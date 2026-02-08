@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { fetchHanziData } from './services/hanziService';
 import { analyzeCharacter } from './services/geminiService';
-import { HanziData, CharacterAnalysis, AnimationState } from './types';
+import { HanziData, CharacterAnalysis, AnimationState, InteractionMode } from './types';
 import SearchInput from './components/SearchInput';
 import StrokeViewer from './components/StrokeViewer';
 import Controls from './components/Controls';
 import AnalysisPanel from './components/AnalysisPanel';
 import LanguageSelector from './components/LanguageSelector';
-import { LANGUAGES } from './locales';
+import { LANGUAGES, UI_LABELS } from './locales';
 import { Brush, Moon, Sun, AlertCircle } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -30,9 +30,13 @@ const App: React.FC = () => {
     return 'light';
   });
 
-  // Animation State
+  // Animation & Interaction State
   const [animationState, setAnimationState] = useState<AnimationState>(AnimationState.IDLE);
+  const [interactionMode, setInteractionMode] = useState<InteractionMode>(InteractionMode.VIEW);
   const [speed, setSpeed] = useState<number>(1);
+
+  // Get current labels based on language
+  const labels = UI_LABELS[currentLang] || UI_LABELS['en'];
 
   // Apply theme class
   useEffect(() => {
@@ -49,6 +53,11 @@ const App: React.FC = () => {
     setTheme(prev => prev === 'light' ? 'dark' : 'light');
   };
 
+  // Sync html lang attribute
+  useEffect(() => {
+    document.documentElement.lang = currentLang;
+  }, [currentLang]);
+
   // Initial load
   useEffect(() => {
     handleSearch('永', currentLang);
@@ -59,6 +68,7 @@ const App: React.FC = () => {
     setLoading(true);
     setError(null);
     setAnimationState(AnimationState.IDLE);
+    setInteractionMode(InteractionMode.VIEW); // Reset to view mode on new search
     setActiveChar(char);
     setAnalysis(null);
     setHanziData(null);
@@ -77,14 +87,12 @@ const App: React.FC = () => {
         setHanziData(data);
         setTimeout(() => setAnimationState(AnimationState.PLAYING), 500);
       } else {
+        // We use English for system errors if translation is missing, but usually this is safe
         setError(`Could not load stroke data for "${char}". It might not be a standard Chinese character.`);
       }
 
       if (aiResult) {
         setAnalysis(aiResult);
-      } else if (!data) {
-         // If both failed, that's a problem, but if only data failed, we might still show AI result? 
-         // For now, let's just rely on the error message above if visual data fails.
       }
     } catch (err) {
       console.error(err);
@@ -96,7 +104,6 @@ const App: React.FC = () => {
 
   const handleLanguageChange = (code: string) => {
     setCurrentLang(code);
-    // If we have a character loaded, re-analyze it in the new language
     if (activeChar) {
       handleSearch(activeChar, code);
     }
@@ -110,7 +117,7 @@ const App: React.FC = () => {
           <div className="flex items-center gap-2 text-teal-700 dark:text-teal-400">
             <Brush size={24} />
             <h1 className="font-bold text-xl tracking-tight hidden sm:block text-slate-800 dark:text-slate-100">
-              HanziMaster <span className="text-slate-400 dark:text-slate-500 font-normal">AI</span>
+              {labels.appTitle}
             </h1>
             <h1 className="font-bold text-xl tracking-tight sm:hidden text-slate-800 dark:text-slate-100">
               Hanzi<span className="text-slate-400 dark:text-slate-500 font-normal">AI</span>
@@ -126,10 +133,6 @@ const App: React.FC = () => {
              >
                {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
              </button>
-
-             <div className="hidden sm:block text-xs text-slate-400 dark:text-slate-500 font-medium px-2 py-1 bg-slate-50 dark:bg-slate-700 rounded border border-slate-100 dark:border-slate-600">
-               v0.1.0
-             </div>
           </div>
         </div>
       </header>
@@ -137,11 +140,16 @@ const App: React.FC = () => {
       <main className="max-w-5xl mx-auto px-4 py-8">
         
         <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4 transition-colors">Master Stroke Order</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4 transition-colors">{labels.appTitle}</h2>
           <p className="text-slate-500 dark:text-slate-400 mb-8 max-w-lg mx-auto">
-            Enter a Chinese character to visualize its stroke order and get detailed AI-powered insights.
+            {labels.appSubtitle}
           </p>
-          <SearchInput onSearch={(char) => handleSearch(char, currentLang)} isLoading={loading} />
+          <SearchInput 
+            onSearch={(char) => handleSearch(char, currentLang)} 
+            isLoading={loading} 
+            placeholderText={labels.searchPlaceholder}
+            invalidCharMessage={labels.errorInvalidChar}
+          />
           
           {error && (
             <div className="max-w-md mx-auto mt-4 p-4 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-xl flex items-center gap-3 border border-red-100 dark:border-red-900/50">
@@ -161,25 +169,47 @@ const App: React.FC = () => {
                   animationState={animationState}
                   setAnimationState={setAnimationState}
                   speed={speed}
+                  mode={interactionMode}
                 />
                 <Controls 
                   animationState={animationState}
                   onPlay={() => setAnimationState(AnimationState.PLAYING)}
                   onPause={() => setAnimationState(AnimationState.PAUSED)}
-                  onReset={() => setAnimationState(AnimationState.IDLE)}
+                  onReset={() => {
+                      setAnimationState(AnimationState.IDLE);
+                      setInteractionMode(InteractionMode.VIEW); // Also reset interaction
+                  }}
                   speed={speed}
                   onSpeedChange={setSpeed}
+                  mode={interactionMode}
+                  onToggleMode={() => {
+                      const newMode = interactionMode === InteractionMode.VIEW ? InteractionMode.PRACTICE : InteractionMode.VIEW;
+                      setInteractionMode(newMode);
+                      if (newMode === InteractionMode.PRACTICE) {
+                          setAnimationState(AnimationState.IDLE); // Stop animation
+                      }
+                  }}
+                  labels={{
+                    play: labels.controlsPlay,
+                    pause: labels.controlsPause,
+                    reset: labels.controlsReset,
+                    speed: labels.controlsSpeed,
+                    practiceMode: labels.practiceMode || "Practice", // Fallback
+                    viewMode: labels.viewMode || "Watch"
+                  }}
                 />
-                <div className="mt-8 text-center">
-                   <p className="text-slate-400 dark:text-slate-500 text-sm">
-                     Stroke {animationState === AnimationState.PLAYING || animationState === AnimationState.PAUSED ? 'Active' : 'Complete'}
-                   </p>
+                <div className="mt-8 text-center min-h-[1.5rem]">
+                   {interactionMode === InteractionMode.VIEW && (
+                       <p className="text-slate-400 dark:text-slate-500 text-sm animate-fade-in">
+                         {animationState === AnimationState.PLAYING || animationState === AnimationState.PAUSED ? labels.strokeStatusActive : labels.strokeStatusComplete}
+                       </p>
+                   )}
                 </div>
               </>
             ) : (
               !loading && !error && (
                 <div className="h-64 w-64 flex items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-3xl text-slate-400 dark:text-slate-600 italic">
-                  Character Preview
+                  {labels.previewText}
                 </div>
               )
             )}
@@ -194,7 +224,8 @@ const App: React.FC = () => {
 
       {/* Footer */}
       <footer className="text-center text-slate-400 dark:text-slate-600 py-8 text-sm mt-12 border-t border-slate-200 dark:border-slate-800 transition-colors">
-        <p>Data provided by Hanzi Writer & Gemini AI</p>
+        <p>{labels.footerCredit}</p>
+        <p className="mt-2 text-xs">{labels.version} v{process.env.APP_VERSION}</p>
       </footer>
     </div>
   );

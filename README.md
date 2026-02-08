@@ -2,17 +2,19 @@
 
 [中文文档](./README_zh-CN.md) | **English**
 
-**HanziMaster AI** is an interactive web application designed to help users master Chinese characters (Hanzi). It combines accurate stroke order animations with the power of Google's Gemini AI to provide linguistic insights, etymology, and mnemonics.
+**HanziMaster AI** is an interactive web application designed to help users master Chinese characters (Hanzi). It combines accurate stroke order animations with the power of Google's Gemini AI to provide linguistic insights, etymology, mnemonics, and **pronunciation**.
 
 ## ✨ Features
 
 *   **Stroke Order Visualization:** Animated, stroke-by-stroke rendering of Chinese characters using SVG data.
+*   **Handwriting Practice:** Interactive touch-friendly mode to practice writing strokes with accuracy validation.
 *   **AI-Powered Analysis:** Leverages **Google Gemini 3 Flash** to generate:
     *   Pinyin & Meaning
     *   Radical breakdown
     *   Etymology / Origin stories
     *   Creative Mnemonics (Memory aids)
     *   Common compound words
+*   **Text-to-Speech (TTS):** Uses **Gemini 2.5 Flash TTS** to pronounce characters and words with high-quality, natural audio.
 *   **Playback Controls:** Play, pause, reset, and adjust the speed of the stroke animation.
 *   **Multi-Language Support:** The interface and AI responses support 10 languages (English, Spanish, French, German, Japanese, Korean, Russian, Portuguese, Italian, Vietnamese).
 *   **Modern UI:** Built with React, Tailwind CSS, and Lucide Icons for a clean, responsive experience.
@@ -21,7 +23,7 @@
 
 *   **Frontend:** React 19, TypeScript
 *   **Styling:** Tailwind CSS
-*   **AI Model:** Google Gemini API (`gemini-3-flash-preview`)
+*   **AI Model:** Google Gemini API (`gemini-3-flash-preview` & `gemini-2.5-flash-preview-tts`)
 *   **Data Source:** Hanzi Writer Data (CDN)
 *   **Icons:** Lucide React
 
@@ -63,8 +65,9 @@
 2.  **Select Language:** Use the dropdown menu in the header to choose your preferred instruction language.
 3.  **Watch & Learn:**
     *   Use the player controls to watch the stroke order animation.
+    *   Click the **Speaker Icon** to hear the pronunciation.
     *   Read the "Memory Aid" and "Origin" sections to deepen your understanding.
-4.  **Practice:** Review the common words provided to see the character in context.
+4.  **Practice:** Switch to "Practice Mode" (Pen icon) to write the character yourself on the screen.
 
 ## 🤝 Contributing
 

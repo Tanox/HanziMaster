@@ -27,3 +27,8 @@ export enum AnimationState {
   PAUSED = 'PAUSED',
   COMPLETED = 'COMPLETED',
 }
+
+export enum InteractionMode {
+  VIEW = 'VIEW',
+  PRACTICE = 'PRACTICE',
+}

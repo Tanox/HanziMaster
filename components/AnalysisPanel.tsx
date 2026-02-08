@@ -2,6 +2,7 @@ import React from 'react';
 import { CharacterAnalysis } from '../types';
 import { BookOpen, Lightbulb, History, Quote } from 'lucide-react';
 import { UI_LABELS } from '../locales';
+import PronunciationButton from './PronunciationButton';
 
 interface AnalysisPanelProps {
   analysis: CharacterAnalysis | null;
@@ -32,8 +33,11 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, isLoading, lang
       {/* Header Card */}
       <div className="col-span-1 md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center justify-between transition-colors duration-300">
         <div>
-          <h2 className="text-4xl font-hanzi font-bold text-slate-800 dark:text-white">{analysis.char}</h2>
-          <p className="text-teal-600 dark:text-teal-400 text-lg font-medium mt-1">{analysis.pinyin}</p>
+          <div className="flex items-end gap-3">
+            <h2 className="text-4xl font-hanzi font-bold text-slate-800 dark:text-white">{analysis.char}</h2>
+            <PronunciationButton text={analysis.char} size={24} className="mb-1" />
+          </div>
+          <p className="text-teal-600 dark:text-teal-400 text-lg font-medium mt-1 ml-1">{analysis.pinyin}</p>
         </div>
         <div className="text-right">
           <p className="text-slate-500 dark:text-slate-400 text-sm uppercase tracking-wider font-semibold">{labels.meaning}</p>
@@ -90,7 +94,10 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, isLoading, lang
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {analysis.examples.map((ex, i) => (
             <div key={i} className="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-100 dark:border-slate-700 hover:border-indigo-100 dark:hover:border-indigo-900 transition-colors">
-              <div className="text-2xl font-hanzi text-slate-800 dark:text-slate-100 mb-1">{ex.word}</div>
+              <div className="flex justify-between items-start">
+                  <div className="text-2xl font-hanzi text-slate-800 dark:text-slate-100 mb-1">{ex.word}</div>
+                  <PronunciationButton text={ex.word} size={18} />
+              </div>
               <div className="text-indigo-600 dark:text-indigo-400 text-sm font-medium">{ex.pinyin}</div>
               <div className="text-slate-500 dark:text-slate-400 text-xs mt-1">{ex.meaning}</div>
             </div>

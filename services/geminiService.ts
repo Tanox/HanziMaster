@@ -75,8 +75,22 @@ export const analyzeCharacter = async (char: string, languageName: string = 'Eng
       }
     });
 
-    const text = response.text;
+    let text = response.text;
     if (!text) return null;
+    
+    // Clean up markdown code blocks if present (common cause of JSON parse errors)
+    text = text.trim();
+    // Remove markdown code fences (e.g. ```json ... ```)
+    if (text.startsWith('```')) {
+      text = text.replace(/^```(json)?\s*/i, '').replace(/\s*```$/, '');
+    }
+
+    // Additional safety: extract JSON object if surrounded by other text or whitespace
+    const startIndex = text.indexOf('{');
+    const endIndex = text.lastIndexOf('}');
+    if (startIndex !== -1 && endIndex !== -1) {
+        text = text.substring(startIndex, endIndex + 1);
+    }
     
     return JSON.parse(text) as CharacterAnalysis;
 

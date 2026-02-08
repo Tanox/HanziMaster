@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { HanziData, AnimationState } from '../types';
+import { HanziData, AnimationState, InteractionMode } from '../types';
+import { PenTool } from 'lucide-react';
 
 interface StrokeViewerProps {
   data: HanziData;
   animationState: AnimationState;
   setAnimationState: (state: AnimationState) => void;
   speed: number;
+  mode: InteractionMode;
 }
 
 const StrokeViewer: React.FC<StrokeViewerProps> = ({
@@ -13,15 +15,25 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   animationState,
   setAnimationState,
   speed,
+  mode,
 }) => {
   const [currentStrokeIndex, setCurrentStrokeIndex] = useState(-1);
   const [progress, setProgress] = useState(0); // 0 to 1 for current stroke
   const requestRef = useRef<number | undefined>(undefined);
   const startTimeRef = useRef<number | undefined>(undefined);
   
+  // Practice Mode State
+  const [practiceStrokeIndex, setPracticeStrokeIndex] = useState(0);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [feedbackColor, setFeedbackColor] = useState<string | null>(null); // 'success' or 'error'
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const userStrokePathRef = useRef<Array<{x: number, y: number}>>([]);
+  
+  // Constants for SVG viewbox
+  const SIZE = 1024; 
+  const OFFSET_Y = SIZE * 0.9; // Based on the translate(0, -921.6) logic roughly
+
   // Helper to convert median points to SVG Path command
-  // Input: [[x1, y1], [x2, y2], ...]
-  // Output: "M x1 y1 L x2 y2 ..."
   const getMedianPath = (points: number[][]): string => {
     if (!points || points.length === 0) return '';
     return points.reduce((acc, point, index) => {
@@ -30,21 +42,25 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     }, '');
   };
 
-  // Reset when data changes
+  // --- Animation Logic (View Mode) ---
+  
+  // Reset when data changes or mode changes
   useEffect(() => {
     setCurrentStrokeIndex(-1);
     setProgress(0);
-    setAnimationState(AnimationState.IDLE);
+    setPracticeStrokeIndex(0);
+    setFeedbackColor(null);
+    if (mode === InteractionMode.VIEW) {
+      setAnimationState(AnimationState.IDLE);
+    }
+    clearCanvas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+  }, [data, mode]);
 
   const animate = (time: number) => {
     if (startTimeRef.current === undefined) startTimeRef.current = time;
     
-    // Duration per stroke (adjusted by speed)
-    // Base duration ~800ms per stroke is usually good
     const strokeDuration = 800 / speed; 
-    
     const elapsed = time - startTimeRef.current;
     const currentProgress = Math.min(elapsed / strokeDuration, 1);
     
@@ -53,24 +69,25 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     if (currentProgress < 1) {
       requestRef.current = requestAnimationFrame(animate);
     } else {
-      // Stroke finished
       if (currentStrokeIndex < data.strokes.length - 1) {
-        // Move to next stroke
         setCurrentStrokeIndex(prev => prev + 1);
-        startTimeRef.current = undefined; // Reset start time for next stroke
+        startTimeRef.current = undefined;
         setProgress(0);
         requestRef.current = requestAnimationFrame(animate);
       } else {
-        // All finished
         setAnimationState(AnimationState.COMPLETED);
-        setCurrentStrokeIndex(data.strokes.length); // Ensure all are shown
+        setCurrentStrokeIndex(data.strokes.length);
       }
     }
   };
 
   useEffect(() => {
+    if (mode === InteractionMode.PRACTICE) {
+        if (requestRef.current !== undefined) cancelAnimationFrame(requestRef.current);
+        return;
+    }
+
     if (animationState === AnimationState.PLAYING) {
-        // If we were idle or completed, start from 0
         if (currentStrokeIndex === -1 || currentStrokeIndex === data.strokes.length) {
             setCurrentStrokeIndex(0);
             setProgress(0);
@@ -83,85 +100,257 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
         if (requestRef.current !== undefined) cancelAnimationFrame(requestRef.current);
     } else if (animationState === AnimationState.PAUSED) {
         if (requestRef.current !== undefined) cancelAnimationFrame(requestRef.current);
-        startTimeRef.current = undefined; // This effectively stops the progress increment
+        startTimeRef.current = undefined;
     }
 
     return () => {
         if (requestRef.current !== undefined) cancelAnimationFrame(requestRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [animationState, currentStrokeIndex, data, speed]);
+  }, [animationState, currentStrokeIndex, data, speed, mode]);
 
 
-  // Constants for SVG viewbox
-  const size = 1024; // Standard HanziWriter size
-  
+  // --- Practice Logic (Practice Mode) ---
+
+  const clearCanvas = () => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      ctx?.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  };
+
+  const drawUserStroke = (points: Array<{x: number, y: number}>, color: string = '#0d9488') => {
+    const canvas = canvasRef.current;
+    if (!canvas || points.length < 2) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 15;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    for (let i = 1; i < points.length; i++) {
+      ctx.lineTo(points[i].x, points[i].y);
+    }
+    ctx.stroke();
+  };
+
+  // Convert screen coordinates to SVG space (0-1024)
+  const getSvgCoordinates = (e: React.PointerEvent) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return { x: 0, y: 0 };
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = SIZE / rect.width;
+    const scaleY = SIZE / rect.height;
+    return {
+      x: (e.clientX - rect.left) * scaleX,
+      y: (e.clientY - rect.top) * scaleY
+    };
+  };
+
+  // Convert Hanzi Data Point (Y-up, origin bottom-left-ish) to SVG Space (Y-down, origin top-left)
+  // Based on the transform: scale(1, -1) translate(0, -921.6)
+  // SVG_Y = -1 * (Data_Y - 921.6) = 921.6 - Data_Y
+  const dataToSvgPoint = (p: number[]) => {
+    return { x: p[0], y: OFFSET_Y - p[1] };
+  };
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (mode !== InteractionMode.PRACTICE || practiceStrokeIndex >= data.strokes.length) return;
+    
+    // Allow touch scrolling if we are not "drawing" yet? No, prevent scroll inside box
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    
+    setIsDrawing(true);
+    userStrokePathRef.current = [];
+    clearCanvas();
+    
+    const point = getSvgCoordinates(e);
+    userStrokePathRef.current.push(point);
+    
+    // Convert to canvas display coords for immediate feedback
+    // Note: Canvas size should match client size, but we map logic to 1024
+    // To simplify, we'll draw on canvas using client coordinates relative to canvas
+    // Wait, let's keep canvas internal resolution high or match 1024? 
+    // Let's set canvas resolution to 1024x1024 via attributes
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!isDrawing || mode !== InteractionMode.PRACTICE) return;
+    
+    const point = getSvgCoordinates(e);
+    userStrokePathRef.current.push(point);
+    drawUserStroke(userStrokePathRef.current);
+  };
+
+  const handlePointerUp = (e: React.PointerEvent) => {
+    if (!isDrawing || mode !== InteractionMode.PRACTICE) return;
+    setIsDrawing(false);
+    (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+
+    validateStroke();
+  };
+
+  const validateStroke = () => {
+    if (practiceStrokeIndex >= data.strokes.length) return;
+
+    const userPath = userStrokePathRef.current;
+    if (userPath.length < 5) return; // Tap is not a stroke
+
+    const targetMedian = data.medians[practiceStrokeIndex].map(dataToSvgPoint);
+    
+    // Simple Validation Algorithm: Average Distance
+    // 1. Resample both paths to same number of points (e.g., 20)
+    // 2. Calculate distance
+    
+    // Simplified: Just check start, middle, end proximity
+    const startDist = getDistance(userPath[0], targetMedian[0]);
+    const endDist = getDistance(userPath[userPath.length - 1], targetMedian[targetMedian.length - 1]);
+    
+    // Threshold (1024 scale)
+    const THRESHOLD = 350; // Generous threshold for mobile
+
+    // Check direction? Start and End must match
+    if (startDist < THRESHOLD && endDist < THRESHOLD) {
+      // Success
+      setPracticeStrokeIndex(prev => prev + 1);
+      clearCanvas();
+      // Optional: Sound effect or haptic
+      if (navigator.vibrate) navigator.vibrate(20);
+    } else {
+      // Fail
+      setFeedbackColor('error');
+      drawUserStroke(userPath, '#ef4444'); // Red
+      setTimeout(() => {
+        setFeedbackColor(null);
+        clearCanvas();
+      }, 500);
+    }
+  };
+
+  const getDistance = (p1: {x: number, y: number}, p2: {x: number, y: number}) => {
+    return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+  };
+
+
   return (
-    <div className="relative w-64 h-64 md:w-80 md:h-80 mx-auto bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden transition-colors duration-300">
-      {/* Grid Background */}
-      <svg viewBox={`0 0 ${size} ${size}`} className="absolute inset-0 w-full h-full pointer-events-none opacity-20">
-        <line x1="0" y1="0" x2={size} y2={size} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
-        <line x1={size} y1="0" x2="0" y2={size} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
-        <line x1={size/2} y1="0" x2={size/2} y2={size} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
-        <line x1="0" y1={size/2} x2={size} y2={size/2} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
-        <rect x="0" y="0" width={size} height={size} className="stroke-slate-400 dark:stroke-slate-400" strokeWidth="4" fill="none" />
-      </svg>
+    <div className="relative w-full max-w-[320px] aspect-square mx-auto">
+      <div className="relative w-full h-full bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden transition-colors duration-300 select-none">
+        
+        {/* Practice Mode Indicator */}
+        {mode === InteractionMode.PRACTICE && (
+            <div className="absolute top-3 right-3 z-20 pointer-events-none">
+                 <div className="bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 p-1.5 rounded-full shadow-sm">
+                    <PenTool size={16} />
+                 </div>
+            </div>
+        )}
 
-      {/* Character Rendering */}
-      <svg 
-        viewBox={`0 0 ${size} ${size}`} 
-        className="absolute inset-0 w-full h-full transform scale-y-[-1]" // Hanzi Writer data is flipped vertically
-      >
-        <defs>
-          {data.medians.map((medianPoints, index) => (
-            <clipPath id={`clip-${index}`} key={`clip-${index}`}>
-               {/* This path is the "revealer". It follows the median. 
-                   We use stroke-dasharray to animate the length.
-                   The stroke-width must be wide enough to cover the actual stroke outline. 
-               */}
+        {/* Grid Background */}
+        <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="absolute inset-0 w-full h-full pointer-events-none opacity-20">
+          <line x1="0" y1="0" x2={SIZE} y2={SIZE} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
+          <line x1={SIZE} y1="0" x2="0" y2={SIZE} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
+          <line x1={SIZE/2} y1="0" x2={SIZE/2} y2={SIZE} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
+          <line x1="0" y1={SIZE/2} x2={SIZE} y2={SIZE/2} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
+          <rect x="0" y="0" width={SIZE} height={SIZE} className="stroke-slate-400 dark:stroke-slate-400" strokeWidth="4" fill="none" />
+        </svg>
+
+        {/* Character Rendering */}
+        <svg 
+          viewBox={`0 0 ${SIZE} ${SIZE}`} 
+          className="absolute inset-0 w-full h-full pointer-events-none"
+        >
+          <defs>
+            {/* View Mode Clips */}
+            {mode === InteractionMode.VIEW && data.medians.map((medianPoints, index) => (
+              <clipPath id={`clip-${index}`} key={`clip-${index}`}>
+                 <path 
+                   d={getMedianPath(medianPoints)} 
+                   fill="none" 
+                   stroke="#000" 
+                   strokeWidth="150" 
+                   strokeLinecap="round"
+                   pathLength={1}
+                   strokeDasharray={`${index === currentStrokeIndex ? progress : (index < currentStrokeIndex ? 1 : 0)} 1`}
+                 />
+              </clipPath>
+            ))}
+          </defs>
+
+          <g transform={`scale(1, -1) translate(0, -${OFFSET_Y})`}> 
+             {/* Background Shadows (Always visible) */}
+             {data.strokes.map((strokePath, index) => (
                <path 
-                 d={getMedianPath(medianPoints)} 
-                 fill="none" 
-                 stroke="#000" 
-                 strokeWidth="150" 
-                 strokeLinecap="round"
-                 pathLength={1} // Normalize length to 1 for easier math
-                 strokeDasharray={`${index === currentStrokeIndex ? progress : (index < currentStrokeIndex ? 1 : 0)} 1`}
+                 key={`bg-${index}`} 
+                 d={strokePath}
+                 className={`transition-colors duration-300 ${
+                    mode === InteractionMode.PRACTICE 
+                        ? (index < practiceStrokeIndex ? 'fill-slate-800 dark:fill-slate-200' : 'fill-slate-100 dark:fill-slate-700') 
+                        : 'fill-slate-200 dark:fill-slate-700'
+                 }`}
                />
-            </clipPath>
-          ))}
-        </defs>
+             ))}
 
-        <g transform={`scale(1, -1) translate(0, -${size*0.9})`}> 
-           {/* 
-              Hanzi data coordinate system is a bit quirky. 
-              Usually 1024x1024, but stored upside down relative to standard SVG. 
-              The scale-y-[-1] on the parent SVG handles flip, but sometimes we need translation.
-           */}
-           {/* Background Shadows (The full character in light grey) */}
-           {data.strokes.map((strokePath, index) => (
-             <path 
-               key={`bg-${index}`} 
-               d={strokePath}
-               className="fill-slate-200 dark:fill-slate-700 transition-colors duration-300"
-             />
-           ))}
+             {/* Animated/Revealed Strokes (View Mode) */}
+             {mode === InteractionMode.VIEW && data.strokes.map((strokePath, index) => (
+               <path 
+                 key={`fg-${index}`} 
+                 d={strokePath} 
+                 className="fill-slate-900 dark:fill-slate-100 transition-colors duration-300"
+                 clipPath={`url(#clip-${index})`}
+                 style={{
+                   transition: 'opacity 0.2s',
+                   opacity: index <= currentStrokeIndex ? 1 : 0
+                 }}
+               />
+             ))}
+             
+             {/* Practice Mode: Current Stroke Hint (Outline) */}
+             {mode === InteractionMode.PRACTICE && practiceStrokeIndex < data.strokes.length && (
+                <path 
+                  d={data.strokes[practiceStrokeIndex]}
+                  className="fill-transparent stroke-teal-500/30 stroke-[20px]"
+                  style={{ animation: 'pulse 2s infinite' }}
+                />
+             )}
+          </g>
+        </svg>
 
-           {/* Foreground Strokes (The animated parts) */}
-           {data.strokes.map((strokePath, index) => (
-             <path 
-               key={`fg-${index}`} 
-               d={strokePath} 
-               className="fill-slate-900 dark:fill-slate-100 transition-colors duration-300"
-               clipPath={`url(#clip-${index})`}
-               style={{
-                 transition: 'opacity 0.2s',
-                 opacity: index <= currentStrokeIndex ? 1 : 0
-               }}
-             />
-           ))}
-        </g>
-      </svg>
+        {/* Interaction Canvas (Practice Mode) */}
+        {mode === InteractionMode.PRACTICE && (
+            <canvas
+                ref={canvasRef}
+                width={SIZE}
+                height={SIZE}
+                className="absolute inset-0 w-full h-full cursor-crosshair touch-none"
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerUp}
+                onPointerLeave={handlePointerUp}
+            />
+        )}
+        
+        {/* Success Overlay for Practice Complete */}
+        {mode === InteractionMode.PRACTICE && practiceStrokeIndex >= data.strokes.length && (
+            <div className="absolute inset-0 flex items-center justify-center bg-teal-500/10 backdrop-blur-[2px] animate-fade-in">
+                <div className="bg-white dark:bg-slate-800 p-4 rounded-full shadow-lg border border-teal-100 dark:border-teal-900">
+                    <span className="text-4xl">🎉</span>
+                </div>
+            </div>
+        )}
+      </div>
+      
+      {mode === InteractionMode.PRACTICE && (
+          <div className="text-center mt-2 text-sm text-slate-400">
+              {practiceStrokeIndex >= data.strokes.length 
+                  ? "Great job! Reset to practice again." 
+                  : `Draw stroke ${practiceStrokeIndex + 1}/${data.strokes.length}`}
+          </div>
+      )}
     </div>
   );
 };

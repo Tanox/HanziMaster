@@ -4,9 +4,11 @@ import { Search } from 'lucide-react';
 interface SearchInputProps {
   onSearch: (char: string) => void;
   isLoading: boolean;
+  placeholderText: string;
+  invalidCharMessage: string;
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({ onSearch, isLoading }) => {
+const SearchInput: React.FC<SearchInputProps> = ({ onSearch, isLoading, placeholderText, invalidCharMessage }) => {
   const [input, setInput] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -19,7 +21,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ onSearch, isLoading }) => {
         onSearch(firstChar);
         setInput('');
       } else {
-        alert("Please enter a valid Chinese character.");
+        alert(invalidCharMessage);
       }
     }
   };
@@ -31,7 +33,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ onSearch, isLoading }) => {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Enter a Chinese character (e.g., 爱)"
+          placeholder={placeholderText}
           className="w-full px-6 py-4 text-lg bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-full shadow-sm focus:outline-none focus:border-teal-500 dark:focus:border-teal-500 focus:ring-2 focus:ring-teal-200 dark:focus:ring-teal-900/50 transition-all font-hanzi placeholder-slate-400 dark:placeholder-slate-500"
           disabled={isLoading}
           maxLength={5}
