@@ -10,7 +10,8 @@ export default defineConfig(({ mode }) => {
       react(),
       VitePWA({
         registerType: 'autoUpdate',
-        includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+        // Include the locally copied hanzi data in the precache
+        includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg', 'hanzi-data/*.json'],
         // Enable PWA in development for testing
         devOptions: {
           enabled: true
@@ -52,13 +53,15 @@ export default defineConfig(({ mode }) => {
         },
         workbox: {
           cleanupOutdatedCaches: true,
+          // Limit the size of precache if necessary, but for ~500 small JSONs it's fine.
+          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
           runtimeCaching: [
             {
-              // Cache Hanzi Writer data (immutable by version)
+              // Cache Hanzi Writer data from CDN (fallback)
               urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/npm\/hanzi-writer-data@2\.0\/.*/i,
               handler: 'CacheFirst',
               options: {
-                cacheName: 'hanzi-data-cache',
+                cacheName: 'hanzi-data-cdn-cache',
                 expiration: {
                   maxEntries: 2000,
                   maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
