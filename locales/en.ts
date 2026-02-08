@@ -1,0 +1,27 @@
+import { UILabels } from './types';
+
+export const en: UILabels = {
+  meaning: 'Meaning',
+  structure: 'Structure',
+  radical: 'Radical',
+  strokeCount: 'Stroke Count',
+  origin: 'Etymology',
+  memoryAid: 'Mnemonic',
+  commonWords: 'Common Words',
+  appTitle: 'HanziMaster AI',
+  appSubtitle: 'Master Chinese character stroke order with AI-powered insights.',
+  searchPlaceholder: 'Enter a character (e.g. 爱)',
+  footerCredit: 'Data source: Hanzi Writer & Gemini AI',
+  version: 'Version',
+  previewText: 'Character Preview',
+  strokeStatusActive: 'Animating...',
+  strokeStatusComplete: 'Animation Complete',
+  errorInvalidChar: 'Please enter a single valid Chinese character.',
+  controlsPlay: 'Play',
+  controlsPause: 'Pause',
+  controlsReset: 'Reset',
+  controlsSpeed: 'Speed',
+  viewMode: 'Watch',
+  practiceMode: 'Practice',
+  randomBtn: 'Random'
+};

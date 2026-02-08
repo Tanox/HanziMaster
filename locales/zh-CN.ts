@@ -1,0 +1,27 @@
+import { UILabels } from './types';
+
+export const zhCN: UILabels = {
+  meaning: '基本释义',
+  structure: '汉字结构',
+  radical: '部首',
+  strokeCount: '总笔画数',
+  origin: '字源演变',
+  memoryAid: '记忆口诀',
+  commonWords: '常用词汇',
+  appTitle: '汉字大师 AI',
+  appSubtitle: '可视化笔顺教学，AI 深度解析汉字奥秘',
+  searchPlaceholder: '请输入一个汉字 (如：爱)',
+  footerCredit: '数据来源：Hanzi Writer & Gemini AI',
+  version: '当前版本',
+  previewText: '汉字预览区域',
+  strokeStatusActive: '笔画演示中...',
+  strokeStatusComplete: '演示结束',
+  errorInvalidChar: '请输入一个有效的单个汉字',
+  controlsPlay: '播放',
+  controlsPause: '暂停',
+  controlsReset: '重置',
+  controlsSpeed: '速度',
+  viewMode: '演示模式',
+  practiceMode: '练习模式',
+  randomBtn: '随机汉字'
+};
