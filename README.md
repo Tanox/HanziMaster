@@ -1,11 +1,75 @@
-<div align="center">
+# HanziMaster AI
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+[中文文档](./README_zh-CN.md) | **English**
 
-  <h1>Built with AI Studio</h2>
+**HanziMaster AI** is an interactive web application designed to help users master Chinese characters (Hanzi). It combines accurate stroke order animations with the power of Google's Gemini AI to provide linguistic insights, etymology, and mnemonics.
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## ✨ Features
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+*   **Stroke Order Visualization:** Animated, stroke-by-stroke rendering of Chinese characters using SVG data.
+*   **AI-Powered Analysis:** Leverages **Google Gemini 3 Flash** to generate:
+    *   Pinyin & Meaning
+    *   Radical breakdown
+    *   Etymology / Origin stories
+    *   Creative Mnemonics (Memory aids)
+    *   Common compound words
+*   **Playback Controls:** Play, pause, reset, and adjust the speed of the stroke animation.
+*   **Multi-Language Support:** The interface and AI responses support 10 languages (English, Spanish, French, German, Japanese, Korean, Russian, Portuguese, Italian, Vietnamese).
+*   **Modern UI:** Built with React, Tailwind CSS, and Lucide Icons for a clean, responsive experience.
 
-</div>
+## 🛠 Tech Stack
+
+*   **Frontend:** React 19, TypeScript
+*   **Styling:** Tailwind CSS
+*   **AI Model:** Google Gemini API (`gemini-3-flash-preview`)
+*   **Data Source:** Hanzi Writer Data (CDN)
+*   **Icons:** Lucide React
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+*   Node.js (v18 or higher recommended)
+*   A Google Gemini API Key
+
+### Installation
+
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/yourusername/hanzimaster-ai.git
+    cd hanzimaster-ai
+    ```
+
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+
+3.  Set up your API Key:
+    Create a `.env` file in the root directory and add your Google Gemini API key:
+    ```env
+    API_KEY=your_actual_api_key_here
+    ```
+    *(Note: Ensure your build tool is configured to expose this key to `process.env`)*
+
+4.  Run the development server:
+    ```bash
+    npm run dev
+    ```
+
+## 🎮 Usage
+
+1.  **Enter a Character:** Type a single Chinese character (e.g., "爱", "龙") into the search bar.
+2.  **Select Language:** Use the dropdown menu in the header to choose your preferred instruction language.
+3.  **Watch & Learn:**
+    *   Use the player controls to watch the stroke order animation.
+    *   Read the "Memory Aid" and "Origin" sections to deepen your understanding.
+4.  **Practice:** Review the common words provided to see the character in context.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is licensed under the MIT License.
