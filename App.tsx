@@ -7,11 +7,12 @@ import StrokeViewer from './components/StrokeViewer';
 import Controls from './components/Controls';
 import AnalysisPanel from './components/AnalysisPanel';
 import LanguageSelector from './components/LanguageSelector';
+import RandomSuggestions from './components/RandomSuggestions';
 import { LANGUAGES, UI_LABELS } from './locales';
 import { Brush, Moon, Sun, AlertCircle, WifiOff } from 'lucide-react';
 import { COMMON_CHARS } from './utils/commonChars';
 
-const APP_VERSION = '0.2.0';
+const APP_VERSION = '0.2.1';
 
 const App: React.FC = () => {
   const [activeChar, setActiveChar] = useState<string>('永');
@@ -261,10 +262,17 @@ const App: React.FC = () => {
             <AnalysisPanel analysis={analysis} isLoading={loading} language={currentLang} />
           </div>
         </div>
+
+        {/* Random Suggestions Footer */}
+        <RandomSuggestions 
+          onSelect={(char) => handleSearch(char, currentLang)} 
+          label={labels.randomBtn}
+        />
+
       </main>
 
       {/* Footer */}
-      <footer className="text-center text-slate-400 dark:text-slate-600 py-8 text-sm mt-12 border-t border-slate-200 dark:border-slate-800 transition-colors">
+      <footer className="text-center text-slate-400 dark:text-slate-600 py-8 text-sm mt-0 border-t border-slate-200 dark:border-slate-800 transition-colors">
         <p>{labels.footerCredit}</p>
         <p className="mt-2 text-xs">{labels.version} v{APP_VERSION}</p>
       </footer>

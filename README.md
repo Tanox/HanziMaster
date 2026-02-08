@@ -4,6 +4,13 @@
 
 **HanziMaster AI** is an interactive web application designed to help users master Chinese characters (Hanzi). It combines accurate stroke order animations with the power of Google's Gemini AI to provide linguistic insights, etymology, mnemonics, and **pronunciation**.
 
+## 📚 Documentation (OpenSpec)
+For detailed project specifications, please refer to the [OpenSpec](./openspec/00_INDEX.md) folder:
+*   [Product Requirements](./openspec/01_PRODUCT_REQUIREMENTS.md)
+*   [Technical Architecture](./openspec/02_TECHNICAL_ARCHITECTURE.md)
+*   [UI/UX Design](./openspec/03_UI_UX_DESIGN.md)
+*   [Data & API](./openspec/04_DATA_AND_API.md)
+
 ## ✨ Features
 
 *   **Offline-First Architecture:** 

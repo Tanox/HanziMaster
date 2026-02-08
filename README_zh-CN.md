@@ -4,6 +4,13 @@
 
 **HanziMaster AI** 是一款交互式汉字学习 Web 应用。它结合了精准的笔画顺序动画与 Google Gemini AI 的强大能力，为用户提供汉字的语言学解析、字源故事、记忆口诀以及**真人级语音朗读**。
 
+## 📚 项目规范 (OpenSpec)
+查看详细的项目技术与产品规范，请参阅 [OpenSpec](./openspec/00_INDEX.md) 目录：
+*   [产品需求文档 (PRD)](./openspec/01_PRODUCT_REQUIREMENTS.md)
+*   [技术架构文档](./openspec/02_TECHNICAL_ARCHITECTURE.md)
+*   [UI/UX 设计规范](./openspec/03_UI_UX_DESIGN.md)
+*   [数据与 API 协议](./openspec/04_DATA_AND_API.md)
+
 ## ✨ 功能特性
 
 *   **离线优先架构 (Offline-First)**：
