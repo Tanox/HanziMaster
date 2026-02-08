@@ -242,7 +242,11 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
 
   return (
     <div className="relative w-full max-w-[320px] aspect-square mx-auto">
-      <div className="relative w-full h-full bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden transition-colors duration-300 select-none">
+      <div className={`relative w-full h-full bg-white dark:bg-slate-800 rounded-3xl shadow-xl overflow-hidden transition-all duration-300 select-none ${
+        feedbackColor === 'error' 
+          ? 'border-2 border-red-400 dark:border-red-500 ring-2 ring-red-100 dark:ring-red-900/30' 
+          : 'border border-slate-100 dark:border-slate-700'
+      }`}>
         
         {/* Practice Mode Indicator */}
         {mode === InteractionMode.PRACTICE && (
