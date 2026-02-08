@@ -8,7 +8,7 @@ import Controls from './components/Controls';
 import AnalysisPanel from './components/AnalysisPanel';
 import LanguageSelector from './components/LanguageSelector';
 import { LANGUAGES } from './locales';
-import { Brush } from 'lucide-react';
+import { Brush, Moon, Sun } from 'lucide-react';
 
 const App: React.FC = () => {
   const [activeChar, setActiveChar] = useState<string>('永');
@@ -19,9 +19,34 @@ const App: React.FC = () => {
   // Language State - Default to Simplified Chinese if preferred, or English
   const [currentLang, setCurrentLang] = useState<string>('zh-CN');
 
+  // Theme State
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('theme');
+      if (saved) return saved as 'light' | 'dark';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    return 'light';
+  });
+
   // Animation State
   const [animationState, setAnimationState] = useState<AnimationState>(AnimationState.IDLE);
   const [speed, setSpeed] = useState<number>(1);
+
+  // Apply theme class
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
 
   // Initial load
   useEffect(() => {
@@ -72,18 +97,31 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen pb-20">
+    <div className="min-h-screen pb-20 bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
+      <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-10 transition-colors duration-300">
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-teal-700">
+          <div className="flex items-center gap-2 text-teal-700 dark:text-teal-400">
             <Brush size={24} />
-            <h1 className="font-bold text-xl tracking-tight hidden sm:block">HanziMaster <span className="text-slate-400 font-normal">AI</span></h1>
-            <h1 className="font-bold text-xl tracking-tight sm:hidden">Hanzi<span className="text-slate-400 font-normal">AI</span></h1>
+            <h1 className="font-bold text-xl tracking-tight hidden sm:block text-slate-800 dark:text-slate-100">
+              HanziMaster <span className="text-slate-400 dark:text-slate-500 font-normal">AI</span>
+            </h1>
+            <h1 className="font-bold text-xl tracking-tight sm:hidden text-slate-800 dark:text-slate-100">
+              Hanzi<span className="text-slate-400 dark:text-slate-500 font-normal">AI</span>
+            </h1>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
              <LanguageSelector currentLang={currentLang} onLanguageChange={handleLanguageChange} />
-             <div className="hidden sm:block text-xs text-slate-400 font-medium px-2 py-1 bg-slate-50 rounded">
+             
+             <button 
+               onClick={toggleTheme}
+               className="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+               aria-label="Toggle Dark Mode"
+             >
+               {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+             </button>
+
+             <div className="hidden sm:block text-xs text-slate-400 dark:text-slate-500 font-medium px-2 py-1 bg-slate-50 dark:bg-slate-700 rounded border border-slate-100 dark:border-slate-600">
                v0.1.0
              </div>
           </div>
@@ -93,8 +131,8 @@ const App: React.FC = () => {
       <main className="max-w-5xl mx-auto px-4 py-8">
         
         <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Master Stroke Order</h2>
-          <p className="text-slate-500 mb-8 max-w-lg mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4 transition-colors">Master Stroke Order</h2>
+          <p className="text-slate-500 dark:text-slate-400 mb-8 max-w-lg mx-auto">
             Enter a Chinese character to visualize its stroke order and get detailed AI-powered insights.
           </p>
           <SearchInput onSearch={(char) => handleSearch(char, currentLang)} isLoading={loading} />
@@ -120,13 +158,13 @@ const App: React.FC = () => {
                   onSpeedChange={setSpeed}
                 />
                 <div className="mt-8 text-center">
-                   <p className="text-slate-400 text-sm">
+                   <p className="text-slate-400 dark:text-slate-500 text-sm">
                      Stroke {animationState === AnimationState.PLAYING || animationState === AnimationState.PAUSED ? 'Active' : 'Complete'}
                    </p>
                 </div>
               </>
             ) : (
-              !loading && <div className="text-slate-400 italic">No character data loaded.</div>
+              !loading && <div className="text-slate-400 dark:text-slate-600 italic">No character data loaded.</div>
             )}
           </div>
 
@@ -138,7 +176,7 @@ const App: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="text-center text-slate-400 py-8 text-sm mt-12 border-t border-slate-200">
+      <footer className="text-center text-slate-400 dark:text-slate-600 py-8 text-sm mt-12 border-t border-slate-200 dark:border-slate-800 transition-colors">
         <p>Data provided by Hanzi Writer & Gemini AI</p>
       </footer>
     </div>

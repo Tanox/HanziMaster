@@ -24,7 +24,7 @@ const Controls: React.FC<ControlsProps> = ({
       <div className="flex items-center gap-4">
         <button
           onClick={onReset}
-          className="p-3 text-slate-600 bg-white border border-slate-200 rounded-full hover:bg-slate-50 hover:text-teal-600 transition-colors shadow-sm"
+          className="p-3 text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-teal-600 dark:hover:text-teal-400 transition-colors shadow-sm"
           title="Reset"
         >
           <RotateCcw size={20} />
@@ -33,7 +33,7 @@ const Controls: React.FC<ControlsProps> = ({
         {animationState === AnimationState.PLAYING ? (
           <button
             onClick={onPause}
-            className="p-4 text-white bg-teal-600 rounded-full hover:bg-teal-700 transition-colors shadow-md transform hover:scale-105"
+            className="p-4 text-white bg-teal-600 dark:bg-teal-500 rounded-full hover:bg-teal-700 dark:hover:bg-teal-600 transition-colors shadow-md transform hover:scale-105"
             title="Pause"
           >
             <Pause size={24} fill="currentColor" />
@@ -41,7 +41,7 @@ const Controls: React.FC<ControlsProps> = ({
         ) : (
           <button
             onClick={onPlay}
-            className="p-4 text-white bg-teal-600 rounded-full hover:bg-teal-700 transition-colors shadow-md transform hover:scale-105"
+            className="p-4 text-white bg-teal-600 dark:bg-teal-500 rounded-full hover:bg-teal-700 dark:hover:bg-teal-600 transition-colors shadow-md transform hover:scale-105"
             title="Play"
           >
             <Play size={24} fill="currentColor" className="ml-1" />
@@ -49,8 +49,8 @@ const Controls: React.FC<ControlsProps> = ({
         )}
       </div>
 
-      <div className="flex items-center gap-3 bg-white px-4 py-2 rounded-lg border border-slate-200 shadow-sm">
-        <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Speed</span>
+      <div className="flex items-center gap-3 bg-white dark:bg-slate-800 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm transition-colors">
+        <span className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Speed</span>
         <div className="flex gap-1">
           {[0.5, 1, 1.5].map((s) => (
             <button
@@ -58,8 +58,8 @@ const Controls: React.FC<ControlsProps> = ({
               onClick={() => onSpeedChange(s)}
               className={`px-2 py-1 text-xs font-bold rounded ${
                 speed === s
-                  ? 'bg-teal-100 text-teal-700'
-                  : 'text-slate-400 hover:text-slate-600'
+                  ? 'bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300'
+                  : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
               }`}
             >
               {s}x

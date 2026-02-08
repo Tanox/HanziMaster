@@ -79,21 +79,21 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
         if (requestRef.current !== undefined) cancelAnimationFrame(requestRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [animationState, currentStrokeIndex, data]);
+  }, [animationState, currentStrokeIndex, data, speed]);
 
 
   // Constants for SVG viewbox
   const size = 1024; // Standard HanziWriter size
   
   return (
-    <div className="relative w-64 h-64 md:w-80 md:h-80 mx-auto bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+    <div className="relative w-64 h-64 md:w-80 md:h-80 mx-auto bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden transition-colors duration-300">
       {/* Grid Background */}
       <svg viewBox={`0 0 ${size} ${size}`} className="absolute inset-0 w-full h-full pointer-events-none opacity-20">
-        <line x1="0" y1="0" x2={size} y2={size} stroke="#cbd5e1" strokeWidth="2" />
-        <line x1={size} y1="0" x2="0" y2={size} stroke="#cbd5e1" strokeWidth="2" />
-        <line x1={size/2} y1="0" x2={size/2} y2={size} stroke="#cbd5e1" strokeWidth="2" />
-        <line x1="0" y1={size/2} x2={size} y2={size/2} stroke="#cbd5e1" strokeWidth="2" />
-        <rect x="0" y="0" width={size} height={size} stroke="#94a3b8" strokeWidth="4" fill="none" />
+        <line x1="0" y1="0" x2={size} y2={size} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
+        <line x1={size} y1="0" x2="0" y2={size} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
+        <line x1={size/2} y1="0" x2={size/2} y2={size} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
+        <line x1="0" y1={size/2} x2={size} y2={size/2} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
+        <rect x="0" y="0" width={size} height={size} className="stroke-slate-400 dark:stroke-slate-400" strokeWidth="4" fill="none" />
       </svg>
 
       {/* Character Rendering */}
@@ -133,8 +133,8 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
            {data.strokes.map((strokePath, index) => (
              <path 
                key={`bg-${index}`} 
-               d={strokePath} 
-               fill="#e2e8f0" 
+               d={strokePath}
+               className="fill-slate-200 dark:fill-slate-700 transition-colors duration-300"
              />
            ))}
 
@@ -143,7 +143,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
              <path 
                key={`fg-${index}`} 
                d={strokePath} 
-               fill="#0f172a" 
+               className="fill-slate-900 dark:fill-slate-100 transition-colors duration-300"
                clipPath={`url(#clip-${index})`}
                style={{
                  transition: 'opacity 0.2s',
