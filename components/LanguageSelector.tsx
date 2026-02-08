@@ -1,6 +1,6 @@
 import React from 'react';
 import { Globe } from 'lucide-react';
-import { LANGUAGES, LanguageOption } from '../locales';
+import { LANGUAGES } from '../locales';
 
 interface LanguageSelectorProps {
   currentLang: string;
@@ -8,8 +8,6 @@ interface LanguageSelectorProps {
 }
 
 const LanguageSelector: React.FC<LanguageSelectorProps> = ({ currentLang, onLanguageChange }) => {
-  const selected = LANGUAGES.find(l => l.code === currentLang) || LANGUAGES[0];
-
   return (
     <div className="relative group">
       <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
