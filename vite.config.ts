@@ -1,16 +1,10 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
-import fs from 'fs';
-import path from 'path';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   
-  // Read package.json to get version securely during build
-  const packageJsonPath = path.resolve(process.cwd(), 'package.json');
-  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
-
   return {
     plugins: [
       react(),
@@ -100,7 +94,6 @@ export default defineConfig(({ mode }) => {
     ],
     define: {
       'process.env.API_KEY': JSON.stringify(env.API_KEY),
-      'process.env.APP_VERSION': JSON.stringify(packageJson.version),
     },
     build: {
       outDir: 'dist',

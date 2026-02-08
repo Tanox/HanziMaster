@@ -10,6 +10,8 @@ import LanguageSelector from './components/LanguageSelector';
 import { LANGUAGES, UI_LABELS } from './locales';
 import { Brush, Moon, Sun, AlertCircle } from 'lucide-react';
 
+const APP_VERSION = '0.1.3';
+
 const App: React.FC = () => {
   const [activeChar, setActiveChar] = useState<string>('永');
   const [hanziData, setHanziData] = useState<HanziData | null>(null);
@@ -225,7 +227,7 @@ const App: React.FC = () => {
       {/* Footer */}
       <footer className="text-center text-slate-400 dark:text-slate-600 py-8 text-sm mt-12 border-t border-slate-200 dark:border-slate-800 transition-colors">
         <p>{labels.footerCredit}</p>
-        <p className="mt-2 text-xs">{labels.version} v{process.env.APP_VERSION}</p>
+        <p className="mt-2 text-xs">{labels.version} v{APP_VERSION}</p>
       </footer>
     </div>
   );

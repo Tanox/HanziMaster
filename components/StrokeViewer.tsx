@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { HanziData, AnimationState, InteractionMode } from '../types';
 import { PenTool } from 'lucide-react';
 
@@ -42,6 +42,27 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     }, '');
   };
 
+  const getDistance = (p1: {x: number, y: number}, p2: {x: number, y: number}) => {
+    return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+  };
+
+  // Helper to calculate path length
+  const getPathLength = (points: number[][]) => {
+    let total = 0;
+    for (let i = 0; i < points.length - 1; i++) {
+      const p1 = points[i];
+      const p2 = points[i + 1];
+      const dist = Math.sqrt(Math.pow(p1[0] - p2[0], 2) + Math.pow(p1[1] - p2[1], 2));
+      total += dist;
+    }
+    return total;
+  };
+
+  const strokeLengths = useMemo(() => {
+    if (!data || !data.medians) return [];
+    return data.medians.map(getPathLength);
+  }, [data]);
+
   // --- Animation Logic (View Mode) ---
   
   // Reset when data changes or mode changes
@@ -69,6 +90,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     if (currentProgress < 1) {
       requestRef.current = requestAnimationFrame(animate);
     } else {
+      // Stroke finished
       if (currentStrokeIndex < data.strokes.length - 1) {
         setCurrentStrokeIndex(prev => prev + 1);
         startTimeRef.current = undefined;
@@ -162,7 +184,6 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   const handlePointerDown = (e: React.PointerEvent) => {
     if (mode !== InteractionMode.PRACTICE || practiceStrokeIndex >= data.strokes.length) return;
     
-    // Allow touch scrolling if we are not "drawing" yet? No, prevent scroll inside box
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
     
     setIsDrawing(true);
@@ -171,12 +192,6 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     
     const point = getSvgCoordinates(e);
     userStrokePathRef.current.push(point);
-    
-    // Convert to canvas display coords for immediate feedback
-    // Note: Canvas size should match client size, but we map logic to 1024
-    // To simplify, we'll draw on canvas using client coordinates relative to canvas
-    // Wait, let's keep canvas internal resolution high or match 1024? 
-    // Let's set canvas resolution to 1024x1024 via attributes
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
@@ -203,23 +218,16 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
 
     const targetMedian = data.medians[practiceStrokeIndex].map(dataToSvgPoint);
     
-    // Simple Validation Algorithm: Average Distance
-    // 1. Resample both paths to same number of points (e.g., 20)
-    // 2. Calculate distance
-    
-    // Simplified: Just check start, middle, end proximity
     const startDist = getDistance(userPath[0], targetMedian[0]);
     const endDist = getDistance(userPath[userPath.length - 1], targetMedian[targetMedian.length - 1]);
     
     // Threshold (1024 scale)
-    const THRESHOLD = 350; // Generous threshold for mobile
+    const THRESHOLD = 350; 
 
-    // Check direction? Start and End must match
     if (startDist < THRESHOLD && endDist < THRESHOLD) {
       // Success
       setPracticeStrokeIndex(prev => prev + 1);
       clearCanvas();
-      // Optional: Sound effect or haptic
       if (navigator.vibrate) navigator.vibrate(20);
     } else {
       // Fail
@@ -231,11 +239,6 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
       }, 500);
     }
   };
-
-  const getDistance = (p1: {x: number, y: number}, p2: {x: number, y: number}) => {
-    return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
-  };
-
 
   return (
     <div className="relative w-full max-w-[320px] aspect-square mx-auto">
@@ -265,20 +268,28 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
           className="absolute inset-0 w-full h-full pointer-events-none"
         >
           <defs>
-            {/* View Mode Clips */}
-            {mode === InteractionMode.VIEW && data.medians.map((medianPoints, index) => (
-              <clipPath id={`clip-${index}`} key={`clip-${index}`}>
-                 <path 
-                   d={getMedianPath(medianPoints)} 
-                   fill="none" 
-                   stroke="#000" 
-                   strokeWidth="150" 
-                   strokeLinecap="round"
-                   pathLength={1}
-                   strokeDasharray={`${index === currentStrokeIndex ? progress : (index < currentStrokeIndex ? 1 : 0)} 1`}
-                 />
-              </clipPath>
-            ))}
+            {/* View Mode Masks */}
+            {mode === InteractionMode.VIEW && data.medians.map((medianPoints, index) => {
+              const len = strokeLengths[index] || 1000;
+              const dashArray = index === currentStrokeIndex 
+                  ? `${progress * len} ${len}` 
+                  : (index < currentStrokeIndex ? `${len} 0` : `0 ${len}`);
+              
+              return (
+                <mask id={`mask-${index}`} key={`mask-${index}`} maskUnits="userSpaceOnUse">
+                   {/* White path on black background reveals the stroke */}
+                   <path 
+                     d={getMedianPath(medianPoints)} 
+                     fill="none" 
+                     stroke="white" 
+                     strokeWidth="150" 
+                     strokeLinecap="round"
+                     strokeLinejoin="round"
+                     strokeDasharray={dashArray}
+                   />
+                </mask>
+              );
+            })}
           </defs>
 
           <g transform={`scale(1, -1) translate(0, -${OFFSET_Y})`}> 
@@ -301,9 +312,11 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
                  key={`fg-${index}`} 
                  d={strokePath} 
                  className="fill-slate-900 dark:fill-slate-100 transition-colors duration-300"
-                 clipPath={`url(#clip-${index})`}
+                 mask={`url(#mask-${index})`}
                  style={{
-                   transition: 'opacity 0.2s',
+                   // Opacity ensures strokes that are "waiting" (future) are hidden, 
+                   // though strokeDasharray `0 len` in mask also handles this.
+                   // Keeping opacity for extra safety.
                    opacity: index <= currentStrokeIndex ? 1 : 0
                  }}
                />

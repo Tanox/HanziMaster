@@ -3,6 +3,21 @@ import { GoogleGenAI, Modality } from "@google/genai";
 // Cache for audio buffers to avoid re-fetching the same text
 const audioCache: Map<string, AudioBuffer> = new Map();
 
+// Global Singleton Audio Context
+let sharedAudioContext: AudioContext | null = null;
+
+function getAudioContext(): AudioContext {
+  if (!sharedAudioContext) {
+    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    sharedAudioContext = new AudioContextClass();
+  }
+  // Ensure context is running (browsers may suspend it if no user gesture)
+  if (sharedAudioContext.state === 'suspended') {
+    sharedAudioContext.resume();
+  }
+  return sharedAudioContext;
+}
+
 // Helper to decode Base64
 function decode(base64: string): Uint8Array {
   const binaryString = atob(base64);
@@ -41,28 +56,22 @@ export const playPronunciation = async (text: string, language: string = 'zh-CN'
     throw new Error("API Key missing");
   }
 
-  // Check cache first
+  const audioContext = getAudioContext();
   const cacheKey = `${language}:${text}`;
-  
-  // Initialize Audio Context (must be done after user interaction)
-  const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-  const audioContext = new AudioContextClass({ sampleRate: 24000 });
 
-  let audioBuffer: AudioBuffer;
-
+  // Use cached buffer if available
   if (audioCache.has(cacheKey)) {
-    // Re-create buffer from cached data if needed, or better, we cache the decoded buffer.
-    // AudioBuffers are tied to context, but usually reusable if context is same. 
-    // Simplified: We will just re-fetch for now or improve caching logic later if context invalidation is an issue.
-    // For simplicity and robustness in this version, let's rely on browser cache or just re-fetch for "Gemini expert" demo.
-    // However, to be "World Class", let's fetch.
+    const cachedBuffer = audioCache.get(cacheKey);
+    if (cachedBuffer) {
+      playSound(audioContext, cachedBuffer);
+      return;
+    }
   }
 
   try {
     const ai = new GoogleGenAI({ apiKey });
     
     // Construct a natural prompt based on the text type
-    // If it's a single char, we say "读这个字". If it's a word, "读这个词".
     const promptText = `Please read the following Chinese text clearly and naturally: "${text}"`;
 
     const response = await ai.models.generateContent({
@@ -88,16 +97,22 @@ export const playPronunciation = async (text: string, language: string = 'zh-CN'
     }
 
     const audioBytes = decode(base64Audio);
-    audioBuffer = await decodeAudioData(audioBytes, audioContext);
+    const audioBuffer = await decodeAudioData(audioBytes, audioContext);
     
-    // Play
-    const source = audioContext.createBufferSource();
-    source.buffer = audioBuffer;
-    source.connect(audioContext.destination);
-    source.start();
+    // Cache the decoded buffer for future use
+    audioCache.set(cacheKey, audioBuffer);
+    
+    playSound(audioContext, audioBuffer);
 
   } catch (error) {
     console.error("TTS Error:", error);
     throw error;
   }
 };
+
+function playSound(ctx: AudioContext, buffer: AudioBuffer) {
+  const source = ctx.createBufferSource();
+  source.buffer = buffer;
+  source.connect(ctx.destination);
+  source.start();
+}
