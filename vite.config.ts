@@ -11,6 +11,10 @@ export default defineConfig(({ mode }) => {
       VitePWA({
         registerType: 'autoUpdate',
         includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+        // Enable PWA in development for testing
+        devOptions: {
+          enabled: true
+        },
         manifest: {
           name: 'HanziMaster AI',
           short_name: 'HanziMaster',
@@ -19,6 +23,8 @@ export default defineConfig(({ mode }) => {
           background_color: '#ffffff',
           display: 'standalone',
           orientation: 'portrait',
+          start_url: '/',
+          scope: '/',
           icons: [
             {
               src: 'pwa-192x192.png',
@@ -45,6 +51,7 @@ export default defineConfig(({ mode }) => {
           ]
         },
         workbox: {
+          cleanupOutdatedCaches: true,
           runtimeCaching: [
             {
               // Cache Hanzi Writer data (immutable by version)
