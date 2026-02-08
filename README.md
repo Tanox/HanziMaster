@@ -6,25 +6,29 @@
 
 ## ✨ Features
 
+*   **Offline-First Architecture:** 
+    *   **Built-in Data:** Includes stroke data for **9000+ characters** (covering HSK 1-6 and beyond).
+    *   **Offline Mode:** Fully functional stroke animations and native pronunciation support even without an internet connection.
 *   **Stroke Order Visualization:** Animated, stroke-by-stroke rendering of Chinese characters using SVG data.
 *   **Handwriting Practice:** Interactive touch-friendly mode to practice writing strokes with accuracy validation.
-*   **AI-Powered Analysis:** Leverages **Google Gemini 3 Flash** to generate:
+*   **AI-Powered Analysis (Online):** Leverages **Google Gemini 3 Flash** to generate:
     *   Pinyin & Meaning
     *   Radical breakdown
     *   Etymology / Origin stories
     *   Creative Mnemonics (Memory aids)
     *   Common compound words
-*   **Text-to-Speech (TTS):** Uses **Gemini 2.5 Flash TTS** to pronounce characters and words with high-quality, natural audio.
-*   **Playback Controls:** Play, pause, reset, and adjust the speed of the stroke animation.
+*   **Hybrid Text-to-Speech (TTS):** 
+    *   **Online:** Uses **Gemini 2.5 Flash TTS** for high-quality, natural audio.
+    *   **Offline:** Fallback to browser-native TTS (`SpeechSynthesis`) ensuring audio is always available.
 *   **Multi-Language Support:** The interface and AI responses support 10 languages (English, Spanish, French, German, Japanese, Korean, Russian, Portuguese, Italian, Vietnamese).
-*   **Modern UI:** Built with React, Tailwind CSS, and Lucide Icons for a clean, responsive experience.
 
 ## 🛠 Tech Stack
 
 *   **Frontend:** React 19, TypeScript
+*   **PWA:** Vite PWA (Workbox) for offline caching
 *   **Styling:** Tailwind CSS
 *   **AI Model:** Google Gemini API (`gemini-3-flash-preview` & `gemini-2.5-flash-preview-tts`)
-*   **Data Source:** Hanzi Writer Data (CDN)
+*   **Data Source:** Hanzi Writer Data (Local copy for offline support)
 *   **Icons:** Lucide React
 
 ## 🚀 Getting Started
@@ -32,7 +36,7 @@
 ### Prerequisites
 
 *   Node.js (v18 or higher recommended)
-*   A Google Gemini API Key
+*   A Google Gemini API Key (for AI features)
 
 ### Installation
 
@@ -46,28 +50,26 @@
     ```bash
     npm install
     ```
+    *Note: This will also install the `hanzi-writer-data` package needed for offline support.*
 
 3.  Set up your API Key:
-    Create a `.env` file in the root directory and add your Google Gemini API key:
+    Create a `.env` file in the root directory:
     ```env
     API_KEY=your_actual_api_key_here
     ```
-    *(Note: Ensure your build tool is configured to expose this key to `process.env`)*
 
-4.  Run the development server:
+4.  Build & Run (to verify data copying):
     ```bash
-    npm run dev
+    npm run build
+    npm run preview
     ```
+    *The build script will automatically copy character data to the `public/hanzi-data` directory.*
 
 ## 🎮 Usage
 
-1.  **Enter a Character:** Type a single Chinese character (e.g., "爱", "龙") into the search bar.
-2.  **Select Language:** Use the dropdown menu in the header to choose your preferred instruction language.
-3.  **Watch & Learn:**
-    *   Use the player controls to watch the stroke order animation.
-    *   Click the **Speaker Icon** to hear the pronunciation.
-    *   Read the "Memory Aid" and "Origin" sections to deepen your understanding.
-4.  **Practice:** Switch to "Practice Mode" (Pen icon) to write the character yourself on the screen.
+1.  **Enter a Character:** Type a single Chinese character (e.g., "爱", "龙").
+2.  **Offline Use:** Disconnect your internet. You can still search, view stroke animations, and hear native pronunciation.
+3.  **Online Analysis:** Connect to the internet to get detailed AI-generated etymology and mnemonics.
 
 ## 🤝 Contributing
 
