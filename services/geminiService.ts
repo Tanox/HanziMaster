@@ -1,12 +1,33 @@
 import { GoogleGenAI, Type, HarmCategory, HarmBlockThreshold } from "@google/genai";
 import { CharacterAnalysis } from '../types';
 
+// Simple offline fallback generator
+const generateOfflineAnalysis = (char: string): CharacterAnalysis => {
+  return {
+    char: char,
+    pinyin: "Offline", // Pinyin conversion requires a library, simplified for now
+    meaning: "Mode: Network Unavailable",
+    radical: "?",
+    strokeCount: 0, // This will be updated by the stroke viewer data if possible
+    etymology: "Detailed etymology requires an internet connection.",
+    mnemonic: "Practice writing this character while offline.",
+    examples: [
+      { word: char, pinyin: "-", meaning: "Analysis unavailable" },
+    ]
+  };
+};
+
 export const analyzeCharacter = async (char: string, languageName: string = 'English'): Promise<CharacterAnalysis | null> => {
+  // Immediate offline check
+  if (!navigator.onLine) {
+    return generateOfflineAnalysis(char);
+  }
+
   try {
     const apiKey = process.env.API_KEY;
     if (!apiKey) {
-      console.error("API Key not found");
-      return null;
+      console.warn("API Key not found, using offline fallback");
+      return generateOfflineAnalysis(char);
     }
 
     const ai = new GoogleGenAI({ apiKey });
@@ -76,7 +97,7 @@ export const analyzeCharacter = async (char: string, languageName: string = 'Eng
     });
 
     let text = response.text;
-    if (!text) return null;
+    if (!text) return generateOfflineAnalysis(char);
     
     // Clean up markdown code blocks if present (common cause of JSON parse errors)
     text = text.trim();
@@ -96,6 +117,7 @@ export const analyzeCharacter = async (char: string, languageName: string = 'Eng
 
   } catch (error) {
     console.error("Gemini API Error:", error);
-    return null;
+    // Fallback on error
+    return generateOfflineAnalysis(char);
   }
 };

@@ -49,17 +49,48 @@ async function decodeAudioData(
   return buffer;
 }
 
+// Fallback: Browser Native TTS
+function speakNative(text: string, lang: string = 'zh-CN') {
+  return new Promise<void>((resolve, reject) => {
+    if (!('speechSynthesis' in window)) {
+      reject(new Error("Browser does not support Speech Synthesis"));
+      return;
+    }
+
+    // Cancel any current speaking
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = lang; // e.g., 'zh-CN'
+    utterance.rate = 0.8; // Slightly slower for learning
+    
+    utterance.onend = () => {
+      resolve();
+    };
+    
+    utterance.onerror = (e) => {
+      console.error("Native TTS Error", e);
+      // Even on error, we resolve to unblock UI, but log it.
+      resolve(); 
+    };
+
+    window.speechSynthesis.speak(utterance);
+  });
+}
+
 export const playPronunciation = async (text: string, language: string = 'zh-CN'): Promise<void> => {
   const apiKey = process.env.API_KEY;
-  if (!apiKey) {
-    console.error("API Key not found");
-    throw new Error("API Key missing");
+
+  // 1. Check Offline / No API Key -> Immediate Native Fallback
+  if (!apiKey || !navigator.onLine) {
+    console.log("Using native TTS (Offline/No Key)");
+    return speakNative(text, 'zh-CN');
   }
 
   const audioContext = getAudioContext();
   const cacheKey = `${language}:${text}`;
 
-  // Use cached buffer if available
+  // 2. Check Cache
   if (audioCache.has(cacheKey)) {
     const cachedBuffer = audioCache.get(cacheKey);
     if (cachedBuffer) {
@@ -69,6 +100,7 @@ export const playPronunciation = async (text: string, language: string = 'zh-CN'
   }
 
   try {
+    // 3. Try Gemini API
     const ai = new GoogleGenAI({ apiKey });
     
     // Construct a natural prompt based on the text type
@@ -105,8 +137,9 @@ export const playPronunciation = async (text: string, language: string = 'zh-CN'
     playSound(audioContext, audioBuffer);
 
   } catch (error) {
-    console.error("TTS Error:", error);
-    throw error;
+    console.warn("Gemini TTS failed, falling back to native:", error);
+    // 4. Fallback to Native if API fails
+    return speakNative(text, 'zh-CN');
   }
 };
 

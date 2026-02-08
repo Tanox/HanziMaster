@@ -8,12 +8,10 @@ import Controls from './components/Controls';
 import AnalysisPanel from './components/AnalysisPanel';
 import LanguageSelector from './components/LanguageSelector';
 import { LANGUAGES, UI_LABELS } from './locales';
-import { Brush, Moon, Sun, AlertCircle } from 'lucide-react';
+import { Brush, Moon, Sun, AlertCircle, WifiOff } from 'lucide-react';
+import { COMMON_CHARS } from './utils/commonChars';
 
 const APP_VERSION = '0.2.0';
-
-// Top 500 most common characters + HSK Level 1 & 2
-const COMMON_CHARS = "的一是在不了有和人这中大为上个国我以要他时来用们生到作地于出就分对成会可主发年动同工也能下过子说产种面而方后多定行学法所民得经十三之进着等部度家电力里如水化高自二理起小物现实量都两体制机当使点从业本去把性好应开它合还因由其些然前外天政四日那社义事平形相全表间样想向道命此位理望果信公手争利实情军最代意强做光今变通各少并口战问气每九许何格名类利手但身象六风业决定几教技元无总反给提解路比解看管认使问知系正实务期展很眼五书开论别光起区系长次手接觉门听见问题日力件员任先海带强特许通位活那员给名几入心几种政只那老受直界张很历革便入几立身千做南比东算且结形又马代光热拉快白算什路运道口布许问但教战主象六风业决公手争利实情军最代意强做光今变通各少并口战问气每九许何格名类利手但身象六风业决定几教技元无总反给提解路比解看管认使问知系正实务期展很眼五书开论别光起区系长次手接觉门听见问题日力件员任先海带强特许通位活那员给名几入心几种政只那老受直界张很历革便入几立身千做南比东算且结形又马代光热拉快白算什路运道口布许问但教战主象六风业决爱喜喜欢谢谢客气不客气再见对不起没关系名字哪儿哪里学校学生老师医生医院椅子猫狗多少钱米饭苹果今天明天昨天上午中午下午星期年日月生日号岁时候现在点分衣服水杯东西块";
 
 const App: React.FC = () => {
   const [activeChar, setActiveChar] = useState<string>('永');
@@ -21,6 +19,7 @@ const App: React.FC = () => {
   const [analysis, setAnalysis] = useState<CharacterAnalysis | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [isOffline, setIsOffline] = useState<boolean>(!navigator.onLine);
   
   // Language State - Default to Simplified Chinese if preferred, or English
   const [currentLang, setCurrentLang] = useState<string>('zh-CN');
@@ -58,6 +57,18 @@ const App: React.FC = () => {
     setTheme(prev => prev === 'light' ? 'dark' : 'light');
   };
 
+  // Monitor Online Status
+  useEffect(() => {
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
   // Sync html lang attribute
   useEffect(() => {
     document.documentElement.lang = currentLang;
@@ -91,13 +102,21 @@ const App: React.FC = () => {
       if (data) {
         setHanziData(data);
         setTimeout(() => setAnimationState(AnimationState.PLAYING), 500);
+        
+        // Enhance offline analysis with real stroke count if in fallback mode
+        if (aiResult && aiResult.meaning === "Mode: Network Unavailable") {
+            setAnalysis({
+                ...aiResult,
+                strokeCount: data.strokes.length
+            });
+        } else if (aiResult) {
+             setAnalysis(aiResult);
+        }
+
       } else {
         // We use English for system errors if translation is missing, but usually this is safe
         setError(`Could not load stroke data for "${char}". It might not be a standard Chinese character.`);
-      }
-
-      if (aiResult) {
-        setAnalysis(aiResult);
+        if (aiResult) setAnalysis(aiResult);
       }
     } catch (err) {
       console.error(err);
@@ -171,6 +190,13 @@ const App: React.FC = () => {
               <AlertCircle size={20} className="shrink-0" />
               <p className="text-sm font-medium">{error}</p>
             </div>
+          )}
+
+          {isOffline && (
+             <div className="max-w-md mx-auto mt-2 p-2 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 rounded-lg flex items-center justify-center gap-2 border border-amber-100 dark:border-amber-900/30 text-sm">
+                 <WifiOff size={16} />
+                 <span>Offline Mode: Using local data & native voice.</span>
+             </div>
           )}
         </div>
 
