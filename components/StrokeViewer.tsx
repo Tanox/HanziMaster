@@ -19,6 +19,17 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   const requestRef = useRef<number | undefined>(undefined);
   const startTimeRef = useRef<number | undefined>(undefined);
   
+  // Helper to convert median points to SVG Path command
+  // Input: [[x1, y1], [x2, y2], ...]
+  // Output: "M x1 y1 L x2 y2 ..."
+  const getMedianPath = (points: number[][]): string => {
+    if (!points || points.length === 0) return '';
+    return points.reduce((acc, point, index) => {
+      const command = index === 0 ? 'M' : 'L';
+      return `${acc} ${command} ${point[0]} ${point[1]}`;
+    }, '');
+  };
+
   // Reset when data changes
   useEffect(() => {
     setCurrentStrokeIndex(-1);
@@ -102,14 +113,14 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
         className="absolute inset-0 w-full h-full transform scale-y-[-1]" // Hanzi Writer data is flipped vertically
       >
         <defs>
-          {data.medians.map((median, index) => (
+          {data.medians.map((medianPoints, index) => (
             <clipPath id={`clip-${index}`} key={`clip-${index}`}>
                {/* This path is the "revealer". It follows the median. 
                    We use stroke-dasharray to animate the length.
                    The stroke-width must be wide enough to cover the actual stroke outline. 
                */}
                <path 
-                 d={median} 
+                 d={getMedianPath(medianPoints)} 
                  fill="none" 
                  stroke="#000" 
                  strokeWidth="150" 
@@ -126,8 +137,6 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
               Hanzi data coordinate system is a bit quirky. 
               Usually 1024x1024, but stored upside down relative to standard SVG. 
               The scale-y-[-1] on the parent SVG handles flip, but sometimes we need translation.
-              Actually, usually just scale(1, -1) translate(0, -900) works for standard fonts.
-              Let's try standard transformation.
            */}
            {/* Background Shadows (The full character in light grey) */}
            {data.strokes.map((strokePath, index) => (

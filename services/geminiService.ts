@@ -1,4 +1,4 @@
-import { GoogleGenAI, Type } from "@google/genai";
+import { GoogleGenAI, Type, HarmCategory, HarmBlockThreshold } from "@google/genai";
 import { CharacterAnalysis } from '../types';
 
 export const analyzeCharacter = async (char: string, languageName: string = 'English'): Promise<CharacterAnalysis | null> => {
@@ -29,6 +29,25 @@ export const analyzeCharacter = async (char: string, languageName: string = 'Eng
       config: {
         systemInstruction: "You are a professional Chinese etymologist and calligraphy expert. You provide accurate, scholarly, yet accessible explanations of Chinese characters.",
         responseMimeType: "application/json",
+        // Adjust safety settings to allow educational content about origins (which may include 'violence' like weapons, hunting, etc.)
+        safetySettings: [
+          {
+            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold: HarmBlockThreshold.BLOCK_NONE,
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+            threshold: HarmBlockThreshold.BLOCK_NONE,
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+            threshold: HarmBlockThreshold.BLOCK_NONE,
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+            threshold: HarmBlockThreshold.BLOCK_NONE,
+          },
+        ],
         responseSchema: {
           type: Type.OBJECT,
           properties: {

@@ -1,6 +1,6 @@
 export interface HanziData {
   strokes: string[];
-  medians: string[];
+  medians: number[][][]; // Changed from string[] to number[][][]
   radStrokes?: number[];
 }
 

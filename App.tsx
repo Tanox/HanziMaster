@@ -8,13 +8,14 @@ import Controls from './components/Controls';
 import AnalysisPanel from './components/AnalysisPanel';
 import LanguageSelector from './components/LanguageSelector';
 import { LANGUAGES } from './locales';
-import { Brush, Moon, Sun } from 'lucide-react';
+import { Brush, Moon, Sun, AlertCircle } from 'lucide-react';
 
 const App: React.FC = () => {
   const [activeChar, setActiveChar] = useState<string>('永');
   const [hanziData, setHanziData] = useState<HanziData | null>(null);
   const [analysis, setAnalysis] = useState<CharacterAnalysis | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   
   // Language State - Default to Simplified Chinese if preferred, or English
   const [currentLang, setCurrentLang] = useState<string>('zh-CN');
@@ -56,9 +57,11 @@ const App: React.FC = () => {
 
   const handleSearch = async (char: string, langCode: string = currentLang) => {
     setLoading(true);
+    setError(null);
     setAnimationState(AnimationState.IDLE);
     setActiveChar(char);
     setAnalysis(null);
+    setHanziData(null);
     
     // Find language name for API
     const langName = LANGUAGES.find(l => l.code === langCode)?.name || 'Simplified Chinese';
@@ -74,15 +77,18 @@ const App: React.FC = () => {
         setHanziData(data);
         setTimeout(() => setAnimationState(AnimationState.PLAYING), 500);
       } else {
-        alert("Could not load stroke data for this character.");
+        setError(`Could not load stroke data for "${char}". It might not be a standard Chinese character.`);
       }
 
       if (aiResult) {
         setAnalysis(aiResult);
+      } else if (!data) {
+         // If both failed, that's a problem, but if only data failed, we might still show AI result? 
+         // For now, let's just rely on the error message above if visual data fails.
       }
     } catch (err) {
       console.error(err);
-      alert("An error occurred while loading data.");
+      setError("An unexpected network error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -136,6 +142,13 @@ const App: React.FC = () => {
             Enter a Chinese character to visualize its stroke order and get detailed AI-powered insights.
           </p>
           <SearchInput onSearch={(char) => handleSearch(char, currentLang)} isLoading={loading} />
+          
+          {error && (
+            <div className="max-w-md mx-auto mt-4 p-4 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-xl flex items-center gap-3 border border-red-100 dark:border-red-900/50">
+              <AlertCircle size={20} className="shrink-0" />
+              <p className="text-sm font-medium">{error}</p>
+            </div>
+          )}
         </div>
 
         <div className="grid lg:grid-cols-12 gap-8">
@@ -164,7 +177,11 @@ const App: React.FC = () => {
                 </div>
               </>
             ) : (
-              !loading && <div className="text-slate-400 dark:text-slate-600 italic">No character data loaded.</div>
+              !loading && !error && (
+                <div className="h-64 w-64 flex items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-3xl text-slate-400 dark:text-slate-600 italic">
+                  Character Preview
+                </div>
+              )
             )}
           </div>
 
