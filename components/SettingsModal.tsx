@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Grid, Eye, PlayCircle, Layers, BookOpen, Lightbulb, Quote, Infinity, Wifi, Settings as SettingsIcon, Shuffle, Clock, Layout } from 'lucide-react';
+import { X, Eye, PlayCircle, Layers, BookOpen, Lightbulb, Quote, Infinity, Wifi, Settings as SettingsIcon, Shuffle, Clock } from 'lucide-react';
 import { AppSettings, GridStyle } from '../types';
 import { UILabels } from '../locales/types';
 
