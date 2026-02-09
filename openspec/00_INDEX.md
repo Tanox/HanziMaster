@@ -14,6 +14,6 @@ Welcome to the technical and product specifications for **HanziMaster**. This do
 ## Project Context
 HanziMaster is an Offline-First Progressive Web App (PWA) designed to teach Chinese characters through animated stroke order and AI-powered linguistic analysis.
 
-*   **Version**: 0.2.5
+*   **Version**: 0.2.6
 *   **License**: GPL-3.0
 *   **Key Tech**: React 19, Vite PWA, Google Gemini API, SVG Animation.

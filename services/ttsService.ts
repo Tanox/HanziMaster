@@ -53,7 +53,7 @@ async function decodeAudioData(
 function speakNative(text: string, lang: string = 'zh-CN') {
   return new Promise<void>((resolve, reject) => {
     if (!('speechSynthesis' in window)) {
-      reject(new Error("Browser does not support Speech Synthesis"));
+      resolve(); // Fail silently/gracefully so UI doesn't break
       return;
     }
 
@@ -64,13 +64,26 @@ function speakNative(text: string, lang: string = 'zh-CN') {
     utterance.lang = lang; // e.g., 'zh-CN'
     utterance.rate = 0.8; // Slightly slower for learning
     
+    // Attempt to pick a voice that matches the language
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length > 0) {
+        // Try to find a voice matching the specific lang code (zh-CN)
+        let selectedVoice = voices.find(v => v.lang === lang);
+        // Fallback to any voice starting with zh (e.g. zh-TW or zh-HK if CN not found)
+        if (!selectedVoice) {
+            selectedVoice = voices.find(v => v.lang.startsWith('zh'));
+        }
+        if (selectedVoice) {
+            utterance.voice = selectedVoice;
+        }
+    }
+    
     utterance.onend = () => {
       resolve();
     };
     
     utterance.onerror = (e) => {
-      console.error("Native TTS Error", e);
-      // Even on error, we resolve to unblock UI, but log it.
+      console.warn("Native TTS Error", e);
       resolve(); 
     };
 
@@ -84,7 +97,7 @@ export const playPronunciation = async (text: string, language: string = 'zh-CN'
   // 1. Check Offline / No API Key -> Immediate Native Fallback
   if (!apiKey || !navigator.onLine) {
     console.log("Using native TTS (Offline/No Key)");
-    return speakNative(text, 'zh-CN');
+    return speakNative(text, language);
   }
 
   const audioContext = getAudioContext();
@@ -103,13 +116,15 @@ export const playPronunciation = async (text: string, language: string = 'zh-CN'
     // 3. Try Gemini API
     const ai = new GoogleGenAI({ apiKey });
     
-    // Construct a natural prompt based on the text type
-    const promptText = `Please read the following Chinese text clearly and naturally: "${text}"`;
+    // Use a very direct prompt to reduce chance of chatty intro/outro
+    const promptText = `Say: ${text}`;
 
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash-preview-tts",
       contents: [{ parts: [{ text: promptText }] }],
       config: {
+        // System instruction forces the model to behave purely as a TTS engine
+        systemInstruction: "You are a Chinese text-to-speech engine. Read the provided text aloud in standard Mandarin Chinese. Do not provide any introductory text or translation. Just speak the Chinese characters.",
         responseModalities: [Modality.AUDIO],
         speechConfig: {
           voiceConfig: {
@@ -143,7 +158,7 @@ export const playPronunciation = async (text: string, language: string = 'zh-CN'
        console.warn("Gemini TTS failed, falling back to native:", error);
     }
     // 4. Fallback to Native if API fails
-    return speakNative(text, 'zh-CN');
+    return speakNative(text, language);
   }
 };
 
