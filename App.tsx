@@ -11,6 +11,7 @@ import RandomSuggestions from './components/RandomSuggestions';
 import HistoryPanel from './components/HistoryPanel';
 import SettingsModal from './components/SettingsModal';
 import ReloadPrompt from './components/ReloadPrompt';
+import InstallPWA from './components/InstallPWA';
 import { LANGUAGES, UI_LABELS } from './locales';
 import { Brush, Moon, Sun, AlertCircle, WifiOff, Settings, Github } from 'lucide-react';
 import { COMMON_CHARS } from './utils/commonChars';
@@ -272,6 +273,8 @@ const App: React.FC = () => {
             </h1>
           </div>
           <div className="flex items-center gap-2 md:gap-3">
+             <InstallPWA installLabel={labels.installApp || 'Install App'} />
+
              <LanguageSelector currentLang={currentLang} onLanguageChange={handleLanguageChange} />
              
              <button

@@ -46,6 +46,7 @@ export const zhCN: UILabels = {
   badgeNone: '未配置',
   getApiKey: '获取 Key',
   practiceComplete: '练习完成',
+  installApp: '安装应用',
   settingShowStructure: '显示汉字结构',
   settingShowEtymology: '显示字源演变',
   settingShowMnemonic: '显示记忆巧记',

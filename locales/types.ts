@@ -47,6 +47,7 @@ export interface UILabels {
   badgeNone: string;
   getApiKey: string;
   practiceComplete: string;
+  installApp?: string; // Optional to prevent breaking other language files immediately
   // Analysis Content Settings
   settingShowStructure: string;
   settingShowEtymology: string;

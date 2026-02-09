@@ -46,6 +46,7 @@ export const en: UILabels = {
   badgeNone: 'None',
   getApiKey: 'Get API Key',
   practiceComplete: 'Practice Complete',
+  installApp: 'Install App',
   settingShowStructure: 'Show Structure',
   settingShowEtymology: 'Show Etymology',
   settingShowMnemonic: 'Show Memory Tip',
