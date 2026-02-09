@@ -51,7 +51,7 @@ async function decodeAudioData(
 
 // Fallback: Browser Native TTS
 function speakNative(text: string, lang: string = 'zh-CN') {
-  return new Promise<void>((resolve, reject) => {
+  return new Promise<void>((resolve) => {
     if (!('speechSynthesis' in window)) {
       resolve(); // Fail silently/gracefully so UI doesn't break
       return;
