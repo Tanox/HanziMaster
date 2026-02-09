@@ -17,14 +17,14 @@ const generateOfflineAnalysis = (char: string, reason: string = "Network Unavail
   };
 };
 
-export const analyzeCharacter = async (char: string, languageName: string = 'English', forceOffline: boolean = false): Promise<CharacterAnalysis | null> => {
+export const analyzeCharacter = async (char: string, languageName: string = 'English', forceOffline: boolean = false, apiKeyOverride?: string): Promise<CharacterAnalysis | null> => {
   // Immediate offline check
   if (!navigator.onLine || forceOffline) {
     return generateOfflineAnalysis(char, forceOffline ? "Offline Mode" : "Network Unavailable");
   }
 
   try {
-    const apiKey = process.env.API_KEY;
+    const apiKey = apiKeyOverride || process.env.API_KEY;
     if (!apiKey) {
       console.warn("API Key not found, using offline fallback");
       return generateOfflineAnalysis(char, "No API Key");

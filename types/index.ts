@@ -42,6 +42,7 @@ export enum InteractionMode {
 export type GridStyle = 'rice' | 'field' | 'none';
 
 export interface AppSettings {
+  apiKey?: string; // User provided API Key
   gridStyle: GridStyle;
   showOutline: boolean;
   autoPlay: boolean;

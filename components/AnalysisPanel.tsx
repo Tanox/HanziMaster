@@ -1,6 +1,6 @@
 import React from 'react';
 import { CharacterAnalysis, AppSettings } from '../types';
-import { BookOpen, Lightbulb, History } from 'lucide-react';
+import { BookOpen, Lightbulb, History, Info } from 'lucide-react';
 import { UI_LABELS } from '../locales';
 import PronunciationButton from './PronunciationButton';
 
@@ -29,7 +29,9 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, isLoading, lang
 
   if (!analysis) return null;
 
-  const isOffline = settings.offlineMode;
+  // Detect fallback state (AI failure, Missing Key, or Offline)
+  const isFallback = analysis.meaning.startsWith('Mode:') || analysis.radical === '?';
+  const showRichContent = !settings.offlineMode && !isFallback;
 
   return (
     <div className="w-full max-w-4xl mx-auto mt-6">
@@ -48,19 +50,30 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, isLoading, lang
                 <div>
                     <h2 className="text-5xl font-hanzi font-bold text-slate-900 dark:text-white mb-1">{analysis.char}</h2>
                     <div className="flex items-center gap-2">
-                        <span className="text-xl text-teal-600 dark:text-teal-400 font-medium tracking-wide">{analysis.pinyin}</span>
-                        <PronunciationButton text={analysis.char} size={20} />
+                        <span className="text-xl text-teal-600 dark:text-teal-400 font-medium tracking-wide">
+                            {analysis.pinyin !== '-' ? analysis.pinyin : ''}
+                        </span>
+                        <PronunciationButton text={analysis.char} size={20} apiKey={settings.apiKey} />
                     </div>
                 </div>
                 <div className="text-right max-w-[50%]">
                     <p className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">{labels.meaning}</p>
-                    <p className="text-lg text-slate-700 dark:text-slate-200 font-serif leading-tight">{analysis.meaning}</p>
+                    <p className="text-lg text-slate-700 dark:text-slate-200 font-serif leading-tight">
+                        {isFallback ? (
+                            <span className="text-slate-400 text-sm italic flex items-center justify-end gap-1">
+                                <Info size={14} />
+                                {analysis.meaning.replace('Mode: ', '')}
+                            </span>
+                        ) : (
+                            analysis.meaning
+                        )}
+                    </p>
                 </div>
             </div>
         </div>
 
         {/* 2. Radical Card */}
-        {settings.showStructure && !isOffline && (
+        {settings.showStructure && showRichContent && (
             <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 flex flex-col items-center justify-center text-center hover:border-teal-100 dark:hover:border-teal-900 transition-colors">
                 <span className="text-slate-400 dark:text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">{labels.radical}</span>
                 <span className="text-4xl font-hanzi text-slate-800 dark:text-slate-200 mb-1">{analysis.radical}</span>
@@ -68,15 +81,15 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, isLoading, lang
         )}
 
         {/* 3. Stroke Count Card */}
-        {settings.showStructure && !isOffline && (
-            <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 flex flex-col items-center justify-center text-center hover:border-teal-100 dark:hover:border-teal-900 transition-colors">
+        {settings.showStructure && (analysis.strokeCount > 0) && (
+            <div className={`bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 flex flex-col items-center justify-center text-center hover:border-teal-100 dark:hover:border-teal-900 transition-colors ${!showRichContent ? 'md:col-span-2' : ''}`}>
                  <span className="text-slate-400 dark:text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">{labels.strokeCount}</span>
                  <span className="text-4xl font-mono font-light text-slate-800 dark:text-slate-200 mb-1">{analysis.strokeCount}</span>
             </div>
         )}
 
         {/* 4. Etymology (Origin) - Full Width or large box */}
-        {settings.showEtymology && !isOffline && (
+        {settings.showEtymology && showRichContent && (
             <div className="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 hover:border-amber-100 dark:hover:border-amber-900/30 transition-colors">
                  <div className="flex items-center gap-2 mb-3 text-amber-600 dark:text-amber-500">
                     <History size={18} />
@@ -89,7 +102,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, isLoading, lang
         )}
 
         {/* 5. Mnemonic - Colored Card */}
-        {settings.showMnemonic && !isOffline && (
+        {settings.showMnemonic && showRichContent && (
             <div className="md:col-span-2 bg-gradient-to-br from-teal-50 to-emerald-50 dark:from-teal-900/20 dark:to-emerald-900/20 p-6 rounded-2xl border border-teal-100 dark:border-teal-900/50 flex flex-col justify-center">
                  <div className="flex items-center gap-2 mb-2 text-teal-700 dark:text-teal-400">
                     <Lightbulb size={18} />
@@ -102,7 +115,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, isLoading, lang
         )}
 
         {/* 6. Vocabulary List - Full Width */}
-        {settings.showExamples && !isOffline && (
+        {settings.showExamples && showRichContent && (
             <div className="md:col-span-4 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 mt-2">
                  <div className="flex items-center gap-2 mb-4 text-indigo-600 dark:text-indigo-400">
                     <BookOpen size={18} />
@@ -117,7 +130,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, isLoading, lang
                           <div className="flex-1 min-w-0">
                               <div className="flex items-center justify-between">
                                   <span className="text-indigo-600 dark:text-indigo-400 text-sm font-semibold">{ex.pinyin}</span>
-                                  <PronunciationButton text={ex.word} size={14} className="opacity-50 hover:opacity-100" />
+                                  <PronunciationButton text={ex.word} size={14} className="opacity-50 hover:opacity-100" apiKey={settings.apiKey} />
                               </div>
                               <p className="text-slate-500 dark:text-slate-400 text-xs truncate mt-0.5" title={ex.meaning}>
                                   {ex.meaning}

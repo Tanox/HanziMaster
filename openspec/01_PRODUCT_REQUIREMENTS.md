@@ -1,51 +1,51 @@
-# 01. Product Requirements Document (PRD)
+# 01. 产品需求文档 (PRD)
 
-**Project**: HanziMaster  
-**Version**: 0.2.8  
-**Status**: Active Development
+**项目**: HanziMaster (汉字大师)
+**版本**: 0.2.8
+**状态**: 开发中
 
-## 1. Executive Summary
-HanziMaster is a web-based educational tool that bridges the gap between traditional rote memorization of Chinese characters and modern linguistic understanding. By combining vector-based stroke animations with Generative AI (Google Gemini), it provides users with immediate visual guidance and deep semantic context.
+## 1. 执行摘要
+HanziMaster 是一个基于 Web 的教育工具，旨在弥合传统死记硬背汉字与现代语言学理解之间的鸿沟。通过结合矢量笔画动画与生成式 AI (Google Gemini)，它为用户提供即时的视觉指导和深层的语义背景。
 
-## 2. User Personas
-*   **The Beginner**: Needs to know *how* to write "你好" without looking like a child's drawing. Needs pronunciation.
-*   **The Scholar**: Wants to know why "休" (rest) is a person leaning against a tree.
-*   **The Traveler**: Needs a reliable dictionary that works on a plane or in areas with poor reception.
+## 2. 用户画像
+*   **初学者**: 需要知道如何书写“你好”而不像画画一样。需要标准的发音。
+*   **学者型**: 想知道为什么“休”字是一个人靠在树上（会意字）。
+*   **旅行者**: 需要一本在飞机上或信号差的地方也能可靠使用的字典。
 
-## 3. Functional Requirements
+## 3. 功能需求
 
-### 3.1 Core Learning (Offline Capable)
-*   **Stroke Animation**: 
-    *   Must render stroke-by-stroke animations for 9000+ characters.
-    *   Controls: Play, Pause, Reset, Speed (0.5x, 1x, 1.5x).
-    *   Must work completely without internet access via PWA precaching.
-*   **InteractionMode**:
-    *   **View Mode**: Passive watching.
-    *   **Practice Mode**: User draws on canvas; system validates accuracy and provides haptic/visual feedback.
-*   **Native TTS (Fallback)**:
-    *   When offline, use `window.speechSynthesis` for pronunciation.
+### 3.1 核心学习功能 (支持离线)
+*   **笔顺动画**:
+    *   必须渲染 9000+ 个汉字的逐笔动画。
+    *   控制功能：播放、暂停、重置、速度调节 (0.5x, 1x, 1.5x)。
+    *   必须通过 PWA 预缓存，在完全无网络的情况下工作。
+*   **交互模式**:
+    *   **演示模式 (View Mode)**: 被动观看。
+    *   **临摹模式 (Practice Mode)**: 用户在画布上书写，系统验证准确性并提供触觉/视觉反馈。
+*   **原生 TTS (降级方案)**:
+    *   离线时，使用 `window.speechSynthesis` 进行发音。
 
-### 3.2 AI Integration (Online Enhanced)
-*   **Linguistic Analysis**: 
-    *   Use Gemini 3 Flash to generate: Pinyin, Radical, Etymology, Mnemonic, and Common Words.
-    *   Graceful degradation: If network fails, show basic local data or a "Network Unavailable" state without crashing.
-*   **Neural TTS**:
-    *   Use Gemini 2.5 Flash TTS for natural, human-like prosody when online.
+### 3.2 AI 集成 (在线增强)
+*   **语言学解析**:
+    *   使用 Gemini 3 Flash 生成：拼音、部首、字源、记忆口诀和常用词汇。
+    *   优雅降级：如果网络请求失败，显示基础本地数据或“网络不可用”状态，而不导致应用崩溃。
+*   **神经 TTS**:
+    *   在线时使用 Gemini 2.5 Flash TTS 提供自然、拟人化的语调。
 
-### 3.3 Discovery & Engagement
-*   **Search**: fast lookup by character.
-*   **Random Suggestion**: 
-    *   Display 3-6 random characters (responsive count) at the bottom of the UI.
-    *   Source from a local list of 5000 common characters.
-*   **Multi-language**: Interface and AI content must support 12 major languages.
+### 3.3 探索与参与
+*   **搜索**: 快速按字符查找。
+*   **随机推荐**:
+    *   在界面底部显示 3-6 个随机汉字（响应式数量）。
+    *   来源为本地存储的 5000 个常用汉字列表。
+*   **多语言支持**: 界面和 AI 内容必须支持 12 种主要语言。
 
-## 4. Non-Functional Requirements
-*   **Performance**: First Contentful Paint (FCP) < 1.0s. Time to Interactive (TTI) < 1.5s.
-*   **Reliability**: Offline mode must function for all static assets and cached API calls.
-*   **Accessibility**: ARIA labels for all icon buttons; keyboard navigability for player controls.
-*   **Compatibility**: Support modern browsers (Chrome, Safari, Edge, Firefox) and mobile OS (iOS, Android).
+## 4. 非功能性需求
+*   **性能**: 首次内容绘制 (FCP) < 1.0s。可交互时间 (TTI) < 1.5s。
+*   **可靠性**: 离线模式必须支持所有静态资源和已缓存的 API 调用。
+*   **无障碍性 (A11y)**: 所有图标按钮需包含 ARIA 标签；播放器控件支持键盘导航。
+*   **兼容性**: 支持现代浏览器 (Chrome, Safari, Edge, Firefox) 和移动操作系统 (iOS, Android)。
 
-## 5. Roadmap
-*   **v0.1**: Basic stroke rendering.
-*   **v0.2**: AI analysis, TTS, and PWA Offline support. (Current)
-*   **v0.3**: User accounts, progress tracking, "Spaced Repetition" (SRS) system.
+## 5. 路线图
+*   **v0.1**: 基础笔画渲染。
+*   **v0.2**: AI 解析、TTS 和 PWA 离线支持。(当前阶段)
+*   **v0.3**: 用户账户、进度追踪、间隔重复 (SRS) 系统。

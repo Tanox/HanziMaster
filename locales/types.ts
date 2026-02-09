@@ -37,6 +37,9 @@ export interface UILabels {
   settingShowSpeedControl?: string;
   settingShowRandomSuggestions?: string;
   settingShowHistory?: string; // Added
+  settingApiKey?: string;
+  settingApiKeyPlaceholder?: string;
+  settingApiKeyHelp?: string;
   // Analysis Content Settings
   settingShowStructure: string;
   settingShowEtymology: string;

@@ -5,11 +5,12 @@
 **汉字大师** 是一款交互式汉字学习 Web 应用。它结合了精准的笔画顺序动画与 Google Gemini AI 的强大能力，为用户提供汉字的语言学解析、字源故事、记忆口诀以及**真人级语音朗读**。
 
 ## 📚 项目规范 (OpenSpec)
-查看详细的项目技术与产品规范，请参阅 [OpenSpec](./openspec/00_INDEX.md) 目录：
-*   [产品需求文档 (PRD)](./openspec/01_PRODUCT_REQUIREMENTS.md)
-*   [技术架构文档](./openspec/02_TECHNICAL_ARCHITECTURE.md)
-*   [UI/UX 设计规范](./openspec/03_UI_UX_DESIGN.md)
-*   [数据与 API 协议](./openspec/04_DATA_AND_API.md)
+查看详细的项目技术与产品规范，请参阅 [OpenSpec](./openspec/00_INDEX.md) 目录（已完全汉化）：
+*   [01. 产品需求文档 (PRD)](./openspec/01_PRODUCT_REQUIREMENTS.md)
+*   [02. 技术架构文档](./openspec/02_TECHNICAL_ARCHITECTURE.md)
+*   [03. UI/UX 设计规范](./openspec/03_UI_UX_DESIGN.md)
+*   [04. 数据与 API 协议](./openspec/04_DATA_AND_API.md)
+*   [05. 营销与推广策略](./openspec/05_MARKETING_AND_PROMO.md)
 
 ## ✨ 功能特性
 
@@ -24,6 +25,7 @@
 *   **混合语音朗读 (Hybrid TTS)**：
     *   **在线**：集成 **Gemini 2.5 Flash TTS**，提供自然的人声发音。
     *   **离线**：自动回退至浏览器原生语音合成 (`SpeechSynthesis`)，确保发音功能永不掉线。
+*   **GEO 优化**：针对 AI 搜索引擎（如 ChatGPT, Gemini）进行了结构化数据优化，方便 AI 抓取和推荐。
 *   **多语言支持**：界面及 AI 回复支持全球 10 种常用语言。
 
 ## 🛠 技术栈
@@ -32,6 +34,7 @@
 *   **离线支持**：Vite PWA (Workbox)
 *   **AI 模型**：Google Gemini API (`gemini-3-flash-preview` & `gemini-2.5-flash-preview-tts`)
 *   **数据源**：Hanzi Writer Data (本地构建 + 静态资源化)
+*   **统计分析**：Google Analytics 4
 
 ## 🚀 快速开始
 

@@ -5,11 +5,12 @@
 **HanziMaster** is an interactive web application designed to help users master Chinese characters (Hanzi). It combines accurate stroke order animations with the power of Google's Gemini AI to provide linguistic insights, etymology, mnemonics, and **pronunciation**.
 
 ## 📚 Documentation (OpenSpec)
-For detailed project specifications, please refer to the [OpenSpec](./openspec/00_INDEX.md) folder:
-*   [Product Requirements](./openspec/01_PRODUCT_REQUIREMENTS.md)
-*   [Technical Architecture](./openspec/02_TECHNICAL_ARCHITECTURE.md)
-*   [UI/UX Design](./openspec/03_UI_UX_DESIGN.md)
-*   [Data & API](./openspec/04_DATA_AND_API.md)
+For detailed project specifications (available in Chinese), please refer to the [OpenSpec](./openspec/00_INDEX.md) folder:
+*   [01. Product Requirements](./openspec/01_PRODUCT_REQUIREMENTS.md)
+*   [02. Technical Architecture](./openspec/02_TECHNICAL_ARCHITECTURE.md)
+*   [03. UI/UX Design](./openspec/03_UI_UX_DESIGN.md)
+*   [04. Data & API](./openspec/04_DATA_AND_API.md)
+*   [05. Marketing & Promotion](./openspec/05_MARKETING_AND_PROMO.md)
 
 ## ✨ Features
 
@@ -27,16 +28,17 @@ For detailed project specifications, please refer to the [OpenSpec](./openspec/0
 *   **Hybrid Text-to-Speech (TTS):** 
     *   **Online:** Uses **Gemini 2.5 Flash TTS** for high-quality, natural audio.
     *   **Offline:** Fallback to browser-native TTS (`SpeechSynthesis`) ensuring audio is always available.
+*   **GEO Optimized:** Includes structured data (JSON-LD) for better visibility in AI-driven search engines.
 *   **Multi-Language Support:** The interface and AI responses support 10 languages (English, Spanish, French, German, Japanese, Korean, Russian, Portuguese, Italian, Vietnamese).
 
 ## 🛠 Tech Stack
 
 *   **Frontend:** React 19, TypeScript
 *   **PWA:** Vite PWA (Workbox) for offline caching
-*   **Styling:** Tailwind CSS
 *   **AI Model:** Google Gemini API (`gemini-3-flash-preview` & `gemini-2.5-flash-preview-tts`)
 *   **Data Source:** Hanzi Writer Data (Local copy for offline support)
 *   **Icons:** Lucide React
+*   **Analytics:** Google Analytics 4
 
 ## 🚀 Getting Started
 

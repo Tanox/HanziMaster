@@ -1,20 +1,20 @@
-# 04. Data & API Specifications
+# 04. 数据与 API 规范
 
-## 1. Internal Data Models
-Located in `src/types/index.ts`.
+## 1. 内部数据模型
+位于 `src/types/index.ts`。
 
-### 1.1 HanziData (Visuals)
-Based on *Hanzi Writer* format.
+### 1.1 HanziData (视觉数据)
+基于 *Hanzi Writer* 格式。
 ```typescript
 interface HanziData {
-  strokes: string[];    // SVG Path commands for the visible stroke
-  medians: number[][][]; // Coordinates [x, y] for the skeleton/median line used for grading
-  radStrokes?: number[]; // Indices of strokes that make up the radical
+  strokes: string[];    // 可见笔画的 SVG Path 命令
+  medians: number[][][]; // 用于评分的骨架/中线坐标 [x, y]
+  radStrokes?: number[]; // 构成部首的笔画索引
 }
 ```
 
-### 1.2 CharacterAnalysis (Linguistics)
-The aggregated data object used by the UI.
+### 1.2 CharacterAnalysis (语言学数据)
+UI 使用的聚合数据对象。
 ```typescript
 interface CharacterAnalysis {
   char: string;
@@ -34,13 +34,13 @@ interface ExampleWord {
 }
 ```
 
-## 2. API Contracts
+## 2. API 契约
 
-### 2.1 Google Gemini (Analysis)
-*   **Model**: `gemini-3-flash-preview`
-*   **Input**: Text prompt with target language.
-*   **Output Config**: `responseMimeType: "application/json"`.
-*   **Schema Enforcement**:
+### 2.1 Google Gemini (解析)
+*   **模型**: `gemini-3-flash-preview`
+*   **输入**: 包含目标语言的文本提示词。
+*   **输出配置**: `responseMimeType: "application/json"`.
+*   **Schema 强制**:
 
 ```json
 {
@@ -70,20 +70,21 @@ interface ExampleWord {
 ```
 
 ### 2.2 Google Gemini (TTS)
-*   **Model**: `gemini-2.5-flash-preview-tts`
-*   **Config**:
+*   **模型**: `gemini-2.5-flash-preview-tts`
+*   **配置**:
     *   `responseModalities`: `['AUDIO']`
-    *   `voiceName`: 'Kore' (Balanced neutral voice)
-*   **Output**: Base64 encoded raw PCM/WAV data.
+    *   `voiceName`: 'Kore' (平衡的中性声音)
+*   **输出**: Base64 编码的原始 PCM/WAV 数据。
 
-## 3. Local Storage / Caching
-*   **Service Worker Cache**: Stores `hanzi-data/*.json`.
-*   **Browser Cache**: Stores fonts.
-*   **Runtime Memory**:
-    *   `audioCache`: `Map<string, AudioBuffer>` to prevent redundant TTS calls.
+## 3. 本地存储 / 缓存
+*   **Service Worker 缓存**: 存储 `hanzi-data/*.json`。
+*   **浏览器缓存**: 存储字体文件。
+*   **运行时内存**:
+    *   `audioCache`: `Map<string, AudioBuffer>` 防止重复调用 TTS。
 
-## 4. Prompt Engineering
-The system prompt used for analysis:
+## 4. 提示词工程 (Prompt Engineering)
+用于解析的系统提示词：
 > "You are a professional Chinese etymologist and calligraphy expert. You provide accurate, scholarly, yet accessible explanations of Chinese characters."
+> (你是一位专业的中国词源学家和书法专家。你提供准确、学术但通俗易懂的汉字解释。)
 
-Specific instructions are injected to handle multilingual support (e.g., "Provide a detailed breakdown in Spanish").
+具体指令会注入以处理多语言支持（例如：“Provide a detailed breakdown in Spanish”）。

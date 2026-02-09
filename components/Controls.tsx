@@ -19,6 +19,7 @@ interface ControlsProps {
     practiceMode: string;
     viewMode: string;
   };
+  apiKey?: string;
 }
 
 const Controls: React.FC<ControlsProps> = ({
@@ -30,6 +31,7 @@ const Controls: React.FC<ControlsProps> = ({
   onToggleMode,
   char,
   labels,
+  apiKey,
 }) => {
   const isPractice = mode === InteractionMode.PRACTICE;
 
@@ -79,7 +81,7 @@ const Controls: React.FC<ControlsProps> = ({
             
             {/* Pronunciation Button (Always Enabled) */}
             <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full p-0.5 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
-               <PronunciationButton text={char} size={22} className="w-[44px] h-[44px]" />
+               <PronunciationButton text={char} size={22} className="w-[44px] h-[44px]" apiKey={apiKey} />
             </div>
             
             {animationState === AnimationState.PLAYING ? (

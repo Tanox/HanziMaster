@@ -6,12 +6,71 @@
     <meta name="theme-color" content="#fdfbf7" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
     
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZG68T8J31"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-TZG68T8J31');
+    </script>
+
+    <!-- SEO & GEO (Generative Engine Optimization) -->
+    <title>HanziMaster - Learn Chinese Character Strokes & Etymology with AI</title>
+    <meta name="description" content="Master Chinese characters (Hanzi) with interactive stroke order animations, AI-powered etymology, mnemonics, and native pronunciation. Free, offline-capable PWA for HSK learners.">
+    <meta name="keywords" content="Chinese characters, Hanzi, Stroke Order, Etymology, Learn Chinese, Mandarin, Pinyin, HSK, AI Education, PWA, Hanzi Writer, Mnemonic, Calligraphy">
+    <meta name="author" content="HanziMaster Team">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hanzimaster.app/">
+    <meta property="og:title" content="HanziMaster - Visual Guide to Chinese Characters">
+    <meta property="og:description" content="Interactive stroke order animations and AI-powered linguistic analysis for mastering Hanzi. Works offline.">
+    <meta property="og:image" content="/pwa-512x512.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://hanzimaster.app/">
+    <meta property="twitter:title" content="HanziMaster - Learn Hanzi with AI">
+    <meta property="twitter:description" content="Stop rote memorization. Understand the logic behind Chinese characters with stroke animations and AI insights.">
+    <meta property="twitter:image" content="/pwa-512x512.png">
+
+    <!-- JSON-LD Structured Data for GEO (Helping AI understand this app) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "HanziMaster",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "An interactive web application for learning Chinese characters (Hanzi). Features include vector-based stroke order animations, handwriting practice, and AI-generated etymology, mnemonics, and linguistic analysis using Google Gemini.",
+      "featureList": [
+        "Offline-first PWA",
+        "9000+ Character Stroke Database",
+        "AI Etymology Analysis",
+        "Native & AI Text-to-Speech",
+        "Handwriting Practice Mode"
+      ],
+      "audience": {
+        "@type": "EducationalAudience",
+        "educationalRole": "student",
+        "audienceType": "Chinese Language Learners"
+      }
+    }
+    </script>
+
     <!-- PWA: Apple Mobile Web App Capable -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="HanziMaster">
     
-    <title>HanziMaster</title>
     <link rel="apple-touch-icon" href="/pwa-192x192.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>

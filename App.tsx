@@ -10,6 +10,7 @@ import LanguageSelector from './components/LanguageSelector';
 import RandomSuggestions from './components/RandomSuggestions';
 import HistoryPanel from './components/HistoryPanel';
 import SettingsModal from './components/SettingsModal';
+import ReloadPrompt from './components/ReloadPrompt';
 import { LANGUAGES, UI_LABELS } from './locales';
 import { Brush, Moon, Sun, AlertCircle, WifiOff, Settings, Github } from 'lucide-react';
 import { COMMON_CHARS } from './utils/commonChars';
@@ -17,6 +18,7 @@ import { COMMON_CHARS } from './utils/commonChars';
 const APP_VERSION = '0.2.8';
 
 const DEFAULT_SETTINGS: AppSettings = {
+  apiKey: '', // Empty by default, relies on build-time env var if not set
   gridStyle: 'rice',
   showOutline: true,
   autoPlay: true,
@@ -157,7 +159,8 @@ const App: React.FC = () => {
     const langName = LANGUAGES.find(l => l.code === langCode)?.name || 'Simplified Chinese';
     
     // 2. Start AI Fetch in Background (Don't await yet)
-    const aiPromise = analyzeCharacter(char, langName, settings.offlineMode);
+    // Pass user-provided API key if available
+    const aiPromise = analyzeCharacter(char, langName, settings.offlineMode, settings.apiKey);
 
     let fetchedData: HanziData | null = null;
 
@@ -367,6 +370,7 @@ const App: React.FC = () => {
                     practiceMode: labels.practiceMode || "Practice",
                     viewMode: labels.viewMode || "Watch"
                   }}
+                  apiKey={settings.apiKey}
                 />
                 <div className="mt-6 md:mt-8 text-center min-h-[1.5rem]">
                    {interactionMode === InteractionMode.VIEW && (
@@ -421,6 +425,8 @@ const App: React.FC = () => {
           speed={speed}
           onSpeedChange={setSpeed}
         />
+        
+        <ReloadPrompt />
 
       </main>
 

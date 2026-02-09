@@ -91,8 +91,8 @@ function speakNative(text: string, lang: string = 'zh-CN') {
   });
 }
 
-export const playPronunciation = async (text: string, language: string = 'zh-CN'): Promise<void> => {
-  const apiKey = process.env.API_KEY;
+export const playPronunciation = async (text: string, language: string = 'zh-CN', apiKeyOverride?: string): Promise<void> => {
+  const apiKey = apiKeyOverride || process.env.API_KEY;
 
   // 1. Check Offline / No API Key -> Immediate Native Fallback
   if (!apiKey || !navigator.onLine) {

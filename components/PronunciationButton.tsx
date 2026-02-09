@@ -6,9 +6,10 @@ interface PronunciationButtonProps {
   text: string;
   size?: number;
   className?: string;
+  apiKey?: string;
 }
 
-const PronunciationButton: React.FC<PronunciationButtonProps> = ({ text, size = 20, className = "" }) => {
+const PronunciationButton: React.FC<PronunciationButtonProps> = ({ text, size = 20, className = "", apiKey }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [error, setError] = useState(false);
 
@@ -20,7 +21,7 @@ const PronunciationButton: React.FC<PronunciationButtonProps> = ({ text, size = 
     setError(false);
 
     try {
-      await playPronunciation(text);
+      await playPronunciation(text, 'zh-CN', apiKey);
       // We don't exactly know when the audio *finishes* playing without hooking into onended of the source node
       // But the API call is the main "loading" part.
       // Let's keep the spinner for a short moment or until the promise resolves (audio loaded).

@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       VitePWA({
-        registerType: 'autoUpdate',
+        registerType: 'prompt', // Changed from 'autoUpdate' to 'prompt'
         // Optimized: Only precache the app shell and critical icons. 
         // We do NOT precache the 9000+ hanzi JSON files here to prevent install timeouts.
         includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
@@ -21,8 +21,8 @@ export default defineConfig(({ mode }) => {
           name: 'HanziMaster',
           short_name: 'HanziMaster',
           description: 'Master Chinese character stroke order with AI insights.',
-          theme_color: '#ffffff',
-          background_color: '#ffffff',
+          theme_color: '#fdfbf7', // Updated to match paper color
+          background_color: '#fdfbf7',
           display: 'standalone',
           orientation: 'portrait',
           start_url: '/',

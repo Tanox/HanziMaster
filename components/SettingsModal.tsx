@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Eye, PlayCircle, Layers, BookOpen, Lightbulb, Quote, Infinity, Wifi, Shuffle, Clock, Gauge } from 'lucide-react';
+import { X, Eye, PlayCircle, Layers, BookOpen, Lightbulb, Quote, Infinity, Wifi, Shuffle, Clock, Gauge, Key } from 'lucide-react';
 import { AppSettings, GridStyle } from '../types';
 import { UILabels } from '../locales/types';
 
@@ -110,6 +110,28 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                   {style === 'none' && labels.settingGridNone}
                 </button>
               ))}
+          </div>
+          
+          {/* Section: API Key (New) */}
+          <SectionHeader title={labels.settingApiKey || "API Key"} />
+          <div className="mb-2">
+            <div className="flex items-center gap-3 mb-2">
+                <div className="p-2 rounded-lg bg-slate-100 text-slate-400 dark:bg-slate-800">
+                    <Key size={16} />
+                </div>
+                <input 
+                    type="password" 
+                    value={settings.apiKey || ''} 
+                    onChange={(e) => update('apiKey', e.target.value)}
+                    placeholder={labels.settingApiKeyPlaceholder || "Enter Gemini API Key"}
+                    className="flex-1 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm text-slate-800 dark:text-slate-200 outline-none focus:border-teal-500 dark:focus:border-teal-500 transition-colors"
+                    autoComplete="off"
+                    spellCheck="false"
+                />
+            </div>
+            <p className="text-xs text-slate-400 dark:text-slate-500 ml-11 leading-normal">
+                {labels.settingApiKeyHelp || "Leave empty to use default."}
+            </p>
           </div>
 
           {/* Section: Learning */}

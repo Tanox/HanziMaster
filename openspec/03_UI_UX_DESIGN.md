@@ -1,50 +1,50 @@
-# 03. UI/UX Design Specifications
+# 03. UI/UX 设计规范
 
-## 1. Design Philosophy
-*   **Academic yet Modern**: Use Serif fonts for Hanzi to convey tradition, Sans-serif for UI to convey modernity.
-*   **Focus-Driven**: The character animation is the center stage. All controls are secondary.
-*   **Responsive**: Layout shifts from Single Column (Mobile) to Split Column (Desktop).
+## 1. 设计哲学
+*   **学术与现代并重**: 汉字展示使用衬线体 (Serif) 传达传统感，UI 界面使用无衬线体 (Sans-serif) 传达现代感。
+*   **焦点驱动**: 汉字动画是舞台中心。所有控制控件都是次要的。
+*   **响应式**: 布局从单列 (移动端) 平滑过渡到双列 (桌面端)。
 
-## 2. Design Tokens (Tailwind)
+## 2. 设计变量 (Design Tokens - Tailwind)
 
-### 2.1 Color Palette
-*   **Primary**: `Teal-600` (Light) / `Teal-400` (Dark). Used for Primary Actions, Highlights.
-*   **Background**: `Slate-50` (Light) / `Slate-900` (Dark). High contrast, easy on eyes.
-*   **Surface**: `White` (Light) / `Slate-800` (Dark). Cards and panels.
-*   **Feedback**:
-    *   Success: `Emerald` (Practice mode correct stroke).
-    *   Error: `Red-500` (Practice mode wrong stroke).
+### 2.1 调色板
+*   **主色 (Primary)**: `Teal-600` (亮色模式) / `Teal-400` (暗色模式)。用于主要操作和高亮。
+*   **背景色**: `Slate-50` (亮色) / `Slate-900` (暗色)。高对比度，护眼。
+*   **表面色**: `White` (亮色) / `Slate-800` (暗色)。用于卡片和面板。
+*   **反馈色**:
+    *   成功: `Emerald` (临摹模式笔画正确)。
+    *   错误: `Red-500` (临摹模式笔画错误)。
 
-### 2.2 Typography
-*   **UI Font**: `Inter` (System-ui fallback).
-*   **Hanzi Font**: `Noto Serif SC` (Google Fonts). Essential for correct rendering of strokes (Serif style matches standard calligraphy better than Sans).
+### 2.2 排版
+*   **UI 字体**: `Inter` (系统 UI字体回退)。
+*   **汉字字体**: `Noto Serif SC` (Google Fonts)。相比 Sans 字体，Serif 风格更符合标准书法的笔画渲染。
 
-## 3. Component Specifications
+## 3. 组件规范
 
-### 3.1 StrokeViewer
-*   **Container**: Square aspect ratio.
-*   **Grid**: "Rice" Grid (米字格) background to guide structure.
-*   **Interaction**: 
-    *   **View**: SVG Paths with `stroke-dasharray` animation.
-    *   **Practice**: HTML5 Canvas overlay for drawing. `pointer-events` handling for touch/mouse.
+### 3.1 笔顺播放器 (StrokeViewer)
+*   **容器**: 正方形比例。
+*   **背景**: “米字格”背景，辅助结构认知。
+*   **交互**:
+    *   **演示**: 使用 `stroke-dasharray` 动画的 SVG 路径。
+    *   **临摹**: 用于绘制的 HTML5 Canvas 覆盖层。处理 `pointer-events` 以支持触摸/鼠标。
 
-### 3.2 AnalysisPanel
-*   **Layout**: Grid-based cards.
-*   **Loading State**: Skeleton screens (gray pulsing blocks) matching the text height.
-*   **Typography**: Large Hanzi display, clear Pinyin.
+### 3.2 解析面板 (AnalysisPanel)
+*   **布局**: 网格布局 (Bento Grid) 卡片。
+*   **加载状态**: 骨架屏 (Skeleton screens，灰色脉冲块) 与文本高度匹配。
+*   **排版**: 大号汉字展示，清晰的拼音标注。
 
-### 3.3 Controls
-*   **Placement**: Centered below the viewer.
-*   **Style**: Floating Action Button (FAB) style for Play/Pause. Secondary buttons (Reset, Speed) are smaller/outline.
-*   **States**: Disabled states when loading.
+### 3.3 控制栏 (Controls)
+*   **位置**: 居中位于播放器下方。
+*   **样式**: 播放/暂停采用悬浮按钮 (FAB) 风格。次要按钮（重置、速度）采用较小的轮廓样式。
+*   **状态**: 加载时处于禁用状态。
 
-## 4. Accessibility (A11y)
-*   **Theme**: Respects system `prefers-color-scheme`.
-*   **Contrast**: Text colors must meet WCAG AA standards against backgrounds.
-*   **Labels**: All icon-only buttons (Play, Shuffle, TTS) must have `aria-label` or `title`.
-*   **Keyboard**: Tab index managed for Search input -> Controls -> Analysis.
+## 4. 无障碍性 (A11y)
+*   **主题**: 遵循系统 `prefers-color-scheme` 设置。
+*   **对比度**: 文本颜色必须符合 WCAG AA 标准。
+*   **标签**: 所有仅图标按钮（播放、随机、TTS）必须包含 `aria-label` 或 `title`。
+*   **键盘**: 管理搜索框 -> 控件 -> 解析内容的 Tab 索引顺序。
 
-## 5. Animations
-*   **Micro-interactions**: Hover effects on buttons (scale up slightly).
-*   **Transitions**: Fade-in for AI content (avoid layout thrashing).
-*   **Stroke Animation**: Smooth interpolation using `requestAnimationFrame`.
+## 5. 动画
+*   **微交互**: 按钮悬停效果（轻微放大）。
+*   **过渡**: AI 内容淡入显示（避免布局剧烈跳动）。
+*   **笔画动画**: 使用 `requestAnimationFrame` 实现平滑插值。

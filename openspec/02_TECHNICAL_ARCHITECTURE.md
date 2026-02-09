@@ -1,65 +1,65 @@
-# 02. Technical Architecture
+# 02. 技术架构
 
-## 1. System Overview
+## 1. 系统概览
 
-The application follows a **Client-Heavy, Serverless** architecture. It is built as a Single Page Application (SPA) wrapped as a Progressive Web App (PWA).
+本应用采用 **重客户端、无服务 (Client-Heavy, Serverless)** 架构。它构建为封装成渐进式 Web 应用 (PWA) 的单页应用 (SPA)。
 
-### Tech Stack
-*   **Runtime**: Browser (Chrome/Safari/Edge/Firefox).
-*   **Framework**: React 19 + TypeScript.
-*   **Build System**: Vite.
-*   **Styling**: Tailwind CSS (Utility-first).
-*   **State Management**: React Hooks (`useState`, `useReducer`, `useContext`).
-*   **AI Engine**: Google GenAI SDK (`@google/genai`).
-*   **Data Transport**: REST / Fetch API.
+### 技术栈
+*   **运行时**: 浏览器 (Chrome/Safari/Edge/Firefox)。
+*   **框架**: React 19 + TypeScript。
+*   **构建系统**: Vite。
+*   **样式**: Tailwind CSS (原子化 CSS)。
+*   **状态管理**: React Hooks (`useState`, `useReducer`, `useContext`)。
+*   **AI 引擎**: Google GenAI SDK (`@google/genai`)。
+*   **数据传输**: REST / Fetch API。
 
-## 2. Offline Strategy (PWA)
+## 2. 离线策略 (PWA)
 
-The core value proposition is "Offline-First". We use `vite-plugin-pwa` with Workbox.
+核心价值主张是“离线优先”。我们使用 `vite-plugin-pwa` 配合 Workbox 实现。
 
-### 2.1 Asset Caching
-*   **App Shell**: HTML, JS bundles, CSS, and Icons are precached on install.
-*   **Hanzi Data**: 
-    *   We copy `node_modules/hanzi-writer-data` (~9000 JSON files) to `/public/hanzi-data` at build time.
-    *   Service Worker is configured to cache these JSON files.
-    *   Strategy: `CacheFirst` for data, falling back to CDN (`jsdelivr`) if local file is missing, then caching that response.
+### 2.1 资源缓存
+*   **App Shell**: HTML, JS 包, CSS, 和图标在安装时预缓存。
+*   **汉字数据**:
+    *   构建时将 `node_modules/hanzi-writer-data` (~9000 个 JSON 文件) 复制到 `/public/hanzi-data`。
+    *   Service Worker 配置为缓存这些 JSON 文件。
+    *   策略: 优先使用缓存 (`CacheFirst`)，如果本地文件缺失则回退到 CDN (`jsdelivr`)，并将响应结果缓存。
 
-### 2.2 Feature Degradation Matrix
+### 2.2 功能降级矩阵
 
-| Feature | Online | Offline |
+| 功能 | 在线状态 | 离线状态 |
 | :--- | :--- | :--- |
-| **Search** | Full functionality | Full functionality (Local Data) |
-| **Animation** | Load from Local/CDN | Load from Cache/Local |
-| **Analysis** | Gemini 3 Flash (Rich) | Static Placeholder / Basic Info |
-| **Audio** | Gemini 2.5 TTS (Natural) | Browser `SpeechSynthesis` (Robotic) |
+| **搜索** | 全功能 | 全功能 (基于本地数据) |
+| **动画** | 从本地/CDN 加载 | 从缓存/本地加载 |
+| **解析** | Gemini 3 Flash (富内容) | 静态占位符 / 基础信息 |
+| **音频** | Gemini 2.5 TTS (自然人声) | 浏览器 `SpeechSynthesis` (机械音) |
 
-## 3. Module Design
+## 3. 模块设计
 
 ### 3.1 `services/hanziService.ts`
-*   Responsible for fetching vector data.
-*   Logic: Try Local Path -> Fail -> Try CDN -> Fail -> Error.
+*   负责获取矢量数据。
+*   逻辑: 尝试本地路径 -> 失败 -> 尝试 CDN -> 失败 -> 报错。
 
 ### 3.2 `services/geminiService.ts`
-*   Manages AI interaction.
-*   **Safety**: Configured to `BLOCK_NONE` for Harassment/Hate/etc. to prevent false positives on historical/war-related etymologies (e.g., characters involving weapons "戈").
-*   **Schema**: Uses `responseSchema` to guarantee JSON output.
+*   管理 AI 交互。
+*   **安全**: 针对骚扰/仇恨言论等配置为 `BLOCK_NONE`，以防止对历史/战争相关的字源解析（如包含武器“戈”的字）产生误报。
+*   **Schema**: 使用 `responseSchema` 强制要求 JSON 输出格式。
 
 ### 3.3 `services/ttsService.ts`
-*   Implements the Hybrid Audio pattern.
-*   Maintains an in-memory `Map<string, AudioBuffer>` cache to prevent re-fetching the same character's audio during a session.
-*   Handles `AudioContext` lifecycle (resume on user interaction).
+*   实现混合音频模式。
+*   维护内存中的 `Map<string, AudioBuffer>` 缓存，防止在同一次会话中重复请求相同的字符音频。
+*   管理 `AudioContext` 生命周期（在用户交互时恢复上下文）。
 
-## 4. Directory Structure
+## 4. 目录结构
 ```
 /
-├── public/             # Static assets + Hanzi JSONs
-├── openspec/           # Specifications (You are here)
+├── public/             # 静态资源 + 汉字 JSON 数据
+├── openspec/           # 规范文档 (当前位置)
 ├── src/
-│   ├── components/     # UI Components (Presentational)
-│   ├── services/       # Business Logic & API calls
-│   ├── utils/          # Helpers
-│   ├── locales/        # i18n dictionaries
-│   ├── types/          # TypeScript definitions
-│   ├── App.tsx         # Main Controller
-│   └── main.tsx        # Entry point
+│   ├── components/     # UI 组件 (展示层)
+│   ├── services/       # 业务逻辑 & API 调用
+│   ├── utils/          # 工具函数
+│   ├── locales/        # 多语言字典
+│   ├── types/          # TypeScript 类型定义
+│   ├── App.tsx         # 主控制器
+│   └── main.tsx        # 入口点
 ```
