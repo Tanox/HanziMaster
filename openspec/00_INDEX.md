@@ -15,6 +15,6 @@
 ## 项目背景
 HanziMaster 是一个**离线优先**的渐进式 Web 应用 (PWA)，旨在通过动画笔顺演示和 AI 驱动的语言学解析来教授汉字。
 
-*   **版本**: 0.2.8
+*   **版本**: 0.3.0
 *   **许可证**: GPL-3.0
 *   **核心技术**: React 19, Vite PWA, Google Gemini API, SVG Animation.

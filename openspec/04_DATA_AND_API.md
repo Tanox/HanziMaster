@@ -76,13 +76,27 @@ interface ExampleWord {
     *   `voiceName`: 'Kore' (平衡的中性声音)
 *   **输出**: Base64 编码的原始 PCM/WAV 数据。
 
-## 3. 本地存储 / 缓存
+## 3. 用户数据模型 (本地 IndexedDB) (v0.3)
+
+### 3.1 ReviewItem (复习条目)
+```typescript
+interface ReviewItem {
+  char: string;
+  nextReviewDate: number; // Timestamp
+  interval: number;       // Days
+  easeFactor: number;     // SM-2 parameter
+  streak: number;
+  lastStudied: number;
+}
+```
+
+## 4. 本地存储 / 缓存
 *   **Service Worker 缓存**: 存储 `hanzi-data/*.json`。
 *   **浏览器缓存**: 存储字体文件。
 *   **运行时内存**:
     *   `audioCache`: `Map<string, AudioBuffer>` 防止重复调用 TTS。
 
-## 4. 提示词工程 (Prompt Engineering)
+## 5. 提示词工程 (Prompt Engineering)
 用于解析的系统提示词：
 > "You are a professional Chinese etymologist and calligraphy expert. You provide accurate, scholarly, yet accessible explanations of Chinese characters."
 > (你是一位专业的中国词源学家和书法专家。你提供准确、学术但通俗易懂的汉字解释。)

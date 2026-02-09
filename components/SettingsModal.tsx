@@ -118,7 +118,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           </div>
           
           {/* Section: API Key (Enhanced) */}
-          <SectionHeader title={labels.settingApiKey || "API Key"} />
+          <SectionHeader title={labels.settingApiKey} />
           <div className="mb-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/50">
             <div className="flex items-center justify-between mb-2">
                 <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
@@ -129,16 +129,16 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                 {usingCustomKey ? (
                      <span className="text-[10px] uppercase font-bold tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center gap-1 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full border border-emerald-100 dark:border-emerald-900/30">
                         <Check size={12} />
-                        Custom
+                        {labels.badgeCustom}
                      </span>
                 ) : hasDefaultKey ? (
                      <span className="text-[10px] uppercase font-bold tracking-wider text-blue-600 dark:text-blue-400 flex items-center gap-1 bg-blue-50 dark:bg-blue-900/20 px-2 py-0.5 rounded-full border border-blue-100 dark:border-blue-900/30">
                         <Check size={12} />
-                        Default
+                        {labels.badgeDefault}
                      </span>
                 ) : (
                      <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500 flex items-center gap-1 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">
-                        None
+                        {labels.badgeNone}
                      </span>
                 )}
             </div>
@@ -148,7 +148,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                     type={showApiKey ? "text" : "password"}
                     value={settings.apiKey || ''} 
                     onChange={(e) => update('apiKey', e.target.value)}
-                    placeholder={labels.settingApiKeyPlaceholder || "Enter Key (AIza...)"}
+                    placeholder={labels.settingApiKeyPlaceholder}
                     className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-lg pl-3 pr-20 py-2.5 text-sm text-slate-800 dark:text-slate-200 outline-none focus:border-teal-500 dark:focus:border-teal-500 focus:ring-1 focus:ring-teal-500/20 transition-all font-mono"
                     autoComplete="off"
                     spellCheck="false"
@@ -176,12 +176,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
             {settings.apiKey && !settings.apiKey.startsWith('AIza') && (
                 <div className="flex items-start gap-2 mb-3 text-amber-600 dark:text-amber-400 text-xs px-2 animate-fade-in">
                      <AlertTriangle size={14} className="mt-0.5 shrink-0" />
-                     <span>{labels.settingApiKeyValidationMsg || "Key format looks incorrect (usually starts with AIza)"}</span>
+                     <span>{labels.settingApiKeyValidationMsg}</span>
                 </div>
             )}
 
             <div className="flex flex-col gap-2 text-xs text-slate-500 dark:text-slate-400">
-                <p className="leading-relaxed">{labels.settingApiKeyHelp || "Using your own key avoids shared quota limits."}</p>
+                <p className="leading-relaxed">{labels.settingApiKeyHelp}</p>
                 <div className="flex items-center gap-3 mt-1">
                     <a 
                       href="https://aistudio.google.com/app/apikey" 
@@ -189,7 +189,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                       rel="noopener noreferrer" 
                       className="text-teal-600 dark:text-teal-400 hover:underline flex items-center gap-1 font-medium bg-white dark:bg-slate-700 px-3 py-1.5 rounded border border-slate-200 dark:border-slate-600 hover:border-teal-300 transition-colors"
                     >
-                      Get API Key
+                      {labels.getApiKey}
                       <ExternalLink size={12} />
                     </a>
                 </div>
@@ -197,7 +197,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           </div>
 
           {/* Section: Learning */}
-          <SectionHeader title={labels.practiceMode || "Practice"} />
+          <SectionHeader title={labels.practiceMode} />
           <div className="space-y-3">
              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -226,7 +226,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
              </div>
 
              <ToggleItem 
-              label={labels.settingOfflineMode || "Offline Mode"} 
+              label={labels.settingOfflineMode} 
               value={settings.offlineMode} 
               onChange={() => update('offlineMode', !settings.offlineMode)}
               icon={<Wifi size={16} />}
@@ -255,16 +255,16 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           </div>
 
           {/* Section: Interface */}
-          <SectionHeader title="Interface" />
+          <SectionHeader title={labels.sectionInterface} />
           <div className="space-y-3">
             <ToggleItem 
-              label={labels.settingShowRandomSuggestions || "Random Suggestions"} 
+              label={labels.settingShowRandomSuggestions} 
               value={settings.showRandomSuggestions} 
               onChange={() => update('showRandomSuggestions', !settings.showRandomSuggestions)}
               icon={<Shuffle size={16} />}
             />
             <ToggleItem 
-              label={labels.settingShowHistory || "Show History"} 
+              label={labels.settingShowHistory} 
               value={settings.showHistory} 
               onChange={() => update('showHistory', !settings.showHistory)}
               icon={<Clock size={16} />}
@@ -272,7 +272,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           </div>
 
           {/* Section: Content */}
-          <SectionHeader title="Content" />
+          <SectionHeader title={labels.sectionContent} />
           <div className="space-y-3">
             <ToggleItem 
               label={labels.settingShowStructure} 

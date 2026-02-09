@@ -32,15 +32,21 @@ export interface UILabels {
   settingShowOutline: string;
   settingAutoPlay: string;
   settingContinuousMode: string;
-  // New Settings (Made optional to support progressive updates across languages)
-  settingOfflineMode?: string;
-  settingShowSpeedControl?: string;
-  settingShowRandomSuggestions?: string;
-  settingShowHistory?: string; // Added
-  settingApiKey?: string;
-  settingApiKeyPlaceholder?: string;
-  settingApiKeyHelp?: string;
-  settingApiKeyValidationMsg?: string; // Added validation message
+  settingOfflineMode: string;
+  settingShowRandomSuggestions: string;
+  settingShowHistory: string;
+  settingApiKey: string;
+  settingApiKeyPlaceholder: string;
+  settingApiKeyHelp: string;
+  settingApiKeyValidationMsg: string;
+  // New UI Elements
+  sectionInterface: string;
+  sectionContent: string;
+  badgeCustom: string;
+  badgeDefault: string;
+  badgeNone: string;
+  getApiKey: string;
+  practiceComplete: string;
   // Analysis Content Settings
   settingShowStructure: string;
   settingShowEtymology: string;

@@ -15,7 +15,7 @@ import { LANGUAGES, UI_LABELS } from './locales';
 import { Brush, Moon, Sun, AlertCircle, WifiOff, Settings, Github } from 'lucide-react';
 import { COMMON_CHARS } from './utils/commonChars';
 
-const APP_VERSION = '0.2.8';
+const APP_VERSION = '0.3.0';
 
 const DEFAULT_SETTINGS: AppSettings = {
   apiKey: '', // Empty by default, relies on build-time env var if not set

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { HanziData, AnimationState, InteractionMode, AppSettings } from '../types';
 import { PenTool } from 'lucide-react';
+import { UI_LABELS } from '../locales';
 
 interface StrokeViewerProps {
   data: HanziData;
@@ -44,6 +45,13 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   // Constants for SVG viewbox
   const SIZE = 1024; 
   const OFFSET_Y = SIZE * 0.9; // Based on the translate(0, -921.6) logic roughly
+
+  // We need to access current language to show translated status
+  // Since StrokeViewer doesn't receive language prop, we infer it from document or default to EN for simplicity, 
+  // but ideally it should be passed. For now, we will just use English "Practice Complete" fallback if not passed,
+  // but let's try to get labels from global context or just hardcode checking html lang attribute
+  const currentLang = document.documentElement.lang || 'en';
+  const labels = UI_LABELS[currentLang] || UI_LABELS['en'];
 
   // Helper to convert median points to SVG Path command
   const getMedianPath = (points: number[][]): string => {
@@ -471,7 +479,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
           <div className="inline-block px-3 py-1 rounded-full bg-vermilion-50 dark:bg-vermilion-900/20 text-vermilion-700 dark:text-vermilion-300 text-xs font-medium tracking-wide transition-opacity duration-300" 
                style={{ opacity: showSuccess || practiceStrokeIndex < data.strokes.length ? 1 : 0 }}>
               {practiceStrokeIndex >= data.strokes.length 
-                  ? "Practice Complete" 
+                  ? labels.practiceComplete 
                   : `Stroke ${practiceStrokeIndex + 1} / ${data.strokes.length}`}
           </div>
         )}
