@@ -269,7 +269,8 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   const shouldShowBackground = mode === InteractionMode.VIEW || settings.showOutline;
 
   return (
-    <div className="relative w-full max-w-[320px] aspect-square mx-auto">
+    // Changed max-width logic to be responsive: wider on mobile, constrained on desktop
+    <div className="relative w-full max-w-[90vw] md:max-w-[400px] aspect-square mx-auto">
       <div className={`relative w-full h-full bg-white dark:bg-slate-800 rounded-3xl shadow-xl overflow-hidden transition-all duration-300 select-none ${
         feedbackColor === 'error' 
           ? 'border-2 border-red-400 dark:border-red-500 ring-2 ring-red-100 dark:ring-red-900/30' 

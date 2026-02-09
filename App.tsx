@@ -14,13 +14,16 @@ import { LANGUAGES, UI_LABELS } from './locales';
 import { Brush, Moon, Sun, AlertCircle, WifiOff, Settings } from 'lucide-react';
 import { COMMON_CHARS } from './utils/commonChars';
 
-const APP_VERSION = '0.2.3';
+const APP_VERSION = '0.2.5';
 
 const DEFAULT_SETTINGS: AppSettings = {
   gridStyle: 'rice',
   showOutline: true,
   autoPlay: true,
   continuousMode: false,
+  offlineMode: false,
+  showSpeedControl: true,
+  showRandomSuggestions: true,
   showStructure: true,
   showEtymology: true,
   showMnemonic: true,
@@ -149,9 +152,10 @@ const App: React.FC = () => {
     
     try {
       // Parallel fetch for speed
+      // We pass settings.offlineMode to force the AI service to skip if enabled
       const [data, aiResult] = await Promise.all([
         fetchHanziData(char),
-        analyzeCharacter(char, langName)
+        analyzeCharacter(char, langName, settings.offlineMode)
       ]);
 
       if (data) {
@@ -210,45 +214,13 @@ const App: React.FC = () => {
          // Switch directly to practice mode for the next char
          setInteractionMode(InteractionMode.PRACTICE);
          handleRandom();
-         // Note: handleSearch resets mode to VIEW, we might need to override this in useEffect or pass a flag
-         // For simplicity in this architecture, handleSearch resets to VIEW. 
-         // We can use a ref or effect to switch it back to PRACTICE if continuous mode is on.
       }, 1500);
     }
   };
 
-  // Effect to enforce Practice Mode if Continuous Mode triggered a search
-  // This is a bit of a hack around the handleSearch reset logic, but keeps handleSearch clean.
-  useEffect(() => {
-    if (settings.continuousMode && hanziData && !loading && animationState === AnimationState.IDLE) {
-       // Only if we just loaded a new char and continuous mode is active
-       // We want to default to Practice instead of View
-       // But handleSearch sets it to VIEW.
-       // We can detect if this search was triggered by continuous mode by checking if we have data and are in IDLE.
-       // However, this might conflict with normal search.
-       // Let's refine: We only auto-switch to PRACTICE if we are already in PRACTICE before search? 
-       // No, handleSearch resets.
-       
-       // Let's just rely on the user manually switching back if they want, OR:
-       // We update handleSearch to accept a mode?
-       // Simplest fix for now: In handleSearch, we reset to VIEW. 
-       // If continuous mode is ON, we ideally want to stay in Practice.
-       // Let's modify handleSearch slightly or use a ref to track intent.
-    }
-  }, [hanziData, loading, settings.continuousMode]);
-
-  // Update handleSearch to support maintaining practice mode
-  // Since we can't easily change the signature without breaking other calls, let's use a side effect.
-  // Actually, let's just use a ref to signal "next char should be practice mode"
   const nextModeRef = React.useRef<InteractionMode>(InteractionMode.VIEW);
 
-  const handleRandomContinuous = () => {
-     nextModeRef.current = InteractionMode.PRACTICE;
-     handleRandom();
-  };
-  
   // Override the interaction mode setting in handleSearch
-  const _originalHandleSearch = handleSearch;
   // We'll wrap logic inside the existing useEffect that responds to data load
   useEffect(() => {
       if (hanziData && !loading && nextModeRef.current === InteractionMode.PRACTICE) {
@@ -265,6 +237,12 @@ const App: React.FC = () => {
       handleSearch(activeChar, code);
     }
   };
+
+  // Re-run search if offline settings change to immediately reflect/hide content
+  // Note: This might be too aggressive if user is just toggling things, but ensures UI consistency.
+  // Actually, we don't need to re-fetch if we just want to hide UI elements (AnalysisPanel handles hiding).
+  // But if we toggle Offline Mode ON, we might want to "clear" the current AI data? 
+  // For now, AnalysisPanel logic is sufficient for visual hiding.
 
   return (
     <div className="min-h-screen pb-20 bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
@@ -299,13 +277,15 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-8">
+      <main className="max-w-5xl mx-auto px-4 py-4 md:py-8">
         
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4 transition-colors">{labels.appTitle}</h2>
-          <p className="text-slate-500 dark:text-slate-400 mb-8 max-w-lg mx-auto">
+        <div className="text-center mb-6 md:mb-10">
+          {/* Hide heavy text on mobile to give more room for the drawing area */}
+          <h2 className="hidden md:block text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4 transition-colors">{labels.appTitle}</h2>
+          <p className="hidden md:block text-slate-500 dark:text-slate-400 mb-8 max-w-lg mx-auto">
             {labels.appSubtitle}
           </p>
+          
           <SearchInput 
             onSearch={(char) => handleSearch(char, currentLang)} 
             onRandom={handleRandom}
@@ -323,15 +303,15 @@ const App: React.FC = () => {
             </div>
           )}
 
-          {isOffline && (
+          {(isOffline || settings.offlineMode) && (
              <div className="max-w-md mx-auto mt-2 p-2 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 rounded-lg flex items-center justify-center gap-2 border border-amber-100 dark:border-amber-900/30 text-sm">
                  <WifiOff size={16} />
-                 <span>Offline Mode: Using local data & native voice.</span>
+                 <span>{settings.offlineMode ? labels.settingOfflineMode + " Enabled" : "Offline Mode: Using local data & native voice."}</span>
              </div>
           )}
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-8">
+        <div className="grid lg:grid-cols-12 gap-6 md:gap-8">
           {/* Left Column: Visuals & Controls */}
           <div className="lg:col-span-5 flex flex-col items-center">
             {hanziData ? (
@@ -369,6 +349,7 @@ const App: React.FC = () => {
                           setAnimationState(AnimationState.IDLE); // Stop animation
                       }
                   }}
+                  settings={settings}
                   labels={{
                     play: labels.controlsPlay,
                     pause: labels.controlsPause,
@@ -378,7 +359,7 @@ const App: React.FC = () => {
                     viewMode: labels.viewMode || "Watch"
                   }}
                 />
-                <div className="mt-8 text-center min-h-[1.5rem]">
+                <div className="mt-6 md:mt-8 text-center min-h-[1.5rem]">
                    {interactionMode === InteractionMode.VIEW && (
                        <p className="text-slate-400 dark:text-slate-500 text-sm animate-fade-in">
                          {animationState === AnimationState.PLAYING || animationState === AnimationState.PAUSED ? labels.strokeStatusActive : labels.strokeStatusComplete}
@@ -400,7 +381,7 @@ const App: React.FC = () => {
             )}
           </div>
 
-          {/* Right Column: AI Analysis */}
+          {/* Right Column: Analysis */}
           <div className="lg:col-span-7">
             <AnalysisPanel analysis={analysis} isLoading={loading} language={currentLang} settings={settings} />
             
@@ -415,10 +396,12 @@ const App: React.FC = () => {
         </div>
 
         {/* Random Suggestions Footer */}
-        <RandomSuggestions 
-          onSelect={(char) => handleSearch(char, currentLang)} 
-          label={labels.randomBtn}
-        />
+        {settings.showRandomSuggestions && (
+          <RandomSuggestions 
+            onSelect={(char) => handleSearch(char, currentLang)} 
+            label={labels.randomBtn}
+          />
+        )}
         
         {/* Settings Modal */}
         <SettingsModal 

@@ -1,5 +1,5 @@
 {
   "name": "HanziMaster",
-  "description": "An interactive Chinese character stroke order teaching application powered by Gemini AI for etymology, mnemonics, and linguistic analysis.",
+  "description": "An interactive Chinese character stroke order teaching application providing etymology, mnemonics, and linguistic analysis.",
   "requestFramePermissions": []
 }

@@ -32,6 +32,10 @@ export interface UILabels {
   settingShowOutline: string;
   settingAutoPlay: string;
   settingContinuousMode: string;
+  // New Settings (Made optional to support progressive updates across languages)
+  settingOfflineMode?: string;
+  settingShowSpeedControl?: string;
+  settingShowRandomSuggestions?: string;
   // Analysis Content Settings
   settingShowStructure: string;
   settingShowEtymology: string;

@@ -17,10 +17,10 @@ const generateOfflineAnalysis = (char: string, reason: string = "Network Unavail
   };
 };
 
-export const analyzeCharacter = async (char: string, languageName: string = 'English'): Promise<CharacterAnalysis | null> => {
+export const analyzeCharacter = async (char: string, languageName: string = 'English', forceOffline: boolean = false): Promise<CharacterAnalysis | null> => {
   // Immediate offline check
-  if (!navigator.onLine) {
-    return generateOfflineAnalysis(char);
+  if (!navigator.onLine || forceOffline) {
+    return generateOfflineAnalysis(char, forceOffline ? "Offline Mode" : "Network Unavailable");
   }
 
   try {

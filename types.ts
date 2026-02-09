@@ -46,6 +46,10 @@ export interface AppSettings {
   showOutline: boolean;
   autoPlay: boolean;
   continuousMode: boolean;
+  // New Interface Settings
+  offlineMode: boolean;
+  showSpeedControl: boolean;
+  showRandomSuggestions: boolean;
   // Content Toggles
   showStructure: boolean;
   showEtymology: boolean;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Grid, Eye, PlayCircle, Layers, BookOpen, Lightbulb, Quote, Infinity } from 'lucide-react';
+import { X, Grid, Eye, PlayCircle, Layers, BookOpen, Lightbulb, Quote, Infinity, Wifi, Settings as SettingsIcon, Shuffle } from 'lucide-react';
 import { AppSettings, GridStyle } from '../types';
 import { UILabels } from '../locales/types';
 
@@ -109,6 +109,20 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           {/* General Toggles */}
           <div className="space-y-4">
             <ToggleItem 
+              label={labels.settingOfflineMode || "Offline Mode"} 
+              value={settings.offlineMode} 
+              onChange={() => update('offlineMode', !settings.offlineMode)}
+              icon={<Wifi size={18} />}
+            />
+
+             <ToggleItem 
+              label={labels.settingShowSpeedControl || "Show Speed Control"} 
+              value={settings.showSpeedControl} 
+              onChange={() => update('showSpeedControl', !settings.showSpeedControl)}
+              icon={<SettingsIcon size={18} />}
+            />
+
+            <ToggleItem 
               label={labels.settingShowOutline} 
               value={settings.showOutline} 
               onChange={() => update('showOutline', !settings.showOutline)}
@@ -128,12 +142,19 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
               onChange={() => update('continuousMode', !settings.continuousMode)}
               icon={<Infinity size={18} />}
             />
+
+            <ToggleItem 
+              label={labels.settingShowRandomSuggestions || "Show Random Suggestions"} 
+              value={settings.showRandomSuggestions} 
+              onChange={() => update('showRandomSuggestions', !settings.showRandomSuggestions)}
+              icon={<Shuffle size={18} />}
+            />
           </div>
 
           <hr className="border-slate-100 dark:border-slate-700" />
 
           {/* Content Display Toggles */}
-           <div className="space-y-4">
+           <div className={`space-y-4 transition-opacity duration-300 ${settings.offlineMode ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
             <label className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-2">
               Display Sections
             </label>

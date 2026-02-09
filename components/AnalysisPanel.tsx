@@ -29,6 +29,10 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, isLoading, lang
 
   if (!analysis) return null;
 
+  // In Offline Mode, we enforce hiding the heavy content containers regardless of individual toggles,
+  // because the fallback data for these is usually empty or "Analysis unavailable".
+  const isOffline = settings.offlineMode;
+
   return (
     <div className="w-full max-w-3xl mx-auto mt-10 grid gap-6 grid-cols-1 md:grid-cols-2">
       {/* Header Card (Always Visible) */}
@@ -46,9 +50,9 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, isLoading, lang
         </div>
       </div>
 
-      {/* Radical & Stats (Structure) */}
-      {settings.showStructure && (
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 transition-colors duration-300">
+      {/* Radical & Stats (Structure) - Hide in offline mode */}
+      {settings.showStructure && !isOffline && (
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 transition-colors duration-300 animate-fade-in">
           <div className="flex items-center gap-2 mb-4 text-teal-700 dark:text-teal-400">
             <BookOpen size={20} />
             <h3 className="font-semibold">{labels.structure}</h3>
@@ -66,9 +70,9 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, isLoading, lang
         </div>
       )}
 
-      {/* Etymology */}
-      {settings.showEtymology && (
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 transition-colors duration-300">
+      {/* Etymology - Hide in offline mode */}
+      {settings.showEtymology && !isOffline && (
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 transition-colors duration-300 animate-fade-in">
           <div className="flex items-center gap-2 mb-4 text-amber-600 dark:text-amber-500">
             <History size={20} />
             <h3 className="font-semibold">{labels.origin}</h3>
@@ -79,9 +83,9 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, isLoading, lang
         </div>
       )}
 
-      {/* Mnemonic */}
-      {settings.showMnemonic && (
-        <div className="col-span-1 md:col-span-2 bg-gradient-to-r from-teal-50 to-emerald-50 dark:from-teal-900/30 dark:to-emerald-900/30 p-6 rounded-2xl border border-teal-100 dark:border-teal-900 transition-colors duration-300">
+      {/* Mnemonic - Hide in offline mode */}
+      {settings.showMnemonic && !isOffline && (
+        <div className="col-span-1 md:col-span-2 bg-gradient-to-r from-teal-50 to-emerald-50 dark:from-teal-900/30 dark:to-emerald-900/30 p-6 rounded-2xl border border-teal-100 dark:border-teal-900 transition-colors duration-300 animate-fade-in">
           <div className="flex items-center gap-2 mb-3 text-teal-800 dark:text-teal-300">
             <Lightbulb size={20} />
             <h3 className="font-bold">{labels.memoryAid}</h3>
@@ -92,9 +96,9 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, isLoading, lang
         </div>
       )}
 
-      {/* Examples */}
-      {settings.showExamples && (
-        <div className="col-span-1 md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 transition-colors duration-300">
+      {/* Examples - Hide in offline mode */}
+      {settings.showExamples && !isOffline && (
+        <div className="col-span-1 md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 transition-colors duration-300 animate-fade-in">
           <div className="flex items-center gap-2 mb-4 text-indigo-600 dark:text-indigo-400">
             <Quote size={20} />
             <h3 className="font-semibold">{labels.commonWords}</h3>
