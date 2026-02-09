@@ -10,13 +10,14 @@ export default defineConfig(({ mode }) => {
       react(),
       VitePWA({
         registerType: 'autoUpdate',
-        // Include the locally copied hanzi data in the precache
-        includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg', 'hanzi-data/*.json'],
-        // Enable PWA in development for testing
+        // Optimized: Only precache the app shell and critical icons. 
+        // We do NOT precache the 9000+ hanzi JSON files here to prevent install timeouts.
+        includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
         devOptions: {
           enabled: true
         },
         manifest: {
+          id: 'hanzimaster-app',
           name: 'HanziMaster',
           short_name: 'HanziMaster',
           description: 'Master Chinese character stroke order with AI insights.',
@@ -41,27 +42,37 @@ export default defineConfig(({ mode }) => {
               src: 'pwa-512x512.png',
               sizes: '512x512',
               type: 'image/png',
-              purpose: 'any'
-            },
-            {
-              src: 'pwa-512x512.png',
-              sizes: '512x512',
-              type: 'image/png',
-              purpose: 'maskable'
+              purpose: 'any maskable'
             }
           ]
         },
         workbox: {
           cleanupOutdatedCaches: true,
-          // Limit the size of precache if necessary, but for ~500 small JSONs it's fine.
-          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+          maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
           runtimeCaching: [
+            // 1. Local Hanzi Data (High Priority)
+            // Cache these permanently as they are requested. 
+            // This enables "Lazy Offline" mode - visited characters work offline.
             {
-              // Cache Hanzi Writer data from CDN (fallback)
+              urlPattern: ({ url }) => url.pathname.startsWith('/hanzi-data/'),
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'hanzi-data-local',
+                expiration: {
+                  maxEntries: 10000,
+                  maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+                },
+                cacheableResponse: {
+                  statuses: [0, 200]
+                }
+              }
+            },
+            // 2. CDN Hanzi Data (Fallback)
+            {
               urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/npm\/hanzi-writer-data@2\.0\/.*/i,
               handler: 'CacheFirst',
               options: {
-                cacheName: 'hanzi-data-cdn-cache',
+                cacheName: 'hanzi-data-cdn',
                 expiration: {
                   maxEntries: 2000,
                   maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
@@ -71,24 +82,24 @@ export default defineConfig(({ mode }) => {
                 }
               }
             },
+            // 3. Google Fonts (Styles)
             {
-              // Cache Google Fonts Styles
               urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
               handler: 'StaleWhileRevalidate',
               options: {
-                cacheName: 'google-fonts-cache',
+                cacheName: 'google-fonts-stylesheets',
                 expiration: {
                   maxEntries: 10,
                   maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
                 }
               }
             },
+            // 4. Google Fonts (Webfonts)
             {
-              // Cache Google Fonts Webfonts
               urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
               handler: 'CacheFirst',
               options: {
-                cacheName: 'gstatic-fonts-cache',
+                cacheName: 'google-fonts-webfonts',
                 expiration: {
                   maxEntries: 30,
                   maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
