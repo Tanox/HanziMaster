@@ -239,13 +239,14 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen pb-20 bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
-      {/* Header */}
-      <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-10 transition-colors duration-300">
+    // Use min-h-[100dvh] for better mobile browser support (address bar handling)
+    <div className="min-h-[100dvh] pb-24 bg-paper dark:bg-slate-900 transition-colors duration-300">
+      {/* Header - Glassmorphism */}
+      <header className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800 sticky top-0 z-40 transition-colors duration-300 supports-[backdrop-filter]:bg-white/60">
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 text-teal-700 dark:text-teal-400">
             <Brush size={24} />
-            <h1 className="font-bold text-xl tracking-tight text-slate-800 dark:text-slate-100">
+            <h1 className="font-bold text-xl tracking-tight text-slate-800 dark:text-slate-100 font-hanzi">
               {labels.appTitle}
             </h1>
           </div>
@@ -254,28 +255,28 @@ const App: React.FC = () => {
              
              <button
                onClick={() => setIsSettingsOpen(true)}
-               className="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+               className="p-3 md:p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors touch-manipulation"
                aria-label="Settings"
              >
-               <Settings size={18} />
+               <Settings size={20} />
              </button>
 
              <button 
                onClick={toggleTheme}
-               className="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+               className="p-3 md:p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors touch-manipulation"
                aria-label="Toggle Dark Mode"
              >
-               {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+               {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
              </button>
           </div>
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-4 md:py-8">
+      <main className="max-w-5xl mx-auto px-4 py-8">
         
-        <div className="text-center mb-6 md:mb-10">
-          <h2 className="hidden md:block text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4 transition-colors">{labels.appTitle}</h2>
-          <p className="hidden md:block text-slate-500 dark:text-slate-400 mb-8 max-w-lg mx-auto">
+        <div className="text-center mb-6 md:mb-12">
+          <h2 className="hidden md:block text-4xl md:text-5xl font-hanzi font-bold text-slate-800 dark:text-white mb-4 transition-colors tracking-tight">{labels.appTitle}</h2>
+          <p className="hidden md:block text-slate-500 dark:text-slate-400 mb-8 max-w-lg mx-auto font-light">
             {labels.appSubtitle}
           </p>
           
@@ -304,7 +305,7 @@ const App: React.FC = () => {
           )}
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-6 md:gap-8">
+        <div className="grid lg:grid-cols-12 gap-8 md:gap-12">
           {/* Left Column: Visuals & Controls */}
           <div className="lg:col-span-5 flex flex-col items-center">
             {hanziData ? (
@@ -354,7 +355,7 @@ const App: React.FC = () => {
                 />
                 <div className="mt-6 md:mt-8 text-center min-h-[1.5rem]">
                    {interactionMode === InteractionMode.VIEW && (
-                       <p className="text-slate-400 dark:text-slate-500 text-sm animate-fade-in">
+                       <p className="text-slate-400 dark:text-slate-500 text-sm animate-fade-in font-medium">
                          {animationState === AnimationState.PLAYING || animationState === AnimationState.PAUSED ? labels.strokeStatusActive : labels.strokeStatusComplete}
                        </p>
                    )}
@@ -404,9 +405,9 @@ const App: React.FC = () => {
 
       </main>
 
-      <footer className="text-center text-slate-400 dark:text-slate-600 py-8 text-sm mt-0 border-t border-slate-200 dark:border-slate-800 transition-colors">
-        <p>{labels.footerCredit}</p>
-        <p className="mt-2 text-xs">{labels.version} v{APP_VERSION}</p>
+      <footer className="text-center text-slate-400 dark:text-slate-600 py-10 text-sm mt-0 border-t border-slate-200/60 dark:border-slate-800 transition-colors">
+        <p className="font-medium">{labels.footerCredit}</p>
+        <p className="mt-2 text-xs opacity-60">{labels.version} v{APP_VERSION}</p>
       </footer>
     </div>
   );

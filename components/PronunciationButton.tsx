@@ -37,7 +37,8 @@ const PronunciationButton: React.FC<PronunciationButtonProps> = ({ text, size = 
     <button
       onClick={handleClick}
       disabled={isPlaying}
-      className={`inline-flex items-center justify-center p-1.5 rounded-full transition-colors ${
+      // Increased padding and added min-width/height for better touch targets (Apple HIG recommends 44pt)
+      className={`inline-flex items-center justify-center min-w-[44px] min-h-[44px] p-2 rounded-full transition-colors ${
         error 
           ? 'text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20' 
           : 'text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/30'

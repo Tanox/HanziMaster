@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#fdfbf7" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
     
     <!-- PWA: Apple Mobile Web App Capable -->
@@ -17,12 +17,36 @@
     <script>
       tailwind.config = {
         darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              paper: '#fdfbf7', // Warm rice paper
+              vermilion: {
+                50: '#fdf3f2',
+                100: '#fbe5e4',
+                200: '#f7cfcd',
+                300: '#f0aaa6',
+                400: '#e67872',
+                500: '#cf352e', // Primary Seal Red
+                600: '#bc221b',
+                700: '#9d1913',
+                800: '#821915',
+                900: '#6b1916',
+              }
+            },
+            fontFamily: {
+              hanzi: ['"Noto Serif SC"', 'serif'],
+              sans: ['Inter', 'sans-serif'],
+            }
+          }
+        }
       }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
       body {
         font-family: 'Inter', sans-serif;
+        overscroll-behavior-y: none; /* Prevent iOS rubber-banding */
       }
       .font-hanzi {
         font-family: 'Noto Serif SC', serif;
@@ -49,6 +73,16 @@
       .dark ::-webkit-scrollbar-thumb:hover {
         background: #64748b;
       }
+      
+      /* Paper Texture Effect */
+      .bg-texture-paper {
+        background-color: #fdfbf7;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+      }
+      .dark .bg-texture-paper {
+        background-color: #1e293b; /* Slate 800 base */
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+      }
     </style>
   <script type="importmap">
 {
@@ -68,7 +102,7 @@
 }
 </script>
 </head>
-  <body class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+  <body class="bg-paper dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors duration-300">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>

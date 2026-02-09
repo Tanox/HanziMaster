@@ -38,6 +38,8 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const userStrokePathRef = useRef<Array<{x: number, y: number}>>([]);
+  // Track last drawn point for efficient segment drawing
+  const lastDrawnPointRef = useRef<{x: number, y: number} | null>(null);
   
   // Constants for SVG viewbox
   const SIZE = 1024; 
@@ -105,6 +107,19 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     return () => clearTimeout(timer);
   }, [practiceStrokeIndex, mode, data]);
 
+  // Auto-reset strokes 5 seconds after completion
+  useEffect(() => {
+    let resetTimer: NodeJS.Timeout;
+    if (mode === InteractionMode.PRACTICE && data && practiceStrokeIndex >= data.strokes.length && data.strokes.length > 0) {
+      resetTimer = setTimeout(() => {
+        setPracticeStrokeIndex(0);
+        hasNotifiedCompletionRef.current = false; // Allow completion event to fire again
+        clearCanvas();
+      }, 5000);
+    }
+    return () => clearTimeout(resetTimer);
+  }, [practiceStrokeIndex, mode, data]);
+
   const animate = (time: number) => {
     if (startTimeRef.current === undefined) startTimeRef.current = time;
     
@@ -169,7 +184,25 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     }
   };
 
-  const drawUserStroke = (points: Array<{x: number, y: number}>, color: string = '#0d9488') => {
+  // Draw only the new segment (more efficient for touch)
+  const drawSegment = (p1: {x: number, y: number}, p2: {x: number, y: number}, color: string = '#cf352e') => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 15;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    ctx.beginPath();
+    ctx.moveTo(p1.x, p1.y);
+    ctx.lineTo(p2.x, p2.y);
+    ctx.stroke();
+  };
+
+  const drawFullStroke = (points: Array<{x: number, y: number}>, color: string = '#cf352e') => {
     const canvas = canvasRef.current;
     if (!canvas || points.length < 2) return;
     const ctx = canvas.getContext('2d');
@@ -211,6 +244,8 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   const handlePointerDown = (e: React.PointerEvent) => {
     if (mode !== InteractionMode.PRACTICE || practiceStrokeIndex >= data.strokes.length) return;
     
+    // Crucial for mobile: prevent scrolling while drawing
+    e.preventDefault(); 
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
     
     setIsDrawing(true);
@@ -219,20 +254,30 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     
     const point = getSvgCoordinates(e);
     userStrokePathRef.current.push(point);
+    lastDrawnPointRef.current = point;
+    
+    // Draw initial dot
+    drawSegment(point, point);
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!isDrawing || mode !== InteractionMode.PRACTICE) return;
+    e.preventDefault(); // Safety against scroll
     
     const point = getSvgCoordinates(e);
     userStrokePathRef.current.push(point);
-    drawUserStroke(userStrokePathRef.current);
+    
+    if (lastDrawnPointRef.current) {
+        drawSegment(lastDrawnPointRef.current, point);
+    }
+    lastDrawnPointRef.current = point;
   };
 
   const handlePointerUp = (e: React.PointerEvent) => {
     if (!isDrawing || mode !== InteractionMode.PRACTICE) return;
     setIsDrawing(false);
     (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+    lastDrawnPointRef.current = null;
 
     validateStroke();
   };
@@ -270,9 +315,10 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
          }, 500);
       }
     } else {
-      // Fail
+      // Fail - redraw full stroke in error color
       setFeedbackColor('error');
-      drawUserStroke(userPath, '#ef4444'); // Red
+      clearCanvas();
+      drawFullStroke(userPath, '#ef4444'); // Red
       setTimeout(() => {
         setFeedbackColor(null);
         clearCanvas();
@@ -281,50 +327,51 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   };
 
   // Determine visibility of the background "hint" strokes in Practice Mode
-  // If settings.showOutline is true, we show them as usual.
-  // If false, we hide them, making it a "blind write" test.
-  // In View Mode, they are always visible as the base.
   const shouldShowBackground = mode === InteractionMode.VIEW || settings.showOutline;
 
   return (
-    // Changed max-width logic to be responsive: wider on mobile, constrained on desktop
-    <div className="relative w-full max-w-[90vw] md:max-w-[400px] aspect-square mx-auto">
-      <div className={`relative w-full h-full bg-white dark:bg-slate-800 rounded-3xl shadow-xl overflow-hidden transition-all duration-300 select-none ${
+    // Responsive aspect ratio container
+    <div className="relative w-full max-w-[90vw] md:max-w-[400px] aspect-square mx-auto my-6">
+      
+      {/* Outer Frame (Shadow & Texture) */}
+      <div className={`relative w-full h-full bg-texture-paper rounded-lg shadow-2xl transition-all duration-300 select-none overflow-hidden ${
         feedbackColor === 'error' 
-          ? 'border-2 border-red-400 dark:border-red-500 ring-2 ring-red-100 dark:ring-red-900/30' 
-          : 'border border-slate-100 dark:border-slate-700'
-      }`}>
+          ? 'ring-4 ring-red-200 dark:ring-red-900/50 border-red-400' 
+          : mode === InteractionMode.PRACTICE 
+            ? 'ring-4 ring-vermilion-100 dark:ring-vermilion-900/30 border-vermilion-200 dark:border-vermilion-800'
+            : 'border-slate-200 dark:border-slate-700'
+      } border`}>
         
-        {/* Practice Mode Indicator */}
+        {/* Practice Mode Seal/Indicator */}
         {mode === InteractionMode.PRACTICE && (
-            <div className="absolute top-3 right-3 z-20 pointer-events-none">
-                 <div className="bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 p-1.5 rounded-full shadow-sm">
-                    <PenTool size={16} />
+            <div className="absolute top-4 right-4 z-20 pointer-events-none animate-fade-in">
+                 <div className="bg-vermilion-500 text-white p-2 rounded-lg shadow-md border-2 border-vermilion-600 transform rotate-6 opacity-90">
+                    <PenTool size={18} />
                  </div>
             </div>
         )}
 
-        {/* Grid Background - Dynamic based on settings */}
-        <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="absolute inset-0 w-full h-full pointer-events-none opacity-20">
+        {/* Inner Shadow to create 'Inset' effect (pressed paper) */}
+        <div className="absolute inset-0 shadow-[inset_0_2px_10px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_2px_10px_rgba(0,0,0,0.3)] pointer-events-none z-10 rounded-lg"></div>
+
+        {/* Grid Background - Styled to look like traditional guides */}
+        <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="absolute inset-0 w-full h-full pointer-events-none opacity-20 dark:opacity-30">
           
           {/* Diagonals - Rice only */}
           {settings.gridStyle === 'rice' && (
             <>
-              <line x1="0" y1="0" x2={SIZE} y2={SIZE} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
-              <line x1={SIZE} y1="0" x2="0" y2={SIZE} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
+              <line x1="0" y1="0" x2={SIZE} y2={SIZE} className="stroke-vermilion-600 dark:stroke-slate-400" strokeWidth="2" strokeDasharray="10,10" />
+              <line x1={SIZE} y1="0" x2="0" y2={SIZE} className="stroke-vermilion-600 dark:stroke-slate-400" strokeWidth="2" strokeDasharray="10,10" />
             </>
           )}
 
           {/* Cross lines - Rice and Field */}
           {(settings.gridStyle === 'rice' || settings.gridStyle === 'field') && (
             <>
-              <line x1={SIZE/2} y1="0" x2={SIZE/2} y2={SIZE} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
-              <line x1="0" y1={SIZE/2} x2={SIZE} y2={SIZE/2} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
+              <line x1={SIZE/2} y1="0" x2={SIZE/2} y2={SIZE} className="stroke-vermilion-600 dark:stroke-slate-400" strokeWidth="2" strokeDasharray="10,10" />
+              <line x1="0" y1={SIZE/2} x2={SIZE} y2={SIZE/2} className="stroke-vermilion-600 dark:stroke-slate-400" strokeWidth="2" strokeDasharray="10,10" />
             </>
           )}
-
-          {/* Border - Always visible unless style 'none' (optional, but keeping border usually looks better. Let's make 'none' remove internal lines but keep box frame for structure) */}
-          <rect x="0" y="0" width={SIZE} height={SIZE} className="stroke-slate-400 dark:stroke-slate-400" strokeWidth="4" fill="none" />
         </svg>
 
         {/* Character Rendering */}
@@ -342,7 +389,6 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
               
               return (
                 <mask id={`mask-${index}`} key={`mask-${index}`} maskUnits="userSpaceOnUse">
-                   {/* White path on black background reveals the stroke */}
                    <path 
                      d={getMedianPath(medianPoints)} 
                      fill="none" 
@@ -358,19 +404,17 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
           </defs>
 
           <g transform={`scale(1, -1) translate(0, -${OFFSET_Y})`}> 
-             {/* Background Shadows (The template) */}
+             {/* Background Shadows (Template) */}
              {data.strokes.map((strokePath, index) => (
                <path 
                  key={`bg-${index}`} 
                  d={strokePath}
                  className={`transition-all duration-300 ${
                     mode === InteractionMode.PRACTICE 
-                        ? (index < practiceStrokeIndex ? 'fill-slate-800 dark:fill-slate-200' : 'fill-slate-100 dark:fill-slate-700') 
-                        : 'fill-slate-200 dark:fill-slate-700'
+                        ? (index < practiceStrokeIndex ? 'fill-slate-800 dark:fill-slate-100' : 'fill-slate-200 dark:fill-slate-600') 
+                        : 'fill-slate-200 dark:fill-slate-600'
                  }`}
                  style={{
-                   // In practice mode, if showOutline is false, hide the future strokes (the template).
-                   // Already completed strokes (index < practiceStrokeIndex) should remain visible so user sees what they wrote (conceptually).
                    opacity: (mode === InteractionMode.PRACTICE && !shouldShowBackground && index >= practiceStrokeIndex) ? 0 : 1
                  }}
                />
@@ -389,20 +433,18 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
                />
              ))}
              
-             {/* Practice Mode: Current Stroke Hint (Outline) */}
-             {/* If blind mode (no outline), we probably shouldn't show this pulse either, or maybe just a very faint one? 
-                 Let's adhere to the setting: showOutline=false implies harder difficulty. Hide the hint. */}
+             {/* Practice Mode: Hint Pulse */}
              {mode === InteractionMode.PRACTICE && settings.showOutline && practiceStrokeIndex < data.strokes.length && (
                 <path 
                   d={data.strokes[practiceStrokeIndex]}
-                  className="fill-transparent stroke-teal-500/30 stroke-[20px]"
+                  className="fill-transparent stroke-vermilion-400 stroke-[20px]"
                   style={{ animation: 'pulse 2s infinite' }}
                 />
              )}
           </g>
         </svg>
 
-        {/* Interaction Canvas (Practice Mode) */}
+        {/* Interaction Canvas */}
         {mode === InteractionMode.PRACTICE && (
             <canvas
                 ref={canvasRef}
@@ -416,23 +458,27 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
             />
         )}
         
-        {/* Success Overlay for Practice Complete */}
+        {/* Success Overlay (Seal Stamp Effect) */}
         {mode === InteractionMode.PRACTICE && showSuccess && (
-            <div className="absolute inset-0 flex items-center justify-center bg-teal-500/10 backdrop-blur-[2px] animate-fade-in z-10">
-                <div className="bg-white dark:bg-slate-800 p-4 rounded-full shadow-lg border border-teal-100 dark:border-teal-900 transform scale-110">
-                    <span className="text-4xl">🎉</span>
+            <div className="absolute inset-0 flex items-center justify-center bg-vermilion-500/10 backdrop-blur-[1px] animate-fade-in z-30">
+                <div className="bg-vermilion-600 text-white w-24 h-24 rounded-lg shadow-xl flex items-center justify-center border-4 border-vermilion-800 transform rotate-12 scale-110 animate-bounce">
+                    <span className="text-5xl font-hanzi font-bold">优</span>
                 </div>
             </div>
         )}
       </div>
       
-      {mode === InteractionMode.PRACTICE && (
-          <div className="text-center mt-2 text-sm text-slate-400 h-5 transition-opacity duration-300" style={{ opacity: showSuccess || practiceStrokeIndex < data.strokes.length ? 1 : 0 }}>
+      {/* Status Text below viewer */}
+      <div className="text-center mt-4 h-6">
+        {mode === InteractionMode.PRACTICE && (
+          <div className="inline-block px-3 py-1 rounded-full bg-vermilion-50 dark:bg-vermilion-900/20 text-vermilion-700 dark:text-vermilion-300 text-xs font-medium tracking-wide transition-opacity duration-300" 
+               style={{ opacity: showSuccess || practiceStrokeIndex < data.strokes.length ? 1 : 0 }}>
               {practiceStrokeIndex >= data.strokes.length 
-                  ? "Great job!" 
-                  : `Draw stroke ${practiceStrokeIndex + 1}/${data.strokes.length}`}
+                  ? "Practice Complete" 
+                  : `Stroke ${practiceStrokeIndex + 1} / ${data.strokes.length}`}
           </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
