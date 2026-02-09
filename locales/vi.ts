@@ -23,5 +23,21 @@ export const vi: UILabels = {
   controlsSpeed: 'Tốc độ',
   viewMode: 'Xem',
   practiceMode: 'Luyện tập',
-  randomBtn: 'Ngẫu nhiên'
+  randomBtn: 'Ngẫu nhiên',
+  settingsTitle: 'Cài đặt',
+  settingGridStyle: 'Kiểu lưới',
+  settingGridRice: 'Lưới chữ Mễ',
+  settingGridField: 'Lưới chữ Điền',
+  settingGridNone: 'Không',
+  settingShowOutline: 'Hiện viền (Luyện tập)',
+  settingAutoPlay: 'Tự động phát',
+  settingContinuousMode: 'Chế độ liên tục',
+  settingShowStructure: 'Hiện cấu trúc',
+  settingShowEtymology: 'Hiện nguồn gốc',
+  settingShowMnemonic: 'Hiện mẹo nhớ',
+  settingShowExamples: 'Hiện từ ghép',
+  historyTitle: 'Lịch sử',
+  clearHistory: 'Xóa',
+  noHistory: 'Chưa có lịch sử.',
+  closeBtn: 'Đóng'
 };

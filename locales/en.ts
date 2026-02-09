@@ -23,5 +23,21 @@ export const en: UILabels = {
   controlsSpeed: 'Speed',
   viewMode: 'Watch',
   practiceMode: 'Practice',
-  randomBtn: 'Random'
+  randomBtn: 'Random',
+  settingsTitle: 'Settings',
+  settingGridStyle: 'Grid Style',
+  settingGridRice: 'Rice Grid',
+  settingGridField: 'Field Grid',
+  settingGridNone: 'None',
+  settingShowOutline: 'Show Outline (Practice)',
+  settingAutoPlay: 'Auto-play Animation',
+  settingContinuousMode: 'Continuous Practice Mode',
+  settingShowStructure: 'Show Structure',
+  settingShowEtymology: 'Show Etymology',
+  settingShowMnemonic: 'Show Mnemonic',
+  settingShowExamples: 'Show Common Words',
+  historyTitle: 'Practice History',
+  clearHistory: 'Clear',
+  noHistory: 'No characters practiced yet.',
+  closeBtn: 'Close'
 };

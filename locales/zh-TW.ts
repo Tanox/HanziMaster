@@ -23,5 +23,21 @@ export const zhTW: UILabels = {
   controlsSpeed: '速度',
   viewMode: '演示模式',
   practiceMode: '練習模式',
-  randomBtn: '隨機漢字'
+  randomBtn: '隨機漢字',
+  settingsTitle: '設置',
+  settingGridStyle: '格線樣式',
+  settingGridRice: '米字格',
+  settingGridField: '田字格',
+  settingGridNone: '無格線',
+  settingShowOutline: '顯示輪廓 (練習模式)',
+  settingAutoPlay: '自動播放動畫',
+  settingContinuousMode: '連續練字模式 (自動下一個)',
+  settingShowStructure: '顯示漢字結構',
+  settingShowEtymology: '顯示字源演變',
+  settingShowMnemonic: '顯示記憶口訣',
+  settingShowExamples: '顯示常用詞彙',
+  historyTitle: '練字歷史',
+  clearHistory: '清除記錄',
+  noHistory: '暫無練字記錄',
+  closeBtn: '關閉'
 };

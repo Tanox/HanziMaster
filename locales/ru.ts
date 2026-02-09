@@ -23,5 +23,21 @@ export const ru: UILabels = {
   controlsSpeed: 'Скорость',
   viewMode: 'Смотреть',
   practiceMode: 'Писать',
-  randomBtn: 'Случайный'
+  randomBtn: 'Случайный',
+  settingsTitle: 'Настройки',
+  settingGridStyle: 'Стиль сетки',
+  settingGridRice: 'Сетка "Рис"',
+  settingGridField: 'Сетка "Поле"',
+  settingGridNone: 'Нет',
+  settingShowOutline: 'Показать контур (Практика)',
+  settingAutoPlay: 'Автовоспроизведение',
+  settingContinuousMode: 'Непрерывный режим',
+  settingShowStructure: 'Показать структуру',
+  settingShowEtymology: 'Показать этимологию',
+  settingShowMnemonic: 'Показать мнемонику',
+  settingShowExamples: 'Показать примеры',
+  historyTitle: 'История',
+  clearHistory: 'Очистить',
+  noHistory: 'Нет истории.',
+  closeBtn: 'Закрыть'
 };

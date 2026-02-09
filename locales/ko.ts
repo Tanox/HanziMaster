@@ -23,5 +23,21 @@ export const ko: UILabels = {
   controlsSpeed: '속도',
   viewMode: '보기',
   practiceMode: '연습',
-  randomBtn: '무작위'
+  randomBtn: '무작위',
+  settingsTitle: '설정',
+  settingGridStyle: '그리드 스타일',
+  settingGridRice: '미자격',
+  settingGridField: '전자격',
+  settingGridNone: '없음',
+  settingShowOutline: '윤곽선 표시 (연습)',
+  settingAutoPlay: '자동 재생',
+  settingContinuousMode: '연속 모드',
+  settingShowStructure: '구조 표시',
+  settingShowEtymology: '어원 표시',
+  settingShowMnemonic: '암기 팁 표시',
+  settingShowExamples: '단어 표시',
+  historyTitle: '기록',
+  clearHistory: '지우기',
+  noHistory: '기록이 없습니다.',
+  closeBtn: '닫기'
 };

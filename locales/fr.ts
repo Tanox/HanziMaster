@@ -23,5 +23,21 @@ export const fr: UILabels = {
   controlsSpeed: 'Vitesse',
   viewMode: 'Voir',
   practiceMode: 'Pratiquer',
-  randomBtn: 'Aléatoire'
+  randomBtn: 'Aléatoire',
+  settingsTitle: 'Paramètres',
+  settingGridStyle: 'Style de grille',
+  settingGridRice: 'Grille riz',
+  settingGridField: 'Grille champ',
+  settingGridNone: 'Aucun',
+  settingShowOutline: 'Afficher le contour (Pratique)',
+  settingAutoPlay: 'Lecture automatique',
+  settingContinuousMode: 'Mode continu',
+  settingShowStructure: 'Afficher la structure',
+  settingShowEtymology: 'Afficher l\'étymologie',
+  settingShowMnemonic: 'Afficher la mnémonique',
+  settingShowExamples: 'Afficher les mots courants',
+  historyTitle: 'Historique',
+  clearHistory: 'Effacer',
+  noHistory: 'Aucun historique.',
+  closeBtn: 'Fermer'
 };

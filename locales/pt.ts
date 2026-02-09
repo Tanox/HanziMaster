@@ -23,5 +23,21 @@ export const pt: UILabels = {
   controlsSpeed: 'Velocidade',
   viewMode: 'Ver',
   practiceMode: 'Praticar',
-  randomBtn: 'Aleatório'
+  randomBtn: 'Aleatório',
+  settingsTitle: 'Configurações',
+  settingGridStyle: 'Estilo de Grade',
+  settingGridRice: 'Grade Arroz',
+  settingGridField: 'Grade Campo',
+  settingGridNone: 'Nenhum',
+  settingShowOutline: 'Mostrar Contorno (Prática)',
+  settingAutoPlay: 'Reprodução Automática',
+  settingContinuousMode: 'Modo Contínuo',
+  settingShowStructure: 'Mostrar Estrutura',
+  settingShowEtymology: 'Mostrar Etimologia',
+  settingShowMnemonic: 'Mostrar Mnemônica',
+  settingShowExamples: 'Mostrar Exemplos',
+  historyTitle: 'Histórico',
+  clearHistory: 'Limpar',
+  noHistory: 'Sem histórico.',
+  closeBtn: 'Fechar'
 };

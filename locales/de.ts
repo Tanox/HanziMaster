@@ -23,5 +23,21 @@ export const de: UILabels = {
   controlsSpeed: 'Tempo',
   viewMode: 'Ansehen',
   practiceMode: 'Üben',
-  randomBtn: 'Zufällig'
+  randomBtn: 'Zufällig',
+  settingsTitle: 'Einstellungen',
+  settingGridStyle: 'Rasterstil',
+  settingGridRice: 'Reis-Raster',
+  settingGridField: 'Feld-Raster',
+  settingGridNone: 'Kein',
+  settingShowOutline: 'Umriss anzeigen (Übung)',
+  settingAutoPlay: 'Automatische Wiedergabe',
+  settingContinuousMode: 'Kontinuierlicher Modus',
+  settingShowStructure: 'Struktur anzeigen',
+  settingShowEtymology: 'Etymologie anzeigen',
+  settingShowMnemonic: 'Eselsbrücke anzeigen',
+  settingShowExamples: 'Häufige Wörter anzeigen',
+  historyTitle: 'Verlauf',
+  clearHistory: 'Löschen',
+  noHistory: 'Kein Verlauf.',
+  closeBtn: 'Schließen'
 };

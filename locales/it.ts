@@ -23,5 +23,21 @@ export const it: UILabels = {
   controlsSpeed: 'Velocità',
   viewMode: 'Guarda',
   practiceMode: 'Pratica',
-  randomBtn: 'Casuale'
+  randomBtn: 'Casuale',
+  settingsTitle: 'Impostazioni',
+  settingGridStyle: 'Stile Griglia',
+  settingGridRice: 'Griglia Riso',
+  settingGridField: 'Griglia Campo',
+  settingGridNone: 'Nessuno',
+  settingShowOutline: 'Mostra Contorno (Pratica)',
+  settingAutoPlay: 'Riproduzione Automatica',
+  settingContinuousMode: 'Modo Continuo',
+  settingShowStructure: 'Mostra Struttura',
+  settingShowEtymology: 'Mostra Etimologia',
+  settingShowMnemonic: 'Mostra Mnemonica',
+  settingShowExamples: 'Mostra Esempi',
+  historyTitle: 'Cronologia',
+  clearHistory: 'Cancella',
+  noHistory: 'Nessuna cronologia.',
+  closeBtn: 'Chiudi'
 };

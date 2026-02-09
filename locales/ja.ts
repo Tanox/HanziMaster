@@ -23,5 +23,21 @@ export const ja: UILabels = {
   controlsSpeed: '速度',
   viewMode: '見る',
   practiceMode: '書く',
-  randomBtn: 'ランダム'
+  randomBtn: 'ランダム',
+  settingsTitle: '設定',
+  settingGridStyle: 'グリッドスタイル',
+  settingGridRice: '米字枠',
+  settingGridField: '田字枠',
+  settingGridNone: 'なし',
+  settingShowOutline: 'アウトラインを表示 (練習)',
+  settingAutoPlay: '自動再生',
+  settingContinuousMode: '連続モード',
+  settingShowStructure: '構造を表示',
+  settingShowEtymology: '語源を表示',
+  settingShowMnemonic: '覚え方を表示',
+  settingShowExamples: '熟語を表示',
+  historyTitle: '履歴',
+  clearHistory: '消去',
+  noHistory: '履歴はありません。',
+  closeBtn: '閉じる'
 };

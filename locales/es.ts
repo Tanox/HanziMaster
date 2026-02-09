@@ -23,5 +23,21 @@ export const es: UILabels = {
   controlsSpeed: 'Velocidad',
   viewMode: 'Ver',
   practiceMode: 'Practicar',
-  randomBtn: 'Aleatorio'
+  randomBtn: 'Aleatorio',
+  settingsTitle: 'Ajustes',
+  settingGridStyle: 'Estilo de cuadrícula',
+  settingGridRice: 'Cuadrícula de arroz',
+  settingGridField: 'Cuadrícula de campo',
+  settingGridNone: 'Ninguno',
+  settingShowOutline: 'Mostrar contorno (Práctica)',
+  settingAutoPlay: 'Reproducción automática',
+  settingContinuousMode: 'Modo Continuo',
+  settingShowStructure: 'Mostrar estructura',
+  settingShowEtymology: 'Mostrar etimología',
+  settingShowMnemonic: 'Mostrar mnemotecnia',
+  settingShowExamples: 'Mostrar palabras comunes',
+  historyTitle: 'Historial',
+  clearHistory: 'Borrar',
+  noHistory: 'Sin historial.',
+  closeBtn: 'Cerrar'
 };

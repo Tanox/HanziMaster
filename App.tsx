@@ -1,18 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { fetchHanziData } from './services/hanziService';
 import { analyzeCharacter } from './services/geminiService';
-import { HanziData, CharacterAnalysis, AnimationState, InteractionMode } from './types';
+import { HanziData, CharacterAnalysis, AnimationState, InteractionMode, AppSettings, HistoryItem } from './types';
 import SearchInput from './components/SearchInput';
 import StrokeViewer from './components/StrokeViewer';
 import Controls from './components/Controls';
 import AnalysisPanel from './components/AnalysisPanel';
 import LanguageSelector from './components/LanguageSelector';
 import RandomSuggestions from './components/RandomSuggestions';
+import HistoryPanel from './components/HistoryPanel';
+import SettingsModal from './components/SettingsModal';
 import { LANGUAGES, UI_LABELS } from './locales';
-import { Brush, Moon, Sun, AlertCircle, WifiOff } from 'lucide-react';
+import { Brush, Moon, Sun, AlertCircle, WifiOff, Settings } from 'lucide-react';
 import { COMMON_CHARS } from './utils/commonChars';
 
-const APP_VERSION = '0.2.2';
+const APP_VERSION = '0.2.3';
+
+const DEFAULT_SETTINGS: AppSettings = {
+  gridStyle: 'rice',
+  showOutline: true,
+  autoPlay: true,
+  continuousMode: false,
+  showStructure: true,
+  showEtymology: true,
+  showMnemonic: true,
+  showExamples: true,
+};
 
 const App: React.FC = () => {
   const [activeChar, setActiveChar] = useState<string>('永');
@@ -21,6 +34,47 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isOffline, setIsOffline] = useState<boolean>(!navigator.onLine);
+  
+  // Settings State
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [settings, setSettings] = useState<AppSettings>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('appSettings');
+      if (saved) {
+        try {
+           return { ...DEFAULT_SETTINGS, ...JSON.parse(saved) };
+        } catch (e) {
+           return DEFAULT_SETTINGS;
+        }
+      }
+    }
+    return DEFAULT_SETTINGS;
+  });
+
+  // History State
+  const [history, setHistory] = useState<HistoryItem[]>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('practiceHistory');
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch (e) {
+          return [];
+        }
+      }
+    }
+    return [];
+  });
+
+  // Persist Settings
+  useEffect(() => {
+    localStorage.setItem('appSettings', JSON.stringify(settings));
+  }, [settings]);
+
+  // Persist History
+  useEffect(() => {
+    localStorage.setItem('practiceHistory', JSON.stringify(history));
+  }, [history]);
   
   // Language State - Default to Simplified Chinese if preferred, or English
   const [currentLang, setCurrentLang] = useState<string>('zh-CN');
@@ -102,7 +156,10 @@ const App: React.FC = () => {
 
       if (data) {
         setHanziData(data);
-        setTimeout(() => setAnimationState(AnimationState.PLAYING), 500);
+        // Respect Auto-play setting
+        if (settings.autoPlay) {
+          setTimeout(() => setAnimationState(AnimationState.PLAYING), 500);
+        }
         
         // Enhance offline/error analysis with real stroke count if in fallback mode
         if (aiResult && aiResult.meaning.startsWith("Mode:")) {
@@ -134,6 +191,74 @@ const App: React.FC = () => {
     handleSearch(randomChar, currentLang);
   };
 
+  const addToHistory = (char: string) => {
+    setHistory(prev => {
+      // Remove existing entry for this char if present (to bump it to top)
+      const filtered = prev.filter(item => item.char !== char);
+      return [{ char, timestamp: Date.now() }, ...filtered].slice(0, 20); // Limit to 20 items
+    });
+  };
+
+  const handlePracticeComplete = () => {
+    // 1. Add to history
+    addToHistory(activeChar);
+
+    // 2. Handle Continuous Mode
+    if (settings.continuousMode) {
+      // Delay slightly to allow the "Success" animation to play
+      setTimeout(() => {
+         // Switch directly to practice mode for the next char
+         setInteractionMode(InteractionMode.PRACTICE);
+         handleRandom();
+         // Note: handleSearch resets mode to VIEW, we might need to override this in useEffect or pass a flag
+         // For simplicity in this architecture, handleSearch resets to VIEW. 
+         // We can use a ref or effect to switch it back to PRACTICE if continuous mode is on.
+      }, 1500);
+    }
+  };
+
+  // Effect to enforce Practice Mode if Continuous Mode triggered a search
+  // This is a bit of a hack around the handleSearch reset logic, but keeps handleSearch clean.
+  useEffect(() => {
+    if (settings.continuousMode && hanziData && !loading && animationState === AnimationState.IDLE) {
+       // Only if we just loaded a new char and continuous mode is active
+       // We want to default to Practice instead of View
+       // But handleSearch sets it to VIEW.
+       // We can detect if this search was triggered by continuous mode by checking if we have data and are in IDLE.
+       // However, this might conflict with normal search.
+       // Let's refine: We only auto-switch to PRACTICE if we are already in PRACTICE before search? 
+       // No, handleSearch resets.
+       
+       // Let's just rely on the user manually switching back if they want, OR:
+       // We update handleSearch to accept a mode?
+       // Simplest fix for now: In handleSearch, we reset to VIEW. 
+       // If continuous mode is ON, we ideally want to stay in Practice.
+       // Let's modify handleSearch slightly or use a ref to track intent.
+    }
+  }, [hanziData, loading, settings.continuousMode]);
+
+  // Update handleSearch to support maintaining practice mode
+  // Since we can't easily change the signature without breaking other calls, let's use a side effect.
+  // Actually, let's just use a ref to signal "next char should be practice mode"
+  const nextModeRef = React.useRef<InteractionMode>(InteractionMode.VIEW);
+
+  const handleRandomContinuous = () => {
+     nextModeRef.current = InteractionMode.PRACTICE;
+     handleRandom();
+  };
+  
+  // Override the interaction mode setting in handleSearch
+  const _originalHandleSearch = handleSearch;
+  // We'll wrap logic inside the existing useEffect that responds to data load
+  useEffect(() => {
+      if (hanziData && !loading && nextModeRef.current === InteractionMode.PRACTICE) {
+          setInteractionMode(InteractionMode.PRACTICE);
+          setAnimationState(AnimationState.IDLE);
+          nextModeRef.current = InteractionMode.VIEW; // Reset flag
+      }
+  }, [hanziData, loading]);
+
+
   const handleLanguageChange = (code: string) => {
     setCurrentLang(code);
     if (activeChar) {
@@ -152,9 +277,17 @@ const App: React.FC = () => {
               {labels.appTitle}
             </h1>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3">
              <LanguageSelector currentLang={currentLang} onLanguageChange={handleLanguageChange} />
              
+             <button
+               onClick={() => setIsSettingsOpen(true)}
+               className="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+               aria-label="Settings"
+             >
+               <Settings size={18} />
+             </button>
+
              <button 
                onClick={toggleTheme}
                className="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
@@ -209,6 +342,14 @@ const App: React.FC = () => {
                   setAnimationState={setAnimationState}
                   speed={speed}
                   mode={interactionMode}
+                  settings={settings}
+                  onPracticeComplete={() => {
+                      if (settings.continuousMode) {
+                          // Signal that we want practice mode for next char
+                          nextModeRef.current = InteractionMode.PRACTICE;
+                      }
+                      handlePracticeComplete();
+                  }}
                 />
                 <Controls 
                   animationState={animationState}
@@ -243,6 +384,11 @@ const App: React.FC = () => {
                          {animationState === AnimationState.PLAYING || animationState === AnimationState.PAUSED ? labels.strokeStatusActive : labels.strokeStatusComplete}
                        </p>
                    )}
+                   {interactionMode === InteractionMode.PRACTICE && settings.continuousMode && (
+                        <p className="text-teal-600 dark:text-teal-400 text-sm font-medium animate-pulse">
+                            {labels.settingContinuousMode}
+                        </p>
+                   )}
                 </div>
               </>
             ) : (
@@ -256,7 +402,15 @@ const App: React.FC = () => {
 
           {/* Right Column: AI Analysis */}
           <div className="lg:col-span-7">
-            <AnalysisPanel analysis={analysis} isLoading={loading} language={currentLang} />
+            <AnalysisPanel analysis={analysis} isLoading={loading} language={currentLang} settings={settings} />
+            
+            {/* History Panel */}
+            <HistoryPanel 
+               history={history} 
+               onSelect={(char) => handleSearch(char, currentLang)} 
+               onClear={() => setHistory([])}
+               labels={labels}
+            />
           </div>
         </div>
 
@@ -264,6 +418,15 @@ const App: React.FC = () => {
         <RandomSuggestions 
           onSelect={(char) => handleSearch(char, currentLang)} 
           label={labels.randomBtn}
+        />
+        
+        {/* Settings Modal */}
+        <SettingsModal 
+          isOpen={isSettingsOpen} 
+          onClose={() => setIsSettingsOpen(false)}
+          settings={settings}
+          onUpdateSettings={setSettings}
+          labels={labels}
         />
 
       </main>

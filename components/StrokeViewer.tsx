@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { HanziData, AnimationState, InteractionMode } from '../types';
+import { HanziData, AnimationState, InteractionMode, AppSettings } from '../types';
 import { PenTool } from 'lucide-react';
 
 interface StrokeViewerProps {
@@ -8,6 +8,8 @@ interface StrokeViewerProps {
   setAnimationState: (state: AnimationState) => void;
   speed: number;
   mode: InteractionMode;
+  settings: AppSettings;
+  onPracticeComplete?: () => void;
 }
 
 const StrokeViewer: React.FC<StrokeViewerProps> = ({
@@ -16,6 +18,8 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   setAnimationState,
   speed,
   mode,
+  settings,
+  onPracticeComplete
 }) => {
   const [currentStrokeIndex, setCurrentStrokeIndex] = useState(-1);
   const [progress, setProgress] = useState(0); // 0 to 1 for current stroke
@@ -26,6 +30,9 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   const [practiceStrokeIndex, setPracticeStrokeIndex] = useState(0);
   const [isDrawing, setIsDrawing] = useState(false);
   const [feedbackColor, setFeedbackColor] = useState<string | null>(null); // 'success' or 'error'
+  // Use a flag ref to prevent multiple calls to onPracticeComplete for the same completion
+  const hasNotifiedCompletionRef = useRef(false);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const userStrokePathRef = useRef<Array<{x: number, y: number}>>([]);
   
@@ -71,6 +78,8 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     setProgress(0);
     setPracticeStrokeIndex(0);
     setFeedbackColor(null);
+    hasNotifiedCompletionRef.current = false;
+    
     if (mode === InteractionMode.VIEW) {
       setAnimationState(AnimationState.IDLE);
     }
@@ -226,9 +235,22 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
 
     if (startDist < THRESHOLD && endDist < THRESHOLD) {
       // Success
-      setPracticeStrokeIndex(prev => prev + 1);
+      const nextIndex = practiceStrokeIndex + 1;
+      setPracticeStrokeIndex(nextIndex);
       clearCanvas();
       if (navigator.vibrate) navigator.vibrate(20);
+
+      // Check for completion
+      if (nextIndex >= data.strokes.length) {
+         // Notify parent after a short delay to allow React state to settle/UI to update
+         // Using a timeout also lets the final visual update happen before potential page jump
+         setTimeout(() => {
+             if (onPracticeComplete && !hasNotifiedCompletionRef.current) {
+                 hasNotifiedCompletionRef.current = true;
+                 onPracticeComplete();
+             }
+         }, 500);
+      }
     } else {
       // Fail
       setFeedbackColor('error');
@@ -239,6 +261,12 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
       }, 500);
     }
   };
+
+  // Determine visibility of the background "hint" strokes in Practice Mode
+  // If settings.showOutline is true, we show them as usual.
+  // If false, we hide them, making it a "blind write" test.
+  // In View Mode, they are always visible as the base.
+  const shouldShowBackground = mode === InteractionMode.VIEW || settings.showOutline;
 
   return (
     <div className="relative w-full max-w-[320px] aspect-square mx-auto">
@@ -257,12 +285,26 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
             </div>
         )}
 
-        {/* Grid Background */}
+        {/* Grid Background - Dynamic based on settings */}
         <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="absolute inset-0 w-full h-full pointer-events-none opacity-20">
-          <line x1="0" y1="0" x2={SIZE} y2={SIZE} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
-          <line x1={SIZE} y1="0" x2="0" y2={SIZE} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
-          <line x1={SIZE/2} y1="0" x2={SIZE/2} y2={SIZE} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
-          <line x1="0" y1={SIZE/2} x2={SIZE} y2={SIZE/2} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
+          
+          {/* Diagonals - Rice only */}
+          {settings.gridStyle === 'rice' && (
+            <>
+              <line x1="0" y1="0" x2={SIZE} y2={SIZE} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
+              <line x1={SIZE} y1="0" x2="0" y2={SIZE} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
+            </>
+          )}
+
+          {/* Cross lines - Rice and Field */}
+          {(settings.gridStyle === 'rice' || settings.gridStyle === 'field') && (
+            <>
+              <line x1={SIZE/2} y1="0" x2={SIZE/2} y2={SIZE} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
+              <line x1="0" y1={SIZE/2} x2={SIZE} y2={SIZE/2} className="stroke-slate-300 dark:stroke-slate-500" strokeWidth="2" />
+            </>
+          )}
+
+          {/* Border - Always visible unless style 'none' (optional, but keeping border usually looks better. Let's make 'none' remove internal lines but keep box frame for structure) */}
           <rect x="0" y="0" width={SIZE} height={SIZE} className="stroke-slate-400 dark:stroke-slate-400" strokeWidth="4" fill="none" />
         </svg>
 
@@ -297,16 +339,21 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
           </defs>
 
           <g transform={`scale(1, -1) translate(0, -${OFFSET_Y})`}> 
-             {/* Background Shadows (Always visible) */}
+             {/* Background Shadows (The template) */}
              {data.strokes.map((strokePath, index) => (
                <path 
                  key={`bg-${index}`} 
                  d={strokePath}
-                 className={`transition-colors duration-300 ${
+                 className={`transition-all duration-300 ${
                     mode === InteractionMode.PRACTICE 
                         ? (index < practiceStrokeIndex ? 'fill-slate-800 dark:fill-slate-200' : 'fill-slate-100 dark:fill-slate-700') 
                         : 'fill-slate-200 dark:fill-slate-700'
                  }`}
+                 style={{
+                   // In practice mode, if showOutline is false, hide the future strokes (the template).
+                   // Already completed strokes (index < practiceStrokeIndex) should remain visible so user sees what they wrote (conceptually).
+                   opacity: (mode === InteractionMode.PRACTICE && !shouldShowBackground && index >= practiceStrokeIndex) ? 0 : 1
+                 }}
                />
              ))}
 
@@ -318,16 +365,15 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
                  className="fill-slate-900 dark:fill-slate-100 transition-colors duration-300"
                  mask={`url(#mask-${index})`}
                  style={{
-                   // Opacity ensures strokes that are "waiting" (future) are hidden, 
-                   // though strokeDasharray `0 len` in mask also handles this.
-                   // Keeping opacity for extra safety.
                    opacity: index <= currentStrokeIndex ? 1 : 0
                  }}
                />
              ))}
              
              {/* Practice Mode: Current Stroke Hint (Outline) */}
-             {mode === InteractionMode.PRACTICE && practiceStrokeIndex < data.strokes.length && (
+             {/* If blind mode (no outline), we probably shouldn't show this pulse either, or maybe just a very faint one? 
+                 Let's adhere to the setting: showOutline=false implies harder difficulty. Hide the hint. */}
+             {mode === InteractionMode.PRACTICE && settings.showOutline && practiceStrokeIndex < data.strokes.length && (
                 <path 
                   d={data.strokes[practiceStrokeIndex]}
                   className="fill-transparent stroke-teal-500/30 stroke-[20px]"
@@ -353,8 +399,8 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
         
         {/* Success Overlay for Practice Complete */}
         {mode === InteractionMode.PRACTICE && practiceStrokeIndex >= data.strokes.length && (
-            <div className="absolute inset-0 flex items-center justify-center bg-teal-500/10 backdrop-blur-[2px] animate-fade-in">
-                <div className="bg-white dark:bg-slate-800 p-4 rounded-full shadow-lg border border-teal-100 dark:border-teal-900">
+            <div className="absolute inset-0 flex items-center justify-center bg-teal-500/10 backdrop-blur-[2px] animate-fade-in z-10">
+                <div className="bg-white dark:bg-slate-800 p-4 rounded-full shadow-lg border border-teal-100 dark:border-teal-900 transform scale-110">
                     <span className="text-4xl">🎉</span>
                 </div>
             </div>
@@ -364,7 +410,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
       {mode === InteractionMode.PRACTICE && (
           <div className="text-center mt-2 text-sm text-slate-400">
               {practiceStrokeIndex >= data.strokes.length 
-                  ? "Great job! Reset to practice again." 
+                  ? "Great job!" 
                   : `Draw stroke ${practiceStrokeIndex + 1}/${data.strokes.length}`}
           </div>
       )}

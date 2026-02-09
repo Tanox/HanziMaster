@@ -1,3 +1,4 @@
+
 export interface UILabels {
   meaning: string;
   structure: string;
@@ -22,6 +23,26 @@ export interface UILabels {
   viewMode: string;
   practiceMode: string;
   randomBtn: string;
+  // Settings
+  settingsTitle: string;
+  settingGridStyle: string;
+  settingGridRice: string;
+  settingGridField: string;
+  settingGridNone: string;
+  settingShowOutline: string;
+  settingAutoPlay: string;
+  settingContinuousMode: string;
+  // Analysis Content Settings
+  settingShowStructure: string;
+  settingShowEtymology: string;
+  settingShowMnemonic: string;
+  settingShowExamples: string;
+  // History
+  historyTitle: string;
+  clearHistory: string;
+  noHistory: string;
+  
+  closeBtn: string;
 }
 
 export interface LanguageOption {
