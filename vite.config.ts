@@ -9,10 +9,8 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       VitePWA({
-        registerType: 'prompt', // Changed from 'autoUpdate' to 'prompt'
-        // Optimized: Only precache the app shell and critical icons. 
-        // We do NOT precache the 9000+ hanzi JSON files here to prevent install timeouts.
-        includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+        registerType: 'prompt',
+        includeAssets: ['favicon.svg', 'icon.svg', 'maskable-icon.svg'],
         devOptions: {
           enabled: true
         },
@@ -21,7 +19,7 @@ export default defineConfig(({ mode }) => {
           name: 'HanziMaster',
           short_name: 'HanziMaster',
           description: 'Master Chinese character stroke order with AI insights.',
-          theme_color: '#fdfbf7', // Updated to match paper color
+          theme_color: '#fdfbf7',
           background_color: '#fdfbf7',
           display: 'standalone',
           orientation: 'portrait',
@@ -29,20 +27,16 @@ export default defineConfig(({ mode }) => {
           scope: '/',
           icons: [
             {
-              src: 'pwa-192x192.png',
-              sizes: '192x192',
-              type: 'image/png'
+              src: 'icon.svg',
+              sizes: '192x192 512x512',
+              type: 'image/svg+xml',
+              purpose: 'any'
             },
             {
-              src: 'pwa-512x512.png',
+              src: 'maskable-icon.svg',
               sizes: '512x512',
-              type: 'image/png'
-            },
-            {
-              src: 'pwa-512x512.png',
-              sizes: '512x512',
-              type: 'image/png',
-              purpose: 'any maskable'
+              type: 'image/svg+xml',
+              purpose: 'maskable'
             }
           ]
         },
@@ -51,8 +45,6 @@ export default defineConfig(({ mode }) => {
           maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
           runtimeCaching: [
             // 1. Local Hanzi Data (High Priority)
-            // Cache these permanently as they are requested. 
-            // This enables "Lazy Offline" mode - visited characters work offline.
             {
               urlPattern: ({ url }) => url.pathname.startsWith('/hanzi-data/'),
               handler: 'CacheFirst',
@@ -82,24 +74,12 @@ export default defineConfig(({ mode }) => {
                 }
               }
             },
-            // 3. Google Fonts (Styles)
+            // 3. Google Fonts
             {
-              urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-              handler: 'StaleWhileRevalidate',
-              options: {
-                cacheName: 'google-fonts-stylesheets',
-                expiration: {
-                  maxEntries: 10,
-                  maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
-                }
-              }
-            },
-            // 4. Google Fonts (Webfonts)
-            {
-              urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+              urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/i,
               handler: 'CacheFirst',
               options: {
-                cacheName: 'google-fonts-webfonts',
+                cacheName: 'google-fonts',
                 expiration: {
                   maxEntries: 30,
                   maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
