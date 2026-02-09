@@ -1,6 +1,6 @@
 import React from 'react';
 import { Play, Pause, RotateCcw, PenTool, Eye } from 'lucide-react';
-import { AnimationState, InteractionMode, AppSettings } from '../types';
+import { AnimationState, InteractionMode } from '../types';
 import PronunciationButton from './PronunciationButton';
 
 interface ControlsProps {
@@ -10,7 +10,6 @@ interface ControlsProps {
   onReset: () => void;
   mode: InteractionMode;
   onToggleMode: () => void;
-  settings: AppSettings;
   char: string;
   labels: {
     play: string;
@@ -29,7 +28,6 @@ const Controls: React.FC<ControlsProps> = ({
   onReset,
   mode,
   onToggleMode,
-  settings,
   char,
   labels,
 }) => {
@@ -43,7 +41,7 @@ const Controls: React.FC<ControlsProps> = ({
             onClick={isPractice ? onToggleMode : undefined}
             className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-full text-sm font-medium transition-all ${
                 !isPractice 
-                ? 'bg-white dark:bg-slate-700 text-teal-700 dark:text-teal-400 shadow-sm' 
+                ? 'bg-white dark:bg-slate-700 text-teal-700 dark:text-teal-400' 
                 : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
             }`}
           >
@@ -54,7 +52,7 @@ const Controls: React.FC<ControlsProps> = ({
             onClick={!isPractice ? onToggleMode : undefined}
             className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-full text-sm font-medium transition-all ${
                 isPractice 
-                ? 'bg-white dark:bg-slate-700 text-teal-700 dark:text-teal-400 shadow-sm' 
+                ? 'bg-white dark:bg-slate-700 text-teal-700 dark:text-teal-400' 
                 : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
             }`}
           >
@@ -68,7 +66,7 @@ const Controls: React.FC<ControlsProps> = ({
             <button
             onClick={onReset}
             disabled={isPractice}
-            className={`p-3 text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full shadow-sm transition-all ${
+            className={`p-3 text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full transition-all ${
                 isPractice 
                 ? 'opacity-30 cursor-not-allowed' 
                 : 'hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-teal-600 dark:hover:text-teal-400'
@@ -80,7 +78,7 @@ const Controls: React.FC<ControlsProps> = ({
             </button>
             
             {/* Pronunciation Button (Always Enabled) */}
-            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full shadow-sm p-0.5 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full p-0.5 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
                <PronunciationButton text={char} size={22} className="w-[44px] h-[44px]" />
             </div>
             
@@ -88,7 +86,7 @@ const Controls: React.FC<ControlsProps> = ({
             <button
                 onClick={onPause}
                 disabled={isPractice}
-                className={`p-4 text-white bg-teal-600 dark:bg-teal-500 rounded-full shadow-md transform transition-all ${
+                className={`p-4 text-white bg-teal-600 dark:bg-teal-500 rounded-full transform transition-all ${
                     isPractice
                     ? 'opacity-30 cursor-not-allowed grayscale'
                     : 'hover:bg-teal-700 dark:hover:bg-teal-600 hover:scale-105'
@@ -102,7 +100,7 @@ const Controls: React.FC<ControlsProps> = ({
             <button
                 onClick={onPlay}
                 disabled={isPractice}
-                className={`p-4 text-white bg-teal-600 dark:bg-teal-500 rounded-full shadow-md transform transition-all ${
+                className={`p-4 text-white bg-teal-600 dark:bg-teal-500 rounded-full transform transition-all ${
                     isPractice
                     ? 'opacity-30 cursor-not-allowed grayscale'
                     : 'hover:bg-teal-700 dark:hover:bg-teal-600 hover:scale-105'

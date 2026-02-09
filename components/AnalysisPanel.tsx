@@ -16,7 +16,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, isLoading, lang
 
   if (isLoading) {
     return (
-      <div className="w-full max-w-2xl mx-auto mt-8 p-8 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 transition-colors duration-300">
+      <div className="w-full max-w-2xl mx-auto mt-8 p-8 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 transition-colors duration-300">
         <div className="animate-pulse space-y-4">
           <div className="h-10 bg-slate-200 dark:bg-slate-700 rounded w-1/4"></div>
           <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4"></div>
@@ -38,7 +38,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, isLoading, lang
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-min">
         
         {/* 1. Header Card (Hero) - Spans 2 cols on desktop */}
-        <div className="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex flex-col justify-between relative overflow-hidden group hover:border-teal-100 dark:hover:border-teal-900 transition-colors">
+        <div className="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 flex flex-col justify-between relative overflow-hidden group hover:border-teal-100 dark:hover:border-teal-900 transition-colors">
             {/* Decorative background char */}
             <div className="absolute -right-4 -bottom-8 text-9xl font-hanzi text-slate-50 dark:text-slate-800 pointer-events-none select-none opacity-50 group-hover:scale-110 transition-transform duration-700">
                 {analysis.char}
@@ -61,7 +61,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, isLoading, lang
 
         {/* 2. Radical Card */}
         {settings.showStructure && !isOffline && (
-            <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex flex-col items-center justify-center text-center hover:border-teal-100 dark:hover:border-teal-900 transition-colors">
+            <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 flex flex-col items-center justify-center text-center hover:border-teal-100 dark:hover:border-teal-900 transition-colors">
                 <span className="text-slate-400 dark:text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">{labels.radical}</span>
                 <span className="text-4xl font-hanzi text-slate-800 dark:text-slate-200 mb-1">{analysis.radical}</span>
             </div>
@@ -69,7 +69,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, isLoading, lang
 
         {/* 3. Stroke Count Card */}
         {settings.showStructure && !isOffline && (
-            <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex flex-col items-center justify-center text-center hover:border-teal-100 dark:hover:border-teal-900 transition-colors">
+            <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 flex flex-col items-center justify-center text-center hover:border-teal-100 dark:hover:border-teal-900 transition-colors">
                  <span className="text-slate-400 dark:text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">{labels.strokeCount}</span>
                  <span className="text-4xl font-mono font-light text-slate-800 dark:text-slate-200 mb-1">{analysis.strokeCount}</span>
             </div>
@@ -77,7 +77,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, isLoading, lang
 
         {/* 4. Etymology (Origin) - Full Width or large box */}
         {settings.showEtymology && !isOffline && (
-            <div className="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 hover:border-amber-100 dark:hover:border-amber-900/30 transition-colors">
+            <div className="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 hover:border-amber-100 dark:hover:border-amber-900/30 transition-colors">
                  <div className="flex items-center gap-2 mb-3 text-amber-600 dark:text-amber-500">
                     <History size={18} />
                     <h3 className="font-bold text-sm uppercase tracking-wide">{labels.origin}</h3>
@@ -103,7 +103,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, isLoading, lang
 
         {/* 6. Vocabulary List - Full Width */}
         {settings.showExamples && !isOffline && (
-            <div className="md:col-span-4 bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 mt-2">
+            <div className="md:col-span-4 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 mt-2">
                  <div className="flex items-center gap-2 mb-4 text-indigo-600 dark:text-indigo-400">
                     <BookOpen size={18} />
                     <h3 className="font-bold text-sm uppercase tracking-wide">{labels.commonWords}</h3>
@@ -111,7 +111,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, isLoading, lang
                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     {analysis.examples.map((ex, i) => (
                       <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-700/30 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors">
-                          <div className="bg-white dark:bg-slate-800 p-2 rounded shadow-sm text-xl font-hanzi text-slate-800 dark:text-slate-200">
+                          <div className="bg-white dark:bg-slate-800 p-2 rounded text-xl font-hanzi text-slate-800 dark:text-slate-200">
                               {ex.word}
                           </div>
                           <div className="flex-1 min-w-0">

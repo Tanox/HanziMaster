@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Eye, PlayCircle, Layers, BookOpen, Lightbulb, Quote, Infinity, Wifi, Settings as SettingsIcon, Shuffle, Clock, Gauge } from 'lucide-react';
+import { X, Eye, PlayCircle, Layers, BookOpen, Lightbulb, Quote, Infinity, Wifi, Shuffle, Clock, Gauge } from 'lucide-react';
 import { AppSettings, GridStyle } from '../types';
 import { UILabels } from '../locales/types';
 
@@ -59,7 +59,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
         disabled={disabled}
         className={`w-11 h-6 rounded-full p-1 transition-colors duration-300 ${value ? 'bg-teal-500' : 'bg-slate-300 dark:bg-slate-600'}`}
       >
-        <div className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 ${value ? 'translate-x-5' : 'translate-x-0'}`} />
+        <div className={`bg-white w-4 h-4 rounded-full transform transition-transform duration-300 ${value ? 'translate-x-5' : 'translate-x-0'}`} />
       </button>
     </div>
   );
@@ -75,7 +75,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-fade-in"
       onClick={handleBackdropClick}
     >
-      <div className="bg-white dark:bg-slate-800 w-full max-w-sm max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 transform transition-all scale-100 scrollbar-hide flex flex-col">
+      <div className="bg-white dark:bg-slate-800 w-full max-w-sm max-h-[90vh] overflow-y-auto rounded-2xl border border-slate-200 dark:border-slate-700 transform transition-all scale-100 scrollbar-hide flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-700 sticky top-0 bg-white dark:bg-slate-800 z-10 shrink-0">
           <h3 className="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
@@ -131,7 +131,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                         onClick={() => onSpeedChange(s)} 
                         className={`px-3 py-1 text-xs font-bold rounded transition-colors ${
                             speed === s 
-                            ? 'bg-white dark:bg-slate-600 text-teal-600 dark:text-teal-400 shadow-sm' 
+                            ? 'bg-white dark:bg-slate-600 text-teal-600 dark:text-teal-400' 
                             : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
                         }`}
                       >

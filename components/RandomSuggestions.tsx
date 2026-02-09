@@ -52,10 +52,10 @@ const RandomSuggestions: React.FC<RandomSuggestionsProps> = ({ onSelect, label }
               text-2xl sm:text-3xl font-hanzi
               bg-white dark:bg-slate-800
               text-slate-600 dark:text-slate-300
-              rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700
+              rounded-2xl border border-slate-200 dark:border-slate-700
               hover:border-teal-500 dark:hover:border-teal-400
               hover:text-teal-600 dark:hover:text-teal-400
-              hover:shadow-md hover:-translate-y-1
+              hover:-translate-y-1
               active:scale-95
               transition-all duration-300
               /* Responsive Logic: 3 chars on mobile, up to 6 on large screens */

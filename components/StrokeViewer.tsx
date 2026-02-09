@@ -334,7 +334,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     <div className="relative w-full max-w-[90vw] md:max-w-[400px] aspect-square mx-auto my-6">
       
       {/* Outer Frame (Shadow & Texture) */}
-      <div className={`relative w-full h-full bg-texture-paper rounded-lg shadow-2xl transition-all duration-300 select-none overflow-hidden ${
+      <div className={`relative w-full h-full bg-texture-paper rounded-lg transition-all duration-300 select-none overflow-hidden ${
         feedbackColor === 'error' 
           ? 'ring-4 ring-red-200 dark:ring-red-900/50 border-red-400' 
           : mode === InteractionMode.PRACTICE 
@@ -345,14 +345,11 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
         {/* Practice Mode Seal/Indicator */}
         {mode === InteractionMode.PRACTICE && (
             <div className="absolute top-4 right-4 z-20 pointer-events-none animate-fade-in">
-                 <div className="bg-vermilion-500 text-white p-2 rounded-lg shadow-md border-2 border-vermilion-600 transform rotate-6 opacity-90">
+                 <div className="bg-vermilion-500 text-white p-2 rounded-lg border-2 border-vermilion-600 transform rotate-6 opacity-90">
                     <PenTool size={18} />
                  </div>
             </div>
         )}
-
-        {/* Inner Shadow to create 'Inset' effect (pressed paper) */}
-        <div className="absolute inset-0 shadow-[inset_0_2px_10px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_2px_10px_rgba(0,0,0,0.3)] pointer-events-none z-10 rounded-lg"></div>
 
         {/* Grid Background - Styled to look like traditional guides */}
         <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="absolute inset-0 w-full h-full pointer-events-none opacity-20 dark:opacity-30">
@@ -461,7 +458,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
         {/* Success Overlay (Seal Stamp Effect) */}
         {mode === InteractionMode.PRACTICE && showSuccess && (
             <div className="absolute inset-0 flex items-center justify-center bg-vermilion-500/10 backdrop-blur-[1px] animate-fade-in z-30">
-                <div className="bg-vermilion-600 text-white w-24 h-24 rounded-lg shadow-xl flex items-center justify-center border-4 border-vermilion-800 transform rotate-12 scale-110 animate-bounce">
+                <div className="bg-vermilion-600 text-white w-24 h-24 rounded-lg flex items-center justify-center border-4 border-vermilion-800 transform rotate-12 scale-110 animate-bounce">
                     <span className="text-5xl font-hanzi font-bold">优</span>
                 </div>
             </div>

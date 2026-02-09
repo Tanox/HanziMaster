@@ -358,7 +358,6 @@ const App: React.FC = () => {
                           setAnimationState(AnimationState.IDLE);
                       }
                   }}
-                  settings={settings}
                   char={activeChar}
                   labels={{
                     play: labels.controlsPlay,
