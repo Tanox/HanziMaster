@@ -8,8 +8,6 @@ interface ControlsProps {
   onPlay: () => void;
   onPause: () => void;
   onReset: () => void;
-  speed: number;
-  onSpeedChange: (speed: number) => void;
   mode: InteractionMode;
   onToggleMode: () => void;
   settings: AppSettings;
@@ -29,8 +27,6 @@ const Controls: React.FC<ControlsProps> = ({
   onPlay,
   onPause,
   onReset,
-  speed,
-  onSpeedChange,
   mode,
   onToggleMode,
   settings,
@@ -67,18 +63,23 @@ const Controls: React.FC<ControlsProps> = ({
           </button>
       </div>
 
-      <div className={`flex flex-col items-center gap-4 transition-all duration-300 ${isPractice ? 'opacity-50 pointer-events-none grayscale' : 'opacity-100'}`}>
+      <div className="flex flex-col items-center gap-4 transition-all duration-300">
         <div className="flex items-center gap-4">
             <button
             onClick={onReset}
-            className="p-3 text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-teal-600 dark:hover:text-teal-400 transition-colors shadow-sm"
+            disabled={isPractice}
+            className={`p-3 text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full shadow-sm transition-all ${
+                isPractice 
+                ? 'opacity-30 cursor-not-allowed' 
+                : 'hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-teal-600 dark:hover:text-teal-400'
+            }`}
             title={labels.reset}
             aria-label={labels.reset}
             >
             <RotateCcw size={20} />
             </button>
             
-            {/* Pronunciation Button (Restored Functionality) */}
+            {/* Pronunciation Button (Always Enabled) */}
             <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full shadow-sm p-0.5 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
                <PronunciationButton text={char} size={22} className="w-[44px] h-[44px]" />
             </div>
@@ -86,7 +87,12 @@ const Controls: React.FC<ControlsProps> = ({
             {animationState === AnimationState.PLAYING ? (
             <button
                 onClick={onPause}
-                className="p-4 text-white bg-teal-600 dark:bg-teal-500 rounded-full hover:bg-teal-700 dark:hover:bg-teal-600 transition-colors shadow-md transform hover:scale-105"
+                disabled={isPractice}
+                className={`p-4 text-white bg-teal-600 dark:bg-teal-500 rounded-full shadow-md transform transition-all ${
+                    isPractice
+                    ? 'opacity-30 cursor-not-allowed grayscale'
+                    : 'hover:bg-teal-700 dark:hover:bg-teal-600 hover:scale-105'
+                }`}
                 title={labels.pause}
                 aria-label={labels.pause}
             >
@@ -95,7 +101,12 @@ const Controls: React.FC<ControlsProps> = ({
             ) : (
             <button
                 onClick={onPlay}
-                className="p-4 text-white bg-teal-600 dark:bg-teal-500 rounded-full hover:bg-teal-700 dark:hover:bg-teal-600 transition-colors shadow-md transform hover:scale-105"
+                disabled={isPractice}
+                className={`p-4 text-white bg-teal-600 dark:bg-teal-500 rounded-full shadow-md transform transition-all ${
+                    isPractice
+                    ? 'opacity-30 cursor-not-allowed grayscale'
+                    : 'hover:bg-teal-700 dark:hover:bg-teal-600 hover:scale-105'
+                }`}
                 title={labels.play}
                 aria-label={labels.play}
             >
@@ -103,27 +114,6 @@ const Controls: React.FC<ControlsProps> = ({
             </button>
             )}
         </div>
-
-        {settings.showSpeedControl && (
-            <div className="flex items-center gap-3 bg-white dark:bg-slate-800 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm transition-colors animate-fade-in">
-                <span className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">{labels.speed}</span>
-                <div className="flex gap-1">
-                {[0.5, 1, 1.5].map((s) => (
-                    <button
-                    key={s}
-                    onClick={() => onSpeedChange(s)}
-                    className={`px-2 py-1 text-xs font-bold rounded ${
-                        speed === s
-                        ? 'bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300'
-                        : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
-                    }`}
-                    >
-                    {s}x
-                    </button>
-                ))}
-                </div>
-            </div>
-        )}
       </div>
     </div>
   );

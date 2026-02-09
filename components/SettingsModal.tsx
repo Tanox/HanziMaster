@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Eye, PlayCircle, Layers, BookOpen, Lightbulb, Quote, Infinity, Wifi, Settings as SettingsIcon, Shuffle, Clock } from 'lucide-react';
+import { X, Eye, PlayCircle, Layers, BookOpen, Lightbulb, Quote, Infinity, Wifi, Settings as SettingsIcon, Shuffle, Clock, Gauge } from 'lucide-react';
 import { AppSettings, GridStyle } from '../types';
 import { UILabels } from '../locales/types';
 
@@ -9,6 +9,8 @@ interface SettingsModalProps {
   settings: AppSettings;
   onUpdateSettings: (newSettings: AppSettings) => void;
   labels: UILabels;
+  speed: number;
+  onSpeedChange: (speed: number) => void;
 }
 
 const SettingsModal: React.FC<SettingsModalProps> = ({
@@ -16,7 +18,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   onClose,
   settings,
   onUpdateSettings,
-  labels
+  labels,
+  speed,
+  onSpeedChange
 }) => {
   if (!isOpen) return null;
 
@@ -111,18 +115,37 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           {/* Section: Learning */}
           <SectionHeader title={labels.practiceMode || "Practice"} />
           <div className="space-y-3">
+             <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-slate-100 text-slate-400 dark:bg-slate-800">
+                     <Gauge size={16} />
+                  </div>
+                  <span className="text-slate-700 dark:text-slate-200 font-medium text-sm">
+                      {labels.controlsSpeed}
+                  </span>
+                </div>
+                <div className="flex gap-1 bg-slate-100 dark:bg-slate-700/50 rounded-lg p-1">
+                  {[0.5, 1, 1.5].map(s => (
+                      <button 
+                        key={s} 
+                        onClick={() => onSpeedChange(s)} 
+                        className={`px-3 py-1 text-xs font-bold rounded transition-colors ${
+                            speed === s 
+                            ? 'bg-white dark:bg-slate-600 text-teal-600 dark:text-teal-400 shadow-sm' 
+                            : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
+                        }`}
+                      >
+                          {s}x
+                      </button>
+                  ))}
+                </div>
+             </div>
+
              <ToggleItem 
               label={labels.settingOfflineMode || "Offline Mode"} 
               value={settings.offlineMode} 
               onChange={() => update('offlineMode', !settings.offlineMode)}
               icon={<Wifi size={16} />}
-            />
-
-             <ToggleItem 
-              label={labels.settingShowSpeedControl || "Speed Control"} 
-              value={settings.showSpeedControl} 
-              onChange={() => update('showSpeedControl', !settings.showSpeedControl)}
-              icon={<SettingsIcon size={16} />}
             />
 
             <ToggleItem 

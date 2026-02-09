@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { fetchHanziData } from './services/hanziService';
 import { analyzeCharacter } from './services/geminiService';
 import { HanziData, CharacterAnalysis, AnimationState, InteractionMode, AppSettings, HistoryItem } from './types';
@@ -11,10 +11,10 @@ import RandomSuggestions from './components/RandomSuggestions';
 import HistoryPanel from './components/HistoryPanel';
 import SettingsModal from './components/SettingsModal';
 import { LANGUAGES, UI_LABELS } from './locales';
-import { Brush, Moon, Sun, AlertCircle, WifiOff, Settings } from 'lucide-react';
+import { Brush, Moon, Sun, AlertCircle, WifiOff, Settings, Github } from 'lucide-react';
 import { COMMON_CHARS } from './utils/commonChars';
 
-const APP_VERSION = '0.2.7';
+const APP_VERSION = '0.2.8';
 
 const DEFAULT_SETTINGS: AppSettings = {
   gridStyle: 'rice',
@@ -22,7 +22,6 @@ const DEFAULT_SETTINGS: AppSettings = {
   autoPlay: true,
   continuousMode: false,
   offlineMode: false,
-  showSpeedControl: true,
   showRandomSuggestions: false, // Default to false as requested
   showHistory: true, // Default to true
   showStructure: true,
@@ -35,7 +34,11 @@ const App: React.FC = () => {
   const [activeChar, setActiveChar] = useState<string>('永');
   const [hanziData, setHanziData] = useState<HanziData | null>(null);
   const [analysis, setAnalysis] = useState<CharacterAnalysis | null>(null);
+  
+  // Two loading states: one for critical visuals (blocking), one for analysis (non-blocking)
   const [loading, setLoading] = useState<boolean>(false);
+  const [isAnalysisLoading, setIsAnalysisLoading] = useState<boolean>(false);
+  
   const [error, setError] = useState<string | null>(null);
   const [isOffline, setIsOffline] = useState<boolean>(!navigator.onLine);
   
@@ -88,7 +91,8 @@ const App: React.FC = () => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('theme');
       if (saved) return saved as 'light' | 'dark';
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      // Default to light mode unless explicitly set
+      return 'light';
     }
     return 'light';
   });
@@ -140,52 +144,65 @@ const App: React.FC = () => {
   }, []);
 
   const handleSearch = async (char: string, langCode: string = currentLang) => {
-    setLoading(true);
+    // 1. Reset States
+    setLoading(true); // Visuals loading (Blocks specific interactions)
+    setIsAnalysisLoading(true); // Analysis loading (Shows skeletons)
     setError(null);
     setAnimationState(AnimationState.IDLE);
-    setInteractionMode(InteractionMode.VIEW); // Reset to view mode on new search
+    setInteractionMode(InteractionMode.VIEW); 
     setActiveChar(char);
     setAnalysis(null);
     setHanziData(null);
     
-    // Find language name for API
     const langName = LANGUAGES.find(l => l.code === langCode)?.name || 'Simplified Chinese';
     
-    try {
-      // Parallel fetch for speed
-      // We pass settings.offlineMode to force the AI service to skip if enabled
-      const [data, aiResult] = await Promise.all([
-        fetchHanziData(char),
-        analyzeCharacter(char, langName, settings.offlineMode)
-      ]);
+    // 2. Start AI Fetch in Background (Don't await yet)
+    const aiPromise = analyzeCharacter(char, langName, settings.offlineMode);
 
-      if (data) {
-        setHanziData(data);
+    let fetchedData: HanziData | null = null;
+
+    try {
+      // 3. Fetch Visual Data (Critical Path - Await this)
+      fetchedData = await fetchHanziData(char);
+
+      if (fetchedData) {
+        setHanziData(fetchedData);
+        // CRITICAL: Stop visual loading immediately so user sees the char
+        setLoading(false); 
+        
         // Respect Auto-play setting
         if (settings.autoPlay) {
           setTimeout(() => setAnimationState(AnimationState.PLAYING), 500);
         }
-        
-        // Enhance offline/error analysis with real stroke count if in fallback mode
-        if (aiResult && aiResult.meaning.startsWith("Mode:")) {
-            setAnalysis({
-                ...aiResult,
-                strokeCount: data.strokes.length
-            });
-        } else if (aiResult) {
-             setAnalysis(aiResult);
-        }
-
       } else {
-        // We use English for system errors if translation is missing, but usually this is safe
+        // We use English for system errors if translation is missing
         setError(`Could not load stroke data for "${char}". It might not be a standard Chinese character.`);
-        if (aiResult) setAnalysis(aiResult);
+        setLoading(false);
       }
     } catch (err) {
       console.error(err);
       setError("An unexpected network error occurred. Please try again.");
-    } finally {
       setLoading(false);
+    }
+
+    // 4. Handle AI Result (Lazy Load)
+    try {
+        const aiResult = await aiPromise;
+        
+        if (fetchedData && aiResult && aiResult.meaning.startsWith("Mode:")) {
+             // Enhance offline/error analysis with real stroke count from visuals
+             setAnalysis({
+                 ...aiResult,
+                 strokeCount: fetchedData.strokes.length
+             });
+        } else if (aiResult) {
+             setAnalysis(aiResult);
+        }
+    } catch (err) {
+        console.error("AI Analysis failed silently:", err);
+        // Don't set global error if visuals loaded fine
+    } finally {
+        setIsAnalysisLoading(false);
     }
   };
 
@@ -219,7 +236,7 @@ const App: React.FC = () => {
     }
   };
 
-  const nextModeRef = React.useRef<InteractionMode>(InteractionMode.VIEW);
+  const nextModeRef = useRef<InteractionMode>(InteractionMode.VIEW);
 
   // Override the interaction mode setting in handleSearch
   // We'll wrap logic inside the existing useEffect that responds to data load
@@ -241,7 +258,7 @@ const App: React.FC = () => {
 
   return (
     // Use min-h-[100dvh] for better mobile browser support (address bar handling)
-    <div className="min-h-[100dvh] pb-24 bg-paper dark:bg-slate-900 transition-colors duration-300">
+    <div className="min-h-[100dvh] pb-24 bg-paper dark:bg-slate-900 transition-colors duration-300 flex flex-col">
       {/* Header - Glassmorphism */}
       <header className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800 sticky top-0 z-40 transition-colors duration-300 supports-[backdrop-filter]:bg-white/60">
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -273,7 +290,7 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-8">
+      <main className="max-w-5xl w-full mx-auto px-4 py-8 flex-grow">
         
         <div className="text-center mb-6 md:mb-12">
           <h2 className="hidden md:block text-4xl md:text-5xl font-hanzi font-bold text-slate-800 dark:text-white mb-4 transition-colors tracking-tight">{labels.appTitle}</h2>
@@ -333,8 +350,6 @@ const App: React.FC = () => {
                       setAnimationState(AnimationState.IDLE);
                       setInteractionMode(InteractionMode.VIEW);
                   }}
-                  speed={speed}
-                  onSpeedChange={setSpeed}
                   mode={interactionMode}
                   onToggleMode={() => {
                       const newMode = interactionMode === InteractionMode.VIEW ? InteractionMode.PRACTICE : InteractionMode.VIEW;
@@ -378,7 +393,7 @@ const App: React.FC = () => {
 
           {/* Right Column: Analysis */}
           <div className="lg:col-span-7">
-            <AnalysisPanel analysis={analysis} isLoading={loading} language={currentLang} settings={settings} />
+            <AnalysisPanel analysis={analysis} isLoading={isAnalysisLoading} language={currentLang} settings={settings} />
             
             {settings.showHistory && (
               <HistoryPanel 
@@ -404,13 +419,42 @@ const App: React.FC = () => {
           settings={settings}
           onUpdateSettings={setSettings}
           labels={labels}
+          speed={speed}
+          onSpeedChange={setSpeed}
         />
 
       </main>
 
-      <footer className="text-center text-slate-400 dark:text-slate-600 py-10 text-sm mt-0 border-t border-slate-200/60 dark:border-slate-800 transition-colors">
-        <p className="font-medium">{labels.footerCredit}</p>
-        <p className="mt-2 text-xs opacity-60">{labels.version} v{APP_VERSION}</p>
+      <footer className="mt-auto border-t border-slate-200/60 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm transition-colors">
+        <div className="max-w-5xl mx-auto px-4 py-8 md:py-10 flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-slate-500 dark:text-slate-400">
+          
+          <div className="text-center md:text-left space-y-1">
+            <p className="font-medium text-slate-600 dark:text-slate-300">
+              {labels.footerCredit}
+            </p>
+            <p className="text-xs opacity-60">
+              GPL-3.0 License &copy; {new Date().getFullYear()} HanziMaster
+            </p>
+          </div>
+
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
+             <a 
+               href="https://github.com/sutchan/HanziMaster" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               className="flex items-center gap-2 hover:text-teal-600 dark:hover:text-teal-400 transition-colors group"
+             >
+               <Github size={18} className="group-hover:scale-110 transition-transform" />
+               <span className="font-medium">GitHub</span>
+             </a>
+             
+             <div className="hidden md:block w-px h-4 bg-slate-300 dark:bg-slate-700"></div>
+             
+             <div className="flex items-center gap-2 text-xs font-mono opacity-80 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700">
+               <span>v{APP_VERSION}</span>
+             </div>
+          </div>
+        </div>
       </footer>
     </div>
   );

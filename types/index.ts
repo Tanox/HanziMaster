@@ -48,7 +48,7 @@ export interface AppSettings {
   continuousMode: boolean;
   // New Interface Settings
   offlineMode: boolean;
-  showSpeedControl: boolean;
+  // showSpeedControl removed
   showRandomSuggestions: boolean;
   showHistory: boolean; // Added
   // Content Toggles

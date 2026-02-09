@@ -1,7 +1,7 @@
 # 01. Product Requirements Document (PRD)
 
 **Project**: HanziMaster  
-**Version**: 0.2.7  
+**Version**: 0.2.8  
 **Status**: Active Development
 
 ## 1. Executive Summary
