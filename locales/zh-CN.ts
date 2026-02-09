@@ -8,7 +8,7 @@ export const zhCN: UILabels = {
   origin: '字源演变',
   memoryAid: '记忆口诀',
   commonWords: '常用词汇',
-  appTitle: '汉字大师 AI',
+  appTitle: '汉字大师',
   appSubtitle: '可视化笔顺教学，AI 深度解析汉字奥秘',
   searchPlaceholder: '请输入一个汉字 (如：爱)',
   footerCredit: '数据来源：Hanzi Writer & Gemini AI',

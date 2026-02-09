@@ -8,7 +8,7 @@ export const ru: UILabels = {
   origin: 'Этимология',
   memoryAid: 'Мнемоника',
   commonWords: 'Примеры слов',
-  appTitle: 'Мастер Ханьцзы AI',
+  appTitle: 'HanziMaster',
   appSubtitle: 'Изучайте порядок черт и происхождение иероглифов с помощью ИИ.',
   searchPlaceholder: 'Введите иероглиф (напр. 爱)',
   footerCredit: 'Данные: Hanzi Writer & Gemini AI',

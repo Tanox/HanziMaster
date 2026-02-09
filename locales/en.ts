@@ -8,7 +8,7 @@ export const en: UILabels = {
   origin: 'Etymology',
   memoryAid: 'Mnemonic',
   commonWords: 'Common Words',
-  appTitle: 'HanziMaster AI',
+  appTitle: 'HanziMaster',
   appSubtitle: 'Master Chinese character stroke order with AI-powered insights.',
   searchPlaceholder: 'Enter a character (e.g. 爱)',
   footerCredit: 'Data source: Hanzi Writer & Gemini AI',

@@ -8,7 +8,7 @@ export const ko: UILabels = {
   origin: '자원 (어원)',
   memoryAid: '암기 팁',
   commonWords: '자주 쓰는 단어',
-  appTitle: '한자 마스터 AI',
+  appTitle: 'HanziMaster',
   appSubtitle: '획순 애니메이션과 AI 분석으로 한자를 완벽하게 학습하세요.',
   searchPlaceholder: '한자를 입력하세요 (예: 爱)',
   footerCredit: '데이터 제공: Hanzi Writer & Gemini AI',

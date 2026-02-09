@@ -1,8 +1,8 @@
-# HanziMaster AI
+# HanziMaster
 
 [中文文档](./README_zh-CN.md) | **English**
 
-**HanziMaster AI** is an interactive web application designed to help users master Chinese characters (Hanzi). It combines accurate stroke order animations with the power of Google's Gemini AI to provide linguistic insights, etymology, mnemonics, and **pronunciation**.
+**HanziMaster** is an interactive web application designed to help users master Chinese characters (Hanzi). It combines accurate stroke order animations with the power of Google's Gemini AI to provide linguistic insights, etymology, mnemonics, and **pronunciation**.
 
 ## 📚 Documentation (OpenSpec)
 For detailed project specifications, please refer to the [OpenSpec](./openspec/00_INDEX.md) folder:
@@ -49,8 +49,8 @@ For detailed project specifications, please refer to the [OpenSpec](./openspec/0
 
 1.  Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/hanzimaster-ai.git
-    cd hanzimaster-ai
+    git clone https://github.com/yourusername/hanzimaster.git
+    cd hanzimaster
     ```
 
 2.  Install dependencies:

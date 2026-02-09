@@ -136,8 +136,12 @@ export const playPronunciation = async (text: string, language: string = 'zh-CN'
     
     playSound(audioContext, audioBuffer);
 
-  } catch (error) {
-    console.warn("Gemini TTS failed, falling back to native:", error);
+  } catch (error: any) {
+    if (error.status === 429 || (error.message && error.message.includes('429'))) {
+       console.warn("Gemini TTS Quota Exceeded. Falling back to native.");
+    } else {
+       console.warn("Gemini TTS failed, falling back to native:", error);
+    }
     // 4. Fallback to Native if API fails
     return speakNative(text, 'zh-CN');
   }

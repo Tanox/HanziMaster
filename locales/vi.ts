@@ -8,7 +8,7 @@ export const vi: UILabels = {
   origin: 'Nguồn gốc',
   memoryAid: 'Mẹo ghi nhớ',
   commonWords: 'Từ ghép thông dụng',
-  appTitle: 'Bậc Thầy Hán Tự AI',
+  appTitle: 'HanziMaster',
   appSubtitle: 'Học thứ tự nét vẽ và phân tích chuyên sâu cùng AI.',
   searchPlaceholder: 'Nhập một chữ Hán (ví dụ: 爱)',
   footerCredit: 'Dữ liệu: Hanzi Writer & Gemini AI',

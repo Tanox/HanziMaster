@@ -8,7 +8,7 @@ export const ja: UILabels = {
   origin: '語源・由来',
   memoryAid: '覚え方',
   commonWords: '熟語・用例',
-  appTitle: '漢字マスターAI',
+  appTitle: 'HanziMaster',
   appSubtitle: '書き順アニメーションとAIによる詳細解説で漢字をマスターしよう。',
   searchPlaceholder: '漢字を入力 (例：爱)',
   footerCredit: 'データ提供：Hanzi Writer & Gemini AI',

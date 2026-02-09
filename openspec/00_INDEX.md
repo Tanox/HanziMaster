@@ -1,6 +1,6 @@
-# HanziMaster AI - Project OpenSpec
+# HanziMaster - Project OpenSpec
 
-Welcome to the technical and product specifications for **HanziMaster AI**. This documentation suite follows the OpenSpec standard to ensure clarity, maintainability, and alignment across engineering, product, and design.
+Welcome to the technical and product specifications for **HanziMaster**. This documentation suite follows the OpenSpec standard to ensure clarity, maintainability, and alignment across engineering, product, and design.
 
 ## Documentation Structure
 
@@ -12,8 +12,8 @@ Welcome to the technical and product specifications for **HanziMaster AI**. This
 | **04** | [Data & API](./04_DATA_AND_API.md) | Types, Schema, Prompt Engineering. | Backend/AI Devs, Frontend Devs |
 
 ## Project Context
-HanziMaster AI is an Offline-First Progressive Web App (PWA) designed to teach Chinese characters through animated stroke order and AI-powered linguistic analysis.
+HanziMaster is an Offline-First Progressive Web App (PWA) designed to teach Chinese characters through animated stroke order and AI-powered linguistic analysis.
 
-*   **Version**: 0.2.1
+*   **Version**: 0.2.2
 *   **License**: GPL-3.0
 *   **Key Tech**: React 19, Vite PWA, Google Gemini API, SVG Animation.

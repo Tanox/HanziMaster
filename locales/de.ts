@@ -8,7 +8,7 @@ export const de: UILabels = {
   origin: 'Etymologie',
   memoryAid: 'Eselsbrücke',
   commonWords: 'Häufige Wörter',
-  appTitle: 'Hanzi Meister AI',
+  appTitle: 'HanziMaster',
   appSubtitle: 'Lerne die chinesische Strichfolge mit KI-gestützten Einblicken.',
   searchPlaceholder: 'Zeichen eingeben (z.B. 爱)',
   footerCredit: 'Daten von Hanzi Writer & Gemini AI',

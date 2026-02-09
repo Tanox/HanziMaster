@@ -8,7 +8,7 @@ export const zhTW: UILabels = {
   origin: '字源演變',
   memoryAid: '記憶口訣',
   commonWords: '常用詞彙',
-  appTitle: '漢字大師 AI',
+  appTitle: '漢字大師',
   appSubtitle: '可視化筆順教學，AI 深度解析漢字奧秘',
   searchPlaceholder: '請輸入一個漢字 (如：愛)',
   footerCredit: '數據來源：Hanzi Writer & Gemini AI',

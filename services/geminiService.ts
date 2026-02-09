@@ -2,15 +2,15 @@ import { GoogleGenAI, Type, HarmCategory, HarmBlockThreshold } from "@google/gen
 import { CharacterAnalysis } from '../types';
 
 // Simple offline fallback generator
-const generateOfflineAnalysis = (char: string): CharacterAnalysis => {
+const generateOfflineAnalysis = (char: string, reason: string = "Network Unavailable"): CharacterAnalysis => {
   return {
     char: char,
-    pinyin: "Offline", // Pinyin conversion requires a library, simplified for now
-    meaning: "Mode: Network Unavailable",
+    pinyin: "-", // Pinyin conversion requires a library, simplified for now
+    meaning: `Mode: ${reason}`,
     radical: "?",
     strokeCount: 0, // This will be updated by the stroke viewer data if possible
-    etymology: "Detailed etymology requires an internet connection.",
-    mnemonic: "Practice writing this character while offline.",
+    etymology: "Detailed analysis requires an active AI connection.",
+    mnemonic: "Focus on writing practice.",
     examples: [
       { word: char, pinyin: "-", meaning: "Analysis unavailable" },
     ]
@@ -27,7 +27,7 @@ export const analyzeCharacter = async (char: string, languageName: string = 'Eng
     const apiKey = process.env.API_KEY;
     if (!apiKey) {
       console.warn("API Key not found, using offline fallback");
-      return generateOfflineAnalysis(char);
+      return generateOfflineAnalysis(char, "No API Key");
     }
 
     const ai = new GoogleGenAI({ apiKey });
@@ -97,7 +97,7 @@ export const analyzeCharacter = async (char: string, languageName: string = 'Eng
     });
 
     let text = response.text;
-    if (!text) return generateOfflineAnalysis(char);
+    if (!text) return generateOfflineAnalysis(char, "No Response");
     
     // Clean up markdown code blocks if present (common cause of JSON parse errors)
     text = text.trim();
@@ -115,9 +115,15 @@ export const analyzeCharacter = async (char: string, languageName: string = 'Eng
     
     return JSON.parse(text) as CharacterAnalysis;
 
-  } catch (error) {
+  } catch (error: any) {
+    // Check for Rate Limit / Quota Exceeded (429)
+    if (error.status === 429 || (error.message && error.message.includes('429'))) {
+        console.warn("Gemini API Quota Exceeded. Falling back to offline mode.");
+        return generateOfflineAnalysis(char, "AI Quota Exceeded");
+    }
+    
     console.error("Gemini API Error:", error);
-    // Fallback on error
-    return generateOfflineAnalysis(char);
+    // Fallback on generic error
+    return generateOfflineAnalysis(char, "Service Error");
   }
 };

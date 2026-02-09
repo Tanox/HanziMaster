@@ -1,11 +1,11 @@
 # 01. Product Requirements Document (PRD)
 
-**Project**: HanziMaster AI  
-**Version**: 0.2.1  
+**Project**: HanziMaster  
+**Version**: 0.2.2  
 **Status**: Active Development
 
 ## 1. Executive Summary
-HanziMaster AI is a web-based educational tool that bridges the gap between traditional rote memorization of Chinese characters and modern linguistic understanding. By combining vector-based stroke animations with Generative AI (Google Gemini), it provides users with immediate visual guidance and deep semantic context.
+HanziMaster is a web-based educational tool that bridges the gap between traditional rote memorization of Chinese characters and modern linguistic understanding. By combining vector-based stroke animations with Generative AI (Google Gemini), it provides users with immediate visual guidance and deep semantic context.
 
 ## 2. User Personas
 *   **The Beginner**: Needs to know *how* to write "你好" without looking like a child's drawing. Needs pronunciation.

@@ -12,7 +12,7 @@ import { LANGUAGES, UI_LABELS } from './locales';
 import { Brush, Moon, Sun, AlertCircle, WifiOff } from 'lucide-react';
 import { COMMON_CHARS } from './utils/commonChars';
 
-const APP_VERSION = '0.2.1';
+const APP_VERSION = '0.2.2';
 
 const App: React.FC = () => {
   const [activeChar, setActiveChar] = useState<string>('永');
@@ -104,8 +104,8 @@ const App: React.FC = () => {
         setHanziData(data);
         setTimeout(() => setAnimationState(AnimationState.PLAYING), 500);
         
-        // Enhance offline analysis with real stroke count if in fallback mode
-        if (aiResult && aiResult.meaning === "Mode: Network Unavailable") {
+        // Enhance offline/error analysis with real stroke count if in fallback mode
+        if (aiResult && aiResult.meaning.startsWith("Mode:")) {
             setAnalysis({
                 ...aiResult,
                 strokeCount: data.strokes.length
@@ -148,11 +148,8 @@ const App: React.FC = () => {
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 text-teal-700 dark:text-teal-400">
             <Brush size={24} />
-            <h1 className="font-bold text-xl tracking-tight hidden sm:block text-slate-800 dark:text-slate-100">
+            <h1 className="font-bold text-xl tracking-tight text-slate-800 dark:text-slate-100">
               {labels.appTitle}
-            </h1>
-            <h1 className="font-bold text-xl tracking-tight sm:hidden text-slate-800 dark:text-slate-100">
-              Hanzi<span className="text-slate-400 dark:text-slate-500 font-normal">AI</span>
             </h1>
           </div>
           <div className="flex items-center gap-3">

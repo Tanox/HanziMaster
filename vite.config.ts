@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => {
           enabled: true
         },
         manifest: {
-          name: 'HanziMaster AI',
+          name: 'HanziMaster',
           short_name: 'HanziMaster',
           description: 'Master Chinese character stroke order with AI insights.',
           theme_color: '#ffffff',
