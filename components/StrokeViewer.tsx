@@ -95,7 +95,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
 
   // Handle Success State Auto-hide
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setTimeout>;
     if (mode === InteractionMode.PRACTICE && data && practiceStrokeIndex >= data.strokes.length && data.strokes.length > 0) {
         setShowSuccess(true);
         timer = setTimeout(() => {
@@ -109,7 +109,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
 
   // Auto-reset strokes 5 seconds after completion
   useEffect(() => {
-    let resetTimer: NodeJS.Timeout;
+    let resetTimer: ReturnType<typeof setTimeout>;
     if (mode === InteractionMode.PRACTICE && data && practiceStrokeIndex >= data.strokes.length && data.strokes.length > 0) {
       resetTimer = setTimeout(() => {
         setPracticeStrokeIndex(0);
