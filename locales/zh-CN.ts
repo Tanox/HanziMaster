@@ -35,6 +35,7 @@ export const zhCN: UILabels = {
   settingOfflineMode: '离线模式',
   settingShowSpeedControl: '显示速度控制',
   settingShowRandomSuggestions: '显示随机推荐',
+  settingShowHistory: '显示练字历史',
   settingShowStructure: '显示汉字结构',
   settingShowEtymology: '显示字源演变',
   settingShowMnemonic: '显示记忆巧记',

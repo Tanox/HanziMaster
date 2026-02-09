@@ -36,6 +36,7 @@ export interface UILabels {
   settingOfflineMode?: string;
   settingShowSpeedControl?: string;
   settingShowRandomSuggestions?: string;
+  settingShowHistory?: string; // Added
   // Analysis Content Settings
   settingShowStructure: string;
   settingShowEtymology: string;

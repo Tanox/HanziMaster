@@ -14,7 +14,7 @@ import { LANGUAGES, UI_LABELS } from './locales';
 import { Brush, Moon, Sun, AlertCircle, WifiOff, Settings } from 'lucide-react';
 import { COMMON_CHARS } from './utils/commonChars';
 
-const APP_VERSION = '0.2.6';
+const APP_VERSION = '0.2.7';
 
 const DEFAULT_SETTINGS: AppSettings = {
   gridStyle: 'rice',
@@ -23,7 +23,8 @@ const DEFAULT_SETTINGS: AppSettings = {
   continuousMode: false,
   offlineMode: false,
   showSpeedControl: true,
-  showRandomSuggestions: true,
+  showRandomSuggestions: false, // Default to false as requested
+  showHistory: true, // Default to true
   showStructure: true,
   showEtymology: true,
   showMnemonic: true,
@@ -379,12 +380,14 @@ const App: React.FC = () => {
           <div className="lg:col-span-7">
             <AnalysisPanel analysis={analysis} isLoading={loading} language={currentLang} settings={settings} />
             
-            <HistoryPanel 
-               history={history} 
-               onSelect={(char) => handleSearch(char, currentLang)} 
-               onClear={() => setHistory([])}
-               labels={labels}
-            />
+            {settings.showHistory && (
+              <HistoryPanel 
+                 history={history} 
+                 onSelect={(char) => handleSearch(char, currentLang)} 
+                 onClear={() => setHistory([])}
+                 labels={labels}
+              />
+            )}
           </div>
         </div>
 

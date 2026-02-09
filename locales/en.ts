@@ -35,6 +35,7 @@ export const en: UILabels = {
   settingOfflineMode: 'Offline Mode',
   settingShowSpeedControl: 'Show Speed Control',
   settingShowRandomSuggestions: 'Show Random Suggestions',
+  settingShowHistory: 'Show History',
   settingShowStructure: 'Show Structure',
   settingShowEtymology: 'Show Etymology',
   settingShowMnemonic: 'Show Memory Tip',

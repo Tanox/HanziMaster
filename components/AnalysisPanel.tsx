@@ -1,6 +1,6 @@
 import React from 'react';
 import { CharacterAnalysis, AppSettings } from '../types';
-import { BookOpen, Lightbulb, History, Quote } from 'lucide-react';
+import { BookOpen, Lightbulb, History } from 'lucide-react';
 import { UI_LABELS } from '../locales';
 import PronunciationButton from './PronunciationButton';
 

@@ -50,6 +50,7 @@ export interface AppSettings {
   offlineMode: boolean;
   showSpeedControl: boolean;
   showRandomSuggestions: boolean;
+  showHistory: boolean; // Added
   // Content Toggles
   showStructure: boolean;
   showEtymology: boolean;

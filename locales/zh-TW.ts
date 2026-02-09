@@ -35,6 +35,7 @@ export const zhTW: UILabels = {
   settingOfflineMode: '離線模式',
   settingShowSpeedControl: '顯示速度控制',
   settingShowRandomSuggestions: '顯示隨機推薦',
+  settingShowHistory: '顯示練字歷史',
   settingShowStructure: '顯示漢字結構',
   settingShowEtymology: '顯示字源演變',
   settingShowMnemonic: '顯示記憶巧記',
