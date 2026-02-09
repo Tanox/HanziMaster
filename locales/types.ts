@@ -40,6 +40,7 @@ export interface UILabels {
   settingApiKey?: string;
   settingApiKeyPlaceholder?: string;
   settingApiKeyHelp?: string;
+  settingApiKeyValidationMsg?: string; // Added validation message
   // Analysis Content Settings
   settingShowStructure: string;
   settingShowEtymology: string;

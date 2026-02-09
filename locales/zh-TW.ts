@@ -39,6 +39,7 @@ export const zhTW: UILabels = {
   settingApiKey: '自定義 API 金鑰',
   settingApiKeyPlaceholder: '在此輸入 Gemini API Key',
   settingApiKeyHelp: '留空則使用內建預設金鑰。使用自己的金鑰可避免配額限制。',
+  settingApiKeyValidationMsg: '金鑰格式似乎不正確 (通常以 AIza 開頭)',
   settingShowStructure: '顯示漢字結構',
   settingShowEtymology: '顯示字源演變',
   settingShowMnemonic: '顯示記憶巧記',

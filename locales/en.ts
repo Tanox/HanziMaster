@@ -39,6 +39,7 @@ export const en: UILabels = {
   settingApiKey: 'Custom API Key',
   settingApiKeyPlaceholder: 'Enter Gemini API Key',
   settingApiKeyHelp: 'Leave empty to use the default key. Use your own key to avoid quota limits.',
+  settingApiKeyValidationMsg: 'Key format looks incorrect (usually starts with AIza)',
   settingShowStructure: 'Show Structure',
   settingShowEtymology: 'Show Etymology',
   settingShowMnemonic: 'Show Memory Tip',
