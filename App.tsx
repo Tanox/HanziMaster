@@ -14,7 +14,7 @@ import { LANGUAGES, UI_LABELS } from './locales';
 import { Brush, Moon, Sun, AlertCircle, WifiOff, Settings } from 'lucide-react';
 import { COMMON_CHARS } from './utils/commonChars';
 
-const APP_VERSION = '0.2.5';
+const APP_VERSION = '0.2.6';
 
 const DEFAULT_SETTINGS: AppSettings = {
   gridStyle: 'rice',
@@ -199,7 +199,7 @@ const App: React.FC = () => {
     setHistory(prev => {
       // Remove existing entry for this char if present (to bump it to top)
       const filtered = prev.filter(item => item.char !== char);
-      return [{ char, timestamp: Date.now() }, ...filtered].slice(0, 20); // Limit to 20 items
+      return [{ char, timestamp: Date.now() }, ...filtered].slice(20); // Limit to 20 items
     });
   };
 
@@ -238,12 +238,6 @@ const App: React.FC = () => {
     }
   };
 
-  // Re-run search if offline settings change to immediately reflect/hide content
-  // Note: This might be too aggressive if user is just toggling things, but ensures UI consistency.
-  // Actually, we don't need to re-fetch if we just want to hide UI elements (AnalysisPanel handles hiding).
-  // But if we toggle Offline Mode ON, we might want to "clear" the current AI data? 
-  // For now, AnalysisPanel logic is sufficient for visual hiding.
-
   return (
     <div className="min-h-screen pb-20 bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
       {/* Header */}
@@ -280,7 +274,6 @@ const App: React.FC = () => {
       <main className="max-w-5xl mx-auto px-4 py-4 md:py-8">
         
         <div className="text-center mb-6 md:mb-10">
-          {/* Hide heavy text on mobile to give more room for the drawing area */}
           <h2 className="hidden md:block text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4 transition-colors">{labels.appTitle}</h2>
           <p className="hidden md:block text-slate-500 dark:text-slate-400 mb-8 max-w-lg mx-auto">
             {labels.appSubtitle}
@@ -325,7 +318,6 @@ const App: React.FC = () => {
                   settings={settings}
                   onPracticeComplete={() => {
                       if (settings.continuousMode) {
-                          // Signal that we want practice mode for next char
                           nextModeRef.current = InteractionMode.PRACTICE;
                       }
                       handlePracticeComplete();
@@ -337,7 +329,7 @@ const App: React.FC = () => {
                   onPause={() => setAnimationState(AnimationState.PAUSED)}
                   onReset={() => {
                       setAnimationState(AnimationState.IDLE);
-                      setInteractionMode(InteractionMode.VIEW); // Also reset interaction
+                      setInteractionMode(InteractionMode.VIEW);
                   }}
                   speed={speed}
                   onSpeedChange={setSpeed}
@@ -346,16 +338,17 @@ const App: React.FC = () => {
                       const newMode = interactionMode === InteractionMode.VIEW ? InteractionMode.PRACTICE : InteractionMode.VIEW;
                       setInteractionMode(newMode);
                       if (newMode === InteractionMode.PRACTICE) {
-                          setAnimationState(AnimationState.IDLE); // Stop animation
+                          setAnimationState(AnimationState.IDLE);
                       }
                   }}
                   settings={settings}
+                  char={activeChar}
                   labels={{
                     play: labels.controlsPlay,
                     pause: labels.controlsPause,
                     reset: labels.controlsReset,
                     speed: labels.controlsSpeed,
-                    practiceMode: labels.practiceMode || "Practice", // Fallback
+                    practiceMode: labels.practiceMode || "Practice",
                     viewMode: labels.viewMode || "Watch"
                   }}
                 />
@@ -385,7 +378,6 @@ const App: React.FC = () => {
           <div className="lg:col-span-7">
             <AnalysisPanel analysis={analysis} isLoading={loading} language={currentLang} settings={settings} />
             
-            {/* History Panel */}
             <HistoryPanel 
                history={history} 
                onSelect={(char) => handleSearch(char, currentLang)} 
@@ -395,7 +387,6 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Random Suggestions Footer */}
         {settings.showRandomSuggestions && (
           <RandomSuggestions 
             onSelect={(char) => handleSearch(char, currentLang)} 
@@ -403,7 +394,6 @@ const App: React.FC = () => {
           />
         )}
         
-        {/* Settings Modal */}
         <SettingsModal 
           isOpen={isSettingsOpen} 
           onClose={() => setIsSettingsOpen(false)}
@@ -414,7 +404,6 @@ const App: React.FC = () => {
 
       </main>
 
-      {/* Footer */}
       <footer className="text-center text-slate-400 dark:text-slate-600 py-8 text-sm mt-0 border-t border-slate-200 dark:border-slate-800 transition-colors">
         <p>{labels.footerCredit}</p>
         <p className="mt-2 text-xs">{labels.version} v{APP_VERSION}</p>

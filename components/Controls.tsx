@@ -1,6 +1,7 @@
 import React from 'react';
 import { Play, Pause, RotateCcw, PenTool, Eye } from 'lucide-react';
 import { AnimationState, InteractionMode, AppSettings } from '../types';
+import PronunciationButton from './PronunciationButton';
 
 interface ControlsProps {
   animationState: AnimationState;
@@ -12,6 +13,7 @@ interface ControlsProps {
   mode: InteractionMode;
   onToggleMode: () => void;
   settings: AppSettings;
+  char: string;
   labels: {
     play: string;
     pause: string;
@@ -32,6 +34,7 @@ const Controls: React.FC<ControlsProps> = ({
   mode,
   onToggleMode,
   settings,
+  char,
   labels,
 }) => {
   const isPractice = mode === InteractionMode.PRACTICE;
@@ -74,6 +77,11 @@ const Controls: React.FC<ControlsProps> = ({
             >
             <RotateCcw size={20} />
             </button>
+            
+            {/* Pronunciation Button (Restored Functionality) */}
+            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full shadow-sm p-0.5 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+               <PronunciationButton text={char} size={22} className="w-[44px] h-[44px]" />
+            </div>
             
             {animationState === AnimationState.PLAYING ? (
             <button

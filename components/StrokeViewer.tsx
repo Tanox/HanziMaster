@@ -33,6 +33,9 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   // Use a flag ref to prevent multiple calls to onPracticeComplete for the same completion
   const hasNotifiedCompletionRef = useRef(false);
 
+  // Success Feedback State (Auto-hide)
+  const [showSuccess, setShowSuccess] = useState(false);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const userStrokePathRef = useRef<Array<{x: number, y: number}>>([]);
   
@@ -78,6 +81,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     setProgress(0);
     setPracticeStrokeIndex(0);
     setFeedbackColor(null);
+    setShowSuccess(false);
     hasNotifiedCompletionRef.current = false;
     
     if (mode === InteractionMode.VIEW) {
@@ -86,6 +90,20 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     clearCanvas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, mode]);
+
+  // Handle Success State Auto-hide
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (mode === InteractionMode.PRACTICE && data && practiceStrokeIndex >= data.strokes.length && data.strokes.length > 0) {
+        setShowSuccess(true);
+        timer = setTimeout(() => {
+            setShowSuccess(false);
+        }, 2000);
+    } else {
+        setShowSuccess(false);
+    }
+    return () => clearTimeout(timer);
+  }, [practiceStrokeIndex, mode, data]);
 
   const animate = (time: number) => {
     if (startTimeRef.current === undefined) startTimeRef.current = time;
@@ -399,7 +417,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
         )}
         
         {/* Success Overlay for Practice Complete */}
-        {mode === InteractionMode.PRACTICE && practiceStrokeIndex >= data.strokes.length && (
+        {mode === InteractionMode.PRACTICE && showSuccess && (
             <div className="absolute inset-0 flex items-center justify-center bg-teal-500/10 backdrop-blur-[2px] animate-fade-in z-10">
                 <div className="bg-white dark:bg-slate-800 p-4 rounded-full shadow-lg border border-teal-100 dark:border-teal-900 transform scale-110">
                     <span className="text-4xl">🎉</span>
@@ -409,7 +427,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
       </div>
       
       {mode === InteractionMode.PRACTICE && (
-          <div className="text-center mt-2 text-sm text-slate-400">
+          <div className="text-center mt-2 text-sm text-slate-400 h-5 transition-opacity duration-300" style={{ opacity: showSuccess || practiceStrokeIndex < data.strokes.length ? 1 : 0 }}>
               {practiceStrokeIndex >= data.strokes.length 
                   ? "Great job!" 
                   : `Draw stroke ${practiceStrokeIndex + 1}/${data.strokes.length}`}
