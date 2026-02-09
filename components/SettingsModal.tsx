@@ -114,7 +114,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           
           {/* Section: API Key (New) */}
           <SectionHeader title={labels.settingApiKey || "API Key"} />
-          <div className="mb-2">
+          <div className="mb-4">
             <div className="flex items-center gap-3 mb-2">
                 <div className="p-2 rounded-lg bg-slate-100 text-slate-400 dark:bg-slate-800">
                     <Key size={16} />
@@ -129,9 +129,20 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                     spellCheck="false"
                 />
             </div>
-            <p className="text-xs text-slate-400 dark:text-slate-500 ml-11 leading-normal">
-                {labels.settingApiKeyHelp || "Leave empty to use default."}
-            </p>
+            <div className="ml-11 flex flex-col gap-1">
+                <p className="text-xs text-slate-400 dark:text-slate-500 leading-normal">
+                    {labels.settingApiKeyHelp || "Leave empty to use default."}
+                </p>
+                <a 
+                  href="https://aistudio.google.com/app/apikey" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-xs text-teal-600 dark:text-teal-400 hover:underline flex items-center gap-1 w-fit"
+                >
+                  Get API Key (Google AI Studio)
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+            </div>
           </div>
 
           {/* Section: Learning */}
