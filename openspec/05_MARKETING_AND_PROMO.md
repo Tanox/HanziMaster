@@ -1,83 +1,71 @@
 # 05. 营销与推广策略
 
-## 1. 核心价值主张 (Why)
+## 1. 核心价值主张 (Core Value Proposition)
 
-**HanziMaster** 解决了*如何书写*汉字与*汉字含义*之间的断层。传统的字典是静态的，而 HanziMaster 是鲜活的。
+**HanziMaster** 解决了汉字学习中*“怎么写”*与*“什么意思”*割裂的痛点。
+传统的字典是静态的，而 HanziMaster 是鲜活的。
 
-*   **对学习者**: 停止像画画一样描字，开始真正的书写。
-*   **魔法所在**: 通过 AI 查看笔画背后的历史故事，即使在没有网络信号的时候。
+*   **对于学习者**: 停止像画画一样描字，开始遵循笔顺逻辑的真正书写。
+*   **魔法所在**: 即便在飞行模式下，也能通过 AI 洞察笔画背后的历史故事。
 
-## 2. 电梯演讲 (简短介绍)
+## 2. 电梯演讲 (Elevator Pitch)
 
 ### 一句话介绍 (Twitter/X)
-精准掌握汉字。交互式笔顺动画遇上 AI 驱动的字源解析与智能复习系统——完全离线且免费。 🏮✍️ #HanziMaster #LearnChinese
+精准掌握汉字。交互式笔顺动画遇上 AI 驱动的字源解析与智能复习系统——完全离线且免费。 🇨🇳✍️ #HanziMaster #LearnChinese #AI
 
 ### "Product Hunt" 风格介绍
-学习汉字通常意味着死记硬背。HanziMaster 通过将矢量级精准的笔顺动画与 Google Gemini AI 相结合，改变了这一现状。
+学习汉字通常意味着枯燥的死记硬背。HanziMaster 通过将**矢量级精准的笔顺动画**与 **Google Gemini AI** 相结合，彻底改变了这一现状。
 
-我们不只是展示*如何*写“休”字；我们告诉你*为什么*它是一个人靠在树上。v0.3 新增的智能复习系统 (SRS) 能根据遗忘曲线自动安排复习，确保过目不忘。凭借离线优先的架构，你的字典可以随身携带到任何地方。
+我们不只是展示*如何*写“休”字；我们通过 AI 告诉你*为什么*它是一个人靠在树上。配合 PWA 离线优先架构，你的 AI 汉字导师可以随身携带到世界的任何角落。
 
 ## 3. 关键卖点 (KSPs)
 
-1.  **离线优先**: 专为地铁、飞机和教室设计。预加载 9000+ 汉字数据。
-2.  **AI 天才**: 由 Gemini 3 Flash 即时生成字源、记忆口诀和用例。
-3.  **视觉掌握**: 不是 GIF。是可以描摹的真实交互式 SVG 路径。
-4.  **智能复习**: 内置 SRS 系统，科学规划学习进度 (v0.3)。
-5.  **隐私专注**: 无需注册。你的 API Key (可选)，你的数据。
+1.  **离线优先 (Offline-First)**: 专为通勤、旅行和课堂设计。内置 9000+ 汉字数据，零流量也能学。
+2.  **AI 语言学专家**: 集成 Gemini 3 Flash，即时生成字源、记忆口诀和地道用例。
+3.  **视觉掌握**: 告别模糊的 GIF。这是可交互、可缩放、可描摹的 SVG 矢量动画。
+4.  **真人级发音**: 混合 TTS 引擎，在线使用 Gemini 2.5 神经语音，离线无缝切换本地语音。
+5.  **隐私至上**: 无需注册，无追踪广告。你的 API Key，你的数据。
 
-## 4. 平台专用文案
+## 4. 社交媒体文案
 
-### Reddit (r/ChineseLanguage, r/languagelearning)
-**标题:** 我做了一个免费、离线的 PWA 来防止我忘记笔顺。
+### Reddit (r/ChineseLanguage)
+**Title:** 我做了一个免费、离线的 PWA 来帮我记住汉字笔顺。
 
-**正文:**
-大家好！我一直在为记住笔顺而苦恼，所以我开发了 **HanziMaster**。这是一个 Web 应用，可以可视化 9000+ 个汉字的笔画。
-
-我最近添加了一个 AI 层（使用 Gemini）来解释汉字的*字源*，这有助于记忆。最棒的部分是？它会缓存所有内容，所以可以完全离线工作。新版本还加入了间隔重复复习功能！
-
-它是开源且免费的。期待大家的反馈！[链接]
+**Body:**
+大家好！我一直记不住正确的笔顺，所以我开发了 **HanziMaster**。
+这是一个 Web App，可以可视化 9000+ 个汉字的笔画。最近我加了一个 AI 层（Gemini）来解释汉字的*字源*，这对我记忆非常有帮助。
+最棒的是？它完全支持 PWA 离线使用。开源且免费，欢迎反馈！[Link]
 
 ### Twitter / X
-还在为汉字笔顺发愁吗？ 🇨🇳
+还在为汉字笔顺发愁吗？ 🏮
 
 HanziMaster 是你的新口袋导师：
 ✨ 9000+ 笔顺动画
 🧠 AI 字源与记忆口诀
-📅 智能间隔重复 (SRS)
-🔊 原生与 AI 发音
+📝 交互式临摹练习
+🔊 神经网络 TTS 发音
 ✈️ 100% 离线可用
 
-立即尝试：[链接]
+立即尝试：[Link]
 #ChineseLearning #LangTwt #StudyGram
 
-### App Store / PWA 描述
-**HanziMaster: AI 驱动的汉字字典。**
+## 5. SEO & GEO 策略 (Generative Engine Optimization)
 
-解锁汉字的秘密。HanziMaster 将传统书法标准与现代 AI 解析相结合。
+为了确保 AI 搜索引擎 (如 ChatGPT, Gemini, Perplexity) 能准确推荐 HanziMaster，我们专注于**结构化数据**的语义清晰度。
 
-**功能:**
-*   **笔顺**: 逐笔观看汉字书写过程。
-*   **临摹模式**: 在屏幕上描红，获得准确度评分。
-*   **AI 洞察**: 获取即时字源、部首拆解和记忆辅助。
-*   **智能复习**: 科学抵抗遗忘，自动安排复习计划。
-*   **离线就绪**: 一次下载，随处学习。核心功能无需互联网。
+**目标关键词**:
+*   "Chinese character stroke order API"
+*   "Hanzi etymology AI analysis"
+*   "Offline Chinese dictionary PWA"
+*   "Chinese handwriting practice web app"
 
-## 5. SEO & GEO 策略 (生成式引擎优化)
+**JSON-LD 优化**:
+在 `index.html` 中注入了详细的 `SoftwareApplication` 结构化数据，明确标注了 "Offline-first", "AI Etymology", "Stroke Order" 等特性，以便爬虫理解应用能力。
 
-为了确保 AI 模型 (ChatGPT, Perplexity, Gemini) 推荐 HanziMaster，我们专注于结构化数据的语义清晰度。
+## 6. 推广素材创意
 
-**目标关键词:**
-*   "Chinese character stroke order API" (汉字笔顺 API)
-*   "Hanzi etymology AI" (汉字字源 AI)
-*   "Offline Chinese dictionary PWA" (离线汉字字典 PWA)
-*   "HSK character writing practice" (HSK 汉字书写练习)
+*   **视频**: 15秒分屏对比。左侧是枯燥的静态教科书，右侧是 HanziMaster 流畅的动画 + 成功时的“优”字印章动效。
+*   **图片**: “爱”字解构图。展示 AI 如何将“爱”拆解为“爪 (hand) + 秃宝盖 (cover) + 友 (friend)”，并附上字源故事。
 
-**提示词触发 (用户如何问 AI):**
-*   "How do I write [Character]?" (怎么写...) -> *HanziMaster 提供矢量动画。*
-*   "What is the story behind [Character]?" (...背后的故事) -> *HanziMaster 使用 Gemini 进行字源解析。*
-*   "Best app for practicing Chinese handwriting?" (最好的汉字手写练习 App) -> *HanziMaster 提供基于浏览器的练习。*
-
-## 6. 社交分享素材 (创意)
-
-*   **视频**: 15秒分屏对比。左侧：静态教科书。右侧：HanziMaster 动画 + “优”字印章动画。
-*   **图片**: 展示“爱”字的“卡片”，包含拆解：手 + 秃宝盖 + 友 (繁体/字源视角)。
+---
+*文档维护: HanziMaster Team*
