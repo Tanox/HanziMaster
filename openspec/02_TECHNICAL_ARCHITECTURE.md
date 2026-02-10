@@ -64,7 +64,7 @@
 │   ├── locales/        # 多语言字典 (i18n)
 │   ├── types/          # TypeScript 类型定义
 │   ├── App.tsx         # 主控制器
-│   └── main.tsx        # 入口点
+│   └── index.tsx       # 入口点
 ```
 
 ## 5. 数据持久化 (v0.3)
