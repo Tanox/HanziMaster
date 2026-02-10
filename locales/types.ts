@@ -39,9 +39,14 @@ export interface UILabels {
   settingApiKeyPlaceholder: string;
   settingApiKeyHelp: string;
   settingApiKeyValidationMsg: string;
+  settingTheme: string;
+  settingLanguage: string;
+  themeLight: string;
+  themeDark: string;
   // New UI Elements
   sectionInterface: string;
   sectionContent: string;
+  sectionAppearance: string;
   badgeCustom: string;
   badgeDefault: string;
   badgeNone: string;
@@ -59,6 +64,11 @@ export interface UILabels {
   noHistory: string;
   
   closeBtn: string;
+  
+  // Welcome Screen
+  welcomeTitle: string;
+  welcomeSubtitle: string;
+  welcomeBtn: string;
 }
 
 export interface LanguageOption {

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { X, Eye, EyeOff, PlayCircle, Layers, BookOpen, Lightbulb, Quote, Infinity, Wifi, Shuffle, Clock, Gauge, Key, Check, AlertTriangle, ExternalLink } from 'lucide-react';
+import { X, Eye, EyeOff, PlayCircle, Layers, BookOpen, Lightbulb, Quote, Infinity, Wifi, Shuffle, Clock, Gauge, Key, Check, AlertTriangle, ExternalLink, Moon, Sun, Globe, Palette } from 'lucide-react';
 import { AppSettings, GridStyle } from '../types';
 import { UILabels } from '../locales/types';
+import { LANGUAGES } from '../locales';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -11,6 +12,10 @@ interface SettingsModalProps {
   labels: UILabels;
   speed: number;
   onSpeedChange: (speed: number) => void;
+  currentLang: string;
+  onLanguageChange: (lang: string) => void;
+  currentTheme: 'light' | 'dark';
+  onThemeChange: () => void;
 }
 
 const SettingsModal: React.FC<SettingsModalProps> = ({
@@ -20,7 +25,11 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   onUpdateSettings,
   labels,
   speed,
-  onSpeedChange
+  onSpeedChange,
+  currentLang,
+  onLanguageChange,
+  currentTheme,
+  onThemeChange
 }) => {
   const [showApiKey, setShowApiKey] = useState(false);
 
@@ -97,6 +106,61 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
         {/* Content */}
         <div className="p-6 space-y-2 overflow-y-auto">
           
+          {/* Section: Appearance */}
+          <SectionHeader title={labels.sectionAppearance || 'Appearance'} />
+          <div className="space-y-4 mb-4">
+             {/* Theme Toggle */}
+             <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800">
+                     <Palette size={16} />
+                  </div>
+                  <span className="text-slate-700 dark:text-slate-200 font-medium text-sm">
+                      {labels.settingTheme}
+                  </span>
+                </div>
+                <div className="flex bg-slate-100 dark:bg-slate-700/50 p-1 rounded-lg">
+                    <button
+                        onClick={() => currentTheme === 'dark' && onThemeChange()}
+                        className={`p-1.5 rounded-md transition-all flex items-center gap-1.5 ${currentTheme === 'light' ? 'bg-white shadow-sm text-amber-500' : 'text-slate-400'}`}
+                        title={labels.themeLight}
+                    >
+                        <Sun size={14} />
+                    </button>
+                    <button
+                        onClick={() => currentTheme === 'light' && onThemeChange()}
+                        className={`p-1.5 rounded-md transition-all flex items-center gap-1.5 ${currentTheme === 'dark' ? 'bg-slate-600 shadow-sm text-indigo-400' : 'text-slate-400'}`}
+                        title={labels.themeDark}
+                    >
+                        <Moon size={14} />
+                    </button>
+                </div>
+             </div>
+
+             {/* Language Selector */}
+             <div className="space-y-2">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800">
+                     <Globe size={16} />
+                  </div>
+                  <span className="text-slate-700 dark:text-slate-200 font-medium text-sm">
+                      {labels.settingLanguage}
+                  </span>
+                </div>
+                <select 
+                    value={currentLang}
+                    onChange={(e) => onLanguageChange(e.target.value)}
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-colors"
+                >
+                    {LANGUAGES.map(lang => (
+                        <option key={lang.code} value={lang.code}>
+                            {lang.native} ({lang.name})
+                        </option>
+                    ))}
+                </select>
+             </div>
+          </div>
+
           {/* Section: Visuals */}
           <SectionHeader title={labels.settingGridStyle} />
           <div className="grid grid-cols-3 gap-2 mb-2">

@@ -1,3 +1,4 @@
+
 import { UILabels } from './types';
 
 export const en: UILabels = {
@@ -39,8 +40,13 @@ export const en: UILabels = {
   settingApiKeyPlaceholder: 'Enter Gemini API Key',
   settingApiKeyHelp: 'Leave empty to use the default key. Use your own key to avoid quota limits.',
   settingApiKeyValidationMsg: 'Key format looks incorrect (usually starts with AIza)',
+  settingTheme: 'Appearance',
+  settingLanguage: 'Language',
+  themeLight: 'Light Mode',
+  themeDark: 'Dark Mode',
   sectionInterface: 'Interface',
   sectionContent: 'Content',
+  sectionAppearance: 'Appearance',
   badgeCustom: 'Custom',
   badgeDefault: 'Default',
   badgeNone: 'None',
@@ -54,5 +60,8 @@ export const en: UILabels = {
   historyTitle: 'History',
   clearHistory: 'Clear',
   noHistory: 'No history yet.',
-  closeBtn: 'Close'
+  closeBtn: 'Close',
+  welcomeTitle: 'Welcome to HanziMaster',
+  welcomeSubtitle: 'Discover the beauty of Chinese characters. The ultimate tool combining traditional calligraphy with AI insights.',
+  welcomeBtn: 'Get Started'
 };

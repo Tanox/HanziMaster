@@ -1,3 +1,4 @@
+
 import { UILabels } from './types';
 
 export const zhCN: UILabels = {
@@ -39,8 +40,13 @@ export const zhCN: UILabels = {
   settingApiKeyPlaceholder: '在此输入 Gemini API Key',
   settingApiKeyHelp: '留空则使用内置默认密钥。使用自己的密钥可避免配额限制。',
   settingApiKeyValidationMsg: '密钥格式似乎不正确 (通常以 AIza 开头)',
+  settingTheme: '主题外观',
+  settingLanguage: '显示语言',
+  themeLight: '浅色模式',
+  themeDark: '深色模式',
   sectionInterface: '界面选项',
   sectionContent: '内容显示',
+  sectionAppearance: '外观',
   badgeCustom: '自定义',
   badgeDefault: '默认',
   badgeNone: '未配置',
@@ -54,5 +60,8 @@ export const zhCN: UILabels = {
   historyTitle: '练字足迹',
   clearHistory: '清空',
   noHistory: '暂无记录',
-  closeBtn: '关闭'
+  closeBtn: '关闭',
+  welcomeTitle: '欢迎使用汉字大师',
+  welcomeSubtitle: '探索汉字之美，掌握书写之道。结合传统书法与 AI 智能解析的终极学习工具。',
+  welcomeBtn: '开始学习'
 };
