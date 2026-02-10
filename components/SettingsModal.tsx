@@ -1,8 +1,12 @@
+/**
+ * HanziMaster v0.3.1
+ */
 import React, { useState } from 'react';
 import { X, Eye, EyeOff, PlayCircle, Layers, BookOpen, Lightbulb, Quote, Infinity, Wifi, Shuffle, Clock, Gauge, Key, Check, AlertTriangle, ExternalLink, Moon, Sun, Globe, Palette } from 'lucide-react';
 import { AppSettings, GridStyle } from '../types';
 import { UILabels } from '../locales/types';
 import { LANGUAGES } from '../locales';
+import ToggleItem from './ToggleItem';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -17,6 +21,12 @@ interface SettingsModalProps {
   currentTheme: 'light' | 'dark';
   onThemeChange: () => void;
 }
+
+const SectionHeader = ({ title }: { title: string }) => (
+  <h4 className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3 mt-6 first:mt-0">
+    {title}
+  </h4>
+);
 
 const SettingsModal: React.FC<SettingsModalProps> = ({
   isOpen,
@@ -47,42 +57,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 
   const hasDefaultKey = Boolean(process.env.API_KEY);
   const usingCustomKey = Boolean(settings.apiKey);
-
-  const ToggleItem = ({ 
-    label, 
-    value, 
-    onChange, 
-    icon,
-    disabled = false
-  }: { 
-    label: string, 
-    value: boolean, 
-    onChange: () => void, 
-    icon: React.ReactNode,
-    disabled?: boolean
-  }) => (
-    <div className={`flex items-center justify-between ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>
-      <div className="flex items-center gap-3">
-        <div className={`p-2 rounded-lg ${value ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400' : 'bg-slate-100 text-slate-400 dark:bg-slate-800'}`}>
-           {icon}
-        </div>
-        <span className="text-slate-700 dark:text-slate-200 font-medium text-sm">{label}</span>
-      </div>
-      <button 
-        onClick={onChange}
-        disabled={disabled}
-        className={`w-11 h-6 rounded-full p-1 transition-colors duration-300 ${value ? 'bg-teal-500' : 'bg-slate-300 dark:bg-slate-600'}`}
-      >
-        <div className={`bg-white w-4 h-4 rounded-full transform transition-transform duration-300 ${value ? 'translate-x-5' : 'translate-x-0'}`} />
-      </button>
-    </div>
-  );
-
-  const SectionHeader = ({ title }: { title: string }) => (
-    <h4 className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3 mt-6 first:mt-0">
-      {title}
-    </h4>
-  );
 
   return (
     <div 

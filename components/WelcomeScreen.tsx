@@ -1,3 +1,6 @@
+/**
+ * HanziMaster v0.3.1
+ */
 import React from 'react';
 import { Brush, ArrowRight } from 'lucide-react';
 import { UILabels } from '../locales/types';

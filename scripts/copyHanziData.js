@@ -1,3 +1,6 @@
+/**
+ * HanziMaster v0.3.1
+ */
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';

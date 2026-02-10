@@ -1,3 +1,6 @@
+/**
+ * HanziMaster v0.3.1
+ */
 import React, { useState } from 'react';
 import { Volume2, Loader2, AlertCircle } from 'lucide-react';
 import { playPronunciation } from '../services/ttsService';

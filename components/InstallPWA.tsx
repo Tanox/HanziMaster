@@ -1,5 +1,18 @@
+/**
+ * HanziMaster v0.3.1
+ */
 import React, { useEffect, useState } from 'react';
 import { Download } from 'lucide-react';
+
+// Fix: Define the BeforeInstallPromptEvent interface as it is not standard in TypeScript lib.dom.d.ts yet.
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{
+    outcome: 'accepted' | 'dismissed';
+    platform: string;
+  }>;
+  prompt(): Promise<void>;
+}
 
 interface InstallPWAProps {
   installLabel: string;

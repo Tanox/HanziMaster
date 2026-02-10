@@ -1,3 +1,6 @@
+/**
+ * HanziMaster v0.3.1
+ */
 import React, { useState, useEffect } from 'react';
 import { COMMON_CHARS } from '../utils/commonChars';
 import { Sparkles } from 'lucide-react';

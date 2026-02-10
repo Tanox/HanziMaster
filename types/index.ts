@@ -1,3 +1,6 @@
+/**
+ * HanziMaster v0.3.1
+ */
 
 export interface HanziData {
   strokes: string[];

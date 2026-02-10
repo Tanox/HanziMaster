@@ -1,3 +1,6 @@
+/**
+ * HanziMaster v0.3.1
+ */
 import React, { useState, useEffect } from 'react';
 import { Search, Shuffle } from 'lucide-react';
 

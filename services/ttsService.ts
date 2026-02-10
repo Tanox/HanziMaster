@@ -1,3 +1,6 @@
+/**
+ * HanziMaster v0.3.1
+ */
 import { GoogleGenAI, Modality } from "@google/genai";
 
 // Cache for audio buffers to avoid re-fetching the same text

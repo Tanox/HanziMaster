@@ -1,3 +1,6 @@
+/**
+ * HanziMaster v0.3.1
+ */
 import { GoogleGenAI, Type, HarmCategory, HarmBlockThreshold } from "@google/genai";
 import { CharacterAnalysis } from '../types';
 

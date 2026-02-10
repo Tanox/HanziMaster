@@ -1,3 +1,6 @@
+/**
+ * HanziMaster v0.3.1
+ */
 import React from 'react';
 import { HistoryItem } from '../types';
 import { UILabels } from '../locales/types';
@@ -36,6 +39,7 @@ const HistoryPanel: React.FC<HistoryPanelProps> = ({ history, onSelect, onClear,
           <button
             key={`${item.char}-${item.timestamp}-${index}`}
             onClick={() => onSelect(item.char)}
+            title={`Practiced on ${new Date(item.timestamp).toLocaleString()}`}
             className="w-12 h-12 flex items-center justify-center font-hanzi text-xl bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-teal-500 dark:hover:border-teal-400 hover:text-teal-600 dark:hover:text-teal-400 transition-all hover:-translate-y-0.5"
           >
             {item.char}

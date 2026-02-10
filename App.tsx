@@ -1,3 +1,6 @@
+/**
+ * HanziMaster v0.3.1
+ */
 import React, { useState, useEffect, useRef } from 'react';
 import { fetchHanziData } from './services/hanziService';
 import { analyzeCharacter } from './services/geminiService';
@@ -10,13 +13,14 @@ import RandomSuggestions from './components/RandomSuggestions';
 import HistoryPanel from './components/HistoryPanel';
 import SettingsModal from './components/SettingsModal';
 import ReloadPrompt from './components/ReloadPrompt';
-import InstallPWA from './components/InstallPWA';
 import WelcomeScreen from './components/WelcomeScreen';
+import Header from './components/Header';
+import Footer from './components/Footer';
 import { LANGUAGES, UI_LABELS } from './locales';
-import { Brush, AlertCircle, WifiOff, Settings, Github } from 'lucide-react';
+import { AlertCircle, WifiOff } from 'lucide-react';
 import { COMMON_CHARS } from './utils/commonChars';
 
-const APP_VERSION = '0.3.0';
+const APP_VERSION = '0.3.1';
 
 const DEFAULT_SETTINGS: AppSettings = {
   apiKey: '', 
@@ -245,27 +249,10 @@ const App: React.FC = () => {
       
       {showWelcome && <WelcomeScreen onDismiss={handleDismissWelcome} labels={labels} />}
 
-      <header className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800 sticky top-0 z-40 transition-colors duration-300 supports-[backdrop-filter]:bg-white/60">
-        <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-teal-700 dark:text-teal-400">
-            <Brush size={24} />
-            <h1 className="font-bold text-xl tracking-tight text-slate-800 dark:text-slate-100 font-hanzi">
-              {labels.appTitle}
-            </h1>
-          </div>
-          <div className="flex items-center gap-2 md:gap-3">
-             <InstallPWA installLabel={labels.installApp || 'Install App'} />
-
-             <button
-               onClick={() => setIsSettingsOpen(true)}
-               className="p-3 md:p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors touch-manipulation"
-               aria-label="Settings"
-             >
-               <Settings size={20} />
-             </button>
-          </div>
-        </div>
-      </header>
+      <Header 
+        labels={labels} 
+        onOpenSettings={() => setIsSettingsOpen(true)} 
+      />
 
       <main className="max-w-5xl w-full mx-auto px-4 py-8 flex-grow">
         
@@ -317,6 +304,7 @@ const App: React.FC = () => {
                       }
                       handlePracticeComplete();
                   }}
+                  labels={labels}
                 />
                 <Controls 
                   animationState={animationState}
@@ -406,37 +394,7 @@ const App: React.FC = () => {
 
       </main>
 
-      <footer className="mt-auto border-t border-slate-200/60 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm transition-colors">
-        <div className="max-w-5xl mx-auto px-4 py-8 md:py-10 flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-slate-500 dark:text-slate-400">
-          
-          <div className="text-center md:text-left space-y-1">
-            <p className="font-medium text-slate-600 dark:text-slate-300">
-              {labels.footerCredit}
-            </p>
-            <p className="text-xs opacity-60">
-              GPL-3.0 License &copy; {new Date().getFullYear()} HanziMaster
-            </p>
-          </div>
-
-          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
-             <a 
-               href="https://github.com/sutchan/HanziMaster" 
-               target="_blank" 
-               rel="noopener noreferrer"
-               className="flex items-center gap-2 hover:text-teal-600 dark:hover:text-teal-400 transition-colors group"
-             >
-               <Github size={18} className="group-hover:scale-110 transition-transform" />
-               <span className="font-medium">GitHub</span>
-             </a>
-             
-             <div className="hidden md:block w-px h-4 bg-slate-300 dark:bg-slate-700"></div>
-             
-             <div className="flex items-center gap-2 text-xs font-mono opacity-80 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700">
-               <span>v{APP_VERSION}</span>
-             </div>
-          </div>
-        </div>
-      </footer>
+      <Footer labels={labels} version={APP_VERSION} />
     </div>
   );
 };

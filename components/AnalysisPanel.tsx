@@ -1,3 +1,6 @@
+/**
+ * HanziMaster v0.3.1
+ */
 import React from 'react';
 import { CharacterAnalysis, AppSettings } from '../types';
 import { BookOpen, Lightbulb, History, Info } from 'lucide-react';

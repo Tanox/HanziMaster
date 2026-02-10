@@ -1,3 +1,6 @@
+/**
+ * HanziMaster v0.3.1
+ */
 import { HanziData } from '../types';
 
 const CDN_BASE_URL = 'https://cdn.jsdelivr.net/npm/hanzi-writer-data@2.0';

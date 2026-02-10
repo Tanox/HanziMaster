@@ -1,3 +1,6 @@
+/**
+ * HanziMaster v0.3.1
+ */
 import { UILabels } from './types';
 
 export const ko: UILabels = {

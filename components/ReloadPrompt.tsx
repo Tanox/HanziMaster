@@ -1,3 +1,6 @@
+/**
+ * HanziMaster v0.3.1
+ */
 import { useRegisterSW } from 'virtual:pwa-register/react';
 import { RefreshCw, X, Wifi } from 'lucide-react';
 
