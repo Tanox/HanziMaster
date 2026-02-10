@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.3.2
  */
 import React from 'react';
 import { useAppController } from './hooks/useAppController';
@@ -19,7 +19,7 @@ import IdiomNavigator from './components/IdiomNavigator';
 import { UI_LABELS } from './locales';
 import { AlertCircle, WifiOff } from 'lucide-react';
 
-const APP_VERSION = '0.3.1';
+const APP_VERSION = '0.3.2';
 
 const App: React.FC = () => {
   const { state, actions } = useAppController();
