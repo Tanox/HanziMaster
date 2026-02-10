@@ -2,16 +2,16 @@
  * HanziMaster v0.3.1
  */
 import { GoogleGenAI, Type, HarmCategory, HarmBlockThreshold } from "@google/genai";
-import { CharacterAnalysis } from '../types';
+import { CharacterAnalysis, IdiomAnalysis } from '../types';
 
 // Simple offline fallback generator
 const generateOfflineAnalysis = (char: string, reason: string = "Network Unavailable"): CharacterAnalysis => {
   return {
     char: char,
-    pinyin: "-", // Pinyin conversion requires a library, simplified for now
+    pinyin: "-", 
     meaning: `Mode: ${reason}`,
     radical: "?",
-    strokeCount: 0, // This will be updated by the stroke viewer data if possible
+    strokeCount: 0,
     etymology: "Detailed analysis requires an active AI connection.",
     mnemonic: "Focus on writing practice.",
     examples: [
@@ -20,8 +20,52 @@ const generateOfflineAnalysis = (char: string, reason: string = "Network Unavail
   };
 };
 
+const generateOfflineIdiomAnalysis = (idiom: string, reason: string = "Network Unavailable"): IdiomAnalysis => {
+  return {
+    idiom: idiom,
+    pinyin: "-",
+    meaning: `Mode: ${reason}`,
+    origin: "Idiom analysis requires an active AI connection.",
+    usage: "-"
+  };
+};
+
+const commonConfig = {
+  responseMimeType: "application/json",
+  safetySettings: [
+    {
+      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+      threshold: HarmBlockThreshold.BLOCK_NONE,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+      threshold: HarmBlockThreshold.BLOCK_NONE,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+      threshold: HarmBlockThreshold.BLOCK_NONE,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+      threshold: HarmBlockThreshold.BLOCK_NONE,
+    },
+  ],
+};
+
+function cleanJsonResponse(text: string): string {
+    text = text.trim();
+    if (text.startsWith('```')) {
+      text = text.replace(/^```(json)?\s*/i, '').replace(/\s*```$/, '');
+    }
+    const startIndex = text.indexOf('{');
+    const endIndex = text.lastIndexOf('}');
+    if (startIndex !== -1 && endIndex !== -1) {
+        text = text.substring(startIndex, endIndex + 1);
+    }
+    return text;
+}
+
 export const analyzeCharacter = async (char: string, languageName: string = 'English', forceOffline: boolean = false, apiKeyOverride?: string): Promise<CharacterAnalysis | null> => {
-  // Immediate offline check
   if (!navigator.onLine || forceOffline) {
     return generateOfflineAnalysis(char, forceOffline ? "Offline Mode" : "Network Unavailable");
   }
@@ -51,27 +95,8 @@ export const analyzeCharacter = async (char: string, languageName: string = 'Eng
       model: 'gemini-3-flash-preview',
       contents: prompt,
       config: {
+        ...commonConfig,
         systemInstruction: "You are a professional Chinese etymologist and calligraphy expert. You provide accurate, scholarly, yet accessible explanations of Chinese characters.",
-        responseMimeType: "application/json",
-        // Adjust safety settings to allow educational content about origins (which may include 'violence' like weapons, hunting, etc.)
-        safetySettings: [
-          {
-            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-            threshold: HarmBlockThreshold.BLOCK_NONE,
-          },
-          {
-            category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-            threshold: HarmBlockThreshold.BLOCK_NONE,
-          },
-          {
-            category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-            threshold: HarmBlockThreshold.BLOCK_NONE,
-          },
-          {
-            category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-            threshold: HarmBlockThreshold.BLOCK_NONE,
-          },
-        ],
         responseSchema: {
           type: Type.OBJECT,
           properties: {
@@ -99,34 +124,71 @@ export const analyzeCharacter = async (char: string, languageName: string = 'Eng
       }
     });
 
-    let text = response.text;
+    const text = cleanJsonResponse(response.text || "");
     if (!text) return generateOfflineAnalysis(char, "No Response");
-    
-    // Clean up markdown code blocks if present (common cause of JSON parse errors)
-    text = text.trim();
-    // Remove markdown code fences (e.g. ```json ... ```)
-    if (text.startsWith('```')) {
-      text = text.replace(/^```(json)?\s*/i, '').replace(/\s*```$/, '');
-    }
-
-    // Additional safety: extract JSON object if surrounded by other text or whitespace
-    const startIndex = text.indexOf('{');
-    const endIndex = text.lastIndexOf('}');
-    if (startIndex !== -1 && endIndex !== -1) {
-        text = text.substring(startIndex, endIndex + 1);
-    }
     
     return JSON.parse(text) as CharacterAnalysis;
 
   } catch (error: any) {
-    // Check for Rate Limit / Quota Exceeded (429)
     if (error.status === 429 || (error.message && error.message.includes('429'))) {
-        console.warn("Gemini API Quota Exceeded. Falling back to offline mode.");
+        console.warn("Gemini API Quota Exceeded. Falling back.");
         return generateOfflineAnalysis(char, "AI Quota Exceeded");
     }
-    
     console.error("Gemini API Error:", error);
-    // Fallback on generic error
     return generateOfflineAnalysis(char, "Service Error");
   }
+};
+
+export const analyzeIdiom = async (idiom: string, languageName: string = 'English', forceOffline: boolean = false, apiKeyOverride?: string): Promise<IdiomAnalysis | null> => {
+    if (!navigator.onLine || forceOffline) {
+        return generateOfflineIdiomAnalysis(idiom, forceOffline ? "Offline Mode" : "Network Unavailable");
+    }
+
+    try {
+        const apiKey = apiKeyOverride || process.env.API_KEY;
+        if (!apiKey) return generateOfflineIdiomAnalysis(idiom, "No API Key");
+
+        const ai = new GoogleGenAI({ apiKey });
+        const prompt = `Analyze the Chinese Idiom (Chengyu) "${idiom}". 
+        Provide a detailed breakdown in ${languageName}.
+        
+        Fields requirements:
+        - meaning: The definition of the idiom in ${languageName}.
+        - origin: The story or historical background behind this idiom in ${languageName}.
+        - usage: An example sentence using this idiom, with translation in ${languageName}.
+        
+        Ensure the response is strictly valid JSON.`;
+
+        const response = await ai.models.generateContent({
+            model: 'gemini-3-flash-preview',
+            contents: prompt,
+            config: {
+                ...commonConfig,
+                systemInstruction: "You are a Chinese literature expert specializing in Chengyu (Idioms).",
+                responseSchema: {
+                    type: Type.OBJECT,
+                    properties: {
+                        idiom: { type: Type.STRING },
+                        pinyin: { type: Type.STRING },
+                        meaning: { type: Type.STRING },
+                        origin: { type: Type.STRING },
+                        usage: { type: Type.STRING }
+                    },
+                    required: ["idiom", "pinyin", "meaning", "origin", "usage"]
+                }
+            }
+        });
+
+        const text = cleanJsonResponse(response.text || "");
+        if (!text) return generateOfflineIdiomAnalysis(idiom, "No Response");
+
+        return JSON.parse(text) as IdiomAnalysis;
+
+    } catch (error: any) {
+        if (error.status === 429 || (error.message && error.message.includes('429'))) {
+             return generateOfflineIdiomAnalysis(idiom, "AI Quota Exceeded");
+        }
+        console.error("Gemini Idiom API Error:", error);
+        return generateOfflineIdiomAnalysis(idiom, "Service Error");
+    }
 };

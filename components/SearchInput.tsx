@@ -12,6 +12,7 @@ interface SearchInputProps {
   invalidCharMessage: string;
   randomButtonLabel: string;
   activeChar?: string;
+  activeTerm?: string;
 }
 
 const SearchInput: React.FC<SearchInputProps> = ({ 
@@ -21,25 +22,25 @@ const SearchInput: React.FC<SearchInputProps> = ({
   placeholderText, 
   invalidCharMessage,
   randomButtonLabel,
-  activeChar
+  activeChar,
+  activeTerm
 }) => {
   const [input, setInput] = useState('');
 
-  // Sync input when activeChar changes externally (e.g. random button clicked)
   useEffect(() => {
-    if (activeChar) {
+    if (activeTerm) {
+      setInput(activeTerm);
+    } else if (activeChar) {
       setInput(activeChar);
     }
-  }, [activeChar]);
+  }, [activeChar, activeTerm]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim() && !isLoading) {
-      // Take only the first character if user types multiple
-      const firstChar = input.trim()[0];
-      // Basic check if it's a Chinese character (range 4E00-9FFF)
-      if (/[\u4E00-\u9FFF]/.test(firstChar)) {
-        onSearch(firstChar);
+      const term = input.trim();
+      if (/^[\u4E00-\u9FFF]{1,4}$/.test(term)) {
+        onSearch(term);
       } else {
         alert(invalidCharMessage);
       }
@@ -56,7 +57,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
           placeholder={placeholderText}
           className="w-full pl-6 pr-28 py-4 text-lg bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-full focus:outline-none focus:border-teal-500 dark:focus:border-teal-500 focus:ring-2 focus:ring-teal-200 dark:focus:ring-teal-900/50 transition-all font-hanzi placeholder-slate-400 dark:placeholder-slate-500"
           disabled={isLoading}
-          maxLength={5}
+          maxLength={4}
         />
         <div className="absolute right-2 flex gap-1">
             <button

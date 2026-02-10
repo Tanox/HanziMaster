@@ -4,7 +4,7 @@
 
 export interface HanziData {
   strokes: string[];
-  medians: number[][][]; // Changed from string[] to number[][][]
+  medians: number[][][];
   radStrokes?: number[];
 }
 
@@ -23,6 +23,14 @@ export interface CharacterAnalysis {
   etymology: string;
   mnemonic: string;
   examples: ExampleWord[];
+}
+
+export interface IdiomAnalysis {
+  idiom: string;
+  pinyin: string;
+  meaning: string;
+  origin: string; // The story or source
+  usage: string; // Example sentence
 }
 
 export interface HistoryItem {
@@ -50,12 +58,9 @@ export interface AppSettings {
   showOutline: boolean;
   autoPlay: boolean;
   continuousMode: boolean;
-  // New Interface Settings
   offlineMode: boolean;
-  // showSpeedControl removed
   showRandomSuggestions: boolean;
-  showHistory: boolean; // Added
-  // Content Toggles
+  showHistory: boolean;
   showStructure: boolean;
   showEtymology: boolean;
   showMnemonic: boolean;
