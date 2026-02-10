@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { X, Eye, EyeOff, PlayCircle, Layers, BookOpen, Lightbulb, Quote, Infinity, Wifi, Shuffle, Clock, Gauge, Key, Check, AlertTriangle, ExternalLink, Moon, Sun, Globe, Palette } from 'lucide-react';
 import { AppSettings, GridStyle } from '../types';

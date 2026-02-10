@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { fetchHanziData } from './services/hanziService';
 import { analyzeCharacter } from './services/geminiService';
