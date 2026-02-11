@@ -24,6 +24,8 @@ const DEFAULT_SETTINGS: AppSettings = {
   showExamples: true,
 };
 
+const CACHE_LIMIT = 150; // Max items to keep in analysis cache
+
 export const useAppController = () => {
   // --- Persistent State ---
   const [settings, setSettings] = useLocalStorage<AppSettings>('appSettings', DEFAULT_SETTINGS);
@@ -31,6 +33,10 @@ export const useAppController = () => {
   const [theme, setTheme] = useLocalStorage<'light' | 'dark'>('theme', 'light');
   const [hasSeenWelcome, setHasSeenWelcome] = useLocalStorage<boolean>('hasSeenWelcome', false);
   const [pinyinCache, setPinyinCache] = useLocalStorage<Record<string, string>>('ai_pinyin_cache', {});
+  
+  // --- Offline Caches (L2 Cache) ---
+  const [analysisCache, setAnalysisCache] = useLocalStorage<Record<string, CharacterAnalysis>>('ai_analysis_cache', {});
+  const [idiomCache, setIdiomCache] = useLocalStorage<Record<string, IdiomAnalysis>>('ai_idiom_cache', {});
 
   // --- App State ---
   const [activeTerm, setActiveTerm] = useState<string>('永');
@@ -104,12 +110,30 @@ export const useAppController = () => {
   const addToHistory = (term: string) => {
     setHistory(prev => {
       const filtered = prev.filter(item => item.char !== term);
-      // Correctly slice to keep the first 20 items, not remove them.
+      // Correctly slice to keep the first 20 items
       return [{ char: term, timestamp: Date.now() }, ...filtered].slice(0, 20); 
     });
   };
 
+  const updateCache = <T>(
+    key: string, 
+    data: T, 
+    setter: React.Dispatch<React.SetStateAction<Record<string, T>>>
+  ) => {
+    setter(prev => {
+      const keys = Object.keys(prev);
+      const newCache = { ...prev, [key]: data };
+      if (keys.length > CACHE_LIMIT) {
+        // Simple pruning: remove the first key found (often oldest in simple objects)
+        const [firstKey] = keys;
+        delete newCache[firstKey];
+      }
+      return newCache;
+    });
+  };
+
   const fetchCharacterData = async (char: string, langCode: string) => {
+    // 1. Fetch Stroke Data (handled by Service Worker cache)
     const fetchedData = await fetchHanziData(char);
     if (fetchedData) {
       setHanziData(fetchedData);
@@ -121,25 +145,50 @@ export const useAppController = () => {
     }
 
     const langName = LANGUAGES.find(l => l.code === langCode)?.name || 'Simplified Chinese';
-    try {
-        const aiResult = await analyzeCharacter(char, langName, settings.offlineMode, settings.apiKey);
-        
-        if (aiResult && aiResult.pinyin && aiResult.pinyin !== '-') {
-            setPinyinCache(prevCache => {
-                if (!PINYIN_MAP[char] && prevCache[char] !== aiResult.pinyin) {
-                    return { ...prevCache, [char]: aiResult.pinyin };
-                }
-                return prevCache;
-            });
+
+    // 2. Fetch Analysis (Check Cache First)
+    if (analysisCache[char] && !settings.offlineMode) {
+         // Use cached data if available (even if online, to save quota/time)
+         // Note: If user forces offline mode, we still try to use cache.
+         setAnalysis(analysisCache[char]);
+    } else {
+        try {
+            // If offline or cache miss, try to analyze
+            const aiResult = await analyzeCharacter(char, langName, settings.offlineMode, settings.apiKey);
+            
+            // Pinyin Cache Update
+            if (aiResult && aiResult.pinyin && aiResult.pinyin !== '-') {
+                setPinyinCache(prevCache => {
+                    if (!PINYIN_MAP[char] && prevCache[char] !== aiResult.pinyin) {
+                        return { ...prevCache, [char]: aiResult.pinyin };
+                    }
+                    return prevCache;
+                });
+            }
+            
+            if (aiResult) {
+                 // Enhance result with stroke count from HanziWriter data if AI missed it
+                 let finalResult = aiResult;
+                 if (fetchedData && aiResult.meaning.startsWith("Mode:")) {
+                      finalResult = { ...aiResult, strokeCount: fetchedData.strokes.length };
+                 }
+
+                 setAnalysis(finalResult);
+
+                 // Only cache valid results (not offline fallbacks)
+                 if (!finalResult.meaning.startsWith("Mode:") && !finalResult.meaning.includes("Network Unavailable")) {
+                     updateCache(char, finalResult, setAnalysisCache);
+                 } else if (analysisCache[char]) {
+                     // If we got a fallback but have a cache (e.g. transient network error), use cache
+                     setAnalysis(analysisCache[char]);
+                 }
+            }
+        } catch (err) {
+            console.error("Char Analysis failed", err);
+            if (analysisCache[char]) {
+                setAnalysis(analysisCache[char]);
+            }
         }
-        
-        if (fetchedData && aiResult && aiResult.meaning.startsWith("Mode:")) {
-            setAnalysis({ ...aiResult, strokeCount: fetchedData.strokes.length });
-        } else if (aiResult) {
-            setAnalysis(aiResult);
-        }
-    } catch (err) {
-        console.error("Char Analysis failed", err);
     }
   };
 
@@ -166,16 +215,34 @@ export const useAppController = () => {
     
     const langName = LANGUAGES.find(l => l.code === langCode)?.name || 'Simplified Chinese';
 
+    // Parallel Fetching
     const promises: Promise<any>[] = [fetchCharacterData(firstChar, langCode)];
 
     if (term.length > 1) {
-        promises.push(
-            analyzeIdiom(term, langName, settings.offlineMode, settings.apiKey)
-                .then(res => setIdiomAnalysis(res))
-                .catch(e => {
-                    console.error("Idiom search error", e);
-                })
-        );
+        // Check Idiom Cache
+        if (idiomCache[term] && !settings.offlineMode) {
+            setIdiomAnalysis(idiomCache[term]);
+        } else {
+            promises.push(
+                analyzeIdiom(term, langName, settings.offlineMode, settings.apiKey)
+                    .then(res => {
+                        setIdiomAnalysis(res);
+                        // Cache valid idiom results
+                        if (res && !res.meaning.startsWith("Mode:")) {
+                             updateCache(term, res, setIdiomCache);
+                        } else if (idiomCache[term]) {
+                             // Fallback to cache on error/offline
+                             setIdiomAnalysis(idiomCache[term]);
+                        }
+                    })
+                    .catch(e => {
+                        console.error("Idiom search error", e);
+                        if (idiomCache[term]) {
+                             setIdiomAnalysis(idiomCache[term]);
+                        }
+                    })
+            );
+        }
     }
 
     await Promise.all(promises);

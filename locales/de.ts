@@ -72,5 +72,7 @@ export const de: UILabels = {
   shareAction: 'Teilen',
   shareTitleChar: "Lerne '{char}' auf HanziMaster zu schreiben!",
   shareTitleIdiom: "Lerne das Idiom '{idiom}' auf HanziMaster!",
+  shareTextChar: "🀄️ Ich habe gerade gelernt, '{char}' ({pinyin}) auf HanziMaster zu schreiben!\n\n📖 Bedeutung: {meaning}\n\n✨ Schau dir die Strichanimation und die KI-Analyse hier an:\n{url}\n\n#HanziMaster #ChinesischLernen #Kalligraphie",
+  shareTextIdiom: "📜 Ich habe ein faszinierendes Idiom gefunden: '{idiom}' ({pinyin})\n\n💡 Bedeutung: {meaning}\n\n🚀 Lerne die Geschichte dahinter auf HanziMaster:\n{url}\n\n#HanziMaster #ChinesischeIdiome #ChinesischLernen",
   shareMessageCopied: 'Text zum Teilen kopiert!',
 };

@@ -72,5 +72,7 @@ export const id: UILabels = {
   shareAction: 'Bagikan',
   shareTitleChar: "Pelajari cara menulis '{char}' di HanziMaster!",
   shareTitleIdiom: "Pelajari peribahasa '{idiom}' di HanziMaster!",
+  shareTextChar: "🀄️ Saya baru saja belajar menulis '{char}' ({pinyin}) di HanziMaster!\n\n📖 Arti: {meaning}\n\n✨ Lihat animasi guratan dan analisis AI di sini:\n{url}\n\n#HanziMaster #BelajarMandarin #Kaligrafi",
+  shareTextIdiom: "📜 Menemukan peribahasa menarik: '{idiom}' ({pinyin})\n\n💡 Arti: {meaning}\n\n🚀 Pelajari kisah di baliknya di HanziMaster:\n{url}\n\n#HanziMaster #PeribahasaMandarin #BelajarMandarin",
   shareMessageCopied: 'Teks untuk dibagikan telah disalin!',
 };

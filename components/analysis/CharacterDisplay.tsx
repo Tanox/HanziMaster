@@ -1,3 +1,4 @@
+
 /**
  * HanziMaster v0.3.6
  */
@@ -22,9 +23,17 @@ const CharacterDisplay: React.FC<CharacterDisplayProps> = ({ analysis, hanziData
   const isFallback = analysis.meaning.startsWith('Mode:') || analysis.radical === '?';
   const showRichContent = !settings.offlineMode && !isFallback;
 
-  const shareText = `I'm learning to write '${analysis.char}' (${analysis.pinyin}) on HanziMaster! It means "${analysis.meaning}". Check out its animated stroke order!`;
-  const shareTitle = labels.shareTitleChar.replace('{char}', analysis.char);
   const shareUrl = `${window.location.origin}?char=${encodeURIComponent(analysis.char)}`;
+  
+  // Use the new template if available, otherwise fallback
+  const shareTemplate = labels.shareTextChar || "I'm learning '{char}' ({pinyin}) on HanziMaster! {url}";
+  const shareText = shareTemplate
+    .replace('{char}', analysis.char)
+    .replace('{pinyin}', analysis.pinyin)
+    .replace('{meaning}', analysis.meaning)
+    .replace('{url}', shareUrl);
+
+  const shareTitle = labels.shareTitleChar.replace('{char}', analysis.char);
 
   const handleShareImage = async () => {
     if (!hanziData) return;

@@ -18,7 +18,7 @@ import IdiomNavigator from './components/IdiomNavigator.tsx';
 import { UI_LABELS } from './locales/index.ts';
 import { AlertCircle, WifiOff } from 'lucide-react';
 
-const APP_VERSION = '0.3.6';
+const APP_VERSION = '0.4.0';
 
 const App: React.FC = () => {
   const { state, actions } = useAppController();

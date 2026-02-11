@@ -1,3 +1,4 @@
+
 /**
  * HanziMaster v0.3.5
  */
@@ -73,5 +74,7 @@ export const en: UILabels = {
   shareAction: 'Share',
   shareTitleChar: "Learn to write '{char}' on HanziMaster!",
   shareTitleIdiom: "Learn the idiom '{idiom}' on HanziMaster!",
+  shareTextChar: "🀄️ I just mastered writing '{char}' ({pinyin}) on HanziMaster!\n\n📖 Meaning: {meaning}\n\n✨ Check out the stroke animation and AI analysis here:\n{url}\n\n#HanziMaster #LearnChinese #Calligraphy",
+  shareTextIdiom: "📜 Found a fascinating idiom: '{idiom}' ({pinyin})\n\n💡 Meaning: {meaning}\n\n🚀 Learn the story behind it on HanziMaster:\n{url}\n\n#HanziMaster #ChineseIdioms #LearnChinese",
   shareMessageCopied: 'Share text copied!',
 };

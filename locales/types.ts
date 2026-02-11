@@ -1,3 +1,4 @@
+
 /**
  * HanziMaster v0.3.5
  */
@@ -80,8 +81,10 @@ export interface UILabels {
   
   // Share functionality
   shareAction: string;
-  shareTitleChar: string; // e.g., "Learn '{char}' on HanziMaster"
-  shareTitleIdiom: string; // e.g., "Learn the idiom '{idiom}' on HanziMaster"
+  shareTitleChar: string; 
+  shareTitleIdiom: string;
+  shareTextChar: string; // New rich text template
+  shareTextIdiom: string; // New rich text template
   shareMessageCopied: string;
 }
 

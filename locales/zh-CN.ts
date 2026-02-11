@@ -1,3 +1,4 @@
+
 /**
  * HanziMaster v0.3.5
  */
@@ -73,5 +74,7 @@ export const zhCN: UILabels = {
   shareAction: '分享',
   shareTitleChar: '快来汉字大师学习“{char}”的写法！',
   shareTitleIdiom: '快来汉字大师学习成语“{idiom}”！',
+  shareTextChar: '🀄️ 我在「汉字大师」学会了“{char}” ({pinyin}) 的标准笔顺！\n\n📖 释义：{meaning}\n\n✨ 结合 AI 解析与书法美学，推荐你也来试试：\n{url}\n\n#汉字大师 #中文学习 #HanziMaster',
+  shareTextIdiom: '📜 发现了一个超棒的成语：“{idiom}” ({pinyin})\n\n💡 意思：{meaning}\n\n🚀 快来「汉字大师」查看它的典故和用法：\n{url}\n\n#汉字大师 #成语学习 #ChineseIdioms',
   shareMessageCopied: '分享文案已复制！',
 };

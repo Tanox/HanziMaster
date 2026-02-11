@@ -72,5 +72,7 @@ export const th: UILabels = {
   shareAction: 'แชร์',
   shareTitleChar: "มาเรียนวิธีเขียน '{char}' ที่ HanziMaster กันเถอะ!",
   shareTitleIdiom: "มาเรียนรู้สำนวน '{idiom}' ที่ HanziMaster กันเถอะ!",
+  shareTextChar: "🀄️ ฉันเพิ่งฝึกเขียน '{char}' ({pinyin}) บน HanziMaster สำเร็จ!\n\n📖 ความหมาย: {meaning}\n\n✨ ดูลำดับขีดและการวิเคราะห์โดย AI ได้ที่นี่:\n{url}\n\n#HanziMaster #เรียนภาษาจีน #พู่กันจีน",
+  shareTextIdiom: "📜 พบสำนวนที่น่าสนใจ: '{idiom}' ({pinyin})\n\n💡 ความหมาย: {meaning}\n\n🚀 เรียนรู้ที่มาและเรื่องราวได้ที่ HanziMaster:\n{url}\n\n#HanziMaster #สำนวนจีน #เรียนภาษาจีน",
   shareMessageCopied: 'คัดลอกข้อความสำหรับแชร์แล้ว!',
 };

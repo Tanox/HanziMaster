@@ -1,4 +1,5 @@
 
+
 # HanziMaster - 项目规范文档 (OpenSpec)
 
 欢迎查阅 **HanziMaster** 的全套项目规范文档。本项目严格遵循 OpenSpec 标准，旨在为开发、产品、设计及市场团队提供统一的真理来源 (Single Source of Truth)。
@@ -17,10 +18,16 @@
 | **08** | [用户旅程 (User Journey)](./08_USER_JOURNEY.md) | 典型场景、交互流程、情感设计 | 产品, 设计 |
 | **09** | [数据字典 (Data Dictionary)](./09_DATA_DICTIONARY.md) | 核心数据结构、离线字典覆盖率、补丁机制 | 开发, 数据 |
 
+## 📊 项目审查
+
+| 日期 | 报告 | 版本 | 状态 |
+| :--- | :--- | :--- | :--- |
+| 2025-02-26 | [项目审查报告](./reports/project_review_20250226_1400.md) | v0.4.0 | ✅ 通过 |
+
 ## 🛠 项目概况
 
 *   **项目名称**: HanziMaster (汉字大师)
-*   **当前版本**: v0.3.9 (Beta)
+*   **当前版本**: v0.4.0 (Beta)
 *   **核心理念**: 离线优先 (Offline-First) + AI 增强 (AI-Enhanced)
 *   **技术栈**: React 19, TypeScript, Vite PWA, Tailwind CSS, Google Gemini API
 
@@ -34,7 +41,7 @@
 *   **v0.3.3**: 系统稳定性优化。修复移动端触摸延迟，优化暗色模式视觉体验。
 *   **v0.3.5**: **成语智能支持**。引入多字输入处理、成语导航器 (IdiomNavigator) 及深度典故解析。
 *   **v0.3.9**: **数据完整性升级**。离线拼音库扩充至 2000+ 高频字，引入“数据自愈”缓存机制，优化随机推荐算法。
-*   **v0.4.0 (Plan)**: 引入 SRS (间隔重复) 复习算法，集成 IndexedDB 持久化存储。
+*   **v0.4.0**: **分享与传播**。新增“生成精美分享卡片 (Share as Image)”功能，优化成语模式体验，统一全站版本号。
 
 ---
 *文档维护: HanziMaster Engineering Team*

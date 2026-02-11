@@ -1,3 +1,4 @@
+
 /**
  * HanziMaster v0.3.5
  */
@@ -16,9 +17,17 @@ interface IdiomDisplayProps {
 
 const IdiomDisplay: React.FC<IdiomDisplayProps> = ({ data, apiKey, labels }) => {
 
-  const shareText = `I just learned the idiom '${data.idiom}' (${data.pinyin}) on HanziMaster! It means "${data.meaning}". What a cool story! Check it out.`;
-  const shareTitle = labels.shareTitleIdiom.replace('{idiom}', data.idiom);
   const shareUrl = `${window.location.origin}?char=${encodeURIComponent(data.idiom)}`;
+  
+  // Use new template if available
+  const shareTemplate = labels.shareTextIdiom || "I just learned the idiom '{idiom}' ({pinyin}) on HanziMaster! {url}";
+  const shareText = shareTemplate
+    .replace('{idiom}', data.idiom)
+    .replace('{pinyin}', data.pinyin)
+    .replace('{meaning}', data.meaning)
+    .replace('{url}', shareUrl);
+
+  const shareTitle = labels.shareTitleIdiom.replace('{idiom}', data.idiom);
 
   return (
     <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-teal-100 dark:border-teal-900/50 shadow-sm animate-fade-in relative overflow-hidden">

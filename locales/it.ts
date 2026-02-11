@@ -64,7 +64,7 @@ export const it: UILabels = {
   noHistory: 'Nessuna cronologia.',
   closeBtn: 'Chiudi',
   welcomeTitle: 'Benvenuto su HanziMaster',
-  welcomeSubtitle: 'Scopri la bellezza dei caratteri cinesi. Lo strumento definitivo che unisce calligrafia e IA.',
+  welcomeSubtitle: 'Scopri la bellezza dei caratteri cinesi. Lo strumento definitivo che unisce calligraphie e IA.',
   welcomeBtn: 'Inizia',
   idiomOrigin: 'Storia dell\'origine',
   idiomUsage: 'Esempio d\'uso',
@@ -72,5 +72,7 @@ export const it: UILabels = {
   shareAction: 'Condividi',
   shareTitleChar: "Impara a scrivere '{char}' su HanziMaster!",
   shareTitleIdiom: "Impara l'idioma '{idiom}' su HanziMaster!",
+  shareTextChar: "🀄️ Ho appena imparato a scrivere '{char}' ({pinyin}) su HanziMaster!\n\n📖 Significato: {meaning}\n\n✨ Guarda l'animazione dei tratti e l'analisi IA qui:\n{url}\n\n#HanziMaster #ImparareCinese #Calligrafia",
+  shareTextIdiom: "📜 Ho trovato un idioma affascinante: '{idiom}' ({pinyin})\n\n💡 Significato: {meaning}\n\n🚀 Scopri la sua storia su HanziMaster:\n{url}\n\n#HanziMaster #IdiomiCinesi #ImparareCinese",
   shareMessageCopied: 'Testo per la condivisione copiato!',
 };

@@ -72,5 +72,7 @@ export const ja: UILabels = {
   shareAction: '共有',
   shareTitleChar: "HanziMasterで「{char}」の書き方を学ぼう！",
   shareTitleIdiom: "HanziMasterで成語「{idiom}」を学ぼう！",
+  shareTextChar: "🀄️ HanziMasterで「{char}」({pinyin})の書き順をマスターしました！\n\n📖 意味：{meaning}\n\n✨ 筆順アニメーションとAI解説はこちら：\n{url}\n\n#HanziMaster #中国語学習 #書道",
+  shareTextIdiom: "📜 面白い成語を見つけました：「{idiom}」({pinyin})\n\n💡 意味：{meaning}\n\n🚀 HanziMasterで由来や使い方を学びましょう：\n{url}\n\n#HanziMaster #成語 #中国語学習",
   shareMessageCopied: '共有テキストをコピーしました！',
 };

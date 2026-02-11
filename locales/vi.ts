@@ -72,5 +72,7 @@ export const vi: UILabels = {
   shareAction: 'Chia sẻ',
   shareTitleChar: "Học cách viết chữ '{char}' trên HanziMaster!",
   shareTitleIdiom: "Học thành ngữ '{idiom}' trên HanziMaster!",
+  shareTextChar: "🀄️ Tôi vừa học cách viết chữ '{char}' ({pinyin}) trên HanziMaster!\n\n📖 Nghĩa: {meaning}\n\n✨ Xem hoạt hình nét bút và phân tích AI tại đây:\n{url}\n\n#HanziMaster #HocTiengTrung #ThuPhap",
+  shareTextIdiom: "📜 Tìm thấy một thành ngữ thú vị: '{idiom}' ({pinyin})\n\n💡 Nghĩa: {meaning}\n\n🚀 Tìm hiểu nguồn gốc tại HanziMaster:\n{url}\n\n#HanziMaster #ThanhNguTrungQuoc #HocTiengTrung",
   shareMessageCopied: 'Đã sao chép nội dung chia sẻ!',
 };

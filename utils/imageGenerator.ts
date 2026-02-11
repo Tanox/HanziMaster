@@ -1,3 +1,4 @@
+
 /**
  * HanziMaster v0.4.0
  * Image Generation Service for Sharable Content
@@ -112,8 +113,15 @@ const drawText = (ctx: CanvasRenderingContext2D, size: number, analysis: Charact
 };
 
 const drawBranding = (ctx: CanvasRenderingContext2D, size: number, theme: string) => {
-    ctx.font = `bold 32px 'Inter', sans-serif`;
+    // App Title
+    ctx.font = `bold 28px 'Inter', sans-serif`;
     ctx.fillStyle = theme === 'dark' ? '#475569' : '#94a3b8';
     ctx.textAlign = 'center';
     ctx.fillText('HanziMaster', size / 2, size + 140);
+
+    // Website URL
+    const url = window.location.host;
+    ctx.font = `medium 18px 'Inter', sans-serif`;
+    ctx.fillStyle = theme === 'dark' ? '#334155' : '#cbd5e1';
+    ctx.fillText(url, size / 2, size + 168);
 };
