@@ -17,6 +17,9 @@
 | **07** | [无障碍访问规范 (A11y)](./07_ACCESSIBILITY_A11Y.md) | WCAG 标准、ARIA 映射、键盘导航、低运动模式 | 开发者, 设计师 |
 | **08** | [用户旅程 (User Journey)](./08_USER_JOURNEY.md) | 典型场景、交互流程、情感设计 | 产品, 设计 |
 | **09** | [数据字典 (Data Dictionary)](./09_DATA_DICTIONARY.md) | 核心数据结构、**节庆数据模型**、离线字典覆盖率 | 开发, 数据 |
+| **10** | [项目文件结构 (Project Structure)](./10_PROJECT_STRUCTURE.md) | **目录映射**、模块职责划分、命名规范 | 开发者 |
+| **11** | [开发指南 (Development Guide)](./11_DEVELOPMENT_GUIDE.md) | 技术栈版本、代码风格、Git 提交规范 | 开发者 |
+| **12** | [安全与隐私规范 (Security)](./12_SECURITY_AND_PRIVACY.md) | API Key 处理、CSP 策略、数据持久化规则 | 架构师, 安全 |
 
 ## 📊 项目审查
 
