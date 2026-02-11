@@ -1,4 +1,5 @@
 
+
 # 06. 测试与质量保证 (QA)
 
 ## 1. 测试矩阵
@@ -19,6 +20,14 @@
 *   **iOS Safari**: 必须处理 `pointer-events` 与橡皮绳回弹冲突。
 *   **Android Chrome**: 适配凹口屏（Safe Area）。
 *   **Desktop**: 适配鼠标轨迹与键盘快捷键（如空格键重置动画）。
+
+## 4. 基础设施与构建验证 (Infrastructure Verification)
+*   **CORS 策略验证**: 
+    *   检查构建产物中是否残留指向外部 CDN (如 esm.sh) 的引用。
+    *   验证 `index.html` 不包含 `<script type="importmap">`。
+*   **PWA 注册**:
+    *   验证 `virtual:pwa-register` 模块在 Build 阶段是否正确解析。
+    *   验证 `sw.js` 是否成功注册并接管 fetch 事件。
 
 ---
 *文档维护: HanziMaster QA Team*

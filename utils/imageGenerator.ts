@@ -1,4 +1,5 @@
 
+
 /**
  * HanziMaster v0.4.0
  * Image Generation Service for Sharable Content
@@ -30,7 +31,7 @@ export const generateShareImage = (options: GenerationOptions): Promise<string> 
         // A simple promise that resolves when fonts are likely ready
         const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
         
-        fontsReady.then(() => {
+        (fontsReady as Promise<any>).then(() => {
             // 1. Draw Background
             ctx.fillStyle = theme === 'dark' ? '#1e293b' : '#fdfbf7';
             ctx.fillRect(0, 0, SIZE, SIZE);

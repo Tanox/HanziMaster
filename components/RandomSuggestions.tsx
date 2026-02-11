@@ -1,11 +1,13 @@
+
 /**
- * HanziMaster v0.3.9
+ * HanziMaster v0.4.1
  */
 import React, { useState, useEffect } from 'react';
 import { COMMON_CHARS } from '../constants/commonChars.ts';
 import { COMMON_TERMS } from '../constants/commonTerms.ts';
 import { PINYIN_MAP } from '../constants/pinyinData.ts';
-import { Sparkles, Headphones } from 'lucide-react';
+import { SEASONAL_EVENTS } from '../constants/seasonalEvents.ts';
+import { Sparkles, Headphones, Calendar } from 'lucide-react';
 
 interface RandomSuggestionsProps {
   onSelect: (term: string) => void;
@@ -15,16 +17,65 @@ interface RandomSuggestionsProps {
 
 const RandomSuggestions: React.FC<RandomSuggestionsProps> = ({ onSelect, label, pinyinCache }) => {
   const [items, setItems] = useState<string[]>([]);
+  const [activeSeason, setActiveSeason] = useState<string | null>(null);
 
   useEffect(() => {
     generateItems();
   }, []);
 
+  const getSeasonalTerms = () => {
+    const now = new Date();
+    const month = now.getMonth() + 1; // 1-12
+    const day = now.getDate();
+
+    // 简单匹配：当前日期是否在某个节日范围内
+    // 注意：如果是跨年节日（如12月-1月），这里的简单逻辑需要确保配置正确（startMonth > endMonth 暂不处理，本配置中无跨年）
+    // 对于春节等农历节日，目前使用宽泛的公历范围覆盖
+    const event = SEASONAL_EVENTS.find(e => {
+       if (e.startMonth === e.endMonth) {
+           return month === e.startMonth && day >= e.startDay && day <= e.endDay;
+       } else {
+           // 跨月逻辑
+           if (month === e.startMonth) return day >= e.startDay;
+           if (month === e.endMonth) return day <= e.endDay;
+           return month > e.startMonth && month < e.endMonth;
+       }
+    });
+
+    if (event) {
+        setActiveSeason(event.name);
+        return event.keywords;
+    }
+    
+    setActiveSeason(null);
+    return [];
+  };
+
   const generateItems = () => {
     const newItems: string[] = [];
+    const seasonalTerms = getSeasonalTerms();
     
-    // 混合策略: 2个单字 + 2个词组 + 2个成语 (或者完全随机)
-    for (let i = 0; i < 6; i++) {
+    // 策略：
+    // 1. 如果有节庆词，前 2 个位置留给节庆词
+    // 2. 剩余位置：混合单字、词组、成语
+    
+    let slotsFilled = 0;
+    
+    // 插入节庆词 (随机取 2 个不同)
+    if (seasonalTerms.length > 0) {
+        const shuffledSeasonal = [...seasonalTerms].sort(() => 0.5 - Math.random());
+        // 取最多2个，或者如果节日词少于2个则全取
+        const countToTake = Math.min(2, shuffledSeasonal.length);
+        for(let i=0; i<countToTake; i++) {
+            newItems.push(shuffledSeasonal[i]);
+            slotsFilled++;
+        }
+    }
+
+    const totalSlots = 6;
+    const remainingSlots = totalSlots - slotsFilled;
+
+    for (let i = 0; i < remainingSlots; i++) {
         const roll = Math.random();
         if (roll < 0.4) {
             // 40% 几率抽取单字
@@ -61,17 +112,31 @@ const RandomSuggestions: React.FC<RandomSuggestionsProps> = ({ onSelect, label, 
   return (
     <div className="w-full mt-12 lg:mt-16 mb-8 border-t border-slate-100 dark:border-slate-800 pt-10 px-4">
       <div className="flex items-center justify-center gap-2 mb-8 text-slate-400 dark:text-slate-500 animate-fade-in">
-        <Sparkles size={16} className="text-amber-400" />
-        <h3 className="text-xs font-bold uppercase tracking-[0.2em]">
-          {label}
-        </h3>
+        {activeSeason ? (
+            <>
+                <Calendar size={16} className="text-vermilion-500" />
+                <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-vermilion-600 dark:text-vermilion-400">
+                    {activeSeason} Suggestions
+                </h3>
+            </>
+        ) : (
+            <>
+                <Sparkles size={16} className="text-amber-400" />
+                <h3 className="text-xs font-bold uppercase tracking-[0.2em]">
+                {label}
+                </h3>
+            </>
+        )}
       </div>
       
       <div className="flex flex-wrap justify-center gap-4 sm:gap-5 md:gap-6">
         {items.map((item, index) => {
           const pinyin = getPinyin(item);
           const isIdiom = item.length >= 4;
-          
+          // Highlight seasonal items if active
+          const seasonalTerms = activeSeason ? SEASONAL_EVENTS.find(e => e.name === activeSeason)?.keywords || [] : [];
+          const isSeasonal = seasonalTerms.includes(item);
+
           return (
             <button
               key={`${item}-${index}`}
@@ -81,7 +146,10 @@ const RandomSuggestions: React.FC<RandomSuggestionsProps> = ({ onSelect, label, 
                 min-w-[70px] sm:min-w-[90px] md:min-w-[120px] h-20 sm:h-24 md:h-28 px-4
                 flex flex-col items-center justify-center
                 bg-white dark:bg-slate-800
-                rounded-2xl border border-slate-200 dark:border-slate-700
+                rounded-2xl border
+                ${isSeasonal 
+                    ? 'border-vermilion-300 dark:border-vermilion-700 bg-vermilion-50/50 dark:bg-vermilion-900/10' 
+                    : 'border-slate-200 dark:border-slate-700'}
                 hover:border-teal-400 dark:hover:border-teal-600
                 hover:shadow-xl hover:shadow-teal-500/10
                 hover:-translate-y-1.5
@@ -92,8 +160,14 @@ const RandomSuggestions: React.FC<RandomSuggestionsProps> = ({ onSelect, label, 
               `}
               title={`Learn ${item}`}
             >
+              {isSeasonal && (
+                  <div className="absolute top-1 right-1 w-2 h-2 bg-vermilion-500 rounded-full animate-pulse" />
+              )}
+
               <ruby className={`
-                font-hanzi text-slate-700 dark:text-slate-200 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors
+                font-hanzi transition-colors
+                ${isSeasonal ? 'text-vermilion-700 dark:text-vermilion-200' : 'text-slate-700 dark:text-slate-200'}
+                group-hover:text-teal-600 dark:group-hover:text-teal-400
                 ${isIdiom ? 'text-xl sm:text-2xl md:text-3xl' : 'text-3xl sm:text-4xl'}
               `}>
                 {item}

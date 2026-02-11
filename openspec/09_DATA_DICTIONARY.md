@@ -1,4 +1,5 @@
 
+
 # 09. 数据字典与 API 协议
 
 ## 1. 核心模型
@@ -28,6 +29,20 @@
     1.  `PINYIN_MAP` (静态硬编码，首屏即用)
     2.  `ai_pinyin_cache` (LocalStorage 动态补丁)
     3.  `Gemini API` (实时在线解析)
+
+### 1.3 节庆配置 (Seasonal Events)
+用于时令推荐算法的数据结构。
+```typescript
+interface SeasonalEvent {
+  name: string;          // 节日名称 (如: "Spring Festival")
+  startMonth: number;    // 开始月份 (1-12)
+  startDay: number;      // 开始日期 (1-31)
+  endMonth: number;      // 结束月份
+  endDay: number;        // 结束日期
+  keywords: string[];    // 推荐词汇池 (如: ["春", "福", "红包"])
+  priority: number;      // 权重 (1-10), 权重高者优先覆盖随机推荐
+}
+```
 
 ## 2. 补丁机制 (Self-Healing Logic)
 为了实现“拼音全覆盖”的目标，应用采取了以下自我修复策略：
