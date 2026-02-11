@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.3.5
  */
 
 import { UILabels } from './types';
@@ -66,5 +66,12 @@ export const zhCN: UILabels = {
   closeBtn: '关闭',
   welcomeTitle: '欢迎使用汉字大师',
   welcomeSubtitle: '探索汉字之美，掌握书写之道。结合传统书法与 AI 智能解析的终极学习工具。',
-  welcomeBtn: '开始学习'
+  welcomeBtn: '开始学习',
+  idiomOrigin: '成语典故',
+  idiomUsage: '用法示例',
+  idiomTitle: '成语解析',
+  shareAction: '分享',
+  shareTitleChar: '快来汉字大师学习“{char}”的写法！',
+  shareTitleIdiom: '快来汉字大师学习成语“{idiom}”！',
+  shareMessageCopied: '分享文案已复制！',
 };

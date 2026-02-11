@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.3.5
  */
 import { UILabels } from './types';
 
@@ -13,13 +13,13 @@ export const de: UILabels = {
   commonWords: 'Häufige Wörter',
   appTitle: 'HanziMaster',
   appSubtitle: 'Lerne die chinesische Strichfolge mit KI-gestützten Einblicken.',
-  searchPlaceholder: 'Zeichen eingeben (z.B. 爱)',
+  searchPlaceholder: 'Zeichen oder Idiom eingeben (z.B. 爱, 守株待兔)',
   footerCredit: 'Daten von Hanzi Writer & Gemini AI',
   version: 'Version',
   previewText: 'Zeichenvorschau',
   strokeStatusActive: 'Animieren...',
   strokeStatusComplete: 'Animation fertig',
-  errorInvalidChar: 'Bitte gib ein einzelnes gültiges chinesisches Zeichen ein.',
+  errorInvalidChar: 'Bitte gib 1 bis 4 gültige chinesische Zeichen ein.',
   controlsPlay: 'Start',
   controlsPause: 'Pause',
   controlsReset: 'Reset',
@@ -65,5 +65,12 @@ export const de: UILabels = {
   closeBtn: 'Schließen',
   welcomeTitle: 'Willkommen bei HanziMaster',
   welcomeSubtitle: 'Entdecke die Schönheit chinesischer Schriftzeichen. Das ultimative Tool, das traditionelle Kalligrafie mit KI verbindet.',
-  welcomeBtn: 'Loslegen'
+  welcomeBtn: 'Loslegen',
+  idiomOrigin: 'Entstehungsgeschichte',
+  idiomUsage: 'Anwendungsbeispiel',
+  idiomTitle: 'Idiom-Analyse',
+  shareAction: 'Teilen',
+  shareTitleChar: "Lerne '{char}' auf HanziMaster zu schreiben!",
+  shareTitleIdiom: "Lerne das Idiom '{idiom}' auf HanziMaster!",
+  shareMessageCopied: 'Text zum Teilen kopiert!',
 };

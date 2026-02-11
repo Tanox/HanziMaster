@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.3.5
  */
 import { UILabels } from './types';
 
@@ -13,13 +13,13 @@ export const ru: UILabels = {
   commonWords: 'Примеры слов',
   appTitle: 'HanziMaster',
   appSubtitle: 'Изучайте порядок черт и происхождение иероглифов с помощью ИИ.',
-  searchPlaceholder: 'Введите иероглиф (напр. 爱)',
+  searchPlaceholder: 'Введите иероглиф или идиому (напр. 爱, 守株待兔)',
   footerCredit: 'Данные: Hanzi Writer & Gemini AI',
   version: 'Версия',
   previewText: 'Предпросмотр',
   strokeStatusActive: 'Анимация...',
   strokeStatusComplete: 'Готово',
-  errorInvalidChar: 'Пожалуйста, введите один китайский иероглиф.',
+  errorInvalidChar: 'Пожалуйста, введите от 1 до 4 китайских иероглифов.',
   controlsPlay: 'Пуск',
   controlsPause: 'Пауза',
   controlsReset: 'Сброс',
@@ -65,5 +65,12 @@ export const ru: UILabels = {
   closeBtn: 'Закрыть',
   welcomeTitle: 'Добро пожаловать в HanziMaster',
   welcomeSubtitle: 'Откройте для себя красоту китайских иероглифов. Инструмент, сочетающий каллиграфию и ИИ.',
-  welcomeBtn: 'Начать'
+  welcomeBtn: 'Начать',
+  idiomOrigin: 'История происхождения',
+  idiomUsage: 'Пример использования',
+  idiomTitle: 'Анализ идиомы',
+  shareAction: 'Поделиться',
+  shareTitleChar: "Научитесь писать '{char}' в HanziMaster!",
+  shareTitleIdiom: "Изучите идиому '{idiom}' в HanziMaster!",
+  shareMessageCopied: 'Текст для отправки скопирован!',
 };

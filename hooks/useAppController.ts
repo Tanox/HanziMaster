@@ -1,12 +1,13 @@
-/**
- * HanziMaster v0.3.1
- */
+
+
 import { useState, useEffect, useRef } from 'react';
-import { HanziData, CharacterAnalysis, IdiomAnalysis, AnimationState, InteractionMode, AppSettings, HistoryItem } from '../types';
-import { fetchHanziData } from '../services/hanziService';
-import { analyzeCharacter, analyzeIdiom } from '../services/geminiService';
-import { LANGUAGES } from '../locales';
-import { COMMON_CHARS } from '../utils/commonChars';
+import { HanziData, CharacterAnalysis, IdiomAnalysis, AnimationState, InteractionMode, AppSettings, HistoryItem } from '../types/index.ts';
+import { fetchHanziData } from '../services/hanziService.ts';
+import { analyzeCharacter, analyzeIdiom } from '../services/geminiService.ts';
+import { LANGUAGES } from '../locales/index.ts';
+import { COMMON_CHARS } from '../constants/commonChars.ts';
+import { useLocalStorage } from './useLocalStorage.ts';
+import { PINYIN_MAP } from '../constants/pinyinData.ts';
 
 const DEFAULT_SETTINGS: AppSettings = {
   apiKey: '', 
@@ -15,7 +16,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   autoPlay: true,
   continuousMode: false,
   offlineMode: false,
-  showRandomSuggestions: false,
+  showRandomSuggestions: true,
   showHistory: true,
   showStructure: true,
   showEtymology: true,
@@ -24,77 +25,40 @@ const DEFAULT_SETTINGS: AppSettings = {
 };
 
 export const useAppController = () => {
+  // --- Persistent State ---
+  const [settings, setSettings] = useLocalStorage<AppSettings>('appSettings', DEFAULT_SETTINGS);
+  const [history, setHistory] = useLocalStorage<HistoryItem[]>('practiceHistory', []);
+  const [theme, setTheme] = useLocalStorage<'light' | 'dark'>('theme', 'light');
+  const [hasSeenWelcome, setHasSeenWelcome] = useLocalStorage<boolean>('hasSeenWelcome', false);
+  const [pinyinCache, setPinyinCache] = useLocalStorage<Record<string, string>>('ai_pinyin_cache', {});
+
+  // --- App State ---
   const [activeTerm, setActiveTerm] = useState<string>('永');
   const [activeChar, setActiveChar] = useState<string>('永');
+  const [currentLang, setCurrentLang] = useState<string>('zh-CN');
   
+  // --- Data State ---
   const [hanziData, setHanziData] = useState<HanziData | null>(null);
   const [analysis, setAnalysis] = useState<CharacterAnalysis | null>(null);
   const [idiomAnalysis, setIdiomAnalysis] = useState<IdiomAnalysis | null>(null);
   
+  // --- UI/Loading State ---
   const [loading, setLoading] = useState<boolean>(false);
   const [isAnalysisLoading, setIsAnalysisLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isOffline, setIsOffline] = useState<boolean>(!navigator.onLine);
-
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [showWelcome, setShowWelcome] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      const seen = localStorage.getItem('hasSeenWelcome');
-      return !seen;
-    }
-    return false;
-  });
+  const [showWelcome, setShowWelcome] = useState<boolean>(false);
 
-  const [settings, setSettings] = useState<AppSettings>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('appSettings');
-      if (saved) {
-        try {
-           return { ...DEFAULT_SETTINGS, ...JSON.parse(saved) };
-        } catch (e) {
-           return DEFAULT_SETTINGS;
-        }
-      }
-    }
-    return DEFAULT_SETTINGS;
-  });
-
-  const [history, setHistory] = useState<HistoryItem[]>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('practiceHistory');
-      if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch (e) {
-          return [];
-        }
-      }
-    }
-    return [];
-  });
-
-  const [currentLang, setCurrentLang] = useState<string>('zh-CN');
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('theme');
-      if (saved) return saved as 'light' | 'dark';
-      return 'light';
-    }
-    return 'light';
-  });
-
+  // --- Animation/Interaction State ---
   const [animationState, setAnimationState] = useState<AnimationState>(AnimationState.IDLE);
   const [interactionMode, setInteractionMode] = useState<InteractionMode>(InteractionMode.VIEW);
   const [speed, setSpeed] = useState<number>(1);
-  const nextModeRef = useRef<InteractionMode>(InteractionMode.VIEW);
+  const maintainModeRef = useRef<InteractionMode | null>(null);
 
   useEffect(() => {
-    localStorage.setItem('appSettings', JSON.stringify(settings));
-  }, [settings]);
-
-  useEffect(() => {
-    localStorage.setItem('practiceHistory', JSON.stringify(history));
-  }, [history]);
+    setShowWelcome(!hasSeenWelcome);
+  }, []); 
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -103,7 +67,6 @@ export const useAppController = () => {
     } else {
       root.classList.remove('dark');
     }
-    localStorage.setItem('theme', theme);
   }, [theme]);
 
   useEffect(() => {
@@ -122,15 +85,11 @@ export const useAppController = () => {
   }, [currentLang]);
 
   useEffect(() => {
-      if (hanziData && !loading && nextModeRef.current === InteractionMode.PRACTICE) {
-          setInteractionMode(InteractionMode.PRACTICE);
-          setAnimationState(AnimationState.IDLE);
-          nextModeRef.current = InteractionMode.VIEW; 
-      }
-  }, [hanziData, loading]);
-
-  useEffect(() => {
-    handleSearch('永', currentLang);
+    // Check for character in URL query params on initial load
+    const urlParams = new URLSearchParams(window.location.search);
+    const charFromUrl = urlParams.get('char');
+    const initialChar = charFromUrl && /^[\u4E00-\u9FFF]{1,4}$/.test(charFromUrl) ? charFromUrl : '永';
+    handleSearch(initialChar, currentLang);
   }, []);
 
   const toggleTheme = () => {
@@ -139,13 +98,14 @@ export const useAppController = () => {
 
   const handleDismissWelcome = () => {
     setShowWelcome(false);
-    localStorage.setItem('hasSeenWelcome', 'true');
+    setHasSeenWelcome(true);
   };
 
   const addToHistory = (term: string) => {
     setHistory(prev => {
       const filtered = prev.filter(item => item.char !== term);
-      return [{ char: term, timestamp: Date.now() }, ...filtered].slice(20); 
+      // Correctly slice to keep the first 20 items, not remove them.
+      return [{ char: term, timestamp: Date.now() }, ...filtered].slice(0, 20); 
     });
   };
 
@@ -153,19 +113,26 @@ export const useAppController = () => {
     const fetchedData = await fetchHanziData(char);
     if (fetchedData) {
       setHanziData(fetchedData);
-      if (settings.autoPlay) {
+      if (settings.autoPlay && (maintainModeRef.current !== InteractionMode.PRACTICE && interactionMode !== InteractionMode.PRACTICE)) {
          setTimeout(() => setAnimationState(AnimationState.PLAYING), 500);
       }
     } else {
       setHanziData(null);
-      if (activeTerm.length === 1) {
-          setError(`Could not load stroke data for "${char}".`);
-      }
     }
 
     const langName = LANGUAGES.find(l => l.code === langCode)?.name || 'Simplified Chinese';
     try {
         const aiResult = await analyzeCharacter(char, langName, settings.offlineMode, settings.apiKey);
+        
+        if (aiResult && aiResult.pinyin && aiResult.pinyin !== '-') {
+            setPinyinCache(prevCache => {
+                if (!PINYIN_MAP[char] && prevCache[char] !== aiResult.pinyin) {
+                    return { ...prevCache, [char]: aiResult.pinyin };
+                }
+                return prevCache;
+            });
+        }
+        
         if (fetchedData && aiResult && aiResult.meaning.startsWith("Mode:")) {
             setAnalysis({ ...aiResult, strokeCount: fetchedData.strokes.length });
         } else if (aiResult) {
@@ -182,7 +149,13 @@ export const useAppController = () => {
     setError(null);
     setAnimationState(AnimationState.IDLE);
     setInteractionMode(InteractionMode.VIEW); 
+    maintainModeRef.current = null;
     
+    // Update URL without reloading page for shareability
+    const url = new URL(window.location.href);
+    url.searchParams.set('char', term);
+    window.history.pushState({}, '', url);
+
     setActiveTerm(term);
     const firstChar = term[0];
     setActiveChar(firstChar);
@@ -193,19 +166,19 @@ export const useAppController = () => {
     
     const langName = LANGUAGES.find(l => l.code === langCode)?.name || 'Simplified Chinese';
 
+    const promises: Promise<any>[] = [fetchCharacterData(firstChar, langCode)];
+
     if (term.length > 1) {
-        try {
-            const idiomPromise = analyzeIdiom(term, langName, settings.offlineMode, settings.apiKey);
-            await fetchCharacterData(firstChar, langCode);
-            const idiomResult = await idiomPromise;
-            setIdiomAnalysis(idiomResult);
-        } catch (e) {
-            console.error("Idiom search error", e);
-            setError("Failed to load idiom data.");
-        }
-    } else {
-        await fetchCharacterData(firstChar, langCode);
+        promises.push(
+            analyzeIdiom(term, langName, settings.offlineMode, settings.apiKey)
+                .then(res => setIdiomAnalysis(res))
+                .catch(e => {
+                    console.error("Idiom search error", e);
+                })
+        );
     }
+
+    await Promise.all(promises);
 
     setLoading(false);
     setIsAnalysisLoading(false);
@@ -217,11 +190,12 @@ export const useAppController = () => {
     handleSearch(randomChar, currentLang);
   };
 
-  const handleCharSelect = (char: string) => {
-      if (char === activeChar) return;
+  const handleCharSelect = (char: string, explicitMode?: InteractionMode) => {
+      if (char === activeChar && !explicitMode) return;
       setActiveChar(char);
       setAnimationState(AnimationState.IDLE);
-      setInteractionMode(InteractionMode.VIEW);
+      const targetMode = explicitMode || (maintainModeRef.current || InteractionMode.VIEW);
+      setInteractionMode(targetMode);
       fetchCharacterData(char, currentLang);
   };
 
@@ -236,37 +210,34 @@ export const useAppController = () => {
     if (activeTerm.length > 1) {
         const currentIndex = activeTerm.indexOf(activeChar);
         if (currentIndex !== -1 && currentIndex < activeTerm.length - 1) {
+            maintainModeRef.current = InteractionMode.PRACTICE;
             setTimeout(() => {
-                handleCharSelect(activeTerm[currentIndex + 1]);
-                setInteractionMode(InteractionMode.PRACTICE);
+                handleCharSelect(activeTerm[currentIndex + 1], InteractionMode.PRACTICE);
             }, 1000);
             return;
         } else {
+             maintainModeRef.current = null;
              addToHistory(activeTerm);
              if (settings.continuousMode) {
-                 setTimeout(() => {
-                     setInteractionMode(InteractionMode.PRACTICE);
-                     handleRandom();
-                 }, 1500);
+                 setTimeout(handleRandom, 1500);
              }
-             return;
         }
-    }
-
-    addToHistory(activeTerm);
-
-    if (settings.continuousMode) {
-      nextModeRef.current = InteractionMode.PRACTICE;
-      setTimeout(() => {
-         handleRandom();
-      }, 1500);
+    } else {
+        addToHistory(activeChar);
+         if (settings.continuousMode) {
+             setTimeout(handleRandom, 1500);
+         }
     }
   };
 
   return {
     state: {
+      settings,
+      history,
+      theme,
       activeTerm,
       activeChar,
+      currentLang,
       hanziData,
       analysis,
       idiomAnalysis,
@@ -276,28 +247,32 @@ export const useAppController = () => {
       isOffline,
       isSettingsOpen,
       showWelcome,
-      settings,
-      history,
-      currentLang,
-      theme,
       animationState,
       interactionMode,
       speed,
+      pinyinCache,
     },
     actions: {
+      setSettings,
+      setHistory,
+      toggleTheme,
+      setActiveTerm,
+      setActiveChar,
+      setHanziData,
+      setAnalysis,
+      setLoading,
+      setError,
+      setIsOffline,
+      setIsSettingsOpen,
+      handleDismissWelcome,
       handleSearch,
       handleRandom,
       handleCharSelect,
       handleLanguageChange,
       handlePracticeComplete,
-      handleDismissWelcome,
-      toggleTheme,
-      setIsSettingsOpen,
-      setSettings,
-      setHistory,
       setAnimationState,
       setInteractionMode,
       setSpeed,
-    }
+    },
   };
 };

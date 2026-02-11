@@ -2,7 +2,7 @@
  * HanziMaster v0.3.1
  */
 import React from 'react';
-import { CharacterAnalysis, IdiomAnalysis, AppSettings } from '../types';
+import { CharacterAnalysis, IdiomAnalysis, AppSettings, HanziData } from '../types';
 import { UI_LABELS } from '../locales';
 import IdiomDisplay from './analysis/IdiomDisplay';
 import CharacterDisplay from './analysis/CharacterDisplay';
@@ -10,12 +10,13 @@ import CharacterDisplay from './analysis/CharacterDisplay';
 interface AnalysisPanelProps {
   analysis: CharacterAnalysis | null;
   idiomAnalysis: IdiomAnalysis | null;
+  hanziData: HanziData | null;
   isLoading: boolean;
   language: string;
   settings: AppSettings;
 }
 
-const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, idiomAnalysis, isLoading, language, settings }) => {
+const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, idiomAnalysis, hanziData, isLoading, language, settings }) => {
   const labels = UI_LABELS[language] || UI_LABELS['en'];
 
   if (isLoading) {
@@ -42,7 +43,8 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, idiomAnalysis, 
       )}
       {analysis && (
         <CharacterDisplay 
-          analysis={analysis} 
+          analysis={analysis}
+          hanziData={hanziData}
           settings={settings} 
           labels={labels} 
           compact={!!idiomAnalysis}

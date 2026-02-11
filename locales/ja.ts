@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.3.5
  */
 import { UILabels } from './types';
 
@@ -13,13 +13,13 @@ export const ja: UILabels = {
   commonWords: '熟語・用例',
   appTitle: 'HanziMaster',
   appSubtitle: '書き順アニメーションとAIによる詳細解説で漢字をマスターしよう。',
-  searchPlaceholder: '漢字を入力 (例：爱)',
+  searchPlaceholder: '漢字や成語を入力 (例：爱, 守株待兔)',
   footerCredit: 'データ提供：Hanzi Writer & Gemini AI',
   version: 'バージョン',
   previewText: 'プレビュー',
   strokeStatusActive: '再生中...',
   strokeStatusComplete: '再生終了',
-  errorInvalidChar: '有効な漢字を1文字入力してください。',
+  errorInvalidChar: '1〜4文字の有効な漢字を入力してください。',
   controlsPlay: '再生',
   controlsPause: '一時停止',
   controlsReset: 'リセット',
@@ -65,5 +65,12 @@ export const ja: UILabels = {
   closeBtn: '閉じる',
   welcomeTitle: 'HanziMasterへようこそ',
   welcomeSubtitle: '漢字の美しさを発見しよう。伝統的な書道とAI分析を組み合わせた究極の学習ツール。',
-  welcomeBtn: '始める'
+  welcomeBtn: '始める',
+  idiomOrigin: '語源・由来',
+  idiomUsage: '用例',
+  idiomTitle: '成語解析',
+  shareAction: '共有',
+  shareTitleChar: "HanziMasterで「{char}」の書き方を学ぼう！",
+  shareTitleIdiom: "HanziMasterで成語「{idiom}」を学ぼう！",
+  shareMessageCopied: '共有テキストをコピーしました！',
 };

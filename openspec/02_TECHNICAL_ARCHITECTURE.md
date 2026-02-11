@@ -1,77 +1,40 @@
-# 02. 技术架构
 
-## 1. 系统概览
+# 02. 技术架构规范
 
-本应用采用 **重客户端、无服务 (Client-Heavy, Serverless)** 架构。它构建为封装成渐进式 Web 应用 (PWA) 的单页应用 (SPA)。
+## 1. 设计哲学
+*   **数据驱动**: 所有的 UI 状态（笔顺进度、解析内容）均由状态机统一管理。
+*   **防御式设计**: 针对网络波动设计多级 Fallback 机制。
+*   **模块化**: 渲染逻辑、AI 服务、数据持久化高度解耦。
 
-### 技术栈
-*   **运行时**: 浏览器 (Chrome/Safari/Edge/Firefox)。
-*   **框架**: React 19 + TypeScript。
-*   **构建系统**: Vite。
-*   **样式**: Tailwind CSS (原子化 CSS)。
-*   **状态管理**: React Hooks (`useState`, `useRef`, `useEffect`)。
-*   **AI 引擎**: Google GenAI SDK (`@google/genai`)。
-*   **数据传输**: REST / Fetch API。
+## 2. 核心管线 (Core Pipelines)
 
-## 2. 离线策略 (PWA)
+### 2.1 笔画渲染与校验管线
+1.  **数据解析**: 将 `HanziData` 中的 `strokes` 转换为 SVG 遮罩。
+2.  **动画驱动**: 使用 `requestAnimationFrame` 配合 CSS `stroke-dasharray` 实现平滑流动。
+3.  **几何校验**: 
+    *   获取用户手写 `PointerEvent` 序列。
+    *   计算轨迹点与 `medians` 路径的最近欧几里得距离。
+    *   判定逻辑：起止点重合度 > 85% 且 路径偏差 < 阈值，判定为通过。
 
-核心价值主张是“离线优先”。我们使用 `vite-plugin-pwa` 配合 Workbox 实现。
+### 2.2 AI 响应管线
+*   **并行请求**: 发起解析请求时，同时触发文本生成与 TTS 生成。
+*   **上下文管理**: 维护最近 10 次查询的上下文，提高 AI 回复的相关性。
+*   **异常处理**: 捕获 429 (频率限制) 和 5xx 错误，触发本地 `OfflineAnalysis` 生成器。
 
-### 2.1 资源缓存
-*   **App Shell**: HTML, JS 包, CSS, 和图标在安装时预缓存。
-*   **汉字数据**:
-    *   构建时脚本 (`scripts/copyHanziData.js`) 将 `hanzi-writer-data` (~9000 个 JSON 文件) 复制到 `/public/hanzi-data`。
-    *   Service Worker 配置 (`vite.config.ts`) 为缓存这些 JSON 文件。
-    *   策略: 优先使用缓存 (`CacheFirst`)，本地无文件则回退到 CDN (`jsdelivr`)。
+## 3. 存储与数据分层策略
+*   **L1: 内存 (Memory)**: 运行时状态，音频 Buffer 缓存。
+*   **L2: 本地缓存 (LocalStorage)**: 
+    *   `appSettings`: 用户偏好。
+    *   `practiceHistory`: 最近 50 条练习记录。
+    *   `ai_pinyin_cache`: **[New]** AI 动态补全的生僻字拼音映射表。
+*   **L3: 静态资源 (Static/SW)**: `public/hanzi-data/` 下的 9000+ JSON 文件，通过构建脚本自动化生成，由 Service Worker 预缓存。
 
-### 2.2 功能降级矩阵
+## 4. 混合语音架构 (Hybrid TTS)
+为了平衡音质与可用性，系统采用以下优先级策略：
+1.  **Cache Hit**: 优先检查内存中是否已有该文本的 `AudioBuffer`。
+2.  **Gemini TTS**: 若在线且有 Key，请求 `gemini-2.5-flash-preview-tts` 获取高保真 PCM 音频流。
+3.  **Native Fallback**: 若 API 失败、配额超限或离线，瞬间无缝切换至浏览器原生 `window.speechSynthesis`。
 
-| 功能 | 在线状态 | 离线状态 |
-| :--- | :--- | :--- |
-| **搜索** | 全功能 | 全功能 (基于本地数据) |
-| **动画** | 从本地/CDN 加载 | 从缓存/本地加载 |
-| **解析** | Gemini 3 Flash (富内容) | 生成静态 Fallback 对象 / 基础信息 |
-| **音频** | Gemini 2.5 TTS (自然人声) | 浏览器 `SpeechSynthesis` (机械音) |
-
-## 3. 模块设计
-
-### 3.1 `services/hanziService.ts`
-*   负责获取矢量数据。
-*   逻辑: 尝试本地 `/hanzi-data` -> 失败 -> 尝试 CDN -> 失败 -> 抛出错误。
-
-### 3.2 `services/geminiService.ts`
-*   管理 AI 交互 (Char Analysis)。
-*   **模型**: `gemini-3-flash-preview`。
-*   **安全**: 针对骚扰/仇恨言论等配置为 `BLOCK_NONE`，以防止对历史/战争相关的字源解析（如包含武器“戈”的字）产生误报。
-*   **Schema**: 使用 `responseSchema` 强制要求 JSON 输出格式。
-
-### 3.3 `services/ttsService.ts`
-*   管理语音合成。
-*   **模型**: `gemini-2.5-flash-preview-tts`。
-*   **缓存**: 维护内存中的 `Map<string, AudioBuffer>`，防止重复请求。
-*   **降级**: 当 API Key 缺失、网络断开或配额超限时，自动切换至 Web Speech API。
-
-## 4. 目录结构
-```
-/
-├── public/             # 静态资源 (icon, manifest) + hanzi-data
-├── scripts/            # 构建辅助脚本 (copyHanziData.js)
-├── openspec/           # 规范文档
-├── src/
-│   ├── components/     # UI 组件 (StrokeViewer, AnalysisPanel, etc.)
-│   ├── services/       # 业务逻辑 (gemini, hanzi, tts)
-│   ├── utils/          # 工具函数 (commonChars)
-│   ├── locales/        # 多语言字典 (i18n)
-│   ├── types/          # TypeScript 类型定义
-│   ├── App.tsx         # 主控制器
-│   └── index.tsx       # 入口点
-```
-
-## 5. 数据持久化 (v0.3)
-当前版本使用 **LocalStorage** 进行轻量级数据存储，以保持架构简单。
-
-*   **Key: `appSettings`**: 存储用户偏好（自动播放、离线模式、API Key 等）。
-*   **Key: `practiceHistory`**: 存储最近练习的汉字列表（JSON 数组）。
-*   **Key: `theme`**: 存储亮色/暗色模式偏好。
-
-*(注：v0.4 计划引入 IndexedDB 以支持更复杂的 SRS 复习队列数据)*
+## 5. 安全性与隐私
+*   **API Key 安全**: 支持用户在客户端设置自己的 API Key，不经过任何中转服务器。
+*   **内容审查**: 开启 Gemini 的安全过滤设置，确保解释内容符合教育用途。

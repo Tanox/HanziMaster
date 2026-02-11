@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.3.5
  */
 import { UILabels } from './types';
 
@@ -13,13 +13,13 @@ export const ko: UILabels = {
   commonWords: '자주 쓰는 단어',
   appTitle: 'HanziMaster',
   appSubtitle: '획순 애니메이션과 AI 분석으로 한자를 완벽하게 학습하세요.',
-  searchPlaceholder: '한자를 입력하세요 (예: 爱)',
+  searchPlaceholder: '한자나 고사성어를 입력하세요 (예: 爱, 守株待兔)',
   footerCredit: '데이터 제공: Hanzi Writer & Gemini AI',
   version: '버전',
   previewText: '한자 미리보기',
   strokeStatusActive: '쓰는 중...',
   strokeStatusComplete: '완료',
-  errorInvalidChar: '유효한 한자 한 글자를 입력해주세요.',
+  errorInvalidChar: '1-4자의 유효한 한자를 입력해주세요.',
   controlsPlay: '재생',
   controlsPause: '일시정지',
   controlsReset: '초기화',
@@ -65,5 +65,12 @@ export const ko: UILabels = {
   closeBtn: '닫기',
   welcomeTitle: 'HanziMaster에 오신 것을 환영합니다',
   welcomeSubtitle: '한자의 아름다움을 발견하세요. 전통 서예와 AI 인사이트를 결합한 최고의 학습 도구입니다.',
-  welcomeBtn: '시작하기'
+  welcomeBtn: '시작하기',
+  idiomOrigin: '어원 이야기',
+  idiomUsage: '사용 예시',
+  idiomTitle: '고사성어 분석',
+  shareAction: '공유하기',
+  shareTitleChar: "HanziMaster에서 '{char}' 쓰는 법을 배워보세요!",
+  shareTitleIdiom: "HanziMaster에서 고사성어 '{idiom}'를 배워보세요!",
+  shareMessageCopied: '공유할 텍스트가 복사되었습니다!',
 };

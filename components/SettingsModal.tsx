@@ -1,12 +1,15 @@
+
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.3.7
  */
-import React, { useState } from 'react';
-import { X, Eye, EyeOff, PlayCircle, Layers, BookOpen, Lightbulb, Quote, Infinity, Wifi, Shuffle, Clock, Gauge, Key, Check, AlertTriangle, ExternalLink, Moon, Sun, Globe, Palette } from 'lucide-react';
-import { AppSettings, GridStyle } from '../types';
-import { UILabels } from '../locales/types';
-import { LANGUAGES } from '../locales';
-import ToggleItem from './ToggleItem';
+import React, { useState, useMemo } from 'react';
+import { X, Eye, EyeOff, PlayCircle, Layers, BookOpen, Lightbulb, Quote, Infinity, Wifi, Shuffle, Clock, Gauge, Key, Check, AlertTriangle, ExternalLink, Moon, Sun, Globe, Palette, Database, Clipboard, ChevronDown, ChevronUp } from 'lucide-react';
+import { AppSettings, GridStyle } from '../types/index.ts';
+import { UILabels } from '../locales/types.ts';
+import { LANGUAGES } from '../locales/index.ts';
+import { COMMON_CHARS } from '../constants/commonChars.ts';
+import { PINYIN_MAP } from '../constants/pinyinData.ts';
+import ToggleItem from './ToggleItem.tsx';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -42,6 +45,16 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   onThemeChange
 }) => {
   const [showApiKey, setShowApiKey] = useState(false);
+  const [showAudit, setShowAudit] = useState(false);
+
+  // --- Audit Logic ---
+  const auditData = useMemo(() => {
+    const total = COMMON_CHARS.length;
+    const missing = COMMON_CHARS.filter(char => !PINYIN_MAP[char]);
+    const covered = total - missing.length;
+    const percentage = Math.round((covered / total) * 100);
+    return { total, missing, covered, percentage };
+  }, []);
 
   if (!isOpen) return null;
 
@@ -53,6 +66,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 
   const update = (key: keyof AppSettings, value: any) => {
     onUpdateSettings({ ...settings, [key]: value });
+  };
+
+  const copyMissingToClipboard = () => {
+    const text = auditData.missing.join('');
+    navigator.clipboard.writeText(text);
+    alert('Missing characters copied to clipboard!');
   };
 
   const hasDefaultKey = Boolean(process.env.API_KEY);
@@ -155,85 +174,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
               ))}
           </div>
           
-          {/* Section: API Key (Enhanced) */}
-          <SectionHeader title={labels.settingApiKey} />
-          <div className="mb-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/50">
-            <div className="flex items-center justify-between mb-2">
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                    <Key size={16} className="text-teal-500" />
-                    Gemini API Key
-                </label>
-                
-                {usingCustomKey ? (
-                     <span className="text-[10px] uppercase font-bold tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center gap-1 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full border border-emerald-100 dark:border-emerald-900/30">
-                        <Check size={12} />
-                        {labels.badgeCustom}
-                     </span>
-                ) : hasDefaultKey ? (
-                     <span className="text-[10px] uppercase font-bold tracking-wider text-blue-600 dark:text-blue-400 flex items-center gap-1 bg-blue-50 dark:bg-blue-900/20 px-2 py-0.5 rounded-full border border-blue-100 dark:border-blue-900/30">
-                        <Check size={12} />
-                        {labels.badgeDefault}
-                     </span>
-                ) : (
-                     <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500 flex items-center gap-1 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">
-                        {labels.badgeNone}
-                     </span>
-                )}
-            </div>
-            
-            <div className="relative mb-2">
-                <input 
-                    type={showApiKey ? "text" : "password"}
-                    value={settings.apiKey || ''} 
-                    onChange={(e) => update('apiKey', e.target.value)}
-                    placeholder={labels.settingApiKeyPlaceholder}
-                    className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-lg pl-3 pr-20 py-2.5 text-sm text-slate-800 dark:text-slate-200 outline-none focus:border-teal-500 dark:focus:border-teal-500 focus:ring-1 focus:ring-teal-500/20 transition-all font-mono"
-                    autoComplete="off"
-                    spellCheck="false"
-                />
-                <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                    {settings.apiKey && (
-                        <button
-                            onClick={() => update('apiKey', '')}
-                            className="p-1.5 text-slate-400 hover:text-red-500 rounded-md transition-colors"
-                            title="Clear"
-                        >
-                            <X size={14} />
-                        </button>
-                    )}
-                    <button
-                        onClick={() => setShowApiKey(!showApiKey)}
-                        className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 rounded-md transition-colors"
-                        title={showApiKey ? "Hide" : "Show"}
-                    >
-                        {showApiKey ? <EyeOff size={14} /> : <Eye size={14} />}
-                    </button>
-                </div>
-            </div>
-
-            {settings.apiKey && !settings.apiKey.startsWith('AIza') && (
-                <div className="flex items-start gap-2 mb-3 text-amber-600 dark:text-amber-400 text-xs px-2 animate-fade-in">
-                     <AlertTriangle size={14} className="mt-0.5 shrink-0" />
-                     <span>{labels.settingApiKeyValidationMsg}</span>
-                </div>
-            )}
-
-            <div className="flex flex-col gap-2 text-xs text-slate-500 dark:text-slate-400">
-                <p className="leading-relaxed">{labels.settingApiKeyHelp}</p>
-                <div className="flex items-center gap-3 mt-1">
-                    <a 
-                      href="https://aistudio.google.com/app/apikey" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="text-teal-600 dark:text-teal-400 hover:underline flex items-center gap-1 font-medium bg-white dark:bg-slate-700 px-3 py-1.5 rounded border border-slate-200 dark:border-slate-600 hover:border-teal-300 transition-colors"
-                    >
-                      {labels.getApiKey}
-                      <ExternalLink size={12} />
-                    </a>
-                </div>
-            </div>
-          </div>
-
           {/* Section: Learning */}
           <SectionHeader title={labels.practiceMode} />
           <div className="space-y-3">
@@ -292,57 +232,127 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
             />
           </div>
 
-          {/* Section: Interface */}
-          <SectionHeader title={labels.sectionInterface} />
-          <div className="space-y-3">
-            <ToggleItem 
-              label={labels.settingShowRandomSuggestions} 
-              value={settings.showRandomSuggestions} 
-              onChange={() => update('showRandomSuggestions', !settings.showRandomSuggestions)}
-              icon={<Shuffle size={16} />}
-            />
-            <ToggleItem 
-              label={labels.settingShowHistory} 
-              value={settings.showHistory} 
-              onChange={() => update('showHistory', !settings.showHistory)}
-              icon={<Clock size={16} />}
-            />
+          {/* Section: Database Audit (Data Quality Check) */}
+          <SectionHeader title="Database Status" />
+          <div className="mb-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/50 overflow-hidden">
+            <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300">
+                    <Database size={16} className="text-teal-500" />
+                    Pinyin Coverage
+                </div>
+                <span className="text-xs font-bold text-teal-600 dark:text-teal-400">
+                    {auditData.percentage}%
+                </span>
+            </div>
+            
+            {/* Progress Bar */}
+            <div className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full mb-3">
+                <div 
+                    className="h-full bg-teal-500 rounded-full transition-all duration-1000" 
+                    style={{ width: `${auditData.percentage}%` }}
+                />
+            </div>
+
+            <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
+                Local pinyin mapping for random suggestions. {auditData.covered} out of {auditData.total} characters covered.
+            </p>
+
+            <button
+                onClick={() => setShowAudit(!showAudit)}
+                className="w-full flex items-center justify-between px-3 py-2 bg-white dark:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-600 text-[10px] font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors"
+            >
+                <span className="flex items-center gap-1.5">
+                    {auditData.missing.length} Missing Characters
+                </span>
+                {showAudit ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+            </button>
+
+            {showAudit && (
+                <div className="mt-3 animate-fade-in">
+                    <div className="max-h-32 overflow-y-auto p-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-[10px] font-hanzi leading-loose tracking-widest text-slate-400 break-all select-all">
+                        {auditData.missing.join(' ')}
+                    </div>
+                    <button
+                        onClick={copyMissingToClipboard}
+                        className="mt-2 w-full flex items-center justify-center gap-1.5 py-1.5 text-[10px] font-bold text-teal-600 hover:text-teal-700 transition-colors"
+                    >
+                        <Clipboard size={12} />
+                        Copy Missing List
+                    </button>
+                </div>
+            )}
           </div>
 
-          {/* Section: Content */}
-          <SectionHeader title={labels.sectionContent} />
-          <div className="space-y-3">
-            <ToggleItem 
-              label={labels.settingShowStructure} 
-              value={settings.showStructure} 
-              onChange={() => update('showStructure', !settings.showStructure)}
-              icon={<Layers size={16} />}
-              disabled={settings.offlineMode}
-            />
+          {/* Section: API Key */}
+          <SectionHeader title={labels.settingApiKey} />
+          <div className="mb-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/50">
+            <div className="flex items-center justify-between mb-2">
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                    <Key size={16} className="text-teal-500" />
+                    Gemini API Key
+                </label>
+                
+                {usingCustomKey ? (
+                     <span className="text-[10px] uppercase font-bold tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center gap-1 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full border border-emerald-100 dark:border-emerald-900/30">
+                        <Check size={12} />
+                        {labels.badgeCustom}
+                     </span>
+                ) : hasDefaultKey ? (
+                     <span className="text-[10px] uppercase font-bold tracking-wider text-blue-600 dark:text-blue-400 flex items-center gap-1 bg-blue-50 dark:bg-blue-900/20 px-2 py-0.5 rounded-full border border-blue-100 dark:border-blue-900/30">
+                        <Check size={12} />
+                        {labels.badgeDefault}
+                     </span>
+                ) : (
+                     <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500 flex items-center gap-1 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">
+                        {labels.badgeNone}
+                     </span>
+                )}
+            </div>
             
-            <ToggleItem 
-              label={labels.settingShowEtymology} 
-              value={settings.showEtymology} 
-              onChange={() => update('showEtymology', !settings.showEtymology)}
-              icon={<BookOpen size={16} />}
-              disabled={settings.offlineMode}
-            />
+            <div className="relative mb-2">
+                <input 
+                    type={showApiKey ? "text" : "password"}
+                    value={settings.apiKey || ''} 
+                    onChange={(e) => update('apiKey', e.target.value)}
+                    placeholder={labels.settingApiKeyPlaceholder}
+                    className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-lg pl-3 pr-20 py-2.5 text-sm text-slate-800 dark:text-slate-200 outline-none focus:border-teal-500 dark:focus:border-teal-500 focus:ring-1 focus:ring-teal-500/20 transition-all font-mono"
+                    autoComplete="off"
+                    spellCheck="false"
+                />
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                    {settings.apiKey && (
+                        <button
+                            onClick={() => update('apiKey', '')}
+                            className="p-1.5 text-slate-400 hover:text-red-500 rounded-md transition-colors"
+                            title="Clear"
+                        >
+                            <X size={14} />
+                        </button>
+                    )}
+                    <button
+                        onClick={() => setShowApiKey(!showApiKey)}
+                        className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 rounded-md transition-colors"
+                        title={showApiKey ? "Hide" : "Show"}
+                    >
+                        {showApiKey ? <EyeOff size={14} /> : <Eye size={14} />}
+                    </button>
+                </div>
+            </div>
 
-            <ToggleItem 
-              label={labels.settingShowMnemonic} 
-              value={settings.showMnemonic} 
-              onChange={() => update('showMnemonic', !settings.showMnemonic)}
-              icon={<Lightbulb size={16} />}
-              disabled={settings.offlineMode}
-            />
-
-            <ToggleItem 
-              label={labels.settingShowExamples} 
-              value={settings.showExamples} 
-              onChange={() => update('showExamples', !settings.showExamples)}
-              icon={<Quote size={16} />}
-              disabled={settings.offlineMode}
-            />
+            <div className="flex flex-col gap-2 text-xs text-slate-500 dark:text-slate-400">
+                <p className="leading-relaxed">{labels.settingApiKeyHelp}</p>
+                <div className="flex items-center gap-3 mt-1">
+                    <a 
+                      href="https://aistudio.google.com/app/apikey" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-teal-600 dark:text-teal-400 hover:underline flex items-center gap-1 font-medium bg-white dark:bg-slate-700 px-3 py-1.5 rounded border border-slate-200 dark:border-slate-600 hover:border-teal-300 transition-colors"
+                    >
+                      {labels.getApiKey}
+                      <ExternalLink size={12} />
+                    </a>
+                </div>
+            </div>
           </div>
 
         </div>

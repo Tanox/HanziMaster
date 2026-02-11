@@ -14,6 +14,9 @@ import { ru } from './ru';
 import { pt } from './pt';
 import { it } from './it';
 import { vi } from './vi';
+import { ar } from './ar';
+import { th } from './th';
+import { id } from './id';
 
 export { type LanguageOption, type UILabels };
 
@@ -30,6 +33,9 @@ export const LANGUAGES: LanguageOption[] = [
   { code: 'pt', name: 'Portuguese', native: 'Português' },
   { code: 'it', name: 'Italian', native: 'Italiano' },
   { code: 'vi', name: 'Vietnamese', native: 'Tiếng Việt' },
+  { code: 'ar', name: 'Arabic', native: 'العربية' },
+  { code: 'th', name: 'Thai', native: 'ไทย' },
+  { code: 'id', name: 'Indonesian', native: 'Bahasa Indonesia' },
 ];
 
 export const UI_LABELS: Record<string, UILabels> = {
@@ -45,4 +51,7 @@ export const UI_LABELS: Record<string, UILabels> = {
   'pt': pt,
   'it': it,
   'vi': vi,
+  'ar': ar,
+  'th': th,
+  'id': id,
 };

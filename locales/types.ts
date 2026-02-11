@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.3.5
  */
 
 export interface UILabels {
@@ -55,7 +55,7 @@ export interface UILabels {
   badgeNone: string;
   getApiKey: string;
   practiceComplete: string;
-  installApp?: string; // Optional to prevent breaking other language files immediately
+  installApp?: string;
   // Analysis Content Settings
   settingShowStructure: string;
   settingShowEtymology: string;
@@ -72,6 +72,17 @@ export interface UILabels {
   welcomeTitle: string;
   welcomeSubtitle: string;
   welcomeBtn: string;
+
+  // Idiom Specific
+  idiomOrigin: string;
+  idiomUsage: string;
+  idiomTitle: string;
+  
+  // Share functionality
+  shareAction: string;
+  shareTitleChar: string; // e.g., "Learn '{char}' on HanziMaster"
+  shareTitleIdiom: string; // e.g., "Learn the idiom '{idiom}' on HanziMaster"
+  shareMessageCopied: string;
 }
 
 export interface LanguageOption {

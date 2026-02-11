@@ -1,25 +1,24 @@
-/**
- * HanziMaster v0.3.1
- */
+
+
 import React from 'react';
-import { useAppController } from './hooks/useAppController';
-import { AnimationState, InteractionMode } from './types';
-import SearchInput from './components/SearchInput';
-import StrokeViewer from './components/StrokeViewer';
-import Controls from './components/Controls';
-import AnalysisPanel from './components/AnalysisPanel';
-import RandomSuggestions from './components/RandomSuggestions';
-import HistoryPanel from './components/HistoryPanel';
-import SettingsModal from './components/SettingsModal';
-import ReloadPrompt from './components/ReloadPrompt';
-import WelcomeScreen from './components/WelcomeScreen';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import IdiomNavigator from './components/IdiomNavigator';
-import { UI_LABELS } from './locales';
+import { useAppController } from './hooks/useAppController.ts';
+import { AnimationState, InteractionMode } from './types/index.ts';
+import SearchInput from './components/SearchInput.tsx';
+import StrokeViewer from './components/StrokeViewer.tsx';
+import Controls from './components/Controls.tsx';
+import AnalysisPanel from './components/AnalysisPanel.tsx';
+import RandomSuggestions from './components/RandomSuggestions.tsx';
+import HistoryPanel from './components/HistoryPanel.tsx';
+import SettingsModal from './components/SettingsModal.tsx';
+import ReloadPrompt from './components/ReloadPrompt.tsx';
+import WelcomeScreen from './components/WelcomeScreen.tsx';
+import Header from './components/Header.tsx';
+import Footer from './components/Footer.tsx';
+import IdiomNavigator from './components/IdiomNavigator.tsx';
+import { UI_LABELS } from './locales/index.ts';
 import { AlertCircle, WifiOff } from 'lucide-react';
 
-const APP_VERSION = '0.3.1';
+const APP_VERSION = '0.3.6';
 
 const App: React.FC = () => {
   const { state, actions } = useAppController();
@@ -69,8 +68,10 @@ const App: React.FC = () => {
           )}
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-8 md:gap-12">
-          <div className="lg:col-span-5 flex flex-col items-center">
+        <div className="flex flex-col lg:grid lg:grid-cols-12 lg:gap-12">
+          
+          {/* --- Left Column / Mobile Order 1: Viewer --- */}
+          <div className="order-1 lg:order-1 lg:col-span-5 flex flex-col items-center">
             
             <IdiomNavigator 
                 term={state.activeTerm} 
@@ -117,18 +118,6 @@ const App: React.FC = () => {
                   }}
                   apiKey={state.settings.apiKey}
                 />
-                <div className="mt-6 md:mt-8 text-center min-h-[1.5rem]">
-                   {state.interactionMode === InteractionMode.VIEW && (
-                       <p className="text-slate-400 dark:text-slate-500 text-sm animate-fade-in font-medium">
-                         {state.animationState === AnimationState.PLAYING || state.animationState === AnimationState.PAUSED ? labels.strokeStatusActive : labels.strokeStatusComplete}
-                       </p>
-                   )}
-                   {state.interactionMode === InteractionMode.PRACTICE && state.settings.continuousMode && (
-                        <p className="text-teal-600 dark:text-teal-400 text-sm font-medium animate-pulse">
-                            {labels.settingContinuousMode}
-                        </p>
-                   )}
-                </div>
               </>
             ) : (
               !state.loading && !state.error && (
@@ -138,11 +127,24 @@ const App: React.FC = () => {
               )
             )}
           </div>
+          
+          {/* --- Mobile Order 2 / Desktop Order 3: Suggestions --- */}
+          {state.settings.showRandomSuggestions && (
+            <div className="order-2 lg:order-3 lg:col-span-12">
+              <RandomSuggestions 
+                onSelect={(char) => actions.handleSearch(char, state.currentLang)} 
+                label={labels.randomBtn}
+                pinyinCache={state.pinyinCache}
+              />
+            </div>
+          )}
 
-          <div className="lg:col-span-7">
+          {/* --- Right Column / Mobile Order 3: Analysis --- */}
+          <div className="order-3 lg:order-2 lg:col-span-7">
             <AnalysisPanel 
                 analysis={state.analysis} 
                 idiomAnalysis={state.idiomAnalysis}
+                hanziData={state.hanziData}
                 isLoading={state.isAnalysisLoading} 
                 language={state.currentLang} 
                 settings={state.settings} 
@@ -158,13 +160,6 @@ const App: React.FC = () => {
             )}
           </div>
         </div>
-
-        {state.settings.showRandomSuggestions && (
-          <RandomSuggestions 
-            onSelect={(char) => actions.handleSearch(char, state.currentLang)} 
-            label={labels.randomBtn}
-          />
-        )}
         
         <SettingsModal 
           isOpen={state.isSettingsOpen} 

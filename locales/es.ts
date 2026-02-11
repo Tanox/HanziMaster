@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.3.5
  */
 import { UILabels } from './types';
 
@@ -13,13 +13,13 @@ export const es: UILabels = {
   commonWords: 'Palabras Comunes',
   appTitle: 'HanziMaster',
   appSubtitle: 'Domina el orden de los trazos y descubre los secretos de los caracteres con IA.',
-  searchPlaceholder: 'Ingresa un carácter (ej. 爱)',
+  searchPlaceholder: 'Ingresa un carácter o modismo (ej. 爱, 守株待兔)',
   footerCredit: 'Datos de Hanzi Writer y Gemini AI',
   version: 'Versión',
   previewText: 'Vista Previa',
   strokeStatusActive: 'Animando...',
   strokeStatusComplete: 'Animación Completa',
-  errorInvalidChar: 'Por favor, ingresa un solo carácter chino válido.',
+  errorInvalidChar: 'Por favor, ingresa de 1 a 4 caracteres chinos válidos.',
   controlsPlay: 'Reproducir',
   controlsPause: 'Pausar',
   controlsReset: 'Reiniciar',
@@ -65,5 +65,12 @@ export const es: UILabels = {
   closeBtn: 'Cerrar',
   welcomeTitle: 'Bienvenido a HanziMaster',
   welcomeSubtitle: 'Descubre la belleza de los caracteres chinos. La herramienta definitiva que combina caligrafía tradicional con IA.',
-  welcomeBtn: 'Empezar'
+  welcomeBtn: 'Empezar',
+  idiomOrigin: 'Historia de origen',
+  idiomUsage: 'Ejemplo de uso',
+  idiomTitle: 'Análisis de modismo',
+  shareAction: 'Compartir',
+  shareTitleChar: "¡Aprende a escribir '{char}' en HanziMaster!",
+  shareTitleIdiom: "¡Aprende el modismo '{idiom}' en HanziMaster!",
+  shareMessageCopied: '¡Texto para compartir copiado!',
 };

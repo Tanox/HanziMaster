@@ -1,98 +1,71 @@
+
 # 04. 数据与 API 协议
 
-## 1. 内部数据模型
-核心类型定义位于 `src/types/index.ts`。
+## 1. 数据源定义
+*   **静态数据**: `hanzi-writer-data` 提供的 9000+ JSON。
+*   **动态数据**: Google Gemini 生成的结构化内容。
 
-### 1.1 HanziData (视觉数据)
-源自 `hanzi-writer-data` 项目，经过 JSON 序列化。
-```typescript
-interface HanziData {
-  strokes: string[];     // 可见笔画的 SVG Path (d属性)
-  medians: number[][][]; // 骨架/中线坐标，用于笔画评分 [strokeIndex][pointIndex][x, y]
-  radStrokes?: number[]; // 构成部首的笔画索引数组
-}
-```
+## 2. Gemini 文本解析协议
+*   **Endpoint**: `ai.models.generateContent`
+*   **Model**: `gemini-3-flash-preview`
+*   **System Instruction**: "你是一位专业的字源学家与书法专家，提供学术严谨且易于理解的汉字解析。"
 
-### 1.2 CharacterAnalysis (业务数据)
-UI 组件使用的聚合数据对象。
+### 2.1 CharacterAnalysis Schema (单字)
 ```typescript
 interface CharacterAnalysis {
-  char: string;          // 目标汉字
+  char: string;          // 目标字
   pinyin: string;        // 拼音
-  meaning: string;       // 基本释义 (目标语言)
-  radical: string;       // 部首字符
-  strokeCount: number;   // 总笔画数
-  etymology: string;     // 字源/词源故事
+  meaning: string;       // 释义
+  radical: string;       // 部首
+  strokeCount: number;   // 笔画数
+  etymology: string;     // 字源故事
   mnemonic: string;      // 记忆口诀
-  examples: ExampleWord[]; // 常用词汇列表
-}
-
-interface ExampleWord {
-  word: string;
-  pinyin: string;
-  meaning: string;
+  examples: Array<{      // 常用词组
+    word: string;
+    pinyin: string;      // 词组拼音
+    meaning: string;
+  }>;
 }
 ```
 
-## 2. API 接口契约
+### 2.2 IdiomAnalysis Schema (成语/词组)
+针对 2-4 字的输入，系统调用独立的成语分析接口。
+```typescript
+interface IdiomAnalysis {
+  idiom: string;         // 成语原文
+  pinyin: string;        // 完整拼音
+  meaning: string;       // 释义
+  origin: string;        // 典故/出处 (Story or Source)
+  usage: string;         // 造句/用法示例
+}
+```
 
-### 2.1 Google Gemini (文本解析)
-*   **模型**: `gemini-3-flash-preview`
-*   **输入**: 包含目标语言的结构化 Prompt，请求 JSON 输出。
-*   **安全设置**: `BLOCK_NONE` (为了允许展示涉及古代战争、狩猎等字源的历史解释)。
-*   **JSON Schema**:
+## 3. Gemini TTS 语音协议
+*   **Model**: `gemini-2.5-flash-preview-tts`
+*   **Config**: 
+    *   `responseModalities: ["AUDIO"]`
+    *   `voiceConfig: { prebuiltVoiceConfig: { voiceName: "Kore" } }`
+*   **Processing**: 输出 PCM 流数据，前端通过自定义 `decodeAudioData` 工具函数解析为 `AudioBuffer`。
+
+## 4. 离线 Fallback 策略
+当 API 无法连接时，`analyzeCharacter` 函数必须返回如下结构的本地对象：
 ```json
 {
-  "type": "OBJECT",
-  "properties": {
-    "char": { "type": "STRING" },
-    "pinyin": { "type": "STRING" },
-    "meaning": { "type": "STRING" },
-    "radical": { "type": "STRING" },
-    "strokeCount": { "type": "INTEGER" },
-    "etymology": { "type": "STRING" },
-    "mnemonic": { "type": "STRING" },
-    "examples": {
-      "type": "ARRAY",
-      "items": {
-        "type": "OBJECT",
-        "properties": {
-          "word": { "type": "STRING" },
-          "pinyin": { "type": "STRING" },
-          "meaning": { "type": "STRING" }
-        }
-      }
-    }
-  },
-  "required": ["char", "pinyin", "meaning", "etymology", "mnemonic", "examples"]
+  "char": "${char}",
+  "pinyin": "-",
+  "meaning": "Mode: Offline",
+  "radical": "?",
+  "strokeCount": 0,
+  "etymology": "Analysis unavailable offline.",
+  "mnemonic": "Focus on writing practice.",
+  "examples": []
 }
 ```
 
-### 2.2 Google Gemini (语音合成 TTS)
-*   **模型**: `gemini-2.5-flash-preview-tts`
-*   **配置**:
-    *   `responseModalities`: `['AUDIO']`
-    *   `voiceName`: `'Kore'` (平衡、自然的中性声音)
-*   **输入**: 纯文本 Prompt `"Say: {text}"`。
-*   **输出**: Base64 编码的原始 PCM 音频数据。前端需使用 `AudioContext` 进行解码播放。
-
-## 3. 数据源与存储
-
-### 3.1 汉字矢量数据
-*   **来源**: `hanzi-writer-data` (npm package).
-*   **分发**: 构建时通过脚本复制到 `/public/hanzi-data/` 目录。
-*   **获取策略**:
-    1.  **Local**: 优先尝试请求 `/hanzi-data/{char}.json` (由 Service Worker 缓存)。
-    2.  **CDN**: 失败则回退至 `jsdelivr` CDN。
-    3.  **Error**: 均失败则抛出错误，提示非标准汉字。
-
-### 3.2 客户端缓存
-*   **Audio Cache**: 运行时内存 `Map<string, AudioBuffer>`，防止重复 TTS 请求。
-*   **Settings/History**: 浏览器 `localStorage`。
-
-## 4. 错误处理规范
-*   **429 Quota Exceeded**: 必须捕获并在 UI 上显示优雅降级（使用本地数据和原生 TTS），禁止应用崩溃。
-*   **JSON Parse Error**: 针对 AI 可能返回的 Markdown 代码块标记（```json），必须在解析前进行正则清理。
+## 5. 存储 Schema (LocalStorage)
+*   `practiceHistory`: `Array<{ char: string, timestamp: number }>` (Max: 50 entries)
+*   `appSettings`: `Object` (含 `gridStyle`, `apiKey`, `theme` 等用户偏好)。
+*   `ai_pinyin_cache`: `Record<string, string>` (AI 自动补全的拼音表)。
 
 ---
-*文档维护: HanziMaster Team*
+*文档维护: HanziMaster Data Engineering*

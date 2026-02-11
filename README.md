@@ -11,6 +11,8 @@ For detailed project specifications (available in Chinese), please refer to the 
 *   [03. UI/UX Design](./openspec/03_UI_UX_DESIGN.md)
 *   [04. Data & API](./openspec/04_DATA_AND_API.md)
 *   [05. Marketing & Promotion](./openspec/05_MARKETING_AND_PROMO.md)
+*   [06. Testing & QA](./openspec/06_TESTING_AND_QA.md)
+*   [07. Accessibility Guidelines](./openspec/07_ACCESSIBILITY_A11Y.md)
 
 ## ✨ Features
 

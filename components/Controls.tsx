@@ -66,32 +66,29 @@ const Controls: React.FC<ControlsProps> = ({
           </button>
       </div>
 
-      <div className="flex flex-col items-center gap-4 transition-all duration-300">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col items-center gap-4 transition-all duration-300 pt-2">
+        <div className="flex items-center justify-center gap-3">
+            {/* Secondary: Reset Button */}
             <button
-            onClick={onReset}
-            disabled={isPractice}
-            className={`p-3 text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full transition-all ${
-                isPractice 
-                ? 'opacity-30 cursor-not-allowed' 
-                : 'hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-teal-600 dark:hover:text-teal-400'
-            }`}
-            title={labels.reset}
-            aria-label={labels.reset}
+              onClick={onReset}
+              disabled={isPractice}
+              className={`w-12 h-12 flex items-center justify-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full transition-all ${
+                  isPractice 
+                  ? 'opacity-30 cursor-not-allowed' 
+                  : 'text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/30'
+              }`}
+              title={labels.reset}
+              aria-label={labels.reset}
             >
-            <RotateCcw size={20} />
+              <RotateCcw size={20} />
             </button>
             
-            {/* Pronunciation Button (Always Enabled) */}
-            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full p-0.5 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
-               <PronunciationButton text={char} size={22} className="w-[44px] h-[44px]" apiKey={apiKey} />
-            </div>
-            
+            {/* Primary: Play/Pause Button */}
             {animationState === AnimationState.PLAYING ? (
             <button
                 onClick={onPause}
                 disabled={isPractice}
-                className={`p-4 text-white bg-teal-600 dark:bg-teal-500 rounded-full transform transition-all ${
+                className={`w-16 h-16 flex items-center justify-center text-white bg-teal-600 dark:bg-teal-500 rounded-full transform transition-all ${
                     isPractice
                     ? 'opacity-30 cursor-not-allowed grayscale'
                     : 'hover:bg-teal-700 dark:hover:bg-teal-600 hover:scale-105'
@@ -99,13 +96,13 @@ const Controls: React.FC<ControlsProps> = ({
                 title={labels.pause}
                 aria-label={labels.pause}
             >
-                <Pause size={24} fill="currentColor" />
+                <Pause size={28} fill="currentColor" />
             </button>
             ) : (
             <button
                 onClick={onPlay}
                 disabled={isPractice}
-                className={`p-4 text-white bg-teal-600 dark:bg-teal-500 rounded-full transform transition-all ${
+                className={`w-16 h-16 flex items-center justify-center text-white bg-teal-600 dark:bg-teal-500 rounded-full transform transition-all ${
                     isPractice
                     ? 'opacity-30 cursor-not-allowed grayscale'
                     : 'hover:bg-teal-700 dark:hover:bg-teal-600 hover:scale-105'
@@ -113,9 +110,17 @@ const Controls: React.FC<ControlsProps> = ({
                 title={labels.play}
                 aria-label={labels.play}
             >
-                <Play size={24} fill="currentColor" className="ml-1" />
+                <Play size={28} fill="currentColor" className="ml-1" />
             </button>
             )}
+
+            {/* Secondary: Pronunciation Button */}
+            <PronunciationButton
+                text={char}
+                size={22}
+                className="w-12 h-12 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
+                apiKey={apiKey}
+            />
         </div>
       </div>
     </div>

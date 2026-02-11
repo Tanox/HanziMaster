@@ -1,5 +1,20 @@
 {
-  "name": "HanziMaster",
-  "description": "An interactive Chinese character stroke order teaching application providing etymology, mnemonics, and linguistic analysis.",
+  "name": "HanziMaster 汉字大师",
+  "description": "The ultimate interactive Chinese character learning platform. Master Hanzi with precision vector stroke animations, AI-powered etymology, mnemonics, and high-quality neural TTS. Features full offline support, HSK 1-9 coverage, and 15+ interface languages.",
+  "keywords": [
+    "Chinese characters",
+    "Hanzi",
+    "Stroke Order",
+    "Etymology",
+    "Learn Chinese",
+    "Mandarin",
+    "Pinyin",
+    "HSK",
+    "AI Education",
+    "PWA",
+    "Handwriting practice",
+    "Mnemonics",
+    "Calligraphy"
+  ],
   "requestFramePermissions": []
 }

@@ -11,6 +11,8 @@
 *   [03. UI/UX 设计规范](./openspec/03_UI_UX_DESIGN.md)
 *   [04. 数据与 API 协议](./openspec/04_DATA_AND_API.md)
 *   [05. 营销与推广策略](./openspec/05_MARKETING_AND_PROMO.md)
+*   [06. 测试与质量保证](./openspec/06_TESTING_AND_QA.md)
+*   [07. 无障碍访问规范](./openspec/07_ACCESSIBILITY_A11Y.md)
 
 ## ✨ 功能特性
 

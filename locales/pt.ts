@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.3.5
  */
 import { UILabels } from './types';
 
@@ -13,13 +13,13 @@ export const pt: UILabels = {
   commonWords: 'Palavras Comuns',
   appTitle: 'HanziMaster',
   appSubtitle: 'Domine a ordem dos traços e aprenda com a IA.',
-  searchPlaceholder: 'Digite um caractere (ex. 爱)',
+  searchPlaceholder: 'Digite um caractere ou expressão (ex. 爱, 守株待兔)',
   footerCredit: 'Dados: Hanzi Writer & Gemini AI',
   version: 'Versão',
   previewText: 'Visualização',
   strokeStatusActive: 'Animando...',
   strokeStatusComplete: 'Concluído',
-  errorInvalidChar: 'Por favor, insira um caractere chinês válido.',
+  errorInvalidChar: 'Por favor, insira de 1 a 4 caracteres chineses válidos.',
   controlsPlay: 'Tocar',
   controlsPause: 'Pausa',
   controlsReset: 'Resetar',
@@ -65,5 +65,12 @@ export const pt: UILabels = {
   closeBtn: 'Fechar',
   welcomeTitle: 'Bem-vindo ao HanziMaster',
   welcomeSubtitle: 'Descubra a beleza dos caracteres chineses. A ferramenta definitiva combinando caligrafia e IA.',
-  welcomeBtn: 'Começar'
+  welcomeBtn: 'Começar',
+  idiomOrigin: 'História de origem',
+  idiomUsage: 'Exemplo de uso',
+  idiomTitle: 'Análise de expressão',
+  shareAction: 'Compartilhar',
+  shareTitleChar: "Aprenda a escrever '{char}' no HanziMaster!",
+  shareTitleIdiom: "Aprenda a expressão '{idiom}' no HanziMaster!",
+  shareMessageCopied: 'Texto de compartilhamento copiado!',
 };

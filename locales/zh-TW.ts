@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.3.5
  */
 import { UILabels } from './types';
 
@@ -13,13 +13,13 @@ export const zhTW: UILabels = {
   commonWords: '常用詞彙',
   appTitle: '漢字大師',
   appSubtitle: '可視化筆順教學，深度解析漢字奧秘',
-  searchPlaceholder: '請輸入一個漢字 (如：愛)',
+  searchPlaceholder: '請輸入一個漢字或成語 (如：愛，守株待兔)',
   footerCredit: '數據支持：Hanzi Writer & 智能引擎',
   version: '當前版本',
   previewText: '漢字預覽',
   strokeStatusActive: '演示中...',
   strokeStatusComplete: '演示結束',
-  errorInvalidChar: '請輸入一個有效的單個漢字',
+  errorInvalidChar: '請輸入 1-4 個有效的漢字',
   controlsPlay: '播放',
   controlsPause: '暫停',
   controlsReset: '重置',
@@ -65,5 +65,12 @@ export const zhTW: UILabels = {
   closeBtn: '關閉',
   welcomeTitle: '歡迎使用漢字大師',
   welcomeSubtitle: '探索漢字之美，掌握書寫之道。結合傳統書法與 AI 智能解析的終極學習工具。',
-  welcomeBtn: '開始學習'
+  welcomeBtn: '開始學習',
+  idiomOrigin: '成語典故',
+  idiomUsage: '用法示例',
+  idiomTitle: '成語解析',
+  shareAction: '分享',
+  shareTitleChar: '快來漢字大師學習「{char}」的寫法！',
+  shareTitleIdiom: '快來漢字大師學習成語「{idiom}」！',
+  shareMessageCopied: '分享文案已複製！',
 };

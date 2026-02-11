@@ -1,7 +1,7 @@
 {
-  "name": "hanzimaster-ai",
+  "name": "hanzimaster",
   "private": true,
-  "version": "0.3.2",
+  "version": "0.3.3",
   "license": "GPL-3.0",
   "type": "module",
   "scripts": {
@@ -11,7 +11,7 @@
     "copy-data": "node scripts/copyHanziData.js"
   },
   "dependencies": {
-    "@google/genai": "^0.2.0",
+    "@google/genai": "^1.40.0",
     "lucide-react": "^0.469.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

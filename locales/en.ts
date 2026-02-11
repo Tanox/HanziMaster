@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.3.5
  */
 
 import { UILabels } from './types';
@@ -14,13 +14,13 @@ export const en: UILabels = {
   commonWords: 'Vocabulary',
   appTitle: 'HanziMaster',
   appSubtitle: 'Master Chinese character stroke order with smart linguistic insights.',
-  searchPlaceholder: 'Enter a character (e.g. 爱)',
+  searchPlaceholder: 'Enter a character or idiom (e.g. 爱, 守株待兔)',
   footerCredit: 'Powered by Hanzi Writer & Smart Engine',
   version: 'Version',
   previewText: 'Character Preview',
   strokeStatusActive: 'Animating...',
   strokeStatusComplete: 'Complete',
-  errorInvalidChar: 'Please enter a single valid Chinese character.',
+  errorInvalidChar: 'Please enter 1 to 4 valid Chinese characters.',
   controlsPlay: 'Play',
   controlsPause: 'Pause',
   controlsReset: 'Reset',
@@ -66,5 +66,12 @@ export const en: UILabels = {
   closeBtn: 'Close',
   welcomeTitle: 'Welcome to HanziMaster',
   welcomeSubtitle: 'Discover the beauty of Chinese characters. The ultimate tool combining traditional calligraphy with AI insights.',
-  welcomeBtn: 'Get Started'
+  welcomeBtn: 'Get Started',
+  idiomOrigin: 'Origin story',
+  idiomUsage: 'Usage example',
+  idiomTitle: 'Idiom analysis',
+  shareAction: 'Share',
+  shareTitleChar: "Learn to write '{char}' on HanziMaster!",
+  shareTitleIdiom: "Learn the idiom '{idiom}' on HanziMaster!",
+  shareMessageCopied: 'Share text copied!',
 };

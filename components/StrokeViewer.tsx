@@ -104,360 +104,298 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
 
   const animate = (time: number) => {
     if (startTimeRef.current === undefined) startTimeRef.current = time;
-    
-    const strokeDuration = 800 / speed; 
     const elapsed = time - startTimeRef.current;
-    const currentProgress = Math.min(elapsed / strokeDuration, 1);
     
+    // Total duration for one stroke
+    const totalStrokeDuration = (strokeLengths[currentStrokeIndex] / 1500) * (1 / speed) * 1000;
+    
+    // Calculate current progress
+    const currentProgress = Math.min(elapsed / totalStrokeDuration, 1);
     setProgress(currentProgress);
-
+    
     if (currentProgress < 1) {
       requestRef.current = requestAnimationFrame(animate);
     } else {
-      // Stroke finished
-      if (currentStrokeIndex < data.strokes.length - 1) {
-        setCurrentStrokeIndex(prev => prev + 1);
-        startTimeRef.current = undefined;
+      // Move to next stroke or finish
+      startTimeRef.current = undefined;
+      const nextStroke = currentStrokeIndex + 1;
+      if (nextStroke < data.strokes.length) {
+        setCurrentStrokeIndex(nextStroke);
         setProgress(0);
         requestRef.current = requestAnimationFrame(animate);
       } else {
-        setAnimationState(AnimationState.COMPLETED);
-        setCurrentStrokeIndex(data.strokes.length);
+        // Animation complete
+        setAnimationState(AnimationState.IDLE);
       }
     }
   };
 
   useEffect(() => {
-    if (mode === InteractionMode.PRACTICE) {
-        if (requestRef.current !== undefined) cancelAnimationFrame(requestRef.current);
-        return;
-    }
-
-    if (animationState === AnimationState.PLAYING) {
-        if (currentStrokeIndex === -1 || currentStrokeIndex === data.strokes.length) {
-            setCurrentStrokeIndex(0);
-            setProgress(0);
-            startTimeRef.current = undefined;
-        }
-        requestRef.current = requestAnimationFrame(animate);
-    } else if (animationState === AnimationState.IDLE) {
-        setCurrentStrokeIndex(-1);
+    if (animationState === AnimationState.PLAYING && mode === InteractionMode.VIEW) {
+      // If idle, start from beginning
+      if (currentStrokeIndex === -1 || currentStrokeIndex >= data.strokes.length - 1) {
+        setCurrentStrokeIndex(0);
         setProgress(0);
-        if (requestRef.current !== undefined) cancelAnimationFrame(requestRef.current);
-    } else if (animationState === AnimationState.PAUSED) {
-        if (requestRef.current !== undefined) cancelAnimationFrame(requestRef.current);
-        startTimeRef.current = undefined;
+      }
+      startTimeRef.current = performance.now();
+      requestRef.current = requestAnimationFrame(animate);
+    } else {
+      cancelAnimationFrame(requestRef.current!);
+      startTimeRef.current = undefined;
     }
-
-    return () => {
-        if (requestRef.current !== undefined) cancelAnimationFrame(requestRef.current);
-    };
+    return () => cancelAnimationFrame(requestRef.current!);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [animationState, currentStrokeIndex, data, speed, mode]);
+  }, [animationState, mode, data]);
 
 
-  // --- Practice Logic (Practice Mode) ---
+  // --- Drawing Logic (Practice Mode) ---
 
   const clearCanvas = () => {
     const canvas = canvasRef.current;
     if (canvas) {
       const ctx = canvas.getContext('2d');
-      ctx?.clearRect(0, 0, canvas.width, canvas.height);
-    }
-  };
-
-  // Draw only the new segment (more efficient for touch)
-  const drawSegment = (p1: {x: number, y: number}, p2: {x: number, y: number}, color: string = '#cf352e') => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 15;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-
-    ctx.beginPath();
-    ctx.moveTo(p1.x, p1.y);
-    ctx.lineTo(p2.x, p2.y);
-    ctx.stroke();
-  };
-
-  const drawFullStroke = (points: Array<{x: number, y: number}>, color: string = '#cf352e') => {
-    const canvas = canvasRef.current;
-    if (!canvas || points.length < 2) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 15;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-
-    ctx.beginPath();
-    ctx.moveTo(points[0].x, points[0].y);
-    for (let i = 1; i < points.length; i++) {
-      ctx.lineTo(points[i].x, points[i].y);
-    }
-    ctx.stroke();
-  };
-
-  // Convert screen coordinates to SVG space (0-1024)
-  const getSvgCoordinates = (e: React.PointerEvent) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return { x: 0, y: 0 };
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = SIZE / rect.width;
-    const scaleY = SIZE / rect.height;
-    return {
-      x: (e.clientX - rect.left) * scaleX,
-      y: (e.clientY - rect.top) * scaleY
-    };
-  };
-
-  // Convert Hanzi Data Point (Y-up, origin bottom-left-ish) to SVG Space (Y-down, origin top-left)
-  // Based on the transform: scale(1, -1) translate(0, -921.6)
-  // SVG_Y = -1 * (Data_Y - 921.6) = 921.6 - Data_Y
-  const dataToSvgPoint = (p: number[]) => {
-    return { x: p[0], y: OFFSET_Y - p[1] };
-  };
-
-  const handlePointerDown = (e: React.PointerEvent) => {
-    if (mode !== InteractionMode.PRACTICE || practiceStrokeIndex >= data.strokes.length) return;
-    
-    // Crucial for mobile: prevent scrolling while drawing
-    e.preventDefault(); 
-    (e.target as HTMLElement).setPointerCapture(e.pointerId);
-    
-    setIsDrawing(true);
-    userStrokePathRef.current = [];
-    clearCanvas();
-    
-    const point = getSvgCoordinates(e);
-    userStrokePathRef.current.push(point);
-    lastDrawnPointRef.current = point;
-    
-    // Draw initial dot
-    drawSegment(point, point);
-  };
-
-  const handlePointerMove = (e: React.PointerEvent) => {
-    if (!isDrawing || mode !== InteractionMode.PRACTICE) return;
-    e.preventDefault(); // Safety against scroll
-    
-    const point = getSvgCoordinates(e);
-    userStrokePathRef.current.push(point);
-    
-    if (lastDrawnPointRef.current) {
-        drawSegment(lastDrawnPointRef.current, point);
-    }
-    lastDrawnPointRef.current = point;
-  };
-
-  const handlePointerUp = (e: React.PointerEvent) => {
-    if (!isDrawing || mode !== InteractionMode.PRACTICE) return;
-    setIsDrawing(false);
-    (e.target as HTMLElement).releasePointerCapture(e.pointerId);
-    lastDrawnPointRef.current = null;
-
-    validateStroke();
-  };
-
-  const validateStroke = () => {
-    if (practiceStrokeIndex >= data.strokes.length) return;
-
-    const userPath = userStrokePathRef.current;
-    if (userPath.length < 5) return; // Tap is not a stroke
-
-    const targetMedian = data.medians[practiceStrokeIndex].map(dataToSvgPoint);
-    
-    const startDist = getDistance(userPath[0], targetMedian[0]);
-    const endDist = getDistance(userPath[userPath.length - 1], targetMedian[targetMedian.length - 1]);
-    
-    // Threshold (1024 scale)
-    const THRESHOLD = 350; 
-
-    if (startDist < THRESHOLD && endDist < THRESHOLD) {
-      // Success
-      const nextIndex = practiceStrokeIndex + 1;
-      setPracticeStrokeIndex(nextIndex);
-      clearCanvas();
-      if (navigator.vibrate) navigator.vibrate(20);
-
-      // Check for completion
-      if (nextIndex >= data.strokes.length) {
-         // Notify parent after a short delay to allow React state to settle/UI to update
-         // Using a timeout also lets the final visual update happen before potential page jump
-         setTimeout(() => {
-             if (onPracticeComplete && !hasNotifiedCompletionRef.current) {
-                 hasNotifiedCompletionRef.current = true;
-                 onPracticeComplete();
-             }
-         }, 500);
+      if (ctx) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
-    } else {
-      // Fail - redraw full stroke in error color
-      setFeedbackColor('error');
-      clearCanvas();
-      drawFullStroke(userPath, '#ef4444'); // Red
-      setTimeout(() => {
-        setFeedbackColor(null);
-        clearCanvas();
-      }, 500);
     }
+    userStrokePathRef.current = [];
+    lastDrawnPointRef.current = null;
   };
 
-  // Determine visibility of the background "hint" strokes in Practice Mode
-  const shouldShowBackground = mode === InteractionMode.VIEW || settings.showOutline;
+  const drawUserStroke = (ctx: CanvasRenderingContext2D, toPoint: {x: number, y: number}) => {
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.lineWidth = 100;
+    ctx.strokeStyle = feedbackColor === 'success' ? '#10b981' : (feedbackColor === 'error' ? '#ef4444' : '#0f172a');
+    
+    // For dark mode, use a lighter color for drawing
+    const isDark = document.documentElement.classList.contains('dark');
+    if (isDark && !feedbackColor) {
+        ctx.strokeStyle = '#f1f5f9';
+    }
+
+    if (lastDrawnPointRef.current) {
+        ctx.beginPath();
+        ctx.moveTo(lastDrawnPointRef.current.x, lastDrawnPointRef.current.y);
+        ctx.lineTo(toPoint.x, toPoint.y);
+        ctx.stroke();
+    }
+    lastDrawnPointRef.current = toPoint;
+  };
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (mode !== InteractionMode.PRACTICE || practiceStrokeIndex >= data.strokes.length) return;
+    e.currentTarget.setPointerCapture(e.pointerId);
+    setIsDrawing(true);
+    setFeedbackColor(null);
+    clearCanvas();
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * SIZE;
+    const y = ((e.clientY - rect.top) / rect.height) * SIZE;
+    userStrokePathRef.current = [{x, y}];
+    lastDrawnPointRef.current = {x, y};
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (!isDrawing) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext('2d');
+    if (!ctx || !canvas) return;
+    
+    const rect = canvas.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * SIZE;
+    const y = ((e.clientY - rect.top) / rect.height) * SIZE;
+    userStrokePathRef.current.push({x, y});
+    drawUserStroke(ctx, {x, y});
+  };
+
+  const handlePointerUp = () => {
+    if (!isDrawing) return;
+    setIsDrawing(false);
+    
+    // Validate stroke
+    const userStroke = userStrokePathRef.current;
+    const targetStroke = data.medians[practiceStrokeIndex];
+
+    if (userStroke.length < 2 || !targetStroke || targetStroke.length < 2) {
+      setFeedbackColor('error');
+      setTimeout(clearCanvas, 500);
+      return;
+    }
+
+    const startPointUser = userStroke[0];
+    const endPointUser = userStroke[userStroke.length - 1];
+
+    const startPointTarget = { x: targetStroke[0][0], y: targetStroke[0][1] };
+    const endPointTarget = { x: targetStroke[targetStroke.length - 1][0], y: targetStroke[targetStroke.length - 1][1] };
+
+    const startDist = getDistance(startPointUser, startPointTarget);
+    const endDist = getDistance(endPointUser, endPointTarget);
+
+    // Heuristic: start/end points must be reasonably close, within 30% of stroke length
+    const strokeLen = getPathLength(targetStroke);
+    const threshold = Math.max(150, strokeLen * 0.4);
+
+    if (startDist < threshold && endDist < threshold) {
+        setFeedbackColor('success');
+        setTimeout(() => {
+            const nextStroke = practiceStrokeIndex + 1;
+            setPracticeStrokeIndex(nextStroke);
+            clearCanvas();
+        }, 300);
+    } else {
+        setFeedbackColor('error');
+        setTimeout(clearCanvas, 500);
+    }
+  };
+  
+  // Call onPracticeComplete when finished, but only once
+  useEffect(() => {
+    if (practiceStrokeIndex >= data.strokes.length && data.strokes.length > 0 && !hasNotifiedCompletionRef.current) {
+        if (onPracticeComplete) {
+            onPracticeComplete();
+        }
+        hasNotifiedCompletionRef.current = true;
+    }
+  }, [practiceStrokeIndex, data.strokes.length, onPracticeComplete]);
+
+
+  // Determine grid line paths
+  const gridLines = useMemo(() => {
+    if (settings.gridStyle === 'none') return [];
+    
+    const lines = [
+      // Bounding box
+      { d: `M 0,0 L ${SIZE},0 L ${SIZE},${SIZE} L 0,${SIZE} Z`, stroke: '#e2e8f0', dark: '#334155' },
+      // Cross
+      { d: `M ${SIZE/2},0 L ${SIZE/2},${SIZE}`, stroke: '#e2e8f0', dark: '#334155' },
+      { d: `M 0,${SIZE/2} L ${SIZE},${SIZE/2}`, stroke: '#e2e8f0', dark: '#334155' },
+    ];
+    if (settings.gridStyle === 'rice') {
+      // Diagonals
+      lines.push({ d: `M 0,0 L ${SIZE},${SIZE}`, stroke: '#e2e8f0', dark: '#334155' });
+      lines.push({ d: `M ${SIZE},0 L 0,${SIZE}`, stroke: '#e2e8f0', dark: '#334155' });
+    }
+    return lines;
+  }, [settings.gridStyle]);
+
+  const StatusOverlay = () => {
+    let text: string | null = null;
+
+    if (mode === InteractionMode.PRACTICE) {
+        if (showSuccess) {
+            text = labels.practiceComplete;
+        } else if (settings.continuousMode && practiceStrokeIndex < data.strokes.length) {
+            text = labels.settingContinuousMode;
+        }
+    } else if (mode === InteractionMode.VIEW) {
+        if (animationState === AnimationState.PLAYING || animationState === AnimationState.PAUSED) {
+            text = labels.strokeStatusActive;
+        } else if (currentStrokeIndex >= data.strokes.length - 1 && data.strokes.length > 0) {
+            text = labels.strokeStatusComplete;
+        }
+    }
+
+    const isVisible = text !== null;
+
+    return (
+        <div className={`absolute bottom-3 left-1/2 -translate-x-1/2 transition-all duration-300 pointer-events-none ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
+            <div className={`px-2.5 py-1 rounded-md text-[10px] font-bold backdrop-blur-sm shadow-md ${mode === InteractionMode.PRACTICE && showSuccess ? 'bg-emerald-600/90 text-white' : 'bg-black/40 text-white'}`}>
+                {text}
+            </div>
+        </div>
+    );
+  };
 
   return (
-    // Responsive aspect ratio container
-    <div className="relative w-full max-w-[90vw] md:max-w-[400px] aspect-square mx-auto my-6">
-      
-      {/* Outer Frame (Shadow & Texture) */}
-      <div className={`relative w-full h-full bg-texture-paper rounded-lg transition-all duration-300 select-none overflow-hidden ${
-        feedbackColor === 'error' 
-          ? 'ring-4 ring-red-200 dark:ring-red-900/50 border-red-400' 
-          : mode === InteractionMode.PRACTICE 
-            ? 'ring-4 ring-vermilion-100 dark:ring-vermilion-900/30 border-vermilion-200 dark:border-vermilion-800'
-            : 'border-slate-200 dark:border-slate-700'
-      } border`}>
-        
-        {/* Practice Mode Seal/Indicator */}
-        {mode === InteractionMode.PRACTICE && (
-            <div className="absolute top-4 right-4 z-20 pointer-events-none animate-fade-in">
-                 <div className="bg-vermilion-500 text-white p-2 rounded-lg border-2 border-vermilion-600 transform rotate-6 opacity-90">
-                    <PenTool size={18} />
-                 </div>
-            </div>
-        )}
-
-        {/* Grid Background - Styled to look like traditional guides */}
-        <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="absolute inset-0 w-full h-full pointer-events-none opacity-20 dark:opacity-30">
-          
-          {/* Diagonals - Rice only */}
-          {settings.gridStyle === 'rice' && (
-            <>
-              <line x1="0" y1="0" x2={SIZE} y2={SIZE} className="stroke-vermilion-600 dark:stroke-slate-400" strokeWidth="2" strokeDasharray="10,10" />
-              <line x1={SIZE} y1="0" x2="0" y2={SIZE} className="stroke-vermilion-600 dark:stroke-slate-400" strokeWidth="2" strokeDasharray="10,10" />
-            </>
-          )}
-
-          {/* Cross lines - Rice and Field */}
-          {(settings.gridStyle === 'rice' || settings.gridStyle === 'field') && (
-            <>
-              <line x1={SIZE/2} y1="0" x2={SIZE/2} y2={SIZE} className="stroke-vermilion-600 dark:stroke-slate-400" strokeWidth="2" strokeDasharray="10,10" />
-              <line x1="0" y1={SIZE/2} x2={SIZE} y2={SIZE/2} className="stroke-vermilion-600 dark:stroke-slate-400" strokeWidth="2" strokeDasharray="10,10" />
-            </>
-          )}
-        </svg>
-
-        {/* Character Rendering */}
-        <svg 
-          viewBox={`0 0 ${SIZE} ${SIZE}`} 
-          className="absolute inset-0 w-full h-full pointer-events-none"
-        >
-          <defs>
-            {/* View Mode Masks */}
-            {mode === InteractionMode.VIEW && data.medians.map((medianPoints, index) => {
-              const len = strokeLengths[index] || 1000;
-              const dashArray = index === currentStrokeIndex 
-                  ? `${progress * len} ${len}` 
-                  : (index < currentStrokeIndex ? `${len} 0` : `0 ${len}`);
-              
-              return (
-                <mask id={`mask-${index}`} key={`mask-${index}`} maskUnits="userSpaceOnUse">
-                   <path 
-                     d={getMedianPath(medianPoints)} 
-                     fill="none" 
-                     stroke="white" 
-                     strokeWidth="150" 
-                     strokeLinecap="round"
-                     strokeLinejoin="round"
-                     strokeDasharray={dashArray}
-                   />
-                </mask>
-              );
-            })}
-          </defs>
-
-          <g transform={`scale(1, -1) translate(0, -${OFFSET_Y})`}> 
-             {/* Background Shadows (Template) */}
-             {data.strokes.map((strokePath, index) => (
-               <path 
-                 key={`bg-${index}`} 
-                 d={strokePath}
-                 className={`transition-all duration-300 ${
-                    mode === InteractionMode.PRACTICE 
-                        ? (index < practiceStrokeIndex ? 'fill-slate-800 dark:fill-slate-100' : 'fill-slate-200 dark:fill-slate-600') 
-                        : 'fill-slate-200 dark:fill-slate-600'
-                 }`}
-                 style={{
-                   opacity: (mode === InteractionMode.PRACTICE && !shouldShowBackground && index >= practiceStrokeIndex) ? 0 : 1
-                 }}
-               />
+    <div className="w-full max-w-xs relative bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-100 dark:border-slate-700 aspect-square shadow-inner bg-texture-paper select-none touch-none">
+      <svg
+        viewBox={`0 0 ${SIZE} ${SIZE}`}
+        className="w-full h-full"
+      >
+        <g transform={`translate(0, ${OFFSET_Y}) scale(1, -1)`}>
+          {/* Grid Lines */}
+          <g strokeWidth="2" className="stroke-slate-200 dark:stroke-slate-700">
+             {gridLines.map((line, i) => (
+                <path key={i} d={line.d} />
              ))}
-
-             {/* Animated/Revealed Strokes (View Mode) */}
-             {mode === InteractionMode.VIEW && data.strokes.map((strokePath, index) => (
-               <path 
-                 key={`fg-${index}`} 
-                 d={strokePath} 
-                 className="fill-slate-900 dark:fill-slate-100 transition-colors duration-300"
-                 mask={`url(#mask-${index})`}
-                 style={{
-                   opacity: index <= currentStrokeIndex ? 1 : 0
-                 }}
-               />
-             ))}
-             
-             {/* Practice Mode: Hint Pulse */}
-             {mode === InteractionMode.PRACTICE && settings.showOutline && practiceStrokeIndex < data.strokes.length && (
-                <path 
-                  d={data.strokes[practiceStrokeIndex]}
-                  className="fill-transparent stroke-vermilion-400 stroke-[20px]"
-                  style={{ animation: 'pulse 2s infinite' }}
-                />
-             )}
           </g>
-        </svg>
 
-        {/* Interaction Canvas */}
-        {mode === InteractionMode.PRACTICE && (
-            <canvas
-                ref={canvasRef}
-                width={SIZE}
-                height={SIZE}
-                className="absolute inset-0 w-full h-full cursor-crosshair touch-none"
-                onPointerDown={handlePointerDown}
-                onPointerMove={handlePointerMove}
-                onPointerUp={handlePointerUp}
-                onPointerLeave={handlePointerUp}
+          {/* Character Outline/Guide */}
+          {(settings.showOutline || mode === InteractionMode.PRACTICE) && (
+            <path
+              d={data.strokes.join(' ')}
+              className={`
+                fill-none stroke-vermilion-100 dark:stroke-vermilion-900 
+                ${mode === InteractionMode.PRACTICE ? 'opacity-60' : 'opacity-100'}
+              `}
+              strokeWidth="4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
-        )}
-        
-        {/* Success Overlay (Seal Stamp Effect) */}
-        {mode === InteractionMode.PRACTICE && showSuccess && (
-            <div className="absolute inset-0 flex items-center justify-center bg-vermilion-500/10 backdrop-blur-[1px] animate-fade-in z-30">
-                <div className="bg-vermilion-600 text-white w-24 h-24 rounded-lg flex items-center justify-center border-4 border-vermilion-800 transform rotate-12 scale-110 animate-bounce">
-                    <span className="text-5xl font-hanzi font-bold">优</span>
-                </div>
-            </div>
-        )}
-      </div>
+          )}
+
+          {/* Animated Strokes (View Mode) */}
+          {mode === InteractionMode.VIEW && data.strokes.map((stroke, i) => (
+            <path
+              key={i}
+              d={stroke}
+              className={`fill-none stroke-vermilion-500`}
+              strokeWidth="100"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{
+                opacity: i <= currentStrokeIndex ? 1 : 0,
+                strokeDasharray: strokeLengths[i],
+                strokeDashoffset: i === currentStrokeIndex ? strokeLengths[i] * (1 - progress) : 0,
+              }}
+            />
+          ))}
+
+          {/* Completed Strokes (Practice Mode) */}
+          {mode === InteractionMode.PRACTICE && data.strokes.map((stroke, i) => (
+            <path
+              key={i}
+              d={stroke}
+              className={`fill-none stroke-vermilion-500`}
+              strokeWidth="100"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{ opacity: i < practiceStrokeIndex ? 1 : 0 }}
+            />
+          ))}
+        </g>
+      </svg>
       
-      {/* Status Text below viewer */}
-      <div className="text-center mt-4 h-6">
-        {mode === InteractionMode.PRACTICE && (
-          <div className="inline-block px-3 py-1 rounded-full bg-vermilion-50 dark:bg-vermilion-900/20 text-vermilion-700 dark:text-vermilion-300 text-xs font-medium tracking-wide transition-opacity duration-300" 
-               style={{ opacity: showSuccess || practiceStrokeIndex < data.strokes.length ? 1 : 0 }}>
-              {practiceStrokeIndex >= data.strokes.length 
-                  ? labels.practiceComplete 
-                  : `Stroke ${practiceStrokeIndex + 1} / ${data.strokes.length}`}
-          </div>
-        )}
-      </div>
+      {/* Practice Canvas Overlay */}
+      <canvas
+        ref={canvasRef}
+        width={SIZE}
+        height={SIZE}
+        className="absolute inset-0 w-full h-full"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerLeave={handlePointerUp}
+      />
+
+      {/* Practice Mode Guide */}
+      {mode === InteractionMode.PRACTICE && practiceStrokeIndex < data.strokes.length && (
+         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 text-center animate-fade-in">
+               <PenTool size={24} className="mx-auto text-teal-500 mb-2" />
+               <p className="font-bold text-slate-700 dark:text-slate-200">
+                  Stroke {practiceStrokeIndex + 1} / {data.strokes.length}
+               </p>
+               <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Please write the next stroke.
+               </p>
+            </div>
+         </div>
+      )}
+
+      <StatusOverlay />
     </div>
   );
 };

@@ -59,8 +59,17 @@ function cleanJsonResponse(text: string): string {
     }
     const startIndex = text.indexOf('{');
     const endIndex = text.lastIndexOf('}');
-    if (startIndex !== -1 && endIndex !== -1) {
-        text = text.substring(startIndex, endIndex + 1);
+    
+    if (startIndex !== -1) {
+        if (endIndex !== -1 && endIndex > startIndex) {
+            text = text.substring(startIndex, endIndex + 1);
+        } else {
+            // Handle potentially truncated JSON
+            text = text.substring(startIndex);
+            if (!text.endsWith('}')) {
+                text += '}';
+            }
+        }
     }
     return text;
 }
@@ -127,7 +136,12 @@ export const analyzeCharacter = async (char: string, languageName: string = 'Eng
     const text = cleanJsonResponse(response.text || "");
     if (!text) return generateOfflineAnalysis(char, "No Response");
     
-    return JSON.parse(text) as CharacterAnalysis;
+    try {
+        return JSON.parse(text) as CharacterAnalysis;
+    } catch (parseError) {
+        console.error("JSON Parse Error in analyzeCharacter:", parseError, "Response was:", text);
+        return generateOfflineAnalysis(char, "AI Data Corruption");
+    }
 
   } catch (error: any) {
     if (error.status === 429 || (error.message && error.message.includes('429'))) {
@@ -182,7 +196,12 @@ export const analyzeIdiom = async (idiom: string, languageName: string = 'Englis
         const text = cleanJsonResponse(response.text || "");
         if (!text) return generateOfflineIdiomAnalysis(idiom, "No Response");
 
-        return JSON.parse(text) as IdiomAnalysis;
+        try {
+            return JSON.parse(text) as IdiomAnalysis;
+        } catch (parseError) {
+            console.error("JSON Parse Error in analyzeIdiom:", parseError, "Response was:", text);
+            return generateOfflineIdiomAnalysis(idiom, "AI Data Corruption");
+        }
 
     } catch (error: any) {
         if (error.status === 429 || (error.message && error.message.includes('429'))) {

@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.3.5
  */
 import { UILabels } from './types';
 
@@ -13,13 +13,13 @@ export const vi: UILabels = {
   commonWords: 'Từ ghép thông dụng',
   appTitle: 'HanziMaster',
   appSubtitle: 'Học thứ tự nét vẽ và phân tích chuyên sâu cùng AI.',
-  searchPlaceholder: 'Nhập một chữ Hán (ví dụ: 爱)',
+  searchPlaceholder: 'Nhập chữ Hán hoặc thành ngữ (ví dụ: 爱, 守株待兔)',
   footerCredit: 'Dữ liệu: Hanzi Writer & Gemini AI',
   version: 'Phiên bản',
   previewText: 'Xem trước chữ Hán',
   strokeStatusActive: 'Đang viết...',
   strokeStatusComplete: 'Hoàn tất',
-  errorInvalidChar: 'Vui lòng nhập một chữ Hán hợp lệ.',
+  errorInvalidChar: 'Vui lòng nhập 1-4 chữ Hán hợp lệ.',
   controlsPlay: 'Phát',
   controlsPause: 'Dừng',
   controlsReset: 'Đặt lại',
@@ -65,5 +65,12 @@ export const vi: UILabels = {
   closeBtn: 'Đóng',
   welcomeTitle: 'Chào mừng đến với HanziMaster',
   welcomeSubtitle: 'Khám phá vẻ đẹp của chữ Hán. Công cụ học tập kết hợp thư pháp truyền thống và AI.',
-  welcomeBtn: 'Bắt đầu'
+  welcomeBtn: 'Bắt đầu',
+  idiomOrigin: 'Điển tích',
+  idiomUsage: 'Cách dùng',
+  idiomTitle: 'Phân tích thành ngữ',
+  shareAction: 'Chia sẻ',
+  shareTitleChar: "Học cách viết chữ '{char}' trên HanziMaster!",
+  shareTitleIdiom: "Học thành ngữ '{idiom}' trên HanziMaster!",
+  shareMessageCopied: 'Đã sao chép nội dung chia sẻ!',
 };
