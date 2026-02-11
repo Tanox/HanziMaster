@@ -44,7 +44,7 @@ export const generateShareImage = (options: GenerationOptions): Promise<string> 
             drawGrid(ctx, renderAreaSize, settings.gridStyle, theme);
 
             // 4. Draw Character (via SVG)
-            drawCharacterAsImage(ctx, renderAreaSize, hanziData, theme).then(() => {
+            drawCharacterAsImage(ctx, renderAreaSize, hanziData).then(() => {
                 // 5. Draw Text
                 drawText(ctx, renderAreaSize, analysis, theme);
                 
@@ -74,7 +74,7 @@ const drawGrid = (ctx: CanvasRenderingContext2D, size: number, style: AppSetting
     ctx.stroke();
 };
 
-const drawCharacterAsImage = (ctx: CanvasRenderingContext2D, size: number, hanziData: HanziData, theme: string): Promise<void> => {
+const drawCharacterAsImage = (ctx: CanvasRenderingContext2D, size: number, hanziData: HanziData): Promise<void> => {
     return new Promise((resolve, reject) => {
         const OFFSET_Y = VIEW_SIZE * 0.9;
         const strokeColor = '#cf352e';

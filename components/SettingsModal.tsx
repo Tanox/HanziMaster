@@ -3,7 +3,7 @@
  * HanziMaster v0.3.7
  */
 import React, { useState, useMemo } from 'react';
-import { X, Eye, EyeOff, PlayCircle, Layers, BookOpen, Lightbulb, Quote, Infinity, Wifi, Shuffle, Clock, Gauge, Key, Check, AlertTriangle, ExternalLink, Moon, Sun, Globe, Palette, Database, Clipboard, ChevronDown, ChevronUp } from 'lucide-react';
+import { X, Eye, EyeOff, PlayCircle, Infinity, Wifi, Gauge, Key, Check, ExternalLink, Moon, Sun, Globe, Palette, Database, Clipboard, ChevronDown, ChevronUp } from 'lucide-react';
 import { AppSettings, GridStyle } from '../types/index.ts';
 import { UILabels } from '../locales/types.ts';
 import { LANGUAGES } from '../locales/index.ts';

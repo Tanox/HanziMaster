@@ -1,3 +1,4 @@
+
 /**
  * HanziMaster v0.4.0
  */
@@ -68,7 +69,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({
       </span>
       {isCopied ? (
         <Check size={size} className="text-emerald-500" />
-      ) : navigator.share ? (
+      ) : typeof navigator.share === 'function' ? (
         <Share2 size={size} />
       ) : (
         <Copy size={size} />

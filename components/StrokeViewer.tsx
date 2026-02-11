@@ -1,3 +1,4 @@
+
 /**
  * HanziMaster v0.3.1
  */
@@ -5,7 +6,7 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { HanziData, AnimationState, InteractionMode, AppSettings } from '../types';
 import { PenTool } from 'lucide-react';
 import { UILabels } from '../locales/types';
-import { getDistance, getMedianPath, getPathLength } from '../utils/geometry';
+import { getDistance, getPathLength } from '../utils/geometry';
 
 interface StrokeViewerProps {
   data: HanziData;
