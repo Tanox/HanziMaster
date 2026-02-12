@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.3.7
+ * HanziMaster v0.4.2
  */
 import React, { useState, useMemo } from 'react';
 import { X, Eye, EyeOff, PlayCircle, Infinity, Wifi, Gauge, Key, Check, ExternalLink, Moon, Sun, Globe, Palette, Database, Clipboard, ChevronDown, ChevronUp } from 'lucide-react';
@@ -76,6 +76,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 
   const hasDefaultKey = Boolean(process.env.API_KEY);
   const usingCustomKey = Boolean(settings.apiKey);
+
+  const coverageDesc = labels.pinyinCoverageDesc 
+    ? labels.pinyinCoverageDesc.replace('{covered}', auditData.covered.toString()).replace('{total}', auditData.total.toString())
+    : `Local pinyin mapping for random suggestions. ${auditData.covered} out of ${auditData.total} characters covered.`;
 
   return (
     <div 
@@ -233,12 +237,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           </div>
 
           {/* Section: Database Audit (Data Quality Check) */}
-          <SectionHeader title="Database Status" />
+          <SectionHeader title={labels.settingDatabaseStatus || "Database Status"} />
           <div className="mb-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/50 overflow-hidden">
             <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300">
                     <Database size={16} className="text-teal-500" />
-                    Pinyin Coverage
+                    {labels.pinyinCoverage || "Pinyin Coverage"}
                 </div>
                 <span className="text-xs font-bold text-teal-600 dark:text-teal-400">
                     {auditData.percentage}%
@@ -254,7 +258,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
             </div>
 
             <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
-                Local pinyin mapping for random suggestions. {auditData.covered} out of {auditData.total} characters covered.
+                {coverageDesc}
             </p>
 
             <button
@@ -262,7 +266,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                 className="w-full flex items-center justify-between px-3 py-2 bg-white dark:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-600 text-[10px] font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors"
             >
                 <span className="flex items-center gap-1.5">
-                    {auditData.missing.length} Missing Characters
+                    {auditData.missing.length} {labels.missingChars || "Missing Characters"}
                 </span>
                 {showAudit ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
             </button>
@@ -277,7 +281,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                         className="mt-2 w-full flex items-center justify-center gap-1.5 py-1.5 text-[10px] font-bold text-teal-600 hover:text-teal-700 transition-colors"
                     >
                         <Clipboard size={12} />
-                        Copy Missing List
+                        {labels.copyMissing || "Copy Missing List"}
                     </button>
                 </div>
             )}

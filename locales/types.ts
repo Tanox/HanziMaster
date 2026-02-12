@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.3.5
+ * HanziMaster v0.4.2
  */
 
 export interface UILabels {
@@ -83,9 +83,38 @@ export interface UILabels {
   shareAction: string;
   shareTitleChar: string; 
   shareTitleIdiom: string;
-  shareTextChar: string; // New rich text template
-  shareTextIdiom: string; // New rich text template
+  shareTextChar: string; 
+  shareTextIdiom: string; 
   shareMessageCopied: string;
+
+  // Database Audit (Optional for compat)
+  settingDatabaseStatus?: string;
+  pinyinCoverage?: string;
+  pinyinCoverageDesc?: string;
+  missingChars?: string;
+  copyMissing?: string;
+
+  // Reload Prompt (Optional for compat)
+  updateAvailable?: string;
+  updateMsg?: string;
+  reloadBtn?: string;
+  offlineReady?: string;
+  offlineMsg?: string;
+  dismissBtn?: string;
+
+  // Seasonal & Suggestions (Optional for compat)
+  suggestionsLabel?: string;
+  springFestival?: string;
+  lanternFestival?: string;
+  qingming?: string;
+  laborDay?: string;
+  dragonBoat?: string;
+  qixi?: string;
+  midAutumn?: string;
+  nationalDay?: string;
+  singlesDay?: string;
+  christmas?: string;
+  [key: string]: string | undefined; // Allow indexing for seasonal keys
 }
 
 export interface LanguageOption {

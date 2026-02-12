@@ -1,11 +1,16 @@
 
 /**
- * HanziMaster v0.3.7
+ * HanziMaster v0.4.2
  */
 import { RefreshCw, X, Wifi } from 'lucide-react';
 import { useRegisterSW } from 'virtual:pwa-register/react';
+import { UILabels } from '../locales/types';
 
-function ReloadPrompt() {
+interface ReloadPromptProps {
+  labels: UILabels;
+}
+
+function ReloadPrompt({ labels }: ReloadPromptProps) {
   const {
     offlineReady: [offlineReady, setOfflineReady],
     needRefresh: [needRefresh, setNeedRefresh],
@@ -26,23 +31,23 @@ function ReloadPrompt() {
           </div>
           <div className="flex-1">
             <h4 className="text-sm font-bold text-slate-800 dark:text-white mb-1">
-              Update Available
+              {labels.updateAvailable || "Update Available"}
             </h4>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">
-              A new version of HanziMaster is available. Reload to update.
+              {labels.updateMsg || "A new version of HanziMaster is available. Reload to update."}
             </p>
             <div className="flex gap-2">
               <button 
                 onClick={() => updateServiceWorker(true)}
                 className="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold rounded-md transition-colors"
               >
-                Reload
+                {labels.reloadBtn || "Reload"}
               </button>
               <button 
                 onClick={close}
                 className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 text-xs font-semibold rounded-md transition-colors"
               >
-                Close
+                 {labels.closeBtn || "Close"}
               </button>
             </div>
           </div>
@@ -63,16 +68,16 @@ function ReloadPrompt() {
           </div>
           <div className="flex-1">
             <h4 className="text-sm font-bold text-slate-800 dark:text-white mb-1">
-              Offline Ready
+              {labels.offlineReady || "Offline Ready"}
             </h4>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">
-              App is ready to work offline.
+              {labels.offlineMsg || "App is ready to work offline."}
             </p>
             <button 
               onClick={close}
               className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 text-xs font-semibold rounded-md transition-colors"
             >
-              Dismiss
+              {labels.dismissBtn || "Dismiss"}
             </button>
           </div>
           <button onClick={close} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 -mt-1 -mr-1">

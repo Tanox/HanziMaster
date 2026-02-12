@@ -76,7 +76,8 @@ const App: React.FC = () => {
             <IdiomNavigator 
                 term={state.activeTerm} 
                 activeChar={state.activeChar} 
-                onSelectChar={actions.handleCharSelect} 
+                activeIndex={state.activeCharIndex}
+                onSelectChar={(char, index) => actions.handleCharSelect(char, undefined, index)} 
             />
 
             {state.hanziData ? (
@@ -135,6 +136,7 @@ const App: React.FC = () => {
                 onSelect={(char) => actions.handleSearch(char, state.currentLang)} 
                 label={labels.randomBtn}
                 pinyinCache={state.pinyinCache}
+                labels={labels}
               />
             </div>
           )}
@@ -175,7 +177,7 @@ const App: React.FC = () => {
           onThemeChange={actions.toggleTheme}
         />
         
-        <ReloadPrompt />
+        <ReloadPrompt labels={labels} />
 
       </main>
 

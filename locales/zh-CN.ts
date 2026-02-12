@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.3.5
+ * HanziMaster v0.4.2
  */
 
 import { UILabels } from './types';
@@ -77,4 +77,32 @@ export const zhCN: UILabels = {
   shareTextChar: '🀄️ 我在「汉字大师」学会了“{char}” ({pinyin}) 的标准笔顺！\n\n📖 释义：{meaning}\n\n✨ 结合 AI 解析与书法美学，推荐你也来试试：\n{url}\n\n#汉字大师 #中文学习 #HanziMaster',
   shareTextIdiom: '📜 发现了一个超棒的成语：“{idiom}” ({pinyin})\n\n💡 意思：{meaning}\n\n🚀 快来「汉字大师」查看它的典故和用法：\n{url}\n\n#汉字大师 #成语学习 #ChineseIdioms',
   shareMessageCopied: '分享文案已复制！',
+
+  // Audit
+  settingDatabaseStatus: '数据库状态',
+  pinyinCoverage: '拼音覆盖率',
+  pinyinCoverageDesc: '本地拼音映射覆盖率。共 {total} 字，已覆盖 {covered} 字。',
+  missingChars: '缺失字符',
+  copyMissing: '复制缺失列表',
+
+  // Reload Prompt
+  updateAvailable: '有新版本',
+  updateMsg: '新版本可用，请刷新以更新。',
+  reloadBtn: '刷新',
+  offlineReady: '离线就绪',
+  offlineMsg: '应用已可离线使用。',
+  dismissBtn: '忽略',
+
+  // Seasonal
+  suggestionsLabel: '推荐',
+  springFestival: '春节',
+  lanternFestival: '元宵节',
+  qingming: '清明节',
+  laborDay: '劳动节',
+  dragonBoat: '端午节',
+  qixi: '七夕节',
+  midAutumn: '中秋节',
+  nationalDay: '国庆节',
+  singlesDay: '双十一',
+  christmas: '圣诞节',
 };

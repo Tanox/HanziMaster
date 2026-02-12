@@ -41,6 +41,7 @@ export const useAppController = () => {
   // --- App State ---
   const [activeTerm, setActiveTerm] = useState<string>('永');
   const [activeChar, setActiveChar] = useState<string>('永');
+  const [activeCharIndex, setActiveCharIndex] = useState<number>(0);
   const [currentLang, setCurrentLang] = useState<string>('zh-CN');
   
   // --- Data State ---
@@ -208,6 +209,7 @@ export const useAppController = () => {
     setActiveTerm(term);
     const firstChar = term[0];
     setActiveChar(firstChar);
+    setActiveCharIndex(0);
 
     setAnalysis(null);
     setIdiomAnalysis(null);
@@ -257,9 +259,15 @@ export const useAppController = () => {
     handleSearch(randomChar, currentLang);
   };
 
-  const handleCharSelect = (char: string, explicitMode?: InteractionMode) => {
-      if (char === activeChar && !explicitMode) return;
+  const handleCharSelect = (char: string, explicitMode?: InteractionMode, index?: number) => {
+      // If index is provided, use it. Otherwise rely on indexOf (fallback, not recommended for duplicates)
+      const targetIndex = index !== undefined ? index : activeTerm.indexOf(char);
+      
+      if (char === activeChar && targetIndex === activeCharIndex && !explicitMode) return;
+      
       setActiveChar(char);
+      if (targetIndex >= 0) setActiveCharIndex(targetIndex);
+      
       setAnimationState(AnimationState.IDLE);
       const targetMode = explicitMode || (maintainModeRef.current || InteractionMode.VIEW);
       setInteractionMode(targetMode);
@@ -275,11 +283,11 @@ export const useAppController = () => {
 
   const handlePracticeComplete = () => {
     if (activeTerm.length > 1) {
-        const currentIndex = activeTerm.indexOf(activeChar);
-        if (currentIndex !== -1 && currentIndex < activeTerm.length - 1) {
+        if (activeCharIndex < activeTerm.length - 1) {
             maintainModeRef.current = InteractionMode.PRACTICE;
             setTimeout(() => {
-                handleCharSelect(activeTerm[currentIndex + 1], InteractionMode.PRACTICE);
+                const nextIndex = activeCharIndex + 1;
+                handleCharSelect(activeTerm[nextIndex], InteractionMode.PRACTICE, nextIndex);
             }, 1000);
             return;
         } else {
@@ -304,6 +312,7 @@ export const useAppController = () => {
       theme,
       activeTerm,
       activeChar,
+      activeCharIndex,
       currentLang,
       hanziData,
       analysis,

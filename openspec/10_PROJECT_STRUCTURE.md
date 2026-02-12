@@ -29,10 +29,13 @@ HanziMaster 采用标准的 React + Vite 项目结构，强调“功能模块化
 │   ├── App.tsx             # 根组件
 │   └── index.tsx           # 入口文件
 ├── index.html              # HTML 模板 (包含 CSP 与 SEO Meta)
+├── metadata.json           # [环境] AI 容器/沙盒环境配置 (权限声明)
 ├── package.json            # 依赖管理与脚本定义
 ├── tailwind.config.js      # 样式配置
 ├── tsconfig.json           # TypeScript 配置
-└── vite.config.ts          # 构建工具配置 (PWA 插件配置)
+├── vercel.json             # [部署] Vercel 路由重写配置
+├── vite.config.ts          # 构建工具配置 (PWA 插件配置)
+└── vite-env.d.ts           # Vite 类型定义声明
 ```
 
 ## 2. 关键目录职责

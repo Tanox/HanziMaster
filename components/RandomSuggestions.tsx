@@ -1,23 +1,25 @@
 
 /**
- * HanziMaster v0.4.1
+ * HanziMaster v0.4.2
  */
 import React, { useState, useEffect } from 'react';
 import { COMMON_CHARS } from '../constants/commonChars.ts';
 import { COMMON_TERMS } from '../constants/commonTerms.ts';
 import { PINYIN_MAP } from '../constants/pinyinData.ts';
 import { SEASONAL_EVENTS } from '../constants/seasonalEvents.ts';
+import { UILabels } from '../locales/types.ts';
 import { Sparkles, Headphones, Calendar } from 'lucide-react';
 
 interface RandomSuggestionsProps {
   onSelect: (term: string) => void;
   label: string;
   pinyinCache: Record<string, string>;
+  labels: UILabels;
 }
 
-const RandomSuggestions: React.FC<RandomSuggestionsProps> = ({ onSelect, label, pinyinCache }) => {
+const RandomSuggestions: React.FC<RandomSuggestionsProps> = ({ onSelect, label, pinyinCache, labels }) => {
   const [items, setItems] = useState<string[]>([]);
-  const [activeSeason, setActiveSeason] = useState<string | null>(null);
+  const [activeSeasonKey, setActiveSeasonKey] = useState<string | null>(null);
 
   useEffect(() => {
     generateItems();
@@ -28,9 +30,6 @@ const RandomSuggestions: React.FC<RandomSuggestionsProps> = ({ onSelect, label, 
     const month = now.getMonth() + 1; // 1-12
     const day = now.getDate();
 
-    // 简单匹配：当前日期是否在某个节日范围内
-    // 注意：如果是跨年节日（如12月-1月），这里的简单逻辑需要确保配置正确（startMonth > endMonth 暂不处理，本配置中无跨年）
-    // 对于春节等农历节日，目前使用宽泛的公历范围覆盖
     const event = SEASONAL_EVENTS.find(e => {
        if (e.startMonth === e.endMonth) {
            return month === e.startMonth && day >= e.startDay && day <= e.endDay;
@@ -43,11 +42,11 @@ const RandomSuggestions: React.FC<RandomSuggestionsProps> = ({ onSelect, label, 
     });
 
     if (event) {
-        setActiveSeason(event.name);
+        setActiveSeasonKey(event.name);
         return event.keywords;
     }
     
-    setActiveSeason(null);
+    setActiveSeasonKey(null);
     return [];
   };
 
@@ -109,14 +108,17 @@ const RandomSuggestions: React.FC<RandomSuggestionsProps> = ({ onSelect, label, 
     return pinyins.join(' ');
   };
 
+  // Resolve the display name from labels using the key
+  const activeSeasonLabel = activeSeasonKey ? labels[activeSeasonKey] : null;
+
   return (
     <div className="w-full mt-12 lg:mt-16 mb-8 border-t border-slate-100 dark:border-slate-800 pt-10 px-4">
       <div className="flex items-center justify-center gap-2 mb-8 text-slate-400 dark:text-slate-500 animate-fade-in">
-        {activeSeason ? (
+        {activeSeasonLabel ? (
             <>
                 <Calendar size={16} className="text-vermilion-500" />
                 <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-vermilion-600 dark:text-vermilion-400">
-                    {activeSeason} Suggestions
+                    {activeSeasonLabel} {labels.suggestionsLabel || 'Suggestions'}
                 </h3>
             </>
         ) : (
@@ -134,7 +136,9 @@ const RandomSuggestions: React.FC<RandomSuggestionsProps> = ({ onSelect, label, 
           const pinyin = getPinyin(item);
           const isIdiom = item.length >= 4;
           // Highlight seasonal items if active
-          const seasonalTerms = activeSeason ? SEASONAL_EVENTS.find(e => e.name === activeSeason)?.keywords || [] : [];
+          const seasonalTerms = activeSeasonKey 
+             ? SEASONAL_EVENTS.find(e => e.name === activeSeasonKey)?.keywords || [] 
+             : [];
           const isSeasonal = seasonalTerms.includes(item);
 
           return (

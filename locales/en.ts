@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.3.5
+ * HanziMaster v0.4.2
  */
 
 import { UILabels } from './types';
@@ -77,4 +77,32 @@ export const en: UILabels = {
   shareTextChar: "🀄️ I just mastered writing '{char}' ({pinyin}) on HanziMaster!\n\n📖 Meaning: {meaning}\n\n✨ Check out the stroke animation and AI analysis here:\n{url}\n\n#HanziMaster #LearnChinese #Calligraphy",
   shareTextIdiom: "📜 Found a fascinating idiom: '{idiom}' ({pinyin})\n\n💡 Meaning: {meaning}\n\n🚀 Learn the story behind it on HanziMaster:\n{url}\n\n#HanziMaster #ChineseIdioms #LearnChinese",
   shareMessageCopied: 'Share text copied!',
+
+  // Audit
+  settingDatabaseStatus: 'Database Status',
+  pinyinCoverage: 'Pinyin Coverage',
+  pinyinCoverageDesc: 'Local pinyin mapping for random suggestions. {covered} out of {total} characters covered.',
+  missingChars: 'Missing Characters',
+  copyMissing: 'Copy Missing List',
+
+  // Reload Prompt
+  updateAvailable: 'Update Available',
+  updateMsg: 'A new version of HanziMaster is available. Reload to update.',
+  reloadBtn: 'Reload',
+  offlineReady: 'Offline Ready',
+  offlineMsg: 'App is ready to work offline.',
+  dismissBtn: 'Dismiss',
+
+  // Seasonal
+  suggestionsLabel: 'Suggestions',
+  springFestival: 'Spring Festival',
+  lanternFestival: 'Lantern Festival',
+  qingming: 'Qingming Festival',
+  laborDay: 'Labor Day',
+  dragonBoat: 'Dragon Boat Festival',
+  qixi: 'Qixi Festival',
+  midAutumn: 'Mid-Autumn Festival',
+  nationalDay: 'National Day',
+  singlesDay: "Singles' Day",
+  christmas: 'Christmas',
 };

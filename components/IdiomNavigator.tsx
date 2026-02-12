@@ -5,27 +5,27 @@ import React from 'react';
 
 interface IdiomNavigatorProps {
   term: string;
-  activeChar: string;
-  onSelectChar: (char: string) => void;
+  activeChar: string; // Kept for display/key purposes if needed, but index is primary for state
+  activeIndex: number;
+  onSelectChar: (char: string, index: number) => void;
 }
 
-const IdiomNavigator: React.FC<IdiomNavigatorProps> = ({ term, activeChar, onSelectChar }) => {
+const IdiomNavigator: React.FC<IdiomNavigatorProps> = ({ term, activeChar, activeIndex, onSelectChar }) => {
   if (term.length <= 1) return null;
 
   const chars = term.split('');
-  const activeIndex = chars.indexOf(activeChar);
 
   return (
     <div className="flex flex-col items-center gap-3 mb-8 animate-fade-in w-full">
        <div className="relative p-1 bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner flex items-center justify-between w-full max-w-xs">
           {chars.map((char, index) => {
-             const isActive = char === activeChar;
+             const isActive = index === activeIndex;
              const isPassed = index < activeIndex;
              
              return (
                <button
                  key={`${char}-${index}`}
-                 onClick={() => onSelectChar(char)}
+                 onClick={() => onSelectChar(char, index)}
                  className={`
                     relative z-10 w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center text-2xl font-hanzi transition-all duration-500
                     ${isActive 
