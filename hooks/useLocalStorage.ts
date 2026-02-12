@@ -1,3 +1,8 @@
+/**
+ * useLocalStorage.ts
+ * HanziMaster v0.4.2
+ * 更新日期: 2026-02-12 22:52
+ */
 import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 
 export function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] {

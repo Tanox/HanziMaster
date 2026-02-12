@@ -92,6 +92,13 @@ export const zhTW: UILabels = {
   offlineMsg: '應用程式已可離線使用。',
   dismissBtn: '忽略',
 
+  // Practice & Suggestions
+  practiceStrokeGuide: '第 {current} 筆 / 共 {total} 筆',
+  practiceStrokeHint: '請書寫下一筆。',
+  refreshSuggestions: '換一批',
+  offlineModeActive: '離線模式已開啟',
+  offlineUsingLocal: '離線模式：使用本地數據和原生語音。',
+
   // Seasonal
   suggestionsLabel: '推薦',
   springFestival: '春節',

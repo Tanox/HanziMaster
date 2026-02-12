@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.4.2
  */
 import React from 'react';
 import { Github } from 'lucide-react';

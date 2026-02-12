@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.4.2
  */
 import React, { useEffect, useState } from 'react';
 import { Download } from 'lucide-react';

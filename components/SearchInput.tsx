@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.4.2
  */
 import React, { useState, useEffect } from 'react';
 import { Search, Shuffle } from 'lucide-react';
@@ -15,11 +15,11 @@ interface SearchInputProps {
   activeTerm?: string;
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({ 
-  onSearch, 
+const SearchInput: React.FC<SearchInputProps> = ({
+  onSearch,
   onRandom,
-  isLoading, 
-  placeholderText, 
+  isLoading,
+  placeholderText,
   invalidCharMessage,
   randomButtonLabel,
   activeChar,
@@ -39,10 +39,16 @@ const SearchInput: React.FC<SearchInputProps> = ({
     e.preventDefault();
     if (input.trim() && !isLoading) {
       const term = input.trim();
+      import { useToast } from '../contexts/ToastContext.tsx';
+
+      // ... (inside component)
+      const { error } = useToast();
+
+      // ... (inside handleSubmit)
       if (/^[\u4E00-\u9FFF]{1,4}$/.test(term)) {
         onSearch(term);
       } else {
-        alert(invalidCharMessage);
+        error(invalidCharMessage);
       }
     }
   };
@@ -60,26 +66,26 @@ const SearchInput: React.FC<SearchInputProps> = ({
           maxLength={4}
         />
         <div className="absolute right-2 flex gap-1">
-            <button
-              type="button"
-              onClick={onRandom}
-              disabled={isLoading}
-              className="p-3 text-slate-400 hover:text-teal-600 dark:text-slate-500 dark:hover:text-teal-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-colors"
-              title={randomButtonLabel}
-            >
-              <Shuffle size={20} />
-            </button>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="p-3 bg-teal-600 dark:bg-teal-500 text-white rounded-full hover:bg-teal-700 dark:hover:bg-teal-600 disabled:bg-slate-300 dark:disabled:bg-slate-700 transition-colors"
-            >
-              {isLoading ? (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              ) : (
-                <Search size={20} />
-              )}
-            </button>
+          <button
+            type="button"
+            onClick={onRandom}
+            disabled={isLoading}
+            className="p-3 text-slate-400 hover:text-teal-600 dark:text-slate-500 dark:hover:text-teal-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-colors"
+            title={randomButtonLabel}
+          >
+            <Shuffle size={20} />
+          </button>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="p-3 bg-teal-600 dark:bg-teal-500 text-white rounded-full hover:bg-teal-700 dark:hover:bg-teal-600 disabled:bg-slate-300 dark:disabled:bg-slate-700 transition-colors"
+          >
+            {isLoading ? (
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <Search size={20} />
+            )}
+          </button>
         </div>
       </div>
     </form>

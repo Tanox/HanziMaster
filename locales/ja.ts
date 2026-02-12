@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.3.5
+ * HanziMaster v0.4.2
  */
 import { UILabels } from './types';
 
@@ -75,4 +75,11 @@ export const ja: UILabels = {
   shareTextChar: "🀄️ HanziMasterで「{char}」({pinyin})の書き順をマスターしました！\n\n📖 意味：{meaning}\n\n✨ 筆順アニメーションとAI解説はこちら：\n{url}\n\n#HanziMaster #中国語学習 #書道",
   shareTextIdiom: "📜 面白い成語を見つけました：「{idiom}」({pinyin})\n\n💡 意味：{meaning}\n\n🚀 HanziMasterで由来や使い方を学びましょう：\n{url}\n\n#HanziMaster #成語 #中国語学習",
   shareMessageCopied: '共有テキストをコピーしました！',
+
+  // Practice & Suggestions
+  practiceStrokeGuide: 'Stroke {current} / {total}',
+  practiceStrokeHint: 'Please write the next stroke.',
+  refreshSuggestions: 'Refresh Suggestions',
+  offlineModeActive: 'Offline Mode Enabled',
+  offlineUsingLocal: 'Offline Mode: Using local data & native voice.',
 };

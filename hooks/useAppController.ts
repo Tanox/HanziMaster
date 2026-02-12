@@ -1,4 +1,8 @@
-
+/**
+ * useAppController.ts
+ * HanziMaster v0.4.2
+ * 更新日期: 2026-02-12 22:52
+ */
 
 import { useState, useEffect, useRef } from 'react';
 import { HanziData, CharacterAnalysis, IdiomAnalysis, AnimationState, InteractionMode, AppSettings, HistoryItem } from '../types/index.ts';
@@ -10,7 +14,7 @@ import { useLocalStorage } from './useLocalStorage.ts';
 import { PINYIN_MAP } from '../constants/pinyinData.ts';
 
 const DEFAULT_SETTINGS: AppSettings = {
-  apiKey: '', 
+  apiKey: '',
   gridStyle: 'rice',
   showOutline: true,
   autoPlay: true,
@@ -33,7 +37,7 @@ export const useAppController = () => {
   const [theme, setTheme] = useLocalStorage<'light' | 'dark'>('theme', 'light');
   const [hasSeenWelcome, setHasSeenWelcome] = useLocalStorage<boolean>('hasSeenWelcome', false);
   const [pinyinCache, setPinyinCache] = useLocalStorage<Record<string, string>>('ai_pinyin_cache', {});
-  
+
   // --- Offline Caches (L2 Cache) ---
   const [analysisCache, setAnalysisCache] = useLocalStorage<Record<string, CharacterAnalysis>>('ai_analysis_cache', {});
   const [idiomCache, setIdiomCache] = useLocalStorage<Record<string, IdiomAnalysis>>('ai_idiom_cache', {});
@@ -43,12 +47,12 @@ export const useAppController = () => {
   const [activeChar, setActiveChar] = useState<string>('永');
   const [activeCharIndex, setActiveCharIndex] = useState<number>(0);
   const [currentLang, setCurrentLang] = useState<string>('zh-CN');
-  
+
   // --- Data State ---
   const [hanziData, setHanziData] = useState<HanziData | null>(null);
   const [analysis, setAnalysis] = useState<CharacterAnalysis | null>(null);
   const [idiomAnalysis, setIdiomAnalysis] = useState<IdiomAnalysis | null>(null);
-  
+
   // --- UI/Loading State ---
   const [loading, setLoading] = useState<boolean>(false);
   const [isAnalysisLoading, setIsAnalysisLoading] = useState<boolean>(false);
@@ -65,7 +69,7 @@ export const useAppController = () => {
 
   useEffect(() => {
     setShowWelcome(!hasSeenWelcome);
-  }, []); 
+  }, []);
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -112,13 +116,13 @@ export const useAppController = () => {
     setHistory(prev => {
       const filtered = prev.filter(item => item.char !== term);
       // Correctly slice to keep the first 20 items
-      return [{ char: term, timestamp: Date.now() }, ...filtered].slice(0, 20); 
+      return [{ char: term, timestamp: Date.now() }, ...filtered].slice(0, 20);
     });
   };
 
   const updateCache = <T>(
-    key: string, 
-    data: T, 
+    key: string,
+    data: T,
     setter: React.Dispatch<React.SetStateAction<Record<string, T>>>
   ) => {
     setter(prev => {
@@ -139,7 +143,7 @@ export const useAppController = () => {
     if (fetchedData) {
       setHanziData(fetchedData);
       if (settings.autoPlay && (maintainModeRef.current !== InteractionMode.PRACTICE && interactionMode !== InteractionMode.PRACTICE)) {
-         setTimeout(() => setAnimationState(AnimationState.PLAYING), 500);
+        setTimeout(() => setAnimationState(AnimationState.PLAYING), 500);
       }
     } else {
       setHanziData(null);
@@ -149,58 +153,58 @@ export const useAppController = () => {
 
     // 2. Fetch Analysis (Check Cache First)
     if (analysisCache[char] && !settings.offlineMode) {
-         // Use cached data if available (even if online, to save quota/time)
-         // Note: If user forces offline mode, we still try to use cache.
-         setAnalysis(analysisCache[char]);
+      // Use cached data if available (even if online, to save quota/time)
+      // Note: If user forces offline mode, we still try to use cache.
+      setAnalysis(analysisCache[char]);
     } else {
-        try {
-            // If offline or cache miss, try to analyze
-            const aiResult = await analyzeCharacter(char, langName, settings.offlineMode, settings.apiKey);
-            
-            // Pinyin Cache Update
-            if (aiResult && aiResult.pinyin && aiResult.pinyin !== '-') {
-                setPinyinCache(prevCache => {
-                    if (!PINYIN_MAP[char] && prevCache[char] !== aiResult.pinyin) {
-                        return { ...prevCache, [char]: aiResult.pinyin };
-                    }
-                    return prevCache;
-                });
-            }
-            
-            if (aiResult) {
-                 // Enhance result with stroke count from HanziWriter data if AI missed it
-                 let finalResult = aiResult;
-                 if (fetchedData && aiResult.meaning.startsWith("Mode:")) {
-                      finalResult = { ...aiResult, strokeCount: fetchedData.strokes.length };
-                 }
+      try {
+        // If offline or cache miss, try to analyze
+        const aiResult = await analyzeCharacter(char, langName, settings.offlineMode, settings.apiKey);
 
-                 setAnalysis(finalResult);
-
-                 // Only cache valid results (not offline fallbacks)
-                 if (!finalResult.meaning.startsWith("Mode:") && !finalResult.meaning.includes("Network Unavailable")) {
-                     updateCache(char, finalResult, setAnalysisCache);
-                 } else if (analysisCache[char]) {
-                     // If we got a fallback but have a cache (e.g. transient network error), use cache
-                     setAnalysis(analysisCache[char]);
-                 }
+        // Pinyin Cache Update
+        if (aiResult && aiResult.pinyin && aiResult.pinyin !== '-') {
+          setPinyinCache(prevCache => {
+            if (!PINYIN_MAP[char] && prevCache[char] !== aiResult.pinyin) {
+              return { ...prevCache, [char]: aiResult.pinyin };
             }
-        } catch (err) {
-            console.error("Char Analysis failed", err);
-            if (analysisCache[char]) {
-                setAnalysis(analysisCache[char]);
-            }
+            return prevCache;
+          });
         }
+
+        if (aiResult) {
+          // Enhance result with stroke count from HanziWriter data if AI missed it
+          let finalResult = aiResult;
+          if (fetchedData && aiResult.meaning.startsWith("Mode:")) {
+            finalResult = { ...aiResult, strokeCount: fetchedData.strokes.length };
+          }
+
+          setAnalysis(finalResult);
+
+          // Only cache valid results (not offline fallbacks)
+          if (!finalResult.meaning.startsWith("Mode:") && !finalResult.meaning.includes("Network Unavailable")) {
+            updateCache(char, finalResult, setAnalysisCache);
+          } else if (analysisCache[char]) {
+            // If we got a fallback but have a cache (e.g. transient network error), use cache
+            setAnalysis(analysisCache[char]);
+          }
+        }
+      } catch (err) {
+        console.error("Char Analysis failed", err);
+        if (analysisCache[char]) {
+          setAnalysis(analysisCache[char]);
+        }
+      }
     }
   };
 
   const handleSearch = async (term: string, langCode: string = currentLang) => {
-    setLoading(true); 
-    setIsAnalysisLoading(true); 
+    setLoading(true);
+    setIsAnalysisLoading(true);
     setError(null);
     setAnimationState(AnimationState.IDLE);
-    setInteractionMode(InteractionMode.VIEW); 
+    setInteractionMode(InteractionMode.VIEW);
     maintainModeRef.current = null;
-    
+
     // Update URL without reloading page for shareability
     const url = new URL(window.location.href);
     url.searchParams.set('char', term);
@@ -214,37 +218,37 @@ export const useAppController = () => {
     setAnalysis(null);
     setIdiomAnalysis(null);
     setHanziData(null);
-    
+
     const langName = LANGUAGES.find(l => l.code === langCode)?.name || 'Simplified Chinese';
 
     // Parallel Fetching
     const promises: Promise<any>[] = [fetchCharacterData(firstChar, langCode)];
 
     if (term.length > 1) {
-        // Check Idiom Cache
-        if (idiomCache[term] && !settings.offlineMode) {
-            setIdiomAnalysis(idiomCache[term]);
-        } else {
-            promises.push(
-                analyzeIdiom(term, langName, settings.offlineMode, settings.apiKey)
-                    .then(res => {
-                        setIdiomAnalysis(res);
-                        // Cache valid idiom results
-                        if (res && !res.meaning.startsWith("Mode:")) {
-                             updateCache(term, res, setIdiomCache);
-                        } else if (idiomCache[term]) {
-                             // Fallback to cache on error/offline
-                             setIdiomAnalysis(idiomCache[term]);
-                        }
-                    })
-                    .catch(e => {
-                        console.error("Idiom search error", e);
-                        if (idiomCache[term]) {
-                             setIdiomAnalysis(idiomCache[term]);
-                        }
-                    })
-            );
-        }
+      // Check Idiom Cache
+      if (idiomCache[term] && !settings.offlineMode) {
+        setIdiomAnalysis(idiomCache[term]);
+      } else {
+        promises.push(
+          analyzeIdiom(term, langName, settings.offlineMode, settings.apiKey)
+            .then(res => {
+              setIdiomAnalysis(res);
+              // Cache valid idiom results
+              if (res && !res.meaning.startsWith("Mode:")) {
+                updateCache(term, res, setIdiomCache);
+              } else if (idiomCache[term]) {
+                // Fallback to cache on error/offline
+                setIdiomAnalysis(idiomCache[term]);
+              }
+            })
+            .catch(e => {
+              console.error("Idiom search error", e);
+              if (idiomCache[term]) {
+                setIdiomAnalysis(idiomCache[term]);
+              }
+            })
+        );
+      }
     }
 
     await Promise.all(promises);
@@ -260,18 +264,18 @@ export const useAppController = () => {
   };
 
   const handleCharSelect = (char: string, explicitMode?: InteractionMode, index?: number) => {
-      // If index is provided, use it. Otherwise rely on indexOf (fallback, not recommended for duplicates)
-      const targetIndex = index !== undefined ? index : activeTerm.indexOf(char);
-      
-      if (char === activeChar && targetIndex === activeCharIndex && !explicitMode) return;
-      
-      setActiveChar(char);
-      if (targetIndex >= 0) setActiveCharIndex(targetIndex);
-      
-      setAnimationState(AnimationState.IDLE);
-      const targetMode = explicitMode || (maintainModeRef.current || InteractionMode.VIEW);
-      setInteractionMode(targetMode);
-      fetchCharacterData(char, currentLang);
+    // If index is provided, use it. Otherwise rely on indexOf (fallback, not recommended for duplicates)
+    const targetIndex = index !== undefined ? index : activeTerm.indexOf(char);
+
+    if (char === activeChar && targetIndex === activeCharIndex && !explicitMode) return;
+
+    setActiveChar(char);
+    if (targetIndex >= 0) setActiveCharIndex(targetIndex);
+
+    setAnimationState(AnimationState.IDLE);
+    const targetMode = explicitMode || (maintainModeRef.current || InteractionMode.VIEW);
+    setInteractionMode(targetMode);
+    fetchCharacterData(char, currentLang);
   };
 
   const handleLanguageChange = (code: string) => {
@@ -283,25 +287,25 @@ export const useAppController = () => {
 
   const handlePracticeComplete = () => {
     if (activeTerm.length > 1) {
-        if (activeCharIndex < activeTerm.length - 1) {
-            maintainModeRef.current = InteractionMode.PRACTICE;
-            setTimeout(() => {
-                const nextIndex = activeCharIndex + 1;
-                handleCharSelect(activeTerm[nextIndex], InteractionMode.PRACTICE, nextIndex);
-            }, 1000);
-            return;
-        } else {
-             maintainModeRef.current = null;
-             addToHistory(activeTerm);
-             if (settings.continuousMode) {
-                 setTimeout(handleRandom, 1500);
-             }
+      if (activeCharIndex < activeTerm.length - 1) {
+        maintainModeRef.current = InteractionMode.PRACTICE;
+        setTimeout(() => {
+          const nextIndex = activeCharIndex + 1;
+          handleCharSelect(activeTerm[nextIndex], InteractionMode.PRACTICE, nextIndex);
+        }, 1000);
+        return;
+      } else {
+        maintainModeRef.current = null;
+        addToHistory(activeTerm);
+        if (settings.continuousMode) {
+          setTimeout(handleRandom, 1500);
         }
+      }
     } else {
-        addToHistory(activeChar);
-         if (settings.continuousMode) {
-             setTimeout(handleRandom, 1500);
-         }
+      addToHistory(activeChar);
+      if (settings.continuousMode) {
+        setTimeout(handleRandom, 1500);
+      }
     }
   };
 

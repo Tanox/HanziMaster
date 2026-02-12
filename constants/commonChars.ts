@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.3.4
+ * HanziMaster v0.4.2
  * 
  * 核心常用汉字表 (Deduplicated Array)
  * 涵盖 HSK 1-9 核心词汇、现代汉语常用字表 (3500字精选) 
