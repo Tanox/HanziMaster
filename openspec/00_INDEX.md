@@ -25,12 +25,12 @@
 
 | 报告类型 | 版本 | 状态 |
 | :--- | :--- | :--- |
-| [最新项目审查报告](./reports/project_review_20250226_1400.md) | v0.4.1 | ✅ 通过 |
+| [最新项目审查报告](./reports/project_review_20250522_1000.md) | v0.4.0 | ✅ 通过 |
 
 ## 🛠 项目概况
 
 *   **项目名称**: HanziMaster (汉字大师)
-*   **当前版本**: v0.4.1 (Stable Planning)
+*   **当前版本**: v0.4.0 (Stable Planning)
 *   **核心理念**: 离线优先 (Offline-First) + AI 增强 (AI-Enhanced)
 *   **技术栈**: React 19, TypeScript, Vite PWA, Tailwind CSS, Google Gemini API
 
