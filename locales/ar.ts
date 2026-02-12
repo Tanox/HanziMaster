@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.4.2
+ * HanziMaster v0.3.5
  */
 import { UILabels } from './types';
 
@@ -75,11 +75,4 @@ export const ar: UILabels = {
   shareTextChar: "🀄️ لقد تعلمت للتو كتابة '{char}' ({pinyin}) على HanziMaster!\n\n📖 المعنى: {meaning}\n\n✨ تحقق من تحريك الضربات وتحليل الذكاء الاصطناعي هنا:\n{url}\n\n#HanziMaster #LearnChinese #Calligraphy",
   shareTextIdiom: "📜 وجدت تعبيراً رائعاً: '{idiom}' ({pinyin})\n\n💡 المعنى: {meaning}\n\n🚀 تعلم القصة وراءه على HanziMaster:\n{url}\n\n#HanziMaster #ChineseIdioms #LearnChinese",
   shareMessageCopied: 'تم نسخ نص المشاركة!',
-
-  // Practice & Suggestions
-  practiceStrokeGuide: 'Stroke {current} / {total}',
-  practiceStrokeHint: 'Please write the next stroke.',
-  refreshSuggestions: 'Refresh Suggestions',
-  offlineModeActive: 'Offline Mode Enabled',
-  offlineUsingLocal: 'Offline Mode: Using local data & native voice.',
 };

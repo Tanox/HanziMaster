@@ -93,13 +93,6 @@ export const en: UILabels = {
   offlineMsg: 'App is ready to work offline.',
   dismissBtn: 'Dismiss',
 
-  // Practice & Suggestions
-  practiceStrokeGuide: 'Stroke {current} / {total}',
-  practiceStrokeHint: 'Please write the next stroke.',
-  refreshSuggestions: 'Refresh Suggestions',
-  offlineModeActive: 'Offline Mode Enabled',
-  offlineUsingLocal: 'Offline Mode: Using local data & native voice.',
-
   // Seasonal
   suggestionsLabel: 'Suggestions',
   springFestival: 'Spring Festival',

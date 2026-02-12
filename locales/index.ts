@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.4.2
+ * HanziMaster v0.3.1
  */
 import { LanguageOption, UILabels } from './types';
 import { en } from './en';

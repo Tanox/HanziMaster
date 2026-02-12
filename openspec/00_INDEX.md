@@ -25,12 +25,12 @@
 
 | 报告类型 | 版本 | 状态 |
 | :--- | :--- | :--- |
-| [最新项目审查报告](./reports/project_review_20260212_2249.md) | v0.4.2 | ⚠️ 有条件通过 |
+| [最新项目审查报告](./reports/project_review_20250522_1000.md) | v0.4.0 | ✅ 通过 |
 
 ## 🛠 项目概况
 
 *   **项目名称**: HanziMaster (汉字大师)
-*   **当前版本**: v0.4.0 (Stable Planning)
+*   **当前版本**: v0.4.2 (UX Refinement)
 *   **核心理念**: 离线优先 (Offline-First) + AI 增强 (AI-Enhanced)
 *   **技术栈**: React 19, TypeScript, Vite PWA, Tailwind CSS, Google Gemini API
 
@@ -41,7 +41,8 @@
 *   **v0.3.0**: 交互系统升级。增加练习记录、随机推荐、多语言字典与 PWA 离线支持。
 *   **v0.3.5**: 成语智能支持。引入多字输入处理、成语导航器 (IdiomNavigator) 及深度典故解析。
 *   **v0.4.0**: 社交与分享生态。新增“生成精美分享卡片 (Share as Image)”功能。
-*   **v0.4.1**: **架构加固与时令智能**。规范构建系统（移除 ImportMap），引入基于日期的节庆推荐算法。
+*   **v0.4.1**: 架构加固与时令智能。规范构建系统（移除 ImportMap），引入基于日期的节庆推荐算法。
+*   **v0.4.2**: **UX 优化与规范化**。引入全局 Toast 通知系统替代原生 Alert，修复多语言本地化遗漏，统一项目文件版本号。
 
 ---
 *文档维护: HanziMaster Engineering Team*

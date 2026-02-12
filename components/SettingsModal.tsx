@@ -68,26 +68,21 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
     onUpdateSettings({ ...settings, [key]: value });
   };
 
-  import { useToast } from '../contexts/ToastContext.tsx';
-
-  // ... (inside component)
-  const { success } = useToast();
-
   const copyMissingToClipboard = () => {
     const text = auditData.missing.join('');
     navigator.clipboard.writeText(text);
-    success('Missing characters copied to clipboard!');
+    alert('Missing characters copied to clipboard!');
   };
 
   const hasDefaultKey = Boolean(process.env.API_KEY);
   const usingCustomKey = Boolean(settings.apiKey);
 
-  const coverageDesc = labels.pinyinCoverageDesc
+  const coverageDesc = labels.pinyinCoverageDesc 
     ? labels.pinyinCoverageDesc.replace('{covered}', auditData.covered.toString()).replace('{total}', auditData.total.toString())
     : `Local pinyin mapping for random suggestions. ${auditData.covered} out of ${auditData.total} characters covered.`;
 
   return (
-    <div
+    <div 
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-fade-in"
       onClick={handleBackdropClick}
     >
@@ -97,7 +92,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           <h3 className="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
             {labels.settingsTitle}
           </h3>
-          <button
+          <button 
             onClick={onClose}
             className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
           >
@@ -107,133 +102,135 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 
         {/* Content */}
         <div className="p-6 space-y-2 overflow-y-auto">
-
+          
           {/* Section: Appearance */}
           <SectionHeader title={labels.sectionAppearance || 'Appearance'} />
           <div className="space-y-4 mb-4">
-            {/* Theme Toggle */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800">
-                  <Palette size={16} />
+             {/* Theme Toggle */}
+             <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800">
+                     <Palette size={16} />
+                  </div>
+                  <span className="text-slate-700 dark:text-slate-200 font-medium text-sm">
+                      {labels.settingTheme}
+                  </span>
                 </div>
-                <span className="text-slate-700 dark:text-slate-200 font-medium text-sm">
-                  {labels.settingTheme}
-                </span>
-              </div>
-              <div className="flex bg-slate-100 dark:bg-slate-700/50 p-1 rounded-lg">
-                <button
-                  onClick={() => currentTheme === 'dark' && onThemeChange()}
-                  className={`p-1.5 rounded-md transition-all flex items-center gap-1.5 ${currentTheme === 'light' ? 'bg-white shadow-sm text-amber-500' : 'text-slate-400'}`}
-                  title={labels.themeLight}
-                >
-                  <Sun size={14} />
-                </button>
-                <button
-                  onClick={() => currentTheme === 'light' && onThemeChange()}
-                  className={`p-1.5 rounded-md transition-all flex items-center gap-1.5 ${currentTheme === 'dark' ? 'bg-slate-600 shadow-sm text-indigo-400' : 'text-slate-400'}`}
-                  title={labels.themeDark}
-                >
-                  <Moon size={14} />
-                </button>
-              </div>
-            </div>
+                <div className="flex bg-slate-100 dark:bg-slate-700/50 p-1 rounded-lg">
+                    <button
+                        onClick={() => currentTheme === 'dark' && onThemeChange()}
+                        className={`p-1.5 rounded-md transition-all flex items-center gap-1.5 ${currentTheme === 'light' ? 'bg-white shadow-sm text-amber-500' : 'text-slate-400'}`}
+                        title={labels.themeLight}
+                    >
+                        <Sun size={14} />
+                    </button>
+                    <button
+                        onClick={() => currentTheme === 'light' && onThemeChange()}
+                        className={`p-1.5 rounded-md transition-all flex items-center gap-1.5 ${currentTheme === 'dark' ? 'bg-slate-600 shadow-sm text-indigo-400' : 'text-slate-400'}`}
+                        title={labels.themeDark}
+                    >
+                        <Moon size={14} />
+                    </button>
+                </div>
+             </div>
 
-            {/* Language Selector */}
-            <div className="space-y-2">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="p-2 rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800">
-                  <Globe size={16} />
+             {/* Language Selector */}
+             <div className="space-y-2">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800">
+                     <Globe size={16} />
+                  </div>
+                  <span className="text-slate-700 dark:text-slate-200 font-medium text-sm">
+                      {labels.settingLanguage}
+                  </span>
                 </div>
-                <span className="text-slate-700 dark:text-slate-200 font-medium text-sm">
-                  {labels.settingLanguage}
-                </span>
-              </div>
-              <select
-                value={currentLang}
-                onChange={(e) => onLanguageChange(e.target.value)}
-                className="w-full p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-colors"
-              >
-                {LANGUAGES.map(lang => (
-                  <option key={lang.code} value={lang.code}>
-                    {lang.native} ({lang.name})
-                  </option>
-                ))}
-              </select>
-            </div>
+                <select 
+                    value={currentLang}
+                    onChange={(e) => onLanguageChange(e.target.value)}
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-colors"
+                >
+                    {LANGUAGES.map(lang => (
+                        <option key={lang.code} value={lang.code}>
+                            {lang.native} ({lang.name})
+                        </option>
+                    ))}
+                </select>
+             </div>
           </div>
 
           {/* Section: Visuals */}
           <SectionHeader title={labels.settingGridStyle} />
           <div className="grid grid-cols-3 gap-2 mb-2">
-            {(['rice', 'field', 'none'] as GridStyle[]).map((style) => (
-              <button
-                key={style}
-                onClick={() => update('gridStyle', style)}
-                className={`py-2 px-2 text-xs rounded-lg border transition-all ${settings.gridStyle === style
-                    ? 'bg-teal-50 dark:bg-teal-900/30 border-teal-500 text-teal-700 dark:text-teal-300 font-medium'
-                    : 'bg-slate-50 dark:bg-slate-700/50 border-transparent text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
+              {(['rice', 'field', 'none'] as GridStyle[]).map((style) => (
+                <button
+                  key={style}
+                  onClick={() => update('gridStyle', style)}
+                  className={`py-2 px-2 text-xs rounded-lg border transition-all ${
+                    settings.gridStyle === style
+                      ? 'bg-teal-50 dark:bg-teal-900/30 border-teal-500 text-teal-700 dark:text-teal-300 font-medium'
+                      : 'bg-slate-50 dark:bg-slate-700/50 border-transparent text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
                   }`}
-              >
-                {style === 'rice' && labels.settingGridRice}
-                {style === 'field' && labels.settingGridField}
-                {style === 'none' && labels.settingGridNone}
-              </button>
-            ))}
+                >
+                  {style === 'rice' && labels.settingGridRice}
+                  {style === 'field' && labels.settingGridField}
+                  {style === 'none' && labels.settingGridNone}
+                </button>
+              ))}
           </div>
-
+          
           {/* Section: Learning */}
           <SectionHeader title={labels.practiceMode} />
           <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-slate-100 text-slate-400 dark:bg-slate-800">
-                  <Gauge size={16} />
+             <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-slate-100 text-slate-400 dark:bg-slate-800">
+                     <Gauge size={16} />
+                  </div>
+                  <span className="text-slate-700 dark:text-slate-200 font-medium text-sm">
+                      {labels.controlsSpeed}
+                  </span>
                 </div>
-                <span className="text-slate-700 dark:text-slate-200 font-medium text-sm">
-                  {labels.controlsSpeed}
-                </span>
-              </div>
-              <div className="flex gap-1 bg-slate-100 dark:bg-slate-700/50 rounded-lg p-1">
-                {[0.5, 1, 1.5].map(s => (
-                  <button
-                    key={s}
-                    onClick={() => onSpeedChange(s)}
-                    className={`px-3 py-1 text-xs font-bold rounded transition-colors ${speed === s
-                        ? 'bg-white dark:bg-slate-600 text-teal-600 dark:text-teal-400'
-                        : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
-                      }`}
-                  >
-                    {s}x
-                  </button>
-                ))}
-              </div>
-            </div>
+                <div className="flex gap-1 bg-slate-100 dark:bg-slate-700/50 rounded-lg p-1">
+                  {[0.5, 1, 1.5].map(s => (
+                      <button 
+                        key={s} 
+                        onClick={() => onSpeedChange(s)} 
+                        className={`px-3 py-1 text-xs font-bold rounded transition-colors ${
+                            speed === s 
+                            ? 'bg-white dark:bg-slate-600 text-teal-600 dark:text-teal-400' 
+                            : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
+                        }`}
+                      >
+                          {s}x
+                      </button>
+                  ))}
+                </div>
+             </div>
 
-            <ToggleItem
-              label={labels.settingOfflineMode}
-              value={settings.offlineMode}
+             <ToggleItem 
+              label={labels.settingOfflineMode} 
+              value={settings.offlineMode} 
               onChange={() => update('offlineMode', !settings.offlineMode)}
               icon={<Wifi size={16} />}
             />
 
-            <ToggleItem
-              label={labels.settingShowOutline}
-              value={settings.showOutline}
+            <ToggleItem 
+              label={labels.settingShowOutline} 
+              value={settings.showOutline} 
               onChange={() => update('showOutline', !settings.showOutline)}
               icon={<Eye size={16} />}
             />
-
-            <ToggleItem
-              label={labels.settingAutoPlay}
-              value={settings.autoPlay}
+            
+            <ToggleItem 
+              label={labels.settingAutoPlay} 
+              value={settings.autoPlay} 
               onChange={() => update('autoPlay', !settings.autoPlay)}
               icon={<PlayCircle size={16} />}
             />
 
-            <ToggleItem
-              label={labels.settingContinuousMode}
-              value={settings.continuousMode}
+            <ToggleItem 
+              label={labels.settingContinuousMode} 
+              value={settings.continuousMode} 
               onChange={() => update('continuousMode', !settings.continuousMode)}
               icon={<Infinity size={16} />}
             />
@@ -243,50 +240,50 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           <SectionHeader title={labels.settingDatabaseStatus || "Database Status"} />
           <div className="mb-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/50 overflow-hidden">
             <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300">
-                <Database size={16} className="text-teal-500" />
-                {labels.pinyinCoverage || "Pinyin Coverage"}
-              </div>
-              <span className="text-xs font-bold text-teal-600 dark:text-teal-400">
-                {auditData.percentage}%
-              </span>
+                <div className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300">
+                    <Database size={16} className="text-teal-500" />
+                    {labels.pinyinCoverage || "Pinyin Coverage"}
+                </div>
+                <span className="text-xs font-bold text-teal-600 dark:text-teal-400">
+                    {auditData.percentage}%
+                </span>
             </div>
-
+            
             {/* Progress Bar */}
             <div className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full mb-3">
-              <div
-                className="h-full bg-teal-500 rounded-full transition-all duration-1000"
-                style={{ width: `${auditData.percentage}%` }}
-              />
+                <div 
+                    className="h-full bg-teal-500 rounded-full transition-all duration-1000" 
+                    style={{ width: `${auditData.percentage}%` }}
+                />
             </div>
 
             <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
-              {coverageDesc}
+                {coverageDesc}
             </p>
 
             <button
-              onClick={() => setShowAudit(!showAudit)}
-              className="w-full flex items-center justify-between px-3 py-2 bg-white dark:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-600 text-[10px] font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors"
+                onClick={() => setShowAudit(!showAudit)}
+                className="w-full flex items-center justify-between px-3 py-2 bg-white dark:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-600 text-[10px] font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors"
             >
-              <span className="flex items-center gap-1.5">
-                {auditData.missing.length} {labels.missingChars || "Missing Characters"}
-              </span>
-              {showAudit ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                <span className="flex items-center gap-1.5">
+                    {auditData.missing.length} {labels.missingChars || "Missing Characters"}
+                </span>
+                {showAudit ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
             </button>
 
             {showAudit && (
-              <div className="mt-3 animate-fade-in">
-                <div className="max-h-32 overflow-y-auto p-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-[10px] font-hanzi leading-loose tracking-widest text-slate-400 break-all select-all">
-                  {auditData.missing.join(' ')}
+                <div className="mt-3 animate-fade-in">
+                    <div className="max-h-32 overflow-y-auto p-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-[10px] font-hanzi leading-loose tracking-widest text-slate-400 break-all select-all">
+                        {auditData.missing.join(' ')}
+                    </div>
+                    <button
+                        onClick={copyMissingToClipboard}
+                        className="mt-2 w-full flex items-center justify-center gap-1.5 py-1.5 text-[10px] font-bold text-teal-600 hover:text-teal-700 transition-colors"
+                    >
+                        <Clipboard size={12} />
+                        {labels.copyMissing || "Copy Missing List"}
+                    </button>
                 </div>
-                <button
-                  onClick={copyMissingToClipboard}
-                  className="mt-2 w-full flex items-center justify-center gap-1.5 py-1.5 text-[10px] font-bold text-teal-600 hover:text-teal-700 transition-colors"
-                >
-                  <Clipboard size={12} />
-                  {labels.copyMissing || "Copy Missing List"}
-                </button>
-              </div>
             )}
           </div>
 
@@ -294,83 +291,83 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           <SectionHeader title={labels.settingApiKey} />
           <div className="mb-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/50">
             <div className="flex items-center justify-between mb-2">
-              <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                <Key size={16} className="text-teal-500" />
-                Gemini API Key
-              </label>
-
-              {usingCustomKey ? (
-                <span className="text-[10px] uppercase font-bold tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center gap-1 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full border border-emerald-100 dark:border-emerald-900/30">
-                  <Check size={12} />
-                  {labels.badgeCustom}
-                </span>
-              ) : hasDefaultKey ? (
-                <span className="text-[10px] uppercase font-bold tracking-wider text-blue-600 dark:text-blue-400 flex items-center gap-1 bg-blue-50 dark:bg-blue-900/20 px-2 py-0.5 rounded-full border border-blue-100 dark:border-blue-900/30">
-                  <Check size={12} />
-                  {labels.badgeDefault}
-                </span>
-              ) : (
-                <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500 flex items-center gap-1 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">
-                  {labels.badgeNone}
-                </span>
-              )}
-            </div>
-
-            <div className="relative mb-2">
-              <input
-                type={showApiKey ? "text" : "password"}
-                value={settings.apiKey || ''}
-                onChange={(e) => update('apiKey', e.target.value)}
-                placeholder={labels.settingApiKeyPlaceholder}
-                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-lg pl-3 pr-20 py-2.5 text-sm text-slate-800 dark:text-slate-200 outline-none focus:border-teal-500 dark:focus:border-teal-500 focus:ring-1 focus:ring-teal-500/20 transition-all font-mono"
-                autoComplete="off"
-                spellCheck="false"
-              />
-              <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                {settings.apiKey && (
-                  <button
-                    onClick={() => update('apiKey', '')}
-                    className="p-1.5 text-slate-400 hover:text-red-500 rounded-md transition-colors"
-                    title="Clear"
-                  >
-                    <X size={14} />
-                  </button>
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                    <Key size={16} className="text-teal-500" />
+                    Gemini API Key
+                </label>
+                
+                {usingCustomKey ? (
+                     <span className="text-[10px] uppercase font-bold tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center gap-1 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full border border-emerald-100 dark:border-emerald-900/30">
+                        <Check size={12} />
+                        {labels.badgeCustom}
+                     </span>
+                ) : hasDefaultKey ? (
+                     <span className="text-[10px] uppercase font-bold tracking-wider text-blue-600 dark:text-blue-400 flex items-center gap-1 bg-blue-50 dark:bg-blue-900/20 px-2 py-0.5 rounded-full border border-blue-100 dark:border-blue-900/30">
+                        <Check size={12} />
+                        {labels.badgeDefault}
+                     </span>
+                ) : (
+                     <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500 flex items-center gap-1 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">
+                        {labels.badgeNone}
+                     </span>
                 )}
-                <button
-                  onClick={() => setShowApiKey(!showApiKey)}
-                  className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 rounded-md transition-colors"
-                  title={showApiKey ? "Hide" : "Show"}
-                >
-                  {showApiKey ? <EyeOff size={14} /> : <Eye size={14} />}
-                </button>
-              </div>
+            </div>
+            
+            <div className="relative mb-2">
+                <input 
+                    type={showApiKey ? "text" : "password"}
+                    value={settings.apiKey || ''} 
+                    onChange={(e) => update('apiKey', e.target.value)}
+                    placeholder={labels.settingApiKeyPlaceholder}
+                    className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-lg pl-3 pr-20 py-2.5 text-sm text-slate-800 dark:text-slate-200 outline-none focus:border-teal-500 dark:focus:border-teal-500 focus:ring-1 focus:ring-teal-500/20 transition-all font-mono"
+                    autoComplete="off"
+                    spellCheck="false"
+                />
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                    {settings.apiKey && (
+                        <button
+                            onClick={() => update('apiKey', '')}
+                            className="p-1.5 text-slate-400 hover:text-red-500 rounded-md transition-colors"
+                            title="Clear"
+                        >
+                            <X size={14} />
+                        </button>
+                    )}
+                    <button
+                        onClick={() => setShowApiKey(!showApiKey)}
+                        className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 rounded-md transition-colors"
+                        title={showApiKey ? "Hide" : "Show"}
+                    >
+                        {showApiKey ? <EyeOff size={14} /> : <Eye size={14} />}
+                    </button>
+                </div>
             </div>
 
             <div className="flex flex-col gap-2 text-xs text-slate-500 dark:text-slate-400">
-              <p className="leading-relaxed">{labels.settingApiKeyHelp}</p>
-              <div className="flex items-center gap-3 mt-1">
-                <a
-                  href="https://aistudio.google.com/app/apikey"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-teal-600 dark:text-teal-400 hover:underline flex items-center gap-1 font-medium bg-white dark:bg-slate-700 px-3 py-1.5 rounded border border-slate-200 dark:border-slate-600 hover:border-teal-300 transition-colors"
-                >
-                  {labels.getApiKey}
-                  <ExternalLink size={12} />
-                </a>
-              </div>
+                <p className="leading-relaxed">{labels.settingApiKeyHelp}</p>
+                <div className="flex items-center gap-3 mt-1">
+                    <a 
+                      href="https://aistudio.google.com/app/apikey" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-teal-600 dark:text-teal-400 hover:underline flex items-center gap-1 font-medium bg-white dark:bg-slate-700 px-3 py-1.5 rounded border border-slate-200 dark:border-slate-600 hover:border-teal-300 transition-colors"
+                    >
+                      {labels.getApiKey}
+                      <ExternalLink size={12} />
+                    </a>
+                </div>
             </div>
           </div>
 
         </div>
-
+        
         <div className="p-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-700 sticky bottom-0 z-10 shrink-0 rounded-b-2xl">
-          <button
-            onClick={onClose}
-            className="w-full py-3 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
-          >
-            {labels.closeBtn}
-          </button>
+           <button 
+             onClick={onClose}
+             className="w-full py-3 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+           >
+             {labels.closeBtn}
+           </button>
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.2
+ * HanziMaster v0.4.0
  */
 import React, { useState } from 'react';
 import { Share2, Copy, Check } from 'lucide-react';
@@ -17,13 +17,13 @@ interface ShareButtonProps {
   };
 }
 
-const ShareButton: React.FC<ShareButtonProps> = ({
-  title,
-  text,
-  url,
-  size = 18,
-  className = "",
-  labels
+const ShareButton: React.FC<ShareButtonProps> = ({ 
+  title, 
+  text, 
+  url, 
+  size = 18, 
+  className = "", 
+  labels 
 }) => {
   const [isCopied, setIsCopied] = useState(false);
   const effectiveUrl = url || window.location.origin;
@@ -48,19 +48,13 @@ const ShareButton: React.FC<ShareButtonProps> = ({
         await navigator.clipboard.writeText(fullText);
         setIsCopied(true);
         setTimeout(() => setIsCopied(false), 2000);
-        import { useToast } from '../contexts/ToastContext.tsx';
-
-        // ... (inside component)
-        const { error } = useToast();
-
-        // ... (inside handleShare fallback)
       } catch (err) {
         console.error('Failed to copy to clipboard:', err);
-        error('Failed to copy.');
+        alert('Failed to copy.');
       }
     }
   };
-
+  
   const tooltip = isCopied ? labels.shareMessageCopied : labels.shareAction;
 
   return (

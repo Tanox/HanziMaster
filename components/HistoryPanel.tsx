@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.4.2
+ * HanziMaster v0.3.1
  */
 import React from 'react';
 import { HistoryItem } from '../types';

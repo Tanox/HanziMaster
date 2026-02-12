@@ -66,9 +66,9 @@ export interface UILabels {
   historyTitle: string;
   clearHistory: string;
   noHistory: string;
-
+  
   closeBtn: string;
-
+  
   // Welcome Screen
   welcomeTitle: string;
   welcomeSubtitle: string;
@@ -78,13 +78,13 @@ export interface UILabels {
   idiomOrigin: string;
   idiomUsage: string;
   idiomTitle: string;
-
+  
   // Share functionality
   shareAction: string;
-  shareTitleChar: string;
+  shareTitleChar: string; 
   shareTitleIdiom: string;
-  shareTextChar: string;
-  shareTextIdiom: string;
+  shareTextChar: string; 
+  shareTextIdiom: string; 
   shareMessageCopied: string;
 
   // Database Audit (Optional for compat)
@@ -101,13 +101,6 @@ export interface UILabels {
   offlineReady?: string;
   offlineMsg?: string;
   dismissBtn?: string;
-
-  // Practice & Suggestions
-  practiceStrokeGuide?: string;
-  practiceStrokeHint?: string;
-  refreshSuggestions?: string;
-  offlineModeActive?: string;
-  offlineUsingLocal?: string;
 
   // Seasonal & Suggestions (Optional for compat)
   suggestionsLabel?: string;

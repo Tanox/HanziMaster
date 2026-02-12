@@ -93,13 +93,6 @@ export const zhCN: UILabels = {
   offlineMsg: '应用已可离线使用。',
   dismissBtn: '忽略',
 
-  // Practice & Suggestions
-  practiceStrokeGuide: '第 {current} 笔 / 共 {total} 笔',
-  practiceStrokeHint: '请书写下一笔。',
-  refreshSuggestions: '换一批',
-  offlineModeActive: '离线模式已开启',
-  offlineUsingLocal: '离线模式：使用本地数据和原生语音。',
-
   // Seasonal
   suggestionsLabel: '推荐',
   springFestival: '春节',

@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.4.2
+ * HanziMaster v0.3.5
  */
 import React from 'react';
 

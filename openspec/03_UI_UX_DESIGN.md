@@ -35,6 +35,17 @@
     *   底部：大号拼音 + App Logo + 域名水印。
 *   **配色**: 必须严格遵循当前主题（深色/浅色），确保生成出的图片与用户看到的界面一致。
 
+### 3.4 全局通知 (Toast Notifications)
+*   **定位**: 屏幕顶部居中 (Top-Center)，距离顶部 20px，层级 z-50。
+*   **动效**: 
+    *   进场：`translate-y-[-100%] -> translate-y-0`, `opacity-0 -> opacity-100`。
+    *   退场：`opacity-100 -> opacity-0`。
+*   **样式规范**:
+    *   **容器**: 圆角 `rounded-lg`，阴影 `shadow-lg`，背景模糊 `backdrop-blur-md`。
+    *   **Success**: 背景 `bg-teal-50` (Dark: `bg-teal-900/80`)，图标 `CheckCircle` (`text-teal-500`)。
+    *   **Error**: 背景 `bg-red-50` (Dark: `bg-red-900/80`)，图标 `AlertCircle` (`text-red-500`)。
+    *   **Info**: 背景 `bg-slate-50` (Dark: `bg-slate-800/80`)，图标 `Info` (`text-slate-500`)。
+
 ## 4. 交互动效 (Micro-interactions)
 
 ### 4.1 笔顺流动 (Stroke Flow)

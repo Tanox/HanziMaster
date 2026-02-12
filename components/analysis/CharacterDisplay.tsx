@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.2
+ * HanziMaster v0.3.6
  */
 import React, { useState } from 'react';
 import { BookOpen, Lightbulb, History, Info, Image as ImageIcon, Loader2 } from 'lucide-react';

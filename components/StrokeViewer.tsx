@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.2
+ * HanziMaster v0.3.1
  */
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { HanziData, AnimationState, InteractionMode, AppSettings } from '../types';
@@ -33,7 +33,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   const [progress, setProgress] = useState(0); // 0 to 1 for current stroke
   const requestRef = useRef<number | undefined>(undefined);
   const startTimeRef = useRef<number | undefined>(undefined);
-
+  
   // Practice Mode State
   const [practiceStrokeIndex, setPracticeStrokeIndex] = useState(0);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -45,12 +45,12 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   const [showSuccess, setShowSuccess] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const userStrokePathRef = useRef<Array<{ x: number, y: number }>>([]);
+  const userStrokePathRef = useRef<Array<{x: number, y: number}>>([]);
   // Track last drawn point for efficient segment drawing
-  const lastDrawnPointRef = useRef<{ x: number, y: number } | null>(null);
-
+  const lastDrawnPointRef = useRef<{x: number, y: number} | null>(null);
+  
   // Constants for SVG viewbox
-  const SIZE = 1024;
+  const SIZE = 1024; 
   const OFFSET_Y = SIZE * 0.9; // Based on the translate(0, -921.6) logic roughly
 
   const strokeLengths = useMemo(() => {
@@ -59,7 +59,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   }, [data]);
 
   // --- Animation Logic (View Mode) ---
-
+  
   // Reset when data changes or mode changes
   useEffect(() => {
     setCurrentStrokeIndex(-1);
@@ -68,7 +68,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     setFeedbackColor(null);
     setShowSuccess(false);
     hasNotifiedCompletionRef.current = false;
-
+    
     if (mode === InteractionMode.VIEW) {
       setAnimationState(AnimationState.IDLE);
     }
@@ -80,12 +80,12 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
     if (mode === InteractionMode.PRACTICE && data && practiceStrokeIndex >= data.strokes.length && data.strokes.length > 0) {
-      setShowSuccess(true);
-      timer = setTimeout(() => {
-        setShowSuccess(false);
-      }, 2000);
+        setShowSuccess(true);
+        timer = setTimeout(() => {
+            setShowSuccess(false);
+        }, 2000);
     } else {
-      setShowSuccess(false);
+        setShowSuccess(false);
     }
     return () => clearTimeout(timer);
   }, [practiceStrokeIndex, mode, data]);
@@ -106,14 +106,14 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   const animate = (time: number) => {
     if (startTimeRef.current === undefined) startTimeRef.current = time;
     const elapsed = time - startTimeRef.current;
-
+    
     // Total duration for one stroke
     const totalStrokeDuration = (strokeLengths[currentStrokeIndex] / 1500) * (1 / speed) * 1000;
-
+    
     // Calculate current progress
     const currentProgress = Math.min(elapsed / totalStrokeDuration, 1);
     setProgress(currentProgress);
-
+    
     if (currentProgress < 1) {
       requestRef.current = requestAnimationFrame(animate);
     } else {
@@ -163,23 +163,23 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     lastDrawnPointRef.current = null;
   };
 
-  const drawUserStroke = (ctx: CanvasRenderingContext2D, toPoint: { x: number, y: number }) => {
+  const drawUserStroke = (ctx: CanvasRenderingContext2D, toPoint: {x: number, y: number}) => {
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     ctx.lineWidth = 100;
     ctx.strokeStyle = feedbackColor === 'success' ? '#10b981' : (feedbackColor === 'error' ? '#ef4444' : '#0f172a');
-
+    
     // For dark mode, use a lighter color for drawing
     const isDark = document.documentElement.classList.contains('dark');
     if (isDark && !feedbackColor) {
-      ctx.strokeStyle = '#f1f5f9';
+        ctx.strokeStyle = '#f1f5f9';
     }
 
     if (lastDrawnPointRef.current) {
-      ctx.beginPath();
-      ctx.moveTo(lastDrawnPointRef.current.x, lastDrawnPointRef.current.y);
-      ctx.lineTo(toPoint.x, toPoint.y);
-      ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(lastDrawnPointRef.current.x, lastDrawnPointRef.current.y);
+        ctx.lineTo(toPoint.x, toPoint.y);
+        ctx.stroke();
     }
     lastDrawnPointRef.current = toPoint;
   };
@@ -194,8 +194,8 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * SIZE;
     const y = ((e.clientY - rect.top) / rect.height) * SIZE;
-    userStrokePathRef.current = [{ x, y }];
-    lastDrawnPointRef.current = { x, y };
+    userStrokePathRef.current = [{x, y}];
+    lastDrawnPointRef.current = {x, y};
   };
 
   const handlePointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
@@ -203,18 +203,18 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
     if (!ctx || !canvas) return;
-
+    
     const rect = canvas.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * SIZE;
     const y = ((e.clientY - rect.top) / rect.height) * SIZE;
-    userStrokePathRef.current.push({ x, y });
-    drawUserStroke(ctx, { x, y });
+    userStrokePathRef.current.push({x, y});
+    drawUserStroke(ctx, {x, y});
   };
 
   const handlePointerUp = () => {
     if (!isDrawing) return;
     setIsDrawing(false);
-
+    
     // Validate stroke
     const userStroke = userStrokePathRef.current;
     const targetStroke = data.medians[practiceStrokeIndex];
@@ -239,25 +239,25 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     const threshold = Math.max(150, strokeLen * 0.4);
 
     if (startDist < threshold && endDist < threshold) {
-      setFeedbackColor('success');
-      setTimeout(() => {
-        const nextStroke = practiceStrokeIndex + 1;
-        setPracticeStrokeIndex(nextStroke);
-        clearCanvas();
-      }, 300);
+        setFeedbackColor('success');
+        setTimeout(() => {
+            const nextStroke = practiceStrokeIndex + 1;
+            setPracticeStrokeIndex(nextStroke);
+            clearCanvas();
+        }, 300);
     } else {
-      setFeedbackColor('error');
-      setTimeout(clearCanvas, 500);
+        setFeedbackColor('error');
+        setTimeout(clearCanvas, 500);
     }
   };
-
+  
   // Call onPracticeComplete when finished, but only once
   useEffect(() => {
     if (practiceStrokeIndex >= data.strokes.length && data.strokes.length > 0 && !hasNotifiedCompletionRef.current) {
-      if (onPracticeComplete) {
-        onPracticeComplete();
-      }
-      hasNotifiedCompletionRef.current = true;
+        if (onPracticeComplete) {
+            onPracticeComplete();
+        }
+        hasNotifiedCompletionRef.current = true;
     }
   }, [practiceStrokeIndex, data.strokes.length, onPracticeComplete]);
 
@@ -265,13 +265,13 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   // Determine grid line paths
   const gridLines = useMemo(() => {
     if (settings.gridStyle === 'none') return [];
-
+    
     const lines = [
       // Bounding box
       { d: `M 0,0 L ${SIZE},0 L ${SIZE},${SIZE} L 0,${SIZE} Z`, stroke: '#e2e8f0', dark: '#334155' },
       // Cross
-      { d: `M ${SIZE / 2},0 L ${SIZE / 2},${SIZE}`, stroke: '#e2e8f0', dark: '#334155' },
-      { d: `M 0,${SIZE / 2} L ${SIZE},${SIZE / 2}`, stroke: '#e2e8f0', dark: '#334155' },
+      { d: `M ${SIZE/2},0 L ${SIZE/2},${SIZE}`, stroke: '#e2e8f0', dark: '#334155' },
+      { d: `M 0,${SIZE/2} L ${SIZE},${SIZE/2}`, stroke: '#e2e8f0', dark: '#334155' },
     ];
     if (settings.gridStyle === 'rice') {
       // Diagonals
@@ -285,27 +285,27 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     let text: string | null = null;
 
     if (mode === InteractionMode.PRACTICE) {
-      if (showSuccess) {
-        text = labels.practiceComplete;
-      } else if (settings.continuousMode && practiceStrokeIndex < data.strokes.length) {
-        text = labels.settingContinuousMode;
-      }
+        if (showSuccess) {
+            text = labels.practiceComplete;
+        } else if (settings.continuousMode && practiceStrokeIndex < data.strokes.length) {
+            text = labels.settingContinuousMode;
+        }
     } else if (mode === InteractionMode.VIEW) {
-      if (animationState === AnimationState.PLAYING || animationState === AnimationState.PAUSED) {
-        text = labels.strokeStatusActive;
-      } else if (currentStrokeIndex >= data.strokes.length - 1 && data.strokes.length > 0) {
-        text = labels.strokeStatusComplete;
-      }
+        if (animationState === AnimationState.PLAYING || animationState === AnimationState.PAUSED) {
+            text = labels.strokeStatusActive;
+        } else if (currentStrokeIndex >= data.strokes.length - 1 && data.strokes.length > 0) {
+            text = labels.strokeStatusComplete;
+        }
     }
 
     const isVisible = text !== null;
 
     return (
-      <div className={`absolute bottom-3 left-1/2 -translate-x-1/2 transition-all duration-300 pointer-events-none ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
-        <div className={`px-2.5 py-1 rounded-md text-[10px] font-bold backdrop-blur-sm shadow-md ${mode === InteractionMode.PRACTICE && showSuccess ? 'bg-emerald-600/90 text-white' : 'bg-black/40 text-white'}`}>
-          {text}
+        <div className={`absolute bottom-3 left-1/2 -translate-x-1/2 transition-all duration-300 pointer-events-none ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
+            <div className={`px-2.5 py-1 rounded-md text-[10px] font-bold backdrop-blur-sm shadow-md ${mode === InteractionMode.PRACTICE && showSuccess ? 'bg-emerald-600/90 text-white' : 'bg-black/40 text-white'}`}>
+                {text}
+            </div>
         </div>
-      </div>
     );
   };
 
@@ -318,9 +318,9 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
         <g transform={`translate(0, ${OFFSET_Y}) scale(1, -1)`}>
           {/* Grid Lines */}
           <g strokeWidth="2" className="stroke-slate-200 dark:stroke-slate-700">
-            {gridLines.map((line, i) => (
-              <path key={i} d={line.d} />
-            ))}
+             {gridLines.map((line, i) => (
+                <path key={i} d={line.d} />
+             ))}
           </g>
 
           {/* Character Outline/Guide */}
@@ -368,7 +368,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
           ))}
         </g>
       </svg>
-
+      
       {/* Practice Canvas Overlay */}
       <canvas
         ref={canvasRef}
@@ -383,17 +383,17 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
 
       {/* Practice Mode Guide */}
       {mode === InteractionMode.PRACTICE && practiceStrokeIndex < data.strokes.length && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 text-center animate-fade-in">
-            <PenTool size={24} className="mx-auto text-teal-500 mb-2" />
-            <p className="font-bold text-slate-700 dark:text-slate-200">
-              {(labels.practiceStrokeGuide || 'Stroke {current} / {total}').replace('{current}', String(practiceStrokeIndex + 1)).replace('{total}', String(data.strokes.length))}
-            </p>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              {labels.practiceStrokeHint || 'Please write the next stroke.'}
-            </p>
-          </div>
-        </div>
+         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 text-center animate-fade-in">
+               <PenTool size={24} className="mx-auto text-teal-500 mb-2" />
+               <p className="font-bold text-slate-700 dark:text-slate-200">
+                  Stroke {practiceStrokeIndex + 1} / {data.strokes.length}
+               </p>
+               <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Please write the next stroke.
+               </p>
+            </div>
+         </div>
       )}
 
       <StatusOverlay />

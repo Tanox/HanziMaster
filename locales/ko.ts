@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.4.2
+ * HanziMaster v0.3.5
  */
 import { UILabels } from './types';
 
@@ -75,11 +75,4 @@ export const ko: UILabels = {
   shareTextChar: "🀄️ HanziMaster에서 '{char}' ({pinyin}) 쓰는 법을 마스터했습니다!\n\n📖 의미: {meaning}\n\n✨ 획순 애니메이션과 AI 분석 확인하기:\n{url}\n\n#HanziMaster #중국어학습 #서예",
   shareTextIdiom: "📜 흥미로운 고사성어를 발견했습니다: '{idiom}' ({pinyin})\n\n💡 의미: {meaning}\n\n🚀 HanziMaster에서 유래와 용법 알아보기:\n{url}\n\n#HanziMaster #고사성어 #중국어학습",
   shareMessageCopied: '공유할 텍스트가 복사되었습니다!',
-
-  // Practice & Suggestions
-  practiceStrokeGuide: 'Stroke {current} / {total}',
-  practiceStrokeHint: 'Please write the next stroke.',
-  refreshSuggestions: 'Refresh Suggestions',
-  offlineModeActive: 'Offline Mode Enabled',
-  offlineUsingLocal: 'Offline Mode: Using local data & native voice.',
 };

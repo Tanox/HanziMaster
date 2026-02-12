@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.4.2
+ * HanziMaster v0.3.5
  */
 import { UILabels } from './types';
 
@@ -75,11 +75,4 @@ export const fr: UILabels = {
   shareTextChar: "🀄️ Je viens d'apprendre à écrire '{char}' ({pinyin}) sur HanziMaster !\n\n📖 Signification : {meaning}\n\n✨ Découvrez l'animation des traits et l'analyse IA ici :\n{url}\n\n#HanziMaster #ApprendreLeChinois #Calligraphie",
   shareTextIdiom: "📜 J'ai découvert un idiome fascinant : '{idiom}' ({pinyin})\n\n💡 Signification : {meaning}\n\n🚀 Apprenez son histoire sur HanziMaster :\n{url}\n\n#HanziMaster #IdiomesChinois #ApprendreLeChinois",
   shareMessageCopied: 'Texte de partage copié !',
-
-  // Practice & Suggestions
-  practiceStrokeGuide: 'Stroke {current} / {total}',
-  practiceStrokeHint: 'Please write the next stroke.',
-  refreshSuggestions: 'Refresh Suggestions',
-  offlineModeActive: 'Offline Mode Enabled',
-  offlineUsingLocal: 'Offline Mode: Using local data & native voice.',
 };

@@ -1,7 +1,5 @@
 /**
- * geminiService.ts
- * HanziMaster v0.4.2
- * 更新日期: 2026-02-12 22:52
+ * HanziMaster v0.3.1
  */
 import { GoogleGenAI, Type, HarmCategory, HarmBlockThreshold } from "@google/genai";
 import { CharacterAnalysis, IdiomAnalysis } from '../types';
@@ -10,7 +8,7 @@ import { CharacterAnalysis, IdiomAnalysis } from '../types';
 const generateOfflineAnalysis = (char: string, reason: string = "Network Unavailable"): CharacterAnalysis => {
   return {
     char: char,
-    pinyin: "-",
+    pinyin: "-", 
     meaning: `Mode: ${reason}`,
     radical: "?",
     strokeCount: 0,
@@ -55,25 +53,25 @@ const commonConfig = {
 };
 
 function cleanJsonResponse(text: string): string {
-  text = text.trim();
-  if (text.startsWith('```')) {
-    text = text.replace(/^```(json)?\s*/i, '').replace(/\s*```$/, '');
-  }
-  const startIndex = text.indexOf('{');
-  const endIndex = text.lastIndexOf('}');
-
-  if (startIndex !== -1) {
-    if (endIndex !== -1 && endIndex > startIndex) {
-      text = text.substring(startIndex, endIndex + 1);
-    } else {
-      // Handle potentially truncated JSON
-      text = text.substring(startIndex);
-      if (!text.endsWith('}')) {
-        text += '}';
-      }
+    text = text.trim();
+    if (text.startsWith('```')) {
+      text = text.replace(/^```(json)?\s*/i, '').replace(/\s*```$/, '');
     }
-  }
-  return text;
+    const startIndex = text.indexOf('{');
+    const endIndex = text.lastIndexOf('}');
+    
+    if (startIndex !== -1) {
+        if (endIndex !== -1 && endIndex > startIndex) {
+            text = text.substring(startIndex, endIndex + 1);
+        } else {
+            // Handle potentially truncated JSON
+            text = text.substring(startIndex);
+            if (!text.endsWith('}')) {
+                text += '}';
+            }
+        }
+    }
+    return text;
 }
 
 export const analyzeCharacter = async (char: string, languageName: string = 'English', forceOffline: boolean = false, apiKeyOverride?: string): Promise<CharacterAnalysis | null> => {
@@ -137,18 +135,18 @@ export const analyzeCharacter = async (char: string, languageName: string = 'Eng
 
     const text = cleanJsonResponse(response.text || "");
     if (!text) return generateOfflineAnalysis(char, "No Response");
-
+    
     try {
-      return JSON.parse(text) as CharacterAnalysis;
+        return JSON.parse(text) as CharacterAnalysis;
     } catch (parseError) {
-      console.error("JSON Parse Error in analyzeCharacter:", parseError, "Response was:", text);
-      return generateOfflineAnalysis(char, "AI Data Corruption");
+        console.error("JSON Parse Error in analyzeCharacter:", parseError, "Response was:", text);
+        return generateOfflineAnalysis(char, "AI Data Corruption");
     }
 
   } catch (error: any) {
     if (error.status === 429 || (error.message && error.message.includes('429'))) {
-      console.warn("Gemini API Quota Exceeded. Falling back.");
-      return generateOfflineAnalysis(char, "AI Quota Exceeded");
+        console.warn("Gemini API Quota Exceeded. Falling back.");
+        return generateOfflineAnalysis(char, "AI Quota Exceeded");
     }
     console.error("Gemini API Error:", error);
     return generateOfflineAnalysis(char, "Service Error");
@@ -156,16 +154,16 @@ export const analyzeCharacter = async (char: string, languageName: string = 'Eng
 };
 
 export const analyzeIdiom = async (idiom: string, languageName: string = 'English', forceOffline: boolean = false, apiKeyOverride?: string): Promise<IdiomAnalysis | null> => {
-  if (!navigator.onLine || forceOffline) {
-    return generateOfflineIdiomAnalysis(idiom, forceOffline ? "Offline Mode" : "Network Unavailable");
-  }
+    if (!navigator.onLine || forceOffline) {
+        return generateOfflineIdiomAnalysis(idiom, forceOffline ? "Offline Mode" : "Network Unavailable");
+    }
 
-  try {
-    const apiKey = apiKeyOverride || process.env.API_KEY;
-    if (!apiKey) return generateOfflineIdiomAnalysis(idiom, "No API Key");
+    try {
+        const apiKey = apiKeyOverride || process.env.API_KEY;
+        if (!apiKey) return generateOfflineIdiomAnalysis(idiom, "No API Key");
 
-    const ai = new GoogleGenAI({ apiKey });
-    const prompt = `Analyze the Chinese Idiom (Chengyu) "${idiom}". 
+        const ai = new GoogleGenAI({ apiKey });
+        const prompt = `Analyze the Chinese Idiom (Chengyu) "${idiom}". 
         Provide a detailed breakdown in ${languageName}.
         
         Fields requirements:
@@ -175,41 +173,41 @@ export const analyzeIdiom = async (idiom: string, languageName: string = 'Englis
         
         Ensure the response is strictly valid JSON.`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
-      contents: prompt,
-      config: {
-        ...commonConfig,
-        systemInstruction: "You are a Chinese literature expert specializing in Chengyu (Idioms).",
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            idiom: { type: Type.STRING },
-            pinyin: { type: Type.STRING },
-            meaning: { type: Type.STRING },
-            origin: { type: Type.STRING },
-            usage: { type: Type.STRING }
-          },
-          required: ["idiom", "pinyin", "meaning", "origin", "usage"]
+        const response = await ai.models.generateContent({
+            model: 'gemini-3-flash-preview',
+            contents: prompt,
+            config: {
+                ...commonConfig,
+                systemInstruction: "You are a Chinese literature expert specializing in Chengyu (Idioms).",
+                responseSchema: {
+                    type: Type.OBJECT,
+                    properties: {
+                        idiom: { type: Type.STRING },
+                        pinyin: { type: Type.STRING },
+                        meaning: { type: Type.STRING },
+                        origin: { type: Type.STRING },
+                        usage: { type: Type.STRING }
+                    },
+                    required: ["idiom", "pinyin", "meaning", "origin", "usage"]
+                }
+            }
+        });
+
+        const text = cleanJsonResponse(response.text || "");
+        if (!text) return generateOfflineIdiomAnalysis(idiom, "No Response");
+
+        try {
+            return JSON.parse(text) as IdiomAnalysis;
+        } catch (parseError) {
+            console.error("JSON Parse Error in analyzeIdiom:", parseError, "Response was:", text);
+            return generateOfflineIdiomAnalysis(idiom, "AI Data Corruption");
         }
-      }
-    });
 
-    const text = cleanJsonResponse(response.text || "");
-    if (!text) return generateOfflineIdiomAnalysis(idiom, "No Response");
-
-    try {
-      return JSON.parse(text) as IdiomAnalysis;
-    } catch (parseError) {
-      console.error("JSON Parse Error in analyzeIdiom:", parseError, "Response was:", text);
-      return generateOfflineIdiomAnalysis(idiom, "AI Data Corruption");
+    } catch (error: any) {
+        if (error.status === 429 || (error.message && error.message.includes('429'))) {
+             return generateOfflineIdiomAnalysis(idiom, "AI Quota Exceeded");
+        }
+        console.error("Gemini Idiom API Error:", error);
+        return generateOfflineIdiomAnalysis(idiom, "Service Error");
     }
-
-  } catch (error: any) {
-    if (error.status === 429 || (error.message && error.message.includes('429'))) {
-      return generateOfflineIdiomAnalysis(idiom, "AI Quota Exceeded");
-    }
-    console.error("Gemini Idiom API Error:", error);
-    return generateOfflineIdiomAnalysis(idiom, "Service Error");
-  }
 };

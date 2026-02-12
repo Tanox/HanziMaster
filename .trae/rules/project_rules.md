@@ -40,6 +40,7 @@
 - **色彩**: 遵循 "Vermilion (朱砂)" + "Slate (松烟)" 配色体系。
 - **字体**: 汉字必须使用 `Noto Serif SC` (font-hanzi)，UI 文本使用 `Inter` (font-sans)。
 - **响应式**: 必须优先适配移动端触摸操作 (44px+ 点击区域)。
+- **交互反馈**: 严禁使用浏览器原生 `alert()` 或 `confirm()`。必须使用全局 `Toast` 组件或自定义 Modal 进行用户提示。
 
 ## 5. 离线优先 (Offline-First)
 - 任何网络请求（Hanzi Data, AI Analysis, TTS）都必须包含 Fallback 机制。

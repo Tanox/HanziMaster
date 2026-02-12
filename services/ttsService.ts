@@ -1,7 +1,5 @@
 /**
- * ttsService.ts
- * HanziMaster v0.4.2
- * 更新日期: 2026-02-12 22:52
+ * HanziMaster v0.3.1
  */
 import { GoogleGenAI, Modality } from "@google/genai";
 
@@ -68,28 +66,28 @@ function speakNative(text: string, lang: string = 'zh-CN') {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = lang; // e.g., 'zh-CN'
     utterance.rate = 0.8; // Slightly slower for learning
-
+    
     // Attempt to pick a voice that matches the language
     const voices = window.speechSynthesis.getVoices();
     if (voices.length > 0) {
-      // Try to find a voice matching the specific lang code (zh-CN)
-      let selectedVoice = voices.find(v => v.lang === lang);
-      // Fallback to any voice starting with zh (e.g. zh-TW or zh-HK if CN not found)
-      if (!selectedVoice) {
-        selectedVoice = voices.find(v => v.lang.startsWith('zh'));
-      }
-      if (selectedVoice) {
-        utterance.voice = selectedVoice;
-      }
+        // Try to find a voice matching the specific lang code (zh-CN)
+        let selectedVoice = voices.find(v => v.lang === lang);
+        // Fallback to any voice starting with zh (e.g. zh-TW or zh-HK if CN not found)
+        if (!selectedVoice) {
+            selectedVoice = voices.find(v => v.lang.startsWith('zh'));
+        }
+        if (selectedVoice) {
+            utterance.voice = selectedVoice;
+        }
     }
-
+    
     utterance.onend = () => {
       resolve();
     };
-
+    
     utterance.onerror = (e) => {
       console.warn("Native TTS Error", e);
-      resolve();
+      resolve(); 
     };
 
     window.speechSynthesis.speak(utterance);
@@ -120,7 +118,7 @@ export const playPronunciation = async (text: string, language: string = 'zh-CN'
   try {
     // 3. Try Gemini API
     const ai = new GoogleGenAI({ apiKey });
-
+    
     // Use a very direct prompt to reduce chance of chatty intro/outro
     const promptText = `Say: ${text}`;
 
@@ -133,9 +131,9 @@ export const playPronunciation = async (text: string, language: string = 'zh-CN'
         responseModalities: [Modality.AUDIO],
         speechConfig: {
           voiceConfig: {
-            prebuiltVoiceConfig: {
-              // 'Kore' is a good balanced voice.
-              voiceName: 'Kore'
+            prebuiltVoiceConfig: { 
+                // 'Kore' is a good balanced voice.
+                voiceName: 'Kore' 
             },
           },
         },
@@ -143,24 +141,24 @@ export const playPronunciation = async (text: string, language: string = 'zh-CN'
     });
 
     const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-
+    
     if (!base64Audio) {
       throw new Error("No audio data received");
     }
 
     const audioBytes = decode(base64Audio);
     const audioBuffer = await decodeAudioData(audioBytes, audioContext);
-
+    
     // Cache the decoded buffer for future use
     audioCache.set(cacheKey, audioBuffer);
-
+    
     playSound(audioContext, audioBuffer);
 
   } catch (error: any) {
     if (error.status === 429 || (error.message && error.message.includes('429'))) {
-      console.warn("Gemini TTS Quota Exceeded. Falling back to native.");
+       console.warn("Gemini TTS Quota Exceeded. Falling back to native.");
     } else {
-      console.warn("Gemini TTS failed, falling back to native:", error);
+       console.warn("Gemini TTS failed, falling back to native:", error);
     }
     // 4. Fallback to Native if API fails
     return speakNative(text, language);

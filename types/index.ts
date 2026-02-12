@@ -1,7 +1,5 @@
 /**
- * types/index.ts
- * HanziMaster v0.4.2
- * 更新日期: 2026-02-12 22:52
+ * HanziMaster v0.3.1
  */
 
 export interface HanziData {

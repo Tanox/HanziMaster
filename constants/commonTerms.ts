@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.2
+ * HanziMaster v0.4.0
  * 常用词组与成语库 (Common Phrases & Idioms)
  */
 

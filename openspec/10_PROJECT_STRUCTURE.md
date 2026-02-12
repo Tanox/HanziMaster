@@ -21,7 +21,9 @@ HanziMaster 采用扁平化的 React + Vite 项目结构，将源码直接置于
 │   └── copyHanziData.js    # 负责将 node_modules 中的汉字数据提取到 public 目录
 ├── components/             # React 组件
 │   ├── analysis/           # AI 解析展示相关组件
+│   ├── ui/                 # [新增] 通用 UI 组件 (Toast.tsx)
 │   └── ...                 # 通用组件 (Header, Footer, Controls)
+├── context/                # [新增] React Context (ToastContext.tsx)
 ├── constants/              # 静态常量配置
 ├── hooks/                  # 自定义 Hooks (useAppController, useLocalStorage)
 ├── locales/                # 多语言翻译文件 (i18n)

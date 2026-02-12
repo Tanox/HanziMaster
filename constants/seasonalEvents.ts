@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.2
+ * HanziMaster v0.4.1
  * 节庆与时令事件定义
  */
 
