@@ -50,7 +50,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   
   // Constants for SVG viewbox
   const SIZE = 1024; 
-  const OFFSET_Y = SIZE * 0.9; // Based on the translate(0, -921.6) logic roughly
+  const OFFSET_Y = 900; // Adjusted for better visual centering standard Hanzi Writer data
 
   const strokeLengths = useMemo(() => {
     if (!data || !data.medians) return [];
@@ -67,11 +67,13 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     setFeedbackColor(null);
     setShowSuccess(false);
     hasNotifiedCompletionRef.current = false;
+    startTimeRef.current = undefined;
     
     if (mode === InteractionMode.VIEW) {
       setAnimationState(AnimationState.IDLE);
     }
     clearCanvas();
+    if (requestRef.current) cancelAnimationFrame(requestRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, mode]);
 
@@ -102,50 +104,57 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     return () => clearTimeout(resetTimer);
   }, [practiceStrokeIndex, mode, data]);
 
-  const animate = (time: number) => {
-    if (startTimeRef.current === undefined) startTimeRef.current = time;
-    const elapsed = time - startTimeRef.current;
-    
-    // Total duration for one stroke
-    const totalStrokeDuration = (strokeLengths[currentStrokeIndex] / 1500) * (1 / speed) * 1000;
-    
-    // Calculate current progress
-    const currentProgress = Math.min(elapsed / totalStrokeDuration, 1);
-    setProgress(currentProgress);
-    
-    if (currentProgress < 1) {
-      requestRef.current = requestAnimationFrame(animate);
-    } else {
-      // Move to next stroke or finish
-      startTimeRef.current = undefined;
-      const nextStroke = currentStrokeIndex + 1;
-      if (nextStroke < data.strokes.length) {
-        setCurrentStrokeIndex(nextStroke);
-        setProgress(0);
-        requestRef.current = requestAnimationFrame(animate);
-      } else {
-        // Animation complete
-        setAnimationState(AnimationState.IDLE);
-      }
-    }
-  };
-
+  // Animation Loop
   useEffect(() => {
-    if (animationState === AnimationState.PLAYING && mode === InteractionMode.VIEW) {
-      // If idle, start from beginning
-      if (currentStrokeIndex === -1 || currentStrokeIndex >= data.strokes.length - 1) {
-        setCurrentStrokeIndex(0);
-        setProgress(0);
-      }
-      startTimeRef.current = performance.now();
-      requestRef.current = requestAnimationFrame(animate);
-    } else {
-      cancelAnimationFrame(requestRef.current!);
+    if (animationState !== AnimationState.PLAYING || mode !== InteractionMode.VIEW) {
       startTimeRef.current = undefined;
+      if (requestRef.current) cancelAnimationFrame(requestRef.current);
+      return;
     }
-    return () => cancelAnimationFrame(requestRef.current!);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [animationState, mode, data]);
+
+    // Initialize index if starting
+    if (currentStrokeIndex === -1) {
+        setCurrentStrokeIndex(0);
+        return; // Let effect re-run with index 0
+    }
+
+    const animate = (time: number) => {
+        if (startTimeRef.current === undefined) startTimeRef.current = time;
+        const elapsed = time - startTimeRef.current;
+        
+        // Total duration for one stroke
+        const length = strokeLengths[currentStrokeIndex] || 1000;
+        const totalStrokeDuration = (length / 800) * (1 / speed) * 1000; // Adjusted base speed
+        
+        // Calculate current progress
+        const currentProgress = Math.min(elapsed / totalStrokeDuration, 1);
+        setProgress(currentProgress);
+        
+        if (currentProgress < 1) {
+          requestRef.current = requestAnimationFrame(animate);
+        } else {
+          // Move to next stroke or finish
+          startTimeRef.current = undefined;
+          const nextStroke = currentStrokeIndex + 1;
+          
+          if (nextStroke < data.strokes.length) {
+            setCurrentStrokeIndex(nextStroke);
+            setProgress(0);
+            // Effect will re-run for next stroke
+          } else {
+            // Animation complete
+            setAnimationState(AnimationState.IDLE);
+            setCurrentStrokeIndex(data.strokes.length); // Ensure all shown
+          }
+        }
+    };
+
+    requestRef.current = requestAnimationFrame(animate);
+
+    return () => {
+       if (requestRef.current) cancelAnimationFrame(requestRef.current);
+    };
+  }, [animationState, currentStrokeIndex, mode, data, speed, strokeLengths, setAnimationState]);
 
 
   // --- Drawing Logic (Practice Mode) ---
@@ -165,7 +174,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   const drawUserStroke = (ctx: CanvasRenderingContext2D, toPoint: {x: number, y: number}) => {
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    ctx.lineWidth = 100;
+    ctx.lineWidth = 60; // Slightly thinner for better precision feel
     ctx.strokeStyle = feedbackColor === 'success' ? '#10b981' : (feedbackColor === 'error' ? '#ef4444' : '#0f172a');
     
     // For dark mode, use a lighter color for drawing
@@ -210,15 +219,22 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     drawUserStroke(ctx, {x, y});
   };
 
+  const transformDataToScreen = (point: number[]) => {
+     // Transform data coordinate (Y-up, origin at bottom-ish) to Screen coordinate (Y-down, origin top-left)
+     // based on the SVG transform: translate(0, OFFSET_Y) scale(1, -1)
+     // screen_y = OFFSET_Y - data_y
+     return { x: point[0], y: OFFSET_Y - point[1] };
+  };
+
   const handlePointerUp = () => {
     if (!isDrawing) return;
     setIsDrawing(false);
     
     // Validate stroke
     const userStroke = userStrokePathRef.current;
-    const targetStroke = data.medians[practiceStrokeIndex];
+    const targetStrokeData = data.medians[practiceStrokeIndex];
 
-    if (userStroke.length < 2 || !targetStroke || targetStroke.length < 2) {
+    if (userStroke.length < 2 || !targetStrokeData || targetStrokeData.length < 2) {
       setFeedbackColor('error');
       setTimeout(clearCanvas, 500);
       return;
@@ -227,15 +243,16 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     const startPointUser = userStroke[0];
     const endPointUser = userStroke[userStroke.length - 1];
 
-    const startPointTarget = { x: targetStroke[0][0], y: targetStroke[0][1] };
-    const endPointTarget = { x: targetStroke[targetStroke.length - 1][0], y: targetStroke[targetStroke.length - 1][1] };
+    const startPointTarget = transformDataToScreen(targetStrokeData[0]);
+    const endPointTarget = transformDataToScreen(targetStrokeData[targetStrokeData.length - 1]);
 
     const startDist = getDistance(startPointUser, startPointTarget);
     const endDist = getDistance(endPointUser, endPointTarget);
 
-    // Heuristic: start/end points must be reasonably close, within 30% of stroke length
-    const strokeLen = getPathLength(targetStroke);
-    const threshold = Math.max(150, strokeLen * 0.4);
+    // Heuristic: start/end points must be reasonably close, within 35% of stroke length or fixed buffer
+    const strokeLen = getPathLength(targetStrokeData);
+    // Be more lenient for short strokes, stricter for long ones
+    const threshold = Math.max(200, strokeLen * 0.5); 
 
     if (startDist < threshold && endDist < threshold) {
         setFeedbackColor('success');
@@ -267,18 +284,18 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     
     const lines = [
       // Bounding box
-      { d: `M 0,0 L ${SIZE},0 L ${SIZE},${SIZE} L 0,${SIZE} Z`, stroke: '#e2e8f0', dark: '#334155' },
+      { d: `M 0,0 L ${SIZE},0 L ${SIZE},${SIZE} L 0,${SIZE} Z` },
       // Cross
-      { d: `M ${SIZE/2},0 L ${SIZE/2},${SIZE}`, stroke: '#e2e8f0', dark: '#334155' },
-      { d: `M 0,${SIZE/2} L ${SIZE},${SIZE/2}`, stroke: '#e2e8f0', dark: '#334155' },
+      { d: `M ${SIZE/2},0 L ${SIZE/2},${SIZE}` },
+      { d: `M 0,${SIZE/2} L ${SIZE},${SIZE/2}` },
     ];
     if (settings.gridStyle === 'rice') {
       // Diagonals
-      lines.push({ d: `M 0,0 L ${SIZE},${SIZE}`, stroke: '#e2e8f0', dark: '#334155' });
-      lines.push({ d: `M ${SIZE},0 L 0,${SIZE}`, stroke: '#e2e8f0', dark: '#334155' });
+      lines.push({ d: `M 0,0 L ${SIZE},${SIZE}` });
+      lines.push({ d: `M ${SIZE},0 L 0,${SIZE}` });
     }
     return lines;
-  }, [settings.gridStyle]);
+  }, [settings.gridStyle, SIZE]);
 
   // UX Fix: Non-intrusive status overlay
   const StatusOverlay = () => {
@@ -295,8 +312,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
         }
     } else if (mode === InteractionMode.VIEW) {
         // Only show status when fully complete or special states, NOT during active animation
-        // This fixes the "Animating..." text blocking the character
-        if (currentStrokeIndex >= data.strokes.length - 1 && data.strokes.length > 0 && animationState === AnimationState.IDLE) {
+        if (currentStrokeIndex >= data.strokes.length && data.strokes.length > 0 && animationState === AnimationState.IDLE) {
             text = labels.strokeStatusComplete;
         }
     }
@@ -319,14 +335,16 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
         viewBox={`0 0 ${SIZE} ${SIZE}`}
         className="w-full h-full"
       >
-        <g transform={`translate(0, ${OFFSET_Y}) scale(1, -1)`}>
-          {/* Grid Lines */}
-          <g strokeWidth="2" className="stroke-slate-200 dark:stroke-slate-700">
-             {gridLines.map((line, i) => (
-                <path key={i} d={line.d} />
-             ))}
-          </g>
+        {/* Grid Lines - Drawn in Screen Space (0-1024), NOT transformed by scale(1, -1) */}
+        <g strokeWidth="2" fill="none" className="stroke-slate-200 dark:stroke-slate-700 opacity-70">
+            {gridLines.map((line, i) => (
+            <path key={i} d={line.d} vectorEffect="non-scaling-stroke" />
+            ))}
+        </g>
 
+        {/* Characters - Transformed to correct orientation */}
+        <g transform={`translate(0, ${OFFSET_Y}) scale(1, -1)`}>
+          
           {/* Character Outline/Guide */}
           {(settings.showOutline || mode === InteractionMode.PRACTICE) && (
             <path
@@ -351,9 +369,9 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
               strokeLinecap="round"
               strokeLinejoin="round"
               style={{
-                opacity: i <= currentStrokeIndex ? 1 : 0,
+                opacity: i < currentStrokeIndex || (i === currentStrokeIndex && progress > 0) ? 1 : 0,
                 strokeDasharray: strokeLengths[i],
-                strokeDashoffset: i === currentStrokeIndex ? strokeLengths[i] * (1 - progress) : 0,
+                strokeDashoffset: i === currentStrokeIndex ? strokeLengths[i] * (1 - progress) : (i < currentStrokeIndex ? 0 : strokeLengths[i]),
               }}
             />
           ))}
@@ -378,11 +396,12 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
         ref={canvasRef}
         width={SIZE}
         height={SIZE}
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 w-full h-full cursor-crosshair"
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerLeave={handlePointerUp}
+        style={{ touchAction: 'none' }}
       />
 
       <StatusOverlay />
