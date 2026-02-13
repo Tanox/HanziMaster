@@ -241,7 +241,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     if (settings.gridStyle === 'none') return [];
     const lines = [
       { d: `M 0,0 L ${SIZE},0 L ${SIZE},${SIZE} L 0,${SIZE} Z` },
-      { d: `M ${SIZE/2},0 L ${SIZE},${SIZE}` },
+      { d: `M ${SIZE/2},0 L ${SIZE/2},${SIZE}` },
       { d: `M 0,${SIZE/2} L ${SIZE},${SIZE/2}` },
     ];
     if (settings.gridStyle === 'rice') {

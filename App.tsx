@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.3
+ * HanziMaster v0.4.5
  */
 import React from 'react';
 import { useAppController } from './hooks/useAppController';
@@ -21,7 +21,7 @@ import { UI_LABELS } from './locales';
 import { AlertCircle, WifiOff } from 'lucide-react';
 import { ToastProvider } from './context/ToastContext';
 
-const APP_VERSION = '0.4.3';
+const APP_VERSION = '0.4.5';
 
 const AppContent: React.FC = () => {
   const { state, actions } = useAppController();
@@ -95,15 +95,15 @@ const AppContent: React.FC = () => {
                 onSelectChar={(char, index) => actions.handleCharSelect(char, undefined, index)} 
             />
 
-            {/* Pinyin Display for Active Character */}
-            <div className="h-8 mb-2 flex items-end justify-center w-full">
+            {/* Pinyin Display for Active Character - Optimized for visibility */}
+            <div className="h-16 mb-4 flex items-end justify-center w-full">
               {currentPinyin ? (
-                  <span className="text-2xl text-vermilion-500 dark:text-vermilion-400 font-serif tracking-widest font-medium animate-fade-in">
+                  <span className="text-5xl md:text-6xl text-vermilion-600 dark:text-vermilion-400 font-serif font-bold tracking-widest drop-shadow-sm animate-fade-in transition-all">
                       {currentPinyin}
                   </span>
               ) : (
                   // Placeholder to prevent layout shift
-                  <span className="text-2xl text-transparent select-none">Pinyin</span>
+                  <span className="text-5xl md:text-6xl text-transparent select-none">Pinyin</span>
               )}
             </div>
 

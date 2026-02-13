@@ -1,5 +1,4 @@
 
-
 # HanziMaster 🖌️
 
 [中文文档](./README_zh-CN.md) | **English**
@@ -8,7 +7,7 @@
 >
 > Master Chinese character stroke order with Zen-like visualization and Gemini AI insights.
 
-![Version](https://img.shields.io/badge/version-0.4.3-blue?style=flat-square)
+![Version](https://img.shields.io/badge/version-0.4.5-blue?style=flat-square)
 ![License](https://img.shields.io/badge/license-GPLv3-green?style=flat-square)
 ![Offline Ready](https://img.shields.io/badge/offline-ready-success?style=flat-square)
 ![Powered by Gemini](https://img.shields.io/badge/AI-Gemini_Flash-8E75B2?style=flat-square)

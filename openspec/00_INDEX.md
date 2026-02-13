@@ -1,5 +1,4 @@
 
-
 # HanziMaster - 项目规范文档 (OpenSpec)
 
 欢迎查阅 **HanziMaster** 的全套项目规范文档。本项目严格遵循 OpenSpec 标准，旨在为开发、产品、设计及市场团队提供统一的真理来源 (Single Source of Truth)。
@@ -10,7 +9,7 @@
 | :--- | :--- | :--- | :--- |
 | **01** | [产品需求文档 (PRD)](./01_PRODUCT_REQUIREMENTS.md) | 节庆推荐、**重置功能**、业务逻辑、版本规划 | 产品经理, 开发者 |
 | **02** | [技术架构规范](./02_TECHNICAL_ARCHITECTURE.md) | **构建策略**、离线优先策略 (PWA)、AI 集成 | 架构师, 核心开发 |
-| **03** | [UI/UX 设计规范](./03_UI_UX_DESIGN.md) | 视觉语言、分享卡片、**Toast 通知**、组件规范 | 设计师, 前端开发 |
+| **03** | [UI/UX 设计规范](./03_UI_UX_DESIGN.md) | **轻量化搜索**、**高视拼音**、Toast 通知、组件规范 | 设计师, 前端开发 |
 | **04** | [数据与 API 协议](./04_DATA_AND_API.md) | 数据模型、Gemini API 契约、Prompt 工程 | AI 工程师, 后端 |
 | **05** | [营销与推广策略](./05_MARKETING_AND_PROMO.md) | 价值主张、病毒式传播、GEO (生成式引擎优化) | 市场, 运营 |
 | **06** | [测试与质量保证 (QA)](./06_TESTING_AND_QA.md) | **CORS/CSP 校验**、离线韧性、性能预算 | QA, 开发者 |
@@ -25,12 +24,12 @@
 
 | 报告类型 | 版本 | 状态 |
 | :--- | :--- | :--- |
-| [最新项目审查报告](./reports/project_review_20250522_1000.md) | v0.4.2 | ✅ 通过 |
+| [最新项目审查报告](./reports/project_review_20250522_1200.md) | v0.4.5 | ✅ 通过 |
 
 ## 🛠 项目概况
 
 *   **项目名称**: HanziMaster (汉字大师)
-*   **当前版本**: v0.4.2 (Stability & UX Polish)
+*   **当前版本**: v0.4.5 (Visual Polish & Grid Fixes)
 *   **核心理念**: 离线优先 (Offline-First) + AI 增强 (AI-Enhanced)
 *   **技术栈**: React 19, TypeScript, Vite PWA, Tailwind CSS, Google Gemini API
 
@@ -41,10 +40,11 @@
 *   **v0.3.0**: 交互系统升级（练习记录、随机推荐、多语言）。
 *   **v0.3.5**: 成语智能支持与 IdiomNavigator。
 *   **v0.4.0**: 社交分享 (Share as Image) 与时令推荐。
-*   **v0.4.2**: **UX 完善与架构规范化**。
-    *   新增 `ToastContext` 全局通知系统。
-    *   新增“重置应用”功能与数据健康度自检。
-    *   完善 PWA 离线提示与更新机制。
+*   **v0.4.2**: **UX 完善与架构规范化**。引入 Toast 系统，数据自检与重置机制。
+*   **v0.4.5**: **视觉精修与体验优化**。
+    *   **搜索框**: 轻量化设计 (Compact Mode)，居中对齐，减少视觉干扰。
+    *   **拼音**: 放大字号，增加阴影与衬线体权重，提升可读性。
+    *   **网格**: 修复米字格与田字格的坐标映射错误。
 
 ---
 *文档维护: HanziMaster Engineering Team*

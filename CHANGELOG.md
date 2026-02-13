@@ -6,6 +6,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.5] - 2025-05-22
+
+### Changed
+- **UI Optimization**: Significantly improved the visibility and aesthetics of the Pinyin display for the current character. It now uses a larger, bolder serif font with drop shadows for better readability.
+- **Documentation**: Updated project specification documents (`openspec/`) to align with the current version.
+
+### Fixed
+- **Version Alignment**: Synced version numbers across `package.json`, `App.tsx`, and documentation to v0.4.5.
+
 ## [0.4.3] - 2025-05-22
 
 ### Fixed
