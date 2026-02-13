@@ -1,5 +1,3 @@
-
-
 /**
  * HanziMaster v0.4.2
  */
@@ -282,19 +280,23 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     return lines;
   }, [settings.gridStyle]);
 
+  // UX Fix: Non-intrusive status overlay
   const StatusOverlay = () => {
     let text: string | null = null;
 
     if (mode === InteractionMode.PRACTICE) {
         if (showSuccess) {
             text = labels.practiceComplete;
-        } else if (settings.continuousMode && practiceStrokeIndex < data.strokes.length) {
-            text = labels.settingContinuousMode;
+        } else if (practiceStrokeIndex < data.strokes.length) {
+            // Show stroke progress in practice mode
+            text = (labels.strokeProgress || "Stroke {current} / {total}")
+                .replace('{current}', (practiceStrokeIndex + 1).toString())
+                .replace('{total}', data.strokes.length.toString());
         }
     } else if (mode === InteractionMode.VIEW) {
-        if (animationState === AnimationState.PLAYING || animationState === AnimationState.PAUSED) {
-            text = labels.strokeStatusActive;
-        } else if (currentStrokeIndex >= data.strokes.length - 1 && data.strokes.length > 0) {
+        // Only show status when fully complete or special states, NOT during active animation
+        // This fixes the "Animating..." text blocking the character
+        if (currentStrokeIndex >= data.strokes.length - 1 && data.strokes.length > 0 && animationState === AnimationState.IDLE) {
             text = labels.strokeStatusComplete;
         }
     }
@@ -303,19 +305,16 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
 
     return (
         <div className={`absolute bottom-3 left-1/2 -translate-x-1/2 transition-all duration-300 pointer-events-none ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
-            <div className={`px-2.5 py-1 rounded-md text-[10px] font-bold backdrop-blur-sm shadow-md ${mode === InteractionMode.PRACTICE && showSuccess ? 'bg-emerald-600/90 text-white' : 'bg-black/40 text-white'}`}>
+            <div className={`px-3 py-1.5 rounded-full text-[10px] font-bold backdrop-blur-sm shadow-sm flex items-center gap-2 ${mode === InteractionMode.PRACTICE && showSuccess ? 'bg-emerald-600/90 text-white' : 'bg-slate-900/10 dark:bg-white/10 text-slate-500 dark:text-slate-300'}`}>
+                {mode === InteractionMode.PRACTICE && !showSuccess && <PenTool size={10} />}
                 {text}
             </div>
         </div>
     );
   };
 
-  const strokeProgressText = (labels.strokeProgress || "Stroke {current} / {total}")
-    .replace('{current}', (practiceStrokeIndex + 1).toString())
-    .replace('{total}', data.strokes.length.toString());
-
   return (
-    <div className="w-full max-w-xs relative bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-100 dark:border-slate-700 aspect-square shadow-inner bg-texture-paper select-none touch-none">
+    <div className="w-full max-w-xs relative bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-100 dark:border-slate-700 aspect-square shadow-inner bg-texture-paper select-none touch-none overflow-hidden">
       <svg
         viewBox={`0 0 ${SIZE} ${SIZE}`}
         className="w-full h-full"
@@ -385,21 +384,6 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
         onPointerUp={handlePointerUp}
         onPointerLeave={handlePointerUp}
       />
-
-      {/* Practice Mode Guide */}
-      {mode === InteractionMode.PRACTICE && practiceStrokeIndex < data.strokes.length && (
-         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 text-center animate-fade-in">
-               <PenTool size={24} className="mx-auto text-teal-500 mb-2" />
-               <p className="font-bold text-slate-700 dark:text-slate-200">
-                  {strokeProgressText}
-               </p>
-               <p className="text-xs text-slate-500 dark:text-slate-400">
-                  {labels.writeNextStroke || "Please write the next stroke."}
-               </p>
-            </div>
-         </div>
-      )}
 
       <StatusOverlay />
     </div>

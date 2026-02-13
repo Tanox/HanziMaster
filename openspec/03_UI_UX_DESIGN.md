@@ -46,6 +46,15 @@
     *   **Error**: 背景 `bg-red-50` (Dark: `bg-red-900/80`)，图标 `AlertCircle` (`text-red-500`)。
     *   **Info**: 背景 `bg-slate-50` (Dark: `bg-slate-800/80`)，图标 `Info` (`text-slate-500`)。
 
+### 3.5 状态反馈 (Status Feedback)
+*   **原则**: 任何状态提示均不得遮挡汉字主体。
+*   **View 模式**: 
+    *   动画播放期间：**完全隐藏**任何状态文字（如“播放中”），确保笔画清晰。
+    *   动画结束：可显示微弱的“Complete”提示。
+*   **Practice 模式**:
+    *   严禁使用全屏模态框 (Modal) 提示步骤。
+    *   应使用底部居中的**胶囊式提示 (Pill Overlay)**，展示进度（如“第 3 / 8 笔”），采用半透明背景以融入环境。
+
 ## 4. 交互动效 (Micro-interactions)
 
 ### 4.1 笔顺流动 (Stroke Flow)
