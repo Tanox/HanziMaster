@@ -1,5 +1,4 @@
 
-
 /**
  * HanziMaster v0.3.5
  */
@@ -80,6 +79,10 @@ export const ja: UILabels = {
   shareTextChar: "🀄️ HanziMasterで「{char}」({pinyin})の書き順をマスターしました！\n\n📖 意味：{meaning}\n\n✨ 筆順アニメーションとAI解説はこちら：\n{url}\n\n#HanziMaster #中国語学習 #書道",
   shareTextIdiom: "📜 面白い成語を見つけました：「{idiom}」({pinyin})\n\n💡 意味：{meaning}\n\n🚀 HanziMasterで由来や使い方を学びましょう：\n{url}\n\n#HanziMaster #成語 #中国語学習",
   shareMessageCopied: '共有テキストをコピーしました！',
+
+  // App Sharing
+  shareAppTitle: 'アプリを共有',
+  shareAppText: '🔥 漢字学習のための素晴らしいツールを見つけました！\n\nHanziMasterは、伝統的な書道とAI分析を組み合わせています。オフラインでも使えます。\n\nチェックしてみてください：{url}\n\n#HanziMaster #中国語学習 #書道',
 
   // UX Fixes v0.4.2
   strokeProgress: '{current} / {total} 画目',

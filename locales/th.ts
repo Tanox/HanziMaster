@@ -1,5 +1,4 @@
 
-
 /**
  * HanziMaster v0.3.5
  */
@@ -80,6 +79,10 @@ export const th: UILabels = {
   shareTextChar: "🀄️ ฉันเพิ่งฝึกเขียน '{char}' ({pinyin}) บน HanziMaster สำเร็จ!\n\n📖 ความหมาย: {meaning}\n\n✨ ดูลำดับขีดและการวิเคราะห์โดย AI ได้ที่นี่:\n{url}\n\n#HanziMaster #เรียนภาษาจีน #พู่กันจีน",
   shareTextIdiom: "📜 พบสำนวนที่น่าสนใจ: '{idiom}' ({pinyin})\n\n💡 ความหมาย: {meaning}\n\n🚀 เรียนรู้ที่มาและเรื่องราวได้ที่ HanziMaster:\n{url}\n\n#HanziMaster #สำนวนจีน #เรียนภาษาจีน",
   shareMessageCopied: 'คัดลอกข้อความสำหรับแชร์แล้ว!',
+
+  // App Sharing
+  shareAppTitle: 'แชร์แอป',
+  shareAppText: '🔥 พบเครื่องมือสุดเจ๋งสำหรับฝึกเขียนอักษรจีน!\n\nHanziMaster ผสมผสานการเขียนพู่กันแบบ Zen เข้ากับ AI ใช้งานแบบออฟไลน์ได้ด้วย!\n\nลองดูเลย: {url}\n\n#HanziMaster #เรียนภาษาจีน #พู่กันจีน',
 
   // UX Fixes v0.4.2
   strokeProgress: 'ขีดที่ {current} / {total}',

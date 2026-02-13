@@ -5,6 +5,7 @@
 import React from 'react';
 import { Brush, Settings, WifiOff } from 'lucide-react';
 import InstallPWA from './InstallPWA';
+import ShareButton from './ShareButton';
 import { UILabels } from '../locales/types';
 
 interface HeaderProps {
@@ -35,6 +36,15 @@ const Header: React.FC<HeaderProps> = ({ labels, onOpenSettings, isOffline }) =>
                 <span className="text-[10px] font-bold uppercase tracking-wider hidden sm:inline">{labels.settingOfflineMode}</span>
              </div>
            )}
+
+           <ShareButton
+              title={labels.shareAppTitle || "Share HanziMaster"}
+              text={(labels.shareAppText || "Check out HanziMaster: {url}").replace('{url}', window.location.origin)}
+              url={window.location.origin}
+              labels={labels}
+              size={20}
+              className="p-3 md:p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors touch-manipulation"
+           />
 
            <InstallPWA installLabel={labels.installApp || 'Install App'} />
 

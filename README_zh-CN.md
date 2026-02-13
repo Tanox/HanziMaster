@@ -7,7 +7,7 @@
 > 
 > 结合传统书法美学与 Gemini AI 深度解析的下一代汉字学习终端。
 
-![Version](https://img.shields.io/badge/version-0.5.0-blue?style=flat-square)
+![Version](https://img.shields.io/badge/version-0.5.2-blue?style=flat-square)
 ![License](https://img.shields.io/badge/license-GPLv3-green?style=flat-square)
 ![Offline Ready](https://img.shields.io/badge/offline-ready-success?style=flat-square)
 ![Powered by Gemini](https://img.shields.io/badge/AI-Gemini_Flash-8E75B2?style=flat-square)

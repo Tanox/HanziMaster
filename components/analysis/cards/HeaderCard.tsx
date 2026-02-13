@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.9
+ * HanziMaster v0.5.1
  */
 import React from 'react';
 import { Info } from 'lucide-react';
@@ -17,6 +17,7 @@ interface HeaderCardProps {
   labels: UILabels;
   compact: boolean;
   isFallback: boolean;
+  fullWidth?: boolean;
 }
 
 const HeaderCard: React.FC<HeaderCardProps> = ({ 
@@ -25,7 +26,8 @@ const HeaderCard: React.FC<HeaderCardProps> = ({
   settings, 
   labels, 
   compact, 
-  isFallback 
+  isFallback,
+  fullWidth = false
 }) => {
   const shareUrl = `${window.location.origin}?char=${encodeURIComponent(analysis.char)}`;
   
@@ -38,9 +40,12 @@ const HeaderCard: React.FC<HeaderCardProps> = ({
 
   const shareTitle = labels.shareTitleChar.replace('{char}', analysis.char);
 
+  // Common wrapper class
+  const wrapperClass = `${fullWidth ? 'md:col-span-4' : 'md:col-span-2'} bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700`;
+
   if (compact) {
     return (
-      <div id="character-header-card-compact" className="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 flex items-center justify-between">
+      <div id="character-header-card-compact" className={`${wrapperClass} flex items-center justify-between`}>
            <div className="flex items-center gap-4">
               <ruby className="text-5xl font-hanzi font-bold text-slate-800 dark:text-white">
                 {analysis.char}
@@ -69,7 +74,7 @@ const HeaderCard: React.FC<HeaderCardProps> = ({
   }
 
   return (
-      <div id="character-header-card" className="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 flex flex-col justify-between relative overflow-hidden group hover:border-vermilion-100 dark:hover:border-vermilion-900 transition-colors">
+      <div id="character-header-card" className={`${wrapperClass} flex flex-col justify-between relative overflow-hidden group hover:border-vermilion-100 dark:hover:border-vermilion-900 transition-colors`}>
           <div className="absolute -right-4 -bottom-8 text-9xl font-hanzi text-slate-50 dark:text-slate-800 pointer-events-none select-none opacity-50 group-hover:scale-110 transition-transform duration-700">
               {analysis.char}
           </div>

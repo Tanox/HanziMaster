@@ -1,5 +1,4 @@
 
-
 /**
  * HanziMaster v0.4.2
  */
@@ -80,6 +79,10 @@ export const zhTW: UILabels = {
   shareTextChar: '🀄️ 我在「漢字大師」學會了「{char}」({pinyin}) 的標準筆順！\n\n📖 釋義：{meaning}\n\n✨ 結合 AI 解析與書法美學，推薦你也來試試：\n{url}\n\n#漢字大師 #中文學習 #HanziMaster',
   shareTextIdiom: '📜 發現了一個超棒的成語：「{idiom}」({pinyin})\n\n💡 意思：{meaning}\n\n🚀 快來「漢字大師」查看它的典故和用法：\n{url}\n\n#漢字大師 #成語學習 #ChineseIdioms',
   shareMessageCopied: '分享文案已複製！',
+
+  // App Sharing
+  shareAppTitle: '推薦給好友',
+  shareAppText: '🔥 發現一個練字神器！\n\n漢字大師 (HanziMaster) —— 結合傳統書法美學與 AI 智能解析，離線也能用。\n\n快來試試：{url}\n\n#漢字大師 #中文學習 #練字打卡',
 
   // Audit
   settingDatabaseStatus: '資料庫狀態',

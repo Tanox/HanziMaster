@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.9
+ * HanziMaster v0.5.1
  */
 import { useState } from 'react';
 import { HanziData, CharacterAnalysis, IdiomAnalysis, AppSettings } from '../types';
@@ -87,10 +87,22 @@ export const useContentFetcher = (settings: AppSettings) => {
             }
             
             if (aiResult) {
-                 // Enhance result with stroke count from HanziWriter data if AI missed it
                  let finalResult = aiResult;
-                 if (fetchedData && aiResult.meaning.startsWith("Mode:")) {
-                      finalResult = { ...aiResult, strokeCount: fetchedData.strokes.length };
+                 
+                 // Enhance result with local data if AI missed it or if we are in offline fallback mode
+                 if (aiResult.meaning.startsWith("Mode:")) {
+                      // 1. Inject Stroke Count from HanziData
+                      if (fetchedData) {
+                          finalResult = { ...finalResult, strokeCount: fetchedData.strokes.length };
+                      }
+                      
+                      // 2. Inject Pinyin from Local DB or Cache
+                      if (finalResult.pinyin === '-' || finalResult.pinyin === '?') {
+                          const localPinyin = PINYIN_MAP[char] || pinyinCache[char];
+                          if (localPinyin) {
+                              finalResult = { ...finalResult, pinyin: localPinyin };
+                          }
+                      }
                  }
 
                  setAnalysis(finalResult);

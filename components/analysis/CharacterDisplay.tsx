@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.9
+ * HanziMaster v0.5.1
  */
 import React from 'react';
 import { CharacterAnalysis, AppSettings, HanziData } from '../../types';
@@ -12,6 +12,7 @@ import StrokeCountCard from './cards/StrokeCountCard';
 import EtymologyCard from './cards/EtymologyCard';
 import MnemonicCard from './cards/MnemonicCard';
 import ExampleWordsCard from './cards/ExampleWordsCard';
+import OfflineStateCard from './cards/OfflineStateCard';
 
 interface CharacterDisplayProps {
   analysis: CharacterAnalysis;
@@ -25,6 +26,11 @@ const CharacterDisplay: React.FC<CharacterDisplayProps> = ({ analysis, hanziData
   const isFallback = analysis.meaning.startsWith('Mode:') || analysis.radical === '?';
   const showRichContent = !settings.offlineMode && !isFallback;
 
+  // Layout Logic:
+  // If we have stroke count (local data exists), we show Header + StrokeCount.
+  // If we don't have stroke count (no local data) and we are offline, we show Header (Full Width) + OfflineCard.
+  const hasStrokeCount = analysis.strokeCount > 0;
+  
   return (
     <div id="character-analysis-grid" className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-min">
       
@@ -35,13 +41,14 @@ const CharacterDisplay: React.FC<CharacterDisplayProps> = ({ analysis, hanziData
         labels={labels} 
         compact={compact}
         isFallback={isFallback}
+        fullWidth={!hasStrokeCount && !showRichContent} // Expand header if it's the only top card
       />
 
       {settings.showStructure && showRichContent && (
         <StructureCard radical={analysis.radical} labels={labels} />
       )}
 
-      {settings.showStructure && (analysis.strokeCount > 0) && (
+      {settings.showStructure && hasStrokeCount && (
         <StrokeCountCard 
             count={analysis.strokeCount} 
             labels={labels} 
@@ -63,6 +70,10 @@ const CharacterDisplay: React.FC<CharacterDisplayProps> = ({ analysis, hanziData
             labels={labels} 
             apiKey={settings.apiKey} 
         />
+      )}
+
+      {!showRichContent && (
+        <OfflineStateCard labels={labels} />
       )}
     </div>
   );

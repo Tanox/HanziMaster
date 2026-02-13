@@ -99,6 +99,10 @@ export interface UILabels {
   shareTextChar: string; 
   shareTextIdiom: string; 
   shareMessageCopied: string;
+  
+  // App Sharing (Viral)
+  shareAppTitle?: string;
+  shareAppText?: string;
 
   // Database Audit (Optional for compat)
   settingDatabaseStatus?: string;

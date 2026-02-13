@@ -1,5 +1,4 @@
 
-
 /**
  * HanziMaster v0.4.2
  */
@@ -90,6 +89,10 @@ export const en: UILabels = {
   shareTextChar: "🀄️ Just mastered writing '{char}' ({pinyin}) on HanziMaster!\n\n📖 Meaning: {meaning}\n\n✨ See the ink flow and AI analysis here:\n{url}\n\n#HanziMaster #LearnChinese #Calligraphy",
   shareTextIdiom: "📜 Fascinating idiom alert: '{idiom}' ({pinyin})\n\n💡 Meaning: {meaning}\n\n🚀 Discover its origin story on HanziMaster:\n{url}\n\n#HanziMaster #ChineseIdioms #DailyChinese",
   shareMessageCopied: 'Share text copied!',
+
+  // App Sharing
+  shareAppTitle: 'Share App',
+  shareAppText: '🔥 I found an amazing tool for mastering Chinese characters!\n\nHanziMaster combines Zen calligraphy with AI insights. Works offline too!\n\nCheck it out: {url}\n\n#HanziMaster #LearnChinese #Calligraphy',
 
   // Audit
   settingDatabaseStatus: 'Database Status',

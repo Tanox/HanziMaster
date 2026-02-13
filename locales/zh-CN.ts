@@ -1,5 +1,4 @@
 
-
 /**
  * HanziMaster v0.4.2
  */
@@ -90,6 +89,10 @@ export const zhCN: UILabels = {
   shareTextChar: '🀄️ 原来“{char}”({pinyin}) 是这样写的！\n\n📖 释义：{meaning}\n\n✨ 汉字大师 AI 告诉我：\n{url}\n\n#汉字大师 #中文之美 #练字打卡',
   shareTextIdiom: '📜 涨知识了！成语“{idiom}”({pinyin})\n\n💡 意思：{meaning}\n\n🚀 在这里看它的典故来源：\n{url}\n\n#汉字大师 #成语故事 #每日一词',
   shareMessageCopied: '分享文案已复制！',
+  
+  // App Sharing
+  shareAppTitle: '分享给好友',
+  shareAppText: '🔥 发现一个练字神器！\n\n汉字大师 (HanziMaster) —— 结合传统书法美学与 AI 智能解析，离线也能用。\n\n快来试试：{url}\n\n#汉字大师 #中文学习 #练字打卡',
 
   // Audit
   settingDatabaseStatus: '数据库状态',

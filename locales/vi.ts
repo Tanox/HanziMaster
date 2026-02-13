@@ -1,5 +1,4 @@
 
-
 /**
  * HanziMaster v0.3.5
  */
@@ -80,6 +79,10 @@ export const vi: UILabels = {
   shareTextChar: "🀄️ Tôi vừa học cách viết chữ '{char}' ({pinyin}) trên HanziMaster!\n\n📖 Nghĩa: {meaning}\n\n✨ Xem hoạt hình nét bút và phân tích AI tại đây:\n{url}\n\n#HanziMaster #HocTiengTrung #ThuPhap",
   shareTextIdiom: "📜 Tìm thấy một thành ngữ thú vị: '{idiom}' ({pinyin})\n\n💡 Nghĩa: {meaning}\n\n🚀 Tìm hiểu nguồn gốc tại HanziMaster:\n{url}\n\n#HanziMaster #ThanhNguTrungQuoc #HocTiengTrung",
   shareMessageCopied: 'Đã sao chép nội dung chia sẻ!',
+
+  // App Sharing
+  shareAppTitle: 'Chia sẻ ứng dụng',
+  shareAppText: '🔥 Tìm thấy một công cụ tuyệt vời để học chữ Hán!\n\nHanziMaster kết hợp thư pháp Zen với phân tích AI. Dùng được cả khi offline!\n\nThử ngay: {url}\n\n#HanziMaster #HocTiengTrung #ThuPhap',
 
   // UX Fixes v0.4.2
   strokeProgress: 'Nét {current} / {total}',

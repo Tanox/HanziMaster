@@ -1,5 +1,4 @@
 
-
 /**
  * HanziMaster v0.3.5
  */
@@ -80,6 +79,10 @@ export const fr: UILabels = {
   shareTextChar: "🀄️ Je viens d'apprendre à écrire '{char}' ({pinyin}) sur HanziMaster !\n\n📖 Signification : {meaning}\n\n✨ Découvrez l'animation des traits et l'analyse IA ici :\n{url}\n\n#HanziMaster #ApprendreLeChinois #Calligraphie",
   shareTextIdiom: "📜 J'ai découvert un idiome fascinant : '{idiom}' ({pinyin})\n\n💡 Signification : {meaning}\n\n🚀 Apprenez son histoire sur HanziMaster :\n{url}\n\n#HanziMaster #IdiomesChinois #ApprendreLeChinois",
   shareMessageCopied: 'Texte de partage copié !',
+
+  // App Sharing
+  shareAppTitle: 'Partager l\'app',
+  shareAppText: "🔥 J'ai trouvé un outil incroyable pour maîtriser les caractères chinois !\n\nHanziMaster combine la calligraphie Zen avec l'IA. Fonctionne aussi hors ligne.\n\nRegardez ça : {url}\n\n#HanziMaster #ApprendreLeChinois #Calligraphie",
 
   // UX Fixes v0.4.2
   strokeProgress: 'Trait {current} / {total}',

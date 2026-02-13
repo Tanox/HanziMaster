@@ -6,6 +6,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.2] - 2025-05-22
+
+### Added
+- **Viral Sharing**: Added a global "Share App" button in the header toolbar, allowing users to quickly share the application via system share menu or clipboard with localized marketing messages.
+- **Viral Content**: Added marketing copy for app sharing to all 15 supported language files to facilitate viral growth in different regions.
+
+### Changed
+- **Version Bump**: Updated application version to v0.5.2.
+
 ## [0.5.0] - 2025-05-22
 
 ### Added

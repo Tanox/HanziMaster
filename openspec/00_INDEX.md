@@ -30,7 +30,7 @@
 ## 🛠 项目概况
 
 *   **项目名称**: HanziMaster (汉字大师)
-*   **当前版本**: v0.5.0 (Cards & Sharing Update)
+*   **当前版本**: v0.5.2 (Viral Sharing Update)
 *   **核心理念**: 离线优先 (Offline-First) + AI 增强 (AI-Enhanced)
 *   **技术栈**: React 19, TypeScript, Vite PWA, Tailwind CSS, Google Gemini API
 
@@ -45,6 +45,7 @@
 *   **v0.4.5**: **视觉精修 (Visual Polish)**。搜索框轻量化，拼音显像优化，网格坐标修复。
 *   **v0.4.9**: **架构重构与模块化**。拆分 Hooks，解耦 UI 与逻辑，提升代码可维护性。
 *   **v0.5.0**: **组件拆分与分享升级**。拆分 CharacterDisplay 卡片，支持移动端原生分享。
+*   **v0.5.2**: **病毒式传播 (Viral Sharing)**。新增应用级分享功能，支持多语言营销文案。
 
 ---
 *文档维护: HanziMaster Engineering Team*

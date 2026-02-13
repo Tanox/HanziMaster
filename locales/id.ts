@@ -1,5 +1,4 @@
 
-
 /**
  * HanziMaster v0.3.5
  */
@@ -80,6 +79,10 @@ export const id: UILabels = {
   shareTextChar: "🀄️ Saya baru saja belajar menulis '{char}' ({pinyin}) di HanziMaster!\n\n📖 Arti: {meaning}\n\n✨ Lihat animasi guratan dan analisis AI di sini:\n{url}\n\n#HanziMaster #BelajarMandarin #Kaligrafi",
   shareTextIdiom: "📜 Menemukan peribahasa menarik: '{idiom}' ({pinyin})\n\n💡 Arti: {meaning}\n\n🚀 Pelajari kisah di baliknya di HanziMaster:\n{url}\n\n#HanziMaster #PeribahasaMandarin #BelajarMandarin",
   shareMessageCopied: 'Teks untuk dibagikan telah disalin!',
+
+  // App Sharing
+  shareAppTitle: 'Bagikan Aplikasi',
+  shareAppText: '🔥 Saya menemukan alat luar biasa untuk menguasai karakter Mandarin!\n\nHanziMaster menggabungkan kaligrafi Zen dengan wawasan AI. Bisa dipakai offline!\n\nCek di sini: {url}\n\n#HanziMaster #BelajarMandarin #Kaligrafi',
 
   // UX Fixes v0.4.2
   strokeProgress: 'Guratan {current} / {total}',
