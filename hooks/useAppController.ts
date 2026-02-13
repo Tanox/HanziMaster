@@ -238,7 +238,7 @@ export const useAppController = () => {
                              setIdiomAnalysis(idiomCache[term]);
                         }
                     })
-                    .catch(e => {
+                    .catch((e: any) => {
                         console.error("Idiom search error", e);
                         if (idiomCache[term]) {
                              setIdiomAnalysis(idiomCache[term]);
