@@ -2,7 +2,7 @@
 /**
  * HanziMaster v0.4.9
  */
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { HistoryItem, AppSettings, InteractionMode, AnimationState } from '../types';
 import { COMMON_CHARS } from '../constants/commonChars';
 import { useLocalStorage } from './useLocalStorage';

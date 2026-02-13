@@ -28,7 +28,7 @@ const ShareImageButton: React.FC<ShareImageButtonProps> = ({ hanziData, analysis
       });
 
       // Try Native Web Share API Level 2 (File Sharing)
-      if (navigator.share && navigator.canShare) {
+      if (typeof navigator !== 'undefined' && 'share' in navigator && 'canShare' in navigator) {
          try {
              const blob = await (await fetch(dataUrl)).blob();
              const file = new File([blob], `HanziMaster_${analysis.char}.png`, { type: 'image/png' });
@@ -68,7 +68,7 @@ const ShareImageButton: React.FC<ShareImageButtonProps> = ({ hanziData, analysis
     }
   };
 
-  const canNativeShare = typeof navigator !== 'undefined' && navigator.share && navigator.canShare;
+  const canNativeShare = typeof navigator !== 'undefined' && 'share' in navigator && 'canShare' in navigator;
 
   return (
     <button
