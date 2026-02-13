@@ -1,9 +1,9 @@
 
 /**
- * HanziMaster v0.4.9
+ * HanziMaster v0.5.1
  */
 import React from 'react';
-import { Brush, ArrowRight, Globe, Search, Eye, PenTool } from 'lucide-react';
+import { Brush, ArrowRight, Globe, Search, Eye, PenTool, Check } from 'lucide-react';
 import { UILabels } from '../locales/types';
 import { LANGUAGES } from '../locales';
 
@@ -15,7 +15,7 @@ interface WelcomeScreenProps {
 }
 
 const FeatureCard = ({ icon, title, desc }: { icon: React.ReactNode, title: string, desc: string }) => (
-  <div className="flex flex-col items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-100 dark:border-slate-700/50">
+  <div className="flex flex-col items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-100 dark:border-slate-700/50 h-full">
      <div className="p-2 bg-white dark:bg-slate-800 rounded-lg shadow-sm text-teal-600 dark:text-teal-400 mb-2">
          {icon}
      </div>
@@ -27,60 +27,69 @@ const FeatureCard = ({ icon, title, desc }: { icon: React.ReactNode, title: stri
 const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onDismiss, labels, currentLang, onLanguageChange }) => {
   return (
     <div id="welcome-screen-overlay" className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/90 backdrop-blur-md animate-fade-in p-4">
-      <div id="welcome-screen-content" className="w-full max-w-md bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 relative">
+      <div id="welcome-screen-content" className="w-full max-w-lg bg-white dark:bg-slate-800 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-700 relative flex flex-col max-h-[90vh]">
         
-        {/* Language Selector (Top Right) */}
-        <div className="absolute top-4 right-4 z-20">
-           <div className="relative group">
-              <div className="flex items-center gap-1.5 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-3 py-1.5 text-xs font-medium text-white cursor-pointer hover:bg-white/30 transition-colors">
-                 <Globe size={12} />
-                 <span>{LANGUAGES.find(l => l.code === currentLang)?.native}</span>
-              </div>
-              <select 
-                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                 value={currentLang}
-                 onChange={(e) => onLanguageChange(e.target.value)}
-              >
-                 {LANGUAGES.map(lang => (
-                    <option key={lang.code} value={lang.code}>
-                        {lang.native} ({lang.name})
-                    </option>
-                 ))}
-              </select>
-           </div>
-        </div>
-
         {/* Hero Section */}
-        <div id="welcome-hero-section" className="bg-gradient-to-br from-vermilion-500 to-vermilion-600 p-8 pt-12 text-center relative overflow-hidden">
+        <div id="welcome-hero-section" className="shrink-0 bg-gradient-to-br from-vermilion-500 to-vermilion-600 p-6 pt-8 text-center relative overflow-hidden rounded-t-3xl">
           {/* Background Decorative Pattern */}
           <div className="absolute inset-0 opacity-10 pointer-events-none flex items-center justify-center select-none">
              <span className="text-[12rem] font-hanzi leading-none text-white animate-pulse" style={{ animationDuration: '4s' }}>字</span>
           </div>
 
           <div className="relative z-10 flex flex-col items-center">
-            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg mb-4 transform -rotate-3 transition-transform hover:rotate-0">
-               <Brush size={32} className="text-vermilion-600" />
+            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg mb-3 transform -rotate-3 transition-transform hover:rotate-0">
+               <Brush size={24} className="text-vermilion-600" />
             </div>
-            <h1 className="text-2xl font-hanzi font-bold text-white mb-2 tracking-wide">
+            <h1 className="text-xl font-hanzi font-bold text-white tracking-wide">
               {labels.appTitle}
             </h1>
-            <div className="w-8 h-1 bg-white/30 rounded-full"></div>
           </div>
         </div>
 
-        {/* Content Section */}
-        <div className="p-6 md:p-8">
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto p-6 md:p-8 custom-scrollbar">
+          
           <div className="text-center mb-6">
             <h2 className="text-lg font-bold text-slate-800 dark:text-white mb-2">
                 {labels.welcomeTitle || "Welcome to HanziMaster"}
             </h2>
             <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                {labels.welcomeSubtitle || "Discover the beauty of Chinese characters. The ultimate tool combining traditional calligraphy with AI insights."}
+                {labels.welcomeSubtitle || "Discover the beauty of Chinese characters."}
             </p>
           </div>
 
+          {/* Language Grid */}
+          <div className="mb-8">
+             <div className="flex items-center justify-center gap-2 mb-4 text-slate-400 dark:text-slate-500">
+                <Globe size={14} />
+                <span className="text-xs font-bold uppercase tracking-widest">Select Language / 选择语言</span>
+             </div>
+             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                {LANGUAGES.map(lang => (
+                    <button
+                        key={lang.code}
+                        onClick={() => onLanguageChange(lang.code)}
+                        className={`
+                            relative flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all duration-200
+                            ${currentLang === lang.code 
+                                ? 'bg-vermilion-50 dark:bg-vermilion-900/20 border-vermilion-500 text-vermilion-700 dark:text-vermilion-300 shadow-sm' 
+                                : 'bg-white dark:bg-slate-700/30 border-slate-100 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-vermilion-200 dark:hover:border-vermilion-800 hover:bg-slate-50 dark:hover:bg-slate-700'}
+                        `}
+                    >
+                        <span className="text-sm font-bold mb-0.5">{lang.native}</span>
+                        <span className="text-[10px] opacity-70">{lang.name}</span>
+                        {currentLang === lang.code && (
+                            <div className="absolute top-2 right-2 text-vermilion-500">
+                                <Check size={14} strokeWidth={3} />
+                            </div>
+                        )}
+                    </button>
+                ))}
+             </div>
+          </div>
+
           {/* Feature Guide */}
-          <div id="welcome-features-section" className="grid grid-cols-3 gap-3 mb-8">
+          <div id="welcome-features-section" className="grid grid-cols-3 gap-3 mb-2">
              <FeatureCard 
                 icon={<Search size={18} />} 
                 title={labels.guideSearchTitle || "Search"} 
@@ -97,7 +106,10 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onDismiss, labels, curren
                 desc={labels.guidePracticeDesc || "Write & Feedback"} 
              />
           </div>
+        </div>
 
+        {/* Footer Action */}
+        <div className="shrink-0 p-6 pt-0 bg-white dark:bg-slate-800 rounded-b-3xl">
           <button
             id="welcome-get-started-btn"
             onClick={onDismiss}

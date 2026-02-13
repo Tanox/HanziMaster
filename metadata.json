@@ -16,5 +16,6 @@
     "Mnemonics",
     "Calligraphy"
   ],
-  "requestFramePermissions": []
+  "requestFramePermissions": [],
+  "googleAnalyticsId": "G-MEASUREMENT_ID"
 }

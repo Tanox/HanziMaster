@@ -1,5 +1,4 @@
-
-<!-- HanziMaster v0.5.0 -->
+<!-- HanziMaster v0.5.1 -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,7 +7,72 @@
     <meta name="theme-color" content="#fdfbf7" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
     
+    <!-- SEO & Meta Information -->
     <title>HanziMaster - Learn Chinese Character Strokes & Etymology with AI</title>
+    <meta name="description" content="Master Chinese characters (Hanzi) with vector stroke order animations, AI-powered etymology, mnemonics, and handwriting practice. Offline-first PWA for HSK learners.">
+    <meta name="keywords" content="Chinese Characters, Hanzi, Stroke Order, Etymology, Pinyin, HSK, Learn Chinese, Mandarin, Calligraphy, AI Education, Mnemonics, Offline App, PWA">
+    <meta name="author" content="HanziMaster Team">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://hanzimaster.app/" />
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hanzimaster.app/">
+    <meta property="og:title" content="HanziMaster - Master Hanzi with AI">
+    <meta property="og:description" content="The ultimate tool for learning Chinese characters. Visualize strokes, understand origins with Gemini AI, and practice offline.">
+    <meta property="og:image" content="/maskable-icon.svg">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="HanziMaster">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="HanziMaster">
+    <meta name="twitter:description" content="Master Hanzi with Zen-like vector stroke animations and AI-powered insights.">
+    <meta name="twitter:image" content="/maskable-icon.svg">
+
+    <!-- Google Analytics (GA4) -->
+    <!-- Replace G-MEASUREMENT_ID with your actual Measurement ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-MEASUREMENT_ID');
+    </script>
+
+    <!-- JSON-LD Structured Data for GEO (Generative Engine Optimization) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "HanziMaster",
+      "alternateName": "汉字大师",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web, Android, iOS, Windows, macOS",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "HanziMaster is an offline-first progressive web application (PWA) designed to help learners master Chinese characters (Hanzi). It features vector-based stroke order animations, AI-generated etymology and mnemonics using Google Gemini, and native text-to-speech. It covers HSK vocabulary and provides a distraction-free 'Zen' writing experience.",
+      "featureList": [
+        "Vector Stroke Order Animations",
+        "AI Etymology Analysis",
+        "Mnemonics Generation",
+        "Native TTS Audio",
+        "Offline PWA Support",
+        "Handwriting Practice Mode"
+      ],
+      "inLanguage": ["en", "zh-CN", "zh-TW", "es", "fr", "de", "ja", "ko", "ru", "pt", "it", "vi"],
+      "author": {
+        "@type": "Organization",
+        "name": "HanziMaster Team",
+        "url": "https://github.com/sutchan/HanziMaster"
+      },
+      "screenshot": "https://hanzimaster.app/screenshot.png"
+    }
+    </script>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
