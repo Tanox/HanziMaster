@@ -1,4 +1,5 @@
 
+
 /**
  * HanziMaster v0.3.5
  */
@@ -47,6 +48,9 @@ export const th: UILabels = {
   settingLanguage: 'ภาษาที่แสดง',
   themeLight: 'โหมดสว่าง',
   themeDark: 'โหมดมืด',
+  settingResetData: 'รีเซ็ตแอป',
+  resetBtn: 'ล้างข้อมูลทั้งหมด',
+  resetConfirm: 'คุณแน่ใจหรือไม่ว่าต้องการล้างประวัติ แคช และการตั้งค่าทั้งหมด? การดำเนินการนี้ไม่สามารถย้อนกลับได้',
   sectionInterface: 'อินเทอร์เฟซ',
   sectionContent: 'เนื้อหา',
   sectionAppearance: 'รูปลักษณ์',

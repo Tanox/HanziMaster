@@ -1,4 +1,5 @@
 
+
 /**
  * HanziMaster v0.3.5
  */
@@ -47,6 +48,9 @@ export const pt: UILabels = {
   settingLanguage: 'Idioma',
   themeLight: 'Modo Claro',
   themeDark: 'Modo Escuro',
+  settingResetData: 'Resetar App',
+  resetBtn: 'Limpar Todos os Dados',
+  resetConfirm: 'Tem certeza de que deseja limpar todo o histórico, cache e configurações? Isso não pode ser desfeito.',
   sectionInterface: 'Interface',
   sectionContent: 'Conteúdo',
   sectionAppearance: 'Aparência',

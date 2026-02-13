@@ -1,3 +1,4 @@
+
 /**
  * HanziMaster v0.4.2
  */
@@ -364,7 +365,8 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
             <path
               key={i}
               d={stroke}
-              className={`fill-none stroke-vermilion-500`}
+              // Restore black/slate stroke style for ink effect
+              className={`fill-none stroke-slate-900 dark:stroke-slate-100`}
               strokeWidth="100"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -381,7 +383,8 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
             <path
               key={i}
               d={stroke}
-              className={`fill-none stroke-vermilion-500`}
+              // Restore black/slate stroke style for ink effect
+              className={`fill-none stroke-slate-900 dark:stroke-slate-100`}
               strokeWidth="100"
               strokeLinecap="round"
               strokeLinejoin="round"

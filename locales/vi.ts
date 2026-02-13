@@ -1,4 +1,5 @@
 
+
 /**
  * HanziMaster v0.3.5
  */
@@ -47,6 +48,9 @@ export const vi: UILabels = {
   settingLanguage: 'Ngôn ngữ',
   themeLight: 'Chế độ sáng',
   themeDark: 'Chế độ tối',
+  settingResetData: 'Đặt lại ứng dụng',
+  resetBtn: 'Xóa tất cả dữ liệu',
+  resetConfirm: 'Bạn có chắc chắn muốn xóa tất cả lịch sử, bộ nhớ đệm và cài đặt không? Hành động này không thể hoàn tác.',
   sectionInterface: 'Giao diện',
   sectionContent: 'Nội dung',
   sectionAppearance: 'Giao diện',

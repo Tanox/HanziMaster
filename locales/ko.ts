@@ -1,4 +1,5 @@
 
+
 /**
  * HanziMaster v0.3.5
  */
@@ -47,6 +48,9 @@ export const ko: UILabels = {
   settingLanguage: '언어',
   themeLight: '라이트 모드',
   themeDark: '다크 모드',
+  settingResetData: '앱 초기화',
+  resetBtn: '모든 데이터 지우기',
+  resetConfirm: '모든 기록, 캐시 및 설정을 지우시겠습니까? 이 작업은 취소할 수 없습니다.',
   sectionInterface: '인터페이스',
   sectionContent: '콘텐츠',
   sectionAppearance: '외관',

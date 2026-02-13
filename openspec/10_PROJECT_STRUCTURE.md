@@ -20,11 +20,11 @@ HanziMaster 采用扁平化的 React + Vite 项目结构，将源码直接置于
 ├── scripts/                # 构建辅助脚本
 │   └── copyHanziData.js    # 负责将 node_modules 中的汉字数据提取到 public 目录
 ├── components/             # React 组件
-│   ├── analysis/           # AI 解析展示相关组件
-│   ├── ui/                 # [新增] 通用 UI 组件 (Toast.tsx)
-│   └── ...                 # 通用组件 (Header, Footer, Controls)
-├── context/                # [新增] React Context (ToastContext.tsx)
-├── constants/              # 静态常量配置
+│   ├── analysis/           # AI 解析展示相关组件 (CharacterDisplay, IdiomDisplay)
+│   ├── ui/                 # [v0.4.2] 通用 UI 组件 (Toast)
+│   └── ...                 # 通用组件 (Header, Footer, Controls, SettingsModal)
+├── context/                # [v0.4.2] React Context (ToastContext)
+├── constants/              # 静态常量配置 (commonChars, pinyinData, seasonalEvents)
 ├── hooks/                  # 自定义 Hooks (useAppController, useLocalStorage)
 ├── locales/                # 多语言翻译文件 (i18n)
 ├── services/               # 外部服务集成 (Gemini API, TTS, Hanzi Data Fetcher)
@@ -48,30 +48,30 @@ HanziMaster 采用扁平化的 React + Vite 项目结构，将源码直接置于
 **绝对权威的文档库**。任何代码变更必须先在此处更新相应的规范文档。
 *   **原则**: Code follows Spec.
 
-### 2.2 `public/hanzi-data/`
+### 2.2 `context/` & `components/ui/` (New)
+**全局状态与基础组件**。
+*   `ToastContext.tsx`: 提供全局通知能力的 Provider，替代原生的 `alert`。
+*   `Toast.tsx`: 独立的通知 UI 组件，支持动画进出场。
+
+### 2.3 `public/hanzi-data/`
 **离线能力的基石**。
 *   此目录不在 git 中提交（体积过大），而是在 `npm run build` 或 `npm run copy-data` 时由 `scripts/copyHanziData.js` 动态生成。
 *   **PWA 策略**: Service Worker 会优先缓存此目录下的高频汉字文件。
 
-### 2.3 `services/`
-**业务逻辑与视图的隔离层**。
-*   `geminiService.ts`: 处理与 Google Gemini 的通信，包含 Prompt 工程与 JSON 清洗逻辑。
-*   `hanziService.ts`: 处理汉字数据的获取策略（Local -> CDN Fallback）。
-*   `ttsService.ts`: 处理混合语音逻辑（Cache -> API -> Native）。
-
 ### 2.4 `hooks/useAppController.ts`
 **全剧状态控制器**。
-*   App.tsx 仅负责渲染，所有的状态流转（搜索、播放、模式切换、设置更新）均由此 Hook 统一管理。
-*   实现 View 与 Logic 的彻底解耦。
+*   App.tsx 仅负责渲染，所有的状态流转（搜索、播放、模式切换、设置更新、AI 调用）均由此 Hook 统一管理。
+*   实现了 L1 (Memory) 和 L2 (LocalStorage) 两级缓存的读写逻辑。
 
 ## 3. 命名规范
 
 | 类型 | 命名方式 | 示例 |
 | :--- | :--- | :--- |
-| **组件文件** | PascalCase | `StrokeViewer.tsx`, `SearchInput.tsx` |
-| **Hook 文件** | camelCase (use前缀) | `useLocalStorage.ts` |
+| **组件文件** | PascalCase | `StrokeViewer.tsx`, `Toast.tsx` |
+| **Hook 文件** | camelCase (use前缀) | `useAppController.ts` |
+| **Context 文件** | PascalCase | `ToastContext.tsx` |
 | **工具/服务** | camelCase | `geminiService.ts`, `geometry.ts` |
-| **常量文件** | camelCase | `commonChars.ts`, `seasonalEvents.ts` |
+| **常量文件** | camelCase | `commonChars.ts`, `pinyinData.ts` |
 | **CSS 类名** | kebab-case (Tailwind) | `bg-slate-900`, `text-vermilion-500` |
 
 ---

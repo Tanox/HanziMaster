@@ -1,4 +1,5 @@
 
+
 /**
  * HanziMaster v0.3.5
  */
@@ -47,6 +48,9 @@ export const it: UILabels = {
   settingLanguage: 'Lingua',
   themeLight: 'Modo Chiaro',
   themeDark: 'Modo Scuro',
+  settingResetData: 'Ripristina App',
+  resetBtn: 'Cancella tutti i dati',
+  resetConfirm: 'Sei sicuro di voler cancellare tutta la cronologia, la cache e le impostazioni? Questa operazione non può essere annullata.',
   sectionInterface: 'Interfaccia',
   sectionContent: 'Contenuto',
   sectionAppearance: 'Aspetto',

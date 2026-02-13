@@ -1,4 +1,5 @@
 
+
 /**
  * HanziMaster v0.4.2
  */
@@ -47,6 +48,9 @@ export const zhTW: UILabels = {
   settingLanguage: '顯示語言',
   themeLight: '淺色模式',
   themeDark: '深色模式',
+  settingResetData: '重置應用',
+  resetBtn: '清除所有數據',
+  resetConfirm: '確定要清除所有歷史記錄、快取和設置嗎？此操作無法撤銷。',
   sectionInterface: '介面選項',
   sectionContent: '內容顯示',
   sectionAppearance: '外觀',

@@ -1,5 +1,4 @@
 
-
 /**
  * HanziMaster v0.4.2
  */
@@ -49,6 +48,9 @@ export const zhCN: UILabels = {
   settingLanguage: '显示语言',
   themeLight: '浅色模式',
   themeDark: '深色模式',
+  settingResetData: '重置应用',
+  resetBtn: '清除所有数据',
+  resetConfirm: '确定要清除所有历史记录、缓存和设置吗？此操作无法撤销。',
   sectionInterface: '界面选项',
   sectionContent: '内容显示',
   sectionAppearance: '外观',

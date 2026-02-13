@@ -1,8 +1,9 @@
+
 /**
  * HanziMaster v0.4.2
  */
 import React, { useState, useMemo } from 'react';
-import { X, Eye, EyeOff, PlayCircle, Infinity, Wifi, Gauge, Key, Check, ExternalLink, Moon, Sun, Globe, Palette, Database, Clipboard, ChevronDown, ChevronUp } from 'lucide-react';
+import { X, Eye, EyeOff, PlayCircle, Infinity, Wifi, Gauge, Key, Check, ExternalLink, Moon, Sun, Globe, Palette, Database, Clipboard, ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
 import { AppSettings, GridStyle } from '../types';
 import { UILabels } from '../locales/types';
 import { LANGUAGES } from '../locales';
@@ -74,6 +75,24 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
     navigator.clipboard.writeText(text)
       .then(() => showToast(labels.copySuccess || "Copied!", 'success'))
       .catch(() => showToast(labels.copyFailed || "Copy failed", 'error'));
+  };
+
+  const handleReset = () => {
+    if (window.confirm(labels.resetConfirm)) {
+      try {
+        localStorage.clear();
+        // Clear caches if supported
+        if ('caches' in window) {
+           caches.keys().then((names) => {
+             names.forEach(name => caches.delete(name));
+           });
+        }
+        window.location.reload();
+      } catch (e) {
+        console.error("Reset failed", e);
+        showToast(labels.toastError, 'error');
+      }
+    }
   };
 
   const hasDefaultKey = Boolean(process.env.API_KEY);
@@ -360,6 +379,16 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                 </div>
             </div>
           </div>
+
+          {/* Section: Reset */}
+          <SectionHeader title={labels.settingResetData} />
+          <button
+            onClick={handleReset}
+            className="w-full py-3 rounded-xl bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 font-medium transition-colors flex items-center justify-center gap-2 border border-red-100 dark:border-red-900/30"
+          >
+            <Trash2 size={16} />
+            {labels.resetBtn}
+          </button>
 
         </div>
         

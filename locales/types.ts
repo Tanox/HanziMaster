@@ -1,5 +1,4 @@
 
-
 /**
  * HanziMaster v0.4.2
  */
@@ -48,6 +47,11 @@ export interface UILabels {
   settingLanguage: string;
   themeLight: string;
   themeDark: string;
+  // Reset
+  settingResetData: string;
+  resetBtn: string;
+  resetConfirm: string;
+  
   // New UI Elements
   sectionInterface: string;
   sectionContent: string;
@@ -119,7 +123,7 @@ export interface UILabels {
   // UX Fixes v0.4.2
   strokeProgress: string;
   writeNextStroke: string;
-  refreshSuggestions: string;
+  refreshSuggestions: '刷新推荐' | string;
   offlineModeEnabled: string;
   offlineModeActive: string;
   copySuccess: string;

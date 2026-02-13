@@ -1,4 +1,5 @@
 
+
 /**
  * HanziMaster v0.3.5
  */
@@ -47,6 +48,9 @@ export const ja: UILabels = {
   settingLanguage: '表示言語',
   themeLight: 'ライトモード',
   themeDark: 'ダークモード',
+  settingResetData: 'アプリをリセット',
+  resetBtn: '全データを消去',
+  resetConfirm: '履歴、キャッシュ、設定をすべて消去してもよろしいですか？この操作は元に戻せません。',
   sectionInterface: 'インターフェース',
   sectionContent: 'コンテンツ',
   sectionAppearance: '外観',

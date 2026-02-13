@@ -1,4 +1,5 @@
 
+
 /**
  * HanziMaster v0.3.5
  */
@@ -47,6 +48,9 @@ export const ar: UILabels = {
   settingLanguage: 'لغة العرض',
   themeLight: 'الوضع الفاتح',
   themeDark: 'الوضع الداكن',
+  settingResetData: 'إعادة تعيين التطبيق',
+  resetBtn: 'مسح جميع البيانات',
+  resetConfirm: 'هل أنت متأكد أنك تريد مسح كل السجل وذاكرة التخزين المؤقت والإعدادات؟ لا يمكن التراجع عن هذا الإجراء.',
   sectionInterface: 'الواجهة',
   sectionContent: 'المحتوى',
   sectionAppearance: 'المظهر',

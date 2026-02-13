@@ -1,4 +1,5 @@
 
+
 /**
  * HanziMaster v0.3.5
  */
@@ -47,6 +48,9 @@ export const ru: UILabels = {
   settingLanguage: 'Язык',
   themeLight: 'Светлая',
   themeDark: 'Темная',
+  settingResetData: 'Сброс приложения',
+  resetBtn: 'Удалить все данные',
+  resetConfirm: 'Вы уверены, что хотите удалить всю историю, кэш и настройки? Это действие нельзя отменить.',
   sectionInterface: 'Интерфейс',
   sectionContent: 'Контент',
   sectionAppearance: 'Внешний вид',

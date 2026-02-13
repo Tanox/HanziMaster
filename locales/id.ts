@@ -1,4 +1,5 @@
 
+
 /**
  * HanziMaster v0.3.5
  */
@@ -47,6 +48,9 @@ export const id: UILabels = {
   settingLanguage: 'Bahasa Tampilan',
   themeLight: 'Mode Terang',
   themeDark: 'Mode Gelap',
+  settingResetData: 'Reset Aplikasi',
+  resetBtn: 'Hapus Semua Data',
+  resetConfirm: 'Apakah Anda yakin ingin menghapus semua riwayat, cache, dan pengaturan? Tindakan ini tidak dapat dibatalkan.',
   sectionInterface: 'Antarmuka',
   sectionContent: 'Konten',
   sectionAppearance: 'Tampilan',
