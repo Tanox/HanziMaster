@@ -1,5 +1,6 @@
+
 /**
- * HanziMaster v0.4.2
+ * HanziMaster v0.4.3
  */
 import React from 'react';
 import { useAppController } from './hooks/useAppController';
@@ -20,7 +21,7 @@ import { UI_LABELS } from './locales';
 import { AlertCircle, WifiOff } from 'lucide-react';
 import { ToastProvider } from './context/ToastContext';
 
-const APP_VERSION = '0.4.2';
+const APP_VERSION = '0.4.3';
 
 const AppContent: React.FC = () => {
   const { state, actions } = useAppController();
@@ -29,7 +30,14 @@ const AppContent: React.FC = () => {
   return (
     <div className="min-h-[100dvh] pb-24 bg-paper dark:bg-slate-900 transition-colors duration-300 flex flex-col">
       
-      {state.showWelcome && <WelcomeScreen onDismiss={actions.handleDismissWelcome} labels={labels} />}
+      {state.showWelcome && (
+        <WelcomeScreen 
+          onDismiss={actions.handleDismissWelcome} 
+          labels={labels} 
+          currentLang={state.currentLang}
+          onLanguageChange={actions.handleLanguageChange}
+        />
+      )}
 
       <Header 
         labels={labels} 

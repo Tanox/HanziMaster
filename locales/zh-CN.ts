@@ -1,4 +1,5 @@
 
+
 /**
  * HanziMaster v0.4.2
  */
@@ -71,6 +72,15 @@ export const zhCN: UILabels = {
   welcomeTitle: '欢迎使用汉字大师',
   welcomeSubtitle: '探索汉字之美，掌握书写之道。结合传统书法与 AI 智能解析的终极学习工具。',
   welcomeBtn: '开始学习',
+  
+  // Onboarding Guide
+  guideSearchTitle: '精准查找',
+  guideSearchDesc: '支持汉字与成语检索',
+  guideWatchTitle: '动态演示',
+  guideWatchDesc: '可视化笔顺流体动画',
+  guidePracticeTitle: '临摹练习',
+  guidePracticeDesc: 'AI 辅助评分与纠错',
+
   idiomOrigin: '成语典故',
   idiomUsage: '用法示例',
   idiomTitle: '成语解析',

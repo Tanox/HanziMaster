@@ -1,10 +1,10 @@
 
 /**
- * HanziMaster v0.4.2
+ * HanziMaster v0.4.3
  */
 import React, { useEffect, useState } from 'react';
 import { CheckCircle, AlertCircle, Info, X } from 'lucide-react';
-import { ToastType } from '../../context/ToastContext';
+import { ToastType } from '../../types';
 
 interface ToastProps {
   message: string;

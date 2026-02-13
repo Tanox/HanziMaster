@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.2
+ * HanziMaster v0.4.3
  */
 
 export interface UILabels {
@@ -56,9 +56,9 @@ export interface UILabels {
   sectionInterface: string;
   sectionContent: string;
   sectionAppearance: string;
-  badgeCustom: string;
-  badgeDefault: string;
-  badgeNone: string;
+  badgeCustom: 'Custom' | '自定义' | 'Personale' | 'Perso' | 'Kustom' | '사용자' | 'Свой' | 'Eigene' | 'カスタム' | 'กำหนดเอง' | 'مخصص' | string;
+  badgeDefault: 'Default' | '默认' | 'Predefinito' | 'Défaut' | 'Padrão' | '기본값' | 'Стандарт' | 'Standard' | 'デフォルト' | 'เริ่มต้น' | 'افتراضي' | string;
+  badgeNone: 'None' | '未配置' | 'Nessuno' | 'Aucun' | 'Nenhum' | '없음' | 'Нет' | 'Keine' | 'なし' | 'ยังไม่ได้ตั้งค่า' | 'غير محدد' | string;
   getApiKey: string;
   practiceComplete: string;
   installApp?: string;
@@ -74,10 +74,18 @@ export interface UILabels {
   
   closeBtn: string;
   
-  // Welcome Screen
-  welcomeTitle: string;
-  welcomeSubtitle: string;
-  welcomeBtn: string;
+  // Welcome Screen (Optional to prevent crash on non-updated locales)
+  welcomeTitle?: string;
+  welcomeSubtitle?: string;
+  welcomeBtn?: string;
+  
+  // Onboarding Guide (Optional for compatibility with partial translations)
+  guideSearchTitle?: string;
+  guideSearchDesc?: string;
+  guideWatchTitle?: string;
+  guideWatchDesc?: string;
+  guidePracticeTitle?: string;
+  guidePracticeDesc?: string;
 
   // Idiom Specific
   idiomOrigin: string;

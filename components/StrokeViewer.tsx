@@ -304,7 +304,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
           )}
 
           {/* Animated Strokes (View Mode) - Masked Median Animation */}
-          {mode === InteractionMode.VIEW && data.strokes.map((stroke, i) => {
+          {mode === InteractionMode.VIEW && data.strokes.map((_, i) => {
              // Only render if needed for animation state
              if (i > currentStrokeIndex && currentStrokeIndex !== -1) return null;
              

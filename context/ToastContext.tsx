@@ -1,18 +1,11 @@
 
 /**
- * HanziMaster v0.4.2
+ * HanziMaster v0.4.3
  */
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import Toast from '../components/ui/Toast';
-
-export type ToastType = 'success' | 'error' | 'info';
-
-export interface ToastMessage {
-  id: string;
-  message: string;
-  type: ToastType;
-}
+import { ToastMessage, ToastType } from '../types';
 
 interface ToastContextType {
   showToast: (message: string, type?: ToastType) => void;

@@ -1,4 +1,5 @@
 
+
 /**
  * HanziMaster v0.4.2
  */
@@ -71,6 +72,15 @@ export const en: UILabels = {
   welcomeTitle: 'Welcome to HanziMaster',
   welcomeSubtitle: 'Discover the beauty of Chinese characters. The ultimate tool combining traditional calligraphy with AI insights.',
   welcomeBtn: 'Get Started',
+  
+  // Onboarding Guide
+  guideSearchTitle: 'Smart Search',
+  guideSearchDesc: 'Find characters & idioms instantly.',
+  guideWatchTitle: 'Stroke Order',
+  guideWatchDesc: 'Visualize correct writing flow.',
+  guidePracticeTitle: 'Zen Practice',
+  guidePracticeDesc: 'Write with real-time feedback.',
+
   idiomOrigin: 'Origin story',
   idiomUsage: 'Usage example',
   idiomTitle: 'Idiom analysis',

@@ -55,6 +55,19 @@
     *   严禁使用全屏模态框 (Modal) 提示步骤。
     *   应使用底部居中的**胶囊式提示 (Pill Overlay)**，展示进度（如“第 3 / 8 笔”），采用半透明背景以融入环境。
 
+### 3.6 欢迎页 (Welcome Screen 2.0)
+*   **布局**:
+    *   **右上角**: 语言切换器 (Globe Icon)，悬浮层级 `z-50`。需支持点击展开下拉菜单。
+    *   **核心区**: 品牌 Logo + Slogan (大号汉字“字”背景纹理)。
+    *   **引导区**: 位于 Slogan 下方，采用 3 列 Flex 布局展示核心功能：
+        *   Icon: Search (查找)
+        *   Icon: Eye (观看)
+        *   Icon: Pen (书写)
+    *   **按钮**: "Get Started" 按钮需带有箭头动效。
+*   **动效**: 
+    *   背景: 动态流动的汉字纹理 (Parallax)。
+    *   入场: 引导卡片依次上浮淡入 (`staggered fade-in`).
+
 ## 4. 交互动效 (Micro-interactions)
 
 ### 4.1 笔顺流动 (Stroke Flow)

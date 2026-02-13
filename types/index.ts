@@ -1,5 +1,6 @@
+
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.4.3
  */
 
 export interface HanziData {
@@ -65,4 +66,13 @@ export interface AppSettings {
   showEtymology: boolean;
   showMnemonic: boolean;
   showExamples: boolean;
+}
+
+// Toast Types
+export type ToastType = 'success' | 'error' | 'info';
+
+export interface ToastMessage {
+  id: string;
+  message: string;
+  type: ToastType;
 }
