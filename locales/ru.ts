@@ -1,3 +1,4 @@
+
 /**
  * HanziMaster v0.3.5
  */
@@ -75,4 +76,16 @@ export const ru: UILabels = {
   shareTextChar: "🀄️ Я научился писать '{char}' ({pinyin}) в HanziMaster!\n\n📖 Значение: {meaning}\n\n✨ Посмотрите анимацию черт и анализ ИИ здесь:\n{url}\n\n#HanziMaster #УчимКитайский #Каллиграфия",
   shareTextIdiom: "📜 Нашел интересную идиому: '{idiom}' ({pinyin})\n\n💡 Значение: {meaning}\n\n🚀 Узнайте историю происхождения в HanziMaster:\n{url}\n\n#HanziMaster #КитайскиеИдиомы #УчимКитайский",
   shareMessageCopied: 'Текст для отправки скопирован!',
+
+  // UX Fixes v0.4.2
+  strokeProgress: 'Черта {current} / {total}',
+  writeNextStroke: 'Пожалуйста, напишите следующую черту.',
+  refreshSuggestions: 'Обновить предложения',
+  offlineModeEnabled: 'Оффлайн режим включен',
+  offlineModeActive: 'Оффлайн режим: Используются локальные данные и системный голос.',
+  copySuccess: 'Скопировано в буфер обмена!',
+  copyFailed: 'Не удалось скопировать.',
+  toastSuccess: 'Успех',
+  toastError: 'Ошибка',
+  toastInfo: 'Инфо',
 };

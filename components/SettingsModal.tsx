@@ -1,4 +1,5 @@
 
+
 /**
  * HanziMaster v0.4.2
  */
@@ -10,6 +11,7 @@ import { LANGUAGES } from '../locales/index.ts';
 import { COMMON_CHARS } from '../constants/commonChars.ts';
 import { PINYIN_MAP } from '../constants/pinyinData.ts';
 import ToggleItem from './ToggleItem.tsx';
+import { useToast } from '../context/ToastContext.tsx';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -46,6 +48,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 }) => {
   const [showApiKey, setShowApiKey] = useState(false);
   const [showAudit, setShowAudit] = useState(false);
+  const { showToast } = useToast();
 
   // --- Audit Logic ---
   const auditData = useMemo(() => {
@@ -70,8 +73,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 
   const copyMissingToClipboard = () => {
     const text = auditData.missing.join('');
-    navigator.clipboard.writeText(text);
-    alert('Missing characters copied to clipboard!');
+    navigator.clipboard.writeText(text)
+      .then(() => showToast(labels.copySuccess || "Copied!", 'success'))
+      .catch(() => showToast(labels.copyFailed || "Copy failed", 'error'));
   };
 
   const hasDefaultKey = Boolean(process.env.API_KEY);

@@ -1,7 +1,7 @@
 {
   "name": "hanzimaster",
   "private": true,
-  "version": "0.4.0",
+  "version": "0.4.2",
   "license": "GPL-3.0",
   "type": "module",
   "scripts": {
@@ -11,15 +11,16 @@
     "copy-data": "node scripts/copyHanziData.js"
   },
   "dependencies": {
-    "@google/genai": "^1.40.0",
+    "@google/genai": "^0.2.1",
     "lucide-react": "^0.469.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
-    "@types/react": "^19.0.2",
-    "@types/react-dom": "^19.0.2",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
     "hanzi-writer-data": "^2.0.1",
     "typescript": "^5.7.2",

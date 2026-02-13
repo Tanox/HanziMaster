@@ -1,4 +1,5 @@
 
+
 /**
  * HanziMaster v0.4.2
  */
@@ -114,6 +115,19 @@ export interface UILabels {
   nationalDay?: string;
   singlesDay?: string;
   christmas?: string;
+
+  // UX Fixes v0.4.2
+  strokeProgress: string;
+  writeNextStroke: string;
+  refreshSuggestions: string;
+  offlineModeEnabled: string;
+  offlineModeActive: string;
+  copySuccess: string;
+  copyFailed: string;
+  toastSuccess: string;
+  toastError: string;
+  toastInfo: string;
+
   [key: string]: string | undefined; // Allow indexing for seasonal keys
 }
 

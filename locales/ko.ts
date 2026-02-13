@@ -1,3 +1,4 @@
+
 /**
  * HanziMaster v0.3.5
  */
@@ -75,4 +76,16 @@ export const ko: UILabels = {
   shareTextChar: "🀄️ HanziMaster에서 '{char}' ({pinyin}) 쓰는 법을 마스터했습니다!\n\n📖 의미: {meaning}\n\n✨ 획순 애니메이션과 AI 분석 확인하기:\n{url}\n\n#HanziMaster #중국어학습 #서예",
   shareTextIdiom: "📜 흥미로운 고사성어를 발견했습니다: '{idiom}' ({pinyin})\n\n💡 의미: {meaning}\n\n🚀 HanziMaster에서 유래와 용법 알아보기:\n{url}\n\n#HanziMaster #고사성어 #중국어학습",
   shareMessageCopied: '공유할 텍스트가 복사되었습니다!',
+
+  // UX Fixes v0.4.2
+  strokeProgress: '획 {current} / {total}',
+  writeNextStroke: '다음 획을 쓰세요.',
+  refreshSuggestions: '추천 새로고침',
+  offlineModeEnabled: '오프라인 모드 활성화됨',
+  offlineModeActive: '오프라인 모드: 로컬 데이터 및 시스템 음성 사용.',
+  copySuccess: '클립보드에 복사되었습니다!',
+  copyFailed: '복사 실패.',
+  toastSuccess: '성공',
+  toastError: '오류',
+  toastInfo: '알림',
 };

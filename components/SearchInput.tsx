@@ -1,8 +1,11 @@
+
+
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.4.2
  */
 import React, { useState, useEffect } from 'react';
 import { Search, Shuffle } from 'lucide-react';
+import { useToast } from '../context/ToastContext.tsx';
 
 interface SearchInputProps {
   onSearch: (char: string) => void;
@@ -26,6 +29,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
   activeTerm
 }) => {
   const [input, setInput] = useState('');
+  const { showToast } = useToast();
 
   useEffect(() => {
     if (activeTerm) {
@@ -42,7 +46,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
       if (/^[\u4E00-\u9FFF]{1,4}$/.test(term)) {
         onSearch(term);
       } else {
-        alert(invalidCharMessage);
+        showToast(invalidCharMessage, 'error');
       }
     }
   };

@@ -1,4 +1,5 @@
 
+
 /**
  * HanziMaster v0.4.2
  */
@@ -195,7 +196,7 @@ const RandomSuggestions: React.FC<RandomSuggestionsProps> = ({ onSelect, label, 
            onClick={generateItems}
            className="text-[10px] font-bold text-slate-400 hover:text-teal-500 uppercase tracking-widest transition-colors py-2 px-4 rounded-full border border-slate-100 dark:border-slate-800 hover:border-teal-200 dark:hover:border-teal-900"
          >
-           Refresh Suggestions
+           {labels.refreshSuggestions || "Refresh Suggestions"}
          </button>
       </div>
     </div>

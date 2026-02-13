@@ -1,4 +1,5 @@
 
+
 /**
  * HanziMaster v0.4.2
  */
@@ -105,4 +106,16 @@ export const en: UILabels = {
   nationalDay: 'National Day',
   singlesDay: "Singles' Day",
   christmas: 'Christmas',
+
+  // UX Fixes v0.4.2
+  strokeProgress: 'Stroke {current} / {total}',
+  writeNextStroke: 'Please write the next stroke.',
+  refreshSuggestions: 'Refresh Suggestions',
+  offlineModeEnabled: 'Offline Mode Enabled',
+  offlineModeActive: 'Offline Mode: Using local data & native voice.',
+  copySuccess: 'Copied to clipboard!',
+  copyFailed: 'Failed to copy.',
+  toastSuccess: 'Success',
+  toastError: 'Error',
+  toastInfo: 'Info',
 };

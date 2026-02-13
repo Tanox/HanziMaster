@@ -104,4 +104,16 @@ export const zhTW: UILabels = {
   nationalDay: '國慶節',
   singlesDay: '雙十一',
   christmas: '聖誕節',
+
+  // UX Fixes v0.4.2
+  strokeProgress: '第 {current} / {total} 筆',
+  writeNextStroke: '請書寫下一筆',
+  refreshSuggestions: '刷新推薦',
+  offlineModeEnabled: '離線模式已啟用',
+  offlineModeActive: '離線模式：使用本地數據與系統語音。',
+  copySuccess: '已複製到剪貼板！',
+  copyFailed: '複製失敗。',
+  toastSuccess: '成功',
+  toastError: '錯誤',
+  toastInfo: '提示',
 };

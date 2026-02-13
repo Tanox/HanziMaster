@@ -1,6 +1,7 @@
 
+
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.4.2
  */
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { HanziData, AnimationState, InteractionMode, AppSettings } from '../types';
@@ -309,6 +310,10 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     );
   };
 
+  const strokeProgressText = (labels.strokeProgress || "Stroke {current} / {total}")
+    .replace('{current}', (practiceStrokeIndex + 1).toString())
+    .replace('{total}', data.strokes.length.toString());
+
   return (
     <div className="w-full max-w-xs relative bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-100 dark:border-slate-700 aspect-square shadow-inner bg-texture-paper select-none touch-none">
       <svg
@@ -387,10 +392,10 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
             <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 text-center animate-fade-in">
                <PenTool size={24} className="mx-auto text-teal-500 mb-2" />
                <p className="font-bold text-slate-700 dark:text-slate-200">
-                  Stroke {practiceStrokeIndex + 1} / {data.strokes.length}
+                  {strokeProgressText}
                </p>
                <p className="text-xs text-slate-500 dark:text-slate-400">
-                  Please write the next stroke.
+                  {labels.writeNextStroke || "Please write the next stroke."}
                </p>
             </div>
          </div>

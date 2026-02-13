@@ -1,3 +1,4 @@
+
 /**
  * HanziMaster v0.3.5
  */
@@ -75,4 +76,16 @@ export const id: UILabels = {
   shareTextChar: "🀄️ Saya baru saja belajar menulis '{char}' ({pinyin}) di HanziMaster!\n\n📖 Arti: {meaning}\n\n✨ Lihat animasi guratan dan analisis AI di sini:\n{url}\n\n#HanziMaster #BelajarMandarin #Kaligrafi",
   shareTextIdiom: "📜 Menemukan peribahasa menarik: '{idiom}' ({pinyin})\n\n💡 Arti: {meaning}\n\n🚀 Pelajari kisah di baliknya di HanziMaster:\n{url}\n\n#HanziMaster #PeribahasaMandarin #BelajarMandarin",
   shareMessageCopied: 'Teks untuk dibagikan telah disalin!',
+
+  // UX Fixes v0.4.2
+  strokeProgress: 'Guratan {current} / {total}',
+  writeNextStroke: 'Silakan tulis guratan berikutnya.',
+  refreshSuggestions: 'Perbarui Saran',
+  offlineModeEnabled: 'Mode Offline Diaktifkan',
+  offlineModeActive: 'Mode Offline: Menggunakan data lokal & suara sistem.',
+  copySuccess: 'Disalin ke papan klip!',
+  copyFailed: 'Gagal menyalin.',
+  toastSuccess: 'Sukses',
+  toastError: 'Kesalahan',
+  toastInfo: 'Info',
 };

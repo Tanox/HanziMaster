@@ -1,5 +1,8 @@
 
 
+/**
+ * HanziMaster v0.4.2
+ */
 import React from 'react';
 import { useAppController } from './hooks/useAppController.ts';
 import { AnimationState, InteractionMode } from './types/index.ts';
@@ -17,10 +20,11 @@ import Footer from './components/Footer.tsx';
 import IdiomNavigator from './components/IdiomNavigator.tsx';
 import { UI_LABELS } from './locales/index.ts';
 import { AlertCircle, WifiOff } from 'lucide-react';
+import { ToastProvider } from './context/ToastContext.tsx';
 
-const APP_VERSION = '0.4.0';
+const APP_VERSION = '0.4.2';
 
-const App: React.FC = () => {
+const AppContent: React.FC = () => {
   const { state, actions } = useAppController();
   const labels = UI_LABELS[state.currentLang] || UI_LABELS['en'];
 
@@ -63,7 +67,7 @@ const App: React.FC = () => {
           {(state.isOffline || state.settings.offlineMode) && (
              <div className="max-w-md mx-auto mt-2 p-2 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 rounded-lg flex items-center justify-center gap-2 border border-amber-100 dark:border-amber-900/30 text-sm">
                  <WifiOff size={16} />
-                 <span>{state.settings.offlineMode ? labels.settingOfflineMode + " Enabled" : "Offline Mode: Using local data & native voice."}</span>
+                 <span>{state.settings.offlineMode ? (labels.offlineModeEnabled || "Offline Mode Enabled") : (labels.offlineModeActive || "Offline Mode: Using local data & native voice.")}</span>
              </div>
           )}
         </div>
@@ -183,6 +187,14 @@ const App: React.FC = () => {
 
       <Footer labels={labels} version={APP_VERSION} />
     </div>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <ToastProvider>
+      <AppContent />
+    </ToastProvider>
   );
 };
 

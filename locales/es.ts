@@ -1,3 +1,4 @@
+
 /**
  * HanziMaster v0.3.5
  */
@@ -75,4 +76,16 @@ export const es: UILabels = {
   shareTextChar: "🀄️ ¡Acabo de aprender a escribir '{char}' ({pinyin}) en HanziMaster!\n\n📖 Significado: {meaning}\n\n✨ Mira la animación de los trazos y el análisis de IA aquí:\n{url}\n\n#HanziMaster #AprenderChino #Caligrafia",
   shareTextIdiom: "📜 Encontré un modismo fascinante: '{idiom}' ({pinyin})\n\n💡 Significado: {meaning}\n\n🚀 Aprende la historia detrás de él en HanziMaster:\n{url}\n\n#HanziMaster #ModismosChinos #AprenderChino",
   shareMessageCopied: '¡Texto para compartir copiado!',
+  
+  // UX Fixes v0.4.2
+  strokeProgress: 'Trazo {current} / {total}',
+  writeNextStroke: 'Por favor escribe el siguiente trazo.',
+  refreshSuggestions: 'Actualizar sugerencias',
+  offlineModeEnabled: 'Modo sin conexión activado',
+  offlineModeActive: 'Modo sin conexión: Usando datos locales y voz del sistema.',
+  copySuccess: '¡Copiado al portapapeles!',
+  copyFailed: 'Error al copiar.',
+  toastSuccess: 'Éxito',
+  toastError: 'Error',
+  toastInfo: 'Info',
 };

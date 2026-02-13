@@ -1,16 +1,17 @@
+
 /**
- * HanziMaster v0.3.5
+ * HanziMaster v0.4.2
  */
 import React from 'react';
 
 interface IdiomNavigatorProps {
   term: string;
-  activeChar: string; // Kept for display/key purposes if needed, but index is primary for state
+  activeChar: string; // Kept in interface but ignoring use in component if unnecessary
   activeIndex: number;
   onSelectChar: (char: string, index: number) => void;
 }
 
-const IdiomNavigator: React.FC<IdiomNavigatorProps> = ({ term, activeChar, activeIndex, onSelectChar }) => {
+const IdiomNavigator: React.FC<IdiomNavigatorProps> = ({ term, activeIndex, onSelectChar }) => {
   if (term.length <= 1) return null;
 
   const chars = term.split('');

@@ -1,4 +1,5 @@
 
+
 /**
  * HanziMaster v0.4.2
  */
@@ -89,7 +90,7 @@ export const zhCN: UILabels = {
   updateAvailable: '有新版本',
   updateMsg: '新版本可用，请刷新以更新。',
   reloadBtn: '刷新',
-  offlineReady: '离线就绪',
+  offlineReady: '离线就緒',
   offlineMsg: '应用已可离线使用。',
   dismissBtn: '忽略',
 
@@ -105,4 +106,16 @@ export const zhCN: UILabels = {
   nationalDay: '国庆节',
   singlesDay: '双十一',
   christmas: '圣诞节',
+
+  // UX Fixes v0.4.2
+  strokeProgress: '第 {current} / {total} 笔',
+  writeNextStroke: '请书写下一笔',
+  refreshSuggestions: '刷新推荐',
+  offlineModeEnabled: '离线模式已启用',
+  offlineModeActive: '离线模式：使用本地数据与系统语音。',
+  copySuccess: '已复制到剪贴板！',
+  copyFailed: '复制失败。',
+  toastSuccess: '成功',
+  toastError: '错误',
+  toastInfo: '提示',
 };

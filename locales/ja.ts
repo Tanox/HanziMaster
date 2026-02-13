@@ -1,3 +1,4 @@
+
 /**
  * HanziMaster v0.3.5
  */
@@ -75,4 +76,16 @@ export const ja: UILabels = {
   shareTextChar: "🀄️ HanziMasterで「{char}」({pinyin})の書き順をマスターしました！\n\n📖 意味：{meaning}\n\n✨ 筆順アニメーションとAI解説はこちら：\n{url}\n\n#HanziMaster #中国語学習 #書道",
   shareTextIdiom: "📜 面白い成語を見つけました：「{idiom}」({pinyin})\n\n💡 意味：{meaning}\n\n🚀 HanziMasterで由来や使い方を学びましょう：\n{url}\n\n#HanziMaster #成語 #中国語学習",
   shareMessageCopied: '共有テキストをコピーしました！',
+
+  // UX Fixes v0.4.2
+  strokeProgress: '{current} / {total} 画目',
+  writeNextStroke: '次の画を書いてください。',
+  refreshSuggestions: '提案を更新',
+  offlineModeEnabled: 'オフラインモード有効',
+  offlineModeActive: 'オフラインモード：ローカルデータとシステム音声を使用します。',
+  copySuccess: 'クリップボードにコピーしました！',
+  copyFailed: 'コピーに失敗しました。',
+  toastSuccess: '成功',
+  toastError: 'エラー',
+  toastInfo: '情報',
 };
