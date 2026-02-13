@@ -241,7 +241,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     if (settings.gridStyle === 'none') return [];
     const lines = [
       { d: `M 0,0 L ${SIZE},0 L ${SIZE},${SIZE} L 0,${SIZE} Z` },
-      { d: `M ${SIZE/2},0 L ${SIZE/2},${SIZE}` },
+      { d: `M ${SIZE/2},0 L ${SIZE},${SIZE}` },
       { d: `M 0,${SIZE/2} L ${SIZE},${SIZE/2}` },
     ];
     if (settings.gridStyle === 'rice') {
@@ -296,7 +296,8 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
           {(settings.showOutline || mode === InteractionMode.PRACTICE) && (
             <path 
               d={data.strokes.join(' ')} 
-              className={`fill-none stroke-vermilion-100 dark:stroke-vermilion-900 ${mode === InteractionMode.PRACTICE ? 'opacity-60' : 'opacity-100'}`} 
+              // UPDATED: Used white/20 for dark mode outline to improve contrast and readability
+              className={`fill-none stroke-vermilion-100 dark:stroke-white/20 ${mode === InteractionMode.PRACTICE ? 'opacity-60' : 'opacity-100'}`} 
               strokeWidth="4" 
               strokeLinecap="round" 
               strokeLinejoin="round" 

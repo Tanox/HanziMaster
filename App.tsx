@@ -27,6 +27,11 @@ const AppContent: React.FC = () => {
   const { state, actions } = useAppController();
   const labels = UI_LABELS[state.currentLang] || UI_LABELS['en'];
 
+  // Determine current pinyin to display above viewer
+  const currentPinyin = state.analysis?.char === state.activeChar 
+    ? state.analysis.pinyin 
+    : (state.pinyinCache[state.activeChar] || '');
+
   return (
     <div className="min-h-[100dvh] pb-24 bg-paper dark:bg-slate-900 transition-colors duration-300 flex flex-col">
       
@@ -89,6 +94,18 @@ const AppContent: React.FC = () => {
                 activeIndex={state.activeCharIndex}
                 onSelectChar={(char, index) => actions.handleCharSelect(char, undefined, index)} 
             />
+
+            {/* Pinyin Display for Active Character */}
+            <div className="h-8 mb-2 flex items-end justify-center w-full">
+              {currentPinyin ? (
+                  <span className="text-2xl text-vermilion-500 dark:text-vermilion-400 font-serif tracking-widest font-medium animate-fade-in">
+                      {currentPinyin}
+                  </span>
+              ) : (
+                  // Placeholder to prevent layout shift
+                  <span className="text-2xl text-transparent select-none">Pinyin</span>
+              )}
+            </div>
 
             {state.hanziData ? (
               <>
