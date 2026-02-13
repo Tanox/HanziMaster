@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.5
+ * HanziMaster v0.4.8
  */
 import React from 'react';
 import { useAppController } from './hooks/useAppController';
@@ -18,10 +18,10 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import IdiomNavigator from './components/IdiomNavigator';
 import { UI_LABELS } from './locales';
-import { AlertCircle, WifiOff } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { ToastProvider } from './context/ToastContext';
 
-const APP_VERSION = '0.4.5';
+const APP_VERSION = '0.4.8';
 
 const AppContent: React.FC = () => {
   const { state, actions } = useAppController();
@@ -47,6 +47,7 @@ const AppContent: React.FC = () => {
       <Header 
         labels={labels} 
         onOpenSettings={() => actions.setIsSettingsOpen(true)} 
+        isOffline={state.isOffline || state.settings.offlineMode}
       />
 
       <main className="max-w-5xl w-full mx-auto px-4 py-8 flex-grow">
@@ -73,13 +74,6 @@ const AppContent: React.FC = () => {
               <AlertCircle size={20} className="shrink-0" />
               <p className="text-sm font-medium">{state.error}</p>
             </div>
-          )}
-
-          {(state.isOffline || state.settings.offlineMode) && (
-             <div className="max-w-md mx-auto mt-2 p-2 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 rounded-lg flex items-center justify-center gap-2 border border-amber-100 dark:border-amber-900/30 text-sm">
-                 <WifiOff size={16} />
-                 <span>{state.settings.offlineMode ? (labels.offlineModeEnabled || "Offline Mode Enabled") : (labels.offlineModeActive || "Offline Mode: Using local data & native voice.")}</span>
-             </div>
           )}
         </div>
 

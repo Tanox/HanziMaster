@@ -6,6 +6,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.8] - 2025-05-22
+
+### Fixed
+- **Cache Strategy**: Fixed a critical issue where enabling "Offline Mode" would prevent the app from using locally cached character analysis data. Now the app prioritizes cache regardless of offline status.
+- **Data Cleanup**: Removed duplicate entries in `PINYIN_MAP` to reduce bundle size and improve data integrity.
+- **Version Sync**: Synchronized version numbers across all files to v0.4.8.
+
+## [0.4.7] - 2025-05-22
+
+### Changed
+- **UI Optimization**: Replaced the intrusive offline banner with a subtle status indicator in the Header toolbar.
+- **Data**: Expanded `SEASONAL_EVENTS` with more idioms for Chinese festivals.
+
+## [0.4.6] - 2025-05-22
+
+### Changed
+- **Data Update**: Significantly expanded the offline Pinyin database (`PINYIN_MAP`) to cover a much broader range of academic, financial, and common characters, ensuring better coverage for "Random Suggestions" in offline mode.
+- **Version Bump**: Updated application version to v0.4.6 across all configuration files and documentation.
+
 ## [0.4.5] - 2025-05-22
 
 ### Changed

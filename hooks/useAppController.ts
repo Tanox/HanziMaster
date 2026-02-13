@@ -1,5 +1,6 @@
+
 /**
- * HanziMaster v0.4.2
+ * HanziMaster v0.4.8
  */
 import React, { useState, useEffect, useRef } from 'react';
 import { HanziData, CharacterAnalysis, IdiomAnalysis, AnimationState, InteractionMode, AppSettings, HistoryItem } from '../types';
@@ -148,14 +149,14 @@ export const useAppController = () => {
 
     const langName = LANGUAGES.find(l => l.code === langCode)?.name || 'Simplified Chinese';
 
-    // 2. Fetch Analysis (Check Cache First)
-    if (analysisCache[char] && !settings.offlineMode) {
-         // Use cached data if available (even if online, to save quota/time)
-         // Note: If user forces offline mode, we still try to use cache.
+    // 2. Fetch Analysis (L2 Cache Strategy)
+    // FIX: Always prefer cache if available, regardless of offline status.
+    // This ensures that if the user goes offline but has the data cached, they can still see it.
+    if (analysisCache[char]) {
          setAnalysis(analysisCache[char]);
     } else {
         try {
-            // If offline or cache miss, try to analyze
+            // If offline or cache miss, try to analyze (or get fallback)
             const aiResult = await analyzeCharacter(char, langName, settings.offlineMode, settings.apiKey);
             
             // Pinyin Cache Update
@@ -180,13 +181,11 @@ export const useAppController = () => {
                  // Only cache valid results (not offline fallbacks)
                  if (!finalResult.meaning.startsWith("Mode:") && !finalResult.meaning.includes("Network Unavailable")) {
                      updateCache(char, finalResult, setAnalysisCache);
-                 } else if (analysisCache[char]) {
-                     // If we got a fallback but have a cache (e.g. transient network error), use cache
-                     setAnalysis(analysisCache[char]);
                  }
             }
         } catch (err) {
             console.error("Char Analysis failed", err);
+            // If API call fails but we somehow have cache (unlikely path but safe), use it
             if (analysisCache[char]) {
                 setAnalysis(analysisCache[char]);
             }
@@ -222,8 +221,8 @@ export const useAppController = () => {
     const promises: Promise<any>[] = [fetchCharacterData(firstChar, langCode)];
 
     if (term.length > 1) {
-        // Check Idiom Cache
-        if (idiomCache[term] && !settings.offlineMode) {
+        // Check Idiom Cache (Always prefer cache)
+        if (idiomCache[term]) {
             setIdiomAnalysis(idiomCache[term]);
         } else {
             promises.push(
@@ -233,16 +232,10 @@ export const useAppController = () => {
                         // Cache valid idiom results
                         if (res && !res.meaning.startsWith("Mode:")) {
                              updateCache(term, res, setIdiomCache);
-                        } else if (idiomCache[term]) {
-                             // Fallback to cache on error/offline
-                             setIdiomAnalysis(idiomCache[term]);
                         }
                     })
                     .catch((e: any) => {
                         console.error("Idiom search error", e);
-                        if (idiomCache[term]) {
-                             setIdiomAnalysis(idiomCache[term]);
-                        }
                     })
             );
         }

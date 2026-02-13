@@ -1,8 +1,7 @@
 
-
 /**
- * HanziMaster v0.4.2
- * 离线拼音数据库 (100% Coverage for Common Chars)
+ * HanziMaster v0.4.8
+ * 离线拼音数据库 (Enhanced Coverage for Common Chars)
  */
 
 export const PINYIN_MAP: Record<string, string> = {
@@ -114,5 +113,12 @@ export const PINYIN_MAP: Record<string, string> = {
   "婪": "lán", "傲": "ào", "慢": "màn", "偏": "piān", "歧": "qí", "良": "liáng", "邪": "xié", "恶": "è", "抱": "bào",
   "愿": "yuàn", "目": "mù", "追": "zhuī", "奋": "fèn", "拼": "pīn", "搏": "bó", "毅": "yì", "耐": "nài", "恒": "héng", "慧": "huì",
   "聪": "cōng", "才": "cái", "华": "huá", "养": "yǎng", "内": "nèi", "涵": "hán", "魅": "mèi", "仪": "yí", "貌": "mào", "省": "xǐng",
-  "娱": "yú", "璞": "pú", "功": "gōng", "炉": "lú", "朗": "lǎng", "灌": "guàn", "顶": "dǐng"
+  "娱": "yú", "璞": "pú", "功": "gōng", "炉": "lú", "朗": "lǎng", "灌": "guàn", "顶": "dǐng",
+
+  // --- 补充完善 (Supplementary) ---
+  "泡": "pào", "缘": "yuán", "际": "jì", "享": "xiǎng", 
+  "污": "wū", "新": "xīn", "材": "cái", "料": "liào", 
+  "汽": "qì", "讯": "xùn", "整": "zhěng", "组": "zǔ", "购": "gòu", 
+  "固": "gù", "创": "chuàng", "型": "xíng", "跨": "kuà", 
+  "伙": "huǒ", "独": "dú", "份": "fèn"
 };
