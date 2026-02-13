@@ -1,85 +1,76 @@
-# 汉字大师 (HanziMaster)
+
+# 汉字大师 (HanziMaster) 🖌️
 
 **中文文档** | [English](./README.md)
 
-**汉字大师** 是一款交互式汉字学习 Web 应用。它结合了精准的笔画顺序动画与 Google Gemini AI 的强大能力，为用户提供汉字的语言学解析、字源故事、记忆口诀以及**真人级语音朗读**。
+> **重塑汉字之魂，探寻笔墨奥秘。**
+> 
+> 结合传统书法美学与 Gemini AI 深度解析的下一代汉字学习终端。
+
+![Version](https://img.shields.io/badge/version-0.4.2-blue?style=flat-square)
+![License](https://img.shields.io/badge/license-GPLv3-green?style=flat-square)
+![Offline Ready](https://img.shields.io/badge/offline-ready-success?style=flat-square)
+![Powered by Gemini](https://img.shields.io/badge/AI-Gemini_Flash-8E75B2?style=flat-square)
+
+## 📖 简介
+
+**汉字大师** 不仅仅是一本字典。它是一款**离线优先**的 PWA 应用，致力于弥合传统书法与现代 AI 技术之间的鸿沟。
+
+无论你是正在备考 HSK 的留学生，还是对汉字文化感兴趣的书法爱好者，汉字大师都能为你提供一个宁静、专注、富有美感的学习环境。
+
+## ✨ 核心亮点
+
+### 🧠 AI 赋能 (Gemini Inside)
+告别死记硬背。我们利用 **Google Gemini 3 Flash** 为你提供：
+*   **字源演变**: 了解“家”为什么是屋顶下一头猪。
+*   **记忆口诀**: AI生成的创意助记词，过目不忘。
+*   **混合语音**: 在线时享受 AI 神经元人声，离线时无缝切换系统语音。
+
+### ✍️ 沉浸式书写
+*   **笔顺流体**: 基于 SVG 矢量数据的 9000+ 汉字动态演示，如行云流水。
+*   **交互临摹**: 米字格上的实时手写练习，包含几何级数的轨迹校验。
+*   **东方美学**: 朱砂红、松烟黑、宣纸白，UI 设计致敬传统文房四宝。
+
+### ⚡ 极致工程
+*   **离线可用**: 完整的 PWA 支持。下载一次，在飞机、地铁或深山中皆可流畅使用。
+*   **隐私安全**: BYOK (Bring Your Own Key) 架构，你的 API Key 仅保存在本地浏览器。
+*   **社交裂变**: 生成精美的汉字卡片 (Share as Image)，随时分享你的练字成就。
 
 ## 📚 项目规范 (OpenSpec)
-查看详细的项目技术与产品规范，请参阅 [OpenSpec](./openspec/00_INDEX.md) 目录（已完全汉化）：
+
+本项目严格遵循 **OpenSpec** 标准，文档即真理：
 *   [01. 产品需求文档 (PRD)](./openspec/01_PRODUCT_REQUIREMENTS.md)
-*   [02. 技术架构文档](./openspec/02_TECHNICAL_ARCHITECTURE.md)
+*   [02. 技术架构规范](./openspec/02_TECHNICAL_ARCHITECTURE.md)
 *   [03. UI/UX 设计规范](./openspec/03_UI_UX_DESIGN.md)
-*   [04. 数据与 API 协议](./openspec/04_DATA_AND_API.md)
 *   [05. 营销与推广策略](./openspec/05_MARKETING_AND_PROMO.md)
-*   [06. 测试与质量保证](./openspec/06_TESTING_AND_QA.md)
-*   [07. 无障碍访问规范](./openspec/07_ACCESSIBILITY_A11Y.md)
-
-## ✨ 功能特性
-
-*   **离线优先架构 (Offline-First)**：
-    *   **内置数据**：集成 **9000+ 汉字**（覆盖 HSK 1-6 及更多）的笔画数据。
-    *   **离线模式**：无网络状态下，笔顺动画、查字、随机练习完全可用。
-*   **笔画顺序可视化**：基于 SVG 数据，逐笔画动态展示汉字的书写过程。
-*   **手写练习模式**：支持触摸屏和鼠标的交互式描红练习，提供实时反馈。
-*   **AI 智能解析 (联网)**：利用 **Google Gemini 3 Flash** 模型生成深度解析：
-    *   字源/词源故事 & 创意记忆口诀
-    *   部首拆解与常用词组
-*   **混合语音朗读 (Hybrid TTS)**：
-    *   **在线**：集成 **Gemini 2.5 Flash TTS**，提供自然的人声发音。
-    *   **离线**：自动回退至浏览器原生语音合成 (`SpeechSynthesis`)，确保发音功能永不掉线。
-*   **GEO 优化**：针对 AI 搜索引擎（如 ChatGPT, Gemini）进行了结构化数据优化，方便 AI 抓取和推荐。
-*   **多语言支持**：界面及 AI 回复支持全球 10 种常用语言。
-
-## 🛠 技术栈
-
-*   **前端框架**：React 19, TypeScript
-*   **离线支持**：Vite PWA (Workbox)
-*   **AI 模型**：Google Gemini API (`gemini-3-flash-preview` & `gemini-2.5-flash-preview-tts`)
-*   **数据源**：Hanzi Writer Data (本地构建 + 静态资源化)
-*   **统计分析**：Google Analytics 4
 
 ## 🚀 快速开始
 
 ### 前置要求
+*   Node.js v18+
+*   Google Gemini API Key (可选，用于解锁 AI 功能)
 
-*   Node.js (建议 v18 或更高版本)
-*   Google Gemini API Key (用于 AI 解析功能)
+### 安装运行
 
-### 安装步骤
+```bash
+# 1. 克隆项目
+git clone https://github.com/yourusername/hanzimaster.git
+cd hanzimaster
 
-1.  克隆仓库：
-    ```bash
-    git clone https://github.com/yourusername/hanzimaster.git
-    cd hanzimaster
-    ```
+# 2. 安装依赖 (自动执行数据拷贝脚本)
+npm install
 
-2.  安装依赖：
-    ```bash
-    npm install
-    ```
+# 3. 配置 Key (可选)
+echo "API_KEY=你的密钥" > .env
 
-3.  配置 API Key：
-    在项目根目录创建一个 `.env` 文件：
-    ```env
-    API_KEY=你的_API_KEY
-    ```
+# 4. 启动预览
+npm run dev
+```
 
-4.  构建与运行：
-    ```bash
-    npm run build
-    npm run preview
-    ```
-    *注意：`npm run build` 会自动执行脚本，将数千个汉字数据文件复制到 `public` 目录，以便离线使用。*
+## 🤝 参与贡献
 
-## 🎮 使用指南
-
-1.  **离线体验**：尝试断开网络，你依然可以搜索汉字、观看笔画动画并听到基础发音。
-2.  **AI 解析**：连接网络后，应用将自动启用 Gemini AI，提供深度的字源故事和记忆技巧。
-
-## 🤝 贡献指南
-
-欢迎提交 Pull Request 或 Issue 来改进这个项目！
+欢迎书法爱好者与极客开发者加入！提交代码前请阅读 [测试规范](./openspec/06_TESTING_AND_QA.md)。
 
 ## 📄 许可证
 
-本项目采用 GNU General Public License v3.0 许可证。
+GPLv3 © 2025 HanziMaster Team

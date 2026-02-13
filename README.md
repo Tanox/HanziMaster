@@ -1,91 +1,77 @@
-# HanziMaster
+
+# HanziMaster 🖌️
 
 [中文文档](./README_zh-CN.md) | **English**
 
-**HanziMaster** is an interactive web application designed to help users master Chinese characters (Hanzi). It combines accurate stroke order animations with the power of Google's Gemini AI to provide linguistic insights, etymology, mnemonics, and **pronunciation**.
+> **The Soul of Hanzi, Reimagined by AI.**
+>
+> Master Chinese character stroke order with Zen-like visualization and Gemini AI insights.
+
+![Version](https://img.shields.io/badge/version-0.4.2-blue?style=flat-square)
+![License](https://img.shields.io/badge/license-GPLv3-green?style=flat-square)
+![Offline Ready](https://img.shields.io/badge/offline-ready-success?style=flat-square)
+![Powered by Gemini](https://img.shields.io/badge/AI-Gemini_Flash-8E75B2?style=flat-square)
+
+## 📖 Introduction
+
+**HanziMaster** is not just a dictionary. It is an interactive, **offline-first** web application designed to bridge the gap between traditional calligraphy and modern AI technology. 
+
+Whether you are an HSK student struggling with stroke order, or a heritage learner curious about the story behind a character, HanziMaster provides a distraction-free, aesthetic environment to learn, practice, and understand.
+
+## ✨ Why HanziMaster?
+
+### 🧠 AI-Powered Intelligence
+Stop rote memorization. We use **Google Gemini 3 Flash** to generate:
+*   **Etymology**: Discover how "家" (Family) evolved from a pig under a roof.
+*   **Mnemonics**: clever memory aids tailored to the character's structure.
+*   **Native TTS**: Hybrid text-to-speech engine ensuring you hear the perfect tone, online or offline.
+
+### ✍️ Zen Mode Writing
+*   **Stroke Flow**: Mesmerizing, fluid animations based on vector data (9000+ characters).
+*   **Interactive Practice**: Write directly on the screen with real-time accuracy validation.
+*   **Aesthetics**: Designed with "Vermilion Ink" and "Rice Paper" textures for a calming experience.
+
+### ⚡ Engineering Excellence
+*   **Offline-First**: Built as a PWA. Download it once, use it on a plane, subway, or deep in the mountains.
+*   **Privacy-Focused**: Bring Your Own Key (BYOK) architecture. Your API key stays in your browser.
+*   **Shareable**: Generate beautiful, watermarked images of your practice to share on social media.
 
 ## 📚 Documentation (OpenSpec)
-For detailed project specifications (available in Chinese), please refer to the [OpenSpec](./openspec/00_INDEX.md) folder:
+
+We follow strict **OpenSpec** standards. Dive into our design philosophy:
 *   [01. Product Requirements](./openspec/01_PRODUCT_REQUIREMENTS.md)
 *   [02. Technical Architecture](./openspec/02_TECHNICAL_ARCHITECTURE.md)
 *   [03. UI/UX Design](./openspec/03_UI_UX_DESIGN.md)
-*   [04. Data & API](./openspec/04_DATA_AND_API.md)
-*   [05. Marketing & Promotion](./openspec/05_MARKETING_AND_PROMO.md)
-*   [06. Testing & QA](./openspec/06_TESTING_AND_QA.md)
-*   [07. Accessibility Guidelines](./openspec/07_ACCESSIBILITY_A11Y.md)
+*   [05. Marketing Strategy](./openspec/05_MARKETING_AND_PROMO.md)
 
-## ✨ Features
-
-*   **Offline-First Architecture:** 
-    *   **Built-in Data:** Includes stroke data for **9000+ characters** (covering HSK 1-6 and beyond).
-    *   **Offline Mode:** Fully functional stroke animations and native pronunciation support even without an internet connection.
-*   **Stroke Order Visualization:** Animated, stroke-by-stroke rendering of Chinese characters using SVG data.
-*   **Handwriting Practice:** Interactive touch-friendly mode to practice writing strokes with accuracy validation.
-*   **AI-Powered Analysis (Online):** Leverages **Google Gemini 3 Flash** to generate:
-    *   Pinyin & Meaning
-    *   Radical breakdown
-    *   Etymology / Origin stories
-    *   Creative Mnemonics (Memory aids)
-    *   Common compound words
-*   **Hybrid Text-to-Speech (TTS):** 
-    *   **Online:** Uses **Gemini 2.5 Flash TTS** for high-quality, natural audio.
-    *   **Offline:** Fallback to browser-native TTS (`SpeechSynthesis`) ensuring audio is always available.
-*   **GEO Optimized:** Includes structured data (JSON-LD) for better visibility in AI-driven search engines.
-*   **Multi-Language Support:** The interface and AI responses support 10 languages (English, Spanish, French, German, Japanese, Korean, Russian, Portuguese, Italian, Vietnamese).
-
-## 🛠 Tech Stack
-
-*   **Frontend:** React 19, TypeScript
-*   **PWA:** Vite PWA (Workbox) for offline caching
-*   **AI Model:** Google Gemini API (`gemini-3-flash-preview` & `gemini-2.5-flash-preview-tts`)
-*   **Data Source:** Hanzi Writer Data (Local copy for offline support)
-*   **Icons:** Lucide React
-*   **Analytics:** Google Analytics 4
-
-## 🚀 Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
-
-*   Node.js (v18 or higher recommended)
-*   A Google Gemini API Key (for AI features)
+*   Node.js v18+
+*   A Google Gemini API Key (Optional for basic features, required for AI analysis)
 
 ### Installation
 
-1.  Clone the repository:
-    ```bash
-    git clone https://github.com/yourusername/hanzimaster.git
-    cd hanzimaster
-    ```
+```bash
+# 1. Clone
+git clone https://github.com/yourusername/hanzimaster.git
+cd hanzimaster
 
-2.  Install dependencies:
-    ```bash
-    npm install
-    ```
-    *Note: This will also install the `hanzi-writer-data` package needed for offline support.*
+# 2. Install dependencies (includes data copying script)
+npm install
 
-3.  Set up your API Key:
-    Create a `.env` file in the root directory:
-    ```env
-    API_KEY=your_actual_api_key_here
-    ```
+# 3. Create env file (Optional)
+echo "API_KEY=your_key" > .env
 
-4.  Build & Run (to verify data copying):
-    ```bash
-    npm run build
-    npm run preview
-    ```
-    *The build script will automatically copy character data to the `public/hanzi-data` directory.*
-
-## 🎮 Usage
-
-1.  **Enter a Character:** Type a single Chinese character (e.g., "爱", "龙").
-2.  **Offline Use:** Disconnect your internet. You can still search, view stroke animations, and hear native pronunciation.
-3.  **Online Analysis:** Connect to the internet to get detailed AI-generated etymology and mnemonics.
+# 4. Run!
+npm run dev
+```
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+We welcome calligraphy enthusiasts and developers! 
+Please check [06. Testing & QA](./openspec/06_TESTING_AND_QA.md) before submitting PRs.
 
 ## 📄 License
 
-This project is licensed under the GNU General Public License v3.0.
+GPLv3 © 2025 HanziMaster Team

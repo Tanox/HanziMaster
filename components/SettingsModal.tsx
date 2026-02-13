@@ -3,7 +3,7 @@
  * HanziMaster v0.4.2
  */
 import React, { useState, useMemo } from 'react';
-import { X, Eye, EyeOff, PlayCircle, Infinity, Wifi, Gauge, Key, Check, ExternalLink, Moon, Sun, Globe, Palette, Database, Clipboard, ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
+import { X, Eye, EyeOff, PlayCircle, Infinity, Wifi, Gauge, Key, Check, ExternalLink, Moon, Sun, Globe, Palette, Database, Clipboard, ChevronDown, ChevronUp, Trash2, AlertTriangle } from 'lucide-react';
 import { AppSettings, GridStyle } from '../types';
 import { UILabels } from '../locales/types';
 import { LANGUAGES } from '../locales';
@@ -78,7 +78,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   };
 
   const handleReset = () => {
-    if (window.confirm(labels.resetConfirm)) {
+    if (window.confirm(labels.resetConfirm || "Are you sure you want to clear all data?")) {
       try {
         localStorage.clear();
         // Clear caches if supported
@@ -90,7 +90,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
         window.location.reload();
       } catch (e) {
         console.error("Reset failed", e);
-        showToast(labels.toastError, 'error');
+        showToast(labels.toastError || "Reset failed", 'error');
       }
     }
   };
@@ -107,7 +107,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-fade-in"
       onClick={handleBackdropClick}
     >
-      <div className="bg-white dark:bg-slate-800 w-full max-w-sm max-h-[90vh] overflow-y-auto rounded-2xl border border-slate-200 dark:border-slate-700 transform transition-all scale-100 scrollbar-hide flex flex-col">
+      <div className="bg-white dark:bg-slate-800 w-full max-w-sm max-h-[90vh] overflow-y-auto rounded-2xl border border-slate-200 dark:border-slate-700 transform transition-all scale-100 scrollbar-hide flex flex-col shadow-2xl">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-700 sticky top-0 bg-white dark:bg-slate-800 z-10 shrink-0">
           <h3 className="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
@@ -320,16 +320,16 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                 {usingCustomKey ? (
                      <span className="text-[10px] uppercase font-bold tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center gap-1 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full border border-emerald-100 dark:border-emerald-900/30">
                         <Check size={12} />
-                        {labels.badgeCustom}
+                        {labels.badgeCustom || "Custom"}
                      </span>
                 ) : hasDefaultKey ? (
                      <span className="text-[10px] uppercase font-bold tracking-wider text-blue-600 dark:text-blue-400 flex items-center gap-1 bg-blue-50 dark:bg-blue-900/20 px-2 py-0.5 rounded-full border border-blue-100 dark:border-blue-900/30">
                         <Check size={12} />
-                        {labels.badgeDefault}
+                        {labels.badgeDefault || "Default"}
                      </span>
                 ) : (
                      <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500 flex items-center gap-1 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">
-                        {labels.badgeNone}
+                        {labels.badgeNone || "None"}
                      </span>
                 )}
             </div>
@@ -373,22 +373,30 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                       rel="noopener noreferrer" 
                       className="text-teal-600 dark:text-teal-400 hover:underline flex items-center gap-1 font-medium bg-white dark:bg-slate-700 px-3 py-1.5 rounded border border-slate-200 dark:border-slate-600 hover:border-teal-300 transition-colors"
                     >
-                      {labels.getApiKey}
+                      {labels.getApiKey || "Get Key"}
                       <ExternalLink size={12} />
                     </a>
                 </div>
             </div>
           </div>
 
-          {/* Section: Reset */}
-          <SectionHeader title={labels.settingResetData} />
-          <button
-            onClick={handleReset}
-            className="w-full py-3 rounded-xl bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 font-medium transition-colors flex items-center justify-center gap-2 border border-red-100 dark:border-red-900/30"
-          >
-            <Trash2 size={16} />
-            {labels.resetBtn}
-          </button>
+          {/* Section: Reset (Hazard Area) */}
+          <SectionHeader title={labels.settingResetData || "Reset Application"} />
+          <div className="p-4 bg-red-50 dark:bg-red-900/10 rounded-xl border border-red-100 dark:border-red-900/20 mb-6">
+            <div className="flex items-start gap-3 mb-3">
+               <AlertTriangle size={18} className="text-red-500 shrink-0 mt-0.5" />
+               <p className="text-xs text-red-700 dark:text-red-300 leading-relaxed">
+                  {labels.resetConfirm || "Clearing data will remove all your practice history, cached analyses, and personalized settings. This action is irreversible."}
+               </p>
+            </div>
+            <button
+                onClick={handleReset}
+                className="w-full py-2.5 rounded-lg bg-white dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 font-bold text-xs transition-colors flex items-center justify-center gap-2 border border-red-200 dark:border-red-800 shadow-sm"
+            >
+                <Trash2 size={14} />
+                {labels.resetBtn || "Wipe All Data"}
+            </button>
+          </div>
 
         </div>
         

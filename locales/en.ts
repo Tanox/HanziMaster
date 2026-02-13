@@ -75,10 +75,10 @@ export const en: UILabels = {
   idiomUsage: 'Usage example',
   idiomTitle: 'Idiom analysis',
   shareAction: 'Share',
-  shareTitleChar: "Learn to write '{char}' on HanziMaster!",
-  shareTitleIdiom: "Learn the idiom '{idiom}' on HanziMaster!",
-  shareTextChar: "🀄️ I just mastered writing '{char}' ({pinyin}) on HanziMaster!\n\n📖 Meaning: {meaning}\n\n✨ Check out the stroke animation and AI analysis here:\n{url}\n\n#HanziMaster #LearnChinese #Calligraphy",
-  shareTextIdiom: "📜 Found a fascinating idiom: '{idiom}' ({pinyin})\n\n💡 Meaning: {meaning}\n\n🚀 Learn the story behind it on HanziMaster:\n{url}\n\n#HanziMaster #ChineseIdioms #LearnChinese",
+  shareTitleChar: "Check out this character '{char}' on HanziMaster!",
+  shareTitleIdiom: "I learned a new idiom '{idiom}' on HanziMaster!",
+  shareTextChar: "🀄️ Just mastered writing '{char}' ({pinyin}) on HanziMaster!\n\n📖 Meaning: {meaning}\n\n✨ See the ink flow and AI analysis here:\n{url}\n\n#HanziMaster #LearnChinese #Calligraphy",
+  shareTextIdiom: "📜 Fascinating idiom alert: '{idiom}' ({pinyin})\n\n💡 Meaning: {meaning}\n\n🚀 Discover its origin story on HanziMaster:\n{url}\n\n#HanziMaster #ChineseIdioms #DailyChinese",
   shareMessageCopied: 'Share text copied!',
 
   // Audit

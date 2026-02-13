@@ -1,5 +1,4 @@
 
-
 # 02. 技术架构规范
 
 ## 1. 设计哲学
@@ -34,6 +33,8 @@
     *   `appSettings`: 用户偏好。
     *   `practiceHistory`: 最近 50 条练习记录。
     *   `ai_pinyin_cache`: AI 动态补全的生僻字拼音映射表。
+    *   `ai_analysis_cache`: 单字解析 L2 缓存。
+    *   `ai_idiom_cache`: 成语解析 L2 缓存。
 *   **L3: 静态资源 (Static/SW)**: `public/hanzi-data/` 下的 9000+ JSON 文件，通过构建脚本自动化生成，由 Service Worker 预缓存。
 
 ## 4. 混合语音架构 (Hybrid TTS)
@@ -50,10 +51,7 @@
 为确保生产环境的稳定性及 PWA 的离线可用性，必须严格遵守以下构建规范：
 
 *   **Vite 独占构建**: 所有核心依赖（React, ReactDOM, Lucide, @google/genai）必须通过 `package.json` 管理并由 Vite 打包。
-*   **禁止 ImportMap**: **严禁**在 `index.html` 中使用 `<script type="importmap">` 引入 CDN 资源。
-    *   *原因 1*: ImportMap 会导致浏览器绕过本地打包文件直接请求外部 URL，引发 **CORS 跨域错误**（如 `Access to script ... blocked by CORS policy`）。
-    *   *原因 2*: 外部 CDN 资源无法被 PWA Service Worker 有效预缓存，破坏离线优先体验。
-    *   *原因 3*: 导致开发环境（HMR）与生产环境行为不一致。
+*   **禁止 ImportMap**: 严禁在 `index.html` 中使用 `<script type="importmap">` 引入 CDN 资源。
 *   **CSP 策略**: 
-    *   `script-src`: 'self' 'unsafe-inline' (仅限必要)
-    *   `connect-src`: 'self' https://generativelanguage.googleapis.com (Gemini API)
+    *   `script-src`: 'self' 'unsafe-inline';
+    *   `connect-src`: 'self' https://generativelanguage.googleapis.com;

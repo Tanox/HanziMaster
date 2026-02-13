@@ -75,10 +75,10 @@ export const zhCN: UILabels = {
   idiomUsage: '用法示例',
   idiomTitle: '成语解析',
   shareAction: '分享',
-  shareTitleChar: '快来汉字大师学习“{char}”的写法！',
-  shareTitleIdiom: '快来汉字大师学习成语“{idiom}”！',
-  shareTextChar: '🀄️ 我在「汉字大师」学会了“{char}” ({pinyin}) 的标准笔顺！\n\n📖 释义：{meaning}\n\n✨ 结合 AI 解析与书法美学，推荐你也来试试：\n{url}\n\n#汉字大师 #中文学习 #HanziMaster',
-  shareTextIdiom: '📜 发现了一个超棒的成语：“{idiom}” ({pinyin})\n\n💡 意思：{meaning}\n\n🚀 快来「汉字大师」查看它的典故和用法：\n{url}\n\n#汉字大师 #成语学习 #ChineseIdioms',
+  shareTitleChar: '我在汉字大师发现了“{char}”的秘密！',
+  shareTitleIdiom: '这句成语“{idiom}”原来是这个意思！',
+  shareTextChar: '🀄️ 原来“{char}”({pinyin}) 是这样写的！\n\n📖 释义：{meaning}\n\n✨ 汉字大师 AI 告诉我：\n{url}\n\n#汉字大师 #中文之美 #练字打卡',
+  shareTextIdiom: '📜 涨知识了！成语“{idiom}”({pinyin})\n\n💡 意思：{meaning}\n\n🚀 在这里看它的典故来源：\n{url}\n\n#汉字大师 #成语故事 #每日一词',
   shareMessageCopied: '分享文案已复制！',
 
   // Audit

@@ -1,3 +1,2 @@
-// [DEPRECATED] This file is redundant and should be deleted.
-// The actual application logic resides in: hooks/useLocalStorage.ts
-export {};
+// This file has been deprecated and moved to hooks/useLocalStorage.ts.
+// Please delete this file.
