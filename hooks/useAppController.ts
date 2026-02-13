@@ -1,13 +1,14 @@
-
-
+/**
+ * HanziMaster v0.4.2
+ */
 import { useState, useEffect, useRef } from 'react';
-import { HanziData, CharacterAnalysis, IdiomAnalysis, AnimationState, InteractionMode, AppSettings, HistoryItem } from '../types/index.ts';
-import { fetchHanziData } from '../services/hanziService.ts';
-import { analyzeCharacter, analyzeIdiom } from '../services/geminiService.ts';
-import { LANGUAGES } from '../locales/index.ts';
-import { COMMON_CHARS } from '../constants/commonChars.ts';
-import { useLocalStorage } from './useLocalStorage.ts';
-import { PINYIN_MAP } from '../constants/pinyinData.ts';
+import { HanziData, CharacterAnalysis, IdiomAnalysis, AnimationState, InteractionMode, AppSettings, HistoryItem } from '../types';
+import { fetchHanziData } from '../services/hanziService';
+import { analyzeCharacter, analyzeIdiom } from '../services/geminiService';
+import { LANGUAGES } from '../locales';
+import { COMMON_CHARS } from '../constants/commonChars';
+import { useLocalStorage } from './useLocalStorage';
+import { PINYIN_MAP } from '../constants/pinyinData';
 
 const DEFAULT_SETTINGS: AppSettings = {
   apiKey: '', 

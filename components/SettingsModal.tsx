@@ -1,17 +1,15 @@
-
-
 /**
  * HanziMaster v0.4.2
  */
 import React, { useState, useMemo } from 'react';
 import { X, Eye, EyeOff, PlayCircle, Infinity, Wifi, Gauge, Key, Check, ExternalLink, Moon, Sun, Globe, Palette, Database, Clipboard, ChevronDown, ChevronUp } from 'lucide-react';
-import { AppSettings, GridStyle } from '../types/index.ts';
-import { UILabels } from '../locales/types.ts';
-import { LANGUAGES } from '../locales/index.ts';
-import { COMMON_CHARS } from '../constants/commonChars.ts';
-import { PINYIN_MAP } from '../constants/pinyinData.ts';
-import ToggleItem from './ToggleItem.tsx';
-import { useToast } from '../context/ToastContext.tsx';
+import { AppSettings, GridStyle } from '../types';
+import { UILabels } from '../locales/types';
+import { LANGUAGES } from '../locales';
+import { COMMON_CHARS } from '../constants/commonChars';
+import { PINYIN_MAP } from '../constants/pinyinData';
+import ToggleItem from './ToggleItem';
+import { useToast } from '../context/ToastContext';
 
 interface SettingsModalProps {
   isOpen: boolean;

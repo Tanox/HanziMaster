@@ -1,26 +1,24 @@
-
-
 /**
  * HanziMaster v0.4.2
  */
 import React from 'react';
-import { useAppController } from './hooks/useAppController.ts';
-import { AnimationState, InteractionMode } from './types/index.ts';
-import SearchInput from './components/SearchInput.tsx';
-import StrokeViewer from './components/StrokeViewer.tsx';
-import Controls from './components/Controls.tsx';
-import AnalysisPanel from './components/AnalysisPanel.tsx';
-import RandomSuggestions from './components/RandomSuggestions.tsx';
-import HistoryPanel from './components/HistoryPanel.tsx';
-import SettingsModal from './components/SettingsModal.tsx';
-import ReloadPrompt from './components/ReloadPrompt.tsx';
-import WelcomeScreen from './components/WelcomeScreen.tsx';
-import Header from './components/Header.tsx';
-import Footer from './components/Footer.tsx';
-import IdiomNavigator from './components/IdiomNavigator.tsx';
-import { UI_LABELS } from './locales/index.ts';
+import { useAppController } from './hooks/useAppController';
+import { AnimationState, InteractionMode } from './types';
+import SearchInput from './components/SearchInput';
+import StrokeViewer from './components/StrokeViewer';
+import Controls from './components/Controls';
+import AnalysisPanel from './components/AnalysisPanel';
+import RandomSuggestions from './components/RandomSuggestions';
+import HistoryPanel from './components/HistoryPanel';
+import SettingsModal from './components/SettingsModal';
+import ReloadPrompt from './components/ReloadPrompt';
+import WelcomeScreen from './components/WelcomeScreen';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import IdiomNavigator from './components/IdiomNavigator';
+import { UI_LABELS } from './locales';
 import { AlertCircle, WifiOff } from 'lucide-react';
-import { ToastProvider } from './context/ToastContext.tsx';
+import { ToastProvider } from './context/ToastContext';
 
 const APP_VERSION = '0.4.2';
 

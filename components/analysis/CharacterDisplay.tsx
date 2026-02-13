@@ -1,14 +1,13 @@
-
 /**
- * HanziMaster v0.3.6
+ * HanziMaster v0.4.2
  */
 import React, { useState } from 'react';
 import { BookOpen, Lightbulb, History, Info, Image as ImageIcon, Loader2 } from 'lucide-react';
-import { CharacterAnalysis, AppSettings, HanziData } from '../../types/index.ts';
-import PronunciationButton from '../PronunciationButton.tsx';
-import ShareButton from '../ShareButton.tsx';
-import { UILabels } from '../../locales/types.ts';
-import { generateShareImage } from '../../utils/imageGenerator.ts';
+import { CharacterAnalysis, AppSettings, HanziData } from '../../types';
+import PronunciationButton from '../PronunciationButton';
+import ShareButton from '../ShareButton';
+import { UILabels } from '../../locales/types';
+import { generateShareImage } from '../../utils/imageGenerator';
 
 interface CharacterDisplayProps {
   analysis: CharacterAnalysis;

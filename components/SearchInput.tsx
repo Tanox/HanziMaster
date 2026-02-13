@@ -1,11 +1,9 @@
-
-
 /**
  * HanziMaster v0.4.2
  */
 import React, { useState, useEffect } from 'react';
 import { Search, Shuffle } from 'lucide-react';
-import { useToast } from '../context/ToastContext.tsx';
+import { useToast } from '../context/ToastContext';
 
 interface SearchInputProps {
   onSearch: (char: string) => void;

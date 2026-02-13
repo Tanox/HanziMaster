@@ -1,14 +1,12 @@
-
-
 /**
  * HanziMaster v0.4.2
  */
 import React, { useState, useEffect } from 'react';
-import { COMMON_CHARS } from '../constants/commonChars.ts';
-import { COMMON_TERMS } from '../constants/commonTerms.ts';
-import { PINYIN_MAP } from '../constants/pinyinData.ts';
-import { SEASONAL_EVENTS } from '../constants/seasonalEvents.ts';
-import { UILabels } from '../locales/types.ts';
+import { COMMON_CHARS } from '../constants/commonChars';
+import { COMMON_TERMS } from '../constants/commonTerms';
+import { PINYIN_MAP } from '../constants/pinyinData';
+import { SEASONAL_EVENTS } from '../constants/seasonalEvents';
+import { UILabels } from '../locales/types';
 import { Sparkles, Headphones, Calendar } from 'lucide-react';
 
 interface RandomSuggestionsProps {
