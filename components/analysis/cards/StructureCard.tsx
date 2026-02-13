@@ -1,0 +1,22 @@
+
+/**
+ * HanziMaster v0.4.9
+ */
+import React from 'react';
+import { UILabels } from '../../../locales/types';
+
+interface StructureCardProps {
+  radical: string;
+  labels: UILabels;
+}
+
+const StructureCard: React.FC<StructureCardProps> = ({ radical, labels }) => {
+  return (
+    <div id="character-structure-card" className="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 flex flex-col items-center justify-center text-center hover:border-vermilion-100 dark:hover:border-vermilion-900 transition-colors">
+        <span className="text-slate-400 dark:text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">{labels.radical}</span>
+        <span className="text-4xl font-hanzi text-slate-800 dark:text-slate-200 mb-1">{radical}</span>
+    </div>
+  );
+};
+
+export default StructureCard;

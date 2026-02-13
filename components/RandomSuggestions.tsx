@@ -1,14 +1,13 @@
 
 /**
- * HanziMaster v0.4.2
+ * HanziMaster v0.4.9
  */
-import React, { useState, useEffect } from 'react';
-import { COMMON_CHARS } from '../constants/commonChars';
-import { COMMON_TERMS } from '../constants/commonTerms';
+import React from 'react';
 import { PINYIN_MAP } from '../constants/pinyinData';
 import { SEASONAL_EVENTS } from '../constants/seasonalEvents';
 import { UILabels } from '../locales/types';
 import { Sparkles, Headphones, Calendar } from 'lucide-react';
+import { useSuggestions } from '../hooks/useSuggestions';
 
 interface RandomSuggestionsProps {
   onSelect: (term: string) => void;
@@ -18,74 +17,7 @@ interface RandomSuggestionsProps {
 }
 
 const RandomSuggestions: React.FC<RandomSuggestionsProps> = ({ onSelect, label, pinyinCache, labels }) => {
-  const [items, setItems] = useState<string[]>([]);
-  const [activeSeasonKey, setActiveSeasonKey] = useState<string | null>(null);
-
-  useEffect(() => {
-    generateItems();
-  }, []);
-
-  const getSeasonalTerms = () => {
-    const now = new Date();
-    const month = now.getMonth() + 1; // 1-12
-    const day = now.getDate();
-
-    const event = SEASONAL_EVENTS.find(e => {
-       if (e.startMonth === e.endMonth) {
-           return month === e.startMonth && day >= e.startDay && day <= e.endDay;
-       } else {
-           // 跨月逻辑
-           if (month === e.startMonth) return day >= e.startDay;
-           if (month === e.endMonth) return day <= e.endDay;
-           return month > e.startMonth && month < e.endMonth;
-       }
-    });
-
-    if (event) {
-        setActiveSeasonKey(event.name);
-        return event.keywords;
-    }
-    
-    setActiveSeasonKey(null);
-    return [];
-  };
-
-  const generateItems = () => {
-    const newItems: string[] = [];
-    const seasonalTerms = getSeasonalTerms();
-    
-    // 策略：
-    // 1. 如果有节庆词，前 2 个位置留给节庆词
-    // 2. 剩余位置：混合单字、词组、成语
-    
-    let slotsFilled = 0;
-    
-    // 插入节庆词 (随机取 2 个不同)
-    if (seasonalTerms.length > 0) {
-        const shuffledSeasonal = [...seasonalTerms].sort(() => 0.5 - Math.random());
-        // 取最多2个，或者如果节日词少于2个则全取
-        const countToTake = Math.min(2, shuffledSeasonal.length);
-        for(let i=0; i<countToTake; i++) {
-            newItems.push(shuffledSeasonal[i]);
-            slotsFilled++;
-        }
-    }
-
-    const totalSlots = 6;
-    const remainingSlots = totalSlots - slotsFilled;
-
-    for (let i = 0; i < remainingSlots; i++) {
-        const roll = Math.random();
-        if (roll < 0.4) {
-            // 40% 几率抽取单字
-            newItems.push(COMMON_CHARS[Math.floor(Math.random() * COMMON_CHARS.length)]);
-        } else {
-            // 60% 几率抽取词组/成语
-            newItems.push(COMMON_TERMS[Math.floor(Math.random() * COMMON_TERMS.length)]);
-        }
-    }
-    setItems(newItems);
-  };
+  const { items, activeSeasonKey, generateItems } = useSuggestions();
 
   const handleItemClick = (term: string) => {
     onSelect(term);
@@ -93,16 +25,16 @@ const RandomSuggestions: React.FC<RandomSuggestionsProps> = ({ onSelect, label, 
   };
 
   const getPinyin = (term: string) => {
-    // 如果是单字，直接从字典或缓存取
+    // If single char, try dictionary or cache
     if (term.length === 1) {
       return PINYIN_MAP[term] || pinyinCache[term] || null;
     }
     
-    // 如果是词组/成语，尝试拼接每个字的拼音
+    // If term/idiom, try to concat pinyin for each char
     const chars = term.split('');
     const pinyins = chars.map(c => PINYIN_MAP[c] || pinyinCache[c] || '?');
     
-    // 如果全都没找到，返回 null 以显示占位符
+    // If none found, return null to show placeholder
     if (pinyins.every(p => p === '?')) return null;
     
     return pinyins.join(' ');

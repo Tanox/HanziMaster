@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.9
+ * HanziMaster v0.5.0
  */
 import React from 'react';
 import { useAppController } from './hooks/useAppController';
@@ -21,7 +21,7 @@ import { UI_LABELS } from './locales';
 import { AlertCircle } from 'lucide-react';
 import { ToastProvider } from './context/ToastContext';
 
-const APP_VERSION = '0.4.9';
+const APP_VERSION = '0.5.0';
 
 const AppContent: React.FC = () => {
   const { state, actions } = useAppController();

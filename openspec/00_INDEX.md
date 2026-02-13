@@ -8,7 +8,7 @@
 | 编号 | 文档名称 | 核心内容 | 面向对象 |
 | :--- | :--- | :--- | :--- |
 | **01** | [产品需求文档 (PRD)](./01_PRODUCT_REQUIREMENTS.md) | 节庆推荐、**重置功能**、业务逻辑、版本规划 | 产品经理, 开发者 |
-| **02** | [技术架构规范](./02_TECHNICAL_ARCHITECTURE.md) | **构建策略**、离线优先策略 (PWA)、AI 集成 | 架构师, 核心开发 |
+| **02** | [技术架构规范](./02_TECHNICAL_ARCHITECTURE.md) | **Hook 架构**、离线优先策略 (PWA)、AI 集成 | 架构师, 核心开发 |
 | **03** | [UI/UX 设计规范](./03_UI_UX_DESIGN.md) | **轻量化搜索**、**高视拼音**、Toast 通知、组件规范 | 设计师, 前端开发 |
 | **04** | [数据与 API 协议](./04_DATA_AND_API.md) | 数据模型、Gemini API 契约、Prompt 工程 | AI 工程师, 后端 |
 | **05** | [营销与推广策略](./05_MARKETING_AND_PROMO.md) | 价值主张、病毒式传播、GEO (生成式引擎优化) | 市场, 运营 |
@@ -16,7 +16,7 @@
 | **07** | [无障碍访问规范 (A11y)](./07_ACCESSIBILITY_A11Y.md) | WCAG 标准、ARIA 映射、键盘导航、低运动模式 | 开发者, 设计师 |
 | **08** | [用户旅程 (User Journey)](./08_USER_JOURNEY.md) | 典型场景、交互流程、情感设计 | 产品, 设计 |
 | **09** | [数据字典 (Data Dictionary)](./09_DATA_DICTIONARY.md) | 核心数据结构、**多级缓存模型**、离线字典覆盖率 | 开发, 数据 |
-| **10** | [项目文件结构 (Project Structure)](./10_PROJECT_STRUCTURE.md) | **Context 目录**、模块职责划分、命名规范 | 开发者 |
+| **10** | [项目文件结构 (Project Structure)](./10_PROJECT_STRUCTURE.md) | **Hook 目录拆分**、模块职责划分、命名规范 | 开发者 |
 | **11** | [开发指南 (Development Guide)](./11_DEVELOPMENT_GUIDE.md) | 技术栈版本、代码风格、Git 提交规范 | 开发者 |
 | **12** | [安全与隐私规范 (Security)](./12_SECURITY_AND_PRIVACY.md) | API Key 处理、CSP 策略、数据持久化规则 | 架构师, 安全 |
 
@@ -29,7 +29,7 @@
 ## 🛠 项目概况
 
 *   **项目名称**: HanziMaster (汉字大师)
-*   **当前版本**: v0.4.9 (Debug & QA Enhanced)
+*   **当前版本**: v0.5.0 (Cards & Sharing Update)
 *   **核心理念**: 离线优先 (Offline-First) + AI 增强 (AI-Enhanced)
 *   **技术栈**: React 19, TypeScript, Vite PWA, Tailwind CSS, Google Gemini API
 
@@ -42,9 +42,8 @@
 *   **v0.4.0**: 社交分享 (Share as Image) 与时令推荐。
 *   **v0.4.2**: **UX 完善与架构规范化**。引入 Toast 系统，数据自检与重置机制。
 *   **v0.4.5**: **视觉精修与体验优化**。搜索框轻量化，拼音显像优化，网格坐标修复。
-*   **v0.4.7**: **数据扩容与状态指示**。顶部状态栏集成离线指示器，移除侵入式横幅；扩充节庆成语库。
-*   **v0.4.8**: **离线与缓存优化**。修复离线模式下无法读取缓存的问题，清理重复数据。
-*   **v0.4.9**: **调试与QA增强**。全站组件添加语义化 ID，便于自动化测试与调试。
+*   **v0.4.9**: **架构重构与模块化**。拆分 Hooks，解耦 UI 与逻辑，提升代码可维护性。
+*   **v0.5.0**: **组件拆分与分享升级**。拆分 CharacterDisplay 卡片，支持移动端原生分享。
 
 ---
 *文档维护: HanziMaster Engineering Team*

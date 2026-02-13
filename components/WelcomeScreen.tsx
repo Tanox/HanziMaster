@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.3
+ * HanziMaster v0.4.9
  */
 import React from 'react';
 import { Brush, ArrowRight, Globe, Search, Eye, PenTool } from 'lucide-react';

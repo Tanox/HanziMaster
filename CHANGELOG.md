@@ -6,7 +6,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2025-05-22
+
+### Added
+- **Native Sharing**: Implemented Web Share API support for mobile devices in `ShareImageButton`.
+- **Modular UI**: Split `CharacterDisplay` into specialized card components (`StructureCard`, `EtymologyCard`, etc.) for better maintainability.
+
+### Changed
+- **Share Image**: Redesigned the generated share image with a 1080x1080 vertical layout, improved typography, and branding.
+- **Version Bump**: Updated application version to v0.5.0.
+
 ## [0.4.9] - 2025-05-22
+
+### Refactored
+- **Architecture**: Decomposed the monolithic `useAppController` into specialized hooks (`useContentFetcher`, `useInteractionState`) to improve separation of concerns between data fetching and UI interaction logic.
+- **Stroke Engine**: Extracted animation logic into `useStrokeAnimation` and handwriting validation logic into `usePracticeDrawing` hooks. This significantly simplifies the `StrokeViewer` component.
+- **Component Split**: 
+  - Extracted `ShareImageButton` from `CharacterDisplay`.
+  - Refactored `SettingsModal` by splitting it into 6 sub-components (`SettingsAppearance`, `SettingsGrid`, etc.) for better maintainability.
+  - Extracted seasonal logic into `useSuggestions` hook.
 
 ### Changed
 - **Debugging & QA**: Added semantic IDs to all major application containers, interactive elements, and layout grids. This significantly improves debuggability and supports automated testing (e.g., Selenium/Cypress) as per OpenSpec QA standards.
