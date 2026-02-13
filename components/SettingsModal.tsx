@@ -104,16 +104,18 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 
   return (
     <div 
+      id="settings-modal-overlay"
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-fade-in"
       onClick={handleBackdropClick}
     >
-      <div className="bg-white dark:bg-slate-800 w-full max-w-sm max-h-[90vh] overflow-y-auto rounded-2xl border border-slate-200 dark:border-slate-700 transform transition-all scale-100 scrollbar-hide flex flex-col shadow-2xl">
+      <div id="settings-modal-content" className="bg-white dark:bg-slate-800 w-full max-w-sm max-h-[90vh] overflow-y-auto rounded-2xl border border-slate-200 dark:border-slate-700 transform transition-all scale-100 scrollbar-hide flex flex-col shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-700 sticky top-0 bg-white dark:bg-slate-800 z-10 shrink-0">
+        <div id="settings-header" className="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-700 sticky top-0 bg-white dark:bg-slate-800 z-10 shrink-0">
           <h3 className="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
             {labels.settingsTitle}
           </h3>
           <button 
+            id="close-settings-btn"
             onClick={onClose}
             className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
           >
@@ -122,7 +124,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-2 overflow-y-auto">
+        <div id="settings-body" className="p-6 space-y-2 overflow-y-auto">
           
           {/* Section: Appearance */}
           <SectionHeader title={labels.sectionAppearance || 'Appearance'} />
@@ -259,7 +261,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 
           {/* Section: Database Audit (Data Quality Check) */}
           <SectionHeader title={labels.settingDatabaseStatus || "Database Status"} />
-          <div className="mb-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/50 overflow-hidden">
+          <div id="settings-audit-section" className="mb-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/50 overflow-hidden">
             <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300">
                     <Database size={16} className="text-teal-500" />
@@ -310,7 +312,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 
           {/* Section: API Key */}
           <SectionHeader title={labels.settingApiKey} />
-          <div className="mb-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/50">
+          <div id="settings-apikey-section" className="mb-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/50">
             <div className="flex items-center justify-between mb-2">
                 <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
                     <Key size={16} className="text-teal-500" />
@@ -382,7 +384,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 
           {/* Section: Reset (Hazard Area) */}
           <SectionHeader title={labels.settingResetData || "Reset Application"} />
-          <div className="p-4 bg-red-50 dark:bg-red-900/10 rounded-xl border border-red-100 dark:border-red-900/20 mb-6">
+          <div id="settings-reset-section" className="p-4 bg-red-50 dark:bg-red-900/10 rounded-xl border border-red-100 dark:border-red-900/20 mb-6">
             <div className="flex items-start gap-3 mb-3">
                <AlertTriangle size={18} className="text-red-500 shrink-0 mt-0.5" />
                <p className="text-xs text-red-700 dark:text-red-300 leading-relaxed">
@@ -390,6 +392,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                </p>
             </div>
             <button
+                id="reset-all-data-btn"
                 onClick={handleReset}
                 className="w-full py-2.5 rounded-lg bg-white dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 font-bold text-xs transition-colors flex items-center justify-center gap-2 border border-red-200 dark:border-red-800 shadow-sm"
             >
@@ -400,8 +403,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 
         </div>
         
-        <div className="p-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-700 sticky bottom-0 z-10 shrink-0 rounded-b-2xl">
+        <div id="settings-footer" className="p-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-700 sticky bottom-0 z-10 shrink-0 rounded-b-2xl">
            <button 
+             id="settings-footer-close-btn"
              onClick={onClose}
              className="w-full py-3 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
            >

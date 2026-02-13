@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.8
+ * HanziMaster v0.4.9
  * 离线拼音数据库 (Enhanced Coverage for Common Chars)
  */
 

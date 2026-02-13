@@ -39,6 +39,7 @@ const Toast: React.FC<ToastProps> = ({ message, type, onClose }) => {
 
   return (
     <div
+      id="toast-notification"
       className={`
         pointer-events-auto
         flex items-center gap-3 p-4 rounded-xl shadow-lg backdrop-blur-md border

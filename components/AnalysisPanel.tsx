@@ -1,3 +1,4 @@
+
 /**
  * HanziMaster v0.3.1
  */
@@ -21,7 +22,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, idiomAnalysis, 
 
   if (isLoading) {
     return (
-      <div className="w-full max-w-2xl mx-auto mt-8 p-8 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 transition-colors duration-300">
+      <div id="analysis-loading-skeleton" className="w-full max-w-2xl mx-auto mt-8 p-8 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 transition-colors duration-300">
         <div className="animate-pulse space-y-4">
           <div className="h-10 bg-slate-200 dark:bg-slate-700 rounded w-1/4"></div>
           <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4"></div>
@@ -33,7 +34,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, idiomAnalysis, 
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto mt-6 flex flex-col gap-6">
+    <div id="analysis-panel-container" className="w-full max-w-4xl mx-auto mt-6 flex flex-col gap-6">
       {idiomAnalysis && (
         <IdiomDisplay 
           data={idiomAnalysis} 

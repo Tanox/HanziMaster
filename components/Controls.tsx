@@ -1,3 +1,4 @@
+
 /**
  * HanziMaster v0.3.1
  */
@@ -39,10 +40,11 @@ const Controls: React.FC<ControlsProps> = ({
   const isPractice = mode === InteractionMode.PRACTICE;
 
   return (
-    <div className="flex flex-col items-center gap-4 mt-6 w-full max-w-xs">
+    <div id="controls-container" className="flex flex-col items-center gap-4 mt-6 w-full max-w-xs">
       {/* Mode Toggle */}
-      <div className="bg-slate-100 dark:bg-slate-800 p-1 rounded-full flex w-full relative border border-slate-200 dark:border-slate-700">
+      <div id="mode-toggle-container" className="bg-slate-100 dark:bg-slate-800 p-1 rounded-full flex w-full relative border border-slate-200 dark:border-slate-700">
           <button 
+            id="btn-view-mode"
             onClick={isPractice ? onToggleMode : undefined}
             className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-full text-sm font-medium transition-all ${
                 !isPractice 
@@ -54,6 +56,7 @@ const Controls: React.FC<ControlsProps> = ({
               {labels.viewMode}
           </button>
           <button 
+            id="btn-practice-mode"
             onClick={!isPractice ? onToggleMode : undefined}
             className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-full text-sm font-medium transition-all ${
                 isPractice 
@@ -66,10 +69,11 @@ const Controls: React.FC<ControlsProps> = ({
           </button>
       </div>
 
-      <div className="flex flex-col items-center gap-4 transition-all duration-300 pt-2">
+      <div id="playback-controls-container" className="flex flex-col items-center gap-4 transition-all duration-300 pt-2">
         <div className="flex items-center justify-center gap-3">
             {/* Secondary: Reset Button */}
             <button
+              id="btn-reset"
               onClick={onReset}
               disabled={isPractice}
               className={`w-12 h-12 flex items-center justify-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full transition-all ${
@@ -86,6 +90,7 @@ const Controls: React.FC<ControlsProps> = ({
             {/* Primary: Play/Pause Button */}
             {animationState === AnimationState.PLAYING ? (
             <button
+                id="btn-pause"
                 onClick={onPause}
                 disabled={isPractice}
                 className={`w-16 h-16 flex items-center justify-center text-white bg-teal-600 dark:bg-teal-500 rounded-full transform transition-all ${
@@ -100,6 +105,7 @@ const Controls: React.FC<ControlsProps> = ({
             </button>
             ) : (
             <button
+                id="btn-play"
                 onClick={onPlay}
                 disabled={isPractice}
                 className={`w-16 h-16 flex items-center justify-center text-white bg-teal-600 dark:bg-teal-500 rounded-full transform transition-all ${

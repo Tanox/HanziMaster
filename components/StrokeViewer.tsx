@@ -267,7 +267,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     }
     if (!text) return null;
     return (
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 pointer-events-none animate-fade-in">
+        <div id="stroke-status-overlay" className="absolute bottom-3 left-1/2 -translate-x-1/2 pointer-events-none animate-fade-in">
             <div className={`px-3 py-1.5 rounded-full text-[10px] font-bold backdrop-blur-sm shadow-sm flex items-center gap-2 ${mode === InteractionMode.PRACTICE && showSuccess ? 'bg-emerald-600/90 text-white' : 'bg-slate-900/10 dark:bg-white/10 text-slate-500 dark:text-slate-300'}`}>
                 {mode === InteractionMode.PRACTICE && !showSuccess && <PenTool size={10} />}
                 {text}
@@ -277,8 +277,8 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   };
 
   return (
-    <div className="w-full max-w-xs relative bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-100 dark:border-slate-700 aspect-square shadow-inner bg-texture-paper select-none touch-none overflow-hidden">
-      <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="w-full h-full">
+    <div id="stroke-viewer-container" className="w-full max-w-xs relative bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-100 dark:border-slate-700 aspect-square shadow-inner bg-texture-paper select-none touch-none overflow-hidden">
+      <svg id="stroke-svg" viewBox={`0 0 ${SIZE} ${SIZE}`} className="w-full h-full">
         <defs>
           {data.strokes.map((stroke, i) => (
             <clipPath id={`${idPrefix}-clip-${i}`} key={i}>
@@ -341,7 +341,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
           ))}
         </g>
       </svg>
-      <canvas ref={canvasRef} width={SIZE} height={SIZE} className="absolute inset-0 w-full h-full cursor-crosshair" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp} onPointerLeave={handlePointerUp} style={{ touchAction: 'none' }} />
+      <canvas id="practice-canvas" ref={canvasRef} width={SIZE} height={SIZE} className="absolute inset-0 w-full h-full cursor-crosshair" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp} onPointerLeave={handlePointerUp} style={{ touchAction: 'none' }} />
       <StatusOverlay />
     </div>
   );

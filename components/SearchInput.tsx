@@ -51,9 +51,10 @@ const SearchInput: React.FC<SearchInputProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-[320px] mx-auto mb-8 transition-all duration-300">
-      <div className="relative flex items-center group">
+    <form id="search-form" onSubmit={handleSubmit} className="w-full max-w-[320px] mx-auto mb-8 transition-all duration-300">
+      <div id="search-input-container" className="relative flex items-center group">
         <input
+          id="main-search-input"
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
@@ -64,6 +65,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
         />
         <div className="absolute right-1.5 flex gap-1">
             <button
+              id="search-random-btn"
               type="button"
               onClick={onRandom}
               disabled={isLoading}
@@ -73,6 +75,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
               <Shuffle size={20} />
             </button>
             <button
+              id="search-submit-btn"
               type="submit"
               disabled={isLoading}
               className="p-2 bg-teal-600 dark:bg-teal-500 text-white rounded-full hover:bg-teal-700 dark:hover:bg-teal-600 disabled:bg-slate-300 dark:disabled:bg-slate-700 transition-all shadow-sm hover:shadow active:scale-95"

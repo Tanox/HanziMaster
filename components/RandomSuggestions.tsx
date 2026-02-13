@@ -1,3 +1,4 @@
+
 /**
  * HanziMaster v0.4.2
  */
@@ -111,8 +112,8 @@ const RandomSuggestions: React.FC<RandomSuggestionsProps> = ({ onSelect, label, 
   const activeSeasonLabel = activeSeasonKey ? labels[activeSeasonKey] : null;
 
   return (
-    <div className="w-full mt-12 lg:mt-16 mb-8 border-t border-slate-100 dark:border-slate-800 pt-10 px-4">
-      <div className="flex items-center justify-center gap-2 mb-8 text-slate-400 dark:text-slate-500 animate-fade-in">
+    <div id="random-suggestions-container" className="w-full mt-12 lg:mt-16 mb-8 border-t border-slate-100 dark:border-slate-800 pt-10 px-4">
+      <div id="suggestions-header" className="flex items-center justify-center gap-2 mb-8 text-slate-400 dark:text-slate-500 animate-fade-in">
         {activeSeasonLabel ? (
             <>
                 <Calendar size={16} className="text-vermilion-500" />
@@ -130,7 +131,7 @@ const RandomSuggestions: React.FC<RandomSuggestionsProps> = ({ onSelect, label, 
         )}
       </div>
       
-      <div className="flex flex-wrap justify-center gap-4 sm:gap-5 md:gap-6">
+      <div id="suggestions-grid" className="flex flex-wrap justify-center gap-4 sm:gap-5 md:gap-6">
         {items.map((item, index) => {
           const pinyin = getPinyin(item);
           const isIdiom = item.length >= 4;
@@ -143,6 +144,7 @@ const RandomSuggestions: React.FC<RandomSuggestionsProps> = ({ onSelect, label, 
           return (
             <button
               key={`${item}-${index}`}
+              id={`suggestion-item-${index}`}
               onClick={() => handleItemClick(item)}
               className={`
                 group relative
@@ -189,8 +191,9 @@ const RandomSuggestions: React.FC<RandomSuggestionsProps> = ({ onSelect, label, 
         })}
       </div>
       
-      <div className="mt-8 text-center">
+      <div id="suggestions-refresh-container" className="mt-8 text-center">
          <button 
+           id="refresh-suggestions-btn"
            onClick={generateItems}
            className="text-[10px] font-bold text-slate-400 hover:text-teal-500 uppercase tracking-widest transition-colors py-2 px-4 rounded-full border border-slate-100 dark:border-slate-800 hover:border-teal-200 dark:hover:border-teal-900"
          >

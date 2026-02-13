@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.8
+ * HanziMaster v0.4.9
  */
 import React, { useState, useEffect, useRef } from 'react';
 import { HanziData, CharacterAnalysis, IdiomAnalysis, AnimationState, InteractionMode, AppSettings, HistoryItem } from '../types';

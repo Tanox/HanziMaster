@@ -1,3 +1,4 @@
+
 /**
  * HanziMaster v0.4.2
  */
@@ -72,9 +73,9 @@ const CharacterDisplay: React.FC<CharacterDisplayProps> = ({ analysis, hanziData
   );
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-min">
+    <div id="character-analysis-grid" className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-min">
       {!compact ? (
-          <div className="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 flex flex-col justify-between relative overflow-hidden group hover:border-vermilion-100 dark:hover:border-vermilion-900 transition-colors">
+          <div id="character-header-card" className="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 flex flex-col justify-between relative overflow-hidden group hover:border-vermilion-100 dark:hover:border-vermilion-900 transition-colors">
               <div className="absolute -right-4 -bottom-8 text-9xl font-hanzi text-slate-50 dark:text-slate-800 pointer-events-none select-none opacity-50 group-hover:scale-110 transition-transform duration-700">
                   {analysis.char}
               </div>
@@ -114,7 +115,7 @@ const CharacterDisplay: React.FC<CharacterDisplayProps> = ({ analysis, hanziData
               </div>
           </div>
       ) : (
-          <div className="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 flex items-center justify-between">
+          <div id="character-header-card-compact" className="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 flex items-center justify-between">
                <div className="flex items-center gap-4">
                   <ruby className="text-5xl font-hanzi font-bold text-slate-800 dark:text-white">
                     {analysis.char}
@@ -142,21 +143,21 @@ const CharacterDisplay: React.FC<CharacterDisplayProps> = ({ analysis, hanziData
       )}
 
       {settings.showStructure && showRichContent && (
-          <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 flex flex-col items-center justify-center text-center hover:border-vermilion-100 dark:hover:border-vermilion-900 transition-colors">
+          <div id="character-structure-card" className="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 flex flex-col items-center justify-center text-center hover:border-vermilion-100 dark:hover:border-vermilion-900 transition-colors">
               <span className="text-slate-400 dark:text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">{labels.radical}</span>
               <span className="text-4xl font-hanzi text-slate-800 dark:text-slate-200 mb-1">{analysis.radical}</span>
           </div>
       )}
 
       {settings.showStructure && (analysis.strokeCount > 0) && (
-          <div className={`bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 flex flex-col items-center justify-center text-center hover:border-vermilion-100 dark:hover:border-vermilion-900 transition-colors ${!showRichContent ? 'md:col-span-2' : ''}`}>
+          <div id="character-stroke-count-card" className={`bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 flex flex-col items-center justify-center text-center hover:border-vermilion-100 dark:hover:border-vermilion-900 transition-colors ${!showRichContent ? 'md:col-span-2' : ''}`}>
               <span className="text-slate-400 dark:text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">{labels.strokeCount}</span>
               <span className="text-4xl font-mono font-light text-slate-800 dark:text-slate-200 mb-1">{analysis.strokeCount}</span>
           </div>
       )}
 
       {settings.showEtymology && showRichContent && (
-          <div className="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 hover:border-amber-100 dark:hover:border-amber-900/30 transition-colors">
+          <div id="character-etymology-card" className="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 hover:border-amber-100 dark:hover:border-amber-900/30 transition-colors">
               <div className="flex items-center gap-2 mb-3 text-amber-600 dark:text-amber-500">
                   <History size={18} />
                   <h3 className="font-bold text-sm uppercase tracking-wide">{labels.origin}</h3>
@@ -168,7 +169,7 @@ const CharacterDisplay: React.FC<CharacterDisplayProps> = ({ analysis, hanziData
       )}
 
       {settings.showMnemonic && showRichContent && (
-          <div className="md:col-span-2 bg-gradient-to-br from-teal-50 to-emerald-50 dark:from-teal-900/20 dark:to-emerald-900/20 p-6 rounded-2xl border border-teal-100 dark:border-teal-900/50 flex flex-col justify-center">
+          <div id="character-mnemonic-card" className="md:col-span-2 bg-gradient-to-br from-teal-50 to-emerald-50 dark:from-teal-900/20 dark:to-emerald-900/20 p-6 rounded-2xl border border-teal-100 dark:border-teal-900/50 flex flex-col justify-center">
               <div className="flex items-center gap-2 mb-2 text-teal-700 dark:text-teal-400">
                   <Lightbulb size={18} />
                   <h3 className="font-bold text-sm uppercase tracking-wide">{labels.memoryAid}</h3>
@@ -180,7 +181,7 @@ const CharacterDisplay: React.FC<CharacterDisplayProps> = ({ analysis, hanziData
       )}
 
       {settings.showExamples && showRichContent && (
-          <div className="md:col-span-4 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 mt-2">
+          <div id="character-examples-card" className="md:col-span-4 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 mt-2">
               <div className="flex items-center gap-2 mb-4 text-indigo-600 dark:text-indigo-400">
                   <BookOpen size={18} />
                   <h3 className="font-bold text-sm uppercase tracking-wide">{labels.commonWords}</h3>

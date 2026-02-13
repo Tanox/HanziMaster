@@ -26,8 +26,8 @@ const FeatureCard = ({ icon, title, desc }: { icon: React.ReactNode, title: stri
 
 const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onDismiss, labels, currentLang, onLanguageChange }) => {
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/90 backdrop-blur-md animate-fade-in p-4">
-      <div className="w-full max-w-md bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 relative">
+    <div id="welcome-screen-overlay" className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/90 backdrop-blur-md animate-fade-in p-4">
+      <div id="welcome-screen-content" className="w-full max-w-md bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 relative">
         
         {/* Language Selector (Top Right) */}
         <div className="absolute top-4 right-4 z-20">
@@ -51,7 +51,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onDismiss, labels, curren
         </div>
 
         {/* Hero Section */}
-        <div className="bg-gradient-to-br from-vermilion-500 to-vermilion-600 p-8 pt-12 text-center relative overflow-hidden">
+        <div id="welcome-hero-section" className="bg-gradient-to-br from-vermilion-500 to-vermilion-600 p-8 pt-12 text-center relative overflow-hidden">
           {/* Background Decorative Pattern */}
           <div className="absolute inset-0 opacity-10 pointer-events-none flex items-center justify-center select-none">
              <span className="text-[12rem] font-hanzi leading-none text-white animate-pulse" style={{ animationDuration: '4s' }}>字</span>
@@ -80,7 +80,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onDismiss, labels, curren
           </div>
 
           {/* Feature Guide */}
-          <div className="grid grid-cols-3 gap-3 mb-8">
+          <div id="welcome-features-section" className="grid grid-cols-3 gap-3 mb-8">
              <FeatureCard 
                 icon={<Search size={18} />} 
                 title={labels.guideSearchTitle || "Search"} 
@@ -99,6 +99,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onDismiss, labels, curren
           </div>
 
           <button
+            id="welcome-get-started-btn"
             onClick={onDismiss}
             className="w-full py-3.5 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-teal-500/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-2 group"
           >

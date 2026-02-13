@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.8
+ * HanziMaster v0.4.9
  */
 import React from 'react';
 import { useAppController } from './hooks/useAppController';
@@ -21,7 +21,7 @@ import { UI_LABELS } from './locales';
 import { AlertCircle } from 'lucide-react';
 import { ToastProvider } from './context/ToastContext';
 
-const APP_VERSION = '0.4.8';
+const APP_VERSION = '0.4.9';
 
 const AppContent: React.FC = () => {
   const { state, actions } = useAppController();
@@ -33,7 +33,7 @@ const AppContent: React.FC = () => {
     : (state.pinyinCache[state.activeChar] || '');
 
   return (
-    <div className="min-h-[100dvh] pb-24 bg-paper dark:bg-slate-900 transition-colors duration-300 flex flex-col">
+    <div id="app-root-container" className="min-h-[100dvh] pb-24 bg-paper dark:bg-slate-900 transition-colors duration-300 flex flex-col">
       
       {state.showWelcome && (
         <WelcomeScreen 
@@ -50,9 +50,9 @@ const AppContent: React.FC = () => {
         isOffline={state.isOffline || state.settings.offlineMode}
       />
 
-      <main className="max-w-5xl w-full mx-auto px-4 py-8 flex-grow">
+      <main id="app-main-content" className="max-w-5xl w-full mx-auto px-4 py-8 flex-grow">
         
-        <div className="text-center mb-6 md:mb-12">
+        <div id="intro-header-section" className="text-center mb-6 md:mb-12">
           <h2 className="hidden md:block text-4xl md:text-5xl font-hanzi font-bold text-slate-800 dark:text-white mb-4 transition-colors tracking-tight">{labels.appTitle}</h2>
           <p className="hidden md:block text-slate-500 dark:text-slate-400 mb-8 max-w-lg mx-auto font-light">
             {labels.appSubtitle}
@@ -70,17 +70,17 @@ const AppContent: React.FC = () => {
           />
           
           {state.error && (
-            <div className="max-w-md mx-auto mt-4 p-4 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-xl flex items-center gap-3 border border-red-100 dark:border-red-900/50">
+            <div id="error-message-container" className="max-w-md mx-auto mt-4 p-4 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-xl flex items-center gap-3 border border-red-100 dark:border-red-900/50">
               <AlertCircle size={20} className="shrink-0" />
               <p className="text-sm font-medium">{state.error}</p>
             </div>
           )}
         </div>
 
-        <div className="flex flex-col lg:grid lg:grid-cols-12 lg:gap-12">
+        <div id="main-grid-layout" className="flex flex-col lg:grid lg:grid-cols-12 lg:gap-12">
           
           {/* --- Left Column / Mobile Order 1: Viewer --- */}
-          <div className="order-1 lg:order-1 lg:col-span-5 flex flex-col items-center">
+          <div id="left-column-viewer" className="order-1 lg:order-1 lg:col-span-5 flex flex-col items-center">
             
             <IdiomNavigator 
                 term={state.activeTerm} 
@@ -90,7 +90,7 @@ const AppContent: React.FC = () => {
             />
 
             {/* Pinyin Display for Active Character - Optimized for visibility */}
-            <div className="h-16 mb-4 flex items-end justify-center w-full">
+            <div id="active-pinyin-display" className="h-16 mb-4 flex items-end justify-center w-full">
               {currentPinyin ? (
                   <span className="text-5xl md:text-6xl text-vermilion-600 dark:text-vermilion-400 font-serif font-bold tracking-widest drop-shadow-sm animate-fade-in transition-all">
                       {currentPinyin}
@@ -143,7 +143,7 @@ const AppContent: React.FC = () => {
               </>
             ) : (
               !state.loading && !state.error && (
-                <div className="h-64 w-64 flex items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-3xl text-slate-400 dark:text-slate-600 italic">
+                <div id="viewer-placeholder" className="h-64 w-64 flex items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-3xl text-slate-400 dark:text-slate-600 italic">
                   {labels.previewText}
                 </div>
               )
@@ -152,7 +152,7 @@ const AppContent: React.FC = () => {
           
           {/* --- Mobile Order 2 / Desktop Order 3: Suggestions --- */}
           {state.settings.showRandomSuggestions && (
-            <div className="order-2 lg:order-3 lg:col-span-12">
+            <div id="center-column-suggestions" className="order-2 lg:order-3 lg:col-span-12">
               <RandomSuggestions 
                 onSelect={(char) => actions.handleSearch(char, state.currentLang)} 
                 label={labels.randomBtn}
@@ -163,7 +163,7 @@ const AppContent: React.FC = () => {
           )}
 
           {/* --- Right Column / Mobile Order 3: Analysis --- */}
-          <div className="order-3 lg:order-2 lg:col-span-7">
+          <div id="right-column-analysis" className="order-3 lg:order-2 lg:col-span-7">
             <AnalysisPanel 
                 analysis={state.analysis} 
                 idiomAnalysis={state.idiomAnalysis}

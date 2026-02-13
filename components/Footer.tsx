@@ -1,3 +1,4 @@
+
 /**
  * HanziMaster v0.3.1
  */
@@ -12,8 +13,8 @@ interface FooterProps {
 
 const Footer: React.FC<FooterProps> = ({ labels, version }) => {
   return (
-    <footer className="mt-auto border-t border-slate-200/60 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm transition-colors">
-      <div className="max-w-5xl mx-auto px-4 py-8 md:py-10 flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-slate-500 dark:text-slate-400">
+    <footer id="app-footer" className="mt-auto border-t border-slate-200/60 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm transition-colors">
+      <div id="footer-content" className="max-w-5xl mx-auto px-4 py-8 md:py-10 flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-slate-500 dark:text-slate-400">
         
         <div className="text-center md:text-left space-y-1">
           <p className="font-medium text-slate-600 dark:text-slate-300">

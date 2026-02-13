@@ -30,7 +30,7 @@ const IdiomDisplay: React.FC<IdiomDisplayProps> = ({ data, apiKey, labels }) => 
   const shareTitle = labels.shareTitleIdiom.replace('{idiom}', data.idiom);
 
   return (
-    <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-teal-100 dark:border-teal-900/50 shadow-sm animate-fade-in relative overflow-hidden">
+    <div id="idiom-analysis-card" className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-teal-100 dark:border-teal-900/50 shadow-sm animate-fade-in relative overflow-hidden">
         <div className="absolute top-0 right-0 w-32 h-32 bg-teal-50 dark:bg-teal-900/10 rounded-bl-full -mr-8 -mt-8"></div>
         
         <div className="relative z-10">

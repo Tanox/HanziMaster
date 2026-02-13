@@ -17,8 +17,8 @@ const IdiomNavigator: React.FC<IdiomNavigatorProps> = ({ term, activeIndex, onSe
   const chars = term.split('');
 
   return (
-    <div className="flex flex-col items-center gap-3 mb-8 animate-fade-in w-full">
-       <div className="relative p-1 bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner flex items-center justify-between w-full max-w-xs">
+    <div id="idiom-navigator-container" className="flex flex-col items-center gap-3 mb-8 animate-fade-in w-full">
+       <div id="idiom-chars-row" className="relative p-1 bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner flex items-center justify-between w-full max-w-xs">
           {chars.map((char, index) => {
              const isActive = index === activeIndex;
              const isPassed = index < activeIndex;
@@ -26,6 +26,7 @@ const IdiomNavigator: React.FC<IdiomNavigatorProps> = ({ term, activeIndex, onSe
              return (
                <button
                  key={`${char}-${index}`}
+                 id={`idiom-char-btn-${index}`}
                  onClick={() => onSelectChar(char, index)}
                  className={`
                     relative z-10 w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center text-2xl font-hanzi transition-all duration-500

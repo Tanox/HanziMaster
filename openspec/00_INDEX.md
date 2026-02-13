@@ -29,7 +29,7 @@
 ## 🛠 项目概况
 
 *   **项目名称**: HanziMaster (汉字大师)
-*   **当前版本**: v0.4.8 (Cache Optimization)
+*   **当前版本**: v0.4.9 (Debug & QA Enhanced)
 *   **核心理念**: 离线优先 (Offline-First) + AI 增强 (AI-Enhanced)
 *   **技术栈**: React 19, TypeScript, Vite PWA, Tailwind CSS, Google Gemini API
 
@@ -44,6 +44,7 @@
 *   **v0.4.5**: **视觉精修与体验优化**。搜索框轻量化，拼音显像优化，网格坐标修复。
 *   **v0.4.7**: **数据扩容与状态指示**。顶部状态栏集成离线指示器，移除侵入式横幅；扩充节庆成语库。
 *   **v0.4.8**: **离线与缓存优化**。修复离线模式下无法读取缓存的问题，清理重复数据。
+*   **v0.4.9**: **调试与QA增强**。全站组件添加语义化 ID，便于自动化测试与调试。
 
 ---
 *文档维护: HanziMaster Engineering Team*
