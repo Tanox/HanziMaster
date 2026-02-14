@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.3.5
+ * HanziMaster v0.5.2
  */
 import { UILabels } from './types';
 
@@ -67,9 +67,23 @@ export const id: UILabels = {
   clearHistory: 'Bersihkan',
   noHistory: 'Belum ada riwayat',
   closeBtn: 'Tutup',
+  // Add missing stats properties
+  statsTitle: 'Pencapaian',
+  statsTotal: 'Total Latihan',
+  statsChars: 'Karakter Unik',
+  statsTerms: 'Peribahasa Unik',
   welcomeTitle: 'Selamat Datang di HanziMaster',
   welcomeSubtitle: 'Jelajahi keindahan karakter Mandarin. Alat pembelajaran utama yang menggabungkan kaligrafi tradisional dengan wawasan AI.',
   welcomeBtn: 'Mulai Belajar',
+  
+  // Onboarding Guide
+  guideSearchTitle: 'Pencarian Cerdas',
+  guideSearchDesc: 'Temukan karakter & peribahasa secara instan.',
+  guideWatchTitle: 'Urutan Guratan',
+  guideWatchDesc: 'Visualisasikan alur penulisan yang benar.',
+  guidePracticeTitle: 'Latihan Zen',
+  guidePracticeDesc: 'Menulis dengan umpan balik waktu nyata.',
+
   idiomOrigin: 'Kisah Asal-usul',
   idiomUsage: 'Contoh Penggunaan',
   idiomTitle: 'Analisis Peribahasa',
@@ -83,6 +97,34 @@ export const id: UILabels = {
   // App Sharing
   shareAppTitle: 'Bagikan Aplikasi',
   shareAppText: '🔥 Saya menemukan alat luar biasa untuk menguasai karakter Mandarin!\n\nHanziMaster menggabungkan kaligrafi Zen dengan wawasan AI. Bisa dipakai offline!\n\nCek di sini: {url}\n\n#HanziMaster #BelajarMandarin #Kaligrafi',
+
+  // Audit
+  settingDatabaseStatus: 'Status Database',
+  pinyinCoverage: 'Cakupan Pinyin',
+  pinyinCoverageDesc: 'Data lokal. {covered} dari {total} karakter tercakup.',
+  missingChars: 'Karakter Hilang',
+  copyMissing: 'Salin Daftar',
+
+  // Reload Prompt
+  updateAvailable: 'Pembaruan Tersedia',
+  updateMsg: 'Versi baru tersedia. Muat ulang untuk memperbarui.',
+  reloadBtn: 'Muat Ulang',
+  offlineReady: 'Siap Offline',
+  offlineMsg: 'Aplikasi siap digunakan secara offline.',
+  dismissBtn: 'Tutup',
+
+  // Seasonal
+  suggestionsLabel: 'Saran',
+  springFestival: 'Imlek',
+  lanternFestival: 'Cap Go Meh',
+  qingming: 'Cheng Beng',
+  laborDay: 'Hari Buruh',
+  dragonBoat: 'Festival Peh Cun',
+  qixi: 'Festival Qixi',
+  midAutumn: 'Festival Kue Bulan',
+  nationalDay: 'Hari Nasional',
+  singlesDay: 'Hari Jomblo',
+  christmas: 'Natal',
 
   // UX Fixes v0.4.2
   strokeProgress: 'Guratan {current} / {total}',

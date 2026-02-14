@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.3.5
+ * HanziMaster v0.5.2
  */
 import { UILabels } from './types';
 
@@ -67,9 +67,23 @@ export const de: UILabels = {
   clearHistory: 'Löschen',
   noHistory: 'Kein Verlauf.',
   closeBtn: 'Schließen',
+  // Add missing stats properties
+  statsTitle: 'Erfolge',
+  statsTotal: 'Insgesamt geübt',
+  statsChars: 'Einzigartige Zeichen',
+  statsTerms: 'Einzigartige Idiome',
   welcomeTitle: 'Willkommen bei HanziMaster',
   welcomeSubtitle: 'Entdecke die Schönheit chinesischer Schriftzeichen. Das ultimative Tool, das traditionelle Kalligrafie mit KI verbindet.',
   welcomeBtn: 'Loslegen',
+  
+  // Onboarding Guide
+  guideSearchTitle: 'Smarte Suche',
+  guideSearchDesc: 'Finde Zeichen & Idiome sofort.',
+  guideWatchTitle: 'Strichfolge',
+  guideWatchDesc: 'Visualisiere den korrekten Schreibfluss.',
+  guidePracticeTitle: 'Zen-Übung',
+  guidePracticeDesc: 'Schreiben mit Echtzeit-Feedback.',
+
   idiomOrigin: 'Entstehungsgeschichte',
   idiomUsage: 'Anwendungsbeispiel',
   idiomTitle: 'Idiom-Analyse',
@@ -83,6 +97,34 @@ export const de: UILabels = {
   // App Sharing
   shareAppTitle: 'App teilen',
   shareAppText: '🔥 Ich habe ein tolles Tool gefunden, um chinesische Schriftzeichen zu meistern!\n\nHanziMaster verbindet Zen-Kalligrafie mit KI-Analysen. Funktioniert auch offline!\n\nProbiere es aus: {url}\n\n#HanziMaster #ChinesischLernen #Kalligraphie',
+
+  // Audit
+  settingDatabaseStatus: 'Datenbank-Status',
+  pinyinCoverage: 'Pinyin-Abdeckung',
+  pinyinCoverageDesc: 'Lokale Pinyin-Zuordnung. {covered} von {total} Zeichen abgedeckt.',
+  missingChars: 'Fehlende Zeichen',
+  copyMissing: 'Liste kopieren',
+
+  // Reload Prompt
+  updateAvailable: 'Update verfügbar',
+  updateMsg: 'Neue Version verfügbar. Zum Aktualisieren neu laden.',
+  reloadBtn: 'Neu laden',
+  offlineReady: 'Offline bereit',
+  offlineMsg: 'App ist bereit für den Offline-Einsatz.',
+  dismissBtn: 'Ausblenden',
+
+  // Seasonal
+  suggestionsLabel: 'Vorschläge',
+  springFestival: 'Frühlingsfest',
+  lanternFestival: 'Laternenfest',
+  qingming: 'Qingming-Fest',
+  laborDay: 'Tag der Arbeit',
+  dragonBoat: 'Drachenbootfest',
+  qixi: 'Qixi-Fest',
+  midAutumn: 'Mondfest',
+  nationalDay: 'Nationalfeiertag',
+  singlesDay: 'Singles\' Day',
+  christmas: 'Weihnachten',
 
   // UX Fixes v0.4.2
   strokeProgress: 'Strich {current} / {total}',

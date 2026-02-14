@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.5.1
+ * HanziMaster v0.5.2
  */
 import React from 'react';
 import { Info } from 'lucide-react';

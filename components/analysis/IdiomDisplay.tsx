@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.3.5
+ * HanziMaster v0.5.2
  */
 import React from 'react';
 import { ScrollText, Quote } from 'lucide-react';

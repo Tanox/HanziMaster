@@ -1,6 +1,5 @@
-
 /**
- * HanziMaster v0.4.2
+ * HanziMaster v0.5.3
  */
 import { UILabels } from './types';
 
@@ -53,6 +52,7 @@ export const zhTW: UILabels = {
   sectionInterface: '介面選項',
   sectionContent: '內容顯示',
   sectionAppearance: '外觀',
+  sectionData: '存儲與同步',
   badgeCustom: '自定義',
   badgeDefault: '默認',
   badgeNone: '未配置',
@@ -67,9 +67,21 @@ export const zhTW: UILabels = {
   clearHistory: '清空',
   noHistory: '暫無記錄',
   closeBtn: '關閉',
+  statsTitle: '學習成就',
+  statsTotal: '累計練習',
+  statsChars: '獨立漢字',
+  statsTerms: '精選成語',
   welcomeTitle: '歡迎使用漢字大師',
   welcomeSubtitle: '探索漢字之美，掌握書寫之道。結合傳統書法與 AI 智能解析的終極學習工具。',
   welcomeBtn: '開始學習',
+  
+  guideSearchTitle: '精準查找',
+  guideSearchDesc: '支持漢字與成語檢索',
+  guideWatchTitle: '動態演示',
+  guideWatchDesc: '可視化筆順流體動畫',
+  guidePracticeTitle: '臨摹練習',
+  guidePracticeDesc: 'AI 輔助評分與糾錯',
+
   idiomOrigin: '成語典故',
   idiomUsage: '用法示例',
   idiomTitle: '成語解析',
@@ -80,18 +92,20 @@ export const zhTW: UILabels = {
   shareTextIdiom: '📜 發現了一個超棒的成語：「{idiom}」({pinyin})\n\n💡 意思：{meaning}\n\n🚀 快來「漢字大師」查看它的典故和用法：\n{url}\n\n#漢字大師 #成語學習 #ChineseIdioms',
   shareMessageCopied: '分享文案已複製！',
 
-  // App Sharing
   shareAppTitle: '推薦給好友',
   shareAppText: '🔥 發現一個練字神器！\n\n漢字大師 (HanziMaster) —— 結合傳統書法美學與 AI 智能解析，離線也能用。\n\n快來試試：{url}\n\n#漢字大師 #中文學習 #練字打卡',
 
-  // Audit
   settingDatabaseStatus: '資料庫狀態',
   pinyinCoverage: '拼音覆蓋率',
   pinyinCoverageDesc: '本地拼音映射覆蓋率。共 {total} 字，已覆蓋 {covered} 字。',
   missingChars: '缺失字符',
   copyMissing: '複製缺失列表',
+  
+  downloadLexicon: '下載離線全量包',
+  downloading: '同步中...',
+  downloadSuccess: '離線詞庫已就緒',
+  downloadError: '同步失敗',
 
-  // Reload Prompt
   updateAvailable: '有新版本',
   updateMsg: '新版本可用，請重新整理以更新。',
   reloadBtn: '重新整理',
@@ -99,7 +113,6 @@ export const zhTW: UILabels = {
   offlineMsg: '應用程式已可離線使用。',
   dismissBtn: '忽略',
 
-  // Seasonal
   suggestionsLabel: '推薦',
   springFestival: '春節',
   lanternFestival: '元宵節',
@@ -112,7 +125,6 @@ export const zhTW: UILabels = {
   singlesDay: '雙十一',
   christmas: '聖誕節',
 
-  // UX Fixes v0.4.2
   strokeProgress: '第 {current} / {total} 筆',
   writeNextStroke: '請書寫下一筆',
   refreshSuggestions: '刷新推薦',

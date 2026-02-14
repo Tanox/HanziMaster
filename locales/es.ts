@@ -1,6 +1,5 @@
-
 /**
- * HanziMaster v0.3.5
+ * HanziMaster v0.5.3
  */
 import { UILabels } from './types';
 
@@ -36,12 +35,13 @@ export const es: UILabels = {
   settingShowOutline: 'Mostrar contorno (Práctica)',
   settingAutoPlay: 'Reproducción automática',
   settingContinuousMode: 'Modo Continuo',
+  settingContinuousDesc: 'Pasa automáticamente al siguiente carácter después de completar uno.',
   settingOfflineMode: 'Modo Offline',
   settingShowRandomSuggestions: 'Mostrar sugerencias aleatorias',
   settingShowHistory: 'Mostrar historial',
   settingApiKey: 'Clave API Personalizada',
   settingApiKeyPlaceholder: 'Introduce tu clave API Gemini',
-  settingApiKeyHelp: 'Deja vacío para usar la clave predeterminada.',
+  settingApiKeyHelp: 'Deja vacío para usar la clave predeterminada. Usa tu propia clave para evitar límites de cuota.',
   settingApiKeyValidationMsg: 'El formato de la clave parece incorrecto (comienza con AIza)',
   settingTheme: 'Apariencia',
   settingLanguage: 'Idioma',
@@ -53,6 +53,7 @@ export const es: UILabels = {
   sectionInterface: 'Interfaz',
   sectionContent: 'Contenido',
   sectionAppearance: 'Apariencia',
+  sectionData: 'Datos y Sincronización',
   badgeCustom: 'Personal',
   badgeDefault: 'Defecto',
   badgeNone: 'Ninguno',
@@ -67,9 +68,21 @@ export const es: UILabels = {
   clearHistory: 'Borrar',
   noHistory: 'Sin historial.',
   closeBtn: 'Cerrar',
+  statsTitle: 'Logros',
+  statsTotal: 'Total practicado',
+  statsChars: 'Caracteres únicos',
+  statsTerms: 'Modismos únicos',
   welcomeTitle: 'Bienvenido a HanziMaster',
   welcomeSubtitle: 'Descubre la belleza de los caracteres chinos. La herramienta definitiva que combina caligrafía tradicional con IA.',
   welcomeBtn: 'Empezar',
+  
+  guideSearchTitle: 'Búsqueda Inteligente',
+  guideSearchDesc: 'Encuentra caracteres y modismos al instante.',
+  guideWatchTitle: 'Orden de Trazos',
+  guideWatchDesc: 'Visualiza el flujo de escritura correcto.',
+  guidePracticeTitle: 'Práctica Zen',
+  guidePracticeDesc: 'Escribe con retroalimentación en tiempo real.',
+
   idiomOrigin: 'Historia de origen',
   idiomUsage: 'Ejemplo de uso',
   idiomTitle: 'Análisis de modismo',
@@ -80,11 +93,39 @@ export const es: UILabels = {
   shareTextIdiom: "📜 Encontré un modismo fascinante: '{idiom}' ({pinyin})\n\n💡 Significado: {meaning}\n\n🚀 Aprende la historia detrás de él en HanziMaster:\n{url}\n\n#HanziMaster #ModismosChinos #AprenderChino",
   shareMessageCopied: '¡Texto para compartir copiado!',
 
-  // App Sharing
   shareAppTitle: 'Compartir App',
-  shareAppText: '🔥 ¡Encontré una herramienta increíble para dominar los caracteres chinos!\n\nHanziMaster combina caligrafía Zen con inteligencia artificial. Funciona sin conexión.\n\nPruébalo aquí: {url}\n\n#HanziMaster #AprenderChino #Caligrafia',
+  shareAppText: '🔥 ¡Encontré una herramienta increíble para dominar los caracteres chinos! HanziMaster combina caligrafía Zen con IA. ¡Pruébalo aquí!: {url}',
 
-  // UX Fixes v0.4.2
+  settingDatabaseStatus: 'Estado de BD',
+  pinyinCoverage: 'Cobertura Pinyin',
+  pinyinCoverageDesc: 'Mapeo local para sugerencias. {covered} de {total} caracteres cubiertos.',
+  missingChars: 'Caracteres Faltantes',
+  copyMissing: 'Copiar Faltantes',
+  
+  downloadLexicon: 'Descargar Léxico Offline',
+  downloading: 'Sincronizando...',
+  downloadSuccess: 'Léxico Listo',
+  downloadError: 'Error de sincronización',
+
+  updateAvailable: 'Actualización',
+  updateMsg: 'Nueva versión disponible. Recarga para actualizar.',
+  reloadBtn: 'Recargar',
+  offlineReady: 'Listo Offline',
+  offlineMsg: 'App lista para uso sin conexión.',
+  dismissBtn: 'Omitir',
+
+  suggestionsLabel: 'Sugerencias',
+  springFestival: 'Año Nuevo Chino',
+  lanternFestival: 'Festival de los Faroles',
+  qingming: 'Festival Qingming',
+  laborDay: 'Día del Trabajo',
+  dragonBoat: 'Festival del Bote del Dragón',
+  qixi: 'Festival Qixi',
+  midAutumn: 'Festival del Medio Otoño',
+  nationalDay: 'Día Nacional',
+  singlesDay: 'Día del Soltero',
+  christmas: 'Navidad',
+
   strokeProgress: 'Trazo {current} / {total}',
   writeNextStroke: 'Por favor escribe el siguiente trazo.',
   refreshSuggestions: 'Actualizar sugerencias',

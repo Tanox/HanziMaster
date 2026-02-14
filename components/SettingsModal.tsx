@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.9
+ * HanziMaster v0.5.2
  */
 import React from 'react';
 import { X } from 'lucide-react';
@@ -9,8 +9,9 @@ import { UILabels } from '../locales/types';
 
 // Import refactored sub-components
 import SettingsAppearance from './settings/SettingsAppearance';
-import SettingsGrid from './settings/SettingsGrid';
+import SettingsVisuals from './settings/SettingsVisuals';
 import SettingsLearning from './settings/SettingsLearning';
+import SettingsContent from './settings/SettingsContent';
 import SettingsDataAudit from './settings/SettingsDataAudit';
 import SettingsApiKey from './settings/SettingsApiKey';
 import SettingsHazardZone from './settings/SettingsHazardZone';
@@ -61,10 +62,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-fade-in"
       onClick={handleBackdropClick}
     >
-      <div id="settings-modal-content" className="bg-white dark:bg-slate-800 w-full max-w-sm max-h-[90vh] overflow-y-auto rounded-2xl border border-slate-200 dark:border-slate-700 transform transition-all scale-100 scrollbar-hide flex flex-col shadow-2xl">
+      <div id="settings-modal-content" className="bg-white dark:bg-slate-800 w-full max-w-sm max-h-[90vh] overflow-y-auto rounded-3xl border border-slate-200 dark:border-slate-700 transform transition-all scale-100 flex flex-col shadow-2xl">
         {/* Header */}
-        <div id="settings-header" className="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-700 sticky top-0 bg-white dark:bg-slate-800 z-10 shrink-0">
-          <h3 className="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
+        <div id="settings-header" className="flex items-center justify-between p-5 border-b border-slate-100 dark:border-slate-700 sticky top-0 bg-white dark:bg-slate-800 z-10 shrink-0">
+          <h3 className="text-xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
             {labels.settingsTitle}
           </h3>
           <button 
@@ -72,12 +73,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
             onClick={onClose}
             className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
           >
-            <X size={20} />
+            <X size={24} />
           </button>
         </div>
 
         {/* Content */}
-        <div id="settings-body" className="p-6 space-y-2 overflow-y-auto">
+        <div id="settings-body" className="p-6 space-y-8 overflow-y-auto custom-scrollbar">
           
           <SettingsAppearance 
             labels={labels}
@@ -87,12 +88,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
             onLanguageChange={onLanguageChange}
           />
 
-          <SettingsGrid 
+          <SettingsVisuals 
             labels={labels}
-            gridStyle={settings.gridStyle}
+            settings={settings}
             onUpdate={update}
           />
-          
+
           <SettingsLearning 
             labels={labels}
             settings={settings}
@@ -101,7 +102,14 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
             onSpeedChange={onSpeedChange}
           />
 
-          <SettingsDataAudit labels={labels} />
+          <SettingsContent 
+            labels={labels}
+            settings={settings}
+            onUpdate={update}
+          />
+
+          {/* Fix: Pass settings and onUpdate props to SettingsDataAudit */}
+          <SettingsDataAudit labels={labels} settings={settings} onUpdate={update} />
 
           <SettingsApiKey 
             labels={labels}
@@ -113,11 +121,11 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 
         </div>
         
-        <div id="settings-footer" className="p-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-700 sticky bottom-0 z-10 shrink-0 rounded-b-2xl">
+        <div id="settings-footer" className="p-5 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-100 dark:border-slate-700 sticky bottom-0 z-10 shrink-0 rounded-b-3xl">
            <button 
              id="settings-footer-close-btn"
              onClick={onClose}
-             className="w-full py-3 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+             className="w-full py-4 rounded-2xl bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-bold hover:opacity-90 active:scale-95 transition-all shadow-lg"
            >
              {labels.closeBtn}
            </button>

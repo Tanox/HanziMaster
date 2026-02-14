@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.3.5
+ * HanziMaster v0.5.2
  */
 import { UILabels } from './types';
 
@@ -67,9 +67,23 @@ export const pt: UILabels = {
   clearHistory: 'Limpar',
   noHistory: 'Sem histórico.',
   closeBtn: 'Fechar',
+  // Add missing stats properties
+  statsTitle: 'Conquistas',
+  statsTotal: 'Total praticado',
+  statsChars: 'Caracteres únicos',
+  statsTerms: 'Expressões únicas',
   welcomeTitle: 'Bem-vindo ao HanziMaster',
   welcomeSubtitle: 'Descubra a beleza dos caracteres chineses. A ferramenta definitiva combinando caligrafia e IA.',
   welcomeBtn: 'Começar',
+  
+  // Onboarding Guide
+  guideSearchTitle: 'Busca Inteligente',
+  guideSearchDesc: 'Encontre caracteres e expressões instantaneamente.',
+  guideWatchTitle: 'Ordem dos Traços',
+  guideWatchDesc: 'Visualize o fluxo correto de escrita.',
+  guidePracticeTitle: 'Prática Zen',
+  guidePracticeDesc: 'Escreva con feedback em tempo real.',
+
   idiomOrigin: 'História de origem',
   idiomUsage: 'Exemplo de uso',
   idiomTitle: 'Análise de expressão',
@@ -83,6 +97,34 @@ export const pt: UILabels = {
   // App Sharing
   shareAppTitle: 'Compartilhar App',
   shareAppText: '🔥 Encontrei uma ferramenta incrível para dominar os caracteres chineses!\n\nHanziMaster combina caligrafia Zen com IA. Funciona offline também!\n\nConfira: {url}\n\n#HanziMaster #AprenderChines #Caligrafia',
+
+  // Audit
+  settingDatabaseStatus: 'Status do BD',
+  pinyinCoverage: 'Cobertura Pinyin',
+  pinyinCoverageDesc: 'Mapeamento local. {covered} de {total} caracteres cobertos.',
+  missingChars: 'Caracteres Faltantes',
+  copyMissing: 'Copiar Lista',
+
+  // Reload Prompt
+  updateAvailable: 'Atualização',
+  updateMsg: 'Nova versão disponível. Recarregue para atualizar.',
+  reloadBtn: 'Recarregar',
+  offlineReady: 'Pronto Offline',
+  offlineMsg: 'App pronto para uso offline.',
+  dismissBtn: 'Dispensar',
+
+  // Seasonal
+  suggestionsLabel: 'Sugestões',
+  springFestival: 'Ano Novo Chinês',
+  lanternFestival: 'Festival das Lanternas',
+  qingming: 'Festival Qingming',
+  laborDay: 'Dia do Trabalho',
+  dragonBoat: 'Festival do Barco Dragão',
+  qixi: 'Festival Qixi',
+  midAutumn: 'Festival do Meio Outono',
+  nationalDay: 'Dia Nacional',
+  singlesDay: 'Dia dos Solteiros',
+  christmas: 'Natal',
 
   // UX Fixes v0.4.2
   strokeProgress: 'Traço {current} / {total}',

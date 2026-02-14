@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.5.2
  */
 import React from 'react';
 import { Play, Pause, RotateCcw, PenTool, Eye } from 'lucide-react';

@@ -1,6 +1,5 @@
-
 /**
- * HanziMaster v0.3.5
+ * HanziMaster v0.5.3
  */
 import { UILabels } from './types';
 
@@ -36,12 +35,13 @@ export const ko: UILabels = {
   settingShowOutline: '윤곽선 표시 (연습)',
   settingAutoPlay: '자동 재생',
   settingContinuousMode: '연속 모드',
+  settingContinuousDesc: '한 글자를 완료하면 자동으로 다음 랜덤 한자로 전환됩니다.',
   settingOfflineMode: '오프라인 모드',
   settingShowRandomSuggestions: '랜덤 추천 표시',
   settingShowHistory: '기록 표시',
   settingApiKey: '사용자 지정 API 키',
   settingApiKeyPlaceholder: 'Gemini API 키 입력',
-  settingApiKeyHelp: '기본 키를 사용하려면 비워 두세요.',
+  settingApiKeyHelp: '기본 키를 사용하려면 비워 두세요. 전용 키를 사용하면 할당량 제한을 피할 수 있습니다.',
   settingApiKeyValidationMsg: '키 형식이 올바르지 않은 것 같습니다 (보통 AIza로 시작)',
   settingTheme: '테마',
   settingLanguage: '언어',
@@ -53,6 +53,7 @@ export const ko: UILabels = {
   sectionInterface: '인터페이스',
   sectionContent: '콘텐츠',
   sectionAppearance: '외관',
+  sectionData: '데이터 및 동기화',
   badgeCustom: '사용자',
   badgeDefault: '기본값',
   badgeNone: '없음',
@@ -63,13 +64,25 @@ export const ko: UILabels = {
   settingShowEtymology: '어원 표시',
   settingShowMnemonic: '암기 팁 표시',
   settingShowExamples: '단어 표시',
-  historyTitle: '기록',
+  historyTitle: '학습 기록',
   clearHistory: '지우기',
   noHistory: '기록이 없습니다.',
   closeBtn: '닫기',
+  statsTitle: '학습 성과',
+  statsTotal: '총 연습량',
+  statsChars: '고유 한자',
+  statsTerms: '고유 성어',
   welcomeTitle: 'HanziMaster에 오신 것을 환영합니다',
   welcomeSubtitle: '한자의 아름다움을 발견하세요. 전통 서예와 AI 인사이트를 결합한 최고의 학습 도구입니다.',
   welcomeBtn: '시작하기',
+  
+  guideSearchTitle: '스마트 검색',
+  guideSearchDesc: '한자와 고사성어를 즉시 검색하세요.',
+  guideWatchTitle: '획순 보기',
+  guideWatchDesc: '올바른 필순을 시각적으로 확인하세요.',
+  guidePracticeTitle: '따라 쓰기',
+  guidePracticeDesc: '실시간 피드백과 함께 연습하세요.',
+
   idiomOrigin: '어원 이야기',
   idiomUsage: '사용 예시',
   idiomTitle: '고사성어 분석',
@@ -80,11 +93,39 @@ export const ko: UILabels = {
   shareTextIdiom: "📜 흥미로운 고사성어를 발견했습니다: '{idiom}' ({pinyin})\n\n💡 의미: {meaning}\n\n🚀 HanziMaster에서 유래와 용법 알아보기:\n{url}\n\n#HanziMaster #고사성어 #중국어학습",
   shareMessageCopied: '공유할 텍스트가 복사되었습니다!',
 
-  // App Sharing
   shareAppTitle: '앱 공유하기',
-  shareAppText: '🔥 한자 학습을 위한 놀라운 도구를 발견했습니다!\n\nHanziMaster는 젠(Zen) 서예와 AI 인사이트를 결합했습니다. 오프라인에서도 작동합니다!\n\n확인해 보세요: {url}\n\n#HanziMaster #중국어학습 #서예',
+  shareAppText: '🔥 한자 학습을 위한 놀라운 도구를 발견했습니다! HanziMaster는 젠(Zen) 서예와 AI 인사이트를 결합했습니다. 오프라인에서도 작동합니다! 확인해 보세요: {url}',
 
-  // UX Fixes v0.4.2
+  settingDatabaseStatus: 'DB 상태',
+  pinyinCoverage: '병음 커버리지',
+  pinyinCoverageDesc: '로컬 병음 데이터. {total}자 중 {covered}자 커버됨.',
+  missingChars: '누락된 문자',
+  copyMissing: '목록 복사',
+  
+  downloadLexicon: '오프라인 단어장 다운로드',
+  downloading: '동기화 중...',
+  downloadSuccess: '오프라인 단어장 준비됨',
+  downloadError: '동기화 실패',
+
+  updateAvailable: '업데이트 가능',
+  updateMsg: '새 버전이 있습니다. 새로고침하여 업데이트하세요.',
+  reloadBtn: '새로고침',
+  offlineReady: '오프라인 준비됨',
+  offlineMsg: '앱을 오프라인에서 사용할 수 있습니다.',
+  dismissBtn: '닫기',
+
+  suggestionsLabel: '추천',
+  springFestival: '춘절',
+  lanternFestival: '원소절',
+  qingming: '청명절',
+  laborDay: '노동절',
+  dragonBoat: '단오절',
+  qixi: '칠석',
+  midAutumn: '중추절',
+  nationalDay: '국경절',
+  singlesDay: '광군제',
+  christmas: '크리스마스',
+
   strokeProgress: '획 {current} / {total}',
   writeNextStroke: '다음 획을 쓰세요.',
   refreshSuggestions: '추천 새로고침',

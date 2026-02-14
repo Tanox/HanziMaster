@@ -1,5 +1,6 @@
+
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.5.3
  */
 import { HanziData } from '../types';
 
@@ -8,9 +9,6 @@ const LOCAL_BASE_URL = '/hanzi-data';
 
 export const fetchHanziData = async (char: string): Promise<HanziData | null> => {
   try {
-    // 1. Try Local Data (Built-in)
-    // We attempt to fetch from the local public folder first.
-    // This allows the app to work offline for the "Common Characters" that we copied during build.
     try {
       const localResponse = await fetch(`${LOCAL_BASE_URL}/${char}.json`);
       if (localResponse.ok) {
@@ -18,11 +16,9 @@ export const fetchHanziData = async (char: string): Promise<HanziData | null> =>
         return data as HanziData;
       }
     } catch (localError) {
-      // Ignore local fetch error, proceed to CDN
-      // console.debug('Local data not found, falling back to CDN');
+      // Ignore local fetch error
     }
 
-    // 2. Fallback to CDN
     const response = await fetch(`${CDN_BASE_URL}/${char}.json`);
     if (!response.ok) {
       if (response.status === 404) {

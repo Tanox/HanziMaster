@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.9
+ * HanziMaster v0.5.2
  */
 import React, { useState } from 'react';
 import { Loader2, Share2, Download } from 'lucide-react';

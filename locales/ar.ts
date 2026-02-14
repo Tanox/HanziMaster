@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.3.5
+ * HanziMaster v0.5.2
  */
 import { UILabels } from './types';
 
@@ -67,9 +67,23 @@ export const ar: UILabels = {
   clearHistory: 'مسح',
   noHistory: 'لا يوجد سجل بعد',
   closeBtn: 'إغلاق',
+  // Add missing stats properties
+  statsTitle: 'الإنجازات',
+  statsTotal: 'إجمالي الممارسة',
+  statsChars: 'أحرف فريدة',
+  statsTerms: 'تعبيرات فريدة',
   welcomeTitle: 'مرحباً بك في HanziMaster',
   welcomeSubtitle: 'اكتشف جمال الأحرف الصينية. الأداة المثالية التي تجمع بين الخط التقليدي والذكاء الاصطناعي.',
   welcomeBtn: 'ابدأ الآن',
+  
+  // Onboarding Guide
+  guideSearchTitle: 'بحث ذكي',
+  guideSearchDesc: 'اعثر على الأحرف والتعابير فوراً.',
+  guideWatchTitle: 'ترتيب الضربات',
+  guideWatchDesc: 'شاهد تدفق الكتابة الصحيح.',
+  guidePracticeTitle: 'ممارسة الزن',
+  guidePracticeDesc: 'اكتب مع ملاحظات فورية.',
+
   idiomOrigin: 'قصة الأصل',
   idiomUsage: 'مثال على الاستخدام',
   idiomTitle: 'تحليل التعبير',
@@ -83,6 +97,34 @@ export const ar: UILabels = {
   // App Sharing
   shareAppTitle: 'مشاركة التطبيق',
   shareAppText: '🔥 وجدت أداة مذهلة لإتقان الأحرف الصينية!\n\nيجمع HanziMaster بين الخط التقليدي والذكاء الاصطناعي. يعمل بدون إنترنت!\n\nجربه الآن: {url}\n\n#HanziMaster #LearnChinese #Calligraphy',
+
+  // Audit
+  settingDatabaseStatus: 'حالة قاعدة البيانات',
+  pinyinCoverage: 'تغطية البينيين',
+  pinyinCoverageDesc: 'البيانات المحلية. تمت تغطية {covered} من {total} حرفاً.',
+  missingChars: 'أحرف مفقودة',
+  copyMissing: 'نسخ القائمة',
+
+  // Reload Prompt
+  updateAvailable: 'تحديث متاح',
+  updateMsg: 'نسخة جديدة متاحة. أعد التحميل للتحديث.',
+  reloadBtn: 'إعادة تحميل',
+  offlineReady: 'جاهز دون اتصال',
+  offlineMsg: 'التطبيق جاهز للاستخدام دون إنترنت.',
+  dismissBtn: 'تجاهل',
+
+  // Seasonal
+  suggestionsLabel: 'اقتراحات',
+  springFestival: 'عيد الربيع',
+  lanternFestival: 'مهرجان الفوانيس',
+  qingming: 'مهرجان تشينغ مينغ',
+  laborDay: 'عيد العمال',
+  dragonBoat: 'مهرجان قوارب التنين',
+  qixi: 'عيد الحب الصيني',
+  midAutumn: 'عيد منتصف الخريف',
+  nationalDay: 'اليوم الوطني',
+  singlesDay: 'يوم العزاب',
+  christmas: 'عيد الميلاد',
 
   // UX Fixes v0.4.2
   strokeProgress: 'الضربة {current} / {total}',

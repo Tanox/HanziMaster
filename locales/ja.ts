@@ -1,6 +1,5 @@
-
 /**
- * HanziMaster v0.3.5
+ * HanziMaster v0.5.3
  */
 import { UILabels } from './types';
 
@@ -36,12 +35,13 @@ export const ja: UILabels = {
   settingShowOutline: 'アウトラインを表示 (練習)',
   settingAutoPlay: '自動再生',
   settingContinuousMode: '連続モード',
+  settingContinuousDesc: '漢字を書き終えた後、自動的に次の漢字へ切り替わります。',
   settingOfflineMode: 'オフラインモード',
   settingShowRandomSuggestions: 'ランダム提案を表示',
   settingShowHistory: '履歴を表示',
   settingApiKey: 'カスタムAPIキー',
   settingApiKeyPlaceholder: 'Gemini APIキーを入力',
-  settingApiKeyHelp: 'デフォルトキーを使用する場合は空のままにしてください。',
+  settingApiKeyHelp: 'デフォルトキーを使用する場合は空のままにしてください。独自のキーを使用すると制限を回避できます。',
   settingApiKeyValidationMsg: 'キーの形式が正しくないようです（通常AIzaで始まります）',
   settingTheme: '外観テーマ',
   settingLanguage: '表示言語',
@@ -53,6 +53,7 @@ export const ja: UILabels = {
   sectionInterface: 'インターフェース',
   sectionContent: 'コンテンツ',
   sectionAppearance: '外観',
+  sectionData: 'データと同期',
   badgeCustom: 'カスタム',
   badgeDefault: 'デフォルト',
   badgeNone: 'なし',
@@ -63,13 +64,25 @@ export const ja: UILabels = {
   settingShowEtymology: '語源を表示',
   settingShowMnemonic: '覚え方を表示',
   settingShowExamples: '熟語を表示',
-  historyTitle: '履歴',
+  historyTitle: '練習の足跡',
   clearHistory: '消去',
   noHistory: '履歴はありません。',
   closeBtn: '閉じる',
+  statsTitle: '学習実績',
+  statsTotal: '練習合計',
+  statsChars: 'ユニーク漢字',
+  statsTerms: 'ユニーク成語',
   welcomeTitle: 'HanziMasterへようこそ',
   welcomeSubtitle: '漢字の美しさを発見しよう。伝統的な書道とAI分析を組み合わせた究極の学習ツール。',
   welcomeBtn: '始める',
+  
+  guideSearchTitle: 'スマート検索',
+  guideSearchDesc: '漢字や成語を瞬時に検索。',
+  guideWatchTitle: '書き順アニメ',
+  guideWatchDesc: '正しい筆順を視覚的に確認。',
+  guidePracticeTitle: '禅の練習',
+  guidePracticeDesc: 'リアルタイム判定で手書き練習。',
+
   idiomOrigin: '語源・由来',
   idiomUsage: '用例',
   idiomTitle: '成語解析',
@@ -80,14 +93,42 @@ export const ja: UILabels = {
   shareTextIdiom: "📜 面白い成語を見つけました：「{idiom}」({pinyin})\n\n💡 意味：{meaning}\n\n🚀 HanziMasterで由来や使い方を学びましょう：\n{url}\n\n#HanziMaster #成語 #中国語学習",
   shareMessageCopied: '共有テキストをコピーしました！',
 
-  // App Sharing
   shareAppTitle: 'アプリを共有',
-  shareAppText: '🔥 漢字学習のための素晴らしいツールを見つけました！\n\nHanziMasterは、伝統的な書道とAI分析を組み合わせています。オフラインでも使えます。\n\nチェックしてみてください：{url}\n\n#HanziMaster #中国語学習 #書道',
+  shareAppText: '🔥 漢字学習のための素晴らしいツールを見つけました！HanziMasterは伝統的な書道とAI分析を組み合わせ、オフラインでも使えます。チェックしてみてください：{url}',
 
-  // UX Fixes v0.4.2
+  settingDatabaseStatus: 'DBステータス',
+  pinyinCoverage: 'ピンイン網羅率',
+  pinyinCoverageDesc: 'ローカルデータの網羅率です。{total}文字中{covered}文字をカバー。',
+  missingChars: '未収録文字',
+  copyMissing: 'リストをコピー',
+  
+  downloadLexicon: 'オフライン辞書をダウンロード',
+  downloading: '同期中...',
+  downloadSuccess: '辞書の準備完了',
+  downloadError: '同期失敗',
+
+  updateAvailable: '更新あり',
+  updateMsg: '新しいバージョンが利用可能です。更新してください。',
+  reloadBtn: '再読み込み',
+  offlineReady: 'オフライン準備完了',
+  offlineMsg: 'アプリはオフラインで使用可能です。',
+  dismissBtn: '閉じる',
+
+  suggestionsLabel: 'おすすめ',
+  springFestival: '春節',
+  lanternFestival: '元宵節',
+  qingming: '清明節',
+  laborDay: '労働節',
+  dragonBoat: '端午節',
+  qixi: '七夕',
+  midAutumn: '中秋節',
+  nationalDay: '国慶節',
+  singlesDay: '独身の日',
+  christmas: 'クリスマス',
+
   strokeProgress: '{current} / {total} 画目',
   writeNextStroke: '次の画を書いてください。',
-  refreshSuggestions: '提案を更新',
+  refreshSuggestions: '換一批',
   offlineModeEnabled: 'オフラインモード有効',
   offlineModeActive: 'オフラインモード：ローカルデータとシステム音声を使用します。',
   copySuccess: 'クリップボードにコピーしました！',

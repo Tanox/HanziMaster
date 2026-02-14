@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.9
+ * HanziMaster v0.5.2
  * Image Generation Service for Sharable Content
  */
 import { HanziData, CharacterAnalysis, AppSettings } from '../types';

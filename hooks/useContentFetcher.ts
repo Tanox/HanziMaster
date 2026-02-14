@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.5.1
+ * HanziMaster v0.5.3
  */
 import { useState } from 'react';
 import { HanziData, CharacterAnalysis, IdiomAnalysis, AppSettings } from '../types';
@@ -36,11 +36,8 @@ export const useContentFetcher = (settings: AppSettings) => {
   ) => {
     setter(prev => {
       const keys = Object.keys(prev);
-      // Prevent duplicates/updates from reordering if we wanted LRU, but simple object is unordered.
-      // We just check size.
       const newCache = { ...prev, [key]: data };
       if (keys.length > CACHE_LIMIT) {
-        // Simple pruning: remove the first key found
         const [firstKey] = keys;
         delete newCache[firstKey];
       }
@@ -54,11 +51,7 @@ export const useContentFetcher = (settings: AppSettings) => {
 
   // --- Core Fetch Actions ---
 
-  /**
-   * Fetches data for a single character: Stroke Data + AI Analysis
-   */
   const fetchCharacter = async (char: string, langCode: string) => {
-    // 1. Stroke Data
     const fetchedData = await fetchHanziData(char);
     if (fetchedData) {
       setHanziData(fetchedData);
@@ -68,35 +61,30 @@ export const useContentFetcher = (settings: AppSettings) => {
 
     const langName = getLangName(langCode);
 
-    // 2. AI Analysis
-    // Always prefer cache first
     if (analysisCache[char]) {
          setAnalysis(analysisCache[char]);
     } else {
         try {
             const aiResult = await analyzeCharacter(char, langName, settings.offlineMode, settings.apiKey);
             
-            // Pinyin Cache Update
-            if (aiResult && aiResult.pinyin && aiResult.pinyin !== '-') {
-                setPinyinCache(prevCache => {
-                    if (!PINYIN_MAP[char] && prevCache[char] !== aiResult.pinyin) {
-                        return { ...prevCache, [char]: aiResult.pinyin };
-                    }
-                    return prevCache;
-                });
-            }
-            
             if (aiResult) {
+                // Pinyin Cache Update
+                if (aiResult.pinyin && aiResult.pinyin !== '-') {
+                    setPinyinCache(prevCache => {
+                        if (!PINYIN_MAP[char] && prevCache[char] !== aiResult.pinyin) {
+                            return { ...prevCache, [char]: aiResult.pinyin };
+                        }
+                        return prevCache;
+                    });
+                }
+                
                  let finalResult = aiResult;
                  
-                 // Enhance result with local data if AI missed it or if we are in offline fallback mode
-                 if (aiResult.meaning.startsWith("Mode:")) {
-                      // 1. Inject Stroke Count from HanziData
+                 if (aiResult.meaning?.startsWith("Mode:")) {
                       if (fetchedData) {
                           finalResult = { ...finalResult, strokeCount: fetchedData.strokes.length };
                       }
                       
-                      // 2. Inject Pinyin from Local DB or Cache
                       if (finalResult.pinyin === '-' || finalResult.pinyin === '?') {
                           const localPinyin = PINYIN_MAP[char] || pinyinCache[char];
                           if (localPinyin) {
@@ -107,10 +95,11 @@ export const useContentFetcher = (settings: AppSettings) => {
 
                  setAnalysis(finalResult);
 
-                 // Only cache valid results
-                 if (!finalResult.meaning.startsWith("Mode:") && !finalResult.meaning.includes("Network Unavailable")) {
+                 if (!finalResult.meaning?.startsWith("Mode:") && !finalResult.meaning?.includes("Network Unavailable")) {
                      updateCache(char, finalResult, setAnalysisCache);
                  }
+            } else if (analysisCache[char]) {
+                setAnalysis(analysisCache[char]);
             }
         } catch (err) {
             console.error("Char Analysis failed", err);
@@ -119,12 +108,9 @@ export const useContentFetcher = (settings: AppSettings) => {
             }
         }
     }
-    return fetchedData; // Return for auto-play logic
+    return fetchedData;
   };
 
-  /**
-   * Fetches data for an idiom/phrase
-   */
   const fetchIdiom = async (term: string, langCode: string) => {
     if (idiomCache[term]) {
         setIdiomAnalysis(idiomCache[term]);
@@ -132,9 +118,11 @@ export const useContentFetcher = (settings: AppSettings) => {
         const langName = getLangName(langCode);
         try {
             const res = await analyzeIdiom(term, langName, settings.offlineMode, settings.apiKey);
-            setIdiomAnalysis(res);
-            if (res && !res.meaning.startsWith("Mode:")) {
-                 updateCache(term, res, setIdiomCache);
+            if (res) {
+                setIdiomAnalysis(res);
+                if (!res.meaning?.startsWith("Mode:")) {
+                     updateCache(term, res, setIdiomCache);
+                }
             }
         } catch (e: any) {
             console.error("Idiom search error", e);

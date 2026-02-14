@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.3
+ * HanziMaster v0.5.3
  */
 
 export interface UILabels {
@@ -74,12 +74,18 @@ export interface UILabels {
   
   closeBtn: string;
   
-  // Welcome Screen (Optional to prevent crash on non-updated locales)
+  // Stats
+  statsTitle: string;
+  statsTotal: string;
+  statsChars: string;
+  statsTerms: string;
+
+  // Welcome Screen
   welcomeTitle?: string;
   welcomeSubtitle?: string;
   welcomeBtn?: string;
   
-  // Onboarding Guide (Optional for compatibility with partial translations)
+  // Onboarding Guide
   guideSearchTitle?: string;
   guideSearchDesc?: string;
   guideWatchTitle?: string;
@@ -104,14 +110,20 @@ export interface UILabels {
   shareAppTitle?: string;
   shareAppText?: string;
 
-  // Database Audit (Optional for compat)
+  // Database Audit
   settingDatabaseStatus?: string;
   pinyinCoverage?: string;
   pinyinCoverageDesc?: string;
   missingChars?: string;
   copyMissing?: string;
+  
+  // Lexicon Download (v0.5.5)
+  downloadLexicon?: string;
+  downloading?: string;
+  downloadSuccess?: string;
+  downloadError?: string;
 
-  // Reload Prompt (Optional for compat)
+  // Reload Prompt
   updateAvailable?: string;
   updateMsg?: string;
   reloadBtn?: string;
@@ -119,7 +131,7 @@ export interface UILabels {
   offlineMsg?: string;
   dismissBtn?: string;
 
-  // Seasonal & Suggestions (Optional for compat)
+  // Seasonal & Suggestions
   suggestionsLabel?: string;
   springFestival?: string;
   lanternFestival?: string;
@@ -144,7 +156,7 @@ export interface UILabels {
   toastError: string;
   toastInfo: string;
 
-  [key: string]: string | undefined; // Allow indexing for seasonal keys
+  [key: string]: string | undefined; 
 }
 
 export interface LanguageOption {

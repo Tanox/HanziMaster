@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.9
+ * HanziMaster v0.5.3
  */
 import { useState, useEffect } from 'react';
 import { HistoryItem, AppSettings, InteractionMode, AnimationState } from '../types';
@@ -28,6 +28,7 @@ export const useAppController = () => {
   // --- Persistent Global State ---
   const [settings, setSettings] = useLocalStorage<AppSettings>('appSettings', DEFAULT_SETTINGS);
   const [history, setHistory] = useLocalStorage<HistoryItem[]>('practiceHistory', []);
+  const [learnedItems, setLearnedItems] = useLocalStorage<string[]>('learnedItems', []);
   const [theme, setTheme] = useLocalStorage<'light' | 'dark'>('theme', 'light');
   const [hasSeenWelcome, setHasSeenWelcome] = useLocalStorage<boolean>('hasSeenWelcome', false);
   
@@ -94,10 +95,17 @@ export const useAppController = () => {
     setHasSeenWelcome(true);
   };
 
-  const addToHistory = (term: string) => {
+  const addToHistoryAndStats = (term: string) => {
+    // 1. Update Recent History
     setHistory(prev => {
       const filtered = prev.filter(item => item.char !== term);
       return [{ char: term, timestamp: Date.now() }, ...filtered].slice(0, 20); 
+    });
+
+    // 2. Update Lifetime Stats
+    setLearnedItems(prev => {
+        if (prev.includes(term)) return prev;
+        return [...prev, term];
     });
   };
 
@@ -184,13 +192,13 @@ export const useAppController = () => {
             return;
         } else {
              interaction.state.maintainModeRef.current = null;
-             addToHistory(activeTerm);
+             addToHistoryAndStats(activeTerm);
              if (settings.continuousMode) {
                  setTimeout(handleRandom, 1500);
              }
         }
     } else {
-        addToHistory(activeChar);
+        addToHistoryAndStats(activeChar);
          if (settings.continuousMode) {
              setTimeout(handleRandom, 1500);
          }
@@ -202,6 +210,7 @@ export const useAppController = () => {
       // App Global
       settings,
       history,
+      learnedItems,
       theme,
       isOffline,
       isSettingsOpen,

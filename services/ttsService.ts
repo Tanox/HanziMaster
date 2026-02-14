@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.5.3
  */
 import { GoogleGenAI, Modality } from "@google/genai";
 
@@ -14,14 +14,12 @@ function getAudioContext(): AudioContext {
     const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
     sharedAudioContext = new AudioContextClass();
   }
-  // Ensure context is running (browsers may suspend it if no user gesture)
   if (sharedAudioContext.state === 'suspended') {
     sharedAudioContext.resume();
   }
-  return sharedAudioContext;
+  return sharedAudioContext!;
 }
 
-// Helper to decode Base64
 function decode(base64: string): Uint8Array {
   const binaryString = atob(base64);
   const len = binaryString.length;
@@ -32,7 +30,6 @@ function decode(base64: string): Uint8Array {
   return bytes;
 }
 
-// Helper to decode Audio Data
 async function decodeAudioData(
   data: Uint8Array,
   ctx: AudioContext,
@@ -52,27 +49,22 @@ async function decodeAudioData(
   return buffer;
 }
 
-// Fallback: Browser Native TTS
 function speakNative(text: string, lang: string = 'zh-CN') {
   return new Promise<void>((resolve) => {
     if (!('speechSynthesis' in window)) {
-      resolve(); // Fail silently/gracefully so UI doesn't break
+      resolve();
       return;
     }
 
-    // Cancel any current speaking
     window.speechSynthesis.cancel();
 
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = lang; // e.g., 'zh-CN'
-    utterance.rate = 0.8; // Slightly slower for learning
+    utterance.lang = lang;
+    utterance.rate = 0.8;
     
-    // Attempt to pick a voice that matches the language
     const voices = window.speechSynthesis.getVoices();
     if (voices.length > 0) {
-        // Try to find a voice matching the specific lang code (zh-CN)
         let selectedVoice = voices.find(v => v.lang === lang);
-        // Fallback to any voice starting with zh (e.g. zh-TW or zh-HK if CN not found)
         if (!selectedVoice) {
             selectedVoice = voices.find(v => v.lang.startsWith('zh'));
         }
@@ -81,32 +73,23 @@ function speakNative(text: string, lang: string = 'zh-CN') {
         }
     }
     
-    utterance.onend = () => {
-      resolve();
-    };
-    
-    utterance.onerror = (e) => {
-      console.warn("Native TTS Error", e);
-      resolve(); 
-    };
+    utterance.onend = () => resolve();
+    utterance.onerror = () => resolve();
 
     window.speechSynthesis.speak(utterance);
   });
 }
 
 export const playPronunciation = async (text: string, language: string = 'zh-CN', apiKeyOverride?: string): Promise<void> => {
-  const apiKey = apiKeyOverride || process.env.API_KEY;
+  const apiKey = apiKeyOverride || (process.env.API_KEY as string);
 
-  // 1. Check Offline / No API Key -> Immediate Native Fallback
   if (!apiKey || !navigator.onLine) {
-    console.log("Using native TTS (Offline/No Key)");
     return speakNative(text, language);
   }
 
   const audioContext = getAudioContext();
   const cacheKey = `${language}:${text}`;
 
-  // 2. Check Cache
   if (audioCache.has(cacheKey)) {
     const cachedBuffer = audioCache.get(cacheKey);
     if (cachedBuffer) {
@@ -116,25 +99,18 @@ export const playPronunciation = async (text: string, language: string = 'zh-CN'
   }
 
   try {
-    // 3. Try Gemini API
     const ai = new GoogleGenAI({ apiKey });
-    
-    // Use a very direct prompt to reduce chance of chatty intro/outro
     const promptText = `Say: ${text}`;
 
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash-preview-tts",
-      contents: [{ parts: [{ text: promptText }] }],
+      contents: promptText,
       config: {
-        // System instruction forces the model to behave purely as a TTS engine
         systemInstruction: "You are a Chinese text-to-speech engine. Read the provided text aloud in standard Mandarin Chinese. Do not provide any introductory text or translation. Just speak the Chinese characters.",
         responseModalities: [Modality.AUDIO],
         speechConfig: {
           voiceConfig: {
-            prebuiltVoiceConfig: { 
-                // 'Kore' is a good balanced voice.
-                voiceName: 'Kore' 
-            },
+            prebuiltVoiceConfig: { voiceName: 'Kore' },
           },
         },
       },
@@ -149,18 +125,11 @@ export const playPronunciation = async (text: string, language: string = 'zh-CN'
     const audioBytes = decode(base64Audio);
     const audioBuffer = await decodeAudioData(audioBytes, audioContext);
     
-    // Cache the decoded buffer for future use
     audioCache.set(cacheKey, audioBuffer);
-    
     playSound(audioContext, audioBuffer);
 
   } catch (error: any) {
-    if (error.status === 429 || (error.message && error.message.includes('429'))) {
-       console.warn("Gemini TTS Quota Exceeded. Falling back to native.");
-    } else {
-       console.warn("Gemini TTS failed, falling back to native:", error);
-    }
-    // 4. Fallback to Native if API fails
+    console.error("TTS generation failed, falling back to native", error);
     return speakNative(text, language);
   }
 };

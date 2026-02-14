@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.9
+ * HanziMaster v0.5.2
  */
 import React, { useRef, useMemo } from 'react';
 import { HanziData, AnimationState, InteractionMode, AppSettings } from '../types';

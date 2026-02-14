@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.9
+ * HanziMaster v0.5.2
  */
 import { useState, useEffect, useCallback } from 'react';
 import { COMMON_CHARS } from '../constants/commonChars';

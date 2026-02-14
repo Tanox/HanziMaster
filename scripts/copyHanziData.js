@@ -1,5 +1,6 @@
+
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.5.2
  */
 import fs from 'fs';
 import path from 'path';

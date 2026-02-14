@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.5.2
+ * HanziMaster v0.5.3
  */
 import React from 'react';
 import { useAppController } from './hooks/useAppController';
@@ -21,7 +21,7 @@ import { UI_LABELS } from './locales';
 import { AlertCircle } from 'lucide-react';
 import { ToastProvider } from './context/ToastContext';
 
-const APP_VERSION = '0.5.2';
+const APP_VERSION = '0.5.3';
 
 const AppContent: React.FC = () => {
   const { state, actions } = useAppController();
@@ -69,18 +69,20 @@ const AppContent: React.FC = () => {
             activeTerm={state.activeTerm}
           />
           
-          {state.error && (
-            <div id="error-message-container" className="max-w-md mx-auto mt-4 p-4 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-xl flex items-center gap-3 border border-red-100 dark:border-red-900/50">
-              <AlertCircle size={20} className="shrink-0" />
-              <p className="text-sm font-medium">{state.error}</p>
-            </div>
-          )}
+          <div className="h-14 overflow-hidden">
+            {state.error && (
+                <div id="error-message-container" className="max-w-md mx-auto p-4 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-xl flex items-center gap-3 border border-red-100 dark:border-red-900/50 animate-fade-in">
+                <AlertCircle size={20} className="shrink-0" />
+                <p className="text-sm font-medium">{state.error}</p>
+                </div>
+            )}
+          </div>
         </div>
 
         <div id="main-grid-layout" className="flex flex-col lg:grid lg:grid-cols-12 lg:gap-12">
           
           {/* --- Left Column / Mobile Order 1: Viewer --- */}
-          <div id="left-column-viewer" className="order-1 lg:order-1 lg:col-span-5 flex flex-col items-center">
+          <div id="left-column-viewer" className="order-1 lg:order-1 lg:col-span-5 flex flex-col items-center min-h-[580px]">
             
             <IdiomNavigator 
                 term={state.activeTerm} 
@@ -96,58 +98,61 @@ const AppContent: React.FC = () => {
                       {currentPinyin}
                   </span>
               ) : (
-                  // Placeholder to prevent layout shift
+                  // Fixed width space to prevent layout collapse
                   <span className="text-5xl md:text-6xl text-transparent select-none">Pinyin</span>
               )}
             </div>
 
-            {state.hanziData ? (
-              <>
-                <StrokeViewer 
-                  data={state.hanziData}
-                  animationState={state.animationState}
-                  setAnimationState={actions.setAnimationState}
-                  speed={state.speed}
-                  mode={state.interactionMode}
-                  settings={state.settings}
-                  onPracticeComplete={actions.handlePracticeComplete}
-                  labels={labels}
-                />
-                <Controls 
-                  animationState={state.animationState}
-                  onPlay={() => actions.setAnimationState(AnimationState.PLAYING)}
-                  onPause={() => actions.setAnimationState(AnimationState.PAUSED)}
-                  onReset={() => {
-                      actions.setAnimationState(AnimationState.IDLE);
-                      actions.setInteractionMode(InteractionMode.VIEW);
-                  }}
-                  mode={state.interactionMode}
-                  onToggleMode={() => {
-                      const newMode = state.interactionMode === InteractionMode.VIEW ? InteractionMode.PRACTICE : InteractionMode.VIEW;
-                      actions.setInteractionMode(newMode);
-                      if (newMode === InteractionMode.PRACTICE) {
-                          actions.setAnimationState(AnimationState.IDLE);
-                      }
-                  }}
-                  char={state.activeChar}
-                  labels={{
-                    play: labels.controlsPlay,
-                    pause: labels.controlsPause,
-                    reset: labels.controlsReset,
-                    speed: labels.controlsSpeed,
-                    practiceMode: labels.practiceMode || "Practice",
-                    viewMode: labels.viewMode || "Watch"
-                  }}
-                  apiKey={state.settings.apiKey}
-                />
-              </>
-            ) : (
-              !state.loading && !state.error && (
-                <div id="viewer-placeholder" className="h-64 w-64 flex items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-3xl text-slate-400 dark:text-slate-600 italic">
-                  {labels.previewText}
-                </div>
-              )
-            )}
+            <div id="viewer-container-outer" className="w-full flex flex-col items-center min-h-[320px]">
+                {state.hanziData ? (
+                <>
+                    <StrokeViewer 
+                    data={state.hanziData}
+                    animationState={state.animationState}
+                    setAnimationState={actions.setAnimationState}
+                    speed={state.speed}
+                    mode={state.interactionMode}
+                    settings={state.settings}
+                    onPracticeComplete={actions.handlePracticeComplete}
+                    labels={labels}
+                    />
+                    <Controls 
+                    animationState={state.animationState}
+                    onPlay={() => actions.setAnimationState(AnimationState.PLAYING)}
+                    onPause={() => actions.setAnimationState(AnimationState.PAUSED)}
+                    onReset={() => {
+                        actions.setAnimationState(AnimationState.IDLE);
+                        actions.setInteractionMode(InteractionMode.VIEW);
+                    }}
+                    mode={state.interactionMode}
+                    onToggleMode={() => {
+                        const newMode = state.interactionMode === InteractionMode.VIEW ? InteractionMode.PRACTICE : InteractionMode.VIEW;
+                        actions.setInteractionMode(newMode);
+                        if (newMode === InteractionMode.PRACTICE) {
+                            actions.setAnimationState(AnimationState.IDLE);
+                        }
+                    }}
+                    char={state.activeChar}
+                    labels={{
+                        play: labels.controlsPlay,
+                        pause: labels.controlsPause,
+                        reset: labels.controlsReset,
+                        speed: labels.controlsSpeed,
+                        practiceMode: labels.practiceMode || "Practice",
+                        viewMode: labels.viewMode || "Watch"
+                    }}
+                    apiKey={state.settings.apiKey}
+                    />
+                </>
+                ) : (
+                !state.loading && !state.error && (
+                    <div id="viewer-placeholder" className="h-[320px] w-full max-w-xs flex flex-col items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-3xl text-slate-400 dark:text-slate-600 italic">
+                        <div className="w-12 h-12 border-4 border-slate-200 border-t-teal-500 rounded-full animate-spin mb-4" />
+                        {labels.previewText}
+                    </div>
+                )
+                )}
+            </div>
           </div>
           
           {/* --- Mobile Order 2 / Desktop Order 3: Suggestions --- */}
@@ -176,6 +181,7 @@ const AppContent: React.FC = () => {
             {state.settings.showHistory && (
               <HistoryPanel 
                  history={state.history} 
+                 learnedItems={state.learnedItems}
                  onSelect={(term) => actions.handleSearch(term, state.currentLang)} 
                  onClear={() => actions.setHistory([])}
                  labels={labels}

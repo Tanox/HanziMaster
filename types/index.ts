@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.3
+ * HanziMaster v0.5.2
  */
 
 export interface HanziData {

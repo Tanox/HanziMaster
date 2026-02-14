@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.3.5
+ * HanziMaster v0.5.2
  */
 import { UILabels } from './types';
 
@@ -67,9 +67,23 @@ export const th: UILabels = {
   clearHistory: 'ล้างประวัติ',
   noHistory: 'ยังไม่มีประวัติ',
   closeBtn: 'ปิด',
+  // Add missing stats properties
+  statsTitle: 'ความสำเร็จ',
+  statsTotal: 'ฝึกเขียนทั้งหมด',
+  statsChars: 'ตัวอักษรไม่ซ้ำ',
+  statsTerms: 'สำนวนไม่ซ้ำ',
   welcomeTitle: 'ยินดีต้อนรับสู่ HanziMaster',
   welcomeSubtitle: 'สำรวจความงามของตัวอักษรจีน เครื่องมือที่ผสมผสานศิลปะการเขียนพู่กันเข้ากับ AI อัจฉริยะ',
   welcomeBtn: 'เริ่มเรียนรู้',
+  
+  // Onboarding Guide
+  guideSearchTitle: 'ค้นหาอัจฉริยะ',
+  guideSearchDesc: 'ค้นหาตัวอักษรและสำนวนได้ทันที',
+  guideWatchTitle: 'ลำดับขีด',
+  guideWatchDesc: 'ดูวิธีการเขียนที่ถูกต้อง',
+  guidePracticeTitle: 'ฝึกเขียน Zen',
+  guidePracticeDesc: 'เขียนพร้อมรับผลตอบรับแบบเรียลไทม์',
+
   idiomOrigin: 'ที่มาของสำนวน',
   idiomUsage: 'ตัวอย่างการใช้งาน',
   idiomTitle: 'วิเคราะห์สำนวน',
@@ -83,6 +97,34 @@ export const th: UILabels = {
   // App Sharing
   shareAppTitle: 'แชร์แอป',
   shareAppText: '🔥 พบเครื่องมือสุดเจ๋งสำหรับฝึกเขียนอักษรจีน!\n\nHanziMaster ผสมผสานการเขียนพู่กันแบบ Zen เข้ากับ AI ใช้งานแบบออฟไลน์ได้ด้วย!\n\nลองดูเลย: {url}\n\n#HanziMaster #เรียนภาษาจีน #พู่กันจีน',
+
+  // Audit
+  settingDatabaseStatus: 'สถานะฐานข้อมูล',
+  pinyinCoverage: 'ความครอบคลุมพินอิน',
+  pinyinCoverageDesc: 'ข้อมูลในเครื่อง ครอบคลุม {covered} จาก {total} ตัวอักษร',
+  missingChars: 'ตัวอักษรที่ขาด',
+  copyMissing: 'คัดลอกรายการ',
+
+  // Reload Prompt
+  updateAvailable: 'มีอัปเดต',
+  updateMsg: 'มีเวอร์ชันใหม่ กรุณารีโหลดเพื่ออัปเดต',
+  reloadBtn: 'รีโหลด',
+  offlineReady: 'พร้อมใช้งานออฟไลน์',
+  offlineMsg: 'แอปพร้อมใช้งานแบบออฟไลน์แล้ว',
+  dismissBtn: 'ปิด',
+
+  // Seasonal
+  suggestionsLabel: 'แนะนำ',
+  springFestival: 'ตรุษจีน',
+  lanternFestival: 'เทศกาลโคมไฟ',
+  qingming: 'เชงเม้ง',
+  laborDay: 'วันแรงงาน',
+  dragonBoat: 'เทศกาลไหว้บ๊ะจ่าง',
+  qixi: 'เทศกาลชีซี',
+  midAutumn: 'เทศกาลไหว้พระจันทร์',
+  nationalDay: 'วันชาติจีน',
+  singlesDay: 'วันคนโสด',
+  christmas: 'คริสต์มาส',
 
   // UX Fixes v0.4.2
   strokeProgress: 'ขีดที่ {current} / {total}',

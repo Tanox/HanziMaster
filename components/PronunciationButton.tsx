@@ -1,5 +1,6 @@
+
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.5.2
  */
 import React, { useState } from 'react';
 import { Volume2, Loader2, AlertCircle } from 'lucide-react';

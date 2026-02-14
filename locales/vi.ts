@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.3.5
+ * HanziMaster v0.5.2
  */
 import { UILabels } from './types';
 
@@ -67,9 +67,23 @@ export const vi: UILabels = {
   clearHistory: 'Xóa',
   noHistory: 'Chưa có lịch sử.',
   closeBtn: 'Đóng',
+  // Add missing stats properties
+  statsTitle: 'Thành tích',
+  statsTotal: 'Tổng số lượt luyện',
+  statsChars: 'Chữ Hán duy nhất',
+  statsTerms: 'Thành ngữ duy nhất',
   welcomeTitle: 'Chào mừng đến với HanziMaster',
   welcomeSubtitle: 'Khám phá vẻ đẹp của chữ Hán. Công cụ học tập kết hợp thư pháp truyền thống và AI.',
   welcomeBtn: 'Bắt đầu',
+  
+  // Onboarding Guide
+  guideSearchTitle: 'Tìm kiếm Thông minh',
+  guideSearchDesc: 'Tìm chữ Hán và thành ngữ tức thì.',
+  guideWatchTitle: 'Thứ tự Nét',
+  guideWatchDesc: 'Xem hoạt hình viết chữ chuẩn.',
+  guidePracticeTitle: 'Luyện tập Zen',
+  guidePracticeDesc: 'Viết với phản hồi thời gian thực.',
+
   idiomOrigin: 'Điển tích',
   idiomUsage: 'Cách dùng',
   idiomTitle: 'Phân tích thành ngữ',
@@ -83,6 +97,34 @@ export const vi: UILabels = {
   // App Sharing
   shareAppTitle: 'Chia sẻ ứng dụng',
   shareAppText: '🔥 Tìm thấy một công cụ tuyệt vời để học chữ Hán!\n\nHanziMaster kết hợp thư pháp Zen với phân tích AI. Dùng được cả khi offline!\n\nThử ngay: {url}\n\n#HanziMaster #HocTiengTrung #ThuPhap',
+
+  // Audit
+  settingDatabaseStatus: 'Trạng thái CSDL',
+  pinyinCoverage: 'Phủ sóng Bính âm',
+  pinyinCoverageDesc: 'Dữ liệu cục bộ. Đã phủ {covered} trên {total} ký tự.',
+  missingChars: 'Ký tự thiếu',
+  copyMissing: 'Sao chép',
+
+  // Reload Prompt
+  updateAvailable: 'Cập nhật',
+  updateMsg: 'Có phiên bản mới. Tải lại để cập nhật.',
+  reloadBtn: 'Tải lại',
+  offlineReady: 'Sẵn sàng Offline',
+  offlineMsg: 'Ứng dụng đã sẵn sàng sử dụng ngoại tuyến.',
+  dismissBtn: 'Bỏ qua',
+
+  // Seasonal
+  suggestionsLabel: 'Gợi ý',
+  springFestival: 'Tết Nguyên Đán',
+  lanternFestival: 'Tết Nguyên Tiêu',
+  qingming: 'Tết Thanh Minh',
+  laborDay: 'Quốc tế Lao động',
+  dragonBoat: 'Tết Đoan Ngọ',
+  qixi: 'Lễ Thất Tịch',
+  midAutumn: 'Tết Trung Thu',
+  nationalDay: 'Quốc Khánh',
+  singlesDay: 'Ngày Độc thân',
+  christmas: 'Giáng Sinh',
 
   // UX Fixes v0.4.2
   strokeProgress: 'Nét {current} / {total}',

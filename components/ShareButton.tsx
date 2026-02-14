@@ -1,5 +1,6 @@
+
 /**
- * HanziMaster v0.4.2
+ * HanziMaster v0.5.2
  */
 import React, { useState } from 'react';
 import { Share2, Copy, Check } from 'lucide-react';

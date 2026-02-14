@@ -1,5 +1,6 @@
+
 /**
- * HanziMaster v0.3.1
+ * HanziMaster v0.5.3
  */
 import { GoogleGenAI, Type, HarmCategory, HarmBlockThreshold } from "@google/genai";
 import { CharacterAnalysis, IdiomAnalysis } from '../types';
@@ -64,7 +65,6 @@ function cleanJsonResponse(text: string): string {
         if (endIndex !== -1 && endIndex > startIndex) {
             text = text.substring(startIndex, endIndex + 1);
         } else {
-            // Handle potentially truncated JSON
             text = text.substring(startIndex);
             if (!text.endsWith('}')) {
                 text += '}';

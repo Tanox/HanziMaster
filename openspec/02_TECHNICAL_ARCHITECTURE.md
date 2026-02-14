@@ -76,9 +76,10 @@ graph TD
 ## 7. 构建与依赖管理 (Build & Deployment)
 为确保生产环境的稳定性及 PWA 的离线可用性，必须严格遵守以下构建规范：
 
-*   **Vite 独占构建**: 所有核心依赖（React, ReactDOM, Lucide, @google/genai）必须通过 `package.json` 管理并由 Vite 打包。
-*   **禁止 ImportMap**: 严禁在 `index.html` 中使用 `<script type="importmap">` 引入 CDN 资源。
+*   **模块管理**: 所有核心依赖版本需在 `index.html` 的 `<importmap>` 中明确声明，确保开发与生产环境版本一致。
 *   **CSP 策略**: 
-    *   `script-src`: 'self' 'unsafe-inline';
-    *   `connect-src`: 'self' https://generativelanguage.googleapis.com;---
+    *   `script-src`: 'self' 'unsafe-inline' https://esm.sh;
+    *   `connect-src`: 'self' https://generativelanguage.googleapis.com https://cdn.jsdelivr.net;
+
+---
 *文档维护: HanziMaster Architecture Team*

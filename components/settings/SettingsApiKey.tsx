@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.9
+ * HanziMaster v0.5.2
  */
 import React, { useState } from 'react';
 import { Key, Check, X, Eye, EyeOff, ExternalLink } from 'lucide-react';

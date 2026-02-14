@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.4.2
+ * HanziMaster v0.5.3
  */
 
 import { UILabels } from './types';
@@ -15,7 +15,7 @@ export const en: UILabels = {
   commonWords: 'Vocabulary',
   appTitle: 'HanziMaster',
   appSubtitle: 'Master Chinese character stroke order with smart linguistic insights.',
-  searchPlaceholder: 'Enter a character or idiom (e.g. 爱, 守株待兔)',
+  searchPlaceholder: 'Enter a character or idiom (e.g. 爱,守株待兔)',
   footerCredit: 'Powered by Hanzi Writer & Smart Engine',
   version: 'Version',
   previewText: 'Character Preview',
@@ -64,10 +64,14 @@ export const en: UILabels = {
   settingShowEtymology: 'Show Etymology',
   settingShowMnemonic: 'Show Memory Tip',
   settingShowExamples: 'Show Vocabulary',
-  historyTitle: 'History',
+  historyTitle: 'Practice Journey',
   clearHistory: 'Clear',
   noHistory: 'No history yet.',
   closeBtn: 'Close',
+  statsTitle: 'Achievements',
+  statsTotal: 'Total Practiced',
+  statsChars: 'Unique Characters',
+  statsTerms: 'Unique Idioms',
   welcomeTitle: 'Welcome to HanziMaster',
   welcomeSubtitle: 'Discover the beauty of Chinese characters. The ultimate tool combining traditional calligraphy with AI insights.',
   welcomeBtn: 'Get Started',
@@ -100,6 +104,12 @@ export const en: UILabels = {
   pinyinCoverageDesc: 'Local pinyin mapping for random suggestions. {covered} out of {total} characters covered.',
   missingChars: 'Missing Characters',
   copyMissing: 'Copy Missing List',
+  
+  // Lexicon Download
+  downloadLexicon: 'Download Offline Lexicon',
+  downloading: 'Syncing Lexicon...',
+  downloadSuccess: 'Lexicon synced for offline use',
+  downloadError: 'Sync failed, please check your network',
 
   // Reload Prompt
   updateAvailable: 'Update Available',

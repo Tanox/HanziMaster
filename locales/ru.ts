@@ -1,6 +1,6 @@
 
 /**
- * HanziMaster v0.3.5
+ * HanziMaster v0.5.2
  */
 import { UILabels } from './types';
 
@@ -67,9 +67,23 @@ export const ru: UILabels = {
   clearHistory: 'Очистить',
   noHistory: 'Нет истории.',
   closeBtn: 'Закрыть',
+  // Add missing stats properties
+  statsTitle: 'Достижения',
+  statsTotal: 'Всего пройдено',
+  statsChars: 'Уникальных иероглифов',
+  statsTerms: 'Уникальных идиом',
   welcomeTitle: 'Добро пожаловать в HanziMaster',
   welcomeSubtitle: 'Откройте для себя красоту китайских иероглифов. Инструмент, сочетающий каллиграфию и ИИ.',
   welcomeBtn: 'Начать',
+  
+  // Onboarding Guide
+  guideSearchTitle: 'Умный поиск',
+  guideSearchDesc: 'Находите иероглифы и идиомы мгновенно.',
+  guideWatchTitle: 'Порядок черт',
+  guideWatchDesc: 'Смотрите правильную последовательность.',
+  guidePracticeTitle: 'Дзен Практика',
+  guidePracticeDesc: 'Пишите с обратной связью в реальном времени.',
+
   idiomOrigin: 'История происхождения',
   idiomUsage: 'Пример использования',
   idiomTitle: 'Анализ идиомы',
@@ -83,6 +97,34 @@ export const ru: UILabels = {
   // App Sharing
   shareAppTitle: 'Поделиться приложением',
   shareAppText: '🔥 Нашел потрясающий инструмент для изучения китайских иероглифов!\n\nHanziMaster сочетает дзен-каллиграфию с ИИ. Работает оффлайн!\n\nПопробуйте: {url}\n\n#HanziMaster #УчимКитайский #Каллиграфия',
+
+  // Audit
+  settingDatabaseStatus: 'Статус БД',
+  pinyinCoverage: 'Покрытие Пиньинь',
+  pinyinCoverageDesc: 'Локальная база. Покрыто {covered} из {total} символов.',
+  missingChars: 'Пропущенные',
+  copyMissing: 'Копировать список',
+
+  // Reload Prompt
+  updateAvailable: 'Обновление',
+  updateMsg: 'Доступна новая версия. Перезагрузите для обновления.',
+  reloadBtn: 'Обновить',
+  offlineReady: 'Оффлайн готов',
+  offlineMsg: 'Приложение готово к работе оффлайн.',
+  dismissBtn: 'Закрыть',
+
+  // Seasonal
+  suggestionsLabel: 'Рекомендации',
+  springFestival: 'Китайский Новый год',
+  lanternFestival: 'Праздник фонарей',
+  qingming: 'Цинмин',
+  laborDay: 'День труда',
+  dragonBoat: 'Праздник драконьих лодок',
+  qixi: 'Циси (День влюбленных)',
+  midAutumn: 'Праздник середины осени',
+  nationalDay: 'День образования КНР',
+  singlesDay: 'День холостяков',
+  christmas: 'Рождество',
 
   // UX Fixes v0.4.2
   strokeProgress: 'Черта {current} / {total}',
