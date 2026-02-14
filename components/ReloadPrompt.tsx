@@ -1,10 +1,25 @@
-
 /**
- * HanziMaster v0.5.2
+ * HanziMaster v0.5.5
  */
+import React from 'react';
 import { RefreshCw, X, Wifi } from 'lucide-react';
-import { useRegisterSW } from 'virtual:pwa-register/react';
 import { UILabels } from '../locales/types';
+
+// Safe check for PWA registration hook
+let useRegisterSW: any = () => ({
+  offlineReady: [false, () => {}],
+  needRefresh: [false, () => {}],
+  updateServiceWorker: () => Promise.resolve(),
+});
+
+try {
+  // @ts-ignore - virtual module handled by Vite PWA plugin
+  import('virtual:pwa-register/react').then(mod => {
+    useRegisterSW = mod.useRegisterSW;
+  }).catch(() => {
+    // Silently fallback in preview/non-pwa environments
+  });
+} catch (e) {}
 
 interface ReloadPromptProps {
   labels: UILabels;
@@ -24,7 +39,7 @@ function ReloadPrompt({ labels }: ReloadPromptProps) {
 
   if (needRefresh) {
     return (
-      <div className="fixed bottom-4 right-4 z-50 p-4 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 animate-fade-in max-w-sm transition-all duration-300">
+      <div id="pwa-refresh-prompt" className="fixed bottom-4 right-4 z-50 p-4 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 animate-fade-in max-w-sm transition-all duration-300">
         <div className="flex items-start gap-3">
           <div className="p-2 bg-teal-50 dark:bg-teal-900/30 rounded-full text-teal-600 dark:text-teal-400">
             <RefreshCw size={20} />
@@ -61,7 +76,7 @@ function ReloadPrompt({ labels }: ReloadPromptProps) {
 
   if (offlineReady) {
     return (
-      <div className="fixed bottom-4 right-4 z-50 p-4 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 animate-fade-in max-w-sm transition-all duration-300">
+      <div id="pwa-offline-ready" className="fixed bottom-4 right-4 z-50 p-4 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 animate-fade-in max-w-sm transition-all duration-300">
         <div className="flex items-start gap-3">
           <div className="p-2 bg-teal-50 dark:bg-teal-900/30 rounded-full text-teal-600 dark:text-teal-400">
             <Wifi size={20} />

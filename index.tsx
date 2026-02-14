@@ -1,6 +1,5 @@
-
 /**
- * HanziMaster v0.5.3
+ * HanziMaster v0.5.6
  */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
