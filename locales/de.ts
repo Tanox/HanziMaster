@@ -1,6 +1,5 @@
-
 /**
- * HanziMaster v0.5.2
+ * HanziMaster v0.5.3
  */
 import { UILabels } from './types';
 
@@ -36,12 +35,13 @@ export const de: UILabels = {
   settingShowOutline: 'Umriss anzeigen (Übung)',
   settingAutoPlay: 'Automatische Wiedergabe',
   settingContinuousMode: 'Kontinuierlicher Modus',
+  settingContinuousDesc: 'Nach Abschluss automatisch zum nächsten Zeichen springen.',
   settingOfflineMode: 'Offline-Modus',
   settingShowRandomSuggestions: 'Zufallsvorschläge anzeigen',
   settingShowHistory: 'Verlauf anzeigen',
   settingApiKey: 'Benutzerdefinierter API-Schlüssel',
   settingApiKeyPlaceholder: 'Gemini API-Schlüssel eingeben',
-  settingApiKeyHelp: 'Leer lassen, um den Standardschlüssel zu verwenden.',
+  settingApiKeyHelp: 'Leer lassen für Standardschlüssel. Eigenen Schlüssel verwenden, um Limits zu vermeiden.',
   settingApiKeyValidationMsg: 'Schlüsselformat ungültig (beginnt meist mit AIza)',
   settingTheme: 'Design',
   settingLanguage: 'Sprache',
@@ -53,6 +53,7 @@ export const de: UILabels = {
   sectionInterface: 'Oberfläche',
   sectionContent: 'Inhalt',
   sectionAppearance: 'Aussehen',
+  sectionData: 'Daten & Synchro',
   badgeCustom: 'Eigene',
   badgeDefault: 'Standard',
   badgeNone: 'Keine',
@@ -67,16 +68,14 @@ export const de: UILabels = {
   clearHistory: 'Löschen',
   noHistory: 'Kein Verlauf.',
   closeBtn: 'Schließen',
-  // Add missing stats properties
   statsTitle: 'Erfolge',
   statsTotal: 'Insgesamt geübt',
   statsChars: 'Einzigartige Zeichen',
   statsTerms: 'Einzigartige Idiome',
   welcomeTitle: 'Willkommen bei HanziMaster',
-  welcomeSubtitle: 'Entdecke die Schönheit chinesischer Schriftzeichen. Das ultimative Tool, das traditionelle Kalligrafie mit KI verbindet.',
+  welcomeSubtitle: 'Entdecke die Schönheit chinesischer Schriftzeichen. Traditionelle Kalligrafie trifft KI.',
   welcomeBtn: 'Loslegen',
   
-  // Onboarding Guide
   guideSearchTitle: 'Smarte Suche',
   guideSearchDesc: 'Finde Zeichen & Idiome sofort.',
   guideWatchTitle: 'Strichfolge',
@@ -90,22 +89,24 @@ export const de: UILabels = {
   shareAction: 'Teilen',
   shareTitleChar: "Lerne '{char}' auf HanziMaster zu schreiben!",
   shareTitleIdiom: "Lerne das Idiom '{idiom}' auf HanziMaster!",
-  shareTextChar: "🀄️ Ich habe gerade gelernt, '{char}' ({pinyin}) auf HanziMaster zu schreiben!\n\n📖 Bedeutung: {meaning}\n\n✨ Schau dir die Strichanimation und die KI-Analyse hier an:\n{url}\n\n#HanziMaster #ChinesischLernen #Kalligraphie",
-  shareTextIdiom: "📜 Ich habe ein faszinierendes Idiom gefunden: '{idiom}' ({pinyin})\n\n💡 Bedeutung: {meaning}\n\n🚀 Lerne die Geschichte dahinter auf HanziMaster:\n{url}\n\n#HanziMaster #ChinesischeIdiome #ChinesischLernen",
+  shareTextChar: "🀄️ Ich habe gerade gelernt, '{char}' ({pinyin}) auf HanziMaster zu schreiben!\n\n📖 Bedeutung: {meaning}\n\n✨ Schau dir die Animation hier an:\n{url}\n\n#HanziMaster #ChinesischLernen",
+  shareTextIdiom: "📜 Ich habe ein faszinierendes Idiom gefunden: '{idiom}' ({pinyin})\n\n💡 Bedeutung: {meaning}\n\n🚀 Lerne die Geschichte dahinter auf HanziMaster:\n{url}\n\n#HanziMaster #ChinesischeIdiome",
   shareMessageCopied: 'Text zum Teilen kopiert!',
 
-  // App Sharing
   shareAppTitle: 'App teilen',
-  shareAppText: '🔥 Ich habe ein tolles Tool gefunden, um chinesische Schriftzeichen zu meistern!\n\nHanziMaster verbindet Zen-Kalligrafie mit KI-Analysen. Funktioniert auch offline!\n\nProbiere es aus: {url}\n\n#HanziMaster #ChinesischLernen #Kalligraphie',
+  shareAppText: '🔥 Geniales Tool zum Chinesisch lernen! HanziMaster verbindet Zen-Kalligrafie mit KI. Probiere es aus: {url}',
 
-  // Audit
   settingDatabaseStatus: 'Datenbank-Status',
   pinyinCoverage: 'Pinyin-Abdeckung',
-  pinyinCoverageDesc: 'Lokale Pinyin-Zuordnung. {covered} von {total} Zeichen abgedeckt.',
+  pinyinCoverageDesc: 'Lokale Daten. {covered} von {total} Zeichen abgedeckt.',
   missingChars: 'Fehlende Zeichen',
   copyMissing: 'Liste kopieren',
 
-  // Reload Prompt
+  downloadLexicon: 'Offline-Lexikon laden',
+  downloading: 'Synchro...',
+  downloadSuccess: 'Lexikon bereit',
+  downloadError: 'Fehler bei Synchro',
+
   updateAvailable: 'Update verfügbar',
   updateMsg: 'Neue Version verfügbar. Zum Aktualisieren neu laden.',
   reloadBtn: 'Neu laden',
@@ -113,7 +114,6 @@ export const de: UILabels = {
   offlineMsg: 'App ist bereit für den Offline-Einsatz.',
   dismissBtn: 'Ausblenden',
 
-  // Seasonal
   suggestionsLabel: 'Vorschläge',
   springFestival: 'Frühlingsfest',
   lanternFestival: 'Laternenfest',
@@ -126,7 +126,6 @@ export const de: UILabels = {
   singlesDay: 'Singles\' Day',
   christmas: 'Weihnachten',
 
-  // UX Fixes v0.4.2
   strokeProgress: 'Strich {current} / {total}',
   writeNextStroke: 'Bitte den nächsten Strich schreiben.',
   refreshSuggestions: 'Vorschläge aktualisieren',

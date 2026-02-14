@@ -14,7 +14,7 @@ import ToggleItem from '../ToggleItem';
 interface SettingsDataAuditProps {
   labels: UILabels;
   settings: AppSettings;
-  onUpdate: (key: keyof AppSettings, value: any) => void;
+  onUpdate: <K extends keyof AppSettings>(key: K, value: AppSettings[K]) => void;
 }
 
 const CACHE_NAME = 'hanzi-data-local';

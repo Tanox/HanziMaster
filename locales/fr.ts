@@ -1,6 +1,5 @@
-
 /**
- * HanziMaster v0.5.2
+ * HanziMaster v0.5.3
  */
 import { UILabels } from './types';
 
@@ -36,12 +35,13 @@ export const fr: UILabels = {
   settingShowOutline: 'Afficher le contour (Pratique)',
   settingAutoPlay: 'Lecture automatique',
   settingContinuousMode: 'Mode continu',
+  settingContinuousDesc: 'Passe automatiquement au caractère suivant après avoir terminé.',
   settingOfflineMode: 'Mode hors ligne',
   settingShowRandomSuggestions: 'Afficher les suggestions aléatoires',
   settingShowHistory: 'Afficher l\'historique',
   settingApiKey: 'Clé API Personnalisée',
   settingApiKeyPlaceholder: 'Entrez votre clé API Gemini',
-  settingApiKeyHelp: 'Laisser vide pour utiliser la clé par défaut.',
+  settingApiKeyHelp: 'Laisser vide pour utiliser la clé par défaut. Utilisez la vôtre pour éviter les limites.',
   settingApiKeyValidationMsg: 'Format de clé incorrect (commence par AIza)',
   settingTheme: 'Thème',
   settingLanguage: 'Langue',
@@ -53,6 +53,7 @@ export const fr: UILabels = {
   sectionInterface: 'Interface',
   sectionContent: 'Contenu',
   sectionAppearance: 'Apparence',
+  sectionData: 'Données & Synchro',
   badgeCustom: 'Perso',
   badgeDefault: 'Défaut',
   badgeNone: 'Aucun',
@@ -67,7 +68,6 @@ export const fr: UILabels = {
   clearHistory: 'Effacer',
   noHistory: 'Aucun historique.',
   closeBtn: 'Fermer',
-  // Add missing stats properties
   statsTitle: 'Succès',
   statsTotal: 'Total pratiqué',
   statsChars: 'Caractères uniques',
@@ -76,7 +76,6 @@ export const fr: UILabels = {
   welcomeSubtitle: 'Découvrez la beauté des caractères chinois. L\'outil ultime combinant calligraphie traditionnelle et IA.',
   welcomeBtn: 'Commencer',
   
-  // Onboarding Guide
   guideSearchTitle: 'Recherche Intelligente',
   guideSearchDesc: 'Trouvez caractères et idiomes instantanément.',
   guideWatchTitle: 'Ordre des Traits',
@@ -94,18 +93,20 @@ export const fr: UILabels = {
   shareTextIdiom: "📜 J'ai découvert un idiome fascinant : '{idiom}' ({pinyin})\n\n💡 Signification : {meaning}\n\n🚀 Apprenez son histoire sur HanziMaster :\n{url}\n\n#HanziMaster #IdiomesChinois #ApprendreLeChinois",
   shareMessageCopied: 'Texte de partage copié !',
 
-  // App Sharing
   shareAppTitle: 'Partager l\'app',
-  shareAppText: "🔥 J'ai trouvé un outil incroyable pour maîtriser les caractères chinois !\n\nHanziMaster combine la calligraphie Zen avec l'IA. Fonctionne aussi hors ligne.\n\nRegardez ça : {url}\n\n#HanziMaster #ApprendreLeChinois #Calligraphie",
+  shareAppText: "🔥 J'ai trouvé un outil incroyable pour maîtriser les caractères chinois ! HanziMaster combine la calligraphie Zen avec l'IA. Essayez ici : {url}",
 
-  // Audit
   settingDatabaseStatus: 'État BDD',
   pinyinCoverage: 'Couverture Pinyin',
-  pinyinCoverageDesc: 'Mappage local pour suggestions. {covered} sur {total} caractères.',
+  pinyinCoverageDesc: 'Données locales pour suggestions. {covered} sur {total} caractères.',
   missingChars: 'Caractères manquants',
   copyMissing: 'Copier liste',
 
-  // Reload Prompt
+  downloadLexicon: 'Télécharger le lexique hors ligne',
+  downloading: 'Synchro en cours...',
+  downloadSuccess: 'Lexique prêt',
+  downloadError: 'Échec de synchro',
+
   updateAvailable: 'Mise à jour',
   updateMsg: 'Nouvelle version disponible. Recharger pour mettre à jour.',
   reloadBtn: 'Recharger',
@@ -113,7 +114,6 @@ export const fr: UILabels = {
   offlineMsg: 'App prête pour usage hors ligne.',
   dismissBtn: 'Ignorer',
 
-  // Seasonal
   suggestionsLabel: 'Suggestions',
   springFestival: 'Nouvel An Chinois',
   lanternFestival: 'Fête des Lanternes',
@@ -126,7 +126,6 @@ export const fr: UILabels = {
   singlesDay: 'Journée des Célibataires',
   christmas: 'Noël',
 
-  // UX Fixes v0.4.2
   strokeProgress: 'Trait {current} / {total}',
   writeNextStroke: 'Veuillez écrire le trait suivant.',
   refreshSuggestions: 'Actualiser les suggestions',
