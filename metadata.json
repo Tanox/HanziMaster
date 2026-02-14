@@ -1,22 +1,4 @@
 {
   "name": "HanziMaster 汉字大师",
-  "version": "0.5.6",
-  "description": "The ultimate interactive Chinese character learning platform. Featuring refined Seal-style iconography and AI-powered etymology insights.",
-  "keywords": [
-    "Chinese characters",
-    "Hanzi",
-    "Stroke Order",
-    "Etymology",
-    "Learn Chinese",
-    "Mandarin",
-    "Pinyin",
-    "HSK",
-    "AI Education",
-    "PWA",
-    "Handwriting practice",
-    "Mnemonics",
-    "Calligraphy"
-  ],
-  "requestFramePermissions": [],
-  "googleAnalyticsId": "G-TZG68T8J31"
+  "description": "The ultimate interactive Chinese character learning platform. Featuring refined Seal-style iconography and AI-powered etymology insights."
 }
