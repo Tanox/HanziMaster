@@ -1,7 +1,7 @@
 {
   "name": "HanziMaster 汉字大师",
-  "version": "0.5.3",
-  "description": "The ultimate interactive Chinese character learning platform. Master Hanzi with precision vector stroke animations, AI-powered etymology, mnemonics, and high-quality neural TTS. Features full offline support, HSK 1-9 coverage, and 15+ interface languages.",
+  "version": "0.5.4",
+  "description": "The ultimate interactive Chinese character learning platform. Featuring refined Seal-style iconography and AI-powered etymology insights.",
   "keywords": [
     "Chinese characters",
     "Hanzi",

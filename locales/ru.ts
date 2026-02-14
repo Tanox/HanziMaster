@@ -1,6 +1,5 @@
-
 /**
- * HanziMaster v0.5.2
+ * HanziMaster v0.5.3
  */
 import { UILabels } from './types';
 
@@ -36,10 +35,11 @@ export const ru: UILabels = {
   settingShowOutline: 'Показать контур (Практика)',
   settingAutoPlay: 'Автовоспроизведение',
   settingContinuousMode: 'Непрерывный режим',
+  settingContinuousDesc: 'Автоматически переходить к следующему иероглифу.',
   settingOfflineMode: 'Оффлайн режим',
-  settingShowRandomSuggestions: 'Показать случайные предложения',
+  settingShowRandomSuggestions: 'Показать рекомендации',
   settingShowHistory: 'Показать историю',
-  settingApiKey: 'Пользовательский API ключ',
+  settingApiKey: 'API ключ',
   settingApiKeyPlaceholder: 'Введите API ключ Gemini',
   settingApiKeyHelp: 'Оставьте пустым для использования ключа по умолчанию.',
   settingApiKeyValidationMsg: 'Неверный формат ключа (обычно начинается с AIza)',
@@ -47,12 +47,13 @@ export const ru: UILabels = {
   settingLanguage: 'Язык',
   themeLight: 'Светлая',
   themeDark: 'Темная',
-  settingResetData: 'Сброс приложения',
+  settingResetData: 'Опасная зона',
   resetBtn: 'Удалить все данные',
-  resetConfirm: 'Вы уверены, что хотите удалить всю историю, кэш и настройки? Это действие нельзя отменить.',
+  resetConfirm: 'Вы уверены? Это действие удалит всю историю и кэш.',
   sectionInterface: 'Интерфейс',
   sectionContent: 'Контент',
   sectionAppearance: 'Внешний вид',
+  sectionData: 'Данные и синхронизация',
   badgeCustom: 'Свой',
   badgeDefault: 'Стандарт',
   badgeNone: 'Нет',
@@ -63,11 +64,10 @@ export const ru: UILabels = {
   settingShowEtymology: 'Показать этимологию',
   settingShowMnemonic: 'Показать мнемонику',
   settingShowExamples: 'Показать примеры',
-  historyTitle: 'История',
+  historyTitle: 'Ваш путь',
   clearHistory: 'Очистить',
   noHistory: 'Нет истории.',
   closeBtn: 'Закрыть',
-  // Add missing stats properties
   statsTitle: 'Достижения',
   statsTotal: 'Всего пройдено',
   statsChars: 'Уникальных иероглифов',
@@ -76,7 +76,6 @@ export const ru: UILabels = {
   welcomeSubtitle: 'Откройте для себя красоту китайских иероглифов. Инструмент, сочетающий каллиграфию и ИИ.',
   welcomeBtn: 'Начать',
   
-  // Onboarding Guide
   guideSearchTitle: 'Умный поиск',
   guideSearchDesc: 'Находите иероглифы и идиомы мгновенно.',
   guideWatchTitle: 'Порядок черт',
@@ -88,52 +87,52 @@ export const ru: UILabels = {
   idiomUsage: 'Пример использования',
   idiomTitle: 'Анализ идиомы',
   shareAction: 'Поделиться',
-  shareTitleChar: "Научитесь писать '{char}' в HanziMaster!",
-  shareTitleIdiom: "Изучите идиому '{idiom}' в HanziMaster!",
-  shareTextChar: "🀄️ Я научился писать '{char}' ({pinyin}) в HanziMaster!\n\n📖 Значение: {meaning}\n\n✨ Посмотрите анимацию черт и анализ ИИ здесь:\n{url}\n\n#HanziMaster #УчимКитайский #Каллиграфия",
-  shareTextIdiom: "📜 Нашел интересную идиому: '{idiom}' ({pinyin})\n\n💡 Значение: {meaning}\n\n🚀 Узнайте историю происхождения в HanziMaster:\n{url}\n\n#HanziMaster #КитайскиеИдиомы #УчимКитайский",
-  shareMessageCopied: 'Текст для отправки скопирован!',
+  shareTitleChar: "Как писать '{char}' в HanziMaster",
+  shareTitleIdiom: "Идиома '{idiom}' в HanziMaster",
+  shareTextChar: "🀄️ Я научился писать '{char}' ({pinyin}) в HanziMaster!\n\n📖 Значение: {meaning}\n\n{url}\n\n#HanziMaster #Китайский",
+  shareTextIdiom: "📜 Нашел интересную идиому: '{idiom}' ({pinyin})\n\n💡 Значение: {meaning}\n\n🚀 История в HanziMaster:\n{url}",
+  shareMessageCopied: 'Текст скопирован!',
 
-  // App Sharing
   shareAppTitle: 'Поделиться приложением',
-  shareAppText: '🔥 Нашел потрясающий инструмент для изучения китайских иероглифов!\n\nHanziMaster сочетает дзен-каллиграфию с ИИ. Работает оффлайн!\n\nПопробуйте: {url}\n\n#HanziMaster #УчимКитайский #Каллиграфия',
+  shareAppText: '🔥 Нашел потрясающий инструмент для изучения китайских иероглифов! Работает оффлайн: {url}',
 
-  // Audit
   settingDatabaseStatus: 'Статус БД',
   pinyinCoverage: 'Покрытие Пиньинь',
-  pinyinCoverageDesc: 'Локальная база. Покрыто {covered} из {total} символов.',
+  pinyinCoverageDesc: 'Локальная база: {covered} из {total} символов.',
   missingChars: 'Пропущенные',
-  copyMissing: 'Копировать список',
+  copyMissing: 'Копировать',
 
-  // Reload Prompt
+  downloadLexicon: 'Скачать оффлайн-словарь',
+  downloading: 'Синхронизация...',
+  downloadSuccess: 'Словарь готов',
+  downloadError: 'Ошибка синхронизации',
+
   updateAvailable: 'Обновление',
-  updateMsg: 'Доступна новая версия. Перезагрузите для обновления.',
+  updateMsg: 'Доступна новая версия. Перезагрузите страницу.',
   reloadBtn: 'Обновить',
   offlineReady: 'Оффлайн готов',
   offlineMsg: 'Приложение готово к работе оффлайн.',
   dismissBtn: 'Закрыть',
 
-  // Seasonal
   suggestionsLabel: 'Рекомендации',
-  springFestival: 'Китайский Новый год',
+  springFestival: 'Чуньцзе',
   lanternFestival: 'Праздник фонарей',
   qingming: 'Цинмин',
   laborDay: 'День труда',
-  dragonBoat: 'Праздник драконьих лодок',
-  qixi: 'Циси (День влюбленных)',
-  midAutumn: 'Праздник середины осени',
-  nationalDay: 'День образования КНР',
+  dragonBoat: 'Дуаньу',
+  qixi: 'Циси',
+  midAutumn: 'Праздник осени',
+  nationalDay: 'День КНР',
   singlesDay: 'День холостяков',
   christmas: 'Рождество',
 
-  // UX Fixes v0.4.2
   strokeProgress: 'Черта {current} / {total}',
-  writeNextStroke: 'Пожалуйста, напишите следующую черту.',
-  refreshSuggestions: 'Обновить предложения',
+  writeNextStroke: 'Напишите следующую черту.',
+  refreshSuggestions: 'Обновить',
   offlineModeEnabled: 'Оффлайн режим включен',
-  offlineModeActive: 'Оффлайн режим: Используются локальные данные и системный голос.',
-  copySuccess: 'Скопировано в буфер обмена!',
-  copyFailed: 'Не удалось скопировать.',
+  offlineModeActive: 'Оффлайн: локальные данные и системный голос.',
+  copySuccess: 'Скопировано!',
+  copyFailed: 'Ошибка.',
   toastSuccess: 'Успех',
   toastError: 'Ошибка',
   toastInfo: 'Инфо',
