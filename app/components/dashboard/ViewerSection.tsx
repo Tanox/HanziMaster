@@ -1,4 +1,4 @@
-// app/components/dashboard/ViewerSection.tsx v0.9.0
+// app/components/dashboard/ViewerSection.tsx v0.9.5
 import React, { useMemo } from 'react';
 import IdiomNavigator from '../IdiomNavigator';
 import StrokeViewer from '../StrokeViewer';
@@ -66,7 +66,7 @@ const ViewerSection: React.FC<ViewerSectionProps> = ({
       {/* Adding Key ensures animation re-triggers on char change */}
       <div id="active-pinyin-display" key={activeChar} className="h-16 mb-4 flex items-end justify-center w-full">
         {currentPinyin && (
-            <span className="text-5xl md:text-6xl text-vermilion-600 dark:text-vermilion-400 font-pinyin font-bold tracking-wider animate-fade-in transition-all">
+            <span className="text-5xl md:text-6xl text-vermilion-500 dark:text-vermilion-400 font-sans font-semibold tracking-wide animate-fade-in transition-all">
                 {currentPinyin}
             </span>
         )}

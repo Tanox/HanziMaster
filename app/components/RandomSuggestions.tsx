@@ -1,4 +1,4 @@
-// app/components/RandomSuggestions.tsx v0.9.0
+// app/components/RandomSuggestions.tsx v0.9.6
 import React from 'react';
 import { SEASONAL_EVENTS } from '../constants/seasonalEvents';
 import { UILabels } from '../types';
@@ -33,21 +33,32 @@ const RandomSuggestions: React.FC<RandomSuggestionsProps> = ({ onSelect, label, 
   const activeSeasonLabel = activeSeasonKey ? labels[activeSeasonKey] : null;
 
   return (
-    <div id="random-suggestions-container" className="w-full mt-12 lg:mt-16 mb-8 border-t border-slate-100 dark:border-slate-800 pt-10 px-4">
-      <div id="suggestions-header" className="flex items-center justify-center gap-2 mb-8 text-slate-400 dark:text-slate-500">
-        {activeSeasonLabel ? (
-            <>
-                <Calendar size={16} className="text-vermilion-500" />
-                <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-vermilion-600 dark:text-vermilion-400">
-                    {activeSeasonLabel} {labels.suggestionsLabel || 'Suggestions'}
-                </h3>
-            </>
-        ) : (
-            <>
-                <Sparkles size={16} className="text-amber-400" />
-                <h3 className="text-xs font-bold uppercase tracking-[0.2em]">{label}</h3>
-            </>
-        )}
+    <div id="random-suggestions-container" className="w-full mt-12 lg:mt-16 mb-4 border-t border-slate-100 dark:border-slate-800 pt-10 px-4">
+      <div id="suggestions-header" className="flex items-center justify-center gap-3 mb-8 text-slate-400 dark:text-slate-500">
+        <div className="flex items-center gap-2">
+            {activeSeasonLabel ? (
+                <>
+                    <Calendar size={16} className="text-vermilion-500" />
+                    <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-vermilion-600 dark:text-vermilion-400">
+                        {activeSeasonLabel} {labels.suggestionsLabel || 'Suggestions'}
+                    </h3>
+                </>
+            ) : (
+                <>
+                    <Sparkles size={16} className="text-amber-400" />
+                    <h3 className="text-xs font-bold uppercase tracking-[0.2em]">{label}</h3>
+                </>
+            )}
+        </div>
+
+        <button 
+            onClick={generateItems} 
+            className="group p-1.5 rounded-full hover:text-teal-500 hover:bg-teal-50 dark:hover:bg-slate-800 transition-all duration-300 active:scale-90"
+            title={labels.refreshSuggestions || "Refresh Suggestions"}
+            aria-label={labels.refreshSuggestions || "Refresh Suggestions"}
+         >
+           <RefreshCw size={14} className="group-hover:rotate-180 transition-transform duration-500" />
+         </button>
       </div>
       
       <div id="suggestions-grid" className="flex flex-wrap justify-center gap-4 sm:gap-6">
@@ -74,17 +85,6 @@ const RandomSuggestions: React.FC<RandomSuggestionsProps> = ({ onSelect, label, 
             </button>
           );
         })}
-      </div>
-      
-      <div className="mt-8 text-center">
-         <button 
-            onClick={generateItems} 
-            className="group p-3 rounded-full text-slate-400 hover:text-teal-500 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800 transition-all duration-300 active:scale-90"
-            title={labels.refreshSuggestions || "Refresh Suggestions"}
-            aria-label={labels.refreshSuggestions || "Refresh Suggestions"}
-         >
-           <RefreshCw size={20} className="group-hover:rotate-180 transition-transform duration-500" />
-         </button>
       </div>
     </div>
   );

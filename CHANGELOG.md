@@ -1,14 +1,16 @@
 # Changelog
 
+## [0.9.6]
+
+### Changed
+- **UX Layout Density**: 将“随机一字”的刷新按钮从底部移至标题右侧，优化了页面空间利用率，减少了不必要的滚动。
+
+## [0.9.5]
+
+### Changed
+- **Classic Pinyin Style**: 拼音字体样式回归经典设计。颜色从 `vermilion-600` 还原为品牌标准 `vermilion-500`，并改用 `font-sans` 配合 `semibold` 字重，视觉感更清爽。
+
 ## [0.9.4]
 
 ### Fixed
 - **Build stability**: 修复了 `SettingsDataAudit.tsx` 中未使用的 `PINYIN_MAP` 导致生产构建失败的问题。
-
-## [0.9.3]
-
-### Added
-- **Exponential Backoff Retry**: `hanziService` 现已具备 CDN 下载自动重试机制，大幅提升弱网环境下的同步成功率。
-- **HSK 1-3 Offline Meanings**: 离线词典现已覆盖 HSK 1-3 级共 518 个核心字词，断网练习不再只有“孤字”。
-- **Real-time Sync Status**: 下载笔顺库时，UI 会实时滚动显示正在处理的汉字，增强交互确定感。
-- **Strict Data Validation**: 引入 SVG 路径完整性校验，确保本地缓存数据 100% 可用，防止 Canvas 渲染崩溃。

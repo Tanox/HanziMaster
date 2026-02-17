@@ -1,13 +1,12 @@
 {
-  "name": "HanziMaster v0.9.4",
-  "version": "0.9.4",
-  "description": "Stability update: Fixed build-time TypeScript errors and optimized resource management.",
+  "name": "HanziMaster v0.9.6",
+  "version": "0.9.6",
+  "description": "UX Refinement: Repositioned suggestion refresh button for better layout density.",
   "keywords": [
     "Chinese characters",
     "Hanzi",
-    "Stroke Order",
-    "Offline Dictionary",
-    "Stability",
+    "UI UX",
+    "Random Suggestions",
     "PWA"
   ],
   "requestFramePermissions": [],
