@@ -1,4 +1,4 @@
-// app/constants/dictionaryData.ts v0.8.8
+// app/constants/dictionaryData.ts v0.9.3
 export const SIMPLE_DICTIONARY: Record<string, string> = {
   // --- HSK 1 Core Vocabulary ---
   "爱": "love; affection; to like",
@@ -187,7 +187,7 @@ export const SIMPLE_DICTIONARY: Record<string, string> = {
   "贵": "expensive",
   "过": "to pass; experience particle",
   "还": "still; yet",
-  "孩子": "child",
+  "孩": "child; kid",
   "好吃": "delicious",
   "黑": "black",
   "红": "red",
