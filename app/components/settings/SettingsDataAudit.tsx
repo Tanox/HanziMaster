@@ -1,6 +1,6 @@
-// app/components/settings/SettingsDataAudit.tsx v0.8.7
+// app/components/settings/SettingsDataAudit.tsx v0.9.1
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { Database, Book, Loader2, Download, Wifi, CheckCircle2, Languages, RefreshCcw } from 'lucide-react';
+import { Database, Book, Loader2, Download, Wifi, CheckCircle2, Languages, RefreshCcw, AlertTriangle } from 'lucide-react';
 import { UILabels, AppSettings } from '../../types';
 import { COMMON_CHARS } from '../../constants/commonChars';
 import { PINYIN_MAP } from '../../constants/pinyinData';
@@ -22,6 +22,7 @@ const SettingsDataAudit: React.FC<SettingsDataAuditProps> = ({ labels, settings,
   const [isLexiconDownloading, setIsLexiconDownloading] = useState(false);
   const [lexiconProgress, setLexiconProgress] = useState(0);
   const [lexiconCoveredCount, setLexiconCoveredCount] = useState(0);
+  const [missingSample, setMissingSample] = useState<string[]>([]);
   
   const [offlineDict, setOfflineDict] = useLocalStorage<Record<string, string>>('offlineDictionary', {});
   const [isDictDownloading, setIsDictDownloading] = useState(false);
@@ -34,8 +35,25 @@ const SettingsDataAudit: React.FC<SettingsDataAuditProps> = ({ labels, settings,
     try {
         const cache = await caches.open(CACHE_NAME);
         const keys = await cache.keys();
-        const count = keys.filter(k => k.url.includes(LOCAL_BASE_URL)).length;
+        const urls = new Set(keys.map(k => k.url));
+        
+        let count = 0;
+        const missing: string[] = [];
+        
+        // Audit only high-frequency subset for the "Missing" list
+        const highFreq = COMMON_CHARS.slice(0, 500);
+        
+        COMMON_CHARS.forEach(char => {
+            const path = `${window.location.origin}${LOCAL_BASE_URL}/${char}.json`;
+            if (urls.has(path)) {
+                count++;
+            } else if (highFreq.includes(char) && missing.length < 5) {
+                missing.push(char);
+            }
+        });
+
         setLexiconCoveredCount(count);
+        setMissingSample(missing);
     } catch (e) {
         console.warn("Lexicon audit failed", e);
     } finally {
@@ -43,19 +61,15 @@ const SettingsDataAudit: React.FC<SettingsDataAuditProps> = ({ labels, settings,
     }
   }, []);
 
-  // Initial Audit
   useEffect(() => {
     auditLexicon();
   }, [auditLexicon]);
 
   const stats = useMemo(() => {
-    // Exact count of items in PINYIN_MAP
     const pinyinTotal = Object.keys(PINYIN_MAP).length;
-    // Lexicon total from common chars
     const lexiconTotal = COMMON_CHARS.length;
-    // Dictionary coverage
     const dictCovered = Object.keys(offlineDict).length;
-    const dictTotal = 518; // Updated target based on v0.8.7 dictionaryData.ts
+    const dictTotal = 518; 
 
     return { lexiconTotal, pinyinTotal, dictCovered, dictTotal };
   }, [offlineDict]);
@@ -99,10 +113,8 @@ const SettingsDataAudit: React.FC<SettingsDataAuditProps> = ({ labels, settings,
     if (isDictDownloading) return;
     setIsDictDownloading(true);
     try {
-        // Dynamic import to keep main bundle small
         const module = await import('../../constants/dictionaryData');
-        await new Promise(resolve => setTimeout(resolve, 600)); // Simulate sync feel
-        
+        await new Promise(resolve => setTimeout(resolve, 600)); 
         setOfflineDict(module.SIMPLE_DICTIONARY);
         showToast(labels.dictionaryReady || "Dictionary Ready", 'success');
     } catch (e) {
@@ -132,17 +144,6 @@ const SettingsDataAudit: React.FC<SettingsDataAuditProps> = ({ labels, settings,
                 </button>
             </div>
 
-            {/* Pinyin Map Stats */}
-            <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-100 dark:border-slate-800">
-                <div className="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-200">
-                    <Languages size={16} className="text-amber-500" />
-                    <span>{labels.pinyinCoverage || "Pinyin Map"}</span>
-                </div>
-                <div className="px-2.5 py-0.5 bg-white dark:bg-slate-800 rounded-full border border-slate-200 dark:border-slate-700 text-[10px] font-mono font-bold text-slate-500">
-                    {stats.pinyinTotal} items
-                </div>
-            </div>
-            
             {/* Lexicon Sync */}
             <div className="p-4 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-100 dark:border-slate-800 space-y-4">
                 <div className="flex items-center justify-between">
@@ -161,6 +162,15 @@ const SettingsDataAudit: React.FC<SettingsDataAuditProps> = ({ labels, settings,
                       style={{ width: `${isLexiconDownloading ? lexiconProgress : lexiconPercentage}%` }} 
                     />
                 </div>
+
+                {lexiconPercentage < 100 && missingSample.length > 0 && !isLexiconDownloading && (
+                    <div className="flex items-start gap-2 p-2 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-100 dark:border-amber-900/30">
+                        <AlertTriangle size={12} className="text-amber-500 mt-0.5 shrink-0" />
+                        <p className="text-[10px] text-amber-700 dark:text-amber-400 leading-tight">
+                            {labels.missingChars || "Missing"}: {missingSample.join(', ')}...
+                        </p>
+                    </div>
+                )}
 
                 <button 
                   onClick={handleDownloadLexicon} 

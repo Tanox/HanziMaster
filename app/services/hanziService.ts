@@ -1,12 +1,25 @@
-// app/services/hanziService.ts v0.8.9
+// app/services/hanziService.ts v0.9.1
 import { HanziData } from '../types';
 
 const CDN_BASE_URL = 'https://cdn.jsdelivr.net/npm/hanzi-writer-data@2.0';
 const LOCAL_BASE_URL = '/hanzi-data';
 
 /**
- * Fetches stroke data with multi-tier fallback.
- * v0.8.9: Enhanced resilience against network 'Failed to fetch' errors.
+ * Validates the structure of fetched Hanzi data.
+ */
+const isValidHanziData = (data: any): data is HanziData => {
+  return (
+    data &&
+    Array.isArray(data.strokes) &&
+    data.strokes.length > 0 &&
+    Array.isArray(data.medians) &&
+    data.medians.length === data.strokes.length
+  );
+};
+
+/**
+ * Fetches stroke data with multi-tier fallback and integrity check.
+ * v0.9.1: Added validation to reject corrupted or partial JSON responses.
  */
 export const fetchHanziData = async (char: string): Promise<HanziData | null> => {
   try {
@@ -17,10 +30,12 @@ export const fetchHanziData = async (char: string): Promise<HanziData | null> =>
           headers: { 'Accept': 'application/json' }
       });
       if (localResponse.ok) {
-        return await localResponse.json() as HanziData;
+        const data = await localResponse.json();
+        if (isValidHanziData(data)) return data;
+        console.warn(`Local data for ${char} is invalid, falling back to CDN.`);
       }
     } catch (localError) {
-        console.debug(`Local fetch for ${char} failed (likely not synced), falling back to CDN.`);
+        console.debug(`Local fetch for ${char} failed (likely not synced).`);
     }
 
     // Tier 2: Try CDN Data (jsDelivr)
@@ -37,7 +52,10 @@ export const fetchHanziData = async (char: string): Promise<HanziData | null> =>
       throw new Error(`CDN returned status ${response.status}`);
     }
 
-    return await response.json() as HanziData;
+    const cdnData = await response.json();
+    if (isValidHanziData(cdnData)) return cdnData;
+    
+    throw new Error(`Fetched data for ${char} failed validation.`);
   } catch (error) {
     // Tier 3: Final Catch
     console.error(`Fatal error loading data for "${char}":`, error);

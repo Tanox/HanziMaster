@@ -1,4 +1,4 @@
-// app/hooks/useAppController.ts v0.7.5
+// app/hooks/useAppController.ts v0.9.1
 import { useState, useEffect } from 'react';
 import { HistoryItem, AppSettings, InteractionMode, AnimationState } from '../types';
 import { COMMON_CHARS } from '../constants/commonChars';
