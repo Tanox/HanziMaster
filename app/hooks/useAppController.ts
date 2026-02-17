@@ -1,4 +1,4 @@
-// app/hooks/useAppController.ts v0.9.1
+// app/hooks/useAppController.ts v0.9.7
 import { useState, useEffect } from 'react';
 import { HistoryItem, AppSettings, InteractionMode, AnimationState } from '../types';
 import { COMMON_CHARS } from '../constants/commonChars';
@@ -7,7 +7,6 @@ import { useInteractionState } from './useInteractionState';
 import { useContentFetcher } from './useContentFetcher';
 
 const DEFAULT_SETTINGS: AppSettings = {
-  apiKey: '', 
   gridStyle: 'rice',
   showOutline: true,
   autoPlay: true,

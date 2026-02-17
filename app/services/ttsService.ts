@@ -1,15 +1,17 @@
-// app/services/ttsService.ts v0.8.9
+// app/services/ttsService.ts v0.9.7
 import { GoogleGenAI, Modality } from "@google/genai";
 
 const audioCache: Map<string, AudioBuffer> = new Map();
 let sharedAudioContext: AudioContext | null = null;
-const aiInstances: Map<string, GoogleGenAI> = new Map();
+let globalAiInstance: GoogleGenAI | null = null;
 
-function getAiInstance(apiKey: string): GoogleGenAI {
-    if (!aiInstances.has(apiKey)) {
-        aiInstances.set(apiKey, new GoogleGenAI({ apiKey }));
+function getAiInstance(): GoogleGenAI | null {
+    const apiKey = process.env.API_KEY;
+    if (!apiKey) return null;
+    if (!globalAiInstance) {
+        globalAiInstance = new GoogleGenAI({ apiKey });
     }
-    return aiInstances.get(apiKey)!;
+    return globalAiInstance;
 }
 
 function getAudioContext(): AudioContext {
@@ -48,11 +50,11 @@ function speakNative(text: string, lang: string = 'zh-CN') {
   });
 }
 
-export const playPronunciation = async (text: string, language: string = 'zh-CN', apiKeyOverride?: string): Promise<void> => {
-  const apiKey = apiKeyOverride || (process.env.API_KEY as string);
+export const playPronunciation = async (text: string, language: string = 'zh-CN'): Promise<void> => {
+  const ai = getAiInstance();
   
   // Quick return for offline or no key
-  if (!apiKey || !navigator.onLine) {
+  if (!ai || !navigator.onLine) {
     return speakNative(text, language);
   }
 
@@ -71,8 +73,6 @@ export const playPronunciation = async (text: string, language: string = 'zh-CN'
   }
 
   try {
-    const ai = getAiInstance(apiKey);
-    // Optimized for TTS task per guidelines
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash-preview-tts",
       contents: [{ parts: [{ text: `Say this clearly in Mandarin Chinese: ${text}` }] }],
@@ -94,7 +94,6 @@ export const playPronunciation = async (text: string, language: string = 'zh-CN'
     source.connect(audioContext.destination);
     source.start();
   } catch (error: any) {
-    // Silent recovery: If it's a 500 or any network error, switch to native immediately
     console.debug("Gemini TTS service unavailable, falling back to native engine.");
     return speakNative(text, language);
   }

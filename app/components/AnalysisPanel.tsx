@@ -1,4 +1,5 @@
-// app/components/AnalysisPanel.tsx v0.7.1
+
+// app/components/AnalysisPanel.tsx v0.7.2
 import React from 'react';
 import { CharacterAnalysis, IdiomAnalysis, AppSettings, HanziData } from '../types';
 import { UI_LABELS } from '../locales';
@@ -38,7 +39,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, idiomAnalysis, 
       {idiomAnalysis && (
         <IdiomDisplay 
           data={idiomAnalysis} 
-          apiKey={settings.apiKey} 
+          // Fix: apiKey was removed from IdiomDisplayProps in v0.9.7 but remained here in the component call
           labels={labels} 
         />
       )}

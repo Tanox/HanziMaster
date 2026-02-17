@@ -1,4 +1,4 @@
-// app/components/Controls.tsx v0.7.1
+// app/components/Controls.tsx v0.9.7
 import React from 'react';
 import { Play, Pause, RotateCcw, PenTool, Eye } from 'lucide-react';
 import { AnimationState, InteractionMode } from '../types';
@@ -20,7 +20,6 @@ interface ControlsProps {
     practiceMode: string;
     viewMode: string;
   };
-  apiKey?: string;
 }
 
 const Controls: React.FC<ControlsProps> = ({
@@ -32,7 +31,6 @@ const Controls: React.FC<ControlsProps> = ({
   onToggleMode,
   char,
   labels,
-  apiKey,
 }) => {
   const isPractice = mode === InteractionMode.PRACTICE;
 
@@ -118,7 +116,6 @@ const Controls: React.FC<ControlsProps> = ({
                 text={char}
                 size={22}
                 className="w-12 h-12 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
-                apiKey={apiKey}
             />
         </div>
       </div>

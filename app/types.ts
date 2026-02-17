@@ -1,4 +1,5 @@
-// app/types.ts v0.8.0
+
+// app/types.ts v0.9.8
 export interface Point {
   x: number;
   y: number;
@@ -94,7 +95,6 @@ export enum InteractionMode {
 export type GridStyle = 'rice' | 'field' | 'none';
 
 export interface AppSettings {
-  apiKey?: string;
   gridStyle: GridStyle;
   showOutline: boolean;
   autoPlay: boolean;
@@ -107,6 +107,8 @@ export interface AppSettings {
   showMnemonic: boolean;
   showExamples: boolean;
   theme?: 'light' | 'dark';
+  // Fix: Added apiKey to resolve type issues in SettingsApiKey.tsx
+  apiKey?: string;
 }
 
 export type ToastType = 'success' | 'error' | 'info';

@@ -1,4 +1,4 @@
-// app/components/analysis/cards/HeaderCard.tsx v0.7.1
+// app/components/analysis/cards/HeaderCard.tsx v0.9.7
 import React from 'react';
 import { CharacterAnalysis, AppSettings, HanziData, UILabels } from '../../../types';
 import PronunciationButton from '../../PronunciationButton';
@@ -34,7 +34,7 @@ const HeaderCard: React.FC<HeaderCardProps> = ({ analysis, hanziData, settings, 
             <rt className="text-xl text-teal-600 dark:text-teal-400 font-medium tracking-wide">{analysis.pinyin}</rt>
           </ruby>
           <div className="flex items-center -mr-2">
-            {!isFallback && <PronunciationButton text={analysis.char} apiKey={settings.apiKey} />}
+            {!isFallback && <PronunciationButton text={analysis.char} />}
             <ShareButton title={shareTitle} text={shareText} url={shareUrl} labels={labels} className="text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-300" />
             <ShareImageButton hanziData={hanziData} analysis={analysis} settings={settings} />
           </div>

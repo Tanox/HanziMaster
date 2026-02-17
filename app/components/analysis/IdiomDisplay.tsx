@@ -1,4 +1,4 @@
-// app/components/analysis/IdiomDisplay.tsx v0.7.1
+// app/components/analysis/IdiomDisplay.tsx v0.9.7
 import React from 'react';
 import { ScrollText, Quote } from 'lucide-react';
 import { IdiomAnalysis, UILabels } from '../../types';
@@ -7,11 +7,10 @@ import ShareButton from '../ShareButton';
 
 interface IdiomDisplayProps {
   data: IdiomAnalysis;
-  apiKey?: string;
   labels: UILabels;
 }
 
-const IdiomDisplay: React.FC<IdiomDisplayProps> = ({ data, apiKey, labels }) => {
+const IdiomDisplay: React.FC<IdiomDisplayProps> = ({ data, labels }) => {
   const shareUrl = `${window.location.origin}?char=${encodeURIComponent(data.idiom)}`;
   const shareTemplate = labels.shareTextIdiom || "I just learned the idiom '{idiom}' ({pinyin}) on HanziMaster! {url}";
   const shareText = shareTemplate.replace('{idiom}', data.idiom).replace('{pinyin}', data.pinyin).replace('{meaning}', data.meaning).replace('{url}', shareUrl);
@@ -28,7 +27,7 @@ const IdiomDisplay: React.FC<IdiomDisplayProps> = ({ data, apiKey, labels }) => 
                      </div>
                      <h2 className="text-4xl md:text-5xl font-hanzi font-bold text-slate-800 dark:text-white mb-2">{data.idiom}</h2>
                      <div className="flex items-center gap-1 -ml-2">
-                         <PronunciationButton text={data.idiom} size={20} apiKey={apiKey} />
+                         <PronunciationButton text={data.idiom} size={20} />
                          <ShareButton title={shareTitle} text={shareText} url={shareUrl} labels={labels} className="text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-300" />
                          <span className="text-xl text-teal-600 dark:text-teal-400 font-medium tracking-wide ml-1">{data.pinyin}</span>
                      </div>

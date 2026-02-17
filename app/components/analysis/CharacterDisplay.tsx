@@ -1,4 +1,4 @@
-// app/components/analysis/CharacterDisplay.tsx v0.7.1
+// app/components/analysis/CharacterDisplay.tsx v0.9.7
 import React from 'react';
 import { CharacterAnalysis, AppSettings, HanziData, UILabels } from '../../types';
 import HeaderCard from './cards/HeaderCard';
@@ -29,7 +29,7 @@ const CharacterDisplay: React.FC<CharacterDisplayProps> = ({ analysis, hanziData
       {settings.showStructure && hasStrokeCount && <StrokeCountCard count={analysis.strokeCount} labels={labels} fullWidth={!showRichContent} />}
       {settings.showEtymology && showRichContent && <EtymologyCard content={analysis.etymology} labels={labels} />}
       {settings.showMnemonic && showRichContent && <MnemonicCard content={analysis.mnemonic} labels={labels} />}
-      {settings.showExamples && showRichContent && <ExampleWordsCard examples={analysis.examples} labels={labels} apiKey={settings.apiKey} />}
+      {settings.showExamples && showRichContent && <ExampleWordsCard examples={analysis.examples} labels={labels} />}
       {!showRichContent && <OfflineStateCard labels={labels} />}
     </div>
   );

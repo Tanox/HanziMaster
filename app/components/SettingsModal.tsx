@@ -1,4 +1,4 @@
-// app/components/SettingsModal.tsx v0.9.2
+// app/components/SettingsModal.tsx v0.9.7
 import React, { useState } from 'react';
 import { X, Layout, PenTool, BookOpen, Database, ShieldAlert, Sparkles } from 'lucide-react';
 import { AppSettings, UILabels } from '../types';
@@ -8,7 +8,6 @@ import SettingsVisuals from './settings/SettingsVisuals';
 import SettingsLearning from './settings/SettingsLearning';
 import SettingsContent from './settings/SettingsContent';
 import SettingsDataAudit from './settings/SettingsDataAudit';
-import SettingsApiKey from './settings/SettingsApiKey';
 import SettingsHazardZone from './settings/SettingsHazardZone';
 
 interface SettingsModalProps {
@@ -119,7 +118,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
             {activeTab === 'data' && (
               <div className="animate-fade-in space-y-8">
                 <SettingsDataAudit labels={labels} settings={settings} onUpdate={update} />
-                <SettingsApiKey labels={labels} apiKey={settings.apiKey} onUpdate={update} />
                 <div className="pt-4">
                    <SettingsHazardZone labels={labels} />
                 </div>

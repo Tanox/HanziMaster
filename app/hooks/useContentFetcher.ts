@@ -1,4 +1,4 @@
-// app/hooks/useContentFetcher.ts v0.7.1
+// app/hooks/useContentFetcher.ts v0.9.7
 import { useState } from 'react';
 import { HanziData, CharacterAnalysis, IdiomAnalysis, AppSettings } from '../types';
 import { useLocalStorage } from './useLocalStorage';
@@ -30,7 +30,7 @@ export const useContentFetcher = (settings: AppSettings) => {
     if (analysisCache[char]) {
       setAnalysis(analysisCache[char]);
     } else {
-      const res = await analyzeCharacter(char, langName, settings.offlineMode, settings.apiKey);
+      const res = await analyzeCharacter(char, langName, settings.offlineMode);
       if (res) {
         setAnalysis(res);
         if (!res.meaning.startsWith('Mode:')) updateCache(char, res, setAnalysisCache);
@@ -44,7 +44,7 @@ export const useContentFetcher = (settings: AppSettings) => {
       setIdiomAnalysis(idiomCache[term]);
     } else {
       const langName = LANGUAGES.find(l => l.code === langCode)?.name || 'English';
-      const res = await analyzeIdiom(term, langName, settings.offlineMode, settings.apiKey);
+      const res = await analyzeIdiom(term, langName, settings.offlineMode);
       if (res) {
         setIdiomAnalysis(res);
         if (!res.meaning.startsWith('Mode:')) updateCache(term, res, setIdiomCache);

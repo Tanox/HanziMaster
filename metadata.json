@@ -1,12 +1,12 @@
 {
-  "name": "HanziMaster v0.9.6",
-  "version": "0.9.6",
-  "description": "UX Refinement: Repositioned suggestion refresh button for better layout density.",
+  "name": "HanziMaster v0.9.7",
+  "version": "0.9.7",
+  "description": "Security & Architecture Alignment: Removed BYOK UI to strictly comply with system API key regulations.",
   "keywords": [
     "Chinese characters",
     "Hanzi",
-    "UI UX",
-    "Random Suggestions",
+    "Security Update",
+    "API Compliance",
     "PWA"
   ],
   "requestFramePermissions": [],

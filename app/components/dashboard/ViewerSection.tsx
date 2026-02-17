@@ -1,4 +1,4 @@
-// app/components/dashboard/ViewerSection.tsx v0.9.5
+// app/components/dashboard/ViewerSection.tsx v0.9.7
 import React, { useMemo } from 'react';
 import IdiomNavigator from '../IdiomNavigator';
 import StrokeViewer from '../StrokeViewer';
@@ -46,10 +46,6 @@ const ViewerSection: React.FC<ViewerSectionProps> = ({
 }) => {
   
   const currentPinyin = useMemo(() => {
-    // 3-Tier Resolution: 
-    // 1. Current AI Analysis (if char matches)
-    // 2. Previously cached AI analysis
-    // 3. Static PINYIN_MAP fallback
     if (analysis?.char === activeChar) return analysis.pinyin;
     return pinyinCache[activeChar] || PINYIN_MAP[activeChar] || '';
   }, [analysis, activeChar, pinyinCache]);
@@ -63,7 +59,6 @@ const ViewerSection: React.FC<ViewerSectionProps> = ({
           onSelectChar={(char, index) => actions.handleCharSelect(char, undefined, index)} 
       />
 
-      {/* Adding Key ensures animation re-triggers on char change */}
       <div id="active-pinyin-display" key={activeChar} className="h-16 mb-4 flex items-end justify-center w-full">
         {currentPinyin && (
             <span className="text-5xl md:text-6xl text-vermilion-500 dark:text-vermilion-400 font-sans font-semibold tracking-wide animate-fade-in transition-all">
@@ -110,7 +105,6 @@ const ViewerSection: React.FC<ViewerSectionProps> = ({
                     practiceMode: labels.practiceMode || "Practice",
                     viewMode: labels.viewMode || "Watch"
                 }}
-                apiKey={settings.apiKey}
               />
           </>
           ) : (

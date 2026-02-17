@@ -1,4 +1,4 @@
-// app/components/PronunciationButton.tsx v0.7.1
+// app/components/PronunciationButton.tsx v0.9.7
 import React, { useState } from 'react';
 import { Volume2, Loader2, AlertCircle } from 'lucide-react';
 import { playPronunciation } from '../services/ttsService';
@@ -7,10 +7,9 @@ interface PronunciationButtonProps {
   text: string;
   size?: number;
   className?: string;
-  apiKey?: string;
 }
 
-const PronunciationButton: React.FC<PronunciationButtonProps> = ({ text, size = 20, className = "", apiKey }) => {
+const PronunciationButton: React.FC<PronunciationButtonProps> = ({ text, size = 20, className = "" }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [error, setError] = useState(false);
 
@@ -20,7 +19,7 @@ const PronunciationButton: React.FC<PronunciationButtonProps> = ({ text, size = 
     setIsPlaying(true);
     setError(false);
     try {
-      await playPronunciation(text, 'zh-CN', apiKey);
+      await playPronunciation(text, 'zh-CN');
     } catch (err) {
       setError(true);
       setTimeout(() => setError(false), 2000);

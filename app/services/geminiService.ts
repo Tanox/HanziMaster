@@ -1,21 +1,21 @@
-// app/services/geminiService.ts v0.8.1
+// app/services/geminiService.ts v0.9.7
 import { GoogleGenAI, Type, HarmCategory, HarmBlockThreshold, Schema } from "@google/genai";
 import { CharacterAnalysis, IdiomAnalysis } from '../types';
 
 // --- AI Instance Cache ---
-const aiInstances: Map<string, GoogleGenAI> = new Map();
+let globalAiInstance: GoogleGenAI | null = null;
 
 /**
- * Gets or creates a cached GoogleGenAI instance.
- * v0.8.1: Ensures initialization strictly follows named parameters.
- * @param apiKey - API key for AI calls
- * @returns GoogleGenAI instance
+ * Gets or creates the global GoogleGenAI instance using process.env.API_KEY.
+ * Strictly follows system rules: Exclusive use of process.env.API_KEY.
  */
-function getAiInstance(apiKey: string): GoogleGenAI {
-    if (!aiInstances.has(apiKey)) {
-        aiInstances.set(apiKey, new GoogleGenAI({ apiKey }));
+function getAiInstance(): GoogleGenAI | null {
+    const apiKey = process.env.API_KEY;
+    if (!apiKey) return null;
+    if (!globalAiInstance) {
+        globalAiInstance = new GoogleGenAI({ apiKey });
     }
-    return aiInstances.get(apiKey)!;
+    return globalAiInstance;
 }
 
 // --- Offline Fallback Logic ---
@@ -72,17 +72,12 @@ const commonConfig = {
 
 /**
  * Robust JSON Extractor.
- * Corrected to use standard JavaScript compatible logic instead of non-standard recursive regex.
  */
 function cleanJsonResponse(text: string): string {
     if (!text) return "";
     const trimmed = text.trim();
-    
-    // Find the longest substring that starts with '{' and ends with '}'
     const match = trimmed.match(/\{[\s\S]*\}/);
     if (match) return match[0];
-    
-    // Fallback: Remove markdown code block markers
     return trimmed.replace(/^```(json)?\s*/i, '').replace(/\s*```$/, '').trim();
 }
 
@@ -90,14 +85,13 @@ function cleanJsonResponse(text: string): string {
  * Generic AI analysis function to fetch structured JSON data from Gemini API.
  */
 async function fetchAiAnalysis<T>({
-  entity, languageName, forceOffline, apiKeyOverride,
+  entity, languageName, forceOffline,
   promptGenerator, systemInstructionGenerator, responseSchema,
   offlineGenerator, errorReason = "Service Error",
 }: {
   entity: string;
   languageName: string;
   forceOffline: boolean;
-  apiKeyOverride?: string;
   promptGenerator: (entity: string, language: string) => string;
   systemInstructionGenerator: (language: string) => string;
   responseSchema: Schema;
@@ -108,14 +102,12 @@ async function fetchAiAnalysis<T>({
     return offlineGenerator(entity, forceOffline ? "Offline Mode" : "Network Unavailable");
   }
 
-  // API Key priority: 1. User Override (BYOK), 2. Environment (Shared)
-  const apiKey = apiKeyOverride || process.env.API_KEY;
-  if (!apiKey) {
-    return offlineGenerator(entity, "No API Key");
+  const ai = getAiInstance();
+  if (!ai) {
+    return offlineGenerator(entity, "No API Key configured");
   }
 
   try {
-    const ai = getAiInstance(apiKey);
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: promptGenerator(entity, languageName),
@@ -175,25 +167,23 @@ const idiomAnalysisSchema: Schema = {
 
 // --- Exported Service Functions ---
 
-export const analyzeCharacter = async (char: string, languageName: string = 'English', forceOffline: boolean = false, apiKeyOverride?: string): Promise<CharacterAnalysis> => {
+export const analyzeCharacter = async (char: string, languageName: string = 'English', forceOffline: boolean = false): Promise<CharacterAnalysis> => {
   return fetchAiAnalysis<CharacterAnalysis>({
     entity: char,
     languageName,
     forceOffline,
-    apiKeyOverride,
     promptGenerator: (entity, lang) => `Please analyze the Chinese character "${entity}" for a student learning in ${lang}.`,
-    systemInstructionGenerator: (lang) => `You are a professional Chinese etymologist and linguist. Your task is to provide a detailed analysis of a single Chinese character. Respond ONLY with a valid JSON object that adheres to the provided schema. The language for all descriptive fields must be ${lang}.`,
+    systemInstructionGenerator: (lang) => `You are a professional Chinese etymologist and linguist. Respond ONLY with a valid JSON object. The language for all descriptive fields must be ${lang}.`,
     responseSchema: characterAnalysisSchema,
     offlineGenerator: generateOfflineAnalysis,
   });
 };
 
-export const analyzeIdiom = async (idiom: string, languageName: string = 'English', forceOffline: boolean = false, apiKeyOverride?: string): Promise<IdiomAnalysis> => {
+export const analyzeIdiom = async (idiom: string, languageName: string = 'English', forceOffline: boolean = false): Promise<IdiomAnalysis> => {
   return fetchAiAnalysis<IdiomAnalysis>({
     entity: idiom,
     languageName,
     forceOffline,
-    apiKeyOverride,
     promptGenerator: (entity, lang) => `Please analyze the Chinese idiom "${entity}" for a student learning in ${lang}.`,
     systemInstructionGenerator: (lang) => `You are a Chinese literature expert specializing in idioms. Respond ONLY with a valid JSON object. The language for all descriptive fields must be ${lang}.`,
     responseSchema: idiomAnalysisSchema,
