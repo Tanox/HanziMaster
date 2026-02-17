@@ -1,13 +1,15 @@
-// app/components/StrokeViewer.tsx v0.8.0
+// app/components/StrokeViewer.tsx v1.1.0
 import React, { useRef, useMemo } from 'react';
-import { HanziData, AnimationState, InteractionMode, AppSettings, UILabels, Grade, PracticeResult } from '../types';
+import { HanziData, AnimationState, InteractionMode, AppSettings, UILabels, Grade, PracticeResult, CharacterAnalysis } from '../types';
 import { PenTool } from 'lucide-react';
 import { getMedianPath } from '../utils/geometry';
 import { useStrokeAnimation } from '../hooks/useStrokeAnimation';
 import { usePracticeDrawing } from '../hooks/usePracticeDrawing';
+import ShareImageButton from './analysis/ShareImageButton';
 
 interface StrokeViewerProps {
   data: HanziData;
+  analysis?: CharacterAnalysis | null;
   animationState: AnimationState;
   setAnimationState: (state: AnimationState) => void;
   speed: number;
@@ -19,6 +21,7 @@ interface StrokeViewerProps {
 
 const StrokeViewer: React.FC<StrokeViewerProps> = ({
   data,
+  analysis,
   animationState,
   setAnimationState,
   speed,
@@ -63,8 +66,8 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     }[result.grade];
 
     return (
-        <div id="result-seal-overlay" className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
-            <div className="relative animate-stamp">
+        <div id="result-seal-overlay" className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none">
+            <div className="relative animate-stamp mb-4">
                 {/* Traditional Vermilion Seal Design */}
                 <div className="w-32 h-32 border-[6px] border-vermilion-600 rounded-xl flex flex-col items-center justify-center bg-white/10 backdrop-blur-[2px] shadow-2xl overflow-hidden transform -rotate-12">
                    <div className="absolute inset-0 bg-vermilion-600 opacity-[0.03] bg-texture-paper"></div>
@@ -75,6 +78,19 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
                 {/* Seal Splatter Shadow Effect */}
                 <div className="absolute -inset-4 bg-vermilion-600/5 blur-2xl rounded-full -z-10"></div>
             </div>
+
+            {analysis && (
+              <div className="pointer-events-auto animate-fade-in" style={{ animationDelay: '0.6s' }}>
+                <ShareImageButton 
+                  analysis={analysis} 
+                  settings={settings} 
+                  score={result.score} 
+                  grade={result.grade}
+                  label={labels.shareAction}
+                  className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-slate-200 dark:border-slate-700 shadow-xl scale-90 hover:scale-100"
+                />
+              </div>
+            )}
         </div>
     );
   };

@@ -1,20 +1,14 @@
 # Changelog
 
-## [0.9.7]
+## [1.0.0]
 
-### Removed
-- **BYOK UI Sanitization**: 彻底移除了“用户自定义 API Key”的 UI 界面和存储逻辑，以严格遵守系统开发者安全准则。
-- **Prop Cleanup**: 移除了全链路中多余的 `apiKey` 参数透传。
+### Refactored
+- **OpenSpec**: 将 16 个散乱文档深度整合为 6 大核心规范模块。
+- **Architecture**: 在规范中确立了 `useUserProgress` 逻辑抽离标准。
+- **Design System**: 规范化了纸墨美学的原子化样式路径。
 
-### Changed
-- **Unified Auth**: 全局统一使用 `process.env.API_KEY` 进行 AI 模型认证，简化了架构并提升了合规性。
+### Added
+- **SRS Guidance**: 在 `05_PEDAGOGY.md` 中补充了复习算法细节。
 
-## [0.9.6]
-
-### Changed
-- **UX Layout Density**: 将“随机一字”的刷新按钮从底部移至标题右侧，优化了页面空间利用率，减少了不必要的滚动。
-
-## [0.9.5]
-
-### Changed
-- **Classic Pinyin Style**: 拼音字体样式回归经典设计。颜色从 `vermilion-600` 还原为品牌标准 `vermilion-500`，并改用 `font-sans` 配合 `semibold` 字重，视觉感更清爽。
+## [1.0.0-rc.1]
+...

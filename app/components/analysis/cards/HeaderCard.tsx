@@ -1,4 +1,4 @@
-// app/components/analysis/cards/HeaderCard.tsx v0.9.7
+// app/components/analysis/cards/HeaderCard.tsx v1.1.0
 import React from 'react';
 import { CharacterAnalysis, AppSettings, HanziData, UILabels } from '../../../types';
 import PronunciationButton from '../../PronunciationButton';
@@ -15,7 +15,7 @@ interface HeaderCardProps {
   fullWidth?: boolean;
 }
 
-const HeaderCard: React.FC<HeaderCardProps> = ({ analysis, hanziData, settings, labels, isFallback, fullWidth }) => {
+const HeaderCard: React.FC<HeaderCardProps> = ({ analysis, settings, labels, isFallback, fullWidth }) => {
   const shareUrl = `${window.location.origin}?char=${encodeURIComponent(analysis.char)}`;
   const shareTemplate = labels.shareTextChar || "I learned '{char}' ({pinyin}) on HanziMaster! Meaning: {meaning}. See more: {url}";
   const shareText = shareTemplate
@@ -36,7 +36,7 @@ const HeaderCard: React.FC<HeaderCardProps> = ({ analysis, hanziData, settings, 
           <div className="flex items-center -mr-2">
             {!isFallback && <PronunciationButton text={analysis.char} />}
             <ShareButton title={shareTitle} text={shareText} url={shareUrl} labels={labels} className="text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-300" />
-            <ShareImageButton hanziData={hanziData} analysis={analysis} settings={settings} />
+            <ShareImageButton analysis={analysis} settings={settings} />
           </div>
         </div>
         <p className="text-lg text-slate-600 dark:text-slate-300 font-medium">{analysis.meaning}</p>

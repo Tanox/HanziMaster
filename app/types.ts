@@ -1,4 +1,3 @@
-
 // app/types.ts v0.9.8
 export interface Point {
   x: number;
@@ -41,9 +40,6 @@ export interface HistoryItem {
   timestamp: number;
 }
 
-/**
- * Enhanced Practice Results for v0.8.0
- */
 export enum Grade {
   EXQUISITE = 'EXQUISITE', // 神品
   MASTERFUL = 'MASTERFUL', // 妙品
@@ -107,8 +103,6 @@ export interface AppSettings {
   showMnemonic: boolean;
   showExamples: boolean;
   theme?: 'light' | 'dark';
-  // Fix: Added apiKey to resolve type issues in SettingsApiKey.tsx
-  apiKey?: string;
 }
 
 export type ToastType = 'success' | 'error' | 'info';

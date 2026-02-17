@@ -1,4 +1,4 @@
-// app/components/dashboard/ViewerSection.tsx v0.9.7
+// app/components/dashboard/ViewerSection.tsx v1.1.0
 import React, { useMemo } from 'react';
 import IdiomNavigator from '../IdiomNavigator';
 import StrokeViewer from '../StrokeViewer';
@@ -72,6 +72,7 @@ const ViewerSection: React.FC<ViewerSectionProps> = ({
           <>
               <StrokeViewer 
                 data={hanziData}
+                analysis={analysis}
                 animationState={animationState}
                 setAnimationState={actions.setAnimationState}
                 speed={speed}

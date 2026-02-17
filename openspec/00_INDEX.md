@@ -1,29 +1,19 @@
-# HanziMaster - 项目规范文档 (OpenSpec)
+# HanziMaster - 项目规范全书 (OpenSpec Index)
 
-欢迎查阅 **HanziMaster** 的全套项目规范文档。本项目严格遵循 OpenSpec 标准，旨在为开发、产品、设计及市场团队提供统一的真理来源 (Single Source of Truth)。
+本文档是 **HanziMaster** 项目的真理来源 (SSOT)。所有代码变更、视觉设计及教学逻辑必须符合下述 7 大核心规范模块。
 
-## 📚 文档目录
+## 📚 核心规范模块 (v1.0.0)
 
-| 编号 | 文档名称 | 核心内容 | 面向对象 | 状态 |
-| :--- | :--- | :--- | :--- | :--- |
-| **--** | [项目总纲 (Project Strategy)](./project.md) | **愿景、里程碑、路线图** | 所有人 | v0.9.1 |
-| **--** | [AI 协作规范 (Agents Guide)](./agents.md) | **SDK 使用、Prompt 约束、代码质量** | 开发者, AI | v0.9.1 |
-| **01** | [产品需求文档 (PRD)](./01_PRODUCT_REQUIREMENTS.md) | **教学闭环**、评分引擎、版本规划 | 产品, 开发 | v0.9.1 |
-| **02** | [技术架构规范](./02_TECHNICAL_ARCHITECTURE.md) | Hook 架构、离线优先、Worker 线程 | 架构师 | v0.9.1 |
-| **03** | [UI/UX 设计规范](./03_UI_UX_DESIGN.md) | **Light Mode 默认**、朱砂印章、纸墨质感 | 设计, 前端 | v0.9.1 |
-| **04** | [数据与 API 协议](./04_DATA_AND_API.md) | Gemini Schema、TTS 协议、**评估模型** | AI, 后端 | v0.9.1 |
-| **05** | [营销与推广策略](./05_MARKETING_AND_PROMO.md) | **数字书法教室**、增长引擎、SEO | market, 运营 | v0.9.1 |
-| **06** | [测试与 quality 保证 (QA)](./06_TESTING_AND_QA.md) | **评分逻辑验证**、离线韧性、性能预算 | QA, 开发 | v0.9.1 |
-| **07** | [无障碍访问规范 (A11y)](./07_ACCESSIBILITY_A11Y.md) | Canvas 语义化、**反馈音效**、键盘导航 | 开发, 设计 | v0.9.1 |
-| **08** | [用户旅程 (User Journey)](./08_USER_JOURNEY.md) | **学生画像**、HSK 备考、深度临摹 | 产品, 设计 | v0.9.1 |
-| **09** | [数据字典 (Data Dictionary)](./09_DATA_DICTIONARY.md) | **UserStats**、PracticeSession、评分模型 | 开发, 数据 | v0.9.1 |
-| **10** | [项目文件结构 (Project Structure)](./10_PROJECT_STRUCTURE.md) | 模块职责、**Utils 分层** | 开发者 | v0.9.1 |
-| **11** | [开发指南 (Development Guide)](./11_DEVELOPMENT_GUIDE.md) | 技术栈锁定 (React 18)、代码风格 | 开发者 | v0.9.1 |
-| **12** | [安全与隐私规范 (Security)](./12_SECURITY_AND_PRIVACY.md) | BYOK 策略、**学习数据本地化** | 架构师, 安全 | v0.9.1 |
-| **13** | [核心算法逻辑 (Algorithms)](./13_EVALUATION_LOGIC.md) | **几何校验**、Frechet 距离、评分权重 | 算法, 开发 | v0.9.1 |
-| **14** | [课程内容体系 (Curriculum)](./14_LEARNING_CURRICULUM.md) | **HSK 分级**、部首进阶、每日计划 | 教研, 产品 | v0.9.1 |
-| **15** | [国际化策略 (I18n Strategy)](./15_I18N_STRATEGY.md) | **15种语言支持**、TypeScript 类型安全 | 开发, 运营 | v0.9.1 |
-| **16** | [部署与运维规范 (Ops)](./16_DEPLOYMENT_OPS.md) | **Vercel 部署**、PWA 缓存策略、版本控制 | 运维, 开发 | v0.9.1 |
+| 编号 | 模块名称 | 核心涵盖子域 | 负责人 |
+| :--- | :--- | :--- | :--- |
+| **00** | [项目总纲与协作策略](./00_STRATEGY.md) | 愿景、AI Agent 协作契约、里程碑规划 | Sut |
+| **01** | [产品定义与用户旅程](./01_PRODUCT_UX.md) | PRD、用户画像 (Alex)、营销与推广策略 | Product |
+| **02** | [技术架构与工程准则](./02_ARCHITECTURE.md) | Hook 分层、目录结构、编码规范、开发指南 | Arch |
+| **03** | [设计系统与感知体验](./03_DESIGN_SYSTEM.md) | 纸墨美学、原子样式、A11y 无障碍、I18n 策略 | Design |
+| **04** | [逻辑引擎与数据协议](./04_LOGIC_DATA.md) | Fréchet 算法、API Schema、数据降级与字典 | Logic |
+| **05** | [教学大纲与学习算法](./05_PEDAGOGY.md) | HSK 课程体系、SRS 复习逻辑、教研标准 | Academic |
+| **06** | [合规、质量与运维](./06_COMPLIANCE_OPS.md) | QA 测试用例、安全性与隐私、部署 CI/CD | DevOps |
 
 ---
-*文档维护: HanziMaster Engineering Team*
+*注：原有分散的 16 个专项文档（如 project.md, agents.md, a11y.md 等）已全部并入上述模块。*
+*文档版本: v1.0.0 | 最后更新: 2025*

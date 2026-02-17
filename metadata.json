@@ -1,12 +1,12 @@
 {
-  "name": "HanziMaster v0.9.7",
-  "version": "0.9.7",
-  "description": "Security & Architecture Alignment: Removed BYOK UI to strictly comply with system API key regulations.",
+  "name": "HanziMaster 汉字大师 v0.9.8",
+  "version": "0.9.8",
+  "description": "Code Review & Integrity: Fully purged BYOK residues and fixed cross-component type mismatches.",
   "keywords": [
     "Chinese characters",
     "Hanzi",
-    "Security Update",
-    "API Compliance",
+    "Refactor",
+    "Type Safety",
     "PWA"
   ],
   "requestFramePermissions": [],
