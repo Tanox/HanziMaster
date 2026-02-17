@@ -1,6 +1,4 @@
-/**
- * app/locales/es.ts v0.7.1
- */
+// app/locales/es.ts v0.7.1
 import { UILabels } from '../types';
 
 export const es: UILabels = {
@@ -19,7 +17,7 @@ export const es: UILabels = {
   previewText: 'Vista Previa',
   strokeStatusActive: 'Animando...',
   strokeStatusComplete: 'Animación Completa',
-  errorInvalidChar: 'Por favor, ingresa de 1 a 4 caracteres chinos válidos.',
+  errorInvalidChar: 'Por favor, ingresa de 1 a 4 caracteres chineses válidos.',
   controlsPlay: 'Reproducir',
   controlsPause: 'Pausar',
   controlsReset: 'Reiniciar',

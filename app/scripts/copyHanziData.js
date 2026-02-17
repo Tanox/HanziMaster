@@ -1,6 +1,4 @@
-/**
- * app/scripts/copyHanziData.js v0.7.1
- */
+// app/scripts/copyHanziData.js v0.7.1
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';

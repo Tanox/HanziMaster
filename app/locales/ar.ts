@@ -1,6 +1,4 @@
-/**
- * app/locales/ar.ts v0.7.1
- */
+// app/locales/ar.ts v0.7.1
 import { UILabels } from '../types';
 
 export const ar: UILabels = {

@@ -1,11 +1,10 @@
-/**
- * app/components/dashboard/ViewerSection.tsx v0.7.1
- */
+// app/components/dashboard/ViewerSection.tsx v0.9.0
 import React, { useMemo } from 'react';
 import IdiomNavigator from '../IdiomNavigator';
 import StrokeViewer from '../StrokeViewer';
 import Controls from '../Controls';
 import { AppSettings, AnimationState, InteractionMode, HanziData, UILabels, CharacterAnalysis } from '../../types';
+import { PINYIN_MAP } from '../../constants/pinyinData';
 
 interface ViewerSectionProps {
   activeTerm: string;
@@ -47,9 +46,12 @@ const ViewerSection: React.FC<ViewerSectionProps> = ({
 }) => {
   
   const currentPinyin = useMemo(() => {
-    return analysis?.char === activeChar 
-      ? analysis.pinyin 
-      : (pinyinCache[activeChar] || '');
+    // 3-Tier Resolution: 
+    // 1. Current AI Analysis (if char matches)
+    // 2. Previously cached AI analysis
+    // 3. Static PINYIN_MAP fallback
+    if (analysis?.char === activeChar) return analysis.pinyin;
+    return pinyinCache[activeChar] || PINYIN_MAP[activeChar] || '';
   }, [analysis, activeChar, pinyinCache]);
 
   return (
@@ -61,9 +63,10 @@ const ViewerSection: React.FC<ViewerSectionProps> = ({
           onSelectChar={(char, index) => actions.handleCharSelect(char, undefined, index)} 
       />
 
-      <div id="active-pinyin-display" className="h-16 mb-4 flex items-end justify-center w-full">
+      {/* Adding Key ensures animation re-triggers on char change */}
+      <div id="active-pinyin-display" key={activeChar} className="h-16 mb-4 flex items-end justify-center w-full">
         {currentPinyin && (
-            <span className="text-5xl md:text-6xl text-vermilion-600 dark:text-vermilion-400 font-serif font-bold tracking-widest animate-fade-in transition-all">
+            <span className="text-5xl md:text-6xl text-vermilion-600 dark:text-vermilion-400 font-pinyin font-bold tracking-wider animate-fade-in transition-all">
                 {currentPinyin}
             </span>
         )}

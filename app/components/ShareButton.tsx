@@ -1,8 +1,6 @@
-/**
- * app/components/ShareButton.tsx v0.7.1
- */
+// app/components/ShareButton.tsx v0.7.1
 import React, { useState } from 'react';
-import { Share2, Copy, Check } from 'lucide-react';
+import { Share2, Check } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
 
 interface ShareButtonProps {

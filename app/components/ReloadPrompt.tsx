@@ -1,13 +1,11 @@
-/**
- * app/components/ReloadPrompt.tsx v0.7.1
- */
+// app/components/ReloadPrompt.tsx v0.8.2
 import React, { useState, useEffect } from 'react';
 import { RefreshCw, X, Wifi } from 'lucide-react';
 import { UILabels } from '../types';
 
 /**
- * 健壮的 Service Worker 注册 Hook
- * 适配浏览器原生 API，不依赖 Vite 虚拟模块
+ * Enhanced SW registration hook for v0.8.2
+ * Added robust error handling for restricted or cross-origin preview environments.
  */
 const useRegisterSW = () => {
   const [offlineReady, setOfflineReady] = useState(false);
@@ -15,41 +13,78 @@ const useRegisterSW = () => {
   const [registration, setRegistration] = useState<ServiceWorkerRegistration | null>(null);
 
   useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.ready.then((reg) => {
-        setRegistration(reg);
-        
-        // 监听新版本的 Service Worker
-        reg.addEventListener('updatefound', () => {
-          const newWorker = reg.installing;
-          if (newWorker) {
-            newWorker.addEventListener('statechange', () => {
-              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                setNeedRefresh(true);
-              } else if (newWorker.state === 'installed') {
-                setOfflineReady(true);
-              }
-            });
+    // Only attempt SW logic in secure contexts and standard environments
+    if ('serviceWorker' in navigator && window.isSecureContext) {
+      try {
+        // Check if service worker is already waiting
+        navigator.serviceWorker.getRegistration().then(reg => {
+          if (reg) {
+            setRegistration(reg);
+            if (reg.waiting) setNeedRefresh(true);
           }
+        }).catch(err => {
+          console.debug('SW Registration query failed (expected in some sandboxed environments):', err);
         });
-      });
 
-      // 检查每小时自动更新
-      const interval = setInterval(() => {
-        if (registration) {
-          registration.update().catch(() => console.debug('SW update check failed.'));
-        }
-      }, 60 * 60 * 1000);
+        const onControllerChange = () => {
+          if (navigator.serviceWorker.controller) {
+            console.log("New service worker taking control.");
+          }
+        };
 
-      return () => clearInterval(interval);
+        navigator.serviceWorker.addEventListener('controllerchange', onControllerChange);
+
+        navigator.serviceWorker.ready.then((reg) => {
+          setRegistration(reg);
+          
+          reg.addEventListener('updatefound', () => {
+            const newWorker = reg.installing;
+            if (newWorker) {
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed') {
+                  if (navigator.serviceWorker.controller) {
+                    setNeedRefresh(true);
+                  } else {
+                    setOfflineReady(true);
+                  }
+                }
+              });
+            }
+          });
+        }).catch(err => {
+          console.debug('SW Ready state failed:', err);
+        });
+
+        // Hourly check
+        const interval = setInterval(() => {
+          if (registration) {
+            registration.update().catch(err => console.debug('SW update check failed:', err));
+          }
+        }, 60 * 60 * 1000);
+
+        return () => {
+          clearInterval(interval);
+          navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
+        };
+      } catch (e) {
+        console.warn('Service Worker initialization prevented by environment security policy.');
+      }
     }
   }, [registration]);
 
   const updateServiceWorker = async (reloadPage?: boolean) => {
-    if (registration?.waiting) {
-      registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+    try {
+      if (registration?.waiting) {
+        registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+      }
+      if (reloadPage) {
+        // Delay slightly for SW to take control
+        setTimeout(() => window.location.reload(), 100);
+      }
+    } catch (e) {
+      console.error('Failed to update Service Worker:', e);
+      if (reloadPage) window.location.reload();
     }
-    if (reloadPage) window.location.reload();
   };
 
   return {
@@ -90,7 +125,7 @@ const ReloadPrompt: React.FC<{ labels: UILabels }> = ({ labels }) => {
               <button onClick={close} className="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-semibold rounded-md">{labels.closeBtn || "Close"}</button>
             </div>
           </div>
-          <button onClick={close} className="text-slate-400 p-1"><X size={16} /></button>
+          <button onClick={close} className="text-slate-400 p-1" aria-label="Dismiss"><X size={16} /></button>
         </div>
       </div>
     );
@@ -106,7 +141,7 @@ const ReloadPrompt: React.FC<{ labels: UILabels }> = ({ labels }) => {
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">{labels.offlineMsg || "The app has been cached for offline use."}</p>
             <button onClick={close} className="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-semibold rounded-md">{labels.dismissBtn || "Dismiss"}</button>
           </div>
-          <button onClick={close} className="text-slate-400 p-1"><X size={16} /></button>
+          <button onClick={close} className="text-slate-400 p-1" aria-label="Dismiss"><X size={16} /></button>
         </div>
       </div>
     );

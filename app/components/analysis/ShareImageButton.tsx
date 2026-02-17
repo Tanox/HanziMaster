@@ -1,6 +1,4 @@
-/**
- * app/components/analysis/ShareImageButton.tsx v0.7.1
- */
+// app/components/analysis/ShareImageButton.tsx v0.7.1
 import React, { useState } from 'react';
 import { Loader2, Share2, Download } from 'lucide-react';
 import { CharacterAnalysis, AppSettings, HanziData } from '../../types';

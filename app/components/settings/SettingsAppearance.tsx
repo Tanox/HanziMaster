@@ -1,6 +1,4 @@
-/**
- * app/components/settings/SettingsAppearance.tsx v0.7.1
- */
+// app/components/settings/SettingsAppearance.tsx v0.7.1
 import React from 'react';
 import { Palette, Sun, Moon, Globe } from 'lucide-react';
 import { UILabels } from '../../types';

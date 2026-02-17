@@ -1,6 +1,4 @@
-/**
- * app/components/dashboard/AnalysisSection.tsx v0.7.1
- */
+// app/components/dashboard/AnalysisSection.tsx v0.7.1
 import React from 'react';
 import AnalysisPanel from '../AnalysisPanel';
 import HistoryPanel from '../HistoryPanel';

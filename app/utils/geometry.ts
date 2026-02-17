@@ -1,6 +1,4 @@
-/**
- * app/utils/geometry.ts v0.7.1
- */
+// app/utils/geometry.ts v0.8.0
 import { Point } from '../types';
 
 export const getMedianPath = (points: number[][]): string => {
@@ -45,22 +43,16 @@ export const cosineSimilarity = (v1: Point, v2: Point): number => {
 
 /**
  * Resamples a path to a fixed number of equidistant points.
- * Crucial for comparing user input with median stroke data.
- * @param points The original array of points defining the path.
- * @param numPoints The desired number of points in the output path.
- * @returns A new array of points, resampled to be equidistant.
  */
 export const resample = (points: Point[], numPoints: number): Point[] => {
     if (!points || points.length === 0) return [];
     if (points.length === 1) return Array(numPoints).fill(points[0]);
 
-    // 1. Calculate the total length of the path.
     const pathLength = points.reduce((acc, p, i) => {
         if (i === 0) return 0;
         return acc + getDistance(points[i-1], p);
     }, 0);
 
-    // 2. Determine the distance between each new point.
     const interval = pathLength / (numPoints - 1);
     const newPoints: Point[] = [points[0]];
     
@@ -68,29 +60,23 @@ export const resample = (points: Point[], numPoints: number): Point[] => {
     let nextPointIndex = 1;
     let lastPoint = points[0];
 
-    // 3. Iterate to create the desired number of points.
     for (let i = 1; i < numPoints; i++) {
         let targetDist = i * interval;
-        // 4. Walk along the original path segments.
         while (nextPointIndex < points.length) {
             const p1 = lastPoint;
             const p2 = points[nextPointIndex];
             const segmentDist = getDistance(p1, p2);
             
-            // 5. If the target point is on the current segment, interpolate its position.
             if (currentDist + segmentDist >= targetDist) {
                 const ratio = (targetDist - currentDist) / segmentDist;
                 const newX = p1.x + (p2.x - p1.x) * ratio;
                 const newY = p1.y + (p2.y - p1.y) * ratio;
                 const interpolatedPoint = { x: newX, y: newY };
                 newPoints.push(interpolatedPoint);
-
-                // Start the next search from the newly created point.
                 lastPoint = interpolatedPoint; 
                 currentDist = targetDist;
                 break;
             } else {
-                // Move to the next segment.
                 currentDist += segmentDist;
                 lastPoint = p2;
                 nextPointIndex++;
@@ -98,7 +84,6 @@ export const resample = (points: Point[], numPoints: number): Point[] => {
         }
     }
     
-    // 6. Safeguard: if floating point errors caused a miss, add the last point.
     while (newPoints.length < numPoints) {
         newPoints.push(points[points.length - 1]);
     }
@@ -118,4 +103,19 @@ export const calculateShapeScore = (userPoints: Point[], targetPoints: Point[]):
         sumDist += getDistance(userPoints[i], targetPoints[i]);
     }
     return sumDist / userPoints.length;
+};
+
+/**
+ * Map shape error and direction similarity into a 0-100 score.
+ */
+export const mapResultToScore = (shapeError: number, directionSimilarity: number): number => {
+    // 1. Shape Component (Max 80 points)
+    // 0 error = 80 pts, 150 error = 0 pts
+    const shapeComponent = Math.max(0, 80 * (1 - shapeError / 150));
+    
+    // 2. Direction Component (Max 20 points)
+    // 1.0 sim = 20 pts, 0 sim = 0 pts
+    const directionComponent = Math.max(0, 20 * directionSimilarity);
+    
+    return Math.round(shapeComponent + directionComponent);
 };

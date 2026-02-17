@@ -1,8 +1,6 @@
-/**
- * app/components/StrokeViewer.tsx v0.7.1
- */
+// app/components/StrokeViewer.tsx v0.8.0
 import React, { useRef, useMemo } from 'react';
-import { HanziData, AnimationState, InteractionMode, AppSettings, UILabels } from '../types';
+import { HanziData, AnimationState, InteractionMode, AppSettings, UILabels, Grade, PracticeResult } from '../types';
 import { PenTool } from 'lucide-react';
 import { getMedianPath } from '../utils/geometry';
 import { useStrokeAnimation } from '../hooks/useStrokeAnimation';
@@ -15,7 +13,7 @@ interface StrokeViewerProps {
   speed: number;
   mode: InteractionMode;
   settings: AppSettings;
-  onPracticeComplete?: () => void;
+  onPracticeComplete?: (result: PracticeResult) => void;
   labels: UILabels;
 }
 
@@ -38,7 +36,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     data, mode, animationState, setAnimationState, speed
   );
 
-  const { practiceStrokeIndex, showSuccess, showGhostHint, handlers } = usePracticeDrawing(
+  const { practiceStrokeIndex, showSuccess, showGhostHint, lastPracticeResult, handlers } = usePracticeDrawing(
     canvasRef, data, mode, onPracticeComplete
   );
 
@@ -56,6 +54,31 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     return lines;
   }, [settings.gridStyle]);
 
+  const ResultSeal = ({ result }: { result: PracticeResult }) => {
+    const gradeLabel = {
+        [Grade.EXQUISITE]: labels.gradeExquisite || '神品',
+        [Grade.MASTERFUL]: labels.gradeMasterful || '妙品',
+        [Grade.PROFICIENT]: labels.gradeProficient || '能品',
+        [Grade.POOR]: labels.gradePoor || '须努力',
+    }[result.grade];
+
+    return (
+        <div id="result-seal-overlay" className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+            <div className="relative animate-stamp">
+                {/* Traditional Vermilion Seal Design */}
+                <div className="w-32 h-32 border-[6px] border-vermilion-600 rounded-xl flex flex-col items-center justify-center bg-white/10 backdrop-blur-[2px] shadow-2xl overflow-hidden transform -rotate-12">
+                   <div className="absolute inset-0 bg-vermilion-600 opacity-[0.03] bg-texture-paper"></div>
+                   <span className="text-4xl font-hanzi font-bold text-vermilion-600 leading-none mb-1">{gradeLabel}</span>
+                   <div className="w-20 h-px bg-vermilion-400 opacity-40 my-1"></div>
+                   <span className="text-xl font-sans font-black text-vermilion-500">{result.score}</span>
+                </div>
+                {/* Seal Splatter Shadow Effect */}
+                <div className="absolute -inset-4 bg-vermilion-600/5 blur-2xl rounded-full -z-10"></div>
+            </div>
+        </div>
+    );
+  };
+
   const StatusOverlay = () => {
     let text: string | null = null;
     if (mode === InteractionMode.PRACTICE) {
@@ -72,7 +95,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
     }
     if (!text) return null;
     return (
-        <div id="stroke-status-overlay" className="absolute bottom-3 left-1/2 -translate-x-1/2 pointer-events-none animate-fade-in">
+        <div id="stroke-status-overlay" className="absolute bottom-3 left-1/2 -translate-x-1/2 pointer-events-none animate-fade-in z-30">
             <div className={`px-3 py-1.5 rounded-full text-[10px] font-bold backdrop-blur-sm shadow-sm flex items-center gap-2 ${mode === InteractionMode.PRACTICE && showSuccess ? 'bg-emerald-600/90 text-white' : 'bg-slate-900/10 dark:bg-white/10 text-slate-500 dark:text-slate-300'}`}>
                 {mode === InteractionMode.PRACTICE && !showSuccess && <PenTool size={10} />}
                 {text}
@@ -97,13 +120,10 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
         </g>
 
         <g transform={`translate(0, ${OFFSET_Y}) scale(1, -1)`}>
-          {/* Practice Mode: Ghost Hint or Current Stroke Outline */}
           {mode === InteractionMode.PRACTICE && data.strokes.map((stroke, i) => {
-              // 1. Completed strokes: Always black
               if (i < practiceStrokeIndex) {
                   return <path key={i} d={stroke} className="fill-slate-900 dark:fill-slate-100 stroke-none" />;
               }
-              // 2. Current stroke: Show if Ghost Hint active OR Settings allow Outline
               if (i === practiceStrokeIndex) {
                   const shouldShow = settings.showOutline || showGhostHint;
                   return shouldShow ? (
@@ -115,17 +135,14 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
                       />
                   ) : null;
               }
-              // 3. Future strokes: Show if Settings allow Outline
               if (i > practiceStrokeIndex && settings.showOutline) {
                   return <path key={i} d={stroke} className="fill-none stroke-vermilion-100 dark:stroke-white/10 opacity-30" strokeWidth="4" />;
               }
               return null;
           })}
 
-          {/* View Mode: Animation Logic */}
           {mode === InteractionMode.VIEW && (
               <>
-                {/* Background Outline */}
                 {settings.showOutline && (
                     <path 
                         d={data.strokes.join(' ')} 
@@ -135,7 +152,6 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
                         strokeLinejoin="round" 
                     />
                 )}
-                {/* Animated Strokes */}
                 {data.strokes.map((_, i) => {
                     if (i > currentStrokeIndex && currentStrokeIndex !== -1) return null;
                     const median = data.medians[i];
@@ -167,7 +183,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
         ref={canvasRef} 
         width={SIZE} 
         height={SIZE} 
-        className="absolute inset-0 w-full h-full cursor-crosshair" 
+        className="absolute inset-0 w-full h-full cursor-crosshair z-10" 
         onPointerDown={handlers.handlePointerDown} 
         onPointerMove={handlers.handlePointerMove} 
         onPointerUp={handlers.handlePointerUp} 
@@ -175,6 +191,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
         style={{ touchAction: 'none' }} 
       />
       
+      {showSuccess && lastPracticeResult && <ResultSeal result={lastPracticeResult} />}
       <StatusOverlay />
     </div>
   );

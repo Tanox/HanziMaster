@@ -1,33 +1,33 @@
-/**
- * app/hooks/usePracticeDrawing.ts v0.7.1
- */
+// app/hooks/usePracticeDrawing.ts v0.8.0
 import { useState, useRef, useEffect, RefObject, PointerEvent } from 'react';
-import { HanziData, InteractionMode, Point } from '../types';
-import { getDistance, subtract, cosineSimilarity, resample, calculateShapeScore } from '../utils/geometry';
+import { HanziData, InteractionMode, Point, PracticeResult, Grade } from '../types';
+import { getDistance, subtract, cosineSimilarity, resample, calculateShapeScore, mapResultToScore } from '../utils/geometry';
 
 const CANVAS_SIZE = 1024;
 const OFFSET_Y = 900; 
 
-// Spec 13 Thresholds
-const TOLERANCE_START_POINT = 120; // px (Relaxed slightly for touch)
-const TOLERANCE_SHAPE_ERROR = 150; // px (Average deviation)
-const TOLERANCE_DIRECTION = 0; // Cosine similarity > 0 (Positive correlation)
+const TOLERANCE_START_POINT = 120; 
+const TOLERANCE_SHAPE_ERROR = 150; 
+const TOLERANCE_DIRECTION = 0; 
 const MAX_MISTAKES_FOR_GHOST = 3;
 
 export const usePracticeDrawing = (
   canvasRef: RefObject<HTMLCanvasElement>,
   data: HanziData | null,
   mode: InteractionMode,
-  onPracticeComplete?: () => void
+  onPracticeComplete?: (result: PracticeResult) => void
 ) => {
   const [practiceStrokeIndex, setPracticeStrokeIndex] = useState(0);
   const [isDrawing, setIsDrawing] = useState(false);
   const [feedbackColor, setFeedbackColor] = useState<string | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
   
-  // Ghosting Lifeline State
   const [mistakeCount, setMistakeCount] = useState(0);
   const [showGhostHint, setShowGhostHint] = useState(false);
+  
+  // v0.8.0 Scoring State
+  const [strokeScores, setStrokeScores] = useState<number[]>([]);
+  const [lastPracticeResult, setLastPracticeResult] = useState<PracticeResult | null>(null);
   
   const userStrokePathRef = useRef<Point[]>([]);
   const lastDrawnPointRef = useRef<Point | null>(null);
@@ -39,6 +39,8 @@ export const usePracticeDrawing = (
     setShowSuccess(false);
     setMistakeCount(0);
     setShowGhostHint(false);
+    setStrokeScores([]);
+    setLastPracticeResult(null);
     hasNotifiedCompletionRef.current = false;
     clearCanvas();
   }, [data]);
@@ -46,25 +48,27 @@ export const usePracticeDrawing = (
   useEffect(() => {
     if (data && practiceStrokeIndex >= data.strokes.length && data.strokes.length > 0) {
         if (!hasNotifiedCompletionRef.current) {
-            onPracticeComplete?.();
+            const finalScore = Math.round(strokeScores.reduce((a, b) => a + b, 0) / strokeScores.length);
+            let grade = Grade.POOR;
+            if (finalScore >= 95) grade = Grade.EXQUISITE;
+            else if (finalScore >= 85) grade = Grade.MASTERFUL;
+            else if (finalScore >= 75) grade = Grade.PROFICIENT;
+
+            const result = { score: finalScore, grade, strokeScores };
+            setLastPracticeResult(result);
+            onPracticeComplete?.(result);
             hasNotifiedCompletionRef.current = true;
         }
         setShowSuccess(true);
-        const timer = setTimeout(() => setShowSuccess(false), 2000);
-        return () => clearTimeout(timer);
     } else {
         setShowSuccess(false);
-        // Reset ghost hint for next stroke
         setMistakeCount(0);
         setShowGhostHint(false);
     }
-  }, [practiceStrokeIndex, data, onPracticeComplete]);
+  }, [practiceStrokeIndex, data, strokeScores, onPracticeComplete]);
 
-  // Trigger Ghost Hint based on mistakes
   useEffect(() => {
-    if (mistakeCount >= MAX_MISTAKES_FOR_GHOST) {
-        setShowGhostHint(true);
-    }
+    if (mistakeCount >= MAX_MISTAKES_FOR_GHOST) setShowGhostHint(true);
   }, [mistakeCount]);
 
   const clearCanvas = () => {
@@ -99,7 +103,6 @@ export const usePracticeDrawing = (
 
   const handlePointerDown = (e: PointerEvent<HTMLCanvasElement>) => {
     if (mode !== InteractionMode.PRACTICE || !data || practiceStrokeIndex >= data.strokes.length) return;
-    
     const targetStrokeData = data.medians[practiceStrokeIndex];
     if (!targetStrokeData) return;
 
@@ -107,32 +110,14 @@ export const usePracticeDrawing = (
     const x = ((e.clientX - rect.left) / rect.width) * CANVAS_SIZE;
     const y = ((e.clientY - rect.top) / rect.height) * CANVAS_SIZE;
     const startPointUser: Point = {x, y};
-
-    // 1. Start Point Validation
     const startPointTarget = transformDataToScreen(targetStrokeData[0]);
     const startDist = getDistance(startPointUser, startPointTarget);
 
     if (startDist > TOLERANCE_START_POINT) {
-        // Invalid start point
         if (navigator.vibrate) navigator.vibrate(50);
         setFeedbackColor('error');
-        // Increment mistake count immediately
         setMistakeCount(prev => prev + 1);
-        
-        // Visual feedback at touch point
-        const canvas = canvasRef.current;
-        const ctx = canvas?.getContext('2d');
-        if (ctx) {
-             ctx.beginPath();
-             ctx.arc(x, y, 20, 0, Math.PI * 2);
-             ctx.fillStyle = 'rgba(239, 68, 68, 0.5)';
-             ctx.fill();
-        }
-        
-        setTimeout(() => {
-            setFeedbackColor(null);
-            clearCanvas();
-        }, 500);
+        setTimeout(() => { setFeedbackColor(null); clearCanvas(); }, 500);
         return;
     }
 
@@ -140,7 +125,6 @@ export const usePracticeDrawing = (
     setIsDrawing(true);
     setFeedbackColor(null);
     clearCanvas();
-
     userStrokePathRef.current = [startPointUser];
     lastDrawnPointRef.current = startPointUser;
   };
@@ -165,30 +149,24 @@ export const usePracticeDrawing = (
     const targetStrokeData = data.medians[practiceStrokeIndex];
 
     if (userStroke.length < 2 || !targetStrokeData) {
-      setFeedbackColor('error');
-      setMistakeCount(prev => prev + 1);
-      setTimeout(clearCanvas, 500);
+      failStroke();
       return;
     }
 
-    // Prepare data for Spec 13 Validation
     const startPointUser = userStroke[0];
     const endPointUser = userStroke[userStroke.length - 1];
     const startPointTarget = transformDataToScreen(targetStrokeData[0]);
     const endPointTarget = transformDataToScreen(targetStrokeData[targetStrokeData.length - 1]);
     
-    // 2. Direction Validation (Cosine Similarity)
     const vecUser = subtract(endPointUser, startPointUser);
     const vecTarget = subtract(endPointTarget, startPointTarget);
     const directionScore = cosineSimilarity(vecUser, vecTarget);
     
     if (directionScore < TOLERANCE_DIRECTION) {
-        // Wrong direction
         failStroke();
         return;
     }
 
-    // 3. Shape Validation (Resampled Average Distance)
     const SAMPLE_COUNT = 10;
     const targetPointsScreen = targetStrokeData.map(transformDataToScreen);
     const resampledUser = resample(userStroke, SAMPLE_COUNT);
@@ -196,13 +174,12 @@ export const usePracticeDrawing = (
     const shapeError = calculateShapeScore(resampledUser, resampledTarget);
 
     if (shapeError > TOLERANCE_SHAPE_ERROR) {
-        // Shape too distorted
         failStroke();
         return;
     }
 
-    // Success
-    passStroke();
+    const score = mapResultToScore(shapeError, directionScore);
+    passStroke(score);
   };
 
   const failStroke = () => {
@@ -212,8 +189,9 @@ export const usePracticeDrawing = (
       setTimeout(clearCanvas, 500);
   };
 
-  const passStroke = () => {
+  const passStroke = (score: number) => {
       setFeedbackColor('success');
+      setStrokeScores(prev => [...prev, score]);
       if (navigator.vibrate) navigator.vibrate(20);
       setTimeout(() => {
           setPracticeStrokeIndex(prev => prev + 1);
@@ -226,7 +204,8 @@ export const usePracticeDrawing = (
     isDrawing,
     feedbackColor,
     showSuccess,
-    showGhostHint, // Exposed for StrokeViewer to use
+    showGhostHint,
+    lastPracticeResult,
     handlers: { handlePointerDown, handlePointerMove, handlePointerUp }
   };
 };

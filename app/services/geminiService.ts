@@ -1,17 +1,15 @@
-/**
- * app/services/geminiService.ts v0.7.1
- */
-// Fix: The type for responseSchema is `Schema`, not `ResponseSchema`.
+// app/services/geminiService.ts v0.8.1
 import { GoogleGenAI, Type, HarmCategory, HarmBlockThreshold, Schema } from "@google/genai";
 import { CharacterAnalysis, IdiomAnalysis } from '../types';
 
-// --- AI 实例缓存 ---
+// --- AI Instance Cache ---
 const aiInstances: Map<string, GoogleGenAI> = new Map();
 
 /**
- * 获取或创建一个缓存的 GoogleGenAI 实例
- * @param apiKey - 用于AI调用的API密钥
- * @returns GoogleGenAI 实例
+ * Gets or creates a cached GoogleGenAI instance.
+ * v0.8.1: Ensures initialization strictly follows named parameters.
+ * @param apiKey - API key for AI calls
+ * @returns GoogleGenAI instance
  */
 function getAiInstance(apiKey: string): GoogleGenAI {
     if (!aiInstances.has(apiKey)) {
@@ -20,8 +18,7 @@ function getAiInstance(apiKey: string): GoogleGenAI {
     return aiInstances.get(apiKey)!;
 }
 
-
-// --- 离线回退逻辑 ---
+// --- Offline Fallback Logic ---
 
 const generateOfflineAnalysis = (char: string, reason: string = "Network Unavailable"): CharacterAnalysis => {
   let meaning = `Mode: ${reason}`;
@@ -61,8 +58,7 @@ const generateOfflineIdiomAnalysis = (idiom: string, reason: string = "Network U
   };
 };
 
-
-// --- 核心请求与解析逻辑 ---
+// --- Core Request & Parsing Logic ---
 
 const commonConfig = {
   responseMimeType: "application/json",
@@ -75,20 +71,23 @@ const commonConfig = {
 };
 
 /**
- * 鲁棒的 JSON 提取器
- * 即使模型输出了 Markdown 或前置说明，也能精准定位 JSON 主体
+ * Robust JSON Extractor.
+ * Corrected to use standard JavaScript compatible logic instead of non-standard recursive regex.
  */
 function cleanJsonResponse(text: string): string {
     if (!text) return "";
-    text = text.trim();
-    const match = text.match(/\{[\s\S]*\}/);
+    const trimmed = text.trim();
+    
+    // Find the longest substring that starts with '{' and ends with '}'
+    const match = trimmed.match(/\{[\s\S]*\}/);
     if (match) return match[0];
-    return text.replace(/^```(json)?\s*/i, '').replace(/\s*```$/, '');
+    
+    // Fallback: Remove markdown code block markers
+    return trimmed.replace(/^```(json)?\s*/i, '').replace(/\s*```$/, '').trim();
 }
 
 /**
- * 通用 AI 解析函数，用于从 Gemini API 获取结构化 JSON 数据。
- * 封装了 API Key 校验、离线回退、及鲁棒的 JSON 解析逻辑。
+ * Generic AI analysis function to fetch structured JSON data from Gemini API.
  */
 async function fetchAiAnalysis<T>({
   entity, languageName, forceOffline, apiKeyOverride,
@@ -101,7 +100,6 @@ async function fetchAiAnalysis<T>({
   apiKeyOverride?: string;
   promptGenerator: (entity: string, language: string) => string;
   systemInstructionGenerator: (language: string) => string;
-  // Fix: The type for responseSchema is `Schema`, not `ResponseSchema`.
   responseSchema: Schema;
   offlineGenerator: (entity: string, reason: string) => T;
   errorReason?: string;
@@ -110,6 +108,7 @@ async function fetchAiAnalysis<T>({
     return offlineGenerator(entity, forceOffline ? "Offline Mode" : "Network Unavailable");
   }
 
+  // API Key priority: 1. User Override (BYOK), 2. Environment (Shared)
   const apiKey = apiKeyOverride || process.env.API_KEY;
   if (!apiKey) {
     return offlineGenerator(entity, "No API Key");
@@ -135,9 +134,8 @@ async function fetchAiAnalysis<T>({
   }
 }
 
-// --- Schema 定义 ---
+// --- Schema Definitions ---
 
-// Fix: The type for responseSchema is `Schema`, not `ResponseSchema`.
 const characterAnalysisSchema: Schema = {
   type: Type.OBJECT,
   properties: {
@@ -163,7 +161,6 @@ const characterAnalysisSchema: Schema = {
   required: ["char", "pinyin", "meaning", "radical", "strokeCount", "etymology", "mnemonic", "examples"]
 };
 
-// Fix: The type for responseSchema is `Schema`, not `ResponseSchema`.
 const idiomAnalysisSchema: Schema = {
   type: Type.OBJECT,
   properties: {
@@ -176,8 +173,7 @@ const idiomAnalysisSchema: Schema = {
   required: ["idiom", "pinyin", "meaning", "origin", "usage"]
 };
 
-
-// --- 导出的服务函数 ---
+// --- Exported Service Functions ---
 
 export const analyzeCharacter = async (char: string, languageName: string = 'English', forceOffline: boolean = false, apiKeyOverride?: string): Promise<CharacterAnalysis> => {
   return fetchAiAnalysis<CharacterAnalysis>({

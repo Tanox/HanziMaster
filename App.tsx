@@ -1,6 +1,4 @@
-/**
- * App.tsx v0.7.1
- */
+// App.tsx v0.9.1
 import React from 'react';
 import { useAppController } from './app/hooks/useAppController';
 import SearchInput from './app/components/SearchInput';
@@ -16,7 +14,7 @@ import { UI_LABELS } from './app/locales';
 import { AlertCircle } from 'lucide-react';
 import { ToastProvider } from './app/context/ToastContext';
 
-const APP_VERSION = '0.7.1';
+const APP_VERSION = '0.9.1';
 
 const AppContent: React.FC = () => {
   const { state, actions } = useAppController();
@@ -37,11 +35,14 @@ const AppContent: React.FC = () => {
         labels={labels} 
         onOpenSettings={() => actions.setIsSettingsOpen(true)} 
         isOffline={state.isOffline || state.settings.offlineMode}
+        version={APP_VERSION}
       />
 
       <main id="app-main-content" className="max-w-5xl w-full mx-auto px-4 py-8 flex-grow">
         <div id="intro-header-section" className="text-center mb-6 md:mb-12">
-          <h2 className="hidden md:block text-4xl md:text-5xl font-hanzi font-bold text-slate-800 dark:text-white mb-4 tracking-tight">{labels.appTitle}</h2>
+          <h2 className="hidden md:block text-4xl md:text-5xl font-hanzi font-bold text-slate-800 dark:text-white mb-4 tracking-tight">
+            {labels.appTitle} <span className="text-sm font-sans font-normal opacity-40 align-middle">v{APP_VERSION}</span>
+          </h2>
           <p className="hidden md:block text-slate-500 dark:text-slate-400 mb-8 max-w-lg mx-auto font-light">
             {labels.appSubtitle}
           </p>

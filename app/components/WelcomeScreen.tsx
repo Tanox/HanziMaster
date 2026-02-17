@@ -1,8 +1,6 @@
-/**
- * app/components/WelcomeScreen.tsx v0.7.1
- */
+// app/components/WelcomeScreen.tsx v0.8.4
 import React, { useState } from 'react';
-import { Brush, ArrowRight, ArrowLeft, Globe, Search, Eye, PenTool, Check, Sparkles, BookOpen } from 'lucide-react';
+import { Brush, ArrowRight, ArrowLeft, Globe, Search, Eye, PenTool, Check, Sparkles } from 'lucide-react';
 import { UILabels } from '../types';
 import { LANGUAGES } from '../locales';
 
@@ -22,7 +20,7 @@ const FeatureCard = ({ icon, title, desc, delay }: { icon: React.ReactNode, titl
          {icon}
      </div>
      <div>
-        <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 mb-0.5">{title}</h3>
+        <h3 className="text-sm font-bold text-slate-800 dark:text-100 mb-0.5">{title}</h3>
         <p className="text-xs text-slate-500 dark:text-slate-400 leading-snug">{desc}</p>
      </div>
   </div>
@@ -67,7 +65,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onDismiss, labels, curren
                         <span className="text-xs font-bold uppercase tracking-[0.2em]">Display Language / 显示语言</span>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
-                        {LANGUAGES.slice(0, 8).map(lang => (
+                        {LANGUAGES.map(lang => (
                             <button
                                 key={lang.code}
                                 onClick={() => onLanguageChange(lang.code)}
@@ -79,7 +77,6 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onDismiss, labels, curren
                             </button>
                         ))}
                     </div>
-                    <p className="text-center text-[10px] text-slate-400 mt-4 font-medium italic">+7 more languages available in settings</p>
                 </div>
             </div>
         )}

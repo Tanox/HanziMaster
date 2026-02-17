@@ -1,6 +1,4 @@
-/**
- * app/components/analysis/cards/EtymologyCard.tsx v0.7.1
- */
+// app/components/analysis/cards/EtymologyCard.tsx v0.7.1
 import React from 'react';
 import { History } from 'lucide-react';
 import { UILabels } from '../../../types';

@@ -1,6 +1,4 @@
-/**
- * app/locales/ko.ts v0.7.1
- */
+// app/locales/ko.ts v0.7.1
 import { UILabels } from '../types';
 
 export const ko: UILabels = {

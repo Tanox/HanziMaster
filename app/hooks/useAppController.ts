@@ -1,13 +1,10 @@
-/**
- * app/hooks/useAppController.ts v0.7.1
- */
+// app/hooks/useAppController.ts v0.7.5
 import { useState, useEffect } from 'react';
 import { HistoryItem, AppSettings, InteractionMode, AnimationState } from '../types';
 import { COMMON_CHARS } from '../constants/commonChars';
 import { useLocalStorage } from './useLocalStorage';
 import { useInteractionState } from './useInteractionState';
 import { useContentFetcher } from './useContentFetcher';
-import { UI_LABELS } from '../locales';
 
 const DEFAULT_SETTINGS: AppSettings = {
   apiKey: '', 

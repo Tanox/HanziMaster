@@ -1,6 +1,4 @@
-/**
- * app/locales/zh-TW.ts v0.7.1
- */
+// app/locales/zh-TW.ts v0.7.1
 import { UILabels } from '../types';
 
 export const zhTW: UILabels = {

@@ -1,6 +1,4 @@
-/**
- * app/components/Footer.tsx v0.7.1
- */
+// app/components/Footer.tsx v0.7.1
 import React from 'react';
 import { Github } from 'lucide-react';
 import { UILabels } from '../types';

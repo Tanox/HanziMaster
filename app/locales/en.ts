@@ -1,6 +1,4 @@
-/**
- * app/locales/en.ts v0.7.1
- */
+// app/locales/en.ts v0.8.3
 import { UILabels } from '../types';
 
 export const en: UILabels = {
@@ -71,6 +69,13 @@ export const en: UILabels = {
   statsChars: 'Unique Characters',
   statsTerms: 'Unique Idioms',
 
+  // Grades v0.8.0
+  gradeExquisite: 'Divine',
+  gradeMasterful: 'Superb',
+  gradeProficient: 'Good',
+  gradePoor: 'Keep Up',
+  scoreLabel: 'Score',
+
   // Welcome v0.6.1
   welcomeStepNext: 'Next',
   welcomeStepPrev: 'Back',
@@ -121,17 +126,16 @@ export const en: UILabels = {
   toastError: 'Error',
   toastInfo: 'Info',
 
-  // Newly Added Keys for v0.6.2
   settingContinuousDesc: 'After completing a character in practice mode, automatically start a new random one.',
   sectionData: 'Data & Sync',
   suggestionsLabel: 'Suggestions',
-  pinyinCoverage: 'Offline Lexicon',
+  pinyinCoverage: 'Offline Resources',
   missingChars: 'unmapped characters',
-  downloadLexicon: 'Download Full Lexicon for Offline Use',
+  downloadLexicon: 'Download Full Lexicon',
   downloading: 'Syncing Lexicon...',
   downloadSuccess: 'Offline Lexicon Ready',
   downloadError: 'Lexicon sync failed',
-  downloadDictionary: 'Download Basic Definitions',
+  downloadDictionary: 'Download Definitions',
   dictionaryCoverage: 'Offline Dictionary',
   dictionaryStatus: '{count} definitions cached',
   downloadingDictionary: 'Syncing Dictionary...',

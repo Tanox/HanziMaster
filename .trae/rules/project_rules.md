@@ -28,19 +28,19 @@
 - 响应 Schema 定义使用 `Type` 枚举 (如 `Type.OBJECT`)，禁止使用 `SchemaType`。
 
 ### 2.4 API Key 管理
-- 所有的 Key 获取必须通过 `process.env.API_KEY` 或用户在设置面板输入的自定义 Key。
+- 所有的 Key 获取必须通过 `process.env.API_KEY` 或用户ใน设置面板输入的自定义 Key。
 - 代码中禁止硬编码任何 Key。
 
 ## 3. 目录与文件规范
 - **根目录**: 项目源码直接位于根目录（无 `src/` 层级）。
 - **文件编码**: UTF-8, CRLF 行尾。
-- **组件结构**: 每个组件文件头部必须包含版本注释，例如 `/** HanziMaster v0.5.0 */`。
+- **组件结构**: 每个组件文件头部必须包含版本注释，例如 `/** HanziMaster v0.7.7 */`。
 
 ## 4. UI/UX 设计原则
 - **色彩**: 遵循 "Vermilion (朱砂)" + "Slate (松烟)" 配色体系。
 - **字体**: 汉字必须使用 `Noto Serif SC` (font-hanzi)，UI 文本使用 `Inter` (font-sans)。
 - **响应式**: 必须优先适配移动端触摸操作 (44px+ 点击区域)。
-- **交互反馈**: 严禁使用浏览器原生 `alert()` 或 `confirm()`。必须使用全局 `Toast` 组件或自定义 Modal 进行用户提示。
+- **交互反馈**: 严禁使用 browser native `alert()` or `confirm()`. 必须使用全局 `Toast` 组件或自定义 Modal 进行用户提示。
 
 ## 5. 离线优先 (Offline-First)
 - 任何网络请求（Hanzi Data, AI Analysis, TTS）都必须包含 Fallback 机制。

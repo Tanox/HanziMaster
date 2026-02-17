@@ -1,6 +1,4 @@
-/**
- * app/utils/imageGenerator.ts v0.7.1
- */
+// app/utils/imageGenerator.ts v0.7.1
 import { HanziData, CharacterAnalysis, AppSettings } from '../types';
 
 interface GenerationOptions {
@@ -12,7 +10,7 @@ interface GenerationOptions {
 
 export const generateShareImage = (options: GenerationOptions): Promise<string> => {
     return new Promise((resolve, reject) => {
-        const { hanziData, analysis, settings, theme } = options;
+        const { analysis, theme } = options;
         const canvas = document.createElement('canvas');
         canvas.width = 1080;
         canvas.height = 1080;

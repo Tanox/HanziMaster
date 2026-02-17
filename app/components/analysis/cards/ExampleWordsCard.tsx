@@ -1,6 +1,4 @@
-/**
- * app/components/analysis/cards/ExampleWordsCard.tsx v0.7.1
- */
+// app/components/analysis/cards/ExampleWordsCard.tsx v0.7.1
 import React from 'react';
 import { BookOpen } from 'lucide-react';
 import { ExampleWord, UILabels } from '../../../types';

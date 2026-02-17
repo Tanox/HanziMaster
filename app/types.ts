@@ -1,6 +1,4 @@
-/**
- * app/types.ts v0.7.1
- */
+// app/types.ts v0.8.0
 export interface Point {
   x: number;
   y: number;
@@ -42,6 +40,22 @@ export interface HistoryItem {
   timestamp: number;
 }
 
+/**
+ * Enhanced Practice Results for v0.8.0
+ */
+export enum Grade {
+  EXQUISITE = 'EXQUISITE', // 神品
+  MASTERFUL = 'MASTERFUL', // 妙品
+  PROFICIENT = 'PROFICIENT', // 能品
+  POOR = 'POOR', // 须努力
+}
+
+export interface PracticeResult {
+  score: number;
+  grade: Grade;
+  strokeScores: number[];
+}
+
 export interface PracticeSession {
   char: string;
   startTime: number;
@@ -49,6 +63,7 @@ export interface PracticeSession {
   mistakes: number;
   hintsUsed: boolean;
   completed: boolean;
+  result?: PracticeResult;
 }
 
 export interface UserStats {
@@ -58,9 +73,6 @@ export interface UserStats {
   lastPracticeDate: string;
 }
 
-/**
- * AI Evaluation Response Schema (v0.6.0)
- */
 export interface EvaluationResponse {
   score: number;        // 0-100
   feedback: string;     // Short feedback
@@ -195,6 +207,13 @@ export interface UILabels {
   statsTotal: string;
   statsChars: string;
   statsTerms: string;
+
+  // Grade Labels
+  gradeExquisite?: string;
+  gradeMasterful?: string;
+  gradeProficient?: string;
+  gradePoor?: string;
+  scoreLabel?: string;
 
   // Rich Welcome Screen v0.6.1
   welcomeStepNext: string;

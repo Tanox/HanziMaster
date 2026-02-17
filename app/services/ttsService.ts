@@ -1,6 +1,4 @@
-/**
- * app/services/ttsService.ts v0.7.1
- */
+// app/services/ttsService.ts v0.8.9
 import { GoogleGenAI, Modality } from "@google/genai";
 
 const audioCache: Map<string, AudioBuffer> = new Map();
@@ -52,14 +50,15 @@ function speakNative(text: string, lang: string = 'zh-CN') {
 
 export const playPronunciation = async (text: string, language: string = 'zh-CN', apiKeyOverride?: string): Promise<void> => {
   const apiKey = apiKeyOverride || (process.env.API_KEY as string);
+  
+  // Quick return for offline or no key
   if (!apiKey || !navigator.onLine) {
-    if (!apiKey) console.warn("TTS Fallback: No API Key provided.");
-    if (!navigator.onLine) console.warn("TTS Fallback: Offline.");
     return speakNative(text, language);
   }
 
   const audioContext = getAudioContext();
   const cacheKey = `${language}:${text}`;
+  
   if (audioCache.has(cacheKey)) {
     const cached = audioCache.get(cacheKey);
     if (cached) {
@@ -73,18 +72,19 @@ export const playPronunciation = async (text: string, language: string = 'zh-CN'
 
   try {
     const ai = getAiInstance(apiKey);
+    // Optimized for TTS task per guidelines
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash-native-audio-preview-12-2025",
-      contents: [{ parts: [{ text: `Speak this in Mandarin Chinese: ${text}` }] }],
+      model: "gemini-2.5-flash-preview-tts",
+      contents: [{ parts: [{ text: `Say this clearly in Mandarin Chinese: ${text}` }] }],
       config: {
-        systemInstruction: "You are a native Mandarin Chinese text-to-speech engine. Only output the audio for the provided text, accurately and clearly.",
+        systemInstruction: "You are a high-quality Mandarin Chinese text-to-speech engine. Output ONLY the raw audio for the text given.",
         responseModalities: [Modality.AUDIO],
         speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Kore' } } },
       },
     });
 
     const base64 = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-    if (!base64) throw new Error("No audio data in AI response");
+    if (!base64) throw new Error("No audio data");
 
     const audioBuffer = await decodeAudioData(decode(base64), audioContext);
     audioCache.set(cacheKey, audioBuffer);
@@ -93,8 +93,9 @@ export const playPronunciation = async (text: string, language: string = 'zh-CN'
     source.buffer = audioBuffer;
     source.connect(audioContext.destination);
     source.start();
-  } catch (error) {
-    console.error("AI TTS failed, falling back to native speech.", error);
+  } catch (error: any) {
+    // Silent recovery: If it's a 500 or any network error, switch to native immediately
+    console.debug("Gemini TTS service unavailable, falling back to native engine.");
     return speakNative(text, language);
   }
 };

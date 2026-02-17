@@ -1,6 +1,4 @@
-/**
- * app/components/SettingsModal.tsx v0.7.1
- */
+// app/components/SettingsModal.tsx v0.7.1
 import React from 'react';
 import { X } from 'lucide-react';
 import { AppSettings, UILabels } from '../types';

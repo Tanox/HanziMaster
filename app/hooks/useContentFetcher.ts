@@ -1,14 +1,10 @@
-/**
- * app/hooks/useContentFetcher.ts v0.7.1
- */
+// app/hooks/useContentFetcher.ts v0.7.1
 import { useState } from 'react';
 import { HanziData, CharacterAnalysis, IdiomAnalysis, AppSettings } from '../types';
 import { useLocalStorage } from './useLocalStorage';
 import { fetchHanziData } from '../services/hanziService';
 import { analyzeCharacter, analyzeIdiom } from '../services/geminiService';
 import { LANGUAGES } from '../locales';
-
-const CACHE_LIMIT = 150;
 
 export const useContentFetcher = (settings: AppSettings) => {
   const [hanziData, setHanziData] = useState<HanziData | null>(null);
@@ -18,7 +14,7 @@ export const useContentFetcher = (settings: AppSettings) => {
   const [isAnalysisLoading, setIsAnalysisLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [pinyinCache, setPinyinCache] = useLocalStorage<Record<string, string>>('ai_pinyin_cache', {});
+  const [pinyinCache] = useLocalStorage<Record<string, string>>('ai_pinyin_cache', {});
   const [analysisCache, setAnalysisCache] = useLocalStorage<Record<string, CharacterAnalysis>>('ai_analysis_cache', {});
   const [idiomCache, setIdiomCache] = useLocalStorage<Record<string, IdiomAnalysis>>('ai_idiom_cache', {});
 

@@ -1,8 +1,6 @@
-/**
- * app/components/settings/SettingsApiKey.tsx v0.7.1
- */
+// app/components/settings/SettingsApiKey.tsx v0.7.1
 import React, { useState } from 'react';
-import { Key, Check, X, Eye, EyeOff, ExternalLink } from 'lucide-react';
+import { Key, X, Eye, EyeOff, ExternalLink } from 'lucide-react';
 import { AppSettings, UILabels } from '../../types';
 import SettingsSection from './SettingsSection';
 

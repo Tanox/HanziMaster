@@ -6,7 +6,7 @@
 >
 > Master Chinese character stroke order with Zen-like visualization, interactive practice, and Gemini AI insights.
 
-![Version](https://img.shields.io/badge/version-0.7.1-blue?style=flat-square)
+![Version](https://img.shields.io/badge/version-0.8.1-blue?style=flat-square)
 ![License](https://img.shields.io/badge/license-GPLv3-green?style=flat-square)
 ![Offline Ready](https://img.shields.io/badge/offline-ready-success?style=flat-square)
 ![Pedagogy](https://img.shields.io/badge/focus-Education-orange?style=flat-square)
@@ -17,11 +17,12 @@
 
 Our pedagogy follows the **Scaffolding** method, structured as a three-step learning loop: **Watch -> Trace -> Write**.
 
-## ✨ Key Features (v0.7.1)
+## ✨ Key Features (v0.8.1)
 
 ### 🎓 Interactive Teaching System
 *   **Fluid Demonstration**: Vector-based animations showing the exact rhythm and flow of writing.
 *   **Smart Tracing**: Practice directly on the screen with "Rice Grid" guides and real-time geometric validation.
+*   **AI Scoring System**: Get instant scores (0-100) based on shape accuracy and stroke direction.
 *   **Ghosting Lifeline**: After 3 consecutive mistakes, a ghost hint appears to guide your hand.
 
 ### 🧠 AI Tutor (Gemini Inside)
@@ -64,4 +65,4 @@ npm run dev
 
 ## 📄 License
 
-GPLv3 © 2025 HanziMaster Team
+GPLv3 © 2025 Sut

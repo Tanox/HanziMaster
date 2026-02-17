@@ -1,7 +1,5 @@
-/**
- * app/components/settings/SettingsHazardZone.tsx v0.7.1
- */
-import React, { useState } from 'react';
+// app/components/settings/SettingsHazardZone.tsx v0.7.1
+import React from 'react';
 import { AlertTriangle, Trash2 } from 'lucide-react';
 import { UILabels } from '../../types';
 import { useToast } from '../../context/ToastContext';

@@ -1,6 +1,4 @@
-/**
- * app/hooks/useStrokeAnimation.ts v0.7.1
- */
+// app/hooks/useStrokeAnimation.ts v0.7.1
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { HanziData, AnimationState, InteractionMode } from '../types';
 import { getPathLength } from '../utils/geometry';

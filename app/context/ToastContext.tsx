@@ -1,6 +1,4 @@
-/**
- * app/context/ToastContext.tsx v0.7.1
- */
+// app/context/ToastContext.tsx v0.7.1
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import Toast from '../components/ui/Toast';

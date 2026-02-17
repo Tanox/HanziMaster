@@ -1,6 +1,4 @@
-/**
- * app/components/InstallPWA.tsx v0.7.1
- */
+// app/components/InstallPWA.tsx v0.7.1
 import React, { useEffect, useState } from 'react';
 import { Download } from 'lucide-react';
 
@@ -39,7 +37,7 @@ const InstallPWA: React.FC<InstallPWAProps> = ({ installLabel }) => {
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;
     await deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
+    await deferredPrompt.userChoice;
     setDeferredPrompt(null);
   };
 

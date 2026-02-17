@@ -1,6 +1,4 @@
-/**
- * app/locales/pt.ts v0.7.1
- */
+// app/locales/pt.ts v0.7.1
 import { UILabels } from '../types';
 
 export const pt: UILabels = {

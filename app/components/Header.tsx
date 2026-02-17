@@ -1,6 +1,4 @@
-/**
- * app/components/Header.tsx v0.7.1
- */
+// app/components/Header.tsx v0.9.1
 import React from 'react';
 import { Brush, Settings, WifiOff } from 'lucide-react';
 import InstallPWA from './InstallPWA';
@@ -11,16 +9,17 @@ interface HeaderProps {
   labels: UILabels;
   onOpenSettings: () => void;
   isOffline: boolean;
+  version: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ labels, onOpenSettings, isOffline }) => {
+const Header: React.FC<HeaderProps> = ({ labels, onOpenSettings, isOffline, version }) => {
   return (
     <header id="app-header" className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800 sticky top-0 z-40 transition-colors duration-300 supports-[backdrop-filter]:bg-white/60">
       <div id="header-content" className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-2 text-teal-700 dark:text-teal-400">
           <Brush size={24} />
           <h1 className="font-bold text-xl tracking-tight text-slate-800 dark:text-slate-100 font-hanzi">
-            {labels.appTitle}
+            {labels.appTitle} <span className="text-[10px] font-sans font-normal opacity-40 ml-1">v{version}</span>
           </h1>
         </div>
         <div className="flex items-center gap-2 md:gap-3">

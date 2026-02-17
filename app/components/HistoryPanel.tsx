@@ -1,6 +1,4 @@
-/**
- * app/components/HistoryPanel.tsx v0.7.1
- */
+// app/components/HistoryPanel.tsx v0.7.1
 import React, { useMemo } from 'react';
 import { HistoryItem, UILabels } from '../types';
 import { Clock, Trash2, Award, Zap, Book } from 'lucide-react';

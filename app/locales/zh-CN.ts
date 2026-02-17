@@ -1,6 +1,4 @@
-/**
- * app/locales/zh-CN.ts v0.7.1
- */
+// app/locales/zh-CN.ts v0.8.3
 import { UILabels } from '../types';
 
 export const zhCN: UILabels = {
@@ -41,7 +39,7 @@ export const zhCN: UILabels = {
   settingApiKey: '自定义 API 密钥',
   settingApiKeyPlaceholder: '在此输入 Gemini API Key',
   settingApiKeyHelp: '使用自定义 Key 可享受更稳定的 AI 解析服务。',
-  settingApiKeyValidationMsg: '密钥格式似乎不正确 (通常以 AIza 开头)',
+  settingApiKeyValidationMsg: '密钥格式似乎不正确 (通常以 AIza 開头)',
   settingTheme: '外观主题',
   settingLanguage: '界面语言',
   themeLight: '明亮模式',
@@ -60,7 +58,7 @@ export const zhCN: UILabels = {
   installApp: '安装应用',
   settingShowStructure: '显示汉字结构拆解',
   settingShowEtymology: '显示字源演变故事',
-  settingShowMnemonic: '显示 AI 记忆口诀',
+  settingShowMnemonic: '显示 AI memory tips',
   settingShowExamples: '显示常用词组示例',
   historyTitle: '练字足迹',
   clearHistory: '清空',
@@ -70,6 +68,13 @@ export const zhCN: UILabels = {
   statsTotal: '累计练习',
   statsChars: '独立汉字',
   statsTerms: '精选成语',
+
+  // Grades v0.8.0
+  gradeExquisite: '神品',
+  gradeMasterful: '妙品',
+  gradeProficient: '能品',
+  gradePoor: '须努力',
+  scoreLabel: '得分',
 
   // Welcome v0.6.1
   welcomeStepNext: '下一步',
@@ -121,11 +126,10 @@ export const zhCN: UILabels = {
   toastError: '出错了',
   toastInfo: '提示',
 
-  // Newly Added Keys for v0.6.2
   settingContinuousDesc: '练习完成一个字后，自动开始下一个随机汉字。',
   sectionData: '数据与同步',
   suggestionsLabel: '推荐',
-  pinyinCoverage: '离线笔顺库',
+  pinyinCoverage: '离线资源包',
   missingChars: '未映射拼音',
   downloadLexicon: '下载完整笔顺库',
   downloading: '笔顺库同步中...',
