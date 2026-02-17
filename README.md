@@ -2,74 +2,65 @@
 
 [中文文档](./README_zh-CN.md) | **English**
 
-> **The Soul of Hanzi, Reimagined by AI.**
+> **The Digital Calligraphy Classroom.**
 >
-> Master Chinese character stroke order with Zen-like visualization and Gemini AI insights.
+> Master Chinese character stroke order with Zen-like visualization, interactive practice, and Gemini AI insights.
 
-![Version](https://img.shields.io/badge/version-0.5.3-blue?style=flat-square)
+![Version](https://img.shields.io/badge/version-0.7.1-blue?style=flat-square)
 ![License](https://img.shields.io/badge/license-GPLv3-green?style=flat-square)
 ![Offline Ready](https://img.shields.io/badge/offline-ready-success?style=flat-square)
-![Powered by Gemini](https://img.shields.io/badge/AI-Gemini_Flash-8E75B2?style=flat-square)
+![Pedagogy](https://img.shields.io/badge/focus-Education-orange?style=flat-square)
 
 ## 📖 Introduction
 
-**HanziMaster** is not just a dictionary. It is an interactive, **offline-first** web application designed to bridge the gap between traditional calligraphy and modern AI technology. 
+**HanziMaster** is more than a dictionary—it is a **comprehensive teaching terminal**. Designed for learners of all levels, it bridges the gap between traditional calligraphy and modern AI technology.
 
-Whether you are an HSK student struggling with stroke order, or a heritage learner curious about the story behind a character, HanziMaster provides a distraction-free, aesthetic environment to learn, practice, and understand.
+Our pedagogy follows the **Scaffolding** method, structured as a three-step learning loop: **Watch -> Trace -> Write**.
 
-## ✨ Why HanziMaster?
+## ✨ Key Features (v0.7.1)
 
-### 🧠 AI-Powered Intelligence
-Stop rote memorization. We use **Google Gemini 3 Flash** to generate:
-*   **Etymology**: Discover how "家" (Family) evolved from a pig under a roof.
-*   **Mnemonics**: clever memory aids tailored to the character's structure.
-*   **Native TTS**: Hybrid text-to-speech engine ensuring you hear the perfect tone, online or offline.
+### 🎓 Interactive Teaching System
+*   **Fluid Demonstration**: Vector-based animations showing the exact rhythm and flow of writing.
+*   **Smart Tracing**: Practice directly on the screen with "Rice Grid" guides and real-time geometric validation.
+*   **Ghosting Lifeline**: After 3 consecutive mistakes, a ghost hint appears to guide your hand.
 
-### ✍️ Zen Mode Writing
-*   **Stroke Flow**: Mesmerizing, fluid animations based on vector data (9000+ characters).
-*   **Interactive Practice**: Write directly on the screen with real-time accuracy validation.
-*   **Aesthetics**: Designed with "Vermilion Ink" and "Rice Paper" textures for a calming experience.
+### 🧠 AI Tutor (Gemini Inside)
+*   **Etymology**: Understand the *why* behind the *how* with AI-powered historical analysis.
+*   **Mnemonics**: AI-generated memory aids tailored to character structure and meaning.
+*   **Native TTS**: High-quality pronunciation for every character, with seamless fallback to system voice when offline.
 
 ### ⚡ Engineering Excellence
-*   **Offline-First**: Built as a PWA. Download it once, use it on a plane, subway, or deep in the mountains.
-*   **Privacy-Focused**: Bring Your Own Key (BYOK) architecture. Your API key stays in your browser.
-*   **Shareable**: Generate beautiful, watermarked images of your practice to share on social media.
+*   **Offline-First**: Fully functional PWA. Practice anywhere, anytime, with on-demand data sync.
+*   **Privacy-Focused**: Your progress and optional API keys stay exclusively in your browser's local storage.
+*   **Paper & Ink UI**: A distraction-free, light-mode-first aesthetic inspired by traditional Xuan paper and vermilion ink.
 
-## 📚 Documentation (OpenSpec)
+## 📚 Specifications (OpenSpec)
 
-We follow strict **OpenSpec** standards. Dive into our design philosophy:
-*   [01. Product Requirements](./openspec/01_PRODUCT_REQUIREMENTS.md)
+This project is governed by **OpenSpec**. The documentation is the single source of truth.
+*   [Project Strategy](./openspec/project.md)
+*   [AI Agents Guide](./openspec/agents.md)
+*   [01. Product Requirements (PRD)](./openspec/01_PRODUCT_REQUIREMENTS.md)
 *   [02. Technical Architecture](./openspec/02_TECHNICAL_ARCHITECTURE.md)
 *   [03. UI/UX Design](./openspec/03_UI_UX_DESIGN.md)
-*   [05. Marketing Strategy](./openspec/05_MARKETING_AND_PROMO.md)
+*   [04. Data & API Protocol](./openspec/04_DATA_AND_API.md)
+*   [06. Testing & QA](./openspec/06_TESTING_AND_QA.md)
+*   [09. Data Dictionary](./openspec/09_DATA_DICTIONARY.md)
+*   [13. Core Algorithms](./openspec/13_EVALUATION_LOGIC.md)
+*   [14. Learning Curriculum](./openspec/14_LEARNING_CURRICULUM.md)
 
 ## 🚀 Quick Start
 
-### Prerequisites
-*   Node.js v18+
-*   A Google Gemini API Key (Optional for basic features, required for AI analysis)
-
-### Installation
-
 ```bash
 # 1. Clone
-git clone https://github.com/yourusername/hanzimaster.git
-cd hanzimaster
+git clone https://github.com/sutchan/HanziMaster.git
+cd HanziMaster
 
-# 2. Install dependencies (includes data copying script)
+# 2. Install (includes data copy)
 npm install
 
-# 3. Create env file (Optional)
-echo "API_KEY=your_key" > .env
-
-# 4. Run!
+# 3. Run
 npm run dev
 ```
-
-## 🤝 Contributing
-
-We welcome calligraphy enthusiasts and developers! 
-Please check [06. Testing & QA](./openspec/06_TESTING_AND_QA.md) before submitting PRs.
 
 ## 📄 License
 

@@ -1,77 +1,70 @@
+# 09. 数据字典
 
+**版本**: v0.7.1
+**状态**: 现行规范
 
-# 09. 数据字典与 API 协议
+## 1. 存储命名空间 (Storage Namespaces)
+应用在浏览器端使用以下存储空间，职责明确：
+*   **LocalStorage**: 存放轻量级、持久化的用户配置和文本缓存。键名均有明确前缀。
+    *   `appSettings`: 用户设置 (`AppSettings` 接口)。
+    *   `practiceHistory`: 最近练习历史 (`HistoryItem[]` 接口)。
+    *   `learnedItems`: 所有练习过的字/词列表 (`string[]`)。
+    *   `ai_analysis_cache_{lang}_{char}`: AI 解析的单字/词语数据 (`CharacterAnalysis` / `IdiomAnalysis` 接口)。
+*   **CacheStorage**: 存放二进制/JSON 等大型静态资源，由 Service Worker 管理。
+    *   `hanzi-data-local`: 存放从 `/public/hanzi-data/` 下载的笔顺矢量文件。
+    *   `hanzi-data-cdn`: 存放从 CDN 回退下载的笔顺数据。
+*   **IndexedDB**: (规划中 v0.8.0) 用于存放用户手写练习的原始轨迹数据 (点集)，用于后续的 AI 评分和回放。
 
-## 1. 核心模型
+## 2. 核心数据模型 (Core Schemas)
 
-### 1.1 CharacterAnalysis (AI 文本响应)
+### 2.1 `HanziData` (笔顺数据)
+*   **来源**: `hanzi-writer-data`
+*   **描述**: 定义一个汉字的可视化所需的所有矢量信息。
 ```typescript
-{
-  char: string;          // 目标汉字
-  pinyin: string;        // 必须带音调的拼音 (例如: ài)
-  meaning: string;       // 基础释义
-  radical: string;       // 部首及含义
-  strokeCount: number;   // 笔画数
-  etymology: string;     // 字源分析
-  mnemonic: string;      // 记忆口诀
-  examples: Array<{      // 常用词组
+interface HanziData {
+  strokes: string[];         // 每个笔画的 SVG 路径轮廓
+  medians: number[][][];    // 每个笔画的中轴线点集，用于练习校验
+  radStrokes?: number[];   // (可选) 指示哪些笔画属于部首
+}
+```
+
+### 2.2 `CharacterAnalysis` (AI 单字分析)
+*   **来源**: Google Gemini API
+*   **描述**: Gemini 返回的结构化 JSON，用于展示汉字的详细信息。
+```typescript
+interface CharacterAnalysis {
+  char: string;
+  pinyin: string;
+  meaning: string;         // 核心释义
+  radical: string;         // 部首
+  strokeCount: number;
+  etymology: string;        // 字源故事
+  mnemonic: string;        // AI 助记词
+  examples: {              // 词组示例
     word: string;
-    pinyin: string;      // 词组拼音
+    pinyin: string;
     meaning: string;
-  }>;
+  }[];
 }
 ```
 
-### 1.2 离线拼音字典 (Offline Pinyin Map)
-*   **存储位置**: `constants/pinyinData.ts`
-*   **当前规模**: 覆盖核心高频汉字及常用生活/学术词汇。
-*   **优先级**: 
-    1.  `PINYIN_MAP` (静态硬编码，首屏即用)
-    2.  `ai_pinyin_cache` (LocalStorage 动态补丁)
-    3.  `Gemini API` (实时在线解析)
-
-### 1.3 节庆配置 (Seasonal Events)
+### 2.3 `UserPracticeRecord` (用户练习记录)
+*   **描述**: (规划中) 存储在 IndexedDB 中的单次练习详细数据。
 ```typescript
-interface SeasonalEvent {
-  name: string;          // 节日 Key (对应 locales)
-  startMonth: number;    // 1-12
-  startDay: number;      // 1-31
-  endMonth: number;
-  endDay: number;
-  keywords: string[];    // 推荐词汇池
+interface UserPracticeRecord {
+  char: string;
+  timestamp: number;
+  mode: 'trace' | 'write'; // 临摹或默写
+  mistakes: number;        // 错误次数
+  score?: number;           // 智能评分 (v0.8.0 引入)
+  duration: number;        // 练习耗时(ms)
+  pathData: Point[][];     // 用户绘制的原始轨迹
 }
 ```
 
-## 2. 缓存与持久化模型 (Storage Schema)
-
-应用采用多级 LocalStorage 缓存策略以减少 API 调用并支持离线访问。
-
-| Key | 类型 | 说明 | 自愈策略 |
-| :--- | :--- | :--- | :--- |
-| `appSettings` | `AppSettings` | 用户偏好（Grid 样式、API Key、主题等） | 默认值回滚 |
-| `practiceHistory` | `HistoryItem[]` | 最近 20 条练习记录 | 自动截断 |
-| `ai_pinyin_cache` | `Record<string, string>` | AI 自动补全的生僻字拼音 | 持续累积 |
-| `ai_analysis_cache` | `Record<string, Analysis>` | **单字**解析结果缓存 (L2 Cache) | 达到 150 条后清理旧数据 |
-| `ai_idiom_cache` | `Record<string, IdiomAnalysis>` | **成语**解析结果缓存 (L2 Cache) | 达到 150 条后清理旧数据 |
-
-## 3. Gemini Prompt 指令集
-*   **角色设定**: "You are a professional Chinese etymologist and calligraphy expert."
-*   **TTS 设定**: 使用 `Modality.AUDIO`，音色配置为 `Kore`，系统指令要求 "Do not provide any introductory text... Just speak."。
-
-## 4. 离线 Fallback 数据结构
-当 API 无法连接且无缓存时，系统生成如下占位数据：
-```json
-{
-  "char": "${char}",
-  "pinyin": "-", 
-  "meaning": "Mode: Network Unavailable / Offline",
-  "radical": "?",
-  "strokeCount": 0,
-  "etymology": "Detailed analysis requires an active AI connection.",
-  "mnemonic": "Focus on writing practice.",
-  "examples": []
-}
-```
+## 3. 静态常量映射 (Static Constants)
+*   **`COMMON_CHARS`**: 内置 3500+ 个常用汉字库，作为离线同步的基准和随机推荐的来源。
+*   **`PINYIN_MAP`**: 内置高频汉字拼音映射表，确保搜索建议的拼音在离线时立即可用，无需等待 AI 返回。
 
 ---
-*文档维护: HanziMaster Data Engineering*
+*文档维护: HanziMaster Dev Team*

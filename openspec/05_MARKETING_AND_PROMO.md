@@ -1,61 +1,37 @@
+# 05. 营销与推广策略
 
-# 05. 营销与推广策略 (Marketing & Promotion Strategy)
+**版本**: v0.7.1
+**状态**: 规划中
 
-## 1. 品牌定位 (Brand Identity)
+## 1. 品牌定位 (Brand Positioning)
+*   **核心概念**: **Digital Calligraphy Classroom (数字书法教室)**。
+*   **Slogan**: "从一撇一捺，读懂中国。(Understand China, one stroke at a time.)"
+*   **目标受众**: 
+    1.  **主要**: HSK 考生、海外中文学习者（特别是二代华裔）。
+    2.  **次要**: 对中国文化和书法感兴趣的爱好者。
 
-### 1.1 核心价值主张 (Value Proposition)
-*   **Slogan**: “由 AI 重塑的汉字之魂 (The Soul of Hanzi, Reimagined by AI)”
-*   **定位**: 全球首个结合**传统书法美学**与**生成式 AI 深度解析**的沉浸式汉字学习终端。
-*   **差异化**: 
-    *   对比字典类 App：我们提供动态的笔顺流与深度的文化背景，而非冷冰冰的释义。
-    *   对比传统练字 App：我们拥有 Gemini AI 驱动的“私人导师”，实时解答字源与记忆难题。
-    *   对比纯 AI 工具：我们拥有离线优先的架构与毫秒级的交互体验。
+## 2. 增长策略 (Growth Strategy)
 
-### 1.2 目标受众 (Target Audience)
-| 用户群体 | 痛点 | 我们的解决方案 | 推广关键词 |
-| :--- | :--- | :--- | :--- |
-| **HSK 备考者** | 汉字难记，形近字易混 | 视觉化笔顺 + 结构拆解 + 记忆口诀 | #HSK必过 #汉字不仅是画画 |
-| **海外华裔 (ABC)** | 能听不懂写，缺乏文化认同 | 游戏化交互 + 英文深度解析字源 | #寻根之旅 #中文很酷 |
-| **书法/设计爱好者** | 缺乏标准参考，审美要求高 | 矢量级米字格 + 传统配色 (朱砂/松烟) | #数字书法 #东方美学 |
-| **教育工作者** | 缺乏生动的课堂演示工具 | 大屏适配 + 投屏模式 + 笔顺动画 | #中文教学黑科技 |
+### 2.1 教学场景切入 (Pedagogical Hook)
+*   **核心痛点**: "字会认不会写" (Can read, can't write)、"笔顺总是错" (Incorrect stroke order)。
+*   **解决方案营销点**: 
+    *   **Ghosting Lifeline**: "比老师更有耐心的 AI 助教，写错三次自动提示。"
+    *   **Strict Mode**: "严格的几何校验，纠正‘画字’坏习惯，真正掌握书写精髓。"
 
-## 2. 增长引擎 (Growth Engines)
+### 2.2 内容营销 (Content Marketing)
+*   **短视频 (Shorts/Reels)**: 制作 "Satisfying Writing" (解压书写) 系列短视频，展示墨水在宣纸上晕染（通过 UI 动画模拟）的过程，重点突出汉字的美感。
+*   **博客/社交媒体**: 
+    *   "为什么 AI 无法完全替代练字？肌肉记忆的科学原理。"
+    *   "解密汉字：‘家’为什么是屋顶下有头猪？" (利用 AI 字源功能生成内容)。
+*   **社交分享**: 鼓励用户使用应用内建的“分享图片”功能，生成精美的汉字卡片，分享到 Instagram, Pinterest, X 等平台，形成自传播。
 
-### 2.1 产品内裂变 (Product-Led Growth)
-*   **"墨宝"分享卡片 (Share as Image)**:
-    *   **机制**: 用户完成练习或发现生僻字时，生成一张带有“朱砂印章”认证的高清图片。
-    *   **心理钩子**: 炫耀心理 (我写得好) + 社交货币 (我知道这个字的冷知识)。
-    *   **流量回流**: 图片底部嵌入二维码或短链接，扫描即可直接跳转到该字的练习页面。
-*   **挑战模式 (Challenge)**:
-    *   推出“生僻字挑战”（如：biáng, 饕餮），鼓励用户录屏分享到 TikTok/抖音。
+## 3. SEO/ASO 关键词
+*   **Primary**: "Chinese Stroke Order App", "Learn Hanzi Writing", "Etymology AI", "汉字笔顺", "练字APP"。
+*   **Secondary**: "HSK Practice", "Calligraphy Simulator", "Offline Chinese Dictionary", "汉字字源", "书法练习"。
 
-### 2.2 内容营销矩阵 (Content Matrix)
-*   **SEO/GEO 策略**: 针对 Google Gemini 和 ChatGPT 优化内容，使其在回答“如何学习汉字笔顺”时优先引用 HanziMaster。
-*   **社交媒体**:
-    *   **Instagram/小红书**: 发布“每日一字”的笔顺流体动画视频 (ASMR 风格)。
-    *   **Twitter/X**: 分享 AI 生成的趣味字源故事（如：“‘家’字为什么房子里有头猪？”）。
-    *   **GitHub**: 撰写技术博客，分享“如何用 SVG + AI 构建离线优先应用”，吸引开发者社区的 Star 和 Fork。
-
-## 3. 渠道推广计划 (Go-to-Market)
-
-### Phase 1: 种子用户 (冷启动)
-*   **平台**: Reddit (r/ChineseLanguage), Hacker News, V2EX。
-*   **动作**: 发布 "Show HN"，强调开源、离线、无广告、AI 驱动。
-*   **目标**: 获取前 1000 名极客用户和深度学习者，收集反馈迭代 UX。
-
-### Phase 2: 垂直渗透
-*   **合作**: 联络 YouTube 中文教学博主，提供 Teacher Mode 供其录课使用。
-*   **ASO**: 优化 App Store / Google Play 关键词（PWA 打包上架），覆盖 "Learn Chinese", "Stroke Order", "Etymology"。
-
-### Phase 3: 病毒传播
-*   **事件营销**: 在春节、中秋等节点，推出“写福字”、“画月亮”特别活动，配合时令推荐功能。
-
-## 4. 数据指标 (Key Metrics)
-*   **北极星指标**: **每日有效练习字数 (Daily Strokes Completed)**。
-*   **辅助指标**: 
-    *   分享卡片生成率 (Viral Coefficient)。
-    *   离线模式使用时长占比 (验证离线价值)。
-    *   Day-30 留存率。
+## 4. 合作伙伴
+*   **目标**: 与孔子学院、在线中文教育平台、HSK 备考博主合作，进行交叉推广。
+*   **方式**: 提供定制化的免费体验码，或联合举办“汉字书写挑战赛”。
 
 ---
-*文档维护: HanziMaster Growth Team*
+*文档维护: HanziMaster Marketing Team*

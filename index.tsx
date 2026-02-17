@@ -1,9 +1,9 @@
 /**
- * HanziMaster v0.5.7
+ * index.tsx v0.7.1
  */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App.tsx';
+import App from './App';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

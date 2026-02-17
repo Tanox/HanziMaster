@@ -1,3 +1,6 @@
+/**
+ * vite-env.d.ts v0.7.1
+ */
 declare module 'virtual:pwa-register/react' {
   import type { Dispatch, SetStateAction } from 'react';
 

@@ -1,39 +1,29 @@
 /**
- * HanziMaster v0.5.8
+ * App.tsx v0.7.1
  */
 import React from 'react';
-import { useAppController } from './hooks/useAppController';
-import { AnimationState, InteractionMode } from './types';
-import SearchInput from './components/SearchInput';
-import StrokeViewer from './components/StrokeViewer';
-import Controls from './components/Controls';
-import AnalysisPanel from './components/AnalysisPanel';
-import RandomSuggestions from './components/RandomSuggestions';
-import HistoryPanel from './components/HistoryPanel';
-import SettingsModal from './components/SettingsModal';
-import ReloadPrompt from './components/ReloadPrompt';
-import WelcomeScreen from './components/WelcomeScreen';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import IdiomNavigator from './components/IdiomNavigator';
-import { UI_LABELS } from './locales';
+import { useAppController } from './app/hooks/useAppController';
+import SearchInput from './app/components/SearchInput';
+import RandomSuggestions from './app/components/RandomSuggestions';
+import SettingsModal from './app/components/SettingsModal';
+import ReloadPrompt from './app/components/ReloadPrompt';
+import WelcomeScreen from './app/components/WelcomeScreen';
+import Header from './app/components/Header';
+import Footer from './app/components/Footer';
+import ViewerSection from './app/components/dashboard/ViewerSection';
+import AnalysisSection from './app/components/dashboard/AnalysisSection';
+import { UI_LABELS } from './app/locales';
 import { AlertCircle } from 'lucide-react';
-import { ToastProvider } from './context/ToastContext';
+import { ToastProvider } from './app/context/ToastContext';
 
-const APP_VERSION = '0.5.8';
+const APP_VERSION = '0.7.1';
 
 const AppContent: React.FC = () => {
   const { state, actions } = useAppController();
   const labels = UI_LABELS[state.currentLang] || UI_LABELS['en'];
 
-  // Determine current pinyin to display above viewer
-  const currentPinyin = state.analysis?.char === state.activeChar 
-    ? state.analysis.pinyin 
-    : (state.pinyinCache[state.activeChar] || '');
-
   return (
     <div id="app-root-container" className="min-h-[100dvh] pb-24 bg-paper dark:bg-slate-900 transition-colors duration-300 flex flex-col">
-      
       {state.showWelcome && (
         <WelcomeScreen 
           onDismiss={actions.handleDismissWelcome} 
@@ -50,9 +40,8 @@ const AppContent: React.FC = () => {
       />
 
       <main id="app-main-content" className="max-w-5xl w-full mx-auto px-4 py-8 flex-grow">
-        
         <div id="intro-header-section" className="text-center mb-6 md:mb-12">
-          <h2 className="hidden md:block text-4xl md:text-5xl font-hanzi font-bold text-slate-800 dark:text-white mb-4 transition-colors tracking-tight">{labels.appTitle}</h2>
+          <h2 className="hidden md:block text-4xl md:text-5xl font-hanzi font-bold text-slate-800 dark:text-white mb-4 tracking-tight">{labels.appTitle}</h2>
           <p className="hidden md:block text-slate-500 dark:text-slate-400 mb-8 max-w-lg mx-auto font-light">
             {labels.appSubtitle}
           </p>
@@ -79,82 +68,30 @@ const AppContent: React.FC = () => {
         </div>
 
         <div id="main-grid-layout" className="flex flex-col lg:grid lg:grid-cols-12 lg:gap-12">
-          
-          {/* --- Left Column / Mobile Order 1: Viewer --- */}
-          <div id="left-column-viewer" className="order-1 lg:order-1 lg:col-span-5 flex flex-col items-center min-h-[580px]">
-            
-            <IdiomNavigator 
-                term={state.activeTerm} 
-                activeChar={state.activeChar} 
-                activeIndex={state.activeCharIndex}
-                onSelectChar={(char, index) => actions.handleCharSelect(char, undefined, index)} 
+          <div id="left-column-viewer-wrapper" className="order-1 lg:order-1 lg:col-span-5">
+            <ViewerSection 
+              activeTerm={state.activeTerm}
+              activeChar={state.activeChar}
+              activeCharIndex={state.activeCharIndex}
+              hanziData={state.hanziData}
+              analysis={state.analysis}
+              pinyinCache={state.pinyinCache}
+              animationState={state.animationState}
+              interactionMode={state.interactionMode}
+              speed={state.speed}
+              settings={state.settings}
+              loading={state.loading}
+              error={state.error}
+              labels={labels}
+              actions={{
+                handleCharSelect: actions.handleCharSelect,
+                setAnimationState: actions.setAnimationState,
+                setInteractionMode: actions.setInteractionMode,
+                handlePracticeComplete: actions.handlePracticeComplete
+              }}
             />
-
-            {/* Pinyin Display for Active Character - Optimized for visibility */}
-            <div id="active-pinyin-display" className="h-16 mb-4 flex items-end justify-center w-full">
-              {currentPinyin ? (
-                  <span className="text-5xl md:text-6xl text-vermilion-600 dark:text-vermilion-400 font-serif font-bold tracking-widest drop-shadow-sm animate-fade-in transition-all">
-                      {currentPinyin}
-                  </span>
-              ) : (
-                  // Fixed width space to prevent layout collapse
-                  <span className="text-5xl md:text-6xl text-transparent select-none">Pinyin</span>
-              )}
-            </div>
-
-            <div id="viewer-container-outer" className="w-full flex flex-col items-center min-h-[320px]">
-                {state.hanziData ? (
-                <>
-                    <StrokeViewer 
-                    data={state.hanziData}
-                    animationState={state.animationState}
-                    setAnimationState={actions.setAnimationState}
-                    speed={state.speed}
-                    mode={state.interactionMode}
-                    settings={state.settings}
-                    onPracticeComplete={actions.handlePracticeComplete}
-                    labels={labels}
-                    />
-                    <Controls 
-                    animationState={state.animationState}
-                    onPlay={() => actions.setAnimationState(AnimationState.PLAYING)}
-                    onPause={() => actions.setAnimationState(AnimationState.PAUSED)}
-                    onReset={() => {
-                        actions.setAnimationState(AnimationState.IDLE);
-                        actions.setInteractionMode(InteractionMode.VIEW);
-                    }}
-                    mode={state.interactionMode}
-                    onToggleMode={() => {
-                        const newMode = state.interactionMode === InteractionMode.VIEW ? InteractionMode.PRACTICE : InteractionMode.VIEW;
-                        actions.setInteractionMode(newMode);
-                        if (newMode === InteractionMode.PRACTICE) {
-                            actions.setAnimationState(AnimationState.IDLE);
-                        }
-                    }}
-                    char={state.activeChar}
-                    labels={{
-                        play: labels.controlsPlay,
-                        pause: labels.controlsPause,
-                        reset: labels.controlsReset,
-                        speed: labels.controlsSpeed,
-                        practiceMode: labels.practiceMode || "Practice",
-                        viewMode: labels.viewMode || "Watch"
-                    }}
-                    apiKey={state.settings.apiKey}
-                    />
-                </>
-                ) : (
-                !state.loading && !state.error && (
-                    <div id="viewer-placeholder" className="h-[320px] w-full max-w-xs flex flex-col items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-3xl text-slate-400 dark:text-slate-600 italic">
-                        <div className="w-12 h-12 border-4 border-slate-200 border-t-teal-500 rounded-full animate-spin mb-4" />
-                        {labels.previewText}
-                    </div>
-                )
-                )}
-            </div>
           </div>
           
-          {/* --- Mobile Order 2 / Desktop Order 3: Suggestions --- */}
           {state.settings.showRandomSuggestions && (
             <div id="center-column-suggestions" className="order-2 lg:order-3 lg:col-span-12">
               <RandomSuggestions 
@@ -166,26 +103,22 @@ const AppContent: React.FC = () => {
             </div>
           )}
 
-          {/* --- Right Column / Mobile Order 3: Analysis --- */}
-          <div id="right-column-analysis" className="order-3 lg:order-2 lg:col-span-7">
-            <AnalysisPanel 
-                analysis={state.analysis} 
-                idiomAnalysis={state.idiomAnalysis}
-                hanziData={state.hanziData}
-                isLoading={state.isAnalysisLoading} 
-                language={state.currentLang} 
-                settings={state.settings} 
+          <div id="right-column-analysis-wrapper" className="order-3 lg:order-2 lg:col-span-7">
+            <AnalysisSection 
+              analysis={state.analysis}
+              idiomAnalysis={state.idiomAnalysis}
+              hanziData={state.hanziData}
+              isAnalysisLoading={state.isAnalysisLoading}
+              currentLang={state.currentLang}
+              settings={state.settings}
+              history={state.history}
+              learnedItems={state.learnedItems}
+              labels={labels}
+              actions={{
+                handleSearch: actions.handleSearch,
+                setHistory: actions.setHistory
+              }}
             />
-            
-            {state.settings.showHistory && (
-              <HistoryPanel 
-                 history={state.history} 
-                 learnedItems={state.learnedItems}
-                 onSelect={(term) => actions.handleSearch(term, state.currentLang)} 
-                 onClear={() => actions.setHistory([])}
-                 labels={labels}
-              />
-            )}
           </div>
         </div>
         
@@ -202,22 +135,17 @@ const AppContent: React.FC = () => {
           currentTheme={state.theme}
           onThemeChange={actions.toggleTheme}
         />
-        
         <ReloadPrompt labels={labels} />
-
       </main>
-
       <Footer labels={labels} version={APP_VERSION} />
     </div>
   );
 };
 
-const App: React.FC = () => {
-  return (
-    <ToastProvider>
-      <AppContent />
-    </ToastProvider>
-  );
-};
+const App: React.FC = () => (
+  <ToastProvider>
+    <AppContent />
+  </ToastProvider>
+);
 
 export default App;

@@ -1,5 +1,5 @@
 /**
- * HanziMaster v0.5.3
+ * vite.config.ts v0.7.1
  */
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';

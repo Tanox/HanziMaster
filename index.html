@@ -1,4 +1,4 @@
-<!-- HanziMaster v0.6.0 -->
+<!-- index.html v0.7.1 -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,69 +7,15 @@
     <meta name="theme-color" content="#fdfbf7" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
     
-    <!-- SEO & Meta Information -->
-    <title>HanziMaster - Learn Chinese Character Strokes & Etymology with AI</title>
-    <meta name="description" content="Master Chinese characters (Hanzi) with vector stroke order animations, AI-powered etymology, mnemonics, and handwriting practice. Offline-first PWA for HSK learners.">
-    <meta name="keywords" content="Chinese Characters, Hanzi, Stroke Order, Etymology, Pinyin, HSK, Learn Chinese, Mandarin, Calligraphy, AI Education, Mnemonics, Offline App, PWA">
-    <meta name="author" content="HanziMaster Team">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://hanzimaster.app/" />
-
-    <!-- Open Graph / Social Media -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://hanzimaster.app/">
-    <meta property="og:title" content="HanziMaster - Master Hanzi with AI">
-    <meta property="og:description" content="The ultimate tool for learning Chinese characters. Visualize strokes, understand origins with Gemini AI, and practice offline.">
-    <meta property="og:image" content="/maskable-icon.svg">
-    <meta property="og:locale" content="en_US">
-    <meta property="og:site_name" content="HanziMaster">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="HanziMaster">
-    <meta name="twitter:description" content="Master Hanzi with Zen-like vector stroke animations and AI-powered insights.">
-    <meta name="twitter:image" content="/maskable-icon.svg">
-
-    <!-- Google Analytics (GA4) -->
+    <title>HanziMaster - Master Hanzi Strokes & Etymology with AI</title>
+    <meta name="description" content="Learn Chinese characters with vector stroke animations, AI-powered etymology, and handwriting practice.">
+    
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZG68T8J31"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-TZG68T8J31');
-    </script>
-
-    <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "HanziMaster",
-      "alternateName": "汉字大师",
-      "applicationCategory": "EducationalApplication",
-      "operatingSystem": "Web, Android, iOS, Windows, macOS",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "description": "HanziMaster is an offline-first progressive web application (PWA) designed to help learners master Chinese characters (Hanzi). It features vector-based stroke order animations, AI-generated etymology and mnemonics using Google Gemini, and native text-to-speech.",
-      "featureList": [
-        "Vector Stroke Order Animations",
-        "AI Etymology Analysis",
-        "Mnemonics Generation",
-        "Native TTS Audio",
-        "Offline PWA Support",
-        "Handwriting Practice Mode"
-      ],
-      "inLanguage": ["en", "zh-CN", "zh-TW", "es", "fr", "de", "ja", "ko", "ru", "pt", "it", "vi"],
-      "author": {
-        "@type": "Organization",
-        "name": "HanziMaster Team",
-        "url": "https://github.com/sutchan/HanziMaster"
-      },
-      "screenshot": "https://hanzimaster.app/screenshot.png"
-    }
     </script>
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -81,16 +27,8 @@
             colors: {
               paper: '#fdfbf7',
               vermilion: {
-                50: '#fdf3f2',
-                100: '#fbe5e4',
-                200: '#f7cfcd',
-                300: '#f0aaa6',
-                400: '#e67872',
-                500: '#bc221b',
-                600: '#a31d17',
-                700: '#8c1914',
-                800: '#751510',
-                900: '#5e110d',
+                50: '#fdf3f2', 100: '#fbe5e4', 200: '#f7cfcd', 300: '#f0aaa6', 400: '#e67872',
+                500: '#bc221b', 600: '#a31d17', 700: '#8c1914', 800: '#751510', 900: '#5e110d',
               }
             },
             fontFamily: {
@@ -98,41 +36,36 @@
               sans: ['Inter', 'sans-serif'],
             },
             keyframes: {
-              fadeIn: {
-                '0%': { opacity: '0', transform: 'translateY(10px)' },
-                '100%': { opacity: '1', transform: 'translateY(0)' },
-              }
+              fadeIn: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } }
             },
-            animation: {
-              'fade-in': 'fadeIn 0.5s ease-out forwards',
-            }
+            animation: { 'fade-in': 'fadeIn 0.5s ease-out forwards' }
           }
         }
       }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/style.css">
-<script type="importmap">
+    <link rel="stylesheet" href="/app/style.css">
+    <script type="importmap">
 {
   "imports": {
     "react": "https://esm.sh/react@18.3.1",
+    "react/": "https://esm.sh/react@18.3.1/",
     "react-dom": "https://esm.sh/react-dom@18.3.1",
+    "react-dom/": "https://esm.sh/react-dom@18.3.1/",
     "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
     "lucide-react": "https://esm.sh/lucide-react@0.469.0?deps=react@18.3.1",
     "@google/genai": "https://esm.sh/@google/genai@0.2.0",
     "uuid": "https://esm.sh/uuid@11.0.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react/": "https://esm.sh/react@^19.2.4/",
     "vite": "https://esm.sh/vite@^7.3.1",
-    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.4",
-    "vite-plugin-pwa": "https://esm.sh/vite-plugin-pwa@^1.2.0",
     "fs": "https://esm.sh/fs@^0.0.1-security",
     "path": "https://esm.sh/path@^0.12.7",
-    "url": "https://esm.sh/url@^0.11.4"
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.4",
+    "url": "https://esm.sh/url@^0.11.4",
+    "vite-plugin-pwa": "https://esm.sh/vite-plugin-pwa@^1.2.0"
   }
 }
 </script>
-</head>
+  </head>
   <body class="bg-paper dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors duration-300">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>

@@ -1,47 +1,25 @@
+# 12. 安全与隐私规范
 
-# 12. 安全与隐私规范 (Security & Privacy)
+**版本**: v0.7.1
+**状态**: 现行规范
 
-## 1. 架构安全模型
-HanziMaster 采用 **无后端 (Serverless / Client-Side Only)** 架构。
-*   **零数据收集**: 我们没有数据库，不收集用户的查询历史、API Key 或练习记录。
-*   **数据所有权**: 所有用户数据（设置、历史）仅存储在用户浏览器的 `LocalStorage` 中。
+## 1. 核心原则：用户数据本地化 (User Data Localization)
+HanziMaster 遵循**“零知识 (Zero-Knowledge)”**原则。我们不收集、不存储、也无法访问任何用户的个人学习数据。所有数据都 100% 留存在用户自己的浏览器中。
 
-## 2. API Key 管理 (BYOK 策略)
+## 2. 学习数据隐私 (Learning Data Privacy)
+*   **存储位置**: 用户的练习进度 (`practiceHistory`)、学习统计 (`learnedItems`)、应用设置 (`appSettings`) 和 AI 内容缓存 (`ai_analysis_cache`) 全部存储于浏览器 `LocalStorage`。
+*   **无云端同步**: 当前版本不提供任何形式的云端账号同步功能。这从架构上杜绝了用户数据被上传到任何服务器的可能性。
+*   **数据擦除**: 用户可以通过“设置”中的“重置应用”功能，一键清除所有 `LocalStorage` 和 `CacheStorage` 中的数据，彻底抹除使用痕迹。
 
-### 2.1 客户端直连
-*   用户输入的 Gemini API Key 直接存储在 `LocalStorage` (`appSettings.apiKey`)。
-*   **传输安全**: Key 仅用于向 `generativelanguage.googleapis.com` 发起 HTTPS 请求，绝不发送至任何第三方统计服务器。
+## 3. API Key 安全 (BYOK - Bring Your Own Key)
+*   **前端存储**: 用户可选输入的自定义 Gemini API Key 仅保存在客户端的 `LocalStorage` 中。
+*   **直接调用**: 该 Key 仅用于从用户浏览器直接向 Google Gemini API 发起请求，不会经过 HanziMaster 的任何中间服务器。
+*   **风险提示**: 在设置界面的 API Key 输入区域，必须明确告知用户上述策略，并提供指向 Google AI Studio 官方文档的链接，以增加透明度。
+*   **非强制性**: 应用在没有用户提供自定义 Key 的情况下，仍能使用由开发者配置的默认 Key（或在离线模式下）提供核心功能，确保 AI 功能是可选增强项。
 
-### 2.2 风险缓解
-*   **前端混淆**: 虽然提供了默认的 `process.env.API_KEY` 以供演示，但该 Key 在前端构建中是可见的。生产环境部署时，必须限制该 Key 的 Referrer 仅为官方域名。
-*   **用户提示**: 在设置界面明确提示用户使用自己的 Key 以避免配额限制，并解释 Key 的存储位置。
-
-## 3. 内容安全策略 (CSP)
-
-为了防止 XSS 攻击及非授权的数据外泄，`index.html` 应遵循以下 CSP 原则（建议配置在 Web 服务器头信息中）：
-
-```http
-Content-Security-Policy: 
-  default-src 'self';
-  script-src 'self' 'unsafe-inline';  # React/Vite 需要
-  connect-src 'self' https://generativelanguage.googleapis.com; # 允许连接 Gemini
-  img-src 'self' data: blob:;         # 允许 SVG 和 Canvas 图片生成
-  style-src 'self' 'unsafe-inline';   # Tailwind
-  font-src 'self' https://fonts.gstatic.com;
-```
-
-## 4. 数据持久化与清理
-
-### 4.1 LocalStorage 策略
-*   **敏感数据**: API Key。
-*   **非敏感数据**: 练习历史、偏好设置、缓存。
-
-### 4.2 清理机制
-*   提供“重置应用”或“清除数据”按钮，调用 `localStorage.clear()`，彻底移除所有本地痕迹。
-
-## 5. 生成内容安全 (AI Safety)
-*   **过滤器配置**: 在 `geminiService.ts` 中，显式设置 `HarmCategory` 阈值。虽然汉字教学风险较低，但仍需防止 AI 生成仇恨言论或不当的例句。
-*   **输入清洗**: 对用户输入的搜索词进行长度限制（Max 4 chars）和正则校验（仅限汉字），防止 Prompt Injection 攻击。
+## 4. 内容安全 (Content Safety)
+*   **场景**: 尽管汉字教学属于低风险领域，但在调用 Gemini API 生成字源故事、助记词等开放性内容时，仍需考虑模型幻觉 (hallucination) 产生不当内容的极低可能性。
+*   **措施**: 在 `geminiService.ts` 中，所有对 `generateContent` 的调用都必须配置基本的 **Safety Filters**，至少屏蔽高风险内容 (`HARM_BLOCK_THRESHOLD_BLOCK_ONLY_HIGH`)。
 
 ---
 *文档维护: HanziMaster Security Team*

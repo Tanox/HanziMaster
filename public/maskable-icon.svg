@@ -1,4 +1,4 @@
-<!-- HanziMaster v0.5.4 - Maskable Icon (Safe Zone) -->
+<!-- public/maskable-icon.svg v0.7.1 -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <rect width="512" height="512" fill="#bc221b"/>
   <!-- Central Character within 80% safe zone -->
