@@ -1,9 +1,8 @@
-// app/components/settings/SettingsDataAudit.tsx v0.9.3
+// app/components/settings/SettingsDataAudit.tsx v0.9.4
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { Database, Book, Loader2, Download, Wifi, CheckCircle2, RefreshCcw, AlertTriangle } from 'lucide-react';
 import { UILabels, AppSettings } from '../../types';
 import { COMMON_CHARS } from '../../constants/commonChars';
-import { PINYIN_MAP } from '../../constants/pinyinData';
 import { useToast } from '../../context/ToastContext';
 import SettingsSection from './SettingsSection';
 import ToggleItem from '../ToggleItem';

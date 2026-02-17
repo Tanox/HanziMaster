@@ -1,13 +1,13 @@
 {
-  "name": "HanziMaster v0.9.3",
-  "version": "0.9.3",
-  "description": "Refined Stroke Library and Comprehensive Offline Dictionary.",
+  "name": "HanziMaster v0.9.4",
+  "version": "0.9.4",
+  "description": "Stability update: Fixed build-time TypeScript errors and optimized resource management.",
   "keywords": [
     "Chinese characters",
     "Hanzi",
     "Stroke Order",
     "Offline Dictionary",
-    "HSK Vocabulary",
+    "Stability",
     "PWA"
   ],
   "requestFramePermissions": [],
