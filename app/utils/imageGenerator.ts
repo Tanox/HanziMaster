@@ -1,5 +1,5 @@
-// app/utils/imageGenerator.ts v1.1.0
-import { CharacterAnalysis, AppSettings, Grade } from '../types';
+// app/utils/imageGenerator.ts v1.1.1
+import { Grade } from '../types';
 
 interface GenerationOptions {
     char: string;

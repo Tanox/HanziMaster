@@ -1,4 +1,4 @@
-// app/components/StrokeViewer.tsx v1.1.0
+// app/components/StrokeViewer.tsx v1.1.1
 import React, { useRef, useMemo } from 'react';
 import { HanziData, AnimationState, InteractionMode, AppSettings, UILabels, Grade, PracticeResult, CharacterAnalysis } from '../types';
 import { PenTool } from 'lucide-react';
@@ -83,7 +83,6 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
               <div className="pointer-events-auto animate-fade-in" style={{ animationDelay: '0.6s' }}>
                 <ShareImageButton 
                   analysis={analysis} 
-                  settings={settings} 
                   score={result.score} 
                   grade={result.grade}
                   label={labels.shareAction}

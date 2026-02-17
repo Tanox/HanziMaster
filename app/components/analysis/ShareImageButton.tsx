@@ -1,22 +1,20 @@
-// app/components/analysis/ShareImageButton.tsx v1.1.0
+// app/components/analysis/ShareImageButton.tsx v1.1.1
 import React, { useState } from 'react';
-import { Loader2, Image as ImageIcon, Download, Share2 } from 'lucide-react';
-import { CharacterAnalysis, AppSettings, HanziData } from '../../types';
+import { Loader2, Download, Share2 } from 'lucide-react';
+import { CharacterAnalysis, Grade } from '../../types';
 import { generateShareImage } from '../../utils/imageGenerator';
 import { useToast } from '../../context/ToastContext';
 
 interface ShareImageButtonProps {
   analysis: CharacterAnalysis;
-  settings: AppSettings;
   score?: number;
-  grade?: any;
+  grade?: Grade;
   label?: string;
   className?: string;
 }
 
 const ShareImageButton: React.FC<ShareImageButtonProps> = ({ 
   analysis, 
-  settings, 
   score, 
   grade,
   label,
