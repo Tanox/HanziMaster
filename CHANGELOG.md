@@ -1,6 +1,11 @@
 
 # Changelog
 
+## [1.0.6]
+
+### Changed
+- **Docs**: Completed the definitive consolidation of all `openspec/` documentation. All content from 18 legacy specification files has been merged into the 7 core modules, which now serve as the project's comprehensive Single Source of Truth.
+
 ## [1.0.5]
 
 ### Added

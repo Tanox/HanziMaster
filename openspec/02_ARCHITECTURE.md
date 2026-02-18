@@ -1,20 +1,20 @@
-# 02. 技术架构与工程准则
 
-**版本**: v1.5.0
-**职责**: 定义组件拓扑、Props 契约、全局状态机与开发流程
+# 02. 技术架构与工程准则
 
 ## 1. 核心技术栈
 *   **React**: `18.3.1` (禁止使用 v19 特性)
 *   **Vite**: `6.0+`
 *   **TypeScript**: `5.7+` (全局 `strict: true`)
 *   **@google/genai**: `0.2.0+`
+*   **Node.js**: `18.0+` (用于运行构建脚本)
 
 ## 2. 状态管理：Hooks 分层架构
 为避免 `useAppController` 成为上帝对象，状态管理严格按下述原则抽离：
-*   **`useAppController` (协调者)**: 唯一持有 `activeChar` 与 `activeTerm`。负责 URL 解析、全局 Modal 状态、以及协调各子 Hook 间的交互。
+*   **`useAppController` (协调者)**: 应用的“大脑”。唯一持有 `activeChar` 与 `activeTerm`。负责 URL 解析、全局 Modal 状态、以及协调各子 Hook 间的交互。
 *   **`useContentFetcher` (数据源)**: 负责获取与缓存 `HanziData` (笔顺)、`CharacterAnalysis` (AI 解析) 和 `IdiomAnalysis`。
 *   **`useInteractionState` (交互态)**: 负责播放、重置、模式切换 (Watch/Practice) 等瞬时 UI 状态。
 *   **`useUserProgress` (用户进度)**: 独立管理用户的学习历史 (`HistoryItem[]`) 和已学清单 (`learnedItems: string[]`)，并与 `LocalStorage` 通信。
+*   **`useDataSync` (数据同步)**: 封装所有离线数据（笔顺库、词典）的下载、缓存与审计逻辑。
 
 ## 3. `app/` 核心源码目录
 ```text
@@ -34,14 +34,16 @@ app/
 └── utils/          # 通用工具函数 (几何计算等)
 ```
 
-## 4. Git 工作流与提交规范
+## 4. Git 工作流与编码规范
 *   **分支模型**: 遵循 Git Flow (`main`, `dev`, `feature/*`, `fix/*`)。
 *   **提交信息**: 必须遵循**语义化提交 (Semantic Commit Messages)**规范。
     *   `feat(practice): add ghosting hint mechanism`
     *   `fix(canvas): resolve touch event conflict on iOS`
     *   `docs(openspec): update a11y standards`
-    *   `refactor(service): improve geminiService error handling`
-    *   `chore(deps): upgrade vite to 6.0.3`
+*   **命名**: 
+    *   组件: `PascalCase` (e.g., `StrokeViewer.tsx`)
+    *   Hooks: `useCamelCase` (e.g., `useAppController.ts`)
+*   **文件头部注释**: 每个 `.ts` / `.tsx` 文件首行必须包含版本注释，例如 `// app/components/Header.tsx v1.0.6`。
 
 ---
 *文档维护: HanziMaster Architecture Team*

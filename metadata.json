@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v1.0.5",
-  "version": "1.0.5",
-  "description": "v1.0.5: Implemented a multi-sensory feedback system by adding sound effects for correct, incorrect, and completed strokes in practice mode, enhancing the user learning experience.",
+  "name": "HanziMaster 汉字大师 v1.0.6",
+  "version": "1.0.6",
+  "description": "v1.0.6: Completed the final consolidation of the OpenSpec documentation. All specifications are now merged into the 7 core modules, making them the single source of truth.",
   "keywords": [
     "Chinese characters",
     "Hanzi",

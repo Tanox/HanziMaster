@@ -1,9 +1,7 @@
+
 # 06. 合规、质量与运维
 
-**版本**: v1.5.0
-**职责**: 定义交付质量、隐私安全与运维流程
-
-## 1. 质量保证 (QA Test Cases)
+## 1. 质量保证 (Quality Assurance)
 核心测试用例必须覆盖以下场景：
 *   **离线韧性**:
     *   **CASE-O-01**: 在飞行模式下，验证已同步的笔顺数据和离线词典能否正常加载。
@@ -15,7 +13,7 @@
     *   **CASE-C-01**: 在 iOS Safari 上，验证练习区的 Canvas 是否已禁用页面滚动和橡皮筋效果。
     *   **CASE-C-02**: 在德语或俄语环境下，检查设置面板中的所有按钮文字是否完整显示，无溢出。
 
-## 2. 安全与隐私策略 (v1.0.1)
+## 2. 安全与隐私策略
 *   **API Key 安全**:
     *   **策略**: **环境变量注入 (Environment Variable Injection)**。
     *   **实现**: 应用 **唯一** 通过 `process.env.API_KEY` 获取 Gemini API Key。此变量由 Vercel 等托管平台的安全设置注入，**绝不**暴露在前端代码中。
@@ -31,7 +29,7 @@
     *   **应用核心 (App Shell)**: 预缓存 (Precache)，随版本更新。
     *   **笔顺数据 (`/hanzi-data/`)**: 运行时缓存，策略为 `CacheFirst`，有效期 1 年。
     *   **Google Fonts**: 运行时缓存，策略为 `CacheFirst`。
-*   **更新机制**: 部署后，Service Worker 会检测到新版本。`ReloadPrompt` 组件将提示用户刷新页面以应用更新。
+*   **更新机制**: 部署新版本后，Service Worker 会检测到变更。`ReloadPrompt` 组件将提示用户刷新页面以应用更新。
 
 ---
 *文档维护: HanziMaster DevOps Team*
