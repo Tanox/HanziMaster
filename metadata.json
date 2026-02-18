@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v1.0.3",
-  "version": "1.0.3",
-  "description": "v1.0.3: Architectural refactor of data synchronization logic into a dedicated `useDataSync` hook and final consolidation of OpenSpec documentation.",
+  "name": "HanziMaster 汉字大师 v1.0.4",
+  "version": "1.0.4",
+  "description": "v1.0.4: Final consolidation of OpenSpec documentation by removing all (18) deprecated spec files, establishing the 7 core modules as the Single Source of Truth.",
   "keywords": [
     "Chinese characters",
     "Hanzi",

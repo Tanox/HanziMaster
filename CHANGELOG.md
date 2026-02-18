@@ -1,6 +1,11 @@
 
 # Changelog
 
+## [1.0.4]
+
+### Chore
+- **Docs**: Removed all (18) deprecated specification files from the `openspec/` directory to enforce the 7 core modules as the Single Source of Truth, aligning the project with its established documentation strategy.
+
 ## [1.0.3]
 
 ### Changed
