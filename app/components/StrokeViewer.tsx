@@ -1,4 +1,5 @@
-// app/components/StrokeViewer.tsx v1.0.1
+
+// app/components/StrokeViewer.tsx v1.0.5
 import React, { useRef, useMemo } from 'react';
 import { HanziData, AnimationState, InteractionMode, AppSettings, UILabels, Grade, PracticeResult, CharacterAnalysis } from '../types';
 import { PenTool } from 'lucide-react';
@@ -40,7 +41,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   );
 
   const { practiceStrokeIndex, showSuccess, showGhostHint, lastPracticeResult, handlers } = usePracticeDrawing(
-    canvasRef, data, mode, onPracticeComplete
+    canvasRef, data, mode, settings, onPracticeComplete
   );
 
   const gridLines = useMemo(() => {

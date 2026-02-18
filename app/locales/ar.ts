@@ -1,4 +1,5 @@
-// app/locales/ar.ts v0.7.2
+
+// app/locales/ar.ts v1.0.5
 import { UILabels } from '../types';
 
 export const ar: UILabels = {
@@ -36,6 +37,7 @@ export const ar: UILabels = {
   settingContinuousMode: 'وضع الممارسة المستمر',
   settingContinuousDesc: 'بعد إكمال الحرف، ابدأ حرفاً جديداً عشوائياً تلقائياً.',
   settingOfflineMode: 'وضع عدم الاتصال',
+  settingSoundEffects: 'المؤثرات الصوتية',
   settingShowRandomSuggestions: 'إظهار اقتراحات عشوائية',
   settingShowHistory: 'إظهار السجل',
   settingApiKey: 'مفتاح API مخصص',

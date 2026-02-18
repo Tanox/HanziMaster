@@ -1,4 +1,5 @@
-// app/hooks/useAppController.ts v1.0.1
+
+// app/hooks/useAppController.ts v1.0.5
 import { useState, useEffect } from 'react';
 import { AppSettings, InteractionMode, AnimationState } from '../types';
 import { COMMON_CHARS } from '../constants/commonChars';
@@ -6,6 +7,7 @@ import { useLocalStorage } from './useLocalStorage';
 import { useInteractionState } from './useInteractionState';
 import { useContentFetcher } from './useContentFetcher';
 import { useUserProgress } from './useUserProgress';
+import { soundService } from '../services/soundService';
 
 const DEFAULT_SETTINGS: AppSettings = {
   gridStyle: 'rice',
@@ -13,6 +15,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   autoPlay: true,
   continuousMode: false,
   offlineMode: false,
+  soundEffects: true,
   showRandomSuggestions: true,
   showHistory: true,
   showStructure: true,
@@ -41,6 +44,7 @@ export const useAppController = () => {
 
   useEffect(() => {
     setShowWelcome(!hasSeenWelcome);
+    soundService.preloadSounds();
   }, []); 
 
   useEffect(() => {

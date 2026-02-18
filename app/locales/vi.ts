@@ -1,4 +1,5 @@
-// app/locales/vi.ts v0.7.2
+
+// app/locales/vi.ts v1.0.5
 import { UILabels } from '../types';
 
 export const vi: UILabels = {
@@ -36,6 +37,7 @@ export const vi: UILabels = {
   settingContinuousMode: 'Chế độ liên tục',
   settingContinuousDesc: 'Sau khi hoàn thành một chữ, tự động bắt đầu chữ mới ngẫu nhiên.',
   settingOfflineMode: 'Chế độ ngoại tuyến',
+  settingSoundEffects: 'Hiệu ứng âm thanh',
   settingShowRandomSuggestions: 'Hiện gợi ý ngẫu nhiên',
   settingShowHistory: 'Hiện lịch sử',
   settingApiKey: 'Khóa API tùy chỉnh',

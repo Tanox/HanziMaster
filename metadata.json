@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v1.0.4",
-  "version": "1.0.4",
-  "description": "v1.0.4: Final consolidation of OpenSpec documentation by removing all (18) deprecated spec files, establishing the 7 core modules as the Single Source of Truth.",
+  "name": "HanziMaster 汉字大师 v1.0.5",
+  "version": "1.0.5",
+  "description": "v1.0.5: Implemented a multi-sensory feedback system by adding sound effects for correct, incorrect, and completed strokes in practice mode, enhancing the user learning experience.",
   "keywords": [
     "Chinese characters",
     "Hanzi",

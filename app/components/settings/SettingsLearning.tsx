@@ -1,6 +1,7 @@
-// app/components/settings/SettingsLearning.tsx v1.0.1
+
+// app/components/settings/SettingsLearning.tsx v1.0.5
 import React from 'react';
-import { Gauge, PlayCircle, Infinity } from 'lucide-react';
+import { Gauge, PlayCircle, Infinity, Volume2 } from 'lucide-react';
 import { AppSettings, UILabels } from '../../types';
 import ToggleItem from '../ToggleItem';
 import SettingsSection from './SettingsSection';
@@ -28,6 +29,7 @@ const SettingsLearning: React.FC<SettingsLearningProps> = ({ labels, settings, o
           </div>
        </div>
       <ToggleItem label={labels.settingAutoPlay} value={settings.autoPlay} onChange={() => onUpdate('autoPlay', !settings.autoPlay)} icon={<PlayCircle size={16} />} />
+      <ToggleItem label={labels.settingSoundEffects} value={settings.soundEffects} onChange={() => onUpdate('soundEffects', !settings.soundEffects)} icon={<Volume2 size={16} />} />
       <div className="space-y-1">
           <ToggleItem label={labels.settingContinuousMode} value={settings.continuousMode} onChange={() => onUpdate('continuousMode', !settings.continuousMode)} icon={<Infinity size={16} />} />
           {labels.settingContinuousDesc && <p className="text-[10px] text-slate-400 dark:text-slate-500 pl-11 leading-tight">{labels.settingContinuousDesc}</p>}

@@ -1,4 +1,5 @@
-// app/locales/it.ts v0.7.2
+
+// app/locales/it.ts v1.0.5
 import { UILabels } from '../types';
 
 export const it: UILabels = {
@@ -36,6 +37,7 @@ export const it: UILabels = {
   settingContinuousMode: 'Modo Continuo',
   settingContinuousDesc: 'Dopo aver completato un carattere, iniziane automaticamente uno nuovo casuale.',
   settingOfflineMode: 'Modalità Offline',
+  settingSoundEffects: 'Effetti Sonori',
   settingShowRandomSuggestions: 'Mostra suggerimenti casuali',
   settingShowHistory: 'Mostra cronologia',
   settingApiKey: 'Chiave API Personalizzata',

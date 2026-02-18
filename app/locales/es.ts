@@ -1,4 +1,5 @@
-// app/locales/es.ts v1.0.1
+
+// app/locales/es.ts v1.0.5
 import { UILabels } from '../types';
 
 export const es: UILabels = {
@@ -36,6 +37,7 @@ export const es: UILabels = {
   settingContinuousMode: 'Modo Continuo',
   settingContinuousDesc: 'Pasa automáticamente al siguiente carácter después de completar uno.',
   settingOfflineMode: 'Modo Offline',
+  settingSoundEffects: 'Efectos de Sonido',
   settingShowRandomSuggestions: 'Mostrar sugerencias aleatorias',
   settingShowHistory: 'Mostrar historial',
   settingApiKey: 'Clave API Personalizada',

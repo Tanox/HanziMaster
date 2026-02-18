@@ -1,4 +1,5 @@
-// app/locales/ru.ts v0.7.2
+
+// app/locales/ru.ts v1.0.5
 import { UILabels } from '../types';
 
 export const ru: UILabels = {
@@ -36,6 +37,7 @@ export const ru: UILabels = {
   settingContinuousMode: 'Непрерывный режим',
   settingContinuousDesc: 'Автоматически переходить к следующему иероглифу.',
   settingOfflineMode: 'Оффлайн режим',
+  settingSoundEffects: 'Звуковые эффекты',
   settingShowRandomSuggestions: 'Показать рекомендации',
   settingShowHistory: 'Показать историю',
   settingApiKey: 'API ключ',

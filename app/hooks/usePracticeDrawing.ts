@@ -1,7 +1,9 @@
-// app/hooks/usePracticeDrawing.ts v1.0.1
+
+// app/hooks/usePracticeDrawing.ts v1.0.5
 import { useState, useRef, useEffect, RefObject, PointerEvent } from 'react';
-import { HanziData, InteractionMode, Point, PracticeResult, Grade } from '../types';
+import { HanziData, InteractionMode, Point, PracticeResult, Grade, AppSettings } from '../types';
 import { getDistance, subtract, cosineSimilarity, resample, calculateShapeScore, mapResultToScore } from '../utils/geometry';
+import { soundService } from '../services/soundService';
 
 const CANVAS_SIZE = 1024;
 const OFFSET_Y = 900; 
@@ -15,6 +17,7 @@ export const usePracticeDrawing = (
   canvasRef: RefObject<HTMLCanvasElement>,
   data: HanziData | null,
   mode: InteractionMode,
+  settings: AppSettings,
   onPracticeComplete?: (result: PracticeResult) => void
 ) => {
   const [practiceStrokeIndex, setPracticeStrokeIndex] = useState(0);
@@ -25,7 +28,6 @@ export const usePracticeDrawing = (
   const [mistakeCount, setMistakeCount] = useState(0);
   const [showGhostHint, setShowGhostHint] = useState(false);
   
-  // v0.8.0 Scoring State
   const [strokeScores, setStrokeScores] = useState<number[]>([]);
   const [lastPracticeResult, setLastPracticeResult] = useState<PracticeResult | null>(null);
   
@@ -56,16 +58,17 @@ export const usePracticeDrawing = (
 
             const result = { score: finalScore, grade, strokeScores };
             setLastPracticeResult(result);
+            if (settings.soundEffects) {
+                soundService.playSound('complete');
+            }
             onPracticeComplete?.(result);
             hasNotifiedCompletionRef.current = true;
         }
         setShowSuccess(true);
     } else {
         setShowSuccess(false);
-        setMistakeCount(0);
-        setShowGhostHint(false);
     }
-  }, [practiceStrokeIndex, data, strokeScores, onPracticeComplete]);
+  }, [practiceStrokeIndex, data, strokeScores, onPracticeComplete, settings.soundEffects]);
 
   useEffect(() => {
     if (mistakeCount >= MAX_MISTAKES_FOR_GHOST) setShowGhostHint(true);
@@ -114,10 +117,7 @@ export const usePracticeDrawing = (
     const startDist = getDistance(startPointUser, startPointTarget);
 
     if (startDist > TOLERANCE_START_POINT) {
-        if (navigator.vibrate) navigator.vibrate(50);
-        setFeedbackColor('error');
-        setMistakeCount(prev => prev + 1);
-        setTimeout(() => { setFeedbackColor(null); clearCanvas(); }, 500);
+        failStroke();
         return;
     }
 
@@ -183,16 +183,22 @@ export const usePracticeDrawing = (
   };
 
   const failStroke = () => {
+      if (settings.soundEffects) {
+          soundService.playSound('error');
+      }
+      if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
       setFeedbackColor('error');
       setMistakeCount(prev => prev + 1);
-      if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
       setTimeout(clearCanvas, 500);
   };
 
   const passStroke = (score: number) => {
+      if (settings.soundEffects) {
+          soundService.playSound('correct');
+      }
+      if (navigator.vibrate) navigator.vibrate(20);
       setFeedbackColor('success');
       setStrokeScores(prev => [...prev, score]);
-      if (navigator.vibrate) navigator.vibrate(20);
       setTimeout(() => {
           setPracticeStrokeIndex(prev => prev + 1);
           clearCanvas();

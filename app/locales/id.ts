@@ -1,4 +1,5 @@
-// app/locales/id.ts v0.7.2
+
+// app/locales/id.ts v1.0.5
 import { UILabels } from '../types';
 
 export const id: UILabels = {
@@ -35,6 +36,7 @@ export const id: UILabels = {
   settingAutoPlay: 'Putar Otomatis',
   settingContinuousMode: 'Mode Latihan Terus-menerus',
   settingOfflineMode: 'Mode Offline',
+  settingSoundEffects: 'Efek Suara',
   settingShowRandomSuggestions: 'Tampilkan Saran Acak',
   settingShowHistory: 'Tampilkan Riwayat',
   settingApiKey: 'API Key Kustom',

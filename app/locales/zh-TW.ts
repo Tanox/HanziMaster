@@ -1,4 +1,5 @@
-// app/locales/zh-TW.ts v1.0.1
+
+// app/locales/zh-TW.ts v1.0.5
 import { UILabels } from '../types';
 
 export const zhTW: UILabels = {
@@ -35,6 +36,7 @@ export const zhTW: UILabels = {
   settingAutoPlay: '自動播放動畫',
   settingContinuousMode: '連續練字模式',
   settingOfflineMode: '離線模式',
+  settingSoundEffects: '音效回饋',
   settingShowRandomSuggestions: '顯示隨機推薦',
   settingShowHistory: '顯示練字歷史',
   settingApiKey: '自定義 API 金鑰',

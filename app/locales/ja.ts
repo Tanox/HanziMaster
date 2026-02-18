@@ -1,3 +1,4 @@
+
 // app/locales/ja.ts v1.4.0
 import { UILabels } from '../types';
 
@@ -36,6 +37,7 @@ export const ja: UILabels = {
   settingContinuousMode: '連続モード',
   settingContinuousDesc: '書き終えた後、自動的に次の漢字へ切り替わります。',
   settingOfflineMode: 'オフラインモード',
+  settingSoundEffects: '効果音',
   settingShowRandomSuggestions: 'ランダム提案を表示',
   settingShowHistory: '履歴を表示',
   settingApiKey: 'カスタムAPIキー',

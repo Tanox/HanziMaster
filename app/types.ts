@@ -1,3 +1,4 @@
+
 // app/types.ts v1.4.0
 export interface Point {
   x: number;
@@ -73,6 +74,7 @@ export interface AppSettings {
   autoPlay: boolean;
   continuousMode: boolean;
   offlineMode: boolean;
+  soundEffects: boolean;
   showRandomSuggestions: boolean;
   showHistory: boolean;
   showStructure: boolean;
@@ -139,6 +141,7 @@ export interface UILabels {
   settingAutoPlay: string;
   settingContinuousMode: string;
   settingOfflineMode: string;
+  settingSoundEffects: string;
   settingShowRandomSuggestions: string;
   settingShowHistory: string;
   settingApiKey: string;

@@ -1,3 +1,4 @@
+
 // app/locales/ko.ts v1.4.0
 import { UILabels } from '../types';
 
@@ -36,6 +37,7 @@ export const ko: UILabels = {
   settingContinuousMode: '연속 모드',
   settingContinuousDesc: '한 글자를 완료하면 자동으로 다음 글자로 전환됩니다.',
   settingOfflineMode: '오프라인 모드',
+  settingSoundEffects: '음향 효과',
   settingShowRandomSuggestions: '랜덤 추천 표시',
   settingShowHistory: '기록 표시',
   settingApiKey: '사용자 지정 API 키',

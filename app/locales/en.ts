@@ -1,4 +1,5 @@
-// app/locales/en.ts v1.0.1
+
+// app/locales/en.ts v1.0.5
 import { UILabels } from '../types';
 
 export const en: UILabels = {
@@ -35,6 +36,7 @@ export const en: UILabels = {
   settingAutoPlay: 'Auto-play',
   settingContinuousMode: 'Continuous Mode',
   settingOfflineMode: 'Offline Mode',
+  settingSoundEffects: 'Sound Effects',
   settingShowRandomSuggestions: 'Show Random Suggestions',
   settingShowHistory: 'Show History',
   settingApiKey: 'Custom API Key',

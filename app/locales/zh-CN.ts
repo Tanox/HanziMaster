@@ -1,4 +1,5 @@
-// app/locales/zh-CN.ts v1.0.1
+
+// app/locales/zh-CN.ts v1.0.5
 import { UILabels } from '../types';
 
 export const zhCN: UILabels = {
@@ -35,6 +36,7 @@ export const zhCN: UILabels = {
   settingAutoPlay: '加载后自动播放',
   settingContinuousMode: '自动挑战模式',
   settingOfflineMode: '极速离线模式',
+  settingSoundEffects: '音效反馈',
   settingShowRandomSuggestions: '显示随机推荐',
   settingShowHistory: '显示练字历史',
   settingApiKey: '自定义 API 密钥',

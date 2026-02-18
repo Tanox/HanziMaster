@@ -1,6 +1,12 @@
 
 # Changelog
 
+## [1.0.5]
+
+### Added
+- **Audio Feedback**: Implemented a new `soundService` to provide multi-sensory feedback during practice mode. Added distinct sounds for correct strokes, incorrect strokes, and character completion.
+- **Settings**: Added a "Sound Effects" toggle in the settings panel to allow users to enable or disable audio feedback.
+
 ## [1.0.4]
 
 ### Chore

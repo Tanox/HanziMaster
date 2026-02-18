@@ -1,4 +1,5 @@
-// app/locales/th.ts v0.7.2
+
+// app/locales/th.ts v1.0.5
 import { UILabels } from '../types';
 
 export const th: UILabels = {
@@ -36,6 +37,7 @@ export const th: UILabels = {
   settingContinuousMode: 'โหมดฝึกเขียนต่อเนื่อง',
   settingContinuousDesc: 'หลังจากเขียนจบตัวหนึ่ง ให้เริ่มตัวใหม่แบบสุ่มอัตโนมัติ',
   settingOfflineMode: 'โหมดออฟไลน์',
+  settingSoundEffects: 'เอฟเฟกต์เสียง',
   settingShowRandomSuggestions: 'แสดงคำแนะนำแบบสุ่ม',
   settingShowHistory: 'แสดงประวัติ',
   settingApiKey: 'API Key ส่วนตัว',
