@@ -1,6 +1,19 @@
 
 # Changelog
 
+## [1.0.9]
+
+### Fixed
+- **Accuracy**: Prioritized the definitive stroke count from `hanziData` over the AI-provided count in `CharacterDisplay`, ensuring the displayed number perfectly matches the stroke animation data.
+
+## [1.0.8]
+
+### Added
+- **Onboarding**: Implemented a new multi-step welcome screen to better onboard new users.
+- **Welcome Step 1**: Focuses on the app's philosophy and provides an integrated language selector.
+- **Welcome Step 2**: Introduces the four core features (Search, Watch, Practice, AI Insights) using descriptive cards.
+- **i18n**: Added new locale keys to all 15 languages to support the content of the new welcome screen.
+
 ## [1.0.7]
 
 ### Fixed

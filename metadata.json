@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v1.0.7",
-  "version": "1.0.7",
-  "description": "v1.0.7: Fixed a critical build error (TS2307) by correcting the module import path for the offline dictionary in the useDataSync hook.",
+  "name": "HanziMaster 汉字大师 v1.0.9",
+  "version": "1.0.9",
+  "description": "v1.0.9: Prioritized hanziData for stroke count accuracy in the CharacterDisplay component, ensuring consistency between animation and analytics.",
   "keywords": [
     "Chinese characters",
     "Hanzi",
