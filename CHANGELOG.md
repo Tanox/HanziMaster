@@ -1,6 +1,11 @@
 
 # Changelog
 
+## [1.1.2]
+
+### Fixed
+- **Offline**: Fixed an issue where lexicon download failures were silently ignored. Implemented a robust fetch-with-retry mechanism and precise error tracking to ensure sync reliability and provide accurate user feedback.
+
 ## [1.1.1]
 
 ### Added

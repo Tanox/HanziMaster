@@ -1,5 +1,5 @@
 
-// app/hooks/useDataSync.ts v1.1.0
+// app/hooks/useDataSync.ts v1.1.2
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { useLocalStorage } from './useLocalStorage';
 import { useToast } from '../context/ToastContext';
@@ -10,8 +10,29 @@ const CACHE_NAME = 'hanzi-data-local';
 const LOCAL_BASE_URL = '/hanzi-data';
 
 /**
+ * Helper for fetching with retries and exponential backoff.
+ */
+async function fetchWithRetry(url: string, options: RequestInit = {}, retries = 3, backoff = 500): Promise<Response> {
+    try {
+        const response = await fetch(url, options);
+        if (response.ok) return response;
+        if (retries > 0 && response.status >= 500) {
+            await new Promise(resolve => setTimeout(resolve, backoff));
+            return fetchWithRetry(url, options, retries - 1, backoff * 2);
+        }
+        return response;
+    } catch (e) {
+        if (retries > 0) {
+            await new Promise(resolve => setTimeout(resolve, backoff));
+            return fetchWithRetry(url, options, retries - 1, backoff * 2);
+        }
+        throw e;
+    }
+}
+
+/**
  * Manages all logic related to offline data synchronization and auditing.
- * v1.1.0: Refactored to use a dynamically fetched character list for complete lexicon download.
+ * v1.1.2: Fixed lexicon download failure by adding a robust retry mechanism.
  */
 export const useDataSync = (labels: UILabels) => {
   const [characterList, setCharacterList] = useState<string[]>([]);
@@ -88,11 +109,14 @@ export const useDataSync = (labels: UILabels) => {
 
   /**
    * Iterates through the full character list and fetches/caches their stroke data.
+   * Includes retry logic for network reliability.
    */
   const handleDownloadLexicon = async () => {
     if (isLexiconDownloading || characterList.length === 0) return;
     setIsLexiconDownloading(true);
     setLexiconProgress(0);
+    const failedChars: string[] = [];
+
     try {
       const cache = await caches.open(CACHE_NAME);
       const total = stats.lexiconTotal;
@@ -104,11 +128,17 @@ export const useDataSync = (labels: UILabels) => {
         
         await Promise.all(batch.map(async (char) => {
           const url = `${LOCAL_BASE_URL}/${char}.json`;
-          if (!(await cache.match(url))) {
-            try { 
-                const res = await fetch(url); 
-                if (res.ok) await cache.put(url, res); 
-            } catch (e) { /* silent catch */ }
+          try {
+            if (!(await cache.match(url))) {
+              const res = await fetchWithRetry(url);
+              if (res.ok) {
+                await cache.put(url, res);
+              } else {
+                failedChars.push(char);
+              }
+            }
+          } catch (e) {
+            failedChars.push(char);
           }
         }));
         
@@ -118,7 +148,14 @@ export const useDataSync = (labels: UILabels) => {
       
       setCurrentTarget('');
       await auditLexicon();
-      showToast(labels.downloadSuccess, 'success');
+      
+      if (failedChars.length > 0) {
+        console.warn('Failed to download:', failedChars);
+        const errorMsg = (labels.downloadError || "Lexicon sync failed").replace('Lexicon sync failed', `Sync failed for ${failedChars.length} items`);
+        showToast(errorMsg, 'error');
+      } else {
+        showToast(labels.downloadSuccess, 'success');
+      }
     } catch (error) { 
       showToast(labels.downloadError, 'error'); 
     } finally { 
