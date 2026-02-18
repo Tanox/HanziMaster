@@ -1,5 +1,5 @@
 
-// app/hooks/useDataSync.ts v1.0.3
+// app/hooks/useDataSync.ts v1.0.7
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { useLocalStorage } from './useLocalStorage';
 import { useToast } from '../context/ToastContext';
@@ -123,7 +123,7 @@ export const useDataSync = (labels: UILabels) => {
     if (isDictDownloading) return;
     setIsDictDownloading(true);
     try {
-        const module = await import('../../constants/dictionaryData');
+        const module = await import('../constants/dictionaryData');
         await new Promise(resolve => setTimeout(resolve, 800)); 
         setOfflineDict(module.SIMPLE_DICTIONARY);
         showToast(labels.dictionaryReady, 'success');

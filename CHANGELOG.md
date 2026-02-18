@@ -1,6 +1,11 @@
 
 # Changelog
 
+## [1.0.7]
+
+### Fixed
+- **Build**: Resolved a critical build failure (TS2307) by correcting the import path for the `dictionaryData` module within the `useDataSync` hook.
+
 ## [1.0.6]
 
 ### Changed

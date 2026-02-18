@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v1.0.6",
-  "version": "1.0.6",
-  "description": "v1.0.6: Completed the final consolidation of the OpenSpec documentation. All specifications are now merged into the 7 core modules, making them the single source of truth.",
+  "name": "HanziMaster 汉字大师 v1.0.7",
+  "version": "1.0.7",
+  "description": "v1.0.7: Fixed a critical build error (TS2307) by correcting the module import path for the offline dictionary in the useDataSync hook.",
   "keywords": [
     "Chinese characters",
     "Hanzi",
