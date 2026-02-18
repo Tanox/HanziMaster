@@ -1,4 +1,4 @@
-// app/services/hanziService.ts v0.9.3
+// app/services/hanziService.ts v1.0.1
 import { HanziData } from '../types';
 
 const CDN_BASE_URL = 'https://cdn.jsdelivr.net/npm/hanzi-writer-data@2.0';

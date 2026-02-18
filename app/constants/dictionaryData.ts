@@ -1,4 +1,4 @@
-// app/constants/dictionaryData.ts v0.9.9
+// app/constants/dictionaryData.ts v1.0.1
 export const SIMPLE_DICTIONARY: Record<string, string> = {
   // --- HSK 1-3 (Existing + Fixes) ---
   "爱": "love; affection; to like",

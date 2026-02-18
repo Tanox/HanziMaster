@@ -1,14 +1,34 @@
+
 # Changelog
 
-## [1.0.0]
+## [1.0.3]
 
-### Refactored
-- **OpenSpec**: 将 16 个散乱文档深度整合为 6 大核心规范模块。
-- **Architecture**: 在规范中确立了 `useUserProgress` 逻辑抽离标准。
-- **Design System**: 规范化了纸墨美学的原子化样式路径。
+### Changed
+- **Architecture**: Refactored the complex data synchronization logic from the `SettingsDataAudit` component into a dedicated `useDataSync` hook, improving separation of concerns and code clarity.
+- **Docs**: Completed the final cleanup of the `openspec/` directory by removing all deprecated specification files, establishing the 7 core modules as the single source of truth.
+
+## [1.0.2]
+
+### Fixed
+- **History**: Ensured that the "Clear History" button correctly resets both the practice history list and the learning statistics for a consistent user experience.
+
+## [1.0.1]
+
+### Chore
+- **Versioning**: Unified all project file versions to `1.0.1` for consistency.
+
+## [1.5.0]
+
+### Changed
+- **Architecture**: Refactored state management to align with OpenSpec v1.0.0.
+- **`useUserProgress`**: Created new hook to isolate all user progress logic (history, learned stats), improving separation of concerns.
+- **`useAppController`**: Simplified the main controller hook to act as a coordinator, delegating state management to specialized sub-hooks.
+
+## [1.4.0]
 
 ### Added
-- **SRS Guidance**: 在 `05_PEDAGOGY.md` 中补充了复习算法细节。
+- **OpenSpec**: Upgraded to v1.4.0. Completed the full component topology map, TypeScript interface contract, and design tokens.
+- **Developer Guide**: The specification documents are now sufficient to support a 1:1 rebuild of the entire application from scratch without referencing old code.
 
-## [1.0.0-rc.1]
-...
+## [1.3.0]
+... (之前的记录)

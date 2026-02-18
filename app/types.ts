@@ -1,4 +1,4 @@
-// app/types.ts v0.9.8
+// app/types.ts v1.4.0
 export interface Point {
   x: number;
   y: number;
@@ -51,29 +51,6 @@ export interface PracticeResult {
   score: number;
   grade: Grade;
   strokeScores: number[];
-}
-
-export interface PracticeSession {
-  char: string;
-  startTime: number;
-  endTime: number;
-  mistakes: number;
-  hintsUsed: boolean;
-  completed: boolean;
-  result?: PracticeResult;
-}
-
-export interface UserStats {
-  totalStrokes: number;
-  charsLearned: string[];
-  dailyStreak: number;
-  lastPracticeDate: string;
-}
-
-export interface EvaluationResponse {
-  score: number;        // 0-100
-  feedback: string;     // Short feedback
-  improvement: string;  // Suggestion for improvement
 }
 
 export enum AnimationState {
@@ -145,6 +122,7 @@ export interface UILabels {
   strokeStatusActive: string;
   strokeStatusComplete: string;
   errorInvalidChar: string;
+  errorCharNotFound: string;
   controlsPlay: string;
   controlsPause: string;
   controlsReset: string;
@@ -152,7 +130,6 @@ export interface UILabels {
   viewMode: string;
   practiceMode: string;
   randomBtn: string;
-  // Settings
   settingsTitle: string;
   settingGridStyle: string;
   settingGridRice: string;
@@ -172,12 +149,9 @@ export interface UILabels {
   settingLanguage: string;
   themeLight: string;
   themeDark: string;
-  // Reset
   settingResetData: string;
   resetBtn: string;
   resetConfirm: string;
-  
-  // UI Elements
   sectionInterface: string;
   sectionContent: string;
   sectionAppearance: string;
@@ -186,32 +160,24 @@ export interface UILabels {
   badgeNone: string;
   getApiKey: string;
   practiceComplete: string;
-  installApp?: string;
-  // Analysis Content Settings
+  installApp: string;
   settingShowStructure: string;
   settingShowEtymology: string;
   settingShowMnemonic: string;
   settingShowExamples: string;
-  // History
   historyTitle: string;
   clearHistory: string;
   noHistory: string;
   closeBtn: string;
-  
-  // Stats
   statsTitle: string;
   statsTotal: string;
   statsChars: string;
   statsTerms: string;
-
-  // Grade Labels
-  gradeExquisite?: string;
-  gradeMasterful?: string;
-  gradeProficient?: string;
-  gradePoor?: string;
-  scoreLabel?: string;
-
-  // Rich Welcome Screen v0.6.1
+  gradeExquisite: string;
+  gradeMasterful: string;
+  gradeProficient: string;
+  gradePoor: string;
+  scoreLabel: string;
   welcomeStepNext: string;
   welcomeStepPrev: string;
   welcomeIntroTitle: string;
@@ -221,8 +187,6 @@ export interface UILabels {
   welcomeTitle: string;
   welcomeSubtitle: string;
   welcomeBtn: string;
-  
-  // Onboarding Guide
   guideSearchTitle: string;
   guideSearchDesc: string;
   guideWatchTitle: string;
@@ -231,31 +195,23 @@ export interface UILabels {
   guidePracticeDesc: string;
   guideAIDesc: string;
   guideAITitle: string;
-
-  // Idiom Specific
   idiomOrigin: string;
   idiomUsage: string;
   idiomTitle: string;
-  
-  // Share
   shareAction: string;
   shareTitleChar: string; 
   shareTitleIdiom: string;
   shareTextChar: string; 
   shareTextIdiom: string; 
   shareMessageCopied: string;
-  shareAppTitle?: string;
-  shareAppText?: string;
-
-  // Update & PWA
-  updateAvailable?: string;
-  updateMsg?: string;
-  reloadBtn?: string;
-  offlineReady?: string;
-  offlineMsg?: string;
-  dismissBtn?: string;
-
-  // UX Fixes
+  shareAppTitle: string;
+  shareAppText: string;
+  updateAvailable: string;
+  updateMsg: string;
+  reloadBtn: string;
+  offlineReady: string;
+  offlineMsg: string;
+  dismissBtn: string;
   strokeProgress: string;
   writeNextStroke: string;
   refreshSuggestions: string;
@@ -266,23 +222,20 @@ export interface UILabels {
   toastSuccess: string;
   toastError: string;
   toastInfo: string;
-
-  // Newly Added Keys for v0.6.2
-  settingContinuousDesc?: string;
-  sectionData?: string;
-  suggestionsLabel?: string;
-  pinyinCoverage?: string;
-  missingChars?: string;
-  downloadLexicon?: string;
-  downloading?: string;
-  downloadSuccess?: string;
-  downloadError?: string;
-  downloadDictionary?: string;
-  dictionaryCoverage?: string;
-  dictionaryStatus?: string;
-  downloadingDictionary?: string;
-  dictionaryReady?: string;
-  dictionaryError?: string;
-
+  settingContinuousDesc: string;
+  sectionData: string;
+  suggestionsLabel: string;
+  pinyinCoverage: string;
+  missingChars: string;
+  downloadLexicon: string;
+  downloading: string;
+  downloadSuccess: string;
+  downloadError: string;
+  downloadDictionary: string;
+  dictionaryCoverage: string;
+  dictionaryStatus: string;
+  downloadingDictionary: string;
+  dictionaryReady: string;
+  dictionaryError: string;
   [key: string]: string | undefined; 
 }

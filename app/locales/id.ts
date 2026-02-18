@@ -1,4 +1,4 @@
-// app/locales/id.ts v0.7.1
+// app/locales/id.ts v0.7.2
 import { UILabels } from '../types';
 
 export const id: UILabels = {
@@ -18,6 +18,7 @@ export const id: UILabels = {
   strokeStatusActive: 'Menganimasi...',
   strokeStatusComplete: 'Selesai',
   errorInvalidChar: 'Masukkan 1-4 karakter Mandarin yang valid.',
+  errorCharNotFound: 'Data untuk karakter "{char}" tidak ditemukan.',
   controlsPlay: 'Putar',
   controlsPause: 'Jeda',
   controlsReset: 'Reset',
@@ -69,13 +70,20 @@ export const id: UILabels = {
   statsChars: 'Karakter Unik',
   statsTerms: 'Peribahasa Unik',
 
+  // Grades v0.8.0
+  gradeExquisite: 'Dewa',
+  gradeMasterful: 'Luar Biasa',
+  gradeProficient: 'Bagus',
+  gradePoor: 'Terus Semangat',
+  scoreLabel: 'Skor',
+
   // Welcome v0.6.1
   welcomeStepNext: 'Berikutnya',
   welcomeStepPrev: 'Kembali',
   welcomeIntroTitle: 'Jiwa Hanzi',
-  welcomeIntroDesc: 'HanziMaster adalah ruang penuh kesadaran yang dirancang untuk menjembatani kesenjangan antara kaligrafi kuno dan AI modern.',
+  welcomeIntroDesc: 'HanziMaster adalah ruang penuh kesadaran yang dirancang untuk menjembatani kesenjangan antara kaligrafi kuno và AI modern.',
   welcomeFeatureTitle: 'Cara Belajar',
-  welcomeFeatureDesc: 'Kuasai karakter melalui intuisi visual dan etimologi bertenaga AI.',
+  welcomeFeatureDesc: 'Kuasai karakter melalui intuisi visual và etimologi bertenaga AI.',
   welcomeTitle: 'Selamat Datang di HanziMaster',
   welcomeSubtitle: 'Jelajahi keindahan karakter Mandarin. Alat pembelajaran utama yang menggabungkan kaligrafi tradisional dengan wawasan AI.',
   welcomeBtn: 'Mulai Belajar',
@@ -88,7 +96,7 @@ export const id: UILabels = {
   guidePracticeTitle: 'Latihan Zen',
   guidePracticeDesc: 'Menulis dengan umpan balik waktu nyata.',
   guideAITitle: 'Wawasan AI',
-  guideAIDesc: 'Buka etimologi dan mnemonik yang didukung oleh Gemini AI.',
+  guideAIDesc: 'Buka etimologi và mnemonik yang didukung oleh Gemini AI.',
 
   idiomOrigin: 'Kisah Asal-usul',
   idiomUsage: 'Contoh Penggunaan',
@@ -96,18 +104,13 @@ export const id: UILabels = {
   shareAction: 'Bagikan',
   shareTitleChar: "Pelajari cara menulis '{char}' di HanziMaster!",
   shareTitleIdiom: "Pelajari peribahasa '{idiom}' di HanziMaster!",
-  shareTextChar: "🀄️ Saya baru saja belajar menulis '{char}' ({pinyin}) di HanziMaster!\n\n📖 Arti: {meaning}\n\n✨ Lihat animasi guratan dan analisis AI di sini:\n{url}\n\n#HanziMaster #BelajarMandarin #Kaligrafi",
+  shareTextChar: "🀄️ Saya baru saja belajar menulis '{char}' ({pinyin}) di HanziMaster!\n\n📖 Arti: {meaning}\n\n✨ Lihat animasi guratan và analisis AI di sini:\n{url}\n\n#HanziMaster #BelajarMandarin #Kaligrafi",
   shareTextIdiom: "📜 Menemukan peribahasa menarik: '{idiom}' ({pinyin})\n\n💡 Arti: {meaning}\n\n🚀 Pelajari kisah di baliknya di HanziMaster:\n{url}\n\n#HanziMaster #PeribahasaMandarin #BelajarMandarin",
   shareMessageCopied: 'Teks untuk dibagikan telah disalin!',
 
   // App Sharing
   shareAppTitle: 'Bagikan Aplikasi',
   shareAppText: '🔥 Saya menemukan alat luar biasa untuk menguasai karakter Mandarin!\n\nHanziMaster menggabungkan kaligrafi Zen dengan wawasan AI. Bisa dipakai offline!\n\nCek di sini: {url}\n\n#HanziMaster #BelajarMandarin #Kaligrafi',
-
-  // Audit
-  settingDatabaseStatus: 'Status Database',
-  pinyinCoverageDesc: 'Data lokal. {covered} dari {total} karakter tercakup.',
-  copyMissing: 'Salin Daftar',
 
   // Reload Prompt
   updateAvailable: 'Pembaruan Tersedia',
@@ -142,8 +145,7 @@ export const id: UILabels = {
   toastError: 'Kesalahan',
   toastInfo: 'Info',
 
-  // Newly Added Keys for v0.6.2
-  settingContinuousDesc: 'Setelah menyelesaikan satu karakter, otomatis mulai yang baru secara acak.',
+  settingContinuousDesc: 'Setelah menyelesaikan satu karakter, otomatis mulai yang mới secara acak.',
   sectionData: 'Data & Sinkronisasi',
   pinyinCoverage: 'Leksikon Offline',
   missingChars: 'Karakter hilang',

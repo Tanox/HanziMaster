@@ -1,10 +1,11 @@
-// app/hooks/useAppController.ts v0.9.7
+// app/hooks/useAppController.ts v1.0.1
 import { useState, useEffect } from 'react';
-import { HistoryItem, AppSettings, InteractionMode, AnimationState } from '../types';
+import { AppSettings, InteractionMode, AnimationState } from '../types';
 import { COMMON_CHARS } from '../constants/commonChars';
 import { useLocalStorage } from './useLocalStorage';
 import { useInteractionState } from './useInteractionState';
 import { useContentFetcher } from './useContentFetcher';
+import { useUserProgress } from './useUserProgress';
 
 const DEFAULT_SETTINGS: AppSettings = {
   gridStyle: 'rice',
@@ -22,8 +23,6 @@ const DEFAULT_SETTINGS: AppSettings = {
 
 export const useAppController = () => {
   const [settings, setSettings] = useLocalStorage<AppSettings>('appSettings', DEFAULT_SETTINGS);
-  const [history, setHistory] = useLocalStorage<HistoryItem[]>('practiceHistory', []);
-  const [learnedItems, setLearnedItems] = useLocalStorage<string[]>('learnedItems', []);
   const [theme, setTheme] = useLocalStorage<'light' | 'dark'>('theme', 'light');
   const [hasSeenWelcome, setHasSeenWelcome] = useLocalStorage<boolean>('hasSeenWelcome', false);
   
@@ -38,6 +37,7 @@ export const useAppController = () => {
 
   const interaction = useInteractionState();
   const content = useContentFetcher(settings);
+  const userProgress = useUserProgress();
 
   useEffect(() => {
     setShowWelcome(!hasSeenWelcome);
@@ -88,18 +88,6 @@ export const useAppController = () => {
     setHasSeenWelcome(true);
   };
 
-  const addToHistoryAndStats = (term: string) => {
-    setHistory(prev => {
-      const filtered = prev.filter(item => item.char !== term);
-      return [{ char: term, timestamp: Date.now() }, ...filtered].slice(0, 20); 
-    });
-
-    setLearnedItems(prev => {
-        if (prev.includes(term)) return prev;
-        return [...prev, term];
-    });
-  };
-
   const handleSearch = async (term: string, langCode: string = currentLang) => {
     content.actions.setLoading(true); 
     content.actions.setIsAnalysisLoading(true); 
@@ -122,20 +110,15 @@ export const useAppController = () => {
     setActiveChar(firstChar);
     setActiveCharIndex(0);
 
-    const promises: Promise<any>[] = [
-        content.actions.fetchCharacter(firstChar, langCode).then((data) => {
-            if (data && settings.autoPlay) {
-                setTimeout(() => interaction.actions.setAnimationState(AnimationState.PLAYING), 500);
-            }
-        })
-    ];
+    const charDataPromise = content.actions.fetchCharacter(firstChar, langCode);
+    const idiomPromise = term.length > 1 ? content.actions.fetchIdiom(term, langCode) : Promise.resolve();
 
-    if (term.length > 1) {
-        promises.push(content.actions.fetchIdiom(term, langCode));
+    const [charDataResult] = await Promise.all([charDataPromise, idiomPromise]);
+
+    if (charDataResult && settings.autoPlay) {
+      setTimeout(() => interaction.actions.setAnimationState(AnimationState.PLAYING), 500);
     }
-
-    await Promise.all(promises);
-
+    
     content.actions.setLoading(false);
     content.actions.setIsAnalysisLoading(false);
   };
@@ -184,13 +167,13 @@ export const useAppController = () => {
             return;
         } else {
              interaction.state.maintainModeRef.current = null;
-             addToHistoryAndStats(activeTerm);
+             userProgress.actions.addToHistoryAndStats(activeTerm);
              if (settings.continuousMode) {
                  setTimeout(handleRandom, 1500);
              }
         }
     } else {
-        addToHistoryAndStats(activeChar);
+        userProgress.actions.addToHistoryAndStats(activeChar);
          if (settings.continuousMode) {
              setTimeout(handleRandom, 1500);
          }
@@ -200,8 +183,6 @@ export const useAppController = () => {
   return {
     state: {
       settings,
-      history,
-      learnedItems,
       theme,
       isOffline,
       isSettingsOpen,
@@ -212,10 +193,10 @@ export const useAppController = () => {
       currentLang,
       ...content.state,
       ...interaction.state,
+      ...userProgress.state,
     },
     actions: {
       setSettings,
-      setHistory,
       toggleTheme,
       setIsOffline,
       setIsSettingsOpen,
@@ -226,6 +207,7 @@ export const useAppController = () => {
       handleLanguageChange,
       handlePracticeComplete,
       ...interaction.actions,
+      ...userProgress.actions,
     },
   };
 };

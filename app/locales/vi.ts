@@ -1,4 +1,4 @@
-// app/locales/vi.ts v0.7.1
+// app/locales/vi.ts v0.7.2
 import { UILabels } from '../types';
 
 export const vi: UILabels = {
@@ -18,6 +18,7 @@ export const vi: UILabels = {
   strokeStatusActive: 'Đang viết...',
   strokeStatusComplete: 'Hoàn tất',
   errorInvalidChar: 'Vui lòng nhập 1-4 chữ Hán hợp lệ.',
+  errorCharNotFound: 'Không tìm thấy dữ liệu cho chữ “{char}”.',
   controlsPlay: 'Phát',
   controlsPause: 'Dừng',
   controlsReset: 'Đặt lại',
@@ -69,6 +70,13 @@ export const vi: UILabels = {
   statsTotal: 'Tổng số lượt luyện',
   statsChars: 'Chữ Hán duy nhất',
   statsTerms: 'Thành ngữ duy nhất',
+
+  // Grades v0.8.0
+  gradeExquisite: 'Thần phẩm',
+  gradeMasterful: 'Diệu phẩm',
+  gradeProficient: 'Năng phẩm',
+  gradePoor: 'Cần cố gắng',
+  scoreLabel: 'Điểm số',
 
   // Welcome v0.6.1
   welcomeStepNext: 'Tiếp theo',
@@ -138,13 +146,9 @@ export const vi: UILabels = {
   toastError: 'Lỗi',
   toastInfo: 'Thông tin',
 
-  // Newly Added Keys for v0.6.2
   sectionData: 'Dữ liệu & Đồng bộ',
-  settingDatabaseStatus: 'Trạng thái CSDL',
   pinyinCoverage: 'Dữ liệu nét bút',
-  pinyinCoverageDesc: 'Dữ liệu cục bộ. Đã phủ {covered} trên {total} ký tự.',
   missingChars: 'Ký tự thiếu',
-  copyMissing: 'Sao chép',
   downloadLexicon: 'Tải xuống dữ liệu đầy đủ',
   downloading: 'Đang đồng bộ...',
   downloadSuccess: 'Dữ liệu sẵn sàng',

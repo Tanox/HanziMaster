@@ -1,4 +1,4 @@
-// app/components/settings/SettingsSection.tsx v0.9.2
+// app/components/settings/SettingsSection.tsx v1.0.1
 import React from 'react';
 
 interface SettingsSectionProps {

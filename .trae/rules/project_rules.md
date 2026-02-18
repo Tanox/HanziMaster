@@ -1,7 +1,7 @@
 # HanziMaster 项目开发规则
 
 ## 1. 核心技术栈
-- **框架**: React 19 + TypeScript + Vite
+- **框架**: React 18.3.1 + TypeScript + Vite
 - **样式**: Tailwind CSS (支持 Dark Mode)
 - **AI SDK**: `@google/genai` (v0.2.0+)
 - **构建**: Vite PWA (Workbox)
@@ -28,7 +28,7 @@
 - 响应 Schema 定义使用 `Type` 枚举 (如 `Type.OBJECT`)，禁止使用 `SchemaType`。
 
 ### 2.4 API Key 管理
-- 所有的 Key 获取必须通过 `process.env.API_KEY` 或用户ใน设置面板输入的自定义 Key。
+- 所有的 Key 获取必须通过 `process.env.API_KEY` 或用户在设置面板输入的自定义 Key。
 - 代码中禁止硬编码任何 Key。
 
 ## 3. 目录与文件规范

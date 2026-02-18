@@ -1,13 +1,14 @@
+
 {
-  "name": "HanziMaster 汉字大师 v0.9.8",
-  "version": "0.9.8",
-  "description": "Code Review & Integrity: Fully purged BYOK residues and fixed cross-component type mismatches.",
+  "name": "HanziMaster 汉字大师 v1.0.3",
+  "version": "1.0.3",
+  "description": "v1.0.3: Architectural refactor of data synchronization logic into a dedicated `useDataSync` hook and final consolidation of OpenSpec documentation.",
   "keywords": [
     "Chinese characters",
     "Hanzi",
-    "Refactor",
-    "Type Safety",
-    "PWA"
+    "OpenSpec",
+    "PWA",
+    "Gemini AI"
   ],
   "requestFramePermissions": [],
   "googleAnalyticsId": "G-TZG68T8J31"

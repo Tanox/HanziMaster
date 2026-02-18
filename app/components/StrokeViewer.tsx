@@ -1,4 +1,4 @@
-// app/components/StrokeViewer.tsx v1.1.1
+// app/components/StrokeViewer.tsx v1.0.1
 import React, { useRef, useMemo } from 'react';
 import { HanziData, AnimationState, InteractionMode, AppSettings, UILabels, Grade, PracticeResult, CharacterAnalysis } from '../types';
 import { PenTool } from 'lucide-react';

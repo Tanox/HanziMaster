@@ -1,4 +1,4 @@
-// app/components/InstallPWA.tsx v0.7.1
+// app/components/InstallPWA.tsx v1.0.1
 import React, { useEffect, useState } from 'react';
 import { Download } from 'lucide-react';
 

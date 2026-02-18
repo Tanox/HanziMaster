@@ -1,4 +1,4 @@
-// app/locales/ko.ts v0.7.1
+// app/locales/ko.ts v1.4.0
 import { UILabels } from '../types';
 
 export const ko: UILabels = {
@@ -18,6 +18,7 @@ export const ko: UILabels = {
   strokeStatusActive: '쓰는 중...',
   strokeStatusComplete: '완료',
   errorInvalidChar: '1-4자의 유효한 한자를 입력해주세요.',
+  errorCharNotFound: "'{char}' 문자에 대한 데이터를 찾을 수 없습니다.",
   controlsPlay: '재생',
   controlsPause: '일시정지',
   controlsReset: '초기화',
@@ -69,19 +70,20 @@ export const ko: UILabels = {
   statsTotal: '총 연습량',
   statsChars: '고유 한자',
   statsTerms: '고유 성어',
-
-  // Welcome v0.6.1
+  gradeExquisite: '신품 (神品)',
+  gradeMasterful: '묘품 (妙品)',
+  gradeProficient: '능품 (能品)',
+  gradePoor: '노력 요함',
+  scoreLabel: '점수',
   welcomeStepNext: '다음',
   welcomeStepPrev: '이전',
   welcomeIntroTitle: '한자의 영혼',
-  welcomeIntroDesc: 'HanziMaster는 고대 서예와 현대 AI 사이의 간극을 연결하도록 설계된 마음챙김 공간입니다.',
+  welcomeIntroDesc: '고대 서예와 현대 AI 사이의 간극을 연결하도록 설계된 마음챙김 공간입니다.',
   welcomeFeatureTitle: '학습 방법',
   welcomeFeatureDesc: '시각적 직관과 AI 기반 어원학을 통해 한자를 마스터하세요.',
   welcomeTitle: 'HanziMaster에 오신 것을 환영합니다',
-  welcomeSubtitle: '한자의 아름다움을 발견하세요. 전통 서예와 AI 분석을 결합한 궁극적인 학습 도구.',
+  welcomeSubtitle: '한자의 아름다움을 발견하세요.',
   welcomeBtn: '시작하기',
-
-  // Onboarding Guide
   guideSearchTitle: '스마트 검색',
   guideSearchDesc: '한자와 성어를 즉시 찾으세요.',
   guideWatchTitle: '획순 흐름',
@@ -90,43 +92,33 @@ export const ko: UILabels = {
   guidePracticeDesc: '실시간 피드백으로 쓰기 연습을 하세요.',
   guideAITitle: 'AI 통찰력',
   guideAIDesc: 'Gemini AI 기반의 어원과 암기법을 잠금 해제하세요.',
-
-  // Idiom Specific
   idiomOrigin: '출전 (유래)',
   idiomUsage: '용법 (사용 예시)',
   idiomTitle: '성어 분석',
-
-  // Share
   shareAction: '공유',
   shareTitleChar: "'{char}' 한자마스터에서 배워보세요!",
-  shareTitleIdiom: "한자마스터에서 새로운 성어 '{idiom}'을 배웠습니다!",
-  shareTextChar: "🀄️ 한자마스터에서 '{char}'({pinyin}) 쓰기를 마스터했습니다!\n\n📖 의미: {meaning}\n\n✨ 여기서 획 흐름과 AI 분석을 확인하세요:\n{url}\n\n#한자마스터 #중국어배우기 #서예",
-  shareTextIdiom: "📜 흥미로운 성어: '{idiom}'({pinyin})\n\n💡 의미: {meaning}\n\n🚀 한자마스터에서 그 유래를 알아보세요:\n{url}\n\n#한자마스터 #중국성어 #매일중국어",
+  shareTitleIdiom: "새로운 성어 '{idiom}'을 배웠습니다!",
+  shareTextChar: "🀄️ '{char}'({pinyin}) 쓰기를 마스터했습니다!\n📖 의미: {meaning}\n{url}",
+  shareTextIdiom: "📜 흥미로운 성어: '{idiom}'({pinyin})\n💡 의미: {meaning}\n🚀 유래 알아보기: {url}",
   shareMessageCopied: '공유 텍스트가 복사되었습니다!',
   shareAppTitle: '앱 공유',
-  shareAppText: '🔥 중국어 한자 마스터를 위한 놀라운 도구를 찾았습니다! {url}',
-
-  // Update & PWA
+  shareAppText: '🔥 중국어 한자 마스터를 위한 놀라운 도구! {url}',
   updateAvailable: '업데이트 가능',
   updateMsg: '최신 개선 사항을 적용하려면 새로 고침하세요.',
   reloadBtn: '새로 고침',
   offlineReady: '오프라인 준비 완료',
   offlineMsg: '앱이 오프라인에서 작동할 준비가 되었습니다.',
   dismissBtn: '닫기',
-
-  // UX Fixes
   strokeProgress: '획 {current} / {total}',
   writeNextStroke: '다음 획을 써주세요.',
   refreshSuggestions: '추천 새로 고침',
   offlineModeEnabled: '오프라인 모드 활성화됨',
-  offlineModeActive: '오프라인 모드: 로컬 데이터 및 시스템 음성 사용 중.',
+  offlineModeActive: '오프라인 우선',
   copySuccess: '클립보드에 복사되었습니다!',
   copyFailed: '복사 실패.',
   toastSuccess: '성공',
   toastError: '오류',
   toastInfo: '정보',
-
-  // Newly Added Keys for v0.6.2
   sectionData: '데이터 및 동기화',
   suggestionsLabel: '추천',
   pinyinCoverage: '오프라인 한자 사전',
@@ -141,4 +133,14 @@ export const ko: UILabels = {
   downloadingDictionary: '사전 동기화 중...',
   dictionaryReady: '사전 준비 완료',
   dictionaryError: '사전 동기화 실패',
+  springFestival: '설날',
+  lanternFestival: '정월대보름',
+  qingming: '청명절',
+  laborDay: '노동절',
+  dragonBoat: '단오절',
+  qixi: '칠석',
+  midAutumn: '추석',
+  nationalDay: '국경절',
+  singlesDay: '독신자의 날',
+  christmas: '크리스마스',
 };

@@ -1,4 +1,4 @@
-// app/locales/zh-CN.ts v0.8.3
+// app/locales/zh-CN.ts v1.0.1
 import { UILabels } from '../types';
 
 export const zhCN: UILabels = {
@@ -18,6 +18,7 @@ export const zhCN: UILabels = {
   strokeStatusActive: '演示中...',
   strokeStatusComplete: '演示结束',
   errorInvalidChar: '请输入 1-4 个有效的汉字',
+  errorCharNotFound: '未找到汉字 “{char}” 的相关数据。',
   controlsPlay: '播放',
   controlsPause: '暂停',
   controlsReset: '重置',

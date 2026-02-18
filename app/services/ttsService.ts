@@ -1,4 +1,4 @@
-// app/services/ttsService.ts v0.9.7
+// app/services/ttsService.ts v1.0.1
 import { GoogleGenAI, Modality } from "@google/genai";
 
 const audioCache: Map<string, AudioBuffer> = new Map();

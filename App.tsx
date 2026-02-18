@@ -1,4 +1,5 @@
-// App.tsx v1.0.0
+
+// App.tsx v1.0.3
 import React from 'react';
 import { useAppController } from './app/hooks/useAppController';
 import SearchInput from './app/components/SearchInput';
@@ -14,10 +15,9 @@ import { UI_LABELS } from './app/locales';
 import { AlertCircle } from 'lucide-react';
 import { ToastProvider } from './app/context/ToastContext';
 
-const APP_VERSION = '1.0.0';
+const APP_VERSION = '1.0.3';
 
 const AppContent: React.FC = () => {
-  // TODO: Following v1.0.0 Arch Spec - Refactor useUserProgress out of useAppController
   const { state, actions } = useAppController();
   const labels = UI_LABELS[state.currentLang] || UI_LABELS['en'];
 
@@ -118,7 +118,7 @@ const AppContent: React.FC = () => {
               labels={labels}
               actions={{
                 handleSearch: actions.handleSearch,
-                setHistory: actions.setHistory
+                clearAllProgress: actions.clearAllProgress
               }}
             />
           </div>

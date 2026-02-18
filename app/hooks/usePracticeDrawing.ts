@@ -1,4 +1,4 @@
-// app/hooks/usePracticeDrawing.ts v0.8.0
+// app/hooks/usePracticeDrawing.ts v1.0.1
 import { useState, useRef, useEffect, RefObject, PointerEvent } from 'react';
 import { HanziData, InteractionMode, Point, PracticeResult, Grade } from '../types';
 import { getDistance, subtract, cosineSimilarity, resample, calculateShapeScore, mapResultToScore } from '../utils/geometry';

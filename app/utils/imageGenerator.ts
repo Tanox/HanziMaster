@@ -1,4 +1,4 @@
-// app/utils/imageGenerator.ts v1.1.1
+// app/utils/imageGenerator.ts v1.0.1
 import { Grade } from '../types';
 
 interface GenerationOptions {

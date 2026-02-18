@@ -1,4 +1,4 @@
-// app/components/settings/SettingsApiKey.tsx v0.9.8 - Deprecated/Purged
+// app/components/settings/SettingsApiKey.tsx v1.0.1
 import React from 'react';
 
 /**

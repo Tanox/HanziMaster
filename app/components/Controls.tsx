@@ -1,4 +1,4 @@
-// app/components/Controls.tsx v0.9.7
+// app/components/Controls.tsx v1.0.1
 import React from 'react';
 import { Play, Pause, RotateCcw, PenTool, Eye } from 'lucide-react';
 import { AnimationState, InteractionMode } from '../types';

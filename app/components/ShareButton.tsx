@@ -1,4 +1,4 @@
-// app/components/ShareButton.tsx v0.7.1
+// app/components/ShareButton.tsx v1.0.1
 import React, { useState } from 'react';
 import { Share2, Check } from 'lucide-react';
 import { useToast } from '../context/ToastContext';

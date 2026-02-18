@@ -1,4 +1,4 @@
-// app/components/settings/SettingsVisuals.tsx v0.9.2
+// app/components/settings/SettingsVisuals.tsx v1.0.1
 import React from 'react';
 import { Eye, LayoutGrid } from 'lucide-react';
 import { AppSettings, GridStyle, UILabels } from '../../types';

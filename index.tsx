@@ -1,7 +1,10 @@
-// index.tsx v0.9.1
+// index.tsx v1.0.1
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+// Explicitly including the .tsx extension ensures the dev server and module
+// resolution correctly identify and transpile the component file, preventing
+// potential fallback to SPA rewrite rules that might incorrectly serve HTML.
+import App from './App.tsx';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

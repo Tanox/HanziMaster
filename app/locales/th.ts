@@ -1,4 +1,4 @@
-// app/locales/th.ts v0.7.1
+// app/locales/th.ts v0.7.2
 import { UILabels } from '../types';
 
 export const th: UILabels = {
@@ -18,6 +18,7 @@ export const th: UILabels = {
   strokeStatusActive: 'กำลังแสดง...',
   strokeStatusComplete: 'แสดงเสร็จสิ้น',
   errorInvalidChar: 'โปรดกรอกตัวอักษรจีนที่ถูกต้อง 1-4 ตัว',
+  errorCharNotFound: 'ไม่พบข้อมูลสำหรับตัวอักษร “{char}”',
   controlsPlay: 'เล่น',
   controlsPause: 'หยุดชั่วคราว',
   controlsReset: 'เริ่มใหม่',
@@ -69,6 +70,13 @@ export const th: UILabels = {
   statsTotal: 'ฝึกเขียนทั้งหมด',
   statsChars: 'ตัวอักษรไม่ซ้ำ',
   statsTerms: 'สำนวนไม่ซ้ำ',
+
+  // Grades v0.8.0
+  gradeExquisite: 'เทพเจ้า',
+  gradeMasterful: 'ยอดเยี่ยม',
+  gradeProficient: 'ดี',
+  gradePoor: 'พยายามต่อไป',
+  scoreLabel: 'คะแนน',
 
   // Welcome v0.6.1
   welcomeStepNext: 'ถัดไป',
@@ -138,13 +146,9 @@ export const th: UILabels = {
   toastError: 'ข้อผิดพลาด',
   toastInfo: 'ข้อมูล',
 
-  // Newly Added Keys for v0.6.2
   sectionData: 'ข้อมูลและการซิงค์',
-  settingDatabaseStatus: 'สถานะฐานข้อมูล',
   pinyinCoverage: 'คลังคำศัพท์ออฟไลน์',
-  pinyinCoverageDesc: 'ข้อมูลในเครื่อง ครอบคลุม {covered} จาก {total} ตัวอักษร',
   missingChars: 'ตัวอักษรที่ขาด',
-  copyMissing: 'คัดลอกรายการ',
   downloadLexicon: 'ดาวน์โหลดคลังคำศัพท์เต็มรูปแบบ',
   downloading: 'กำลังซิงค์...',
   downloadSuccess: 'คลังคำศัพท์พร้อมใช้งาน',

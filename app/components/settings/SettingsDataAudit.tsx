@@ -1,12 +1,11 @@
-// app/components/settings/SettingsDataAudit.tsx v0.9.4
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+
+// app/components/settings/SettingsDataAudit.tsx v1.0.3
+import React from 'react';
 import { Database, Book, Loader2, Download, Wifi, CheckCircle2, RefreshCcw, AlertTriangle } from 'lucide-react';
 import { UILabels, AppSettings } from '../../types';
-import { COMMON_CHARS } from '../../constants/commonChars';
-import { useToast } from '../../context/ToastContext';
 import SettingsSection from './SettingsSection';
 import ToggleItem from '../ToggleItem';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { useDataSync } from '../../hooks/useDataSync';
 
 interface SettingsDataAuditProps {
   labels: UILabels;
@@ -14,117 +13,12 @@ interface SettingsDataAuditProps {
   onUpdate: <K extends keyof AppSettings>(key: K, value: AppSettings[K]) => void;
 }
 
-const CACHE_NAME = 'hanzi-data-local';
-const LOCAL_BASE_URL = '/hanzi-data';
-
 const SettingsDataAudit: React.FC<SettingsDataAuditProps> = ({ labels, settings, onUpdate }) => {
-  const [isLexiconDownloading, setIsLexiconDownloading] = useState(false);
-  const [lexiconProgress, setLexiconProgress] = useState(0);
-  const [lexiconCoveredCount, setLexiconCoveredCount] = useState(0);
-  const [missingSample, setMissingSample] = useState<string[]>([]);
-  const [currentTarget, setCurrentTarget] = useState<string>('');
-  
-  const [offlineDict, setOfflineDict] = useLocalStorage<Record<string, string>>('offlineDictionary', {});
-  const [isDictDownloading, setIsDictDownloading] = useState(false);
-  const [isAuditing, setIsAuditing] = useState(false);
-
-  const { showToast } = useToast();
-
-  const auditLexicon = useCallback(async () => {
-    setIsAuditing(true);
-    try {
-        const cache = await caches.open(CACHE_NAME);
-        const keys = await cache.keys();
-        const urls = new Set(keys.map(k => k.url));
-        
-        let count = 0;
-        const missing: string[] = [];
-        const highFreq = COMMON_CHARS.slice(0, 500);
-        
-        COMMON_CHARS.forEach(char => {
-            const path = `${window.location.origin}${LOCAL_BASE_URL}/${char}.json`;
-            if (urls.has(path)) {
-                count++;
-            } else if (highFreq.includes(char) && missing.length < 5) {
-                missing.push(char);
-            }
-        });
-
-        setLexiconCoveredCount(count);
-        setMissingSample(missing);
-    } catch (e) {
-        console.warn("Lexicon audit failed", e);
-    } finally {
-        setIsAuditing(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    auditLexicon();
-  }, [auditLexicon]);
-
-  const stats = useMemo(() => {
-    const lexiconTotal = COMMON_CHARS.length;
-    const dictCovered = Object.keys(offlineDict).length;
-    const dictTotal = 518; 
-
-    return { lexiconTotal, dictCovered, dictTotal };
-  }, [offlineDict]);
+  const { state, actions } = useDataSync(labels);
+  const { isLexiconDownloading, lexiconProgress, missingSample, currentTarget, isDictDownloading, isAuditing, stats } = state;
 
   const dictPercentage = Math.min(100, Math.round((stats.dictCovered / stats.dictTotal) * 100));
-  const lexiconPercentage = Math.round((lexiconCoveredCount / stats.lexiconTotal) * 100);
-
-  const handleDownloadLexicon = async () => {
-    if (isLexiconDownloading) return;
-    setIsLexiconDownloading(true);
-    setLexiconProgress(0);
-    try {
-      const cache = await caches.open(CACHE_NAME);
-      const total = stats.lexiconTotal;
-      const BATCH_SIZE = 40;
-      
-      for (let i = 0; i < total; i += BATCH_SIZE) {
-        const batch = COMMON_CHARS.slice(i, i + BATCH_SIZE);
-        setCurrentTarget(batch[0]);
-        
-        await Promise.all(batch.map(async (char) => {
-          const url = `${LOCAL_BASE_URL}/${char}.json`;
-          if (!(await cache.match(url))) {
-            try { 
-                const res = await fetch(url); 
-                if (res.ok) await cache.put(url, res); 
-            } catch (e) { /* silent catch */ }
-          }
-        }));
-        
-        const currentProgress = Math.round((Math.min(i + BATCH_SIZE, total) / total) * 100);
-        setLexiconProgress(currentProgress);
-      }
-      
-      setCurrentTarget('');
-      await auditLexicon();
-      showToast(labels.downloadSuccess || "Lexicon Ready", 'success');
-    } catch (error) { 
-      showToast(labels.downloadError || "Sync failed", 'error'); 
-    } finally { 
-      setIsLexiconDownloading(false); 
-    }
-  };
-
-  const handleDownloadDictionary = async () => {
-    if (isDictDownloading) return;
-    setIsDictDownloading(true);
-    try {
-        const module = await import('../../constants/dictionaryData');
-        await new Promise(resolve => setTimeout(resolve, 800)); 
-        setOfflineDict(module.SIMPLE_DICTIONARY);
-        showToast(labels.dictionaryReady || "Dictionary Ready", 'success');
-    } catch (e) {
-        showToast(labels.dictionaryError || "Sync failed", 'error');
-    } finally {
-        setIsDictDownloading(false);
-    }
-  };
+  const lexiconPercentage = Math.round((stats.lexiconCoveredCount / stats.lexiconTotal) * 100);
 
   return (
     <SettingsSection title={labels.sectionData || "Data Management"}>
@@ -137,7 +31,7 @@ const SettingsDataAudit: React.FC<SettingsDataAuditProps> = ({ labels, settings,
                 icon={<Wifi size={16} />} 
                 />
                 <button 
-                  onClick={auditLexicon}
+                  onClick={actions.auditLexicon}
                   disabled={isAuditing}
                   className="p-2 text-slate-400 hover:text-teal-500 transition-colors"
                   title="Refresh Audit"
@@ -188,14 +82,14 @@ const SettingsDataAudit: React.FC<SettingsDataAuditProps> = ({ labels, settings,
                 )}
 
                 <button 
-                  onClick={handleDownloadLexicon} 
+                  onClick={actions.handleDownloadLexicon} 
                   disabled={isLexiconDownloading} 
                   className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl border text-xs font-black uppercase tracking-widest transition-all shadow-sm ${lexiconPercentage === 100 && !isLexiconDownloading ? 'bg-teal-50 dark:bg-teal-900/20 border-teal-200 dark:border-teal-800 text-teal-600' : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:shadow-md active:scale-[0.98]'}`}
                 >
                     {isLexiconDownloading ? (
                       <>{lexiconProgress}% {labels.downloading}</>
                     ) : lexiconPercentage === 100 ? (
-                      <><CheckCircle2 size={14} /> {labels.downloadSuccess || "Offline Ready"}</>
+                      <><CheckCircle2 size={14} /> {labels.downloadSuccess}</>
                     ) : (
                       <><Download size={14} /> {labels.downloadLexicon}</>
                     )}
@@ -219,20 +113,20 @@ const SettingsDataAudit: React.FC<SettingsDataAuditProps> = ({ labels, settings,
 
                 <div className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shadow-inner">
                     <div 
-                      className={`h-full bg-gradient-to-r from-indigo-500 to-purple-400 rounded-full transition-all duration-700 ${isDictDownloading ? 'animate-pulse' : ''}`} 
+                      className={`h-full bg-gradient-to-r from-indigo-500 to-purple-400 bg-[length:200%_100%] rounded-full transition-all duration-700 ${isDictDownloading ? 'animate-shimmer' : ''}`} 
                       style={{ width: `${dictPercentage}%` }} 
                     />
                 </div>
 
                 <button 
-                  onClick={handleDownloadDictionary} 
+                  onClick={actions.handleDownloadDictionary} 
                   disabled={isDictDownloading} 
                   className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl border text-xs font-black uppercase tracking-widest transition-all shadow-sm ${dictPercentage >= 100 && !isDictDownloading ? 'bg-indigo-50 dark:bg-indigo-900/20 border-indigo-200 dark:border-indigo-800 text-indigo-600' : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:shadow-md active:scale-[0.98]'}`}
                 >
                     {isDictDownloading ? (
                       <><Loader2 size={14} className="animate-spin" /> {labels.downloadingDictionary}</>
                     ) : dictPercentage >= 100 ? (
-                      <><CheckCircle2 size={14} /> {labels.dictionaryReady || "Dictionary Active"}</>
+                      <><CheckCircle2 size={14} /> {labels.dictionaryReady}</>
                     ) : (
                       <><Download size={14} /> {labels.downloadDictionary}</>
                     )}

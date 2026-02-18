@@ -1,4 +1,4 @@
-// app/locales/pt.ts v0.7.1
+// app/locales/pt.ts v0.7.2
 import { UILabels } from '../types';
 
 export const pt: UILabels = {
@@ -18,6 +18,7 @@ export const pt: UILabels = {
   strokeStatusActive: 'Animando...',
   strokeStatusComplete: 'Concluído',
   errorInvalidChar: 'Por favor, insira de 1 a 4 caracteres chineses válidos.',
+  errorCharNotFound: 'Não foram encontrados dados para o caractere "{char}".',
   controlsPlay: 'Tocar',
   controlsPause: 'Pausa',
   controlsReset: 'Resetar',
@@ -54,7 +55,7 @@ export const pt: UILabels = {
   badgeCustom: 'Personal',
   badgeDefault: 'Padrão',
   badgeNone: 'Nenhum',
-  getApiKey: 'Obter Chave',
+  getApiKey: 'Obtener Chave',
   practiceComplete: 'Prática Concluída',
   installApp: 'Instalar App',
   settingShowStructure: 'Mostrar Estrutura',
@@ -69,6 +70,13 @@ export const pt: UILabels = {
   statsTotal: 'Total praticado',
   statsChars: 'Caracteres únicos',
   statsTerms: 'Expressões únicas',
+
+  // Grades v0.8.0
+  gradeExquisite: 'Divino',
+  gradeMasterful: 'Soberbo',
+  gradeProficient: 'Bom',
+  gradePoor: 'Continue assim',
+  scoreLabel: 'Pontuação',
 
   // Welcome v0.6.1
   welcomeStepNext: 'Próximo',
@@ -107,7 +115,7 @@ export const pt: UILabels = {
 
   // Reload Prompt
   updateAvailable: 'Atualização',
-  updateMsg: 'Nova versão disponível. Recarregue para atualizar.',
+  updateMsg: 'Nova versão disponible. Recarregue para atualizar.',
   reloadBtn: 'Recarregar',
   offlineReady: 'Pronto Offline',
   offlineMsg: 'App pronto para uso offline.',
@@ -138,13 +146,9 @@ export const pt: UILabels = {
   toastError: 'Erro',
   toastInfo: 'Info',
 
-  // Newly Added Keys for v0.6.2
   sectionData: 'Dados e Sincronização',
-  settingDatabaseStatus: 'Status do BD',
   pinyinCoverage: 'Léxico Offline',
-  pinyinCoverageDesc: 'Mapeamento local. {covered} de {total} caracteres cobertos.',
   missingChars: 'Caracteres Faltantes',
-  copyMissing: 'Copiar Lista',
   downloadLexicon: 'Baixar Léxico Completo',
   downloading: 'Sincronizando...',
   downloadSuccess: 'Léxico Pronto',

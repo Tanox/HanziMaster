@@ -1,4 +1,5 @@
-// app/locales/fr.ts v0.7.1
+
+// app/locales/fr.ts v1.0.2
 import { UILabels } from '../types';
 
 export const fr: UILabels = {
@@ -18,6 +19,7 @@ export const fr: UILabels = {
   strokeStatusActive: 'Animation en cours...',
   strokeStatusComplete: 'Animation terminée',
   errorInvalidChar: 'Veuillez entrer 1 à 4 caractères chinois valides.',
+  errorCharNotFound: 'Les données pour le caractère "{char}" n\'ont pas été trouvées.',
   controlsPlay: 'Lecture',
   controlsPause: 'Pause',
   controlsReset: 'RàZ',
@@ -70,6 +72,13 @@ export const fr: UILabels = {
   statsChars: 'Caractères uniques',
   statsTerms: 'Idiomes uniques',
 
+  // Grades v0.8.0
+  gradeExquisite: 'Divin',
+  gradeMasterful: 'Superbe',
+  gradeProficient: 'Bon',
+  gradePoor: 'Continue ainsi',
+  scoreLabel: 'Score',
+
   // Welcome v0.6.1
   welcomeStepNext: 'Suivant',
   welcomeStepPrev: 'Précédent',
@@ -98,7 +107,7 @@ export const fr: UILabels = {
   shareTitleChar: "Découvrez le caractère '{char}' sur HanziMaster !", 
   shareTitleIdiom: "J'ai appris l'idiome '{idiom}' sur HanziMaster !",
   shareTextChar: "🀄️ Je viens de maîtriser l'écriture de '{char}' ({pinyin}) sur HanziMaster !\n\n📖 Signification : {meaning}\n\n✨ Voyez le tracé et l'analyse IA ici :\n{url}\n\n#HanziMaster #ApprendreLeChinois #Calligraphie", 
-  shareTextIdiom: "📜 Alerte idiome fascinant : '{idiome}' ({pinyin})\n\n💡 Signification : {meaning}\n\n🚀 Découvrez son origine sur HanziMaster :\n{url}\n\n#HanziMaster #IdiomesChinois #ChinoisQuotidien", 
+  shareTextIdiom: "📜 Alerte idiome fascinant : '{idiom}' ({pinyin})\n\n💡 Signification : {meaning}\n\n🚀 Découvrez son origine sur HanziMaster :\n{url}\n\n#HanziMaster #IdiomesChinois #ChinoisQuotidien", 
   shareMessageCopied: 'Texte de partage copié !',
   shareAppTitle: 'Partager l\'application',
   shareAppText: '🔥 J\'ai trouvé un outil incroyable pour maîtriser les caractères chinois ! {url}',
@@ -135,4 +144,14 @@ export const fr: UILabels = {
   downloadingDictionary: 'Synchronisation...',
   dictionaryReady: 'Dictionnaire prêt',
   dictionaryError: 'Échec de la synchronisation',
+  springFestival: 'Nouvel An Chinois',
+  lanternFestival: 'Fête des Lanternes',
+  qingming: 'Fête de Qingming',
+  laborDay: 'Fête du Travail',
+  dragonBoat: 'Fête des Bateaux-Dragons',
+  qixi: 'Fête de Qixi',
+  midAutumn: 'Fête de la Mi-Automne',
+  nationalDay: 'Fête Nationale',
+  singlesDay: 'Jour des Célibataires',
+  christmas: 'Noël',
 };

@@ -1,4 +1,4 @@
-// app/services/geminiService.ts v0.9.7
+// app/services/geminiService.ts v1.0.1
 import { GoogleGenAI, Type, HarmCategory, HarmBlockThreshold, Schema } from "@google/genai";
 import { CharacterAnalysis, IdiomAnalysis } from '../types';
 

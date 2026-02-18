@@ -1,4 +1,4 @@
-// app/locales/it.ts v0.7.1
+// app/locales/it.ts v0.7.2
 import { UILabels } from '../types';
 
 export const it: UILabels = {
@@ -18,6 +18,7 @@ export const it: UILabels = {
   strokeStatusActive: 'Animazione...',
   strokeStatusComplete: 'Finito',
   errorInvalidChar: 'Inserisci da 1 a 4 caratteri cinesi validi.',
+  errorCharNotFound: 'Dati per il carattere "{char}" non trovati.',
   controlsPlay: 'Play',
   controlsPause: 'Pausa',
   controlsReset: 'Reset',
@@ -70,12 +71,19 @@ export const it: UILabels = {
   statsChars: 'Caracteri unici',
   statsTerms: 'Idiomi unici',
 
+  // Grades v0.8.0
+  gradeExquisite: 'Divino',
+  gradeMasterful: 'Superbo',
+  gradeProficient: 'Buono',
+  gradePoor: 'Continua così',
+  scoreLabel: 'Punteggio',
+
   // Welcome v0.6.1
   welcomeStepNext: 'Avanti',
   welcomeStepPrev: 'Indietro',
   welcomeIntroTitle: "L'Anima degli Hanzi",
   welcomeIntroDesc: "HanziMaster è uno spazio consapevole progettato per colmare il divario tra l'antica calligrafia e l'IA moderna.",
-  welcomeFeatureTitle: 'Come Imparare',
+  welcomeFeatureTitle: 'How to Learn',
   welcomeFeatureDesc: "Domina i caratteri attraverso l'intuizione visiva e l'etimologia basata sull'IA.",
   welcomeTitle: 'Benvenuto su HanziMaster',
   welcomeSubtitle: 'Scopri la bellezza dei caratteri cinesi. Lo strumento definitivo che unisce calligraphie e IA.',
@@ -138,13 +146,9 @@ export const it: UILabels = {
   toastError: 'Errore',
   toastInfo: 'Info',
 
-  // Newly Added Keys for v0.6.2
   sectionData: 'Dati e Sincronizzazione',
-  settingDatabaseStatus: 'Stato Database',
   pinyinCoverage: 'Lessico Offline',
-  pinyinCoverageDesc: 'Mappatura locale. {covered} su {total} caratteri coperti.',
   missingChars: 'Caratteri Mancanti',
-  copyMissing: 'Copia Lista',
   downloadLexicon: 'Scarica Lessico Completo',
   downloading: 'Sincronizzazione...',
   downloadSuccess: 'Lessico Pronto',

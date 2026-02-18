@@ -1,4 +1,4 @@
-// app/locales/ru.ts v0.7.1
+// app/locales/ru.ts v0.7.2
 import { UILabels } from '../types';
 
 export const ru: UILabels = {
@@ -18,6 +18,7 @@ export const ru: UILabels = {
   strokeStatusActive: 'Анимация...',
   strokeStatusComplete: 'Готово',
   errorInvalidChar: 'Пожалуйста, введите от 1 до 4 китайских иероглифов.',
+  errorCharNotFound: 'Данные для иероглифа "{char}" не найдены.',
   controlsPlay: 'Пуск',
   controlsPause: 'Пауза',
   controlsReset: 'Сброс',
@@ -69,6 +70,13 @@ export const ru: UILabels = {
   statsTotal: 'Всего пройдено',
   statsChars: 'Уникальных иероглифов',
   statsTerms: 'Уникальных идиом',
+
+  // Grades v0.8.0
+  gradeExquisite: 'Божественно',
+  gradeMasterful: 'Превосходно',
+  gradeProficient: 'Хорошо',
+  gradePoor: 'Продолжай',
+  scoreLabel: 'Счет',
 
   // Welcome v0.6.1
   welcomeStepNext: 'Далее',
@@ -133,13 +141,9 @@ export const ru: UILabels = {
   toastError: 'Ошибка',
   toastInfo: 'Инфо',
 
-  // Newly Added Keys for v0.6.2
   sectionData: 'Данные и синхронизация',
-  settingDatabaseStatus: 'Статус БД',
   pinyinCoverage: 'Оффлайн лексикон',
-  pinyinCoverageDesc: 'Локальная база: {covered} из {total} символов.',
   missingChars: 'Пропущенные',
-  copyMissing: 'Копировать',
   downloadLexicon: 'Скачать полный лексикон',
   downloading: 'Синхронизация...',
   downloadSuccess: 'Лексикон готов',

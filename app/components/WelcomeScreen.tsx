@@ -1,4 +1,4 @@
-// app/components/WelcomeScreen.tsx v0.8.4
+// app/components/WelcomeScreen.tsx v1.0.1
 import React, { useState } from 'react';
 import { Brush, ArrowRight, ArrowLeft, Globe, Search, Eye, PenTool, Check, Sparkles } from 'lucide-react';
 import { UILabels } from '../types';

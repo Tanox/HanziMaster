@@ -1,4 +1,4 @@
-// app/components/analysis/CharacterDisplay.tsx v0.9.7
+// app/components/analysis/CharacterDisplay.tsx v1.0.1
 import React from 'react';
 import { CharacterAnalysis, AppSettings, HanziData, UILabels } from '../../types';
 import HeaderCard from './cards/HeaderCard';

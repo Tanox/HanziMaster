@@ -1,4 +1,4 @@
-// app/locales/en.ts v0.8.3
+// app/locales/en.ts v1.0.1
 import { UILabels } from '../types';
 
 export const en: UILabels = {
@@ -18,6 +18,7 @@ export const en: UILabels = {
   strokeStatusActive: 'Animating...',
   strokeStatusComplete: 'Complete',
   errorInvalidChar: 'Please enter 1 to 4 valid Chinese characters.',
+  errorCharNotFound: 'Character data for "{char}" could not be found.',
   controlsPlay: 'Play',
   controlsPause: 'Pause',
   controlsReset: 'Reset',

@@ -1,8 +1,8 @@
-# HanziMaster - 项目规范全书 (OpenSpec Index)
+# HanziMaster - 项目规范全书 (OpenSpec Index v2.0.0)
 
-本文档是 **HanziMaster** 项目的真理来源 (SSOT)。所有代码变更、视觉设计及教学逻辑必须符合下述 7 大核心规范模块。
+本文档是 **HanziMaster** 项目的最终真理之源 (Single Source of Truth, SSOT)。所有代码变更、视觉设计及教学逻辑必须符合下述 7 大核心规范模块。
 
-## 📚 核心规范模块 (v1.0.0)
+## 📚 核心规范模块 (Core Modules)
 
 | 编号 | 模块名称 | 核心涵盖子域 | 负责人 |
 | :--- | :--- | :--- | :--- |
@@ -15,5 +15,6 @@
 | **06** | [合规、质量与运维](./06_COMPLIANCE_OPS.md) | QA 测试用例、安全性与隐私、部署 CI/CD | DevOps |
 
 ---
-*注：原有分散的 16 个专项文档（如 project.md, agents.md, a11y.md 等）已全部并入上述模块。*
-*文档版本: v1.0.0 | 最后更新: 2025*
+**弃用声明 (v2.0.0):** 所有旧版规范文件 (如 `01_PRODUCT_REQUIREMENTS.md`, `project.md` 等) 现已废弃并被移除。上述 7 个核心模块是项目的唯一规范来源。
+
+*文档版本: v2.0.0 | 最后更新: 2025*

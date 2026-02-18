@@ -1,10 +1,10 @@
-// app/hooks/useContentFetcher.ts v0.9.7
+// app/hooks/useContentFetcher.ts v1.0.1
 import { useState } from 'react';
 import { HanziData, CharacterAnalysis, IdiomAnalysis, AppSettings } from '../types';
 import { useLocalStorage } from './useLocalStorage';
 import { fetchHanziData } from '../services/hanziService';
 import { analyzeCharacter, analyzeIdiom } from '../services/geminiService';
-import { LANGUAGES } from '../locales';
+import { LANGUAGES, UI_LABELS } from '../locales';
 
 export const useContentFetcher = (settings: AppSettings) => {
   const [hanziData, setHanziData] = useState<HanziData | null>(null);
@@ -23,10 +23,23 @@ export const useContentFetcher = (settings: AppSettings) => {
   };
 
   const fetchCharacter = async (char: string, langCode: string) => {
-    const fetchedData = await fetchHanziData(char);
-    setHanziData(fetchedData);
     const langName = LANGUAGES.find(l => l.code === langCode)?.name || 'English';
+    const labels = UI_LABELS[langCode] || UI_LABELS['en'];
 
+    const fetchedData = await fetchHanziData(char);
+    
+    if (!fetchedData) {
+      setHanziData(null);
+      if (labels.errorCharNotFound) {
+        setError(labels.errorCharNotFound.replace('{char}', char));
+      } else {
+        setError(`Character data for "${char}" could not be found.`);
+      }
+      return null;
+    }
+
+    setHanziData(fetchedData);
+    
     if (analysisCache[char]) {
       setAnalysis(analysisCache[char]);
     } else {

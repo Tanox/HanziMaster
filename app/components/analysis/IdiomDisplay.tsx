@@ -1,4 +1,4 @@
-// app/components/analysis/IdiomDisplay.tsx v0.9.7
+// app/components/analysis/IdiomDisplay.tsx v1.0.1
 import React from 'react';
 import { ScrollText, Quote } from 'lucide-react';
 import { IdiomAnalysis, UILabels } from '../../types';

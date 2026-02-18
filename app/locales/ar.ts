@@ -1,4 +1,4 @@
-// app/locales/ar.ts v0.7.1
+// app/locales/ar.ts v0.7.2
 import { UILabels } from '../types';
 
 export const ar: UILabels = {
@@ -18,6 +18,7 @@ export const ar: UILabels = {
   strokeStatusActive: 'جاري العرض...',
   strokeStatusComplete: 'اكتمل العرض',
   errorInvalidChar: 'يرجى إدخال 1-4 أحرف صينية صالحة.',
+  errorCharNotFound: 'لم يتم العثور على بيانات للحرف "{char}".',
   controlsPlay: 'تشغيل',
   controlsPause: 'إيقاف مؤقت',
   controlsReset: 'إعادة ضبط',
@@ -70,6 +71,13 @@ export const ar: UILabels = {
   statsChars: 'أحرف فريدة',
   statsTerms: 'تعبيرات فريدة',
 
+  // Grades v0.8.0
+  gradeExquisite: 'إلهي',
+  gradeMasterful: 'رائع',
+  gradeProficient: 'جيد',
+  gradePoor: 'استمر في ذلك',
+  scoreLabel: 'النتيجة',
+
   // Welcome v0.6.1
   welcomeStepNext: 'التالي',
   welcomeStepPrev: 'السابق',
@@ -103,7 +111,7 @@ export const ar: UILabels = {
 
   // App Sharing
   shareAppTitle: 'مشاركة التطبيق',
-  shareAppText: '🔥 وجدت أداة مذهلة لإتقان الأحرف الصينية!\n\nيجمع HanziMaster بين الخط التقليدي والذكاء الاصطناعي. يعمل بدون إنترنت!\n\nجربه الآن: {url}\n\n#HanziMaster #LearnChinese #Calligraphy',
+  shareAppText: '🔥 وجدت أداة مذهلة لإتقان الأحرف الصينية!\n\ يجمع HanziMaster بين الخط التقليدي والذكاء الاصطناعي. يعمل بدون إنترنت!\n\nجربه الآن: {url}\n\n#HanziMaster #LearnChinese #Calligraphy',
 
   // Reload Prompt
   updateAvailable: 'تحديث متاح',
@@ -138,13 +146,9 @@ export const ar: UILabels = {
   toastError: 'خطأ',
   toastInfo: 'معلومات',
 
-  // Newly Added Keys for v0.6.2
   sectionData: 'البيانات والمزامنة',
-  settingDatabaseStatus: 'حالة قاعدة البيانات',
   pinyinCoverage: 'معجم غير متصل',
-  pinyinCoverageDesc: 'البيانات المحلية. تمت تغطية {covered} من {total} حرفاً.',
   missingChars: 'أحرف مفقودة',
-  copyMissing: 'نسخ القائمة',
   downloadLexicon: 'تنزيل المعجم الكامل',
   downloading: 'جاري المزامنة...',
   downloadSuccess: 'المعجم جاهز',

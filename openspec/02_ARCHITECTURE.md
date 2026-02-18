@@ -1,31 +1,47 @@
 # 02. 技术架构与工程准则
 
-**版本**: v1.0.0
-**职责**: 定义软件拓扑结构与工程质量边界
+**版本**: v1.5.0
+**职责**: 定义组件拓扑、Props 契约、全局状态机与开发流程
 
-## 1. 架构分层 (Hook-Driven)
-应用采用逻辑与 UI 彻底分离的 React 架构，强制执行以下 Hook 分层：
-*   **`useAppController`**: 顶层协调者。负责全局 Modal 状态、路由解析、以及子 Hook 间的调度。
-*   **`useUserProgress`**: (v1.0.0 核心重构项) 独立管理 HSK 进度、学习统计、SRS 时间戳。
-*   **`useContentFetcher`**: 隔离 I/O 逻辑。负责 HanziData、AI 解析与拼音缓存的获取。
-*   **`useInteractionState`**: 管理播放、重置、模式切换等瞬时 UI 状态。
+## 1. 核心技术栈
+*   **React**: `18.3.1` (禁止使用 v19 特性)
+*   **Vite**: `6.0+`
+*   **TypeScript**: `5.7+` (全局 `strict: true`)
+*   **@google/genai**: `0.2.0+`
 
-## 2. 目录结构
+## 2. 状态管理：Hooks 分层架构
+为避免 `useAppController` 成为上帝对象，状态管理严格按下述原则抽离：
+*   **`useAppController` (协调者)**: 唯一持有 `activeChar` 与 `activeTerm`。负责 URL 解析、全局 Modal 状态、以及协调各子 Hook 间的交互。
+*   **`useContentFetcher` (数据源)**: 负责获取与缓存 `HanziData` (笔顺)、`CharacterAnalysis` (AI 解析) 和 `IdiomAnalysis`。
+*   **`useInteractionState` (交互态)**: 负责播放、重置、模式切换 (Watch/Practice) 等瞬时 UI 状态。
+*   **`useUserProgress` (用户进度)**: 独立管理用户的学习历史 (`HistoryItem[]`) 和已学清单 (`learnedItems: string[]`)，并与 `LocalStorage` 通信。
+
+## 3. `app/` 核心源码目录
 ```text
 app/
-├── components/         # 原子 UI 组件 (dashboard, settings, analysis)
-├── constants/          # 静态真理 (HSK 词库, 拼音表, 节气)
-├── hooks/              # 业务逻辑中心 (useUserProgress, useStrokeAnimation)
-├── services/           # 外部服务适配器 (Gemini API, HanziService, TTS)
-├── utils/              # 纯计算工具 (几何 Fréchet 计算, 图像生成)
-└── types.ts            # 全局强类型定义
+├── components/     # UI 组件
+│   ├── analysis/   #   - 分析面板卡片
+│   ├── dashboard/  #   - 主界面大型组合组件
+│   ├── settings/   #   - 设置面板子组件
+│   └── ui/         #   - 通用原子组件 (Toast)
+├── constants/      # 静态常量数据 (常用字、离线词典)
+├── context/        # React Context (ToastProvider)
+├── hooks/          # 业务逻辑 Hooks (核心)
+├── locales/        # i18n 语言文件
+├── scripts/        # Node.js 构建脚本 (数据拷贝)
+├── services/       # 外部服务交互层 (API 调用)
+├── types.ts        # 全局 TypeScript 类型定义
+└── utils/          # 通用工具函数 (几何计算等)
 ```
 
-## 3. 编码准则 (Engineering Standards)
-*   **强类型**: 禁止使用 `any`，所有函数需显式声明入参及返回类型。
-*   **版本头部**: 每个 `.ts/tsx` 文件首行必须包含 `vX.Y.Z` 注释。
-*   **离线优先**: 网络请求必须包含三级降级路径 (LocalStorage -> SW Cache -> CDN/AI)。
-*   **Git 规范**: 必须使用语义化提交 (e.g., `feat(practice): ...`, `fix(canvas): ...`)。
+## 4. Git 工作流与提交规范
+*   **分支模型**: 遵循 Git Flow (`main`, `dev`, `feature/*`, `fix/*`)。
+*   **提交信息**: 必须遵循**语义化提交 (Semantic Commit Messages)**规范。
+    *   `feat(practice): add ghosting hint mechanism`
+    *   `fix(canvas): resolve touch event conflict on iOS`
+    *   `docs(openspec): update a11y standards`
+    *   `refactor(service): improve geminiService error handling`
+    *   `chore(deps): upgrade vite to 6.0.3`
 
 ---
-*文档维护: HanziMaster Arch Team*
+*文档维护: HanziMaster Architecture Team*

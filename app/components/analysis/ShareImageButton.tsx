@@ -1,4 +1,4 @@
-// app/components/analysis/ShareImageButton.tsx v1.1.1
+// app/components/analysis/ShareImageButton.tsx v1.0.1
 import React, { useState } from 'react';
 import { Loader2, Download, Share2 } from 'lucide-react';
 import { CharacterAnalysis, Grade } from '../../types';

@@ -1,4 +1,4 @@
-// app/components/RandomSuggestions.tsx v0.9.6
+// app/components/RandomSuggestions.tsx v1.0.1
 import React from 'react';
 import { SEASONAL_EVENTS } from '../constants/seasonalEvents';
 import { UILabels } from '../types';

@@ -1,4 +1,4 @@
-// app/components/ReloadPrompt.tsx v0.8.2
+// app/components/ReloadPrompt.tsx v1.0.1
 import React, { useState, useEffect } from 'react';
 import { RefreshCw, X, Wifi } from 'lucide-react';
 import { UILabels } from '../types';

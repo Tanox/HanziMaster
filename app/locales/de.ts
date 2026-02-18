@@ -1,4 +1,4 @@
-// app/locales/de.ts v0.7.1
+// app/locales/de.ts v0.7.2
 import { UILabels } from '../types';
 
 export const de: UILabels = {
@@ -18,6 +18,7 @@ export const de: UILabels = {
   strokeStatusActive: 'Animieren...',
   strokeStatusComplete: 'Animation fertig',
   errorInvalidChar: 'Bitte gib 1 bis 4 gültige chinesische Zeichen ein.',
+  errorCharNotFound: 'Daten für das Zeichen "{char}" konnten nicht gefunden werden.',
   controlsPlay: 'Start',
   controlsPause: 'Pause',
   controlsReset: 'Reset',
@@ -69,6 +70,13 @@ export const de: UILabels = {
   statsTotal: 'Insgesamt geübt',
   statsChars: 'Einzigartige Zeichen',
   statsTerms: 'Einzigartige Idiome',
+
+  // Grades v0.8.0
+  gradeExquisite: 'Göttlich',
+  gradeMasterful: 'Hervorragend',
+  gradeProficient: 'Gut',
+  gradePoor: 'Dranbleiben',
+  scoreLabel: 'Punktzahl',
 
   // Welcome v0.6.1
   welcomeStepNext: 'Weiter',
@@ -133,13 +141,9 @@ export const de: UILabels = {
   toastError: 'Fehler',
   toastInfo: 'Info',
 
-  // Newly Added Keys for v0.6.2
   sectionData: 'Daten & Synchro',
-  settingDatabaseStatus: 'Datenbank-Status',
   pinyinCoverage: 'Offline-Lexikon',
-  pinyinCoverageDesc: 'Lokale Daten. {covered} von {total} Zeichen abgedeckt.',
   missingChars: 'Fehlende Zeichen',
-  copyMissing: 'Liste kopieren',
   downloadLexicon: 'Offline-Lexikon laden',
   downloading: 'Synchro...',
   downloadSuccess: 'Lexikon bereit',

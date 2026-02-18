@@ -1,4 +1,5 @@
-// app/components/dashboard/AnalysisSection.tsx v0.7.1
+
+// app/components/dashboard/AnalysisSection.tsx v1.0.2
 import React from 'react';
 import AnalysisPanel from '../AnalysisPanel';
 import HistoryPanel from '../HistoryPanel';
@@ -16,7 +17,7 @@ interface AnalysisSectionProps {
   labels: UILabels;
   actions: {
     handleSearch: (term: string, langCode: string) => void;
-    setHistory: (history: HistoryItem[]) => void;
+    clearAllProgress: () => void;
   }
 }
 
@@ -48,7 +49,7 @@ const AnalysisSection: React.FC<AnalysisSectionProps> = ({
            history={history} 
            learnedItems={learnedItems}
            onSelect={(term) => actions.handleSearch(term, currentLang)} 
-           onClear={() => actions.setHistory([])}
+           onClear={actions.clearAllProgress}
            labels={labels}
         />
       )}
