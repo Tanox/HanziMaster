@@ -1,10 +1,9 @@
 
-// app/hooks/useDataSync.ts v1.0.7
+// app/hooks/useDataSync.ts v1.1.0
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { useLocalStorage } from './useLocalStorage';
 import { useToast } from '../context/ToastContext';
-import { COMMON_CHARS } from '../constants/commonChars';
-import { DICTIONARY_SIZE } from '../constants/dictionaryMeta';
+import { DICTIONARY_SIZE, LEXICON_SIZE } from '../constants/dictionaryMeta';
 import { UILabels } from '../types';
 
 const CACHE_NAME = 'hanzi-data-local';
@@ -12,10 +11,10 @@ const LOCAL_BASE_URL = '/hanzi-data';
 
 /**
  * Manages all logic related to offline data synchronization and auditing.
- * Extracted from SettingsDataAudit for better separation of concerns (v1.0.3).
- * @param labels - The UI labels for toast notifications.
+ * v1.1.0: Refactored to use a dynamically fetched character list for complete lexicon download.
  */
 export const useDataSync = (labels: UILabels) => {
+  const [characterList, setCharacterList] = useState<string[]>([]);
   const [isLexiconDownloading, setIsLexiconDownloading] = useState(false);
   const [lexiconProgress, setLexiconProgress] = useState(0);
   const [lexiconCoveredCount, setLexiconCoveredCount] = useState(0);
@@ -28,33 +27,45 @@ export const useDataSync = (labels: UILabels) => {
 
   const { showToast } = useToast();
 
+  useEffect(() => {
+    const fetchCharList = async () => {
+        try {
+            const res = await fetch(`${LOCAL_BASE_URL}/character-list.json`);
+            if (res.ok) {
+                const list = await res.json();
+                setCharacterList(list);
+            }
+        } catch (e) {
+            console.warn("Could not fetch character list for offline sync.", e);
+        }
+    };
+    fetchCharList();
+  }, []);
+
   /**
-   * Audits the CacheStorage to check for locally stored stroke data.
+   * Audits the CacheStorage to check for locally stored stroke data against the full character list.
    */
   const auditLexicon = useCallback(async () => {
+    if (characterList.length === 0) return;
     setIsAuditing(true);
     try {
-        if (!('caches' in window)) {
-            console.warn("Cache API not supported in this context.");
-            return;
-        }
+        if (!('caches' in window)) return;
         const cache = await caches.open(CACHE_NAME);
         const keys = await cache.keys();
         const urls = new Set(keys.map(k => k.url));
         
         let count = 0;
         const missing: string[] = [];
-        const highFreq = COMMON_CHARS.slice(0, 500);
+        const highFreq = new Set(characterList.slice(0, 500));
         
-        for (const char of COMMON_CHARS) {
+        for (const char of characterList) {
             const path = `${window.location.origin}${LOCAL_BASE_URL}/${char}.json`;
             if (urls.has(path)) {
                 count++;
-            } else if (highFreq.includes(char) && missing.length < 5) {
+            } else if (highFreq.has(char) && missing.length < 5) {
                 missing.push(char);
             }
         }
-
         setLexiconCoveredCount(count);
         setMissingSample(missing);
     } catch (e) {
@@ -62,34 +73,33 @@ export const useDataSync = (labels: UILabels) => {
     } finally {
         setIsAuditing(false);
     }
-  }, []);
+  }, [characterList]);
 
   useEffect(() => {
     auditLexicon();
   }, [auditLexicon]);
 
   const stats = useMemo(() => {
-    const lexiconTotal = COMMON_CHARS.length;
+    const lexiconTotal = LEXICON_SIZE > 0 ? LEXICON_SIZE : characterList.length;
     const dictCovered = Object.keys(offlineDict).length;
     const dictTotal = DICTIONARY_SIZE; 
-
     return { lexiconTotal, lexiconCoveredCount, dictCovered, dictTotal };
-  }, [offlineDict, lexiconCoveredCount]);
+  }, [offlineDict, lexiconCoveredCount, characterList.length]);
 
   /**
-   * Iterates through all common characters and fetches/caches their stroke data.
+   * Iterates through the full character list and fetches/caches their stroke data.
    */
   const handleDownloadLexicon = async () => {
-    if (isLexiconDownloading) return;
+    if (isLexiconDownloading || characterList.length === 0) return;
     setIsLexiconDownloading(true);
     setLexiconProgress(0);
     try {
       const cache = await caches.open(CACHE_NAME);
       const total = stats.lexiconTotal;
-      const BATCH_SIZE = 40;
+      const BATCH_SIZE = 50;
       
       for (let i = 0; i < total; i += BATCH_SIZE) {
-        const batch = COMMON_CHARS.slice(i, i + BATCH_SIZE);
+        const batch = characterList.slice(i, i + BATCH_SIZE);
         setCurrentTarget(batch[0]);
         
         await Promise.all(batch.map(async (char) => {

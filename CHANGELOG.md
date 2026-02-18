@@ -1,6 +1,12 @@
 
 # Changelog
 
+## [1.1.0]
+
+### Changed
+- **Offline**: Overhauled the lexicon sync to download the complete 9,000+ character library instead of a limited subset, providing full offline stroke animation capability.
+- **Build**: The build script now auto-generates a master character list and updates lexicon metadata for accurate progress tracking.
+
 ## [1.0.9]
 
 ### Fixed
