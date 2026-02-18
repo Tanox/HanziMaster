@@ -1,5 +1,5 @@
 
-// app/services/geminiService.ts v1.1.3
+// app/services/geminiService.ts v1.1.5
 import { GoogleGenAI, Type, HarmCategory, HarmBlockThreshold, Schema } from "@google/genai";
 import { CharacterAnalysis, IdiomAnalysis } from '../types';
 import { PINYIN_MAP } from '../constants/pinyinData';
@@ -36,7 +36,6 @@ const generateOfflineAnalysis = (char: string, reason: string = "Network Unavail
     console.warn("Could not read offline dictionary", e);
   }
 
-  // v1.1.3: Prioritize local pinyin map for offline mode.
   const pinyin = PINYIN_MAP[char] || "-";
 
   return {
@@ -81,8 +80,10 @@ const commonConfig = {
 function cleanJsonResponse(text: string): string {
     if (!text) return "";
     const trimmed = text.trim();
-    const match = trimmed.match(/\{[\s\S]*\}/);
+    // Prioritize finding a JSON object/array
+    const match = trimmed.match(/\{[\s\S]*\}|\[[\s\S]*\]/);
     if (match) return match[0];
+    // Fallback for markdown-wrapped JSON
     return trimmed.replace(/^```(json)?\s*/i, '').replace(/\s*```$/, '').trim();
 }
 
@@ -124,6 +125,11 @@ async function fetchAiAnalysis<T>({
     });
 
     const jsonText = cleanJsonResponse(response.text || "");
+    
+    if (!jsonText) {
+      throw new Error("Received empty JSON response from AI.");
+    }
+
     return JSON.parse(jsonText) as T;
   } catch (error: any) {
     console.error(`AI analysis for "${entity}" failed:`, error);

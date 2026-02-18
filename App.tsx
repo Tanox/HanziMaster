@@ -1,5 +1,5 @@
 
-// App.tsx v1.1.3
+// App.tsx v1.1.5
 import React from 'react';
 import { useAppController } from './app/hooks/useAppController';
 import SearchInput from './app/components/SearchInput';
@@ -15,7 +15,7 @@ import { UI_LABELS } from './app/locales';
 import { AlertCircle } from 'lucide-react';
 import { ToastProvider } from './app/context/ToastContext';
 
-const APP_VERSION = '1.1.3';
+const APP_VERSION = '1.1.5';
 
 const AppContent: React.FC = () => {
   const { state, actions } = useAppController();

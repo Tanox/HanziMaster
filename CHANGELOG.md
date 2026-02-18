@@ -1,6 +1,16 @@
 
 # Changelog
 
+## [1.1.5]
+
+### Fixed
+- **API**: Improved robustness of the Gemini API service by adding a check for empty JSON responses. This prevents crashes from `JSON.parse` errors and ensures a graceful fallback to offline analysis when the AI returns an empty result.
+
+## [1.1.4]
+
+### Fixed
+- **Offline**: Fortified the lexicon download mechanism by implementing a multi-source CDN mirror fallback system. The sync process now automatically cycles through local, jsDelivr, and unpkg sources, dramatically increasing download success rates under adverse network conditions.
+
 ## [1.1.3]
 
 ### Fixed

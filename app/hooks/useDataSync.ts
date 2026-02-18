@@ -1,5 +1,5 @@
 
-// app/hooks/useDataSync.ts v1.1.2
+// app/hooks/useDataSync.ts v1.1.4
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { useLocalStorage } from './useLocalStorage';
 import { useToast } from '../context/ToastContext';
@@ -7,10 +7,14 @@ import { DICTIONARY_SIZE, LEXICON_SIZE } from '../constants/dictionaryMeta';
 import { UILabels } from '../types';
 
 const CACHE_NAME = 'hanzi-data-local';
-const LOCAL_BASE_URL = '/hanzi-data';
+const LEXICON_BASE_URLS = [
+    '/hanzi-data',                                     // 1. Primary: Local copy from /public
+    'https://cdn.jsdelivr.net/npm/hanzi-writer-data@2.0', // 2. Secondary: jsDelivr CDN
+    'https://unpkg.com/hanzi-writer-data@2.0.1'        // 3. Tertiary: unpkg CDN
+];
 
 /**
- * Helper for fetching with retries and exponential backoff.
+ * Helper for fetching with retries and exponential backoff for a single host.
  */
 async function fetchWithRetry(url: string, options: RequestInit = {}, retries = 3, backoff = 500): Promise<Response> {
     try {
@@ -31,8 +35,29 @@ async function fetchWithRetry(url: string, options: RequestInit = {}, retries = 
 }
 
 /**
+ * Tries fetching a resource from a list of mirror URLs, one by one.
+ */
+async function fetchFromMirrors(path: string, mirrors: string[]): Promise<Response> {
+    let lastError: Error | null = null;
+    for (const base of mirrors) {
+        const url = `${base}/${path}`;
+        try {
+            const response = await fetchWithRetry(url);
+            if (response.ok) {
+                return response;
+            }
+        } catch (e) {
+            lastError = e as Error;
+            console.warn(`Fetch from mirror ${url} failed. Trying next.`);
+        }
+    }
+    throw lastError || new Error(`Failed to fetch from all mirrors for path: ${path}`);
+}
+
+
+/**
  * Manages all logic related to offline data synchronization and auditing.
- * v1.1.2: Fixed lexicon download failure by adding a robust retry mechanism.
+ * v1.1.4: Fortified with multi-source CDN mirror fallback.
  */
 export const useDataSync = (labels: UILabels) => {
   const [characterList, setCharacterList] = useState<string[]>([]);
@@ -51,7 +76,7 @@ export const useDataSync = (labels: UILabels) => {
   useEffect(() => {
     const fetchCharList = async () => {
         try {
-            const res = await fetch(`${LOCAL_BASE_URL}/character-list.json`);
+            const res = await fetch(`${LEXICON_BASE_URLS[0]}/character-list.json`);
             if (res.ok) {
                 const list = await res.json();
                 setCharacterList(list);
@@ -63,9 +88,6 @@ export const useDataSync = (labels: UILabels) => {
     fetchCharList();
   }, []);
 
-  /**
-   * Audits the CacheStorage to check for locally stored stroke data against the full character list.
-   */
   const auditLexicon = useCallback(async () => {
     if (characterList.length === 0) return;
     setIsAuditing(true);
@@ -80,7 +102,7 @@ export const useDataSync = (labels: UILabels) => {
         const highFreq = new Set(characterList.slice(0, 500));
         
         for (const char of characterList) {
-            const path = `${window.location.origin}${LOCAL_BASE_URL}/${char}.json`;
+            const path = `${window.location.origin}${LEXICON_BASE_URLS[0]}/${char}.json`;
             if (urls.has(path)) {
                 count++;
             } else if (highFreq.has(char) && missing.length < 5) {
@@ -107,10 +129,6 @@ export const useDataSync = (labels: UILabels) => {
     return { lexiconTotal, lexiconCoveredCount, dictCovered, dictTotal };
   }, [offlineDict, lexiconCoveredCount, characterList.length]);
 
-  /**
-   * Iterates through the full character list and fetches/caches their stroke data.
-   * Includes retry logic for network reliability.
-   */
   const handleDownloadLexicon = async () => {
     if (isLexiconDownloading || characterList.length === 0) return;
     setIsLexiconDownloading(true);
@@ -127,15 +145,13 @@ export const useDataSync = (labels: UILabels) => {
         setCurrentTarget(batch[0]);
         
         await Promise.all(batch.map(async (char) => {
-          const url = `${LOCAL_BASE_URL}/${char}.json`;
+          const filePath = `${char}.json`;
+          const cacheKey = `${LEXICON_BASE_URLS[0]}/${filePath}`;
+          
           try {
-            if (!(await cache.match(url))) {
-              const res = await fetchWithRetry(url);
-              if (res.ok) {
-                await cache.put(url, res);
-              } else {
-                failedChars.push(char);
-              }
+            if (!(await cache.match(cacheKey))) {
+              const res = await fetchFromMirrors(filePath, LEXICON_BASE_URLS);
+              await cache.put(cacheKey, res);
             }
           } catch (e) {
             failedChars.push(char);
@@ -163,9 +179,6 @@ export const useDataSync = (labels: UILabels) => {
     }
   };
 
-  /**
-   * Dynamically imports and stores the offline dictionary.
-   */
   const handleDownloadDictionary = async () => {
     if (isDictDownloading) return;
     setIsDictDownloading(true);
