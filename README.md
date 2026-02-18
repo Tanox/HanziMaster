@@ -6,7 +6,7 @@
 >
 > Master Chinese character stroke order with Zen-like visualization, interactive practice, and Gemini AI insights.
 
-![Version](https://img.shields.io/badge/version-1.1.0-blue?style=flat-square)
+![Version](https://img.shields.io/badge/version-1.1.1-blue?style=flat-square)
 ![License](https://img.shields.io/badge/license-GPLv3-green?style=flat-square)
 
 ## 📖 Introduction

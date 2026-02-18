@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v1.1.0",
-  "version": "1.1.0",
-  "description": "v1.1.0: Overhauled the offline lexicon sync to download the complete 9,000+ character library, providing full offline capability.",
+  "name": "HanziMaster 汉字大师 v1.1.1",
+  "version": "1.1.1",
+  "description": "v1.1.1: Added a clear stroke count display directly within the HeaderCard component for improved at-a-glance information, prioritizing hanziData for accuracy.",
   "keywords": [
     "Chinese characters",
     "Hanzi",

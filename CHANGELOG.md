@@ -1,6 +1,11 @@
 
 # Changelog
 
+## [1.1.1]
+
+### Added
+- **UI**: Added a prominent stroke count display next to the main character in the `HeaderCard` component, ensuring this key information is immediately visible to the user.
+
 ## [1.1.0]
 
 ### Changed
