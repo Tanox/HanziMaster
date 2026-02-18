@@ -1,6 +1,11 @@
 
 # Changelog
 
+## [1.1.3]
+
+### Fixed
+- **Offline**: Fixed a critical bug where pinyin was not displayed in offline mode. The offline analysis fallback now correctly queries the extensive local `PINYIN_MAP` before defaulting to an empty state, ensuring pinyin is available for common characters without a network connection.
+
 ## [1.1.2]
 
 ### Fixed

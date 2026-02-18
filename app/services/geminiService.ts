@@ -1,6 +1,8 @@
-// app/services/geminiService.ts v1.0.1
+
+// app/services/geminiService.ts v1.1.3
 import { GoogleGenAI, Type, HarmCategory, HarmBlockThreshold, Schema } from "@google/genai";
 import { CharacterAnalysis, IdiomAnalysis } from '../types';
+import { PINYIN_MAP } from '../constants/pinyinData';
 
 // --- AI Instance Cache ---
 let globalAiInstance: GoogleGenAI | null = null;
@@ -34,16 +36,19 @@ const generateOfflineAnalysis = (char: string, reason: string = "Network Unavail
     console.warn("Could not read offline dictionary", e);
   }
 
+  // v1.1.3: Prioritize local pinyin map for offline mode.
+  const pinyin = PINYIN_MAP[char] || "-";
+
   return {
     char: char,
-    pinyin: "-", 
+    pinyin: pinyin,
     meaning: meaning,
     radical: "?",
     strokeCount: 0,
     etymology: "Detailed analysis requires an active AI connection.",
     mnemonic: "Focus on writing practice.",
     examples: [
-      { word: char, pinyin: "-", meaning: meaning.startsWith('Mode:') ? "Analysis unavailable" : meaning },
+      { word: char, pinyin: pinyin, meaning: meaning.startsWith('Mode:') ? "Analysis unavailable" : meaning },
     ]
   };
 };
