@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* app/style.css v0.9.3 */
 
 /* Base Typography */
