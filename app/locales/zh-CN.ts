@@ -110,6 +110,8 @@ export const zhCN: UILabels = {
   shareMessageCopied: '分享文案已复制！',
   shareAppTitle: '分享给好友',
   shareAppText: '🔥 发现一个练字神器！汉字大师 (HanziMaster) —— 快来试试：{url}',
+  promoShareAction: '推荐给好友',
+  promoShareCopied: '推广文案已复制！',
 
   updateAvailable: '发现新版本',
   updateMsg: '建议刷新以应用最新改进。',

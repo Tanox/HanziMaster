@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v1.1.5",
-  "version": "1.1.5",
-  "description": "v1.1.5: Improved Gemini API service robustness by adding a check for empty JSON responses, preventing crashes and ensuring a graceful fallback to offline mode.",
+  "name": "HanziMaster 汉字大师 v1.1.6",
+  "version": "1.1.6",
+  "description": "v1.1.6: Completed migration from Vite to Next.js using Pages Router.",
   "keywords": [
     "Chinese characters",
     "Hanzi",

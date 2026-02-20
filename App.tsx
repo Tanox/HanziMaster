@@ -37,6 +37,7 @@ const AppContent: React.FC = () => {
         onOpenSettings={() => actions.setIsSettingsOpen(true)} 
         isOffline={state.isOffline || state.settings.offlineMode}
         version={APP_VERSION}
+        currentLang={state.currentLang}
       />
 
       <main id="app-main-content" className="max-w-5xl w-full mx-auto px-4 py-8 flex-grow">

@@ -209,6 +209,8 @@ export interface UILabels {
   shareMessageCopied: string;
   shareAppTitle: string;
   shareAppText: string;
+  promoShareAction: string;
+  promoShareCopied: string;
   updateAvailable: string;
   updateMsg: string;
   reloadBtn: string;

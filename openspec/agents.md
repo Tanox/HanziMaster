@@ -12,8 +12,7 @@
 
 ## 2. 编码约束 (Coding Constraints)
 *   **React 18**: 严格使用 React 18 API。**禁止**使用 React 19 的实验性特性（如 `use()` Hook 或 React Compiler），直到项目正式决定升级。
-*   **零 Node.js 运行时依赖**: 前端源码 (`app/` 目录) 中禁止引入 `fs`, `path`, `process` 等任何 Node.js 核心模块。这些模块仅允许在 `vite.config.ts` 或 `app/scripts/` 等构建时环境中使用。
-*   **Importmap 纯净**: 确保 `index.html` 中的 `importmap` 仅包含浏览器可执行的 ESM 模块链接，无冗余或错误的条目。
+*   **零 Node.js 运行时依赖**: 前端源码 (`app/` 目录) 中禁止引入 `fs`, `path`, `process` 等任何 Node.js 核心模块。这些模块仅允许在 `next.config.mjs` 或 `app/scripts/` 等构建时环境中使用。
 *   **严格遵循 SDK 规范**: 所有对 `@google/genai` 的使用必须遵循项目 `.trae/` 目录下定义的最新编码规范。
 
 ## 3. Google GenAI SDK 使用规范

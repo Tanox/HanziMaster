@@ -110,6 +110,8 @@ export const en: UILabels = {
   shareMessageCopied: 'Share text copied!',
   shareAppTitle: 'Share App',
   shareAppText: '🔥 I found an amazing tool for mastering Chinese characters! {url}',
+  promoShareAction: 'Recommend to Friends',
+  promoShareCopied: 'Promo copy copied!',
 
   updateAvailable: 'Update Available',
   updateMsg: 'Reload to apply the latest improvements.',

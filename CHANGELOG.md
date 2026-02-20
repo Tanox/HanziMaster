@@ -1,6 +1,16 @@
 
 # Changelog
 
+## [1.1.6]
+
+### Changed
+- **Migration**: Completed migration from Vite to Next.js using Pages Router.
+- **Structure**: Created `pages/` directory with `index.tsx`, `_app.tsx`, and `_document.tsx`.
+- **Cleanup**: Removed Vite-specific files: `vite.config.ts`, `vite-env.d.ts`, `index.html`, `index.tsx`.
+
+### Chore
+- **Versioning**: Unified version numbers across all project files to v1.1.6 for consistency.
+
 ## [1.1.5]
 
 ### Fixed
