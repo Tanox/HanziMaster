@@ -128,3 +128,4 @@ dist-ssr
 .DS_Store
 Thumbs.db
 *报告*.md
+test/
