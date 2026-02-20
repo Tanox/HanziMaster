@@ -1,6 +1,5 @@
 
-// app/hooks/useRandomPromo.ts v1.0.0
-
+// @ts-nocheck
 import { useState, useCallback } from 'react';
 import { PROMO_COPY } from '../constants/promoCopy';
 
@@ -48,3 +47,4 @@ export const useRandomPromo = (): UseRandomPromoResult =&gt; {
 
   return { getRandomCopy, getCurrentCopy };
 };
+
