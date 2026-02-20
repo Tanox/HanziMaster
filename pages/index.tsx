@@ -3,8 +3,8 @@
 import React from 'react';
 import App from '../App';
 
-const HomePage: React.FC = () =&gt; {
-  return &lt;App /&gt;;
+const HomePage: React.FC = () => {
+  return <App />;
 };
 
 export default HomePage;

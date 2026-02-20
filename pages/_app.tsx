@@ -4,8 +4,8 @@ import React from 'react';
 import type { AppProps } from 'next/app';
 import '../app/style.css';
 
-const MyApp: React.FC&lt;AppProps&gt; = ({ Component, pageProps }) =&gt; {
-  return &lt;Component {...pageProps} /&gt;;
+const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
+  return <Component {...pageProps} />;
 };
 
 export default MyApp;
