@@ -47,7 +47,7 @@
   - `programmatic` TR-3.8: HanziData 接口包含可选的 radStrokes 属性
   - `human-judgement` TR-3.9: 类型定义格式正确，语法无误
 
-## [/] Task 4: 统一文档中的版本号引用
+## [x] Task 4: 统一文档中的版本号引用
 - **Priority**: P1
 - **Depends On**: None
 - **Description**: 
@@ -60,7 +60,7 @@
   - `human-judgement` TR-4.2: 版本号上下文引用合理
 - **Notes**: 主要更新文档中的版本引用，不涉及代码文件
 
-## [ ] Task 5: 更新项目规则文档
+## [x] Task 5: 更新项目规则文档
 - **Priority**: P1
 - **Depends On**: None
 - **Description**: 

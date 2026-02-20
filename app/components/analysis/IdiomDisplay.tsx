@@ -1,5 +1,5 @@
-// app/components/analysis/IdiomDisplay.tsx v1.0.1
-import React from 'react';
+// app/components/analysis/IdiomDisplay.tsx v1.1.6
+import React, { useState, useEffect } from 'react';
 import { ScrollText, Quote } from 'lucide-react';
 import { IdiomAnalysis, UILabels } from '../../types';
 import PronunciationButton from '../PronunciationButton';
@@ -11,7 +11,13 @@ interface IdiomDisplayProps {
 }
 
 const IdiomDisplay: React.FC<IdiomDisplayProps> = ({ data, labels }) => {
-  const shareUrl = `${window.location.origin}?char=${encodeURIComponent(data.idiom)}`;
+  const [origin, setOrigin] = useState('');
+
+  useEffect(() => {
+    setOrigin(window.location.origin);
+  }, []);
+
+  const shareUrl = `${origin}?char=${encodeURIComponent(data.idiom)}`;
   const shareTemplate = labels.shareTextIdiom || "I just learned the idiom '{idiom}' ({pinyin}) on HanziMaster! {url}";
   const shareText = shareTemplate.replace('{idiom}', data.idiom).replace('{pinyin}', data.pinyin).replace('{meaning}', data.meaning).replace('{url}', shareUrl);
   const shareTitle = (labels.shareTitleIdiom || "").replace('{idiom}', data.idiom);

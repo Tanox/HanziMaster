@@ -127,3 +127,4 @@ dist-ssr
 # OS
 .DS_Store
 Thumbs.db
+*报告*.md

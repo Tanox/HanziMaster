@@ -1,7 +1,7 @@
 
-// app/components/PromoShareButton.tsx v1.0.0
+// app/components/PromoShareButton.tsx v1.1.6
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Share2, Check } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
 import { useRandomPromo, Language } from '../hooks/useRandomPromo';
@@ -18,18 +18,22 @@ interface PromoShareButtonProps {
   };
 }
 
-const PromoShareButton: React.FC&lt;PromoShareButtonProps&gt; = ({ 
+const PromoShareButton: React.FC<PromoShareButtonProps> = ({ 
   size = 18, 
   className = "", 
   lang,
   labels 
-}) =&gt; {
+}) => {
   const [isCopied, setIsCopied] = useState(false);
+  const [effectiveUrl, setEffectiveUrl] = useState('');
   const { showToast } = useToast();
   const { getRandomCopy } = useRandomPromo();
-  const effectiveUrl = typeof window !== 'undefined' ? window.location.origin : '';
 
-  const handleShare = async () =&gt; {
+  useEffect(() => {
+    setEffectiveUrl(window.location.origin);
+  }, []);
+
+  const handleShare = async () => {
     try {
       const promoCopy = getRandomCopy(lang, effectiveUrl);
       
@@ -43,7 +47,7 @@ const PromoShareButton: React.FC&lt;PromoShareButtonProps&gt; = ({
         await navigator.clipboard.writeText(promoCopy);
         setIsCopied(true);
         showToast(labels.shareMessageCopied, 'success');
-        setTimeout(() =&gt; setIsCopied(false), 2000);
+        setTimeout(() => setIsCopied(false), 2000);
       }
     } catch (err) {
       console.warn('Share failed:', err);
@@ -54,20 +58,20 @@ const PromoShareButton: React.FC&lt;PromoShareButtonProps&gt; = ({
   const tooltip = isCopied ? labels.shareMessageCopied : labels.shareAction;
 
   return (
-    &lt;button 
+    <button 
       onClick={handleShare} 
       className={`relative inline-flex items-center justify-center p-2 rounded-full transition-colors group ${className}`} 
       title={tooltip}
-    &gt;
-      &lt;span className="absolute -bottom-8 bg-slate-800 text-white text-[10px] font-bold px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 group-hover:-bottom-7 transition-all duration-200 pointer-events-none"&gt;
+    >
+      <span className="absolute -bottom-8 bg-slate-800 text-white text-[10px] font-bold px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 group-hover:-bottom-7 transition-all duration-200 pointer-events-none">
         {tooltip}
-      &lt;/span&gt;
+      </span>
       {isCopied ? (
-        &lt;Check size={size} className="text-emerald-500" /&gt;
+        <Check size={size} className="text-emerald-500" />
       ) : (
-        &lt;Share2 size={size} /&gt;
+        <Share2 size={size} />
       )}
-    &lt;/button&gt;
+    </button>
   );
 };
 

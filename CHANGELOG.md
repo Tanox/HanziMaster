@@ -7,6 +7,16 @@
 - **Migration**: Completed migration from Vite to Next.js using Pages Router.
 - **Structure**: Created `pages/` directory with `index.tsx`, `_app.tsx`, and `_document.tsx`.
 - **Cleanup**: Removed Vite-specific files: `vite.config.ts`, `vite-env.d.ts`, `index.html`, `index.tsx`.
+- **Next.js Compatibility**: Fixed all direct `window` object usage to use `useEffect` for client-side only access, preventing SSR errors.
+- **UI/UX**: Replaced native `window.confirm()` in `SettingsHazardZone` with custom modal to follow project design guidelines.
+
+### Fixed
+- **ShareButton**: Fixed direct `window.location` access by wrapping in `useEffect`.
+- **Header**: Fixed direct `window.location` access by wrapping in `useEffect`.
+- **PromoShareButton**: Fixed direct `window.location` access by wrapping in `useEffect`.
+- **HeaderCard**: Fixed direct `window.location` access by wrapping in `useEffect`.
+- **IdiomDisplay**: Fixed direct `window.location` access by wrapping in `useEffect`.
+- **SettingsHazardZone**: Replaced `window.confirm()` with custom modal component.
 
 ### Chore
 - **Versioning**: Unified version numbers across all project files to v1.1.6 for consistency.

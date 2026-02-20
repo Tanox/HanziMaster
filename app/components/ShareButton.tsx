@@ -1,5 +1,5 @@
-// app/components/ShareButton.tsx v1.0.1
-import React, { useState } from 'react';
+// app/components/ShareButton.tsx v1.1.6
+import React, { useState, useEffect } from 'react';
 import { Share2, Check } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
 
@@ -18,8 +18,12 @@ interface ShareButtonProps {
 
 const ShareButton: React.FC<ShareButtonProps> = ({ title, text, url, size = 18, className = "", labels }) => {
   const [isCopied, setIsCopied] = useState(false);
+  const [effectiveUrl, setEffectiveUrl] = useState('');
   const { showToast } = useToast();
-  const effectiveUrl = url || window.location.origin;
+
+  useEffect(() => {
+    setEffectiveUrl(url || window.location.origin);
+  }, [url]);
 
   const handleShare = async () => {
     const shareData = { title, text, url: effectiveUrl };
