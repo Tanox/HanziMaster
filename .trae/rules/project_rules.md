@@ -1,10 +1,10 @@
 # HanziMaster 项目开发规则
 
 ## 1. 核心技术栈
-- **框架**: React 18.3.1 + TypeScript + Next.js 15.1.0 (Pages Router)
+- **框架**: React 18.3.1 + TypeScript + Vite
 - **样式**: Tailwind CSS (支持 Dark Mode)
 - **AI SDK**: `@google/genai` (v0.2.0+)
-- **构建**: Next.js
+- **构建**: Vite PWA (Workbox)
 
 ## 2. Google GenAI 编码规范
 本项目严格遵循 `@google/genai` 最新版 SDK 规范：

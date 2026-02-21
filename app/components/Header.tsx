@@ -1,9 +1,8 @@
-// app/components/Header.tsx v1.1.6
-import React, { useState, useEffect } from 'react';
+// app/components/Header.tsx v1.0.1
+import React from 'react';
 import { Brush, Settings, WifiOff } from 'lucide-react';
 import InstallPWA from './InstallPWA';
 import ShareButton from './ShareButton';
-import PromoShareButton from './PromoShareButton';
 import { UILabels } from '../types';
 
 interface HeaderProps {
@@ -11,16 +10,9 @@ interface HeaderProps {
   onOpenSettings: () => void;
   isOffline: boolean;
   version: string;
-  currentLang: string;
 }
 
-const Header = ({ labels, onOpenSettings, isOffline, version, currentLang }: HeaderProps) => {
-  const [origin, setOrigin] = useState('');
-
-  useEffect(() => {
-    setOrigin(window.location.origin);
-  }, []);
-
+const Header: React.FC<HeaderProps> = ({ labels, onOpenSettings, isOffline, version }) => {
   return (
     <header id="app-header" className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800 sticky top-0 z-40 transition-colors duration-300 supports-[backdrop-filter]:bg-white/60">
       <div id="header-content" className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -37,20 +29,10 @@ const Header = ({ labels, onOpenSettings, isOffline, version, currentLang }: Hea
                 <span className="text-[10px] font-bold uppercase tracking-wider hidden sm:inline">{labels.settingOfflineMode}</span>
              </div>
            )}
-           <PromoShareButton
-              lang={currentLang === 'zh-CN' ? 'zhCN' : 'en'}
-              labels={{
-                shareAction: labels.promoShareAction || labels.shareAction,
-                shareMessageCopied: labels.promoShareCopied || labels.shareMessageCopied,
-                copyFailed: labels.copyFailed
-              }}
-              size={20}
-              className="p-3 md:p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors touch-manipulation"
-           />
            <ShareButton
               title={labels.shareAppTitle || "Share HanziMaster"}
-              text={(labels.shareAppText || "Check out HanziMaster: {url}").replace('{url}', origin)}
-              url={origin}
+              text={(labels.shareAppText || "Check out HanziMaster: {url}").replace('{url}', window.location.origin)}
+              url={window.location.origin}
               labels={labels}
               size={20}
               className="p-3 md:p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors touch-manipulation"

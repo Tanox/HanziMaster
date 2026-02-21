@@ -29,22 +29,10 @@ enum InteractionMode { VIEW, PRACTICE }
 enum Grade { EXQUISITE, MASTERFUL, PROFICIENT, POOR }
 ```
 
-### 3.2 基础类型定义 (Basic Types)
-```typescript
-interface Point {
-  x: number;
-  y: number;
-}
-
-type GridStyle = 'rice' | 'field' | 'none';
-
-type ToastType = 'success' | 'error' | 'info';
-```
-
-### 3.3 应用配置契约 (AppSettings)
+### 3.2 应用配置契约 (AppSettings)
 ```typescript
 interface AppSettings {
-  gridStyle: GridStyle;
+  gridStyle: 'rice' | 'field' | 'none';
   showOutline: boolean;
   autoPlay: boolean;
   continuousMode: boolean;
@@ -60,18 +48,11 @@ interface AppSettings {
 }
 ```
 
-### 3.4 核心数据 Schema (Data Schemas)
+### 3.3 核心数据 Schema (Data Schemas)
 ```typescript
 interface HanziData {
   strokes: string[];
   medians: number[][][];
-  radStrokes?: number[];
-}
-
-interface ExampleWord {
-  word: string;
-  pinyin: string;
-  meaning: string;
 }
 
 interface CharacterAnalysis {
@@ -82,7 +63,7 @@ interface CharacterAnalysis {
   strokeCount: number;
   etymology: string;
   mnemonic: string;
-  examples: ExampleWord[];
+  examples: { word: string; pinyin: string; meaning: string; }[];
 }
 
 interface IdiomAnalysis {
@@ -91,174 +72,6 @@ interface IdiomAnalysis {
   meaning: string;
   origin: string;
   usage: string;
-}
-
-interface HistoryItem {
-  char: string;
-  timestamp: number;
-}
-
-interface PracticeResult {
-  score: number;
-  grade: Grade;
-  strokeScores: number[];
-}
-
-interface ToastMessage {
-  id: string;
-  message: string;
-  type: ToastType;
-}
-
-interface SeasonalEvent {
-  name: string;
-  startMonth: number;
-  startDay: number;
-  endMonth: number;
-  endDay: number;
-  keywords: string[];
-}
-
-interface LanguageOption {
-  code: string;
-  name: string;
-  native: string;
-}
-
-interface UILabels {
-  meaning: string;
-  structure: string;
-  radical: string;
-  strokeCount: string;
-  origin: string;
-  memoryAid: string;
-  commonWords: string;
-  appTitle: string;
-  appSubtitle: string;
-  searchPlaceholder: string;
-  footerCredit: string;
-  version: string;
-  previewText: string;
-  strokeStatusActive: string;
-  strokeStatusComplete: string;
-  errorInvalidChar: string;
-  errorCharNotFound: string;
-  controlsPlay: string;
-  controlsPause: string;
-  controlsReset: string;
-  controlsSpeed: string;
-  viewMode: string;
-  practiceMode: string;
-  randomBtn: string;
-  settingsTitle: string;
-  settingGridStyle: string;
-  settingGridRice: string;
-  settingGridField: string;
-  settingGridNone: string;
-  settingShowOutline: string;
-  settingAutoPlay: string;
-  settingContinuousMode: string;
-  settingOfflineMode: string;
-  settingSoundEffects: string;
-  settingShowRandomSuggestions: string;
-  settingShowHistory: string;
-  settingApiKey: string;
-  settingApiKeyPlaceholder: string;
-  settingApiKeyHelp: string;
-  settingApiKeyValidationMsg: string;
-  settingTheme: string;
-  settingLanguage: string;
-  themeLight: string;
-  themeDark: string;
-  settingResetData: string;
-  resetBtn: string;
-  resetConfirm: string;
-  sectionInterface: string;
-  sectionContent: string;
-  sectionAppearance: string;
-  badgeCustom: string;
-  badgeDefault: string;
-  badgeNone: string;
-  getApiKey: string;
-  practiceComplete: string;
-  installApp: string;
-  settingShowStructure: string;
-  settingShowEtymology: string;
-  settingShowMnemonic: string;
-  settingShowExamples: string;
-  historyTitle: string;
-  clearHistory: string;
-  noHistory: string;
-  closeBtn: string;
-  statsTitle: string;
-  statsTotal: string;
-  statsChars: string;
-  statsTerms: string;
-  gradeExquisite: string;
-  gradeMasterful: string;
-  gradeProficient: string;
-  gradePoor: string;
-  scoreLabel: string;
-  welcomeStepNext: string;
-  welcomeStepPrev: string;
-  welcomeIntroTitle: string;
-  welcomeIntroDesc: string;
-  welcomeFeatureTitle: string;
-  welcomeFeatureDesc: string;
-  welcomeTitle: string;
-  welcomeSubtitle: string;
-  welcomeBtn: string;
-  guideSearchTitle: string;
-  guideSearchDesc: string;
-  guideWatchTitle: string;
-  guideWatchDesc: string;
-  guidePracticeTitle: string;
-  guidePracticeDesc: string;
-  guideAIDesc: string;
-  guideAITitle: string;
-  idiomOrigin: string;
-  idiomUsage: string;
-  idiomTitle: string;
-  shareAction: string;
-  shareTitleChar: string;
-  shareTitleIdiom: string;
-  shareTextChar: string;
-  shareTextIdiom: string;
-  shareMessageCopied: string;
-  shareAppTitle: string;
-  shareAppText: string;
-  updateAvailable: string;
-  updateMsg: string;
-  reloadBtn: string;
-  offlineReady: string;
-  offlineMsg: string;
-  dismissBtn: string;
-  strokeProgress: string;
-  writeNextStroke: string;
-  refreshSuggestions: string;
-  offlineModeEnabled: string;
-  offlineModeActive: string;
-  copySuccess: string;
-  copyFailed: string;
-  toastSuccess: string;
-  toastError: string;
-  toastInfo: string;
-  settingContinuousDesc: string;
-  sectionData: string;
-  suggestionsLabel: string;
-  pinyinCoverage: string;
-  missingChars: string;
-  downloadLexicon: string;
-  downloading: string;
-  downloadSuccess: string;
-  downloadError: string;
-  downloadDictionary: string;
-  dictionaryCoverage: string;
-  dictionaryStatus: string;
-  downloadingDictionary: string;
-  dictionaryReady: string;
-  dictionaryError: string;
-  [key: string]: string | undefined;
 }
 ```
 

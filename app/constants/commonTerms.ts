@@ -1,4 +1,4 @@
-// app/constants/commonTerms.ts v1.1.0
+// app/constants/commonTerms.ts v1.0.1
 export const COMMON_TERMS = [
   // HSK 1 & Daily
   "学习", "快乐", "朋友", "老师", "学生", "学校", "医生", "医院", "工作", "休息",

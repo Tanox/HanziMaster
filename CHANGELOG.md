@@ -1,25 +1,19 @@
 
 # Changelog
 
+## [1.1.7]
+
+### Added
+- **Veo Video**: Introduced a new feature to generate high-quality stroke order demonstration videos using the Veo model.
+- **Aesthetic**: The generated videos feature a "Paper & Ink" design aesthetic, simulating traditional brush writing on rice paper.
+- **Security**: Implemented the mandatory API key selection flow for Veo video generation to ensure compliance with billing requirements.
+
 ## [1.1.6]
 
-### Changed
-- **Migration**: Completed migration from Vite to Next.js using Pages Router.
-- **Structure**: Created `pages/` directory with `index.tsx`, `_app.tsx`, and `_document.tsx`.
-- **Cleanup**: Removed Vite-specific files: `vite.config.ts`, `vite-env.d.ts`, `index.html`, `index.tsx`.
-- **Next.js Compatibility**: Fixed all direct `window` object usage to use `useEffect` for client-side only access, preventing SSR errors.
-- **UI/UX**: Replaced native `window.confirm()` in `SettingsHazardZone` with custom modal to follow project design guidelines.
-
-### Fixed
-- **ShareButton**: Fixed direct `window.location` access by wrapping in `useEffect`.
-- **Header**: Fixed direct `window.location` access by wrapping in `useEffect`.
-- **PromoShareButton**: Fixed direct `window.location` access by wrapping in `useEffect`.
-- **HeaderCard**: Fixed direct `window.location` access by wrapping in `useEffect`.
-- **IdiomDisplay**: Fixed direct `window.location` access by wrapping in `useEffect`.
-- **SettingsHazardZone**: Replaced `window.confirm()` with custom modal component.
-
-### Chore
-- **Versioning**: Unified version numbers across all project files to v1.1.6 for consistency.
+### Added
+- **SRS**: Implemented a comprehensive Spaced Repetition System (SRS) using the SuperMemo-2 (SM-2) algorithm. The system now tracks user practice performance and automatically schedules characters for review based on their mastery level.
+- **UI**: Added a "Due for Review" section in the history panel that highlights characters requiring immediate attention, providing a personalized learning path.
+- **Progress Tracking**: Enhanced the `useUserProgress` hook to store and manage SRS metadata, ensuring persistent learning data across sessions.
 
 ## [1.1.5]
 

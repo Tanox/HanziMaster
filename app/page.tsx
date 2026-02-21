@@ -1,24 +1,38 @@
+'use client';
 
-// App.tsx v1.1.6
-import React from 'react';
-import { useAppController } from './app/hooks/useAppController';
-import SearchInput from './app/components/SearchInput';
-import RandomSuggestions from './app/components/RandomSuggestions';
-import SettingsModal from './app/components/SettingsModal';
-import ReloadPrompt from './app/components/ReloadPrompt';
-import WelcomeScreen from './app/components/WelcomeScreen';
-import Header from './app/components/Header';
-import Footer from './app/components/Footer';
-import ViewerSection from './app/components/dashboard/ViewerSection';
-import AnalysisSection from './app/components/dashboard/AnalysisSection';
-import { UI_LABELS } from './app/locales';
+import React, { useEffect, useState } from 'react';
+import { useAppController } from './hooks/useAppController';
+import SearchInput from './components/SearchInput';
+import RandomSuggestions from './components/RandomSuggestions';
+import SettingsModal from './components/SettingsModal';
+import ReloadPrompt from './components/ReloadPrompt';
+import WelcomeScreen from './components/WelcomeScreen';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import ViewerSection from './components/dashboard/ViewerSection';
+import AnalysisSection from './components/dashboard/AnalysisSection';
+import { UI_LABELS } from './locales';
 import { AlertCircle } from 'lucide-react';
-import { ToastProvider } from './app/context/ToastContext';
 
-const APP_VERSION = '1.1.6';
+const APP_VERSION = '1.1.7';
 
-const AppContent: React.FC = () => {
+export default function Home() {
   const { state, actions } = useAppController();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Prevent hydration mismatch for local storage dependent state
+  if (!mounted) {
+    return (
+      <div className="min-h-[100dvh] pb-24 bg-paper dark:bg-slate-900 flex flex-col items-center justify-center">
+        <div className="w-12 h-12 border-4 border-slate-200 border-t-teal-500 rounded-full animate-spin" />
+      </div>
+    );
+  }
+
   const labels = UI_LABELS[state.currentLang] || UI_LABELS['en'];
 
   return (
@@ -37,7 +51,6 @@ const AppContent: React.FC = () => {
         onOpenSettings={() => actions.setIsSettingsOpen(true)} 
         isOffline={state.isOffline || state.settings.offlineMode}
         version={APP_VERSION}
-        currentLang={state.currentLang}
       />
 
       <main id="app-main-content" className="max-w-5xl w-full mx-auto px-4 py-8 flex-grow">
@@ -116,6 +129,7 @@ const AppContent: React.FC = () => {
               settings={state.settings}
               history={state.history}
               learnedItems={state.learnedItems}
+              dueReviews={state.dueReviews}
               labels={labels}
               actions={{
                 handleSearch: actions.handleSearch,
@@ -143,12 +157,4 @@ const AppContent: React.FC = () => {
       <Footer labels={labels} version={APP_VERSION} />
     </div>
   );
-};
-
-const App: React.FC = () => (
-  <ToastProvider>
-    <AppContent />
-  </ToastProvider>
-);
-
-export default App;
+}

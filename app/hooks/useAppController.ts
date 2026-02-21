@@ -1,7 +1,7 @@
 
 // app/hooks/useAppController.ts v1.0.5
-import { useState, useEffect } from 'react';
-import { AppSettings, InteractionMode, AnimationState } from '../types';
+import { useState, useEffect, useCallback } from 'react';
+import { AppSettings, InteractionMode, AnimationState, PracticeResult } from '../types';
 import { COMMON_CHARS } from '../constants/commonChars';
 import { useLocalStorage } from './useLocalStorage';
 import { useInteractionState } from './useInteractionState';
@@ -34,7 +34,7 @@ export const useAppController = () => {
   const [activeCharIndex, setActiveCharIndex] = useState<number>(0);
   const [currentLang, setCurrentLang] = useState<string>('zh-CN');
   
-  const [isOffline, setIsOffline] = useState<boolean>(!navigator.onLine);
+  const [isOffline, setIsOffline] = useState<boolean>(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [showWelcome, setShowWelcome] = useState<boolean>(false);
 
@@ -43,9 +43,10 @@ export const useAppController = () => {
   const userProgress = useUserProgress();
 
   useEffect(() => {
+    setIsOffline(!navigator.onLine);
     setShowWelcome(!hasSeenWelcome);
     soundService.preloadSounds();
-  }, []); 
+  }, [hasSeenWelcome]); 
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -71,28 +72,7 @@ export const useAppController = () => {
     document.documentElement.lang = currentLang;
   }, [currentLang]);
 
-  useEffect(() => {
-    try {
-        const urlParams = new URLSearchParams(window.location.search);
-        const charFromUrl = urlParams.get('char');
-        const initialChar = charFromUrl && /^[\u4E00-\u9FFF]{1,4}$/.test(charFromUrl) ? charFromUrl : '永';
-        handleSearch(initialChar, currentLang);
-    } catch (e) {
-        console.warn("Failed to parse URL params", e);
-        handleSearch('永', currentLang);
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'light' ? 'dark' : 'light');
-  };
-
-  const handleDismissWelcome = () => {
-    setShowWelcome(false);
-    setHasSeenWelcome(true);
-  };
-
-  const handleSearch = async (term: string, langCode: string = currentLang) => {
+  const handleSearch = useCallback(async (term: string, langCode: string = currentLang) => {
     content.actions.setLoading(true); 
     content.actions.setIsAnalysisLoading(true); 
     content.actions.resetData();
@@ -125,6 +105,27 @@ export const useAppController = () => {
     
     content.actions.setLoading(false);
     content.actions.setIsAnalysisLoading(false);
+  }, [currentLang, content.actions, interaction.actions, settings.autoPlay]);
+
+  useEffect(() => {
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const charFromUrl = urlParams.get('char');
+        const initialChar = charFromUrl && /^[\u4E00-\u9FFF]{1,4}$/.test(charFromUrl) ? charFromUrl : '永';
+        handleSearch(initialChar, currentLang);
+    } catch (e) {
+        console.warn("Failed to parse URL params", e);
+        handleSearch('永', currentLang);
+    }
+  }, [currentLang, handleSearch]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
+
+  const handleDismissWelcome = () => {
+    setShowWelcome(false);
+    setHasSeenWelcome(true);
   };
 
   const handleRandom = () => {
@@ -160,7 +161,10 @@ export const useAppController = () => {
     }
   };
 
-  const handlePracticeComplete = () => {
+  const handlePracticeComplete = (result: PracticeResult) => {
+    // Always update SRS for the current character
+    userProgress.actions.updateSRS(activeChar, result);
+
     if (activeTerm.length > 1) {
         if (activeCharIndex < activeTerm.length - 1) {
             interaction.state.maintainModeRef.current = InteractionMode.PRACTICE;

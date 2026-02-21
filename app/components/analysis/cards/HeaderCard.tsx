@@ -1,6 +1,6 @@
 
-// app/components/analysis/cards/HeaderCard.tsx v1.1.6
-import React, { useState, useEffect } from 'react';
+// app/components/analysis/cards/HeaderCard.tsx v1.1.1
+import React from 'react';
 import { CharacterAnalysis, AppSettings, HanziData, UILabels } from '../../../types';
 import PronunciationButton from '../../PronunciationButton';
 import ShareButton from '../../ShareButton';
@@ -17,13 +17,7 @@ interface HeaderCardProps {
 }
 
 const HeaderCard: React.FC<HeaderCardProps> = ({ analysis, hanziData, labels, isFallback, fullWidth }) => {
-  const [origin, setOrigin] = useState('');
-
-  useEffect(() => {
-    setOrigin(window.location.origin);
-  }, []);
-
-  const shareUrl = `${origin}?char=${encodeURIComponent(analysis.char)}`;
+  const shareUrl = `${window.location.origin}?char=${encodeURIComponent(analysis.char)}`;
   const shareTemplate = labels.shareTextChar || "I learned '{char}' ({pinyin}) on HanziMaster! Meaning: {meaning}. See more: {url}";
   const shareText = shareTemplate
     .replace('{char}', analysis.char)

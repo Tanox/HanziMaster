@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import IdiomNavigator from '../IdiomNavigator';
 import StrokeViewer from '../StrokeViewer';
 import Controls from '../Controls';
-import { AppSettings, AnimationState, InteractionMode, HanziData, UILabels, CharacterAnalysis } from '../../types';
+import { AppSettings, AnimationState, InteractionMode, HanziData, UILabels, CharacterAnalysis, PracticeResult } from '../../types';
 import { PINYIN_MAP } from '../../constants/pinyinData';
 
 interface ViewerSectionProps {
@@ -24,7 +24,7 @@ interface ViewerSectionProps {
     handleCharSelect: (char: string, explicitMode?: InteractionMode, index?: number) => void;
     setAnimationState: (state: AnimationState) => void;
     setInteractionMode: (mode: InteractionMode) => void;
-    handlePracticeComplete: () => void;
+    handlePracticeComplete: (result: PracticeResult) => void;
   };
 }
 

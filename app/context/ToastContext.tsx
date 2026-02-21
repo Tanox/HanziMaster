@@ -1,3 +1,5 @@
+'use client';
+
 // app/context/ToastContext.tsx v1.0.1
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -19,15 +21,15 @@ export const useToast = () => {
 export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
+  const removeToast = useCallback((id: string) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, []);
+
   const showToast = useCallback((message: string, type: ToastType = 'info') => {
     const id = uuidv4();
     setToasts((prev) => [...prev, { id, message, type }]);
     setTimeout(() => removeToast(id), 3000);
-  }, []);
-
-  const removeToast = useCallback((id: string) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
-  }, []);
+  }, [removeToast]);
 
   return (
     <ToastContext.Provider value={{ showToast }}>

@@ -1,11 +1,9 @@
 
-// app/services/soundService.ts v1.0.5
+// app/services/soundService.ts v1.1.0
 type SoundEffect = 'correct' | 'error' | 'complete';
 
 class SoundService {
   private audioContext: AudioContext | null = null;
-  private soundCache: Map<SoundEffect, AudioBuffer> = new Map();
-  private isLoading: Set<SoundEffect> = new Set();
 
   private initializeAudioContext() {
     if (!this.audioContext && typeof window !== 'undefined') {
@@ -21,55 +19,56 @@ class SoundService {
     }
   }
 
-  private async loadSound(name: SoundEffect): Promise<AudioBuffer | null> {
-    this.initializeAudioContext();
-    if (!this.audioContext) return null;
-    if (this.soundCache.has(name)) return this.soundCache.get(name)!;
-    if (this.isLoading.has(name)) return null;
-
-    this.isLoading.add(name);
-    try {
-      // Assuming sound files are located in /public/audio/
-      const response = await fetch(`/audio/${name}.mp3`);
-      const arrayBuffer = await response.arrayBuffer();
-      const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
-      this.soundCache.set(name, audioBuffer);
-      return audioBuffer;
-    } catch (e) {
-      console.warn(`Failed to load sound: ${name}.mp3`, e);
-      return null;
-    } finally {
-      this.isLoading.delete(name);
-    }
-  }
-
   public playSound(name: SoundEffect): void {
     this.initializeAudioContext();
-    const audioCtx = this.audioContext;
-    if (!audioCtx) return;
+    const ctx = this.audioContext;
+    if (!ctx) return;
 
-    const play = (buffer: AudioBuffer) => {
-      const source = audioCtx.createBufferSource();
-      source.buffer = buffer;
-      source.connect(audioCtx.destination);
-      source.start(0);
-    };
+    const t = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
 
-    if (this.soundCache.has(name)) {
-      play(this.soundCache.get(name)!);
-    } else {
-      this.loadSound(name).then(buffer => {
-        if (buffer) play(buffer);
-      });
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    if (name === 'correct') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(600, t);
+      osc.frequency.exponentialRampToValueAtTime(1200, t + 0.1);
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.3, t + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 0.3);
+      osc.start(t);
+      osc.stop(t + 0.3);
+    } else if (name === 'error') {
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(300, t);
+      osc.frequency.exponentialRampToValueAtTime(150, t + 0.2);
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.3, t + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 0.3);
+      osc.start(t);
+      osc.stop(t + 0.3);
+    } else if (name === 'complete') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(400, t);
+      osc.frequency.exponentialRampToValueAtTime(800, t + 0.1);
+      osc.frequency.setValueAtTime(800, t + 0.15);
+      osc.frequency.exponentialRampToValueAtTime(1600, t + 0.25);
+      
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.3, t + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.1, t + 0.1);
+      gain.gain.linearRampToValueAtTime(0.3, t + 0.15);
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 0.4);
+      
+      osc.start(t);
+      osc.stop(t + 0.4);
     }
   }
 
   public preloadSounds(): void {
-    // Preload sounds without waiting for them to complete.
-    // This warms up the cache for a better user experience.
-    this.loadSound('correct');
-    this.loadSound('error');
-    this.loadSound('complete');
+    // No longer needed since we synthesize sounds
   }
 }
 

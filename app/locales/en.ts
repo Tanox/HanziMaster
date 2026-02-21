@@ -110,8 +110,6 @@ export const en: UILabels = {
   shareMessageCopied: 'Share text copied!',
   shareAppTitle: 'Share App',
   shareAppText: '🔥 I found an amazing tool for mastering Chinese characters! {url}',
-  promoShareAction: 'Recommend to Friends',
-  promoShareCopied: 'Promo copy copied!',
 
   updateAvailable: 'Update Available',
   updateMsg: 'Reload to apply the latest improvements.',
@@ -146,4 +144,11 @@ export const en: UILabels = {
   downloadingDictionary: 'Syncing Dictionary...',
   dictionaryReady: 'Dictionary Ready',
   dictionaryError: 'Dictionary sync failed',
+  dueReviews: 'Due for Review',
+  generateVideo: 'Generate Stroke Video',
+  videoGenerating: 'Generating Video (this may take a few minutes)...',
+  videoReady: 'Video Ready',
+  videoError: 'Video Generation Failed',
+  selectApiKey: 'Select API Key',
+  apiKeyRequired: 'A paid Gemini API key is required for video generation.',
 };

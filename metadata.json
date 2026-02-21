@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v1.1.6",
-  "version": "1.1.6",
-  "description": "v1.1.6: Completed migration from Vite to Next.js using Pages Router.",
+  "name": "HanziMaster 汉字大师 v1.1.7",
+  "version": "1.1.7",
+  "description": "v1.1.7: Added Veo-powered stroke order video generation with 'Paper & Ink' aesthetic. Integrated mandatory API key selection for video generation.",
   "keywords": [
     "Chinese characters",
     "Hanzi",

@@ -41,6 +41,14 @@ export interface HistoryItem {
   timestamp: number;
 }
 
+export interface SRSItem {
+  char: string;
+  interval: number; // in days
+  repetition: number;
+  efactor: number; // easiness factor
+  nextReviewDate: number; // timestamp
+}
+
 export enum Grade {
   EXQUISITE = 'EXQUISITE', // 神品
   MASTERFUL = 'MASTERFUL', // 妙品
@@ -209,8 +217,6 @@ export interface UILabels {
   shareMessageCopied: string;
   shareAppTitle: string;
   shareAppText: string;
-  promoShareAction: string;
-  promoShareCopied: string;
   updateAvailable: string;
   updateMsg: string;
   reloadBtn: string;
@@ -242,5 +248,11 @@ export interface UILabels {
   downloadingDictionary: string;
   dictionaryReady: string;
   dictionaryError: string;
+  generateVideo: string;
+  videoGenerating: string;
+  videoReady: string;
+  videoError: string;
+  selectApiKey: string;
+  apiKeyRequired: string;
   [key: string]: string | undefined; 
 }

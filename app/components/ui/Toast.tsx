@@ -1,4 +1,4 @@
-// app/components/ui/Toast.tsx v1.1.6
+// app/components/ui/Toast.tsx v1.0.1
 import React, { useEffect, useState } from 'react';
 import { CheckCircle, AlertCircle, Info, X } from 'lucide-react';
 import { ToastType } from '../../types';

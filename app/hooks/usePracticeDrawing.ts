@@ -1,6 +1,6 @@
 
 // app/hooks/usePracticeDrawing.ts v1.0.5
-import { useState, useRef, useEffect, RefObject, PointerEvent } from 'react';
+import { useState, useRef, useEffect, RefObject, PointerEvent, useCallback } from 'react';
 import { HanziData, InteractionMode, Point, PracticeResult, Grade, AppSettings } from '../types';
 import { getDistance, subtract, cosineSimilarity, resample, calculateShapeScore, mapResultToScore } from '../utils/geometry';
 import { soundService } from '../services/soundService';
@@ -35,6 +35,16 @@ export const usePracticeDrawing = (
   const lastDrawnPointRef = useRef<Point | null>(null);
   const hasNotifiedCompletionRef = useRef(false);
 
+  const clearCanvas = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    userStrokePathRef.current = [];
+    lastDrawnPointRef.current = null;
+  }, [canvasRef]);
+
   useEffect(() => {
     setPracticeStrokeIndex(0);
     setFeedbackColor(null);
@@ -45,7 +55,7 @@ export const usePracticeDrawing = (
     setLastPracticeResult(null);
     hasNotifiedCompletionRef.current = false;
     clearCanvas();
-  }, [data]);
+  }, [data, clearCanvas]);
 
   useEffect(() => {
     if (data && practiceStrokeIndex >= data.strokes.length && data.strokes.length > 0) {
@@ -73,16 +83,6 @@ export const usePracticeDrawing = (
   useEffect(() => {
     if (mistakeCount >= MAX_MISTAKES_FOR_GHOST) setShowGhostHint(true);
   }, [mistakeCount]);
-
-  const clearCanvas = () => {
-    const canvas = canvasRef.current;
-    if (canvas) {
-      const ctx = canvas.getContext('2d');
-      if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-    userStrokePathRef.current = [];
-    lastDrawnPointRef.current = null;
-  };
 
   const drawUserStroke = (ctx: CanvasRenderingContext2D, toPoint: Point) => {
     ctx.lineCap = 'round';

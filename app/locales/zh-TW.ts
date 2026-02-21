@@ -135,13 +135,4 @@ export const zhTW: UILabels = {
   downloadingDictionary: '詞典同步中...',
   dictionaryReady: '離線詞典已就緒',
   dictionaryError: '同步失敗',
-  springFestival: '春節',
-  lanternFestival: '元宵節',
-  qingming: '清明節',
-  dragonBoat: '端午節',
-  qixi: '七夕節',
-  midAutumn: '中秋節',
-  nationalDay: '國慶節',
-  singlesDay: '光棍節',
-  christmas: '聖誕節',
 };

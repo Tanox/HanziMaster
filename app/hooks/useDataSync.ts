@@ -131,6 +131,8 @@ export const useDataSync = (labels: UILabels) => {
 
   const handleDownloadLexicon = async () => {
     if (isLexiconDownloading || characterList.length === 0) return;
+    if (typeof window === 'undefined' || !('caches' in window)) return;
+    
     setIsLexiconDownloading(true);
     setLexiconProgress(0);
     const failedChars: string[] = [];
@@ -183,9 +185,9 @@ export const useDataSync = (labels: UILabels) => {
     if (isDictDownloading) return;
     setIsDictDownloading(true);
     try {
-        const module = await import('../constants/dictionaryData');
+        const dictModule = await import('../constants/dictionaryData');
         await new Promise(resolve => setTimeout(resolve, 800)); 
-        setOfflineDict(module.SIMPLE_DICTIONARY);
+        setOfflineDict(dictModule.SIMPLE_DICTIONARY);
         showToast(labels.dictionaryReady, 'success');
     } catch (e) {
         showToast(labels.dictionaryError, 'error');

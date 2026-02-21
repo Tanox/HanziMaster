@@ -110,8 +110,6 @@ export const zhCN: UILabels = {
   shareMessageCopied: '分享文案已复制！',
   shareAppTitle: '分享给好友',
   shareAppText: '🔥 发现一个练字神器！汉字大师 (HanziMaster) —— 快来试试：{url}',
-  promoShareAction: '推荐给好友',
-  promoShareCopied: '推广文案已复制！',
 
   updateAvailable: '发现新版本',
   updateMsg: '建议刷新以应用最新改进。',
@@ -146,4 +144,11 @@ export const zhCN: UILabels = {
   downloadingDictionary: '词典同步中...',
   dictionaryReady: '离线词典已就绪',
   dictionaryError: '词典同步失败',
+  dueReviews: '待复习',
+  generateVideo: '生成笔顺视频',
+  videoGenerating: '正在生成视频（可能需要几分钟）...',
+  videoReady: '视频已就绪',
+  videoError: '视频生成失败',
+  selectApiKey: '选择 API 密钥',
+  apiKeyRequired: '视频生成功能需要配置付费版 Gemini API 密钥。',
 };
