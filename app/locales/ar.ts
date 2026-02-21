@@ -161,4 +161,10 @@ export const ar: UILabels = {
   downloadingDictionary: 'جاري مزامنة القاموس...',
   dictionaryReady: 'القاموس جاهز',
   dictionaryError: 'فشل المزامنة',
+  generateVideo: 'إنشاء فيديو للضربات',
+  videoGenerating: 'جاري إنشاء الفيديو... قد يستغرق هذا بضع دقائق.',
+  videoReady: 'الفيديو جاهز!',
+  videoError: 'فشل إنشاء الفيديو. يرجى المحاولة مرة أخرى.',
+  selectApiKey: 'تحديد مفتاح API',
+  apiKeyRequired: 'يتطلب إنشاء الفيديو مفتاح API مدفوعاً. يرجى تحديد مفتاح API من مشروع Google Cloud الخاص بك.',
 };

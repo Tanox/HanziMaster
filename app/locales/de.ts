@@ -156,4 +156,10 @@ export const de: UILabels = {
   downloadingDictionary: 'Lade Wörterbuch...',
   dictionaryReady: 'Wörterbuch bereit',
   dictionaryError: 'Synchronisierung fehlgeschlagen',
+  generateVideo: 'Strichvideo generieren',
+  videoGenerating: 'Video wird generiert (dies kann einige Minuten dauern)...',
+  videoReady: 'Video bereit!',
+  videoError: 'Videogenerierung fehlgeschlagen. Bitte versuchen Sie es erneut.',
+  selectApiKey: 'API-Schlüssel auswählen',
+  apiKeyRequired: 'Für die Videogenerierung ist ein kostenpflichtiger Gemini API-Schlüssel erforderlich. Bitte wählen Sie einen API-Schlüssel aus Ihrem Google Cloud-Projekt aus.',
 };

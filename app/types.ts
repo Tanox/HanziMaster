@@ -1,11 +1,19 @@
 
-// app/types.ts v1.4.0
+// app/types.ts v1.2.0
 export interface Point {
   x: number;
   y: number;
 }
 
 export interface HanziData {
+  char: string;
+  pinyin: string;
+  radical: string;
+  simplified: string;
+  traditional: string;
+  meaning: string;
+  strokeCount: number;
+  strokeOrder: string[]; // SVG paths for stroke order
   strokes: string[];
   medians: number[][][];
   radStrokes?: number[];

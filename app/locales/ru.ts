@@ -156,4 +156,10 @@ export const ru: UILabels = {
   downloadingDictionary: 'Синхронизация словаря...',
   dictionaryReady: 'Словарь готов',
   dictionaryError: 'Ошибка синхронизации',
+  generateVideo: 'Сгенерировать видео черт',
+  videoGenerating: 'Генерация видео (это может занять несколько минут)...',
+  videoReady: 'Видео готово!',
+  videoError: 'Ошибка генерации видео. Пожалуйста, попробуйте еще раз.',
+  selectApiKey: 'Выбрать API-ключ',
+  apiKeyRequired: 'Для генерации видео требуется платный API-ключ Gemini. Пожалуйста, выберите API-ключ из вашего проекта Google Cloud.',
 };

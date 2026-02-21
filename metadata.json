@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v1.1.7",
-  "version": "1.1.7",
-  "description": "v1.1.7: Added Veo-powered stroke order video generation with 'Paper & Ink' aesthetic. Integrated mandatory API key selection for video generation.",
+  "name": "HanziMaster 汉字大师 v1.2.0",
+  "version": "1.2.0",
+  "description": "v1.2.0: Enhanced HanziData interface for comprehensive character information. Implemented core data model for interactive stroke order and learning progress tracking.",
   "keywords": [
     "Chinese characters",
     "Hanzi",

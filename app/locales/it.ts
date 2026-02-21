@@ -161,4 +161,10 @@ export const it: UILabels = {
   downloadingDictionary: 'Sync Dizionario...',
   dictionaryReady: 'Dizionario Pronto',
   dictionaryError: 'Sincronizzazione fallita',
+  generateVideo: 'Genera Video Tratti',
+  videoGenerating: 'Generazione video (potrebbe richiedere alcuni minuti)...',
+  videoReady: 'Video Pronto!',
+  videoError: 'Generazione video fallita. Riprova.',
+  selectApiKey: 'Seleziona Chiave API',
+  apiKeyRequired: 'La generazione video richiede una chiave API Gemini a pagamento. Seleziona una chiave API dal tuo progetto Google Cloud.',
 };

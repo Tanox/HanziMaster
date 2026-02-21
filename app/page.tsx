@@ -14,7 +14,7 @@ import AnalysisSection from './components/dashboard/AnalysisSection';
 import { UI_LABELS } from './locales';
 import { AlertCircle } from 'lucide-react';
 
-const APP_VERSION = '1.1.7';
+const APP_VERSION = '1.2.0';
 
 export default function Home() {
   const { state, actions } = useAppController();

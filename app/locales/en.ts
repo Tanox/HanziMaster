@@ -147,8 +147,8 @@ export const en: UILabels = {
   dueReviews: 'Due for Review',
   generateVideo: 'Generate Stroke Video',
   videoGenerating: 'Generating Video (this may take a few minutes)...',
-  videoReady: 'Video Ready',
-  videoError: 'Video Generation Failed',
+  videoReady: 'Video Ready!',
+  videoError: 'Video Generation Failed. Please try again.',
   selectApiKey: 'Select API Key',
-  apiKeyRequired: 'A paid Gemini API key is required for video generation.',
+  apiKeyRequired: 'Video generation requires a paid Gemini API key. Please select an API key from your Google Cloud project.',
 };

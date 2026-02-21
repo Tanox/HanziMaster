@@ -161,4 +161,10 @@ export const vi: UILabels = {
   downloadingDictionary: 'Đang tải từ điển...',
   dictionaryReady: 'Từ điển sẵn sàng',
   dictionaryError: 'Đồng bộ thất bại',
+  generateVideo: 'Tạo Video Nét Chữ',
+  videoGenerating: 'Đang tạo Video (có thể mất vài phút)...',
+  videoReady: 'Video đã sẵn sàng!',
+  videoError: 'Tạo video thất bại. Vui lòng thử lại.',
+  selectApiKey: 'Chọn Khóa API',
+  apiKeyRequired: 'Tạo video yêu cầu khóa API Gemini trả phí. Vui lòng chọn khóa API từ dự án Google Cloud của bạn.',
 };

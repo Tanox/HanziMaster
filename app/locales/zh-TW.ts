@@ -135,4 +135,10 @@ export const zhTW: UILabels = {
   downloadingDictionary: '詞典同步中...',
   dictionaryReady: '離線詞典已就緒',
   dictionaryError: '同步失敗',
+  generateVideo: '生成筆順影片',
+  videoGenerating: '影片生成中 (這可能需要幾分鐘)...',
+  videoReady: '影片已就緒！',
+  videoError: '影片生成失敗。請再試一次。',
+  selectApiKey: '選擇 API 金鑰',
+  apiKeyRequired: '影片生成需要付費的 Gemini API 金鑰。請從您的 Google Cloud 專案中選擇一個 API 金鑰。',
 };

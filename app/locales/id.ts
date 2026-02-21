@@ -161,4 +161,10 @@ export const id: UILabels = {
   downloadingDictionary: 'Menyinkronkan Kamus...',
   dictionaryReady: 'Kamus Siap',
   dictionaryError: 'Gagal menyinkronkan',
+  generateVideo: 'Hasilkan Video Guratan',
+  videoGenerating: 'Menghasilkan Video (ini mungkin memakan waktu beberapa menit)...',
+  videoReady: 'Video Siap!',
+  videoError: 'Gagal menghasilkan video. Silakan coba lagi.',
+  selectApiKey: 'Pilih Kunci API',
+  apiKeyRequired: 'Pembuatan video memerlukan kunci API Gemini berbayar. Silakan pilih kunci API dari proyek Google Cloud Anda.',
 };

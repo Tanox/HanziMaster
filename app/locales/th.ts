@@ -161,4 +161,10 @@ export const th: UILabels = {
   downloadingDictionary: 'กำลังโหลดพจนานุกรม...',
   dictionaryReady: 'พจนานุกรมพร้อมใช้งาน',
   dictionaryError: 'การซิงค์ล้มเหลว',
+  generateVideo: 'สร้างวิดีโอการเขียน',
+  videoGenerating: 'กำลังสร้างวิดีโอ (อาจใช้เวลาหลายนาที)...',
+  videoReady: 'วิดีโอพร้อมแล้ว!',
+  videoError: 'การสร้างวิดีโอไม่สำเร็จ โปรดลองอีกครั้ง',
+  selectApiKey: 'เลือก API Key',
+  apiKeyRequired: 'การสร้างวิดีโอต้องใช้ Gemini API Key แบบชำระเงิน โปรดเลือก API Key จากโปรเจกต์ Google Cloud ของคุณ',
 };

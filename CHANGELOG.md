@@ -1,6 +1,11 @@
 
 # Changelog
 
+## [1.2.0]
+
+### Changed
+- **Data Model**: Updated the `HanziData` interface to include comprehensive character information: `pinyin`, `radical`, `simplified`, `traditional`, `meaning`, `strokeCount`, and `strokeOrder` (SVG paths).
+
 ## [1.1.7]
 
 ### Added
