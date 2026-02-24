@@ -24,10 +24,10 @@
 
 ## 3. 运维部署 (DevOps)
 *   **托管平台**: Vercel (静态站点部署)。
-*   **构建流程**: `npm run build` 命令依次执行 `copy-data` (同步笔顺库至 `/public`), `tsc` (类型检查) 和 `vite build` (打包)。
+*   **构建流程**: `npm run build` 命令依次执行 `copy-data` (生成元数据), `tsc` (类型检查) 和 `next build` (打包)。
 *   **PWA 缓存策略**:
     *   **应用核心 (App Shell)**: 预缓存 (Precache)，随版本更新。
-    *   **笔顺数据 (`/hanzi-data/`)**: 运行时缓存，策略为 `CacheFirst`，有效期 1 年。
+    *   **笔顺数据 (`/api/hanzi/`)**: 运行时缓存，策略为 `CacheFirst`，有效期 1 年。
     *   **Google Fonts**: 运行时缓存，策略为 `CacheFirst`。
 *   **更新机制**: 部署新版本后，Service Worker 会检测到变更。`ReloadPrompt` 组件将提示用户刷新页面以应用更新。
 

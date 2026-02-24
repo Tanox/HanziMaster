@@ -16,7 +16,12 @@ export async function GET(
   }
 
   // 解码字符（以防万一）
-  const decodedChar = decodeURIComponent(char);
+  let decodedChar = decodeURIComponent(char);
+  
+  // 如果包含 .json 后缀，则移除
+  if (decodedChar.endsWith('.json')) {
+    decodedChar = decodedChar.slice(0, -5);
+  }
 
   // 构建文件路径
   const filePath = path.join(HANZI_DATA_PATH, `${decodedChar}.json`);

@@ -5,8 +5,8 @@
 
 ## 1. 技术栈锁定 (Tech Stack)
 为保证项目稳定性和一致性，开发中必须遵循以下技术栈版本：
-*   **React**: `18.3.1` (禁止使用 v19 Alpha/Beta 特性，如 `use()` 或 React Compiler)。
-*   **Vite**: `6.0+`
+*   **Next.js**: `15.1.0` (App Router)。
+*   **React**: `18.3.1`。
 *   **TypeScript**: `5.7+` (项目已开启 `strict: true`，所有代码必须强类型)。
 *   **@google/genai**: `0.2.0+`
 *   **Node.js**: `18.0+` (用于运行构建脚本)。
@@ -41,8 +41,9 @@
 
 ## 4. 离线数据处理 (Offline Data)
 *   **数据源**: `hanzi-writer-data` 是一个 `devDependency`，其数据不会直接打包进应用。
-*   **构建步骤**: 运行 `npm install` 或 `npm run build` 时，会自动执行 `app/scripts/copyHanziData.js` 脚本。此脚本会将 `node_modules/hanzi-writer-data` 中的所有 JSON 文件复制到 `public/hanzi-data/` 目录。
-*   **缓存策略**: `vite.config.ts` 中的 Workbox 配置会自动对 `/hanzi-data/` 路径下的所有文件应用 `CacheFirst` 策略，确保一旦加载，后续访问将从本地缓存读取。
+*   **构建步骤**: 运行 `npm run copy-data` 时，会自动执行 `app/scripts/copyHanziData.js` 脚本。此脚本会生成 `public/hanzi-data/character-list.json` 和 `app/constants/dictionaryMeta.ts`。
+*   **API 路由**: 汉字数据通过 `/app/api/hanzi/[char]/route.ts` 按需提供，避免了大量静态文件的复制。
+*   **缓存策略**: `next-pwa` 配置会自动对 `/api/hanzi/*` 路径下的所有文件应用 `CacheFirst` 策略，确保一旦加载，后续访问将从本地缓存读取。
 
 ---
 *文档维护: HanziMaster Dev Team*

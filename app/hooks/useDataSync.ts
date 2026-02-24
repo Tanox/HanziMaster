@@ -8,7 +8,7 @@ import { UILabels } from '../types';
 
 const CACHE_NAME = 'hanzi-data-local';
 const LEXICON_BASE_URLS = [
-    '/hanzi-data',                                     // 1. Primary: Local copy from /public
+    '/api/hanzi',                                      // 1. Primary: Local API route
     'https://cdn.jsdelivr.net/npm/hanzi-writer-data@2.0', // 2. Secondary: jsDelivr CDN
     'https://unpkg.com/hanzi-writer-data@2.0.1'        // 3. Tertiary: unpkg CDN
 ];
@@ -76,7 +76,7 @@ export const useDataSync = (labels: UILabels) => {
   useEffect(() => {
     const fetchCharList = async () => {
         try {
-            const res = await fetch(`${LEXICON_BASE_URLS[0]}/character-list.json`);
+            const res = await fetch('/hanzi-data/character-list.json');
             if (res.ok) {
                 const list = await res.json();
                 setCharacterList(list);
