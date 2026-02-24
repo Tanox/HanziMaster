@@ -1,5 +1,5 @@
 
-// app/services/geminiService.ts v1.1.5
+// app/services/geminiService.ts v1.1.6
 import { GoogleGenAI, Type, HarmCategory, HarmBlockThreshold, Schema } from "@google/genai";
 import { CharacterAnalysis, IdiomAnalysis } from '../types';
 import { PINYIN_MAP } from '../constants/pinyinData';
@@ -8,11 +8,11 @@ import { PINYIN_MAP } from '../constants/pinyinData';
 let globalAiInstance: GoogleGenAI | null = null;
 
 /**
- * Gets or creates the global GoogleGenAI instance using process.env.API_KEY.
- * Strictly follows system rules: Exclusive use of process.env.API_KEY.
+ * Gets or creates the global GoogleGenAI instance using process.env.NEXT_PUBLIC_GEMINI_API_KEY.
+ * Strictly follows system rules: Exclusive use of process.env.NEXT_PUBLIC_GEMINI_API_KEY.
  */
 function getAiInstance(): GoogleGenAI | null {
-    const apiKey = process.env.API_KEY;
+    const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
     if (!apiKey) return null;
     if (!globalAiInstance) {
         globalAiInstance = new GoogleGenAI({ apiKey });
@@ -25,12 +25,14 @@ function getAiInstance(): GoogleGenAI | null {
 const generateOfflineAnalysis = (char: string, reason: string = "Network Unavailable"): CharacterAnalysis => {
   let meaning = `Mode: ${reason}`;
   try {
-    const dictStr = window.localStorage.getItem('offlineDictionary');
-    if (dictStr) {
-      const dict = JSON.parse(dictStr);
-      if (dict[char]) {
-        meaning = dict[char];
-      }
+    if (typeof window !== 'undefined') {
+        const dictStr = window.localStorage.getItem('offlineDictionary');
+        if (dictStr) {
+        const dict = JSON.parse(dictStr);
+        if (dict[char]) {
+            meaning = dict[char];
+        }
+        }
     }
   } catch (e) {
     console.warn("Could not read offline dictionary", e);
@@ -79,12 +81,39 @@ const commonConfig = {
  */
 function cleanJsonResponse(text: string): string {
     if (!text) return "";
-    const trimmed = text.trim();
-    // Prioritize finding a JSON object/array
-    const match = trimmed.match(/\{[\s\S]*\}|\[[\s\S]*\]/);
-    if (match) return match[0];
-    // Fallback for markdown-wrapped JSON
-    return trimmed.replace(/^```(json)?\s*/i, '').replace(/\s*```$/, '').trim();
+    let cleaned = text.trim();
+    
+    // Remove markdown code blocks if present
+    if (cleaned.startsWith('```')) {
+        cleaned = cleaned.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
+    }
+    
+    // Find the first '{' or '[' and the last '}' or ']'
+    const firstOpenBrace = cleaned.indexOf('{');
+    const firstOpenBracket = cleaned.indexOf('[');
+    const lastCloseBrace = cleaned.lastIndexOf('}');
+    const lastCloseBracket = cleaned.lastIndexOf(']');
+    
+    let start = -1;
+    let end = -1;
+    
+    if (firstOpenBrace !== -1 && (firstOpenBracket === -1 || firstOpenBrace < firstOpenBracket)) {
+        start = firstOpenBrace;
+    } else if (firstOpenBracket !== -1) {
+        start = firstOpenBracket;
+    }
+    
+    if (lastCloseBrace !== -1 && (lastCloseBracket === -1 || lastCloseBrace > lastCloseBracket)) {
+        end = lastCloseBrace;
+    } else if (lastCloseBracket !== -1) {
+        end = lastCloseBracket;
+    }
+    
+    if (start !== -1 && end !== -1 && end > start) {
+        return cleaned.substring(start, end + 1);
+    }
+    
+    return cleaned;
 }
 
 /**
@@ -104,7 +133,9 @@ async function fetchAiAnalysis<T>({
   offlineGenerator: (entity: string, reason: string) => T;
   errorReason?: string;
 }): Promise<T> {
-  if (!navigator.onLine || forceOffline) {
+  const isOnline = typeof navigator !== 'undefined' ? navigator.onLine : true;
+
+  if (!isOnline || forceOffline) {
     return offlineGenerator(entity, forceOffline ? "Offline Mode" : "Network Unavailable");
   }
 

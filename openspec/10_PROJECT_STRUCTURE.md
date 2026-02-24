@@ -1,21 +1,24 @@
 # 10. 项目文件结构
 
-**版本**: v0.7.1
+**版本**: v1.2.0
 **状态**: 现行规范
 
 ## 1. 根目录结构 (Root Structure)
 ```
 .
-├── app/                  # 核心前端源码
+├── app/                  # 核心前端源码 (Next.js App Router)
 ├── openspec/             # 项目规范文档 (Single Source of Truth)
 ├── public/               # 静态资源 (icons, fonts, hanzi-data)
 ├── .github/              # (可选) CI/CD 工作流
 ├── .trae/                # AI 代理规则
 ├── CHANGELOG.md          # 版本更新日志
-├── index.html            # 应用入口
+├── next.config.mjs       # Next.js 配置
+├── next-env.d.ts         # Next.js 类型声明
 ├── package.json          # 依赖与脚本
+├── postcss.config.mjs    # PostCSS 配置
+├── tailwind.config.ts    # Tailwind CSS 配置
 ├── tsconfig.json         # TypeScript 配置
-└── vite.config.ts        # Vite 构建配置
+└── vercel.json           # Vercel 部署配置
 ```
 
 ## 2. `app/` 核心源码目录
@@ -34,8 +37,11 @@ app/
 ├── locales/            # 国际化 (i18n) 语言文件
 ├── scripts/            # Node.js 构建脚本 (如数据拷贝)
 ├── services/           # 外部服务交互层 (API 调用)
-├── types/              # 全局 TypeScript 类型定义
-└── utils/              # 通用工具函数 (无副作用的纯函数)
+├── utils/              # 通用工具函数 (无副作用的纯函数)
+├── globals.css         # 全局样式 (Tailwind imports)
+├── layout.tsx          # 根布局 (Root Layout)
+├── page.tsx            # 首页入口 (Home Page)
+└── types.ts            # 全局 TypeScript 类型定义
 ```
 
 ## 3. 规范说明

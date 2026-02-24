@@ -1,10 +1,13 @@
 
 // app/components/dashboard/AnalysisSection.tsx v1.0.2
 import React from 'react';
+import dynamic from 'next/dynamic';
 import AnalysisPanel from '../AnalysisPanel';
 import HistoryPanel from '../HistoryPanel';
 import VeoVideoGenerator from '../VeoVideoGenerator';
-import { CharacterAnalysis, IdiomAnalysis, HanziData, AppSettings, HistoryItem, UILabels } from '../../types';
+import { CharacterAnalysis, IdiomAnalysis, HanziData, AppSettings, HistoryItem, UILabels, SRSItem } from '../../types';
+
+const ProgressStats = dynamic(() => import('./ProgressStats'), { ssr: false });
 
 interface AnalysisSectionProps {
   analysis: CharacterAnalysis | null;
@@ -16,6 +19,7 @@ interface AnalysisSectionProps {
   history: HistoryItem[];
   learnedItems: string[];
   dueReviews: string[];
+  srsData: Record<string, SRSItem>;
   labels: UILabels;
   actions: {
     handleSearch: (term: string, langCode: string) => void;
@@ -33,6 +37,7 @@ const AnalysisSection: React.FC<AnalysisSectionProps> = ({
   history,
   learnedItems,
   dueReviews,
+  srsData,
   labels,
   actions
 }) => {
@@ -54,14 +59,21 @@ const AnalysisSection: React.FC<AnalysisSectionProps> = ({
       )}
       
       {settings.showHistory && (
-        <HistoryPanel 
-           history={history} 
-           learnedItems={learnedItems}
-           dueReviews={dueReviews}
-           onSelect={(term) => actions.handleSearch(term, currentLang)} 
-           onClear={actions.clearAllProgress}
-           labels={labels}
-        />
+        <>
+          <ProgressStats 
+            srsData={srsData} 
+            totalLearned={learnedItems.length} 
+            labels={labels} 
+          />
+          <HistoryPanel 
+             history={history} 
+             learnedItems={learnedItems}
+             dueReviews={dueReviews}
+             onSelect={(term) => actions.handleSearch(term, currentLang)} 
+             onClear={actions.clearAllProgress}
+             labels={labels}
+          />
+        </>
       )}
     </div>
   );

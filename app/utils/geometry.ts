@@ -67,6 +67,13 @@ export const resample = (points: Point[], numPoints: number): Point[] => {
             const p2 = points[nextPointIndex];
             const segmentDist = getDistance(p1, p2);
             
+            if (segmentDist < 0.0001) {
+                // Skip zero-length segments to avoid NaN
+                lastPoint = p2;
+                nextPointIndex++;
+                continue;
+            }
+
             if (currentDist + segmentDist >= targetDist) {
                 const ratio = (targetDist - currentDist) / segmentDist;
                 const newX = p1.x + (p2.x - p1.x) * ratio;

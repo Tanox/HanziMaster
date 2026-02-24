@@ -73,7 +73,7 @@ export default function VeoVideoGenerator({ char, labels }: VeoVideoGeneratorPro
       const downloadLink = operation.response?.generatedVideos?.[0]?.video?.uri;
       if (downloadLink) {
         // Fetch with API key header
-        const apiKey = process.env.API_KEY;
+        const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
         const response = await fetch(downloadLink, {
           method: 'GET',
           headers: {

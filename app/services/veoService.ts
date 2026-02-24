@@ -1,9 +1,9 @@
 
-// app/services/veoService.ts v1.0.0
+// app/services/veoService.ts v1.0.1
 import { GoogleGenAI } from "@google/genai";
 
 export const generateStrokeVideo = async (char: string, aesthetic: string = "Paper & Ink") => {
-  const apiKey = process.env.API_KEY;
+  const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
   if (!apiKey) throw new Error("API_KEY is missing");
   
   const ai = new GoogleGenAI({ apiKey });
@@ -27,7 +27,7 @@ export const generateStrokeVideo = async (char: string, aesthetic: string = "Pap
 };
 
 export const getOperationStatus = async (operation: any) => {
-  const apiKey = process.env.API_KEY;
+  const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
   if (!apiKey) throw new Error("API_KEY is missing");
   const ai = new GoogleGenAI({ apiKey });
   return await (ai as any).operations.getVideosOperation({ operation });

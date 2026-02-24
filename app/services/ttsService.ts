@@ -6,7 +6,7 @@ let sharedAudioContext: AudioContext | null = null;
 let globalAiInstance: GoogleGenAI | null = null;
 
 function getAiInstance(): GoogleGenAI | null {
-    const apiKey = process.env.API_KEY;
+    const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
     if (!apiKey) return null;
     if (!globalAiInstance) {
         globalAiInstance = new GoogleGenAI({ apiKey });

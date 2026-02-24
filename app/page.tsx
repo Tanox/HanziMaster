@@ -130,6 +130,7 @@ export default function Home() {
               history={state.history}
               learnedItems={state.learnedItems}
               dueReviews={state.dueReviews}
+              srsData={state.srsData}
               labels={labels}
               actions={{
                 handleSearch: actions.handleSearch,

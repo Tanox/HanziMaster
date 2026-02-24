@@ -47,21 +47,25 @@ export const fetchHanziData = async (char: string): Promise<HanziData | null> =>
   try {
     // Tier 1: Try Local Data
     try {
-      const localResponse = await fetch(`${LOCAL_BASE_URL}/${char}.json`, {
+      const encodedChar = encodeURIComponent(char);
+      console.log(`Attempting local fetch for ${char} at ${LOCAL_BASE_URL}/${encodedChar}.json`);
+      const localResponse = await fetch(`${LOCAL_BASE_URL}/${encodedChar}.json`, {
           cache: 'default',
           headers: { 'Accept': 'application/json' }
       });
+      console.log(`Local fetch status for ${char}: ${localResponse.status}`);
       if (localResponse.ok) {
         const data = await localResponse.json();
         if (isValidHanziData(data)) return data;
         console.warn(`Local data for ${char} is invalid, falling back to CDN.`);
       }
     } catch (localError) {
-        console.debug(`Local fetch for ${char} failed (likely not synced).`);
+        console.warn(`Local fetch for ${char} failed (likely not synced). Error:`, localError);
     }
 
     // Tier 2: Try CDN Data with Retry
-    const response = await fetchWithRetry(`${CDN_BASE_URL}/${char}.json`, {
+    const encodedChar = encodeURIComponent(char);
+    const response = await fetchWithRetry(`${CDN_BASE_URL}/${encodedChar}.json`, {
         mode: 'cors',
         credentials: 'omit'
     });
