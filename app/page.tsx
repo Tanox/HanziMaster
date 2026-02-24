@@ -11,6 +11,9 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import ViewerSection from './components/dashboard/ViewerSection';
 import AnalysisSection from './components/dashboard/AnalysisSection';
+import CommonCharacters from './components/CommonCharacters';
+import ChallengeModal from './components/ChallengeModal';
+import Leaderboard from './components/Leaderboard';
 import { UI_LABELS } from './locales';
 import { AlertCircle } from 'lucide-react';
 
@@ -139,6 +142,14 @@ export default function Home() {
             />
           </div>
         </div>
+
+        <CommonCharacters onSelect={(char) => actions.handleSearch(char, state.currentLang)} labels={labels} />
+
+        <div className="mt-8 text-center">
+          <button onClick={actions.startChallenge} className="px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg shadow-md hover:bg-emerald-700 transition-colors">{labels.startChallenge || 'Start Writing Challenge'}</button>
+        </div>
+
+        <Leaderboard scores={state.scores} labels={labels} onClearScores={actions.clearScores} />
         
         <SettingsModal 
           isOpen={state.isSettingsOpen} 
@@ -154,6 +165,13 @@ export default function Home() {
           onThemeChange={actions.toggleTheme}
         />
         <ReloadPrompt labels={labels} />
+        <ChallengeModal 
+          isOpen={state.isChallengeActive}
+          onClose={actions.endChallenge}
+          character={state.challengeCharacter}
+          labels={labels}
+          onSubmitScore={actions.submitScore}
+        />
       </main>
       <Footer labels={labels} version={APP_VERSION} />
     </div>

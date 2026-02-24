@@ -3,6 +3,14 @@
 import { UILabels } from '../types';
 
 export const zhCN: UILabels = {
+  commonCharacters: '常用汉字',
+  startChallenge: '开始书写挑战',
+  writingChallenge: '书写挑战',
+  challengeInstruction: '请在上方书写汉字！',
+  timeUp: '时间到！',
+  leaderboard: '排行榜',
+  clearScores: '清除',
+  noScores: '暂无分数，快来挑战吧！',
   meaning: '基本释义',
   structure: '汉字结构',
   radical: '部首',

@@ -3,6 +3,14 @@
 import { UILabels } from '../types';
 
 export const th: UILabels = {
+  commonCharacters: 'ตัวละครทั่วไป',
+  startChallenge: 'เริ่มการท้าทายการเขียน',
+  writingChallenge: 'การท้าทายการเขียน',
+  challengeInstruction: 'เขียนตัวละครด้านบน!',
+  timeUp: 'หมดเวลา!',
+  leaderboard: 'ลีดเดอร์บอร์ด',
+  clearScores: 'ล้าง',
+  noScores: 'ยังไม่มีคะแนน ท้าทายเลย!',
   meaning: 'ความหมายพื้นฐาน',
   structure: 'โครงสร้างตัวอักษร',
   radical: 'หมวดนำ (Radical)',

@@ -3,6 +3,14 @@
 import { UILabels } from '../types';
 
 export const id: UILabels = {
+  commonCharacters: 'Karakter Umum',
+  startChallenge: 'Mulai Tantangan Menulis',
+  writingChallenge: 'Tantangan Menulis',
+  challengeInstruction: 'Tulis karakter di atas!',
+  timeUp: 'Waktu habis!',
+  leaderboard: 'Papan Peringkat',
+  clearScores: 'Hapus',
+  noScores: 'Belum ada skor. Ikuti tantangan!',
   meaning: 'Arti Dasar',
   structure: 'Struktur Karakter',
   radical: 'Radikal',

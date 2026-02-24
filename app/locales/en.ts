@@ -3,6 +3,14 @@
 import { UILabels } from '../types';
 
 export const en: UILabels = {
+  commonCharacters: 'Common Characters',
+  startChallenge: 'Start Writing Challenge',
+  writingChallenge: 'Writing Challenge',
+  challengeInstruction: 'Write the character above!',
+  timeUp: 'Time is up!',
+  leaderboard: 'Leaderboard',
+  clearScores: 'Clear',
+  noScores: 'No scores yet. Take a challenge!',
   meaning: 'Meaning',
   structure: 'Structure',
   radical: 'Radical',

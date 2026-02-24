@@ -3,6 +3,14 @@
 import { UILabels } from '../types';
 
 export const de: UILabels = {
+  commonCharacters: 'Gängige Zeichen',
+  startChallenge: 'Schreib-Challenge starten',
+  writingChallenge: 'Schreib-Challenge',
+  challengeInstruction: 'Schreiben Sie das obige Zeichen!',
+  timeUp: 'Die Zeit ist um!',
+  leaderboard: 'Bestenliste',
+  clearScores: 'Löschen',
+  noScores: 'Noch keine Punkte. Nehmen Sie eine Herausforderung an!',
   meaning: 'Bedeutung',
   structure: 'Struktur',
   radical: 'Radikal',

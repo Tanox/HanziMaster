@@ -3,6 +3,14 @@
 import { UILabels } from '../types';
 
 export const ko: UILabels = {
+  commonCharacters: '일반적인 문자',
+  startChallenge: '쓰기 챌린지 시작',
+  writingChallenge: '쓰기 챌린지',
+  challengeInstruction: '위의 문자를 쓰세요!',
+  timeUp: '시간이 다 되었습니다!',
+  leaderboard: '리더보드',
+  clearScores: '지우기',
+  noScores: '아직 점수가 없습니다. 도전해보세요!',
   meaning: '의미',
   structure: '한자 구조',
   radical: '부수',

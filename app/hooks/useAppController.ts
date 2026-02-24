@@ -2,6 +2,7 @@
 // app/hooks/useAppController.ts v1.0.5
 import { useState, useEffect, useCallback } from 'react';
 import { AppSettings, InteractionMode, AnimationState, PracticeResult } from '../types';
+import { Score } from '../components/Leaderboard';
 import { COMMON_CHARS } from '../constants/commonChars';
 import { useLocalStorage } from './useLocalStorage';
 import { useInteractionState } from './useInteractionState';
@@ -34,6 +35,10 @@ export const useAppController = () => {
   const [activeCharIndex, setActiveCharIndex] = useState<number>(0);
   const [currentLang, setCurrentLang] = useState<string>('zh-CN');
   
+  const [scores, setScores] = useLocalStorage<Score[]>('leaderboardScores', []);
+  const [isChallengeActive, setIsChallengeActive] = useState<boolean>(false);
+  const [challengeCharacter, setChallengeCharacter] = useState<string>('');
+
   const [isOffline, setIsOffline] = useState<boolean>(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [showWelcome, setShowWelcome] = useState<boolean>(false);
@@ -188,6 +193,30 @@ export const useAppController = () => {
     }
   };
 
+  const startChallenge = () => {
+    const randomIndex = Math.floor(Math.random() * COMMON_CHARS.length);
+    const char = COMMON_CHARS[randomIndex];
+    setChallengeCharacter(char);
+    setIsChallengeActive(true);
+  };
+
+  const endChallenge = () => {
+    setIsChallengeActive(false);
+  };
+
+  const submitScore = (score: number) => {
+    const newScore: Score = {
+      character: challengeCharacter,
+      score,
+      timestamp: Date.now(),
+    };
+    setScores(prevScores => [...prevScores, newScore]);
+  };
+
+  const clearScores = () => {
+    setScores([]);
+  };
+
   return {
     state: {
       settings,
@@ -202,6 +231,9 @@ export const useAppController = () => {
       ...content.state,
       ...interaction.state,
       ...userProgress.state,
+      scores,
+      isChallengeActive,
+      challengeCharacter,
     },
     actions: {
       setSettings,
@@ -216,6 +248,10 @@ export const useAppController = () => {
       handlePracticeComplete,
       ...interaction.actions,
       ...userProgress.actions,
+      startChallenge,
+      endChallenge,
+      submitScore,
+      clearScores,
     },
   };
 };

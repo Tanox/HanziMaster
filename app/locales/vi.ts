@@ -3,6 +3,14 @@
 import { UILabels } from '../types';
 
 export const vi: UILabels = {
+  commonCharacters: 'Ký tự chung',
+  startChallenge: 'Bắt đầu Thử thách Viết',
+  writingChallenge: 'Thử thách Viết',
+  challengeInstruction: 'Viết ký tự ở trên!',
+  timeUp: 'Hết giờ!',
+  leaderboard: 'Bảng xếp hạng',
+  clearScores: 'Xóa',
+  noScores: 'Chưa có điểm. Hãy tham gia thử thách!',
   meaning: 'Nghĩa cơ bản',
   structure: 'Cấu trúc',
   radical: 'Bộ thủ',

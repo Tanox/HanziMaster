@@ -3,6 +3,14 @@
 import { UILabels } from '../types';
 
 export const ru: UILabels = {
+  commonCharacters: 'Общие символы',
+  startChallenge: 'Начать соревнование по письму',
+  writingChallenge: 'Соревнование по письму',
+  challengeInstruction: 'Напишите иероглиф выше!',
+  timeUp: 'Время вышло!',
+  leaderboard: 'Таблица лидеров',
+  clearScores: 'Очистить',
+  noScores: 'Пока нет очков. Примите вызов!',
   meaning: 'Значение',
   structure: 'Структура',
   radical: 'Ключ',

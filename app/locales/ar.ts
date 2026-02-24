@@ -3,6 +3,14 @@
 import { UILabels } from '../types';
 
 export const ar: UILabels = {
+  commonCharacters: 'الأحرف الشائعة',
+  startChallenge: 'ابدأ تحدي الكتابة',
+  writingChallenge: 'تحدي الكتابة',
+  challengeInstruction: 'اكتب الحرف أعلاه!',
+  timeUp: 'انتهى الوقت!',
+  leaderboard: 'لوحة الصدارة',
+  clearScores: 'مسح',
+  noScores: 'لا توجد نتائج حتى الآن. خذ تحديا!',
   meaning: 'المعنى الأساسي',
   structure: 'هيكل الرمز',
   radical: 'الجذر',

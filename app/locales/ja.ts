@@ -3,6 +3,14 @@
 import { UILabels } from '../types';
 
 export const ja: UILabels = {
+  commonCharacters: '一般的な文字',
+  startChallenge: 'ライティングチャレンジを開始',
+  writingChallenge: 'ライティングチャレンジ',
+  challengeInstruction: '上の文字を書いてください！',
+  timeUp: '時間切れです！',
+  leaderboard: 'リーダーボード',
+  clearScores: 'クリア',
+  noScores: 'まだスコアがありません。チャレンジしてみてください！',
   meaning: '意味',
   structure: '漢字の構成',
   radical: '部首',
