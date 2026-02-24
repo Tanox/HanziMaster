@@ -29,21 +29,7 @@ try {
 }
 
 const jsonFiles = files.filter(file => file.endsWith('.json'));
-console.log(`Found ${jsonFiles.length} character files. Copying...`);
-
-let count = 0;
-jsonFiles.forEach((fileName) => {
-  const srcPath = path.join(SOURCE_DIR, fileName);
-  const destPath = path.join(DEST_DIR, fileName);
-  try {
-    fs.copyFileSync(srcPath, destPath);
-    count++;
-  } catch (e) {
-    console.error(`Failed to copy ${fileName}:`, e);
-  }
-});
-
-console.log(`Copy complete. Copied ${count} files.`);
+console.log(`Found ${jsonFiles.length} character files. Generating metadata...`);
 
 // --- Auto-generate metadata and character list ---
 console.log('Generating lexicon metadata...');
