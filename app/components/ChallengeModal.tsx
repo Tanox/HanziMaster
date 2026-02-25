@@ -19,10 +19,18 @@ const ChallengeModal: React.FC<ChallengeModalProps> = ({ isOpen, onClose, charac
   const writerRef = useRef<HanziWriter | null>(null);
   const targetRef = useRef<HTMLDivElement>(null);
 
+  const handleTimeUp = React.useCallback(() => {
+    // Logic when time runs out
+    alert(labels.timeUp || 'Time is up!');
+    onSubmitScore(0); // Submit a score of 0
+    onClose();
+  }, [labels.timeUp, onSubmitScore, onClose]);
+
   useEffect(() => {
     if (isOpen) {
       setTimeLeft(CHALLENGE_DURATION);
       if (targetRef.current) {
+        targetRef.current.innerHTML = '';
         writerRef.current = HanziWriter.create(targetRef.current, character, {
           width: 200,
           height: 200,
@@ -33,7 +41,17 @@ const ChallengeModal: React.FC<ChallengeModalProps> = ({ isOpen, onClose, charac
           delayBetweenStrokes: 200,
           strokeAnimationSpeed: 1,
         });
-        writerRef.current.quiz();
+        
+        writerRef.current.quiz({
+          onComplete: (summary) => {
+            const mistakes = summary.totalMistakes;
+            // Simplified scoring: Base 1000, minus 50 per mistake, plus 20 per second left
+            const score = Math.max(0, 1000 - (mistakes * 50)) + (timeLeft * 20);
+            onSubmitScore(score);
+            alert(`Challenge Complete! Score: ${score}`);
+            onClose();
+          }
+        });
       }
 
       const timer = setInterval(() => {
@@ -50,34 +68,15 @@ const ChallengeModal: React.FC<ChallengeModalProps> = ({ isOpen, onClose, charac
       return () => {
         clearInterval(timer);
         if (writerRef.current) {
-          // writerRef.current.target.innerHTML = '';
           writerRef.current = null;
         }
       };
     }
-  }, [isOpen, character]);
+  }, [isOpen, character, handleTimeUp, onClose, onSubmitScore, timeLeft]); // Added dependencies
 
-  const handleTimeUp = () => {
-    // Logic when time runs out
-    alert(labels.timeUp || 'Time is up!');
-    onSubmitScore(0); // Submit a score of 0
-    onClose();
-  };
+  // ... (handleTimeUp definition remains the same)
 
-  const handleSubmit = () => {
-    if (!writerRef.current) return;
-
-    writerRef.current.quiz({
-      onComplete: (summary) => {
-        const mistakes = summary.totalMistakes;
-        const accuracy = Math.max(0, 1 - (mistakes / summary.character.strokes.length));
-        const score = Math.round(accuracy * 5000) + (timeLeft * 100);
-        onSubmitScore(score);
-        alert(`Score: ${score}`);
-        onClose();
-      }
-    });
-  };
+  // Removed handleSubmit as it's now handled by onComplete
 
   if (!isOpen) return null;
 
@@ -91,8 +90,7 @@ const ChallengeModal: React.FC<ChallengeModalProps> = ({ isOpen, onClose, charac
         <div className="text-center text-4xl font-bold my-4 text-slate-700 dark:text-slate-300">{timeLeft}s</div>
         <p className="text-center text-slate-500 dark:text-slate-400 mb-6">{labels.challengeInstruction || 'Write the character above!'}</p>
         <div className="flex gap-4">
-          <button onClick={onClose} className="w-full px-4 py-2 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-white font-semibold">{labels.cancelBtn || 'Cancel'}</button>
-          <button onClick={handleSubmit} className="w-full px-4 py-2 rounded-lg bg-emerald-600 text-white font-semibold">{labels.submitBtn || 'Submit'}</button>
+          <button onClick={onClose} className="w-full px-4 py-2 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-white font-semibold">{labels.cancelBtn || 'Give Up'}</button>
         </div>
       </div>
     </div>

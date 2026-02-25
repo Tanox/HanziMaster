@@ -17,7 +17,7 @@ import Leaderboard from './components/Leaderboard';
 import { UI_LABELS } from './locales';
 import { AlertCircle } from 'lucide-react';
 
-const APP_VERSION = '1.2.0';
+const APP_VERSION = '1.3.0';
 
 export default function Home() {
   const { state, actions } = useAppController();
