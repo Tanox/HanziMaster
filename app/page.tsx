@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useAppController } from './hooks/useAppController';
 import SearchInput from './components/SearchInput';
 const RandomSuggestions = dynamic(() => import('./components/RandomSuggestions'));
 const SettingsModal = dynamic(() => import('./components/SettingsModal'));
 const ReloadPrompt = dynamic(() => import('./components/ReloadPrompt'));
-import dynamic from 'next/dynamic';
 const WelcomeScreen = dynamic(() => import('./components/WelcomeScreen'));
 const VideoModal = dynamic(() => import('./components/VideoModal'));
 import Header from './components/Header';

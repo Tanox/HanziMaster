@@ -4,7 +4,6 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import AnalysisPanel from '../AnalysisPanel';
 import HistoryPanel from '../HistoryPanel';
-import VeoVideoGenerator from '../VeoVideoGenerator';
 import { CharacterAnalysis, IdiomAnalysis, HanziData, AppSettings, HistoryItem, UILabels, SRSItem } from '../../types';
 
 const ProgressStats = dynamic(() => import('./ProgressStats'), { 
