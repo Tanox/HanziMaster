@@ -58,10 +58,6 @@ const AnalysisSection: React.FC<AnalysisSectionProps> = ({
           onSearch={(term) => actions.handleSearch(term, currentLang)}
       />
       
-      {analysis && !isAnalysisLoading && !isOffline && (
-        <VeoVideoGenerator char={analysis.char} labels={labels} />
-      )}
-      
       {settings.showHistory && (
         <>
           <ProgressStats 

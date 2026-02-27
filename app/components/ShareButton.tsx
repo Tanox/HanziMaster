@@ -25,20 +25,22 @@ const ShareButton: React.FC<ShareButtonProps> = ({ title, text, url, size = 18, 
 
   const handleShare = async () => {
     const hasUrlInText = text.includes(effectiveUrl);
-    const shareData: ShareData = { title, text };
-    if (!hasUrlInText) {
-      shareData.url = effectiveUrl;
-    }
+    const fullText = hasUrlInText ? text : `${text}\n\n${effectiveUrl}`;
+    const shareData: ShareData = { title, text: fullText };
 
+    let shared = false;
     if (typeof navigator.share === 'function') {
       try {
         await navigator.share(shareData);
-      } catch (err) {
-        console.warn('Web Share API failed:', err);
+        shared = true;
+      } catch (err: any) {
+        if (err.name === 'AbortError') return;
+        console.warn('Web Share API failed, falling back to clipboard:', err);
       }
-    } else {
+    }
+    
+    if (!shared) {
       try {
-        const fullText = hasUrlInText ? text : `${text}\n\n${effectiveUrl}`;
         await navigator.clipboard.writeText(fullText);
         setIsCopied(true);
         showToast(labels.shareMessageCopied, 'success');

@@ -1,6 +1,6 @@
 // app/components/Header.tsx v1.0.1
 import React from 'react';
-import { Brush, Settings, WifiOff } from 'lucide-react';
+import { Brush, Settings, WifiOff, Video } from 'lucide-react';
 import InstallPWA from './InstallPWA';
 import ShareButton from './ShareButton';
 import { UILabels } from '../types';
@@ -11,9 +11,11 @@ interface HeaderProps {
   isOffline: boolean;
   version: string;
   onStartChallenge: () => void;
+  activeChar: string;
+  onOpenVideo: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ labels, onOpenSettings, isOffline, version, onStartChallenge }) => {
+const Header: React.FC<HeaderProps> = ({ labels, onOpenSettings, isOffline, version, onStartChallenge, activeChar, onOpenVideo }) => {
   return (
     <header id="app-header" className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800 sticky top-0 z-40 transition-colors duration-300 supports-[backdrop-filter]:bg-white/60">
       <div id="header-content" className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -39,6 +41,11 @@ const Header: React.FC<HeaderProps> = ({ labels, onOpenSettings, isOffline, vers
               className="p-3 md:p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors touch-manipulation"
            />
            <InstallPWA installLabel={labels.installApp || 'Install App'} />
+           {activeChar && (
+             <button onClick={onOpenVideo} className="p-3 md:p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors touch-manipulation" aria-label={labels.generateVideo || 'Generate Video'}>
+               <Video size={20} />
+             </button>
+           )}
            <button onClick={onStartChallenge} className="p-3 md:p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors touch-manipulation" aria-label={labels.startChallenge || 'Start Challenge'}>
              <Brush size={20} />
            </button>

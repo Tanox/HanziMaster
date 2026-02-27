@@ -16,7 +16,7 @@ interface ExampleWordsCardProps {
 const ExampleWordsCard: React.FC<ExampleWordsCardProps> = ({ examples, labels, onSearch }) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
   
-  if (!examples || examples.length === 0) return null;
+  if (!Array.isArray(examples) || examples.length === 0) return null;
 
   const displayExamples = isExpanded ? examples : examples.slice(0, 3);
   const hasMore = examples.length > 3;

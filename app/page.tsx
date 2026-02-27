@@ -8,6 +8,7 @@ const SettingsModal = dynamic(() => import('./components/SettingsModal'));
 const ReloadPrompt = dynamic(() => import('./components/ReloadPrompt'));
 import dynamic from 'next/dynamic';
 const WelcomeScreen = dynamic(() => import('./components/WelcomeScreen'));
+const VideoModal = dynamic(() => import('./components/VideoModal'));
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ViewerSection from './components/dashboard/ViewerSection';
@@ -22,6 +23,7 @@ const APP_VERSION = '1.3.1';
 export default function Home() {
   const { state, actions } = useAppController();
   const [mounted, setMounted] = useState(false);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -55,6 +57,15 @@ export default function Home() {
         isOffline={state.isOffline || state.settings.offlineMode}
         version={APP_VERSION}
         onStartChallenge={actions.startChallenge}
+        activeChar={state.activeChar}
+        onOpenVideo={() => setIsVideoModalOpen(true)}
+      />
+
+      <VideoModal 
+        isOpen={isVideoModalOpen} 
+        onClose={() => setIsVideoModalOpen(false)} 
+        char={state.activeChar} 
+        labels={labels} 
       />
 
       <main id="app-main-content" className="max-w-5xl w-full mx-auto px-4 py-8 flex-grow flex flex-col items-center">
