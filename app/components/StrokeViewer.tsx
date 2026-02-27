@@ -85,7 +85,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
 
   return (
     <div id="stroke-viewer-container" className="w-full max-w-xs relative bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-100 dark:border-slate-700 aspect-square shadow-inner bg-texture-paper select-none touch-none overflow-hidden">
-      <svg id="stroke-svg" viewBox={`0 0 ${SIZE} ${SIZE}`} className="w-full h-full absolute inset-0 -z-10">
+      <svg id="stroke-svg" viewBox={`0 0 ${SIZE} ${SIZE}`} className="w-full h-full absolute inset-0 z-0">
         <defs>
           {data.strokes.map((stroke, i) => (
             <clipPath id={`${idPrefix}-clip-${i}`} key={i}>
@@ -94,7 +94,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
           ))}
         </defs>
 
-        <g strokeWidth="2" fill="none" className="stroke-slate-200 dark:stroke-slate-700 opacity-70">
+        <g strokeWidth="1" fill="none" className="stroke-slate-300 dark:stroke-slate-600 opacity-80">
             {gridLines.map((line, i) => <path key={i} d={line.d} vectorEffect="non-scaling-stroke" />)}
         </g>
 
@@ -103,19 +103,19 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
               if (i < practiceStrokeIndex) {
                   return <path key={i} d={stroke} className="fill-slate-900 dark:fill-slate-100 stroke-none" />;
               }
-              if (i === practiceStrokeIndex) {
+                  if (i === practiceStrokeIndex) {
                   const shouldShow = settings.showOutline || showGhostHint;
                   return shouldShow ? (
                       <path 
                         key={i} 
                         d={stroke} 
-                        className={`fill-none stroke-vermilion-100 dark:stroke-white/20 ${showGhostHint ? 'opacity-80 animate-pulse' : 'opacity-60'}`} 
+                        className={`fill-none stroke-vermilion-200 dark:stroke-white/30 ${showGhostHint ? 'opacity-80 animate-pulse' : 'opacity-60'}`} 
                         strokeWidth="4" 
                       />
                   ) : null;
               }
               if (i > practiceStrokeIndex && settings.showOutline) {
-                  return <path key={i} d={stroke} className="fill-none stroke-vermilion-100 dark:stroke-white/10 opacity-30" strokeWidth="4" />;
+                  return <path key={i} d={stroke} className="fill-none stroke-vermilion-200 dark:stroke-white/10 opacity-30" strokeWidth="4" />;
               }
               return null;
           })}
@@ -125,7 +125,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
                 {settings.showOutline && (
                     <path 
                         d={data.strokes.join(' ')} 
-                        className="fill-none stroke-vermilion-50 dark:stroke-white/10 opacity-100" 
+                        className="fill-none stroke-vermilion-200 dark:stroke-white/20 opacity-100" 
                         strokeWidth="4" 
                         strokeLinecap="round" 
                         strokeLinejoin="round" 
