@@ -98,6 +98,7 @@ export interface AppSettings {
   showMnemonic: boolean;
   showExamples: boolean;
   showMainTitle: boolean;
+  showCommonCharacters: boolean;
   theme?: 'light' | 'dark';
 }
 
@@ -264,5 +265,6 @@ export interface UILabels {
   selectApiKey: string;
   apiKeyRequired: string;
   settingShowMainTitle?: string;
+  settingShowCommonCharacters?: string;
   [key: string]: string | undefined; 
 }

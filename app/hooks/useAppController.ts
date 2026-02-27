@@ -24,6 +24,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   showMnemonic: true,
   showExamples: true,
   showMainTitle: false,
+  showCommonCharacters: true,
 };
 
 export const useAppController = () => {

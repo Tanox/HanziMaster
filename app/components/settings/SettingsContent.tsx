@@ -18,6 +18,7 @@ const SettingsContent: React.FC<SettingsContentProps> = ({ labels, settings, onU
       <ToggleItem label={labels.settingShowEtymology} value={settings.showEtymology} onChange={() => onUpdate('showEtymology', !settings.showEtymology)} icon={<History size={16} />} />
       <ToggleItem label={labels.settingShowMnemonic} value={settings.showMnemonic} onChange={() => onUpdate('showMnemonic', !settings.showMnemonic)} icon={<Lightbulb size={16} />} />
       <ToggleItem label={labels.settingShowExamples} value={settings.showExamples} onChange={() => onUpdate('showExamples', !settings.showExamples)} icon={<BookOpen size={16} />} />
+      <ToggleItem label={labels.settingShowCommonCharacters || 'Show Common Characters'} value={settings.showCommonCharacters} onChange={() => onUpdate('showCommonCharacters', !settings.showCommonCharacters)} icon={<Box size={16} />} />
     </div>
   </SettingsSection>
 );

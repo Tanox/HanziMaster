@@ -162,4 +162,5 @@ export const zhCN: UILabels = {
   selectApiKey: '选择 API 密钥',
   apiKeyRequired: '视频生成功能需要配置付费版 Gemini API 密钥。',
   settingShowMainTitle: '在首页显示应用大标题',
+  settingShowCommonCharacters: '显示常用汉字列表',
 };

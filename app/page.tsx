@@ -145,7 +145,9 @@ export default function Home() {
           </div>
         </div>
 
-        <CommonCharacters onSelect={(char) => actions.handleSearch(char, state.currentLang)} labels={labels} />
+        {state.settings.showCommonCharacters && (
+          <CommonCharacters onSelect={(char) => actions.handleSearch(char, state.currentLang)} labels={labels} />
+        )}
 
         <SettingsModal 
           isOpen={state.isSettingsOpen} 
