@@ -4,6 +4,8 @@ import { UILabels } from '../types';
 
 export const ko: UILabels = {
   commonCharacters: '일반적인 문자',
+  showMore: '더 보기',
+  showLess: '간략히 보기',
   startChallenge: '쓰기 챌린지 시작',
   writingChallenge: '쓰기 챌린지',
   challengeInstruction: '위의 문자를 쓰세요!',

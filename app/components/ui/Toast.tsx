@@ -1,4 +1,6 @@
 // app/components/ui/Toast.tsx v1.0.1
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { CheckCircle, AlertCircle, Info, X } from 'lucide-react';
 import { ToastType } from '../../types';

@@ -1,4 +1,6 @@
 // app/components/SearchInput.tsx v1.0.1
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { Search, Shuffle } from 'lucide-react';
 import { useToast } from '../context/ToastContext';

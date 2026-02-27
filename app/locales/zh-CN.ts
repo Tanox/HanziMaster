@@ -4,6 +4,8 @@ import { UILabels } from '../types';
 
 export const zhCN: UILabels = {
   commonCharacters: '常用汉字',
+  showMore: '显示更多',
+  showLess: '显示更少',
   startChallenge: '开始书写挑战',
   writingChallenge: '书写挑战',
   challengeInstruction: '请在上方书写汉字！',

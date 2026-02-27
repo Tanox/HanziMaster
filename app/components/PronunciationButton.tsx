@@ -1,4 +1,6 @@
 // app/components/PronunciationButton.tsx v1.0.1
+'use client';
+
 import React, { useState } from 'react';
 import { Volume2, Loader2, AlertCircle } from 'lucide-react';
 import { playPronunciation } from '../services/ttsService';

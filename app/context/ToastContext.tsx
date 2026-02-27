@@ -1,6 +1,8 @@
 'use client';
 
 // app/context/ToastContext.tsx v1.0.1
+'use client';
+
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import Toast from '../components/ui/Toast';

@@ -2,12 +2,11 @@
 // app/scripts/copyHanziData.js v1.1.0
 import fs from 'fs';
 import path from 'path';
+import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
+const require = createRequire(import.meta.url);
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const SOURCE_DIR = path.resolve(process.cwd(), 'node_modules', 'hanzi-writer-data');
+const SOURCE_DIR = path.dirname(require.resolve('hanzi-writer-data/package.json'));
 const DEST_DIR = path.resolve(process.cwd(), 'public', 'hanzi-data');
 
 if (!fs.existsSync(DEST_DIR)) {
@@ -39,6 +38,18 @@ const charList = jsonFiles.map(file => path.basename(file, '.json'));
 const charListPath = path.join(DEST_DIR, 'character-list.json');
 fs.writeFileSync(charListPath, JSON.stringify(charList));
 console.log(`Character list with ${charList.length} items saved to ${charListPath}`);
+
+// Copy JSON files
+console.log('Copying character files...');
+let copiedCount = 0;
+for (const file of jsonFiles) {
+  const srcPath = path.join(SOURCE_DIR, file);
+  const destPath = path.join(DEST_DIR, file);
+  // Only copy if destination doesn't exist or is older (optional optimization, but simple copy is safer for consistency)
+  fs.copyFileSync(srcPath, destPath);
+  copiedCount++;
+}
+console.log(`Copied ${copiedCount} character files to ${DEST_DIR}`);
 
 // Update metadata file
 const metaFilePath = path.resolve(process.cwd(), 'app', 'constants', 'dictionaryMeta.ts');

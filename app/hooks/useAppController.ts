@@ -1,5 +1,5 @@
 
-// app/hooks/useAppController.ts v1.0.5
+// app/hooks/useAppController.ts v1.3.0
 import { useState, useEffect, useCallback } from 'react';
 import { AppSettings, InteractionMode, AnimationState, PracticeResult } from '../types';
 import { Score } from '../components/Leaderboard';
@@ -30,8 +30,8 @@ export const useAppController = () => {
   const [theme, setTheme] = useLocalStorage<'light' | 'dark'>('theme', 'light');
   const [hasSeenWelcome, setHasSeenWelcome] = useLocalStorage<boolean>('hasSeenWelcome', false);
   
-  const [activeTerm, setActiveTerm] = useState<string>('永');
-  const [activeChar, setActiveChar] = useState<string>('永');
+  const [activeTerm, setActiveTerm] = useState<string>('一');
+  const [activeChar, setActiveChar] = useState<string>('一');
   const [activeCharIndex, setActiveCharIndex] = useState<number>(0);
   const [currentLang, setCurrentLang] = useState<string>('zh-CN');
   
@@ -120,7 +120,7 @@ export const useAppController = () => {
         handleSearch(initialChar, currentLang);
     } catch (e) {
         console.warn("Failed to parse URL params", e);
-        handleSearch('永', currentLang);
+        handleSearch('一', currentLang);
     }
   }, [currentLang, handleSearch]);
 

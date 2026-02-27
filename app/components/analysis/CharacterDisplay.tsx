@@ -16,9 +16,10 @@ interface CharacterDisplayProps {
   settings: AppSettings;
   labels: UILabels;
   compact?: boolean;
+  onSearch?: (term: string) => void;
 }
 
-const CharacterDisplay: React.FC<CharacterDisplayProps> = ({ analysis, hanziData, settings, labels, compact = false }) => {
+const CharacterDisplay: React.FC<CharacterDisplayProps> = ({ analysis, hanziData, settings, labels, compact = false, onSearch }) => {
   const isFallback = analysis.meaning.startsWith('Mode:') || analysis.radical === '?';
   const showRichContent = !settings.offlineMode && !isFallback;
 
@@ -33,7 +34,7 @@ const CharacterDisplay: React.FC<CharacterDisplayProps> = ({ analysis, hanziData
       {settings.showStructure && hasStrokeCount && <StrokeCountCard count={definitiveStrokeCount} labels={labels} fullWidth={!showRichContent} />}
       {settings.showEtymology && showRichContent && <EtymologyCard content={analysis.etymology} labels={labels} />}
       {settings.showMnemonic && showRichContent && <MnemonicCard content={analysis.mnemonic} labels={labels} />}
-      {settings.showExamples && showRichContent && <ExampleWordsCard examples={analysis.examples} labels={labels} />}
+      {settings.showExamples && showRichContent && <ExampleWordsCard examples={analysis.examples} labels={labels} onSearch={onSearch} />}
       {!showRichContent && <OfflineStateCard labels={labels} />}
     </div>
   );

@@ -12,9 +12,10 @@ interface AnalysisPanelProps {
   isLoading: boolean;
   language: string;
   settings: AppSettings;
+  onSearch?: (term: string) => void;
 }
 
-const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, idiomAnalysis, hanziData, isLoading, language, settings }) => {
+const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, idiomAnalysis, hanziData, isLoading, language, settings, onSearch }) => {
   const labels = UI_LABELS[language] || UI_LABELS['en'];
   const containerClass = "w-full max-w-4xl mx-auto mt-6 flex flex-col gap-6 min-h-[480px] transition-all duration-500";
 
@@ -48,6 +49,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, idiomAnalysis, 
           settings={settings} 
           labels={labels} 
           compact={!!idiomAnalysis}
+          onSearch={onSearch}
         />
       )}
       {!analysis && !idiomAnalysis && <div className="flex-1"></div>}

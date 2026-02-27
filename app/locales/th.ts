@@ -4,6 +4,8 @@ import { UILabels } from '../types';
 
 export const th: UILabels = {
   commonCharacters: 'ตัวละครทั่วไป',
+  showMore: 'แสดงเพิ่มเติม',
+  showLess: 'แสดงน้อยลง',
   startChallenge: 'เริ่มการท้าทายการเขียน',
   writingChallenge: 'การท้าทายการเขียน',
   challengeInstruction: 'เขียนตัวละครด้านบน!',

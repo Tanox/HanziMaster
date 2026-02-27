@@ -4,6 +4,8 @@ import { UILabels } from '../types';
 
 export const ja: UILabels = {
   commonCharacters: '一般的な文字',
+  showMore: 'もっと見る',
+  showLess: '少なく表示',
   startChallenge: 'ライティングチャレンジを開始',
   writingChallenge: 'ライティングチャレンジ',
   challengeInstruction: '上の文字を書いてください！',

@@ -1,4 +1,6 @@
 // app/components/SettingsModal.tsx v1.0.1
+'use client';
+
 import React, { useState } from 'react';
 import { X, Layout, PenTool, BookOpen, Database, ShieldAlert, Sparkles } from 'lucide-react';
 import { AppSettings, UILabels } from '../types';

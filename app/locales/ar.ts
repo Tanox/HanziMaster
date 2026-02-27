@@ -4,6 +4,8 @@ import { UILabels } from '../types';
 
 export const ar: UILabels = {
   commonCharacters: 'الأحرف الشائعة',
+  showMore: 'أظهر المزيد',
+  showLess: 'أظهر أقل',
   startChallenge: 'ابدأ تحدي الكتابة',
   writingChallenge: 'تحدي الكتابة',
   challengeInstruction: 'اكتب الحرف أعلاه!',

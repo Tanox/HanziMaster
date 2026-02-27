@@ -4,6 +4,8 @@ import { UILabels } from '../types';
 
 export const it: UILabels = {
   commonCharacters: 'Caratteri Comuni',
+  showMore: 'Mostra di più',
+  showLess: 'Mostra di meno',
   startChallenge: 'Inizia Sfida di Scrittura',
   writingChallenge: 'Sfida di Scrittura',
   challengeInstruction: 'Scrivi il carattere sopra!',

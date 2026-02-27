@@ -4,6 +4,8 @@ import { UILabels } from '../types';
 
 export const id: UILabels = {
   commonCharacters: 'Karakter Umum',
+  showMore: 'Tampilkan Lebih Banyak',
+  showLess: 'Tampilkan Lebih Sedikit',
   startChallenge: 'Mulai Tantangan Menulis',
   writingChallenge: 'Tantangan Menulis',
   challengeInstruction: 'Tulis karakter di atas!',

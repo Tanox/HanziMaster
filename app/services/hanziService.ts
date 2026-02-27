@@ -2,7 +2,7 @@
 import { HanziData } from '../types';
 
 const CDN_BASE_URL = 'https://cdn.jsdelivr.net/npm/hanzi-writer-data@2.0';
-const LOCAL_BASE_URL = '/api/hanzi';
+const LOCAL_BASE_URL = '/hanzi-data';
 
 /**
  * Validates the structure of fetched Hanzi data.
@@ -48,12 +48,10 @@ export const fetchHanziData = async (char: string): Promise<HanziData | null> =>
     // Tier 1: Try Local Data
     try {
       const encodedChar = encodeURIComponent(char);
-      console.log(`Attempting local fetch for ${char} at ${LOCAL_BASE_URL}/${encodedChar}`);
-      const localResponse = await fetch(`${LOCAL_BASE_URL}/${encodedChar}`, {
+      const localResponse = await fetch(`${LOCAL_BASE_URL}/${encodedChar}.json`, {
           cache: 'default',
           headers: { 'Accept': 'application/json' }
       });
-      console.log(`Local fetch status for ${char}: ${localResponse.status}`);
       if (localResponse.ok) {
         const data = await localResponse.json();
         if (isValidHanziData(data)) return data;

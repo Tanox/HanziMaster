@@ -4,6 +4,8 @@ import { UILabels } from '../types';
 
 export const ru: UILabels = {
   commonCharacters: 'Общие символы',
+  showMore: 'Показать больше',
+  showLess: 'Показать меньше',
   startChallenge: 'Начать соревнование по письму',
   writingChallenge: 'Соревнование по письму',
   challengeInstruction: 'Напишите иероглиф выше!',

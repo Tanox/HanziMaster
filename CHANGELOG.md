@@ -1,6 +1,21 @@
 
 # Changelog
 
+## [1.3.1]
+
+### Fixed
+- **Build Stability**: Resolved a critical build failure by removing Next.js cache before build, ensuring consistent behavior.
+- **Data Integrity**: Corrected the `copyHanziData.js` script to robustly locate the `hanzi-writer-data` package, preventing data copy errors.
+- **Default Character**: Changed the default character on initial load from '永' to '一' for a faster and smoother startup experience.
+
+## [1.3.0]
+
+### Added
+- **Challenge Mode**: Introduced a new "Hanzi Writing Challenge" feature where users can test their writing speed and accuracy against a 30-second timer.
+- **Scoring System**: Implemented an automatic scoring algorithm based on stroke mistakes and remaining time.
+- **Leaderboard**: Added a local leaderboard to track and display the top 10 highest scores.
+- **Localization**: Updated all 15 supported languages with UI labels for the new challenge mode.
+
 ## [1.2.0]
 
 ### Changed

@@ -2,8 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-// 动态获取 hanzi-writer-data 的路径
-const HANZI_DATA_PATH = path.resolve(process.cwd(), 'node_modules', 'hanzi-writer-data');
+// Define the path to the hanzi-writer-data directory in public
+// This is more reliable as we copy the data there during build/dev
+const PUBLIC_HANZI_DATA_PATH = path.join(process.cwd(), 'public', 'hanzi-data');
+const NODE_MODULES_HANZI_DATA_PATH = path.resolve(process.cwd(), 'node_modules', 'hanzi-writer-data');
 
 export async function GET(
   request: NextRequest,
@@ -15,24 +17,33 @@ export async function GET(
     return NextResponse.json({ error: 'Character is required' }, { status: 400 });
   }
 
-  // 解码字符（以防万一）
+  // Decode character
   let decodedChar = decodeURIComponent(char);
   
-  // 如果包含 .json 后缀，则移除
+  // Remove .json extension if present
   if (decodedChar.endsWith('.json')) {
     decodedChar = decodedChar.slice(0, -5);
   }
 
-  // 构建文件路径
-  const filePath = path.join(HANZI_DATA_PATH, `${decodedChar}.json`);
+  // Security check: ensure no path traversal
+  if (decodedChar.includes('/') || decodedChar.includes('\\') || decodedChar.includes('..')) {
+     return NextResponse.json({ error: 'Invalid character parameter' }, { status: 400 });
+  }
 
-  // 检查文件是否存在
+  // Try public/hanzi-data first
+  let filePath = path.join(PUBLIC_HANZI_DATA_PATH, `${decodedChar}.json`);
+
   if (!fs.existsSync(filePath)) {
-    return NextResponse.json({ error: 'Character not found' }, { status: 404 });
+    // Fallback to node_modules if not found in public
+    filePath = path.join(NODE_MODULES_HANZI_DATA_PATH, `${decodedChar}.json`);
+    
+    if (!fs.existsSync(filePath)) {
+      return NextResponse.json({ error: 'Character not found' }, { status: 404 });
+    }
   }
 
   try {
-    // 读取文件内容
+    // Read file content
     const fileContent = fs.readFileSync(filePath, 'utf-8');
     const data = JSON.parse(fileContent);
     

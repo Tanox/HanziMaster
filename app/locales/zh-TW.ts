@@ -4,6 +4,8 @@ import { UILabels } from '../types';
 
 export const zhTW: UILabels = {
   commonCharacters: '常用漢字',
+  showMore: '顯示更多',
+  showLess: '顯示更少',
   startChallenge: '開始書寫挑戰',
   writingChallenge: '書寫挑戰',
   challengeInstruction: '請在上方書寫漢字！',

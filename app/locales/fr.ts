@@ -4,6 +4,8 @@ import { UILabels } from '../types';
 
 export const fr: UILabels = {
   commonCharacters: 'Caractères Communs',
+  showMore: 'Afficher plus',
+  showLess: 'Afficher moins',
   startChallenge: 'Commencer le Défi d\'Écriture',
   writingChallenge: 'Défi d\'Écriture',
   challengeInstruction: 'Écrivez le caractère ci-dessus !',

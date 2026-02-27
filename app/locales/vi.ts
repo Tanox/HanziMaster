@@ -4,6 +4,8 @@ import { UILabels } from '../types';
 
 export const vi: UILabels = {
   commonCharacters: 'Ký tự chung',
+  showMore: 'Hiển thị thêm',
+  showLess: 'Hiển thị ít hơn',
   startChallenge: 'Bắt đầu Thử thách Viết',
   writingChallenge: 'Thử thách Viết',
   challengeInstruction: 'Viết ký tự ở trên!',

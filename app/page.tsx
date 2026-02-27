@@ -3,21 +3,21 @@
 import React, { useEffect, useState } from 'react';
 import { useAppController } from './hooks/useAppController';
 import SearchInput from './components/SearchInput';
-import RandomSuggestions from './components/RandomSuggestions';
-import SettingsModal from './components/SettingsModal';
-import ReloadPrompt from './components/ReloadPrompt';
-import WelcomeScreen from './components/WelcomeScreen';
+const RandomSuggestions = dynamic(() => import('./components/RandomSuggestions'));
+const SettingsModal = dynamic(() => import('./components/SettingsModal'));
+const ReloadPrompt = dynamic(() => import('./components/ReloadPrompt'));
+import dynamic from 'next/dynamic';
+const WelcomeScreen = dynamic(() => import('./components/WelcomeScreen'));
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ViewerSection from './components/dashboard/ViewerSection';
 import AnalysisSection from './components/dashboard/AnalysisSection';
-import CommonCharacters from './components/CommonCharacters';
-import ChallengeModal from './components/ChallengeModal';
-import Leaderboard from './components/Leaderboard';
+const CommonCharacters = dynamic(() => import('./components/CommonCharacters'));
+const ChallengeModal = dynamic(() => import('./components/ChallengeModal'));
 import { UI_LABELS } from './locales';
 import { AlertCircle } from 'lucide-react';
 
-const APP_VERSION = '1.3.0';
+const APP_VERSION = '1.3.1';
 
 export default function Home() {
   const { state, actions } = useAppController();
@@ -54,6 +54,7 @@ export default function Home() {
         onOpenSettings={() => actions.setIsSettingsOpen(true)} 
         isOffline={state.isOffline || state.settings.offlineMode}
         version={APP_VERSION}
+        onStartChallenge={actions.startChallenge}
       />
 
       <main id="app-main-content" className="max-w-5xl w-full mx-auto px-4 py-8 flex-grow">
@@ -145,12 +146,6 @@ export default function Home() {
 
         <CommonCharacters onSelect={(char) => actions.handleSearch(char, state.currentLang)} labels={labels} />
 
-        <div className="mt-8 text-center">
-          <button onClick={actions.startChallenge} className="px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg shadow-md hover:bg-emerald-700 transition-colors">{labels.startChallenge || 'Start Writing Challenge'}</button>
-        </div>
-
-        <Leaderboard scores={state.scores} labels={labels} onClearScores={actions.clearScores} />
-        
         <SettingsModal 
           isOpen={state.isSettingsOpen} 
           onClose={() => actions.setIsSettingsOpen(false)}
@@ -171,6 +166,8 @@ export default function Home() {
           character={state.challengeCharacter}
           labels={labels}
           onSubmitScore={actions.submitScore}
+          scores={state.scores}
+          onClearScores={actions.clearScores}
         />
       </main>
       <Footer labels={labels} version={APP_VERSION} />

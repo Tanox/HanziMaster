@@ -2,6 +2,8 @@
 // app/components/VeoVideoGenerator.tsx v1.0.0
 'use client';
 
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { Video, Loader2, Play, AlertCircle, Key, ExternalLink } from 'lucide-react';
 import { generateStrokeVideo, getOperationStatus } from '../services/veoService';

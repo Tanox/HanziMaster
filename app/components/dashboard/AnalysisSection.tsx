@@ -52,6 +52,7 @@ const AnalysisSection: React.FC<AnalysisSectionProps> = ({
           isLoading={isAnalysisLoading} 
           language={currentLang} 
           settings={settings} 
+          onSearch={(term) => actions.handleSearch(term, currentLang)}
       />
       
       {analysis && !isAnalysisLoading && !isOffline && (

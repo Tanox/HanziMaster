@@ -1,4 +1,6 @@
 // app/components/ReloadPrompt.tsx v1.0.1
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { RefreshCw, X, Wifi } from 'lucide-react';
 import { UILabels } from '../types';
