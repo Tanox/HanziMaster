@@ -85,7 +85,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
 
   return (
     <div id="stroke-viewer-container" className="w-full max-w-xs relative bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-100 dark:border-slate-700 aspect-square shadow-inner bg-texture-paper select-none touch-none overflow-hidden">
-      <svg id="stroke-svg" viewBox={`0 0 ${SIZE} ${SIZE}`} className="w-full h-full">
+      <svg id="stroke-svg" viewBox={`0 0 ${SIZE} ${SIZE}`} className="w-full h-full absolute inset-0 -z-10">
         <defs>
           {data.strokes.map((stroke, i) => (
             <clipPath id={`${idPrefix}-clip-${i}`} key={i}>

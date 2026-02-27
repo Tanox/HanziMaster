@@ -7,7 +7,10 @@ import HistoryPanel from '../HistoryPanel';
 import VeoVideoGenerator from '../VeoVideoGenerator';
 import { CharacterAnalysis, IdiomAnalysis, HanziData, AppSettings, HistoryItem, UILabels, SRSItem } from '../../types';
 
-const ProgressStats = dynamic(() => import('./ProgressStats'), { ssr: false });
+const ProgressStats = dynamic(() => import('./ProgressStats'), { 
+  ssr: false,
+  loading: () => <div className="h-24 w-full bg-slate-100 dark:bg-slate-800 animate-pulse rounded-xl" />
+});
 
 interface AnalysisSectionProps {
   analysis: CharacterAnalysis | null;

@@ -57,8 +57,8 @@ export default function Home() {
         onStartChallenge={actions.startChallenge}
       />
 
-      <main id="app-main-content" className="max-w-5xl w-full mx-auto px-4 py-8 flex-grow">
-        <div id="intro-header-section" className="text-center mb-6 md:mb-12">
+      <main id="app-main-content" className="max-w-5xl w-full mx-auto px-4 py-8 flex-grow flex flex-col items-center">
+        <div id="intro-header-section" className="w-full max-w-2xl text-center mb-6 md:mb-12">
           <h2 className="hidden md:block text-4xl md:text-5xl font-hanzi font-bold text-slate-800 dark:text-white mb-4 tracking-tight">
             {labels.appTitle} <span className="text-sm font-sans font-normal opacity-40 align-middle">v{APP_VERSION}</span>
           </h2>
@@ -87,8 +87,8 @@ export default function Home() {
           </div>
         </div>
 
-        <div id="main-grid-layout" className="flex flex-col lg:grid lg:grid-cols-12 lg:gap-12">
-          <div id="left-column-viewer-wrapper" className="order-1 lg:order-1 lg:col-span-5">
+        <div id="content-wrapper" className="w-full flex flex-col lg:flex-row lg:gap-12">
+          <div id="viewer-and-suggestions-column" className="w-full lg:w-5/12">
             <ViewerSection 
               activeTerm={state.activeTerm}
               activeChar={state.activeChar}
@@ -110,20 +110,17 @@ export default function Home() {
                 handlePracticeComplete: actions.handlePracticeComplete
               }}
             />
-          </div>
-          
-          {state.settings.showRandomSuggestions && (
-            <div id="center-column-suggestions" className="order-2 lg:order-3 lg:col-span-12">
+            {state.settings.showRandomSuggestions && (
               <RandomSuggestions 
                 onSelect={(char) => actions.handleSearch(char, state.currentLang)} 
                 label={labels.randomBtn}
                 pinyinCache={state.pinyinCache}
                 labels={labels}
               />
-            </div>
-          )}
-
-          <div id="right-column-analysis-wrapper" className="order-3 lg:order-2 lg:col-span-7">
+            )}
+          </div>
+          
+          <div id="analysis-and-history-column" className="w-full lg:w-7/12 mt-8 lg:mt-0">
             <AnalysisSection 
               analysis={state.analysis}
               idiomAnalysis={state.idiomAnalysis}

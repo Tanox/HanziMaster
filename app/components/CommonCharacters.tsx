@@ -33,7 +33,7 @@ const CommonCharacters: React.FC<CommonCharactersProps> = ({ onSelect, labels })
           </motion.div>
         </button>
       </div>
-      <motion.div layout className="flex flex-wrap gap-2 overflow-hidden">
+      <motion.div className="flex flex-wrap gap-2 overflow-hidden">
         <AnimatePresence>
           {visibleChars.map((charData) => (
             <motion.button

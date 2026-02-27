@@ -67,7 +67,7 @@ const ViewerSection: React.FC<ViewerSectionProps> = ({
         )}
       </div>
 
-      <div id="viewer-container-outer" className="w-full flex flex-col items-center min-h-[320px]">
+      <div id="viewer-container-outer" className="w-full flex flex-col items-center min-h-[320px] relative">
           {hanziData ? (
           <>
               <StrokeViewer 
