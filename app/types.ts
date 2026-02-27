@@ -97,6 +97,7 @@ export interface AppSettings {
   showEtymology: boolean;
   showMnemonic: boolean;
   showExamples: boolean;
+  showMainTitle: boolean;
   theme?: 'light' | 'dark';
 }
 
@@ -262,5 +263,6 @@ export interface UILabels {
   videoError: string;
   selectApiKey: string;
   apiKeyRequired: string;
+  settingShowMainTitle?: string;
   [key: string]: string | undefined; 
 }

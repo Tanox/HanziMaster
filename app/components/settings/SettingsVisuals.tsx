@@ -34,6 +34,7 @@ const SettingsVisuals: React.FC<SettingsVisualsProps> = ({ labels, settings, onU
           </div>
       </div>
       <ToggleItem label={labels.settingShowOutline} value={settings.showOutline} onChange={() => onUpdate('showOutline', !settings.showOutline)} icon={<Eye size={18} />} />
+      <ToggleItem label={labels.settingShowMainTitle || 'Show App Title'} value={settings.showMainTitle} onChange={() => onUpdate('showMainTitle', !settings.showMainTitle)} icon={<LayoutGrid size={18} />} />
     </div>
   </SettingsSection>
 );

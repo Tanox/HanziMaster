@@ -26,42 +26,48 @@ export const useContentFetcher = (settings: AppSettings) => {
     const langName = LANGUAGES.find(l => l.code === langCode)?.name || 'English';
     const labels = UI_LABELS[langCode] || UI_LABELS['en'];
 
-    const fetchedData = await fetchHanziData(char);
-    
-    if (!fetchedData) {
-      setHanziData(null);
-      if (labels.errorCharNotFound) {
-        setError(labels.errorCharNotFound.replace('{char}', char));
-      } else {
-        setError(`Character data for "${char}" could not be found.`);
+    try {
+      const fetchedData = await fetchHanziData(char);
+      
+      if (!fetchedData) {
+        setHanziData(null);
+        setError(labels.errorCharNotFound?.replace('{char}', char) || `Character data for "${char}" could not be found.`);
+        return null;
       }
+
+      setHanziData(fetchedData);
+      
+      if (analysisCache[char]) {
+        setAnalysis(analysisCache[char]);
+      } else {
+        const res = await analyzeCharacter(char, langName, settings.offlineMode);
+        if (res) {
+          setAnalysis(res);
+          if (!res.meaning.startsWith('Mode:')) updateCache(char, res, setAnalysisCache);
+        }
+      }
+      return fetchedData;
+    } catch (err) {
+      console.error("Error in fetchCharacter:", err);
+      setError(labels.errorGeneral || "An unexpected error occurred. Please try again.");
       return null;
     }
-
-    setHanziData(fetchedData);
-    
-    if (analysisCache[char]) {
-      setAnalysis(analysisCache[char]);
-    } else {
-      const res = await analyzeCharacter(char, langName, settings.offlineMode);
-      if (res) {
-        setAnalysis(res);
-        if (!res.meaning.startsWith('Mode:')) updateCache(char, res, setAnalysisCache);
-      }
-    }
-    return fetchedData;
   };
 
   const fetchIdiom = async (term: string, langCode: string) => {
-    if (idiomCache[term]) {
-      setIdiomAnalysis(idiomCache[term]);
-    } else {
-      const langName = LANGUAGES.find(l => l.code === langCode)?.name || 'English';
-      const res = await analyzeIdiom(term, langName, settings.offlineMode);
-      if (res) {
-        setIdiomAnalysis(res);
-        if (!res.meaning.startsWith('Mode:')) updateCache(term, res, setIdiomCache);
+    try {
+      if (idiomCache[term]) {
+        setIdiomAnalysis(idiomCache[term]);
+      } else {
+        const langName = LANGUAGES.find(l => l.code === langCode)?.name || 'English';
+        const res = await analyzeIdiom(term, langName, settings.offlineMode);
+        if (res) {
+          setIdiomAnalysis(res);
+          if (!res.meaning.startsWith('Mode:')) updateCache(term, res, setIdiomCache);
+        }
       }
+    } catch (err) {
+      console.error("Error in fetchIdiom:", err);
     }
   };
 

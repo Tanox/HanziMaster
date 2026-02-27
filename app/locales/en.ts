@@ -161,4 +161,5 @@ export const en: UILabels = {
   videoError: 'Video Generation Failed. Please try again.',
   selectApiKey: 'Select API Key',
   apiKeyRequired: 'Video generation requires a paid Gemini API key. Please select an API key from your Google Cloud project.',
+  settingShowMainTitle: 'Show App Title on Home Page',
 };

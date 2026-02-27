@@ -23,6 +23,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   showEtymology: true,
   showMnemonic: true,
   showExamples: true,
+  showMainTitle: false,
 };
 
 export const useAppController = () => {
@@ -77,7 +78,12 @@ export const useAppController = () => {
     document.documentElement.lang = currentLang;
   }, [currentLang]);
 
+  const [searchId, setSearchId] = useState(0);
+
   const handleSearch = useCallback(async (term: string, langCode: string = currentLang) => {
+    const currentSearchId = Date.now();
+    setSearchId(currentSearchId);
+    
     content.actions.setLoading(true); 
     content.actions.setIsAnalysisLoading(true); 
     content.actions.resetData();
@@ -104,14 +110,20 @@ export const useAppController = () => {
 
     const [charDataResult] = await Promise.all([charDataPromise, idiomPromise]);
 
-    if (charDataResult && settings.autoPlay) {
-      setTimeout(() => interaction.actions.setAnimationState(AnimationState.PLAYING), 500);
-    }
-    
-    content.actions.setLoading(false);
-    content.actions.setIsAnalysisLoading(false);
+    // Only apply results if this is still the most recent search
+    setSearchId(prev => {
+      if (prev === currentSearchId) {
+        if (charDataResult && settings.autoPlay) {
+          setTimeout(() => interaction.actions.setAnimationState(AnimationState.PLAYING), 500);
+        }
+        content.actions.setLoading(false);
+        content.actions.setIsAnalysisLoading(false);
+      }
+      return prev;
+    });
   }, [currentLang, content.actions, interaction.actions, settings.autoPlay]);
 
+  // Initial load from URL - only run once on mount
   useEffect(() => {
     try {
         const urlParams = new URLSearchParams(window.location.search);
@@ -122,7 +134,8 @@ export const useAppController = () => {
         console.warn("Failed to parse URL params", e);
         handleSearch('一', currentLang);
     }
-  }, [currentLang, handleSearch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); 
 
   const toggleTheme = () => {
     setTheme(prev => prev === 'light' ? 'dark' : 'light');

@@ -2,7 +2,7 @@
 import { HanziData } from '../types';
 
 const CDN_BASE_URL = 'https://cdn.jsdelivr.net/npm/hanzi-writer-data@2.0';
-const LOCAL_BASE_URL = '/hanzi-data';
+const LOCAL_API_URL = '/api/hanzi';
 
 /**
  * Validates the structure of fetched Hanzi data.
@@ -45,20 +45,20 @@ async function fetchWithRetry(url: string, options: RequestInit = {}, retries = 
  */
 export const fetchHanziData = async (char: string): Promise<HanziData | null> => {
   try {
-    // Tier 1: Try Local Data
+    // Tier 1: Try Local API (which handles public/hanzi-data and node_modules fallback)
     try {
       const encodedChar = encodeURIComponent(char);
-      const localResponse = await fetch(`${LOCAL_BASE_URL}/${encodedChar}.json`, {
+      const localResponse = await fetch(`${LOCAL_API_URL}/${encodedChar}`, {
           cache: 'default',
           headers: { 'Accept': 'application/json' }
       });
       if (localResponse.ok) {
         const data = await localResponse.json();
         if (isValidHanziData(data)) return data;
-        console.warn(`Local data for ${char} is invalid, falling back to CDN.`);
+        console.warn(`Local API data for ${char} is invalid, falling back to CDN.`);
       }
     } catch (localError) {
-        console.warn(`Local fetch for ${char} failed (likely not synced). Error:`, localError);
+        console.warn(`Local API fetch for ${char} failed. Error:`, localError);
     }
 
     // Tier 2: Try CDN Data with Retry

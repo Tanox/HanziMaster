@@ -59,12 +59,16 @@ export default function Home() {
 
       <main id="app-main-content" className="max-w-5xl w-full mx-auto px-4 py-8 flex-grow flex flex-col items-center">
         <div id="intro-header-section" className="w-full max-w-2xl text-center mb-6 md:mb-12">
-          <h2 className="hidden md:block text-4xl md:text-5xl font-hanzi font-bold text-slate-800 dark:text-white mb-4 tracking-tight">
-            {labels.appTitle} <span className="text-sm font-sans font-normal opacity-40 align-middle">v{APP_VERSION}</span>
-          </h2>
-          <p className="hidden md:block text-slate-500 dark:text-slate-400 mb-8 max-w-lg mx-auto font-light">
-            {labels.appSubtitle}
-          </p>
+          {state.settings.showMainTitle && (
+            <>
+              <h2 className="hidden md:block text-4xl md:text-5xl font-hanzi font-bold text-slate-800 dark:text-white mb-4 tracking-tight">
+                {labels.appTitle} <span className="text-sm font-sans font-normal opacity-40 align-middle">v{APP_VERSION}</span>
+              </h2>
+              <p className="hidden md:block text-slate-500 dark:text-slate-400 mb-8 max-w-lg mx-auto font-light">
+                {labels.appSubtitle}
+              </p>
+            </>
+          )}
           
           <SearchInput 
             onSearch={(term) => actions.handleSearch(term, state.currentLang)} 

@@ -11,7 +11,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "copy-data": "node app/scripts/copyHanziData.js"
+    "copy-data": "node app/scripts/copyHanziData.js",
+    "generate-db": "node app/scripts/generateFullDatabase.js"
   },
   "dependencies": {
     "@google/genai": "^0.2.0",
