@@ -266,5 +266,15 @@ export interface UILabels {
   apiKeyRequired: string;
   settingShowMainTitle?: string;
   settingShowCommonCharacters?: string;
+  recentHistory?: string;
+  tryCharacters?: string;
+  clearBtn?: string;
+  learningPathTitle?: string;
+  learningPathL1Title?: string;
+  learningPathL1Desc?: string;
+  learningPathL2Title?: string;
+  learningPathL2Desc?: string;
+  learningPathL3Title?: string;
+  learningPathL3Desc?: string;
   [key: string]: string | undefined; 
 }

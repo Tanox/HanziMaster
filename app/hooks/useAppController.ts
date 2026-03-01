@@ -106,6 +106,9 @@ export const useAppController = () => {
     setActiveChar(firstChar);
     setActiveCharIndex(0);
 
+    // Add to history on search
+    userProgress.actions.addToHistoryAndStats(term);
+
     const charDataPromise = content.actions.fetchCharacter(firstChar, langCode);
     const idiomPromise = term.length > 1 ? content.actions.fetchIdiom(term, langCode) : Promise.resolve();
 
@@ -122,7 +125,7 @@ export const useAppController = () => {
       }
       return prev;
     });
-  }, [currentLang, content.actions, interaction.actions, settings.autoPlay]);
+  }, [currentLang, content.actions, interaction.actions, settings.autoPlay, userProgress.actions]);
 
   // Initial load from URL - only run once on mount
   useEffect(() => {

@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Search, Shuffle } from 'lucide-react';
+import { Search, Shuffle, X } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
 
 interface SearchInputProps {
@@ -14,6 +14,7 @@ interface SearchInputProps {
   randomButtonLabel: string;
   activeChar?: string;
   activeTerm?: string;
+  className?: string;
 }
 
 const SearchInput: React.FC<SearchInputProps> = ({ 
@@ -24,7 +25,8 @@ const SearchInput: React.FC<SearchInputProps> = ({
   invalidCharMessage,
   randomButtonLabel,
   activeChar,
-  activeTerm
+  activeTerm,
+  className = ''
 }) => {
   const [input, setInput] = useState('');
   const { showToast } = useToast();
@@ -50,7 +52,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
   };
 
   return (
-    <form id="search-form" onSubmit={handleSubmit} className="w-full max-w-[340px] mx-auto mb-8 transition-all duration-300">
+    <form id="search-form" onSubmit={handleSubmit} className={`w-full max-w-[340px] mx-auto transition-all duration-300 ${className || 'mb-8'}`}>
       <div id="search-input-container" className="relative flex items-center group">
         <div className="absolute left-1.5 z-10">
             <button
@@ -71,12 +73,22 @@ const SearchInput: React.FC<SearchInputProps> = ({
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder={placeholderText}
-          className="w-full pl-12 pr-12 py-3 text-xl text-center bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-900 dark:white rounded-full focus:outline-none focus:border-teal-500 dark:focus:border-teal-500 focus:ring-2 focus:ring-teal-200 dark:focus:ring-teal-900/50 transition-all font-hanzi placeholder-slate-400 dark:placeholder-slate-500 shadow-sm group-hover:shadow-md group-hover:border-slate-300 dark:group-hover:border-slate-600"
+          className="w-full pl-12 pr-24 py-3 text-xl text-center bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-900 dark:white rounded-full focus:outline-none focus:border-teal-500 dark:focus:border-teal-500 focus:ring-2 focus:ring-teal-200 dark:focus:ring-teal-900/50 transition-all font-hanzi placeholder-slate-400 dark:placeholder-slate-500 shadow-sm group-hover:shadow-md group-hover:border-slate-300 dark:group-hover:border-slate-600"
           disabled={isLoading}
           maxLength={4}
         />
 
-        <div className="absolute right-1.5 z-10">
+        <div className="absolute right-1.5 z-10 flex items-center gap-1">
+            {input && (
+              <button
+                type="button"
+                onClick={() => setInput('')}
+                className="p-2 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 rounded-full transition-colors"
+                aria-label="Clear search"
+              >
+                <X size={18} />
+              </button>
+            )}
             <button
               id="search-submit-btn"
               type="submit"
