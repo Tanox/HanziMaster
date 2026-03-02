@@ -1,4 +1,4 @@
-// app/constants/seasonalEvents.ts v1.0.1
+// app/constants/seasonalEvents.ts v1.3.4
 import { SeasonalEvent } from '../types';
 
 export { type SeasonalEvent };

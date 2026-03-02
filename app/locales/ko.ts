@@ -1,5 +1,5 @@
 
-// app/locales/ko.ts v1.4.0
+// app/locales/ko.ts v1.3.4
 import { UILabels } from '../types';
 
 export const ko: UILabels = {
@@ -173,4 +173,10 @@ export const ko: UILabels = {
   nationalDay: '국경절',
   singlesDay: '독신자의 날',
   christmas: '크리스마스',
+  progressTitle: "학습 진행 상황",
+  statsTotal: "학습한 항목",
+  statsNew: "신규",
+  statsApprentice: "초보",
+  statsGuru: "숙련",
+  statsMaster: "마스터",
 };

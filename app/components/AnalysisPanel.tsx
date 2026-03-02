@@ -1,4 +1,4 @@
-// app/components/AnalysisPanel.tsx v1.0.1
+// app/components/AnalysisPanel.tsx v1.3.4
 import React from 'react';
 import { CharacterAnalysis, IdiomAnalysis, AppSettings, HanziData } from '../types';
 import { UI_LABELS } from '../locales';

@@ -1,4 +1,4 @@
-// app/components/settings/SettingsHazardZone.tsx v1.0.1
+// app/components/settings/SettingsHazardZone.tsx v1.3.4
 import React from 'react';
 import { AlertTriangle, Trash2 } from 'lucide-react';
 import { UILabels } from '../../types';

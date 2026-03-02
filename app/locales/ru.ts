@@ -1,5 +1,5 @@
 
-// app/locales/ru.ts v1.0.5
+// app/locales/ru.ts v1.3.4
 import { UILabels } from '../types';
 
 export const ru: UILabels = {
@@ -184,4 +184,10 @@ export const ru: UILabels = {
   learningPathL2Desc: 'Структуры и ключи',
   learningPathL3Title: 'L3: Мастерство',
   learningPathL3Desc: 'Сложные иероглифы и культура',
+  progressTitle: "Прогресс Обучения",
+  statsTotal: "Всего",
+  statsNew: "Новый",
+  statsApprentice: "Ученик",
+  statsGuru: "Гуру",
+  statsMaster: "Мастер",
 };

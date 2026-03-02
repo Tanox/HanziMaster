@@ -1,5 +1,5 @@
 
-// app/types.ts v1.2.0
+// app/types.ts v1.3.4
 export interface Point {
   x: number;
   y: number;
@@ -123,6 +123,25 @@ export interface LanguageOption {
   code: string;
   name: string;
   native: string;
+}
+
+export interface Achievement {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  unlocked: boolean;
+  unlockedAt?: number;
+  reward?: string;
+}
+
+export interface UserStats {
+  totalPracticed: number;
+  uniqueChars: number;
+  daysStreak: number;
+  lastLoginDate: number;
+  perfectStreaks: number; // consecutive perfect scores
+  totalPerfectScores: number; // total EXQUISITE/MASTERFUL grades
 }
 
 export interface UILabels {

@@ -1,5 +1,5 @@
 
-// app/locales/ja.ts v1.4.0
+// app/locales/ja.ts v1.3.4
 import { UILabels } from '../types';
 
 export const ja: UILabels = {
@@ -173,4 +173,10 @@ export const ja: UILabels = {
   nationalDay: '国慶節',
   singlesDay: '独身の日',
   christmas: 'クリスマス',
+  progressTitle: "学習の進捗",
+  statsTotal: "学習済み",
+  statsNew: "新規",
+  statsApprentice: "見習い",
+  statsGuru: "熟練",
+  statsMaster: "達人",
 };

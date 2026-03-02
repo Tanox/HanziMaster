@@ -1,5 +1,5 @@
 
-// app/services/veoService.ts v1.0.1
+// app/services/veoService.ts v1.3.4
 import { GoogleGenAI } from "@google/genai";
 
 export const generateStrokeVideo = async (char: string, aesthetic: string = "Paper & Ink") => {

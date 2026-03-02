@@ -1,5 +1,5 @@
 
-// app/locales/pt.ts v1.0.5
+// app/locales/pt.ts v1.3.4
 import { UILabels } from '../types';
 
 export const pt: UILabels = {
@@ -189,4 +189,10 @@ export const pt: UILabels = {
   learningPathL2Desc: 'Estruturas e radicais',
   learningPathL3Title: 'L3: Maestria',
   learningPathL3Desc: 'Caracteres complexos e cultura',
+  progressTitle: "Progresso de Aprendizado",
+  statsTotal: "Total",
+  statsNew: "Novo",
+  statsApprentice: "Aprendiz",
+  statsGuru: "Guru",
+  statsMaster: "Mestre",
 };

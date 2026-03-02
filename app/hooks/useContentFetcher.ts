@@ -1,4 +1,4 @@
-// app/hooks/useContentFetcher.ts v1.0.1
+// app/hooks/useContentFetcher.ts v1.3.4
 import { useState } from 'react';
 import { HanziData, CharacterAnalysis, IdiomAnalysis, AppSettings } from '../types';
 import { useLocalStorage } from './useLocalStorage';

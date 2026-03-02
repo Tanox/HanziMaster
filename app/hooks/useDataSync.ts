@@ -1,5 +1,5 @@
 
-// app/hooks/useDataSync.ts v1.1.4
+// app/hooks/useDataSync.ts v1.3.4
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { useLocalStorage } from './useLocalStorage';
 import { useToast } from '../context/ToastContext';

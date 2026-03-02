@@ -1,4 +1,4 @@
-// app/hooks/useLocalStorage.ts v1.0.1
+// app/hooks/useLocalStorage.ts v1.3.4
 import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 
 export function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] {

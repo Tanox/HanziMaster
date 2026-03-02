@@ -1,5 +1,5 @@
 
-// app/services/geminiService.ts v1.1.6
+// app/services/geminiService.ts v1.3.4
 import { GoogleGenAI, Type, HarmCategory, HarmBlockThreshold, Schema } from "@google/genai";
 import { CharacterAnalysis, IdiomAnalysis } from '../types';
 import { PINYIN_MAP } from '../constants/pinyinData';

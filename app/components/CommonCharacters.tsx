@@ -1,4 +1,4 @@
-// app/components/CommonCharacters.tsx v1.2.1
+// app/components/CommonCharacters.tsx v1.3.4
 
 'use client';
 

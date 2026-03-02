@@ -1,4 +1,4 @@
-// app/components/Header.tsx v1.0.2
+// app/components/Header.tsx v1.3.4
 import React from 'react';
 import { Brush, WifiOff } from 'lucide-react';
 import InstallPWA from './InstallPWA';

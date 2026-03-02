@@ -1,5 +1,5 @@
 
-// app/components/StrokeViewer.tsx v1.0.5
+// app/components/StrokeViewer.tsx v1.3.4
 import React, { useRef, useMemo } from 'react';
 import { HanziData, AnimationState, InteractionMode, AppSettings, UILabels, Grade, PracticeResult, CharacterAnalysis } from '../types';
 import { PenTool } from 'lucide-react';
@@ -68,9 +68,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
                 .replace('{total}', data.strokes.length.toString());
         }
     } else if (mode === InteractionMode.VIEW) {
-        if (currentStrokeIndex >= data.strokes.length && data.strokes.length > 0 && animationState === AnimationState.IDLE) {
-            text = labels.strokeStatusComplete;
-        }
+        // "Demo end" prompt removed as per user request
     }
     if (!text) return null;
     return (

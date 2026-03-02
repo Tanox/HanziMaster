@@ -1,4 +1,4 @@
-// app/components/ToggleItem.tsx v1.0.1
+// app/components/ToggleItem.tsx v1.3.4
 import React from 'react';
 
 interface ToggleItemProps {

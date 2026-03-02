@@ -1,5 +1,5 @@
 
-// app/locales/zh-CN.ts v1.0.5
+// app/locales/zh-CN.ts v1.3.4
 import { UILabels } from '../types';
 
 export const zhCN: UILabels = {
@@ -173,4 +173,10 @@ export const zhCN: UILabels = {
   learningPathL2Desc: '间架结构与偏旁部首',
   learningPathL3Title: 'L3: 意境',
   learningPathL3Desc: '复杂笔画与文化主题',
+  progressTitle: "学习进度",
+  statsTotal: "已学汉字",
+  statsNew: "初学",
+  statsApprentice: "熟练",
+  statsGuru: "精通",
+  statsMaster: "大师",
 };

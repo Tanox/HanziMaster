@@ -1,4 +1,4 @@
-// app/constants/commonCharacters.ts v1.2.1
+// app/constants/commonCharacters.ts v1.3.4
 
 export interface CommonCharacter {
   char: string;

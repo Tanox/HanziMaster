@@ -1,5 +1,5 @@
 
-// app/components/dashboard/AnalysisSection.tsx v1.0.2
+// app/components/dashboard/AnalysisSection.tsx v1.3.4
 import React from 'react';
 import dynamic from 'next/dynamic';
 import AnalysisPanel from '../AnalysisPanel';

@@ -1,4 +1,4 @@
-// app/components/Controls.tsx v1.0.1
+// app/components/Controls.tsx v1.3.4
 import React from 'react';
 import { Play, Pause, RotateCcw, PenTool, Eye } from 'lucide-react';
 import { AnimationState, InteractionMode } from '../types';
@@ -65,21 +65,6 @@ const Controls: React.FC<ControlsProps> = ({
 
       <div id="playback-controls-container" className="flex flex-col items-center gap-4 transition-all duration-300 pt-2">
         <div className="flex items-center justify-center gap-3">
-            <button
-              id="btn-reset"
-              onClick={onReset}
-              disabled={isPractice}
-              className={`w-12 h-12 flex items-center justify-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full transition-all ${
-                  isPractice 
-                  ? 'opacity-30 cursor-not-allowed' 
-                  : 'text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/30'
-              }`}
-              title={labels.reset}
-              aria-label={labels.reset}
-            >
-              <RotateCcw size={20} />
-            </button>
-            
             {animationState === AnimationState.PLAYING ? (
             <button
                 id="btn-pause"

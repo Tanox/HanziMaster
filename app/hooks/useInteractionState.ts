@@ -1,4 +1,4 @@
-// app/hooks/useInteractionState.ts v1.0.1
+// app/hooks/useInteractionState.ts v1.3.4
 import { useState, useRef } from 'react';
 import { AnimationState, InteractionMode } from '../types';
 

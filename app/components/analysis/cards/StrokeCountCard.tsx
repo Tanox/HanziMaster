@@ -1,4 +1,4 @@
-// app/components/analysis/cards/StrokeCountCard.tsx v0.7.1
+// app/components/analysis/cards/StrokeCountCard.tsx v1.3.4
 import React from 'react';
 import { PenTool } from 'lucide-react';
 import { UILabels } from '../../../types';

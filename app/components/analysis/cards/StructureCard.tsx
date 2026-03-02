@@ -1,4 +1,4 @@
-// app/components/analysis/cards/StructureCard.tsx v0.7.1
+// app/components/analysis/cards/StructureCard.tsx v1.3.4
 import React from 'react';
 import { Box } from 'lucide-react';
 import { UILabels } from '../../../types';

@@ -1,4 +1,4 @@
-// app/hooks/useStrokeAnimation.ts v1.0.1
+// app/hooks/useStrokeAnimation.ts v1.3.4
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { HanziData, AnimationState, InteractionMode } from '../types';
 import { getPathLength } from '../utils/geometry';
@@ -36,8 +36,9 @@ export const useStrokeAnimation = (
       return;
     }
 
-    if (currentStrokeIndex === -1) {
+    if (currentStrokeIndex === -1 || currentStrokeIndex >= data.strokes.length) {
         setCurrentStrokeIndex(0);
+        setProgress(0);
         return;
     }
 

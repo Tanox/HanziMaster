@@ -1,4 +1,4 @@
-// app/components/IdiomNavigator.tsx v1.0.1
+// app/components/IdiomNavigator.tsx v1.3.4
 import React from 'react';
 
 interface IdiomNavigatorProps {

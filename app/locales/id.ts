@@ -1,5 +1,5 @@
 
-// app/locales/id.ts v1.0.5
+// app/locales/id.ts v1.3.4
 import { UILabels } from '../types';
 
 export const id: UILabels = {
@@ -189,4 +189,10 @@ export const id: UILabels = {
   learningPathL2Desc: 'Struktur & radikal',
   learningPathL3Title: 'L3: Penguasaan',
   learningPathL3Desc: 'Karakter kompleks & budaya',
+  progressTitle: "Kemajuan Belajar",
+  statsTotal: "Total",
+  statsNew: "Baru",
+  statsApprentice: "Magang",
+  statsGuru: "Guru",
+  statsMaster: "Master",
 };

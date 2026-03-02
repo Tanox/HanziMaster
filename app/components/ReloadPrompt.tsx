@@ -1,4 +1,4 @@
-// app/components/ReloadPrompt.tsx v1.0.1
+// app/components/ReloadPrompt.tsx v1.3.4
 'use client';
 
 import React, { useState, useEffect } from 'react';

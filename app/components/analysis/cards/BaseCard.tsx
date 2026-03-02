@@ -1,4 +1,4 @@
-// app/components/analysis/cards/BaseCard.tsx v0.7.1
+// app/components/analysis/cards/BaseCard.tsx v1.3.4
 import React from 'react';
 
 interface BaseCardProps {

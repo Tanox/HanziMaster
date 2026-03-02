@@ -1,4 +1,4 @@
-// app/components/settings/SettingsContent.tsx v1.0.1
+// app/components/settings/SettingsContent.tsx v1.3.4
 import React from 'react';
 import { BookOpen, History, Lightbulb, Box } from 'lucide-react';
 import { AppSettings, UILabels } from '../../types';

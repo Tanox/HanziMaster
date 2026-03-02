@@ -1,4 +1,4 @@
-// app/constants/pinyinData.ts v1.0.1
+// app/constants/pinyinData.ts v1.3.4
 export const PINYIN_MAP: Record<string, string> = {
   // --- Numbers & Units ---
   "一": "yī", "二": "èr", "三": "sān", "四": "sì", "五": "wǔ", "六": "liù", "七": "qī", "八": "bā", "九": "jiǔ", "十": "shí",

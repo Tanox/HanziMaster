@@ -1,4 +1,4 @@
-// app/components/LearningPath.tsx v1.0.0
+// app/components/LearningPath.tsx v1.3.4
 'use client';
 
 import React, { useState } from 'react';

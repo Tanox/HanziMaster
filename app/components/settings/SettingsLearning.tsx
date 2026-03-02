@@ -1,5 +1,5 @@
 
-// app/components/settings/SettingsLearning.tsx v1.0.5
+// app/components/settings/SettingsLearning.tsx v1.3.4
 import React from 'react';
 import { Gauge, PlayCircle, Infinity, Volume2 } from 'lucide-react';
 import { AppSettings, UILabels } from '../../types';

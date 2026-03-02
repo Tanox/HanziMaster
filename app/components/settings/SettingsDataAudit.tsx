@@ -1,5 +1,5 @@
 
-// app/components/settings/SettingsDataAudit.tsx v1.0.3
+// app/components/settings/SettingsDataAudit.tsx v1.3.4
 import React from 'react';
 import { Database, Book, Loader2, Download, Wifi, CheckCircle2, RefreshCcw, AlertTriangle } from 'lucide-react';
 import { UILabels, AppSettings } from '../../types';

@@ -1,4 +1,4 @@
-// app/components/dashboard/ViewerSection.tsx v1.1.0
+// app/components/dashboard/ViewerSection.tsx v1.3.4
 import React, { useMemo } from 'react';
 import IdiomNavigator from '../IdiomNavigator';
 import StrokeViewer from '../StrokeViewer';

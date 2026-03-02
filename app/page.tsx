@@ -17,15 +17,18 @@ const CommonCharacters = dynamic(() => import('./components/CommonCharacters'));
 const ChallengeModal = dynamic(() => import('./components/ChallengeModal'));
 const LearningPath = dynamic(() => import('./components/LearningPath'));
 import { UI_LABELS } from './locales';
-import { AlertCircle, Brush, BookOpen, Settings, Video, Share2 } from 'lucide-react';
+import { AlertCircle, Brush, BookOpen, Settings, Video, Share2, Trophy } from 'lucide-react';
 import ShareButton from './components/ShareButton';
+import { AchievementsPanel } from './components/AchievementsPanel';
+import { AchievementToast } from './components/AchievementToast';
 
-const APP_VERSION = '1.3.1';
+const APP_VERSION = '1.3.4';
 
 export default function Home() {
   const { state, actions } = useAppController();
   const [mounted, setMounted] = useState(false);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [showAchievements, setShowAchievements] = useState(false);
   const [activeTab, setActiveTab] = useState<'viewer' | 'analysis'>('viewer');
 
   useEffect(() => {
@@ -126,6 +129,17 @@ export default function Home() {
                  title={labels.startChallenge || 'Start Challenge'}
                >
                  <Brush size={20} />
+               </button>
+               <button 
+                 onClick={() => setShowAchievements(true)} 
+                 className="p-3 bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-teal-600 dark:hover:text-teal-400 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm transition-all active:scale-95 relative"
+                 aria-label="Achievements"
+                 title="Achievements"
+               >
+                 <Trophy size={20} />
+                 {state.newlyUnlocked && state.newlyUnlocked.length > 0 && (
+                    <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-white dark:border-slate-800" />
+                 )}
                </button>
                <button 
                  onClick={() => actions.setIsSettingsOpen(true)} 
@@ -306,6 +320,21 @@ export default function Home() {
           onSubmitScore={actions.submitScore}
           scores={state.scores}
           onClearScores={actions.clearScores}
+        />
+        
+        {showAchievements && (
+          <AchievementsPanel 
+            achievements={state.achievements} 
+            stats={state.stats} 
+            onClose={() => setShowAchievements(false)} 
+            labels={labels}
+          />
+        )}
+
+        <AchievementToast 
+          achievements={state.newlyUnlocked} 
+          onDismiss={actions.clearNewUnlocked} 
+          labels={labels}
         />
       </main>
       <Footer labels={labels} version={APP_VERSION} />

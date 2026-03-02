@@ -1,4 +1,4 @@
-// app/components/ChallengeModal.tsx v1.3.0
+// app/components/ChallengeModal.tsx v1.3.4
 
 'use client';
 

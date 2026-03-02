@@ -1,4 +1,4 @@
-// app/hooks/useSuggestions.ts v1.0.1
+// app/hooks/useSuggestions.ts v1.3.4
 import { useState, useEffect, useCallback } from 'react';
 import { COMMON_CHARS } from '../constants/commonChars';
 import { COMMON_TERMS } from '../constants/commonTerms';

@@ -1,6 +1,24 @@
 
 # Changelog
 
+## [1.3.4]
+
+### Added
+- **L10N**: Added comprehensive translations for the Learning Progress container across all supported languages.
+
+## [1.3.3]
+
+### Fixed
+- **UI**: Fixed a bug where multiple share buttons appeared on the character details page by removing the redundant text share button from `HeaderCard`.
+
+## [1.3.2]
+
+### Changed
+- **UI**: Removed duplicate stroke count display from HeaderCard.
+- **UI**: Removed 'Demo end' prompt and reset button from StrokeViewer and Controls.
+- **i18n**: Ensured LearningPath uses localized labels.
+- **Versioning**: Synced version numbers across all files to 1.3.2.
+
 ## [1.3.1]
 
 ### Fixed

@@ -1,4 +1,4 @@
-// app/components/analysis/cards/MnemonicCard.tsx v0.7.1
+// app/components/analysis/cards/MnemonicCard.tsx v1.3.4
 import React from 'react';
 import { Lightbulb } from 'lucide-react';
 import { UILabels } from '../../../types';

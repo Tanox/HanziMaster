@@ -1,4 +1,4 @@
-// app/locales/index.ts v1.0.1
+// app/locales/index.ts v1.3.4
 import { LanguageOption, UILabels } from '../types';
 import { en } from './en';
 import { zhCN } from './zh-CN';

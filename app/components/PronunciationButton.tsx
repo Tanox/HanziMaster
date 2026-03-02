@@ -1,4 +1,4 @@
-// app/components/PronunciationButton.tsx v1.0.1
+// app/components/PronunciationButton.tsx v1.3.4
 'use client';
 
 import React, { useState } from 'react';

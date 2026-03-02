@@ -1,5 +1,5 @@
 
-// app/components/WelcomeScreen.tsx v1.0.8
+// app/components/WelcomeScreen.tsx v1.3.4
 'use client';
 
 import React, { useState } from 'react';

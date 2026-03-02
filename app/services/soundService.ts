@@ -1,5 +1,5 @@
 
-// app/services/soundService.ts v1.1.0
+// app/services/soundService.ts v1.3.4
 type SoundEffect = 'correct' | 'error' | 'complete';
 
 class SoundService {

@@ -1,5 +1,5 @@
 
-// app/locales/vi.ts v1.0.5
+// app/locales/vi.ts v1.3.4
 import { UILabels } from '../types';
 
 export const vi: UILabels = {
@@ -189,4 +189,10 @@ export const vi: UILabels = {
   learningPathL2Desc: 'Cấu trúc & bộ thủ',
   learningPathL3Title: 'L3: Thành thạo',
   learningPathL3Desc: 'Chữ Hán phức tạp & văn hóa',
+  progressTitle: "Tiến độ học tập",
+  statsTotal: "Tổng số",
+  statsNew: "Mới",
+  statsApprentice: "Người học việc",
+  statsGuru: "Chuyên gia",
+  statsMaster: "Bậc thầy",
 };

@@ -1,5 +1,5 @@
 
-// app/locales/ar.ts v1.0.5
+// app/locales/ar.ts v1.3.4
 import { UILabels } from '../types';
 
 export const ar: UILabels = {
@@ -189,4 +189,10 @@ export const ar: UILabels = {
   learningPathL2Desc: 'الهياكل والجذور',
   learningPathL3Title: 'L3: الإتقان',
   learningPathL3Desc: 'الأحرف المعقدة والثقافة',
+  progressTitle: "تقدم التعلم",
+  statsTotal: "إجمالي العناصر",
+  statsNew: "جديد",
+  statsApprentice: "متدرب",
+  statsGuru: "خبير",
+  statsMaster: "سيد",
 };

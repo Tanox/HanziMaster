@@ -1,5 +1,5 @@
 
-// app/components/VeoVideoGenerator.tsx v1.0.0
+// app/components/VeoVideoGenerator.tsx v1.3.4
 'use client';
 
 import React, { useState, useEffect } from 'react';

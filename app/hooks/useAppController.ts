@@ -1,5 +1,5 @@
 
-// app/hooks/useAppController.ts v1.3.0
+// app/hooks/useAppController.ts v1.3.4
 import { useState, useEffect, useCallback } from 'react';
 import { AppSettings, InteractionMode, AnimationState, PracticeResult } from '../types';
 import { Score } from '../components/Leaderboard';

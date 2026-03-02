@@ -1,4 +1,4 @@
-// app/components/Leaderboard.tsx v1.3.0
+// app/components/Leaderboard.tsx v1.3.4
 
 import React from 'react';
 import { UILabels } from '../types';

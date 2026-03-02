@@ -1,5 +1,5 @@
 
-// app/locales/th.ts v1.0.5
+// app/locales/th.ts v1.3.4
 import { UILabels } from '../types';
 
 export const th: UILabels = {
@@ -189,4 +189,10 @@ export const th: UILabels = {
   learningPathL2Desc: 'โครงสร้างและหมวดนำ',
   learningPathL3Title: 'L3: เชี่ยวชาญ',
   learningPathL3Desc: 'ตัวอักษรที่ซับซ้อนและวัฒนธรรม',
+  progressTitle: "ความคืบหน้าการเรียนรู้",
+  statsTotal: "ทั้งหมด",
+  statsNew: "ใหม่",
+  statsApprentice: "ฝึกหัด",
+  statsGuru: "ผู้เชี่ยวชาญ",
+  statsMaster: "ปรมาจารย์",
 };

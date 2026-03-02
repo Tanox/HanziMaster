@@ -1,4 +1,4 @@
-// app/components/HistoryPanel.tsx v1.0.1
+// app/components/HistoryPanel.tsx v1.3.4
 import React, { useMemo } from 'react';
 import { HistoryItem, UILabels } from '../types';
 import { Clock, Trash2, RefreshCw } from 'lucide-react';

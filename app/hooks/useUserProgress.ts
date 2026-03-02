@@ -1,6 +1,7 @@
 
-// app/hooks/useUserProgress.ts v1.1.0
+// app/hooks/useUserProgress.ts v1.3.4
 import { useLocalStorage } from './useLocalStorage';
+import { useAchievements } from './useAchievements';
 import { HistoryItem, SRSItem, Grade, PracticeResult } from '../types';
 
 /**
@@ -10,23 +11,37 @@ export const useUserProgress = () => {
   const [history, setHistory] = useLocalStorage<HistoryItem[]>('practiceHistory', []);
   const [learnedItems, setLearnedItems] = useLocalStorage<string[]>('learnedItems', []);
   const [srsData, setSrsData] = useLocalStorage<Record<string, SRSItem>>('srsData', {});
+  
+  const { 
+    achievements, 
+    stats, 
+    newlyUnlocked, 
+    clearNewUnlocked, 
+    recordPractice, 
+    clearAchievements 
+  } = useAchievements();
 
   /**
    * Adds a term to the history and learned items list.
    * @param term The character or idiom practiced.
    */
-  const addToHistoryAndStats = (term: string) => {
+  const addToHistoryAndStats = (term: string, result?: PracticeResult) => {
     // Add to history (capped at 20 items)
     setHistory(prev => {
       const filtered = prev.filter(item => item.char !== term);
       return [{ char: term, timestamp: Date.now() }, ...filtered].slice(0, 20); 
     });
 
+    const isNewChar = !learnedItems.includes(term);
+
     // Add to unique learned items
-    setLearnedItems(prev => {
-        if (prev.includes(term)) return prev;
-        return [...prev, term];
-    });
+    if (isNewChar) {
+      setLearnedItems(prev => [...prev, term]);
+    }
+
+    if (result) {
+      recordPractice(term, result, isNewChar);
+    }
   };
 
   /**
@@ -111,11 +126,15 @@ export const useUserProgress = () => {
       learnedItems,
       srsData,
       dueReviews: getDueReviews(),
+      achievements,
+      stats,
+      newlyUnlocked,
     },
     actions: {
       addToHistoryAndStats,
       updateSRS,
       clearAllProgress,
+      clearNewUnlocked,
     },
   };
 };

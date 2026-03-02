@@ -1,4 +1,4 @@
-// app/components/analysis/cards/ExampleWordsCard.tsx v0.9.7
+// app/components/analysis/cards/ExampleWordsCard.tsx v1.3.4
 'use client';
 
 import React from 'react';

@@ -1,5 +1,5 @@
 
-// app/locales/fr.ts v1.0.5
+// app/locales/fr.ts v1.3.4
 import { UILabels } from '../types';
 
 export const fr: UILabels = {
@@ -183,4 +183,10 @@ export const fr: UILabels = {
   nationalDay: 'Fête Nationale',
   singlesDay: 'Jour des Célibataires',
   christmas: 'Noël',
+  progressTitle: "Progression de l'Apprentissage",
+  statsTotal: "Total",
+  statsNew: "Nouveau",
+  statsApprentice: "Apprenti",
+  statsGuru: "Gourou",
+  statsMaster: "Maître",
 };
