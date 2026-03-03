@@ -1,5 +1,5 @@
 
-// app/components/StrokeViewer.tsx v1.3.7
+// app/components/StrokeViewer.tsx v1.3.8
 import React, { useRef, useMemo } from 'react';
 import { HanziData, AnimationState, InteractionMode, AppSettings, UILabels, Grade, PracticeResult, CharacterAnalysis } from '../types';
 import { PenTool } from 'lucide-react';
@@ -61,7 +61,7 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
   const StatusOverlay = () => {
     let text: string | null = null;
     if (mode === InteractionMode.PRACTICE) {
-        if (showSuccess) text = labels.practiceComplete;
+        if (showSuccess) text = null; // "Practice complete" prompt removed as per user request
         else if (practiceStrokeIndex < data.strokes.length) {
             text = (labels.strokeProgress || "Stroke {current} / {total}")
                 .replace('{current}', (practiceStrokeIndex + 1).toString())

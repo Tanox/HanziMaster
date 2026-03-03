@@ -1,6 +1,12 @@
 
 # Changelog
 
+## [1.3.8]
+
+### UI
+- **Optimization**: Removed sharing functionality from the practice result seal to streamline the user experience.
+- **Optimization**: Removed "Practice complete" prompts and status text after finishing a character in practice mode.
+
 ## [1.3.7]
 
 ### UI

@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v1.3.7",
-  "version": "1.3.7",
-  "description": "v1.3.7: Refined UI by moving action buttons to the header, standardizing button sizes, and improving practice mode.",
+  "name": "HanziMaster 汉字大师 v1.3.8",
+  "version": "1.3.8",
+  "description": "v1.3.8: Removed sharing functionality after practice and removed practice completion prompts to streamline the user experience.",
   "keywords": [
     "Chinese characters",
     "Hanzi",
