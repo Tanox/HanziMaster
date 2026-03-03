@@ -179,4 +179,8 @@ export const zhCN: UILabels = {
   statsApprentice: "熟练",
   statsGuru: "精通",
   statsMaster: "大师",
+  footerSourceCode: "开源代码",
+  footerReportBug: "报告问题",
+  footerRequestFeature: "提交需求",
+  footerLicense: "开源协议",
 };

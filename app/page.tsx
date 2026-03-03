@@ -9,12 +9,10 @@ import ReloadPrompt from './components/ReloadPrompt';
 const RandomSuggestions = dynamic(() => import('./components/RandomSuggestions'));
 const SettingsModal = dynamic(() => import('./components/SettingsModal'));
 const WelcomeScreen = dynamic(() => import('./components/WelcomeScreen'));
-const VideoModal = dynamic(() => import('./components/VideoModal'));
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ViewerSection from './components/dashboard/ViewerSection';
 import AnalysisSection from './components/dashboard/AnalysisSection';
-import ActionButtons from './components/dashboard/ActionButtons';
 import WelcomeContent from './components/dashboard/WelcomeContent';
 import MobileTabs from './components/dashboard/MobileTabs';
 const CommonCharacters = dynamic(() => import('./components/CommonCharacters'));
@@ -24,7 +22,7 @@ import { AlertCircle } from 'lucide-react';
 import { AchievementsPanel } from './components/AchievementsPanel';
 import { AchievementToast } from './components/AchievementToast';
 
-const APP_VERSION = '1.3.6';
+const APP_VERSION = '1.3.7';
 
 export default function Home() {
   const { state, actions } = useAppController();
@@ -68,13 +66,10 @@ export default function Home() {
         labels={labels} 
         isOffline={state.isOffline || state.settings.offlineMode}
         version={APP_VERSION}
-      />
-
-      <VideoModal 
-        isOpen={isVideoModalOpen} 
-        onClose={() => setIsVideoModalOpen(false)} 
-        char={state.activeChar} 
-        labels={labels} 
+        newlyUnlocked={state.newlyUnlocked}
+        onStartChallenge={actions.startChallenge}
+        onShowAchievements={() => setShowAchievements(true)}
+        onOpenSettings={() => actions.setIsSettingsOpen(true)}
       />
 
       <main id="app-main-content" className="max-w-5xl w-full mx-auto px-4 py-8 flex-grow flex flex-col items-center">
@@ -104,16 +99,6 @@ export default function Home() {
                 className="mb-0"
               />
             </div>
-            
-            <ActionButtons 
-              labels={labels}
-              activeChar={state.activeChar}
-              newlyUnlocked={state.newlyUnlocked}
-              onOpenVideoModal={() => setIsVideoModalOpen(true)}
-              onStartChallenge={actions.startChallenge}
-              onShowAchievements={() => setShowAchievements(true)}
-              onOpenSettings={() => actions.setIsSettingsOpen(true)}
-            />
           </div>
 
           {!state.activeChar && !state.loading && (

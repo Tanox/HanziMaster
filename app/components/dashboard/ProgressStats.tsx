@@ -36,7 +36,7 @@ const ProgressStats: React.FC<ProgressStatsProps> = ({ srsData, totalLearned, la
   if (totalLearned === 0) return null;
 
   return (
-    <div className="w-full bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm mb-8">
+    <div className="w-full bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm mt-8 mb-8">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
           <Trophy className="text-yellow-500" size={20} />

@@ -12,7 +12,7 @@ const notoSerifSC = Noto_Serif_SC({
 });
 
 export const metadata: Metadata = {
-  title: 'HanziMaster v1.3.6 - Interactive Calligraphy & AI Scoring',
+  title: 'HanziMaster v1.3.7 - Interactive Calligraphy & AI Scoring',
   description: 'Master Chinese characters with stroke animations and intelligent scoring engine.',
 };
 

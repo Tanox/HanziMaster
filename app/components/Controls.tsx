@@ -101,8 +101,8 @@ const Controls: React.FC<ControlsProps> = ({
 
             <PronunciationButton
                 text={char}
-                size={22}
-                className="w-12 h-12 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
+                size={28}
+                className="w-16 h-16 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-md"
             />
         </div>
       </div>

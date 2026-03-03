@@ -7,6 +7,12 @@
 - **Optimization**: Removed duplicate generic share button from `ActionButtons` to streamline sharing functionality.
 - **Feature**: Added a "Clear Strokes" button in practice mode to allow users to reset their drawing.
 - **Enhancement**: Made the outline of the current stroke to be written more obvious in practice mode by changing its color to teal and increasing its thickness.
+- **Refactor**: Temporarily removed the "Record Stroke Video" button and `VideoModal`.
+- **Layout**: Moved Settings, Challenge, and Leaderboard buttons to the top right of the Header toolbar.
+- **Styling**: Standardized the size of the Play, Reset, and Pronunciation buttons in the controls section.
+- **Styling**: Adjusted the spacing above the learning progress container to match other containers.
+- **Localization**: Translated footer menu strings.
+- **Layout**: Moved the version number to the copyright container in the footer.
 
 ## [1.3.6]
 

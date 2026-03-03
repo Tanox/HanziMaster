@@ -179,4 +179,8 @@ export const en: UILabels = {
   statsApprentice: "Apprentice",
   statsGuru: "Guru",
   statsMaster: "Master",
+  footerSourceCode: "Source Code",
+  footerReportBug: "Report Bug",
+  footerRequestFeature: "Request Feature",
+  footerLicense: "License",
 };

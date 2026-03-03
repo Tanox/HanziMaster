@@ -1,4 +1,4 @@
-// app/components/Footer.tsx v1.3.4
+// app/components/Footer.tsx v1.3.7
 import React from 'react';
 import { Github, Bug, Lightbulb, FileText } from 'lucide-react';
 import { UILabels } from '../types';
@@ -16,33 +16,30 @@ const Footer: React.FC<FooterProps> = ({ labels, version }) => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-center md:text-left space-y-1">
             <p className="font-medium text-slate-600 dark:text-slate-300">{labels.footerCredit}</p>
-            <p className="text-xs opacity-60">GPL-3.0 License &copy; {new Date().getFullYear()} HanziMaster</p>
+            <p className="text-xs opacity-60 flex items-center justify-center md:justify-start gap-2">
+              <span>GPL-3.0 License &copy; {new Date().getFullYear()} HanziMaster</span>
+              <span className="font-mono bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">v{version}</span>
+            </p>
           </div>
           
           <div className="flex flex-wrap justify-center md:justify-end gap-x-6 gap-y-3 text-xs font-medium">
             <a href="https://github.com/sutchan/HanziMaster" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-teal-600 dark:hover:text-teal-400 transition-colors group">
               <Github size={14} className="group-hover:scale-110 transition-transform" />
-              <span>Source Code</span>
+              <span>{labels.footerSourceCode || 'Source Code'}</span>
             </a>
             <a href="https://github.com/sutchan/HanziMaster/issues/new" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-teal-600 dark:hover:text-teal-400 transition-colors group">
               <Bug size={14} className="group-hover:scale-110 transition-transform" />
-              <span>Report Bug</span>
+              <span>{labels.footerReportBug || 'Report Bug'}</span>
             </a>
             <a href="https://github.com/sutchan/HanziMaster/issues/new" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-teal-600 dark:hover:text-teal-400 transition-colors group">
               <Lightbulb size={14} className="group-hover:scale-110 transition-transform" />
-              <span>Request Feature</span>
+              <span>{labels.footerRequestFeature || 'Request Feature'}</span>
             </a>
             <a href="https://github.com/sutchan/HanziMaster/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-teal-600 dark:hover:text-teal-400 transition-colors group">
               <FileText size={14} className="group-hover:scale-110 transition-transform" />
-              <span>License</span>
+              <span>{labels.footerLicense || 'License'}</span>
             </a>
           </div>
-        </div>
-
-        <div className="flex justify-center md:justify-end">
-           <div className="flex items-center gap-2 text-xs font-mono opacity-80 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700">
-             <span>v{version}</span>
-           </div>
         </div>
 
       </div>
