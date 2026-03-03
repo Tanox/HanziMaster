@@ -1,4 +1,4 @@
-// app/components/Footer.tsx v1.3.7
+// app/components/Footer.tsx v1.3.8
 import React from 'react';
 import { Github, Bug, Lightbulb, FileText } from 'lucide-react';
 import { UILabels } from '../types';

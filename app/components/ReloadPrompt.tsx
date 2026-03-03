@@ -1,13 +1,13 @@
-// app/components/ReloadPrompt.tsx v1.3.4
+// app/components/ReloadPrompt.tsx v1.3.8
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { RefreshCw, X, Wifi } from 'lucide-react';
 import { UILabels } from '../types';
 
 /**
- * Enhanced SW registration hook for v0.8.2
- * Added robust error handling for restricted or cross-origin preview environments.
+ * Enhanced SW registration hook for v1.3.8
+ * Added robust error handling and auto-dismiss logic.
  */
 const useRegisterSW = () => {
   const [offlineReady, setOfflineReady] = useState(false);
@@ -103,14 +103,24 @@ const ReloadPrompt: React.FC<{ labels: UILabels }> = ({ labels }) => {
     updateServiceWorker,
   } = useRegisterSW();
 
-  const close = () => {
+  const close = useCallback(() => {
     setOfflineReady(false);
     setNeedRefresh(false);
-  };
+  }, [setOfflineReady, setNeedRefresh]);
 
   const handleUpdate = () => {
     updateServiceWorker(true);
   };
+
+  // Auto-dismiss after 10 seconds
+  useEffect(() => {
+    if (needRefresh || offlineReady) {
+      const timer = setTimeout(() => {
+        close();
+      }, 10000);
+      return () => clearTimeout(timer);
+    }
+  }, [needRefresh, offlineReady, close]);
 
   if (needRefresh) {
     return (

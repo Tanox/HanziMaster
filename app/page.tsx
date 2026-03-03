@@ -1,4 +1,4 @@
-// app/page.tsx v1.3.5
+// app/page.tsx v1.3.8
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -22,7 +22,7 @@ import { AlertCircle } from 'lucide-react';
 import { AchievementsPanel } from './components/AchievementsPanel';
 import { AchievementToast } from './components/AchievementToast';
 
-const APP_VERSION = '1.3.7';
+const APP_VERSION = '1.3.8';
 
 export default function Home() {
   const { state, actions } = useAppController();
