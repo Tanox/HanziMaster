@@ -190,7 +190,7 @@ export const th: UILabels = {
   learningPathL3Title: 'L3: เชี่ยวชาญ',
   learningPathL3Desc: 'ตัวอักษรที่ซับซ้อนและวัฒนธรรม',
   progressTitle: "ความคืบหน้าการเรียนรู้",
-  statsTotal: "ทั้งหมด",
+  statsLearned: "ทั้งหมด",
   statsNew: "ใหม่",
   statsApprentice: "ฝึกหัด",
   statsGuru: "ผู้เชี่ยวชาญ",

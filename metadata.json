@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v1.3.4",
-  "version": "1.3.4",
-  "description": "v1.3.4: Added comprehensive translations for the Learning Progress container.",
+  "name": "HanziMaster 汉字大师 v1.3.6",
+  "version": "1.3.6",
+  "description": "v1.3.6: Optimized UI by removing duplicate pronunciation button on desktop.",
   "keywords": [
     "Chinese characters",
     "Hanzi",

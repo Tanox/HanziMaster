@@ -185,7 +185,7 @@ export const de: UILabels = {
   learningPathL3Title: 'L3: Meisterschaft',
   learningPathL3Desc: 'Komplexe Zeichen & Kultur',
   progressTitle: "Lernfortschritt",
-  statsTotal: "Gesamt",
+  statsLearned: "Gesamt",
   statsNew: "Neu",
   statsApprentice: "Lehrling",
   statsGuru: "Guru",

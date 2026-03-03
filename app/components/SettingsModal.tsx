@@ -1,4 +1,4 @@
-// app/components/SettingsModal.tsx v1.3.4
+// app/components/SettingsModal.tsx v1.3.6
 'use client';
 
 import React, { useState } from 'react';
@@ -130,7 +130,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
         
         {/* Footer */}
         <div className="p-6 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-100 dark:border-slate-800 shrink-0">
-           <button onClick={onClose} className="w-full py-4 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold hover:opacity-90 active:scale-[0.98] transition-all shadow-lg">{labels.closeBtn}</button>
+           <p className="text-center text-xs text-slate-400 dark:text-slate-500">HanziMaster Settings</p>
         </div>
       </div>
     </div>

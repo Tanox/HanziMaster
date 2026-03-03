@@ -30,7 +30,7 @@ const CharacterDisplay: React.FC<CharacterDisplayProps> = ({ analysis, hanziData
   return (
     <div id="character-analysis-grid" className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-min">
       <HeaderCard analysis={analysis} hanziData={hanziData} settings={settings} labels={labels} compact={compact} isFallback={isFallback} fullWidth={!hasStrokeCount && !showRichContent} />
-      {settings.showStructure && showRichContent && <StructureCard radical={analysis.radical} labels={labels} />}
+      {settings.showStructure && showRichContent && <StructureCard radical={analysis.radical} structure={analysis.structure} labels={labels} />}
       {settings.showStructure && hasStrokeCount && <StrokeCountCard count={definitiveStrokeCount} labels={labels} fullWidth={!showRichContent} />}
       {settings.showEtymology && showRichContent && <EtymologyCard content={analysis.etymology} labels={labels} />}
       {settings.showMnemonic && showRichContent && <MnemonicCard content={analysis.mnemonic} labels={labels} />}

@@ -1,4 +1,4 @@
-// app/components/dashboard/ViewerSection.tsx v1.3.4
+// app/components/dashboard/ViewerSection.tsx v1.3.7
 import React, { useMemo } from 'react';
 import IdiomNavigator from '../IdiomNavigator';
 import StrokeViewer from '../StrokeViewer';
@@ -44,6 +44,7 @@ const ViewerSection: React.FC<ViewerSectionProps> = ({
   labels,
   actions
 }) => {
+  const [practiceKey, setPracticeKey] = React.useState(0);
   
   const currentPinyin = useMemo(() => {
     if (analysis?.char === activeChar) return analysis.pinyin;
@@ -59,7 +60,7 @@ const ViewerSection: React.FC<ViewerSectionProps> = ({
           onSelectChar={(char, index) => actions.handleCharSelect(char, undefined, index)} 
       />
 
-      <div id="active-pinyin-display" key={activeChar} className="h-16 mb-4 flex items-end justify-center w-full">
+      <div id="active-pinyin-display" key={activeChar} className="h-16 mb-4 flex items-end justify-center w-full lg:hidden">
         {currentPinyin && (
             <span className="text-5xl md:text-6xl text-vermilion-500 dark:text-vermilion-400 font-sans font-semibold tracking-wide animate-fade-in transition-all">
                 {currentPinyin}
@@ -71,6 +72,7 @@ const ViewerSection: React.FC<ViewerSectionProps> = ({
           {hanziData ? (
           <>
               <StrokeViewer 
+                key={`${activeChar}-${practiceKey}`}
                 data={hanziData}
                 analysis={analysis}
                 animationState={animationState}
@@ -86,8 +88,12 @@ const ViewerSection: React.FC<ViewerSectionProps> = ({
                 onPlay={() => actions.setAnimationState(AnimationState.PLAYING)}
                 onPause={() => actions.setAnimationState(AnimationState.PAUSED)}
                 onReset={() => {
-                    actions.setAnimationState(AnimationState.IDLE);
-                    actions.setInteractionMode(InteractionMode.VIEW);
+                    if (interactionMode === InteractionMode.PRACTICE) {
+                        setPracticeKey(prev => prev + 1);
+                    } else {
+                        actions.setAnimationState(AnimationState.IDLE);
+                        actions.setInteractionMode(InteractionMode.VIEW);
+                    }
                 }}
                 mode={interactionMode}
                 onToggleMode={() => {

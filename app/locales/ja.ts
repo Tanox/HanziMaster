@@ -174,7 +174,7 @@ export const ja: UILabels = {
   singlesDay: '独身の日',
   christmas: 'クリスマス',
   progressTitle: "学習の進捗",
-  statsTotal: "学習済み",
+  statsLearned: "学習済み",
   statsNew: "新規",
   statsApprentice: "見習い",
   statsGuru: "熟練",

@@ -30,6 +30,7 @@ export interface CharacterAnalysis {
   pinyin: string;
   meaning: string;
   radical: string;
+  structure?: string; // e.g., Left-Right, Top-Bottom
   strokeCount: number;
   etymology: string;
   mnemonic: string;
@@ -211,6 +212,7 @@ export interface UILabels {
   closeBtn: string;
   statsTitle: string;
   statsTotal: string;
+  statsLearned: string;
   statsChars: string;
   statsTerms: string;
   gradeExquisite: string;

@@ -190,7 +190,7 @@ export const vi: UILabels = {
   learningPathL3Title: 'L3: Thành thạo',
   learningPathL3Desc: 'Chữ Hán phức tạp & văn hóa',
   progressTitle: "Tiến độ học tập",
-  statsTotal: "Tổng số",
+  statsLearned: "Tổng số",
   statsNew: "Mới",
   statsApprentice: "Người học việc",
   statsGuru: "Chuyên gia",

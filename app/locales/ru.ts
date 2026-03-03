@@ -185,7 +185,7 @@ export const ru: UILabels = {
   learningPathL3Title: 'L3: Мастерство',
   learningPathL3Desc: 'Сложные иероглифы и культура',
   progressTitle: "Прогресс Обучения",
-  statsTotal: "Всего",
+  statsLearned: "Всего",
   statsNew: "Новый",
   statsApprentice: "Ученик",
   statsGuru: "Гуру",

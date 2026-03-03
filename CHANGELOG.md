@@ -1,6 +1,25 @@
 
 # Changelog
 
+## [1.3.7]
+
+### UI
+- **Optimization**: Removed duplicate generic share button from `ActionButtons` to streamline sharing functionality.
+- **Feature**: Added a "Clear Strokes" button in practice mode to allow users to reset their drawing.
+- **Enhancement**: Made the outline of the current stroke to be written more obvious in practice mode by changing its color to teal and increasing its thickness.
+
+## [1.3.6]
+
+### UI
+- **Optimization**: Removed duplicate pronunciation button from `HeaderCard` on desktop screens, as it is already available in the `Controls` panel.
+- **Optimization**: Removed duplicate close button from the `SettingsModal` footer to streamline the UI.
+
+## [1.3.5]
+
+### Refactor
+- **Codebase**: Split `app/page.tsx` into smaller components (`ActionButtons`, `WelcomeContent`, `MobileTabs`) to improve maintainability.
+- **Service**: Refactored `app/services/geminiService.ts` by extracting schemas and offline generators into separate files (`aiSchemas.ts`, `offlineGenerators.ts`).
+
 ## [1.3.4]
 
 ### Added

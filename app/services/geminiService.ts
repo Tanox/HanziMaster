@@ -1,8 +1,8 @@
-
-// app/services/geminiService.ts v1.3.4
-import { GoogleGenAI, Type, HarmCategory, HarmBlockThreshold, Schema } from "@google/genai";
+// app/services/geminiService.ts v1.3.5
+import { GoogleGenAI, HarmCategory, HarmBlockThreshold, Schema } from "@google/genai";
 import { CharacterAnalysis, IdiomAnalysis } from '../types';
-import { PINYIN_MAP } from '../constants/pinyinData';
+import { characterAnalysisSchema, idiomAnalysisSchema } from './aiSchemas';
+import { generateOfflineAnalysis, generateOfflineIdiomAnalysis } from './offlineGenerators';
 
 // --- AI Instance Cache ---
 let globalAiInstance: GoogleGenAI | null = null;
@@ -19,50 +19,6 @@ function getAiInstance(): GoogleGenAI | null {
     }
     return globalAiInstance;
 }
-
-// --- Offline Fallback Logic ---
-
-const generateOfflineAnalysis = (char: string, reason: string = "Network Unavailable"): CharacterAnalysis => {
-  let meaning = `Mode: ${reason}`;
-  try {
-    if (typeof window !== 'undefined') {
-        const dictStr = window.localStorage.getItem('offlineDictionary');
-        if (dictStr) {
-        const dict = JSON.parse(dictStr);
-        if (dict[char]) {
-            meaning = dict[char];
-        }
-        }
-    }
-  } catch (e) {
-    console.warn("Could not read offline dictionary", e);
-  }
-
-  const pinyin = PINYIN_MAP[char] || "-";
-
-  return {
-    char: char,
-    pinyin: pinyin,
-    meaning: meaning,
-    radical: "?",
-    strokeCount: 0,
-    etymology: "Detailed analysis requires an active AI connection.",
-    mnemonic: "Focus on writing practice.",
-    examples: [
-      { word: char, pinyin: pinyin, meaning: meaning.startsWith('Mode:') ? "Analysis unavailable" : meaning },
-    ]
-  };
-};
-
-const generateOfflineIdiomAnalysis = (idiom: string, reason: string = "Network Unavailable"): IdiomAnalysis => {
-  return {
-    idiom: idiom,
-    pinyin: "-",
-    meaning: `Mode: ${reason}`,
-    origin: "Idiom analysis requires an active AI connection.",
-    usage: "-"
-  };
-};
 
 // --- Core Request & Parsing Logic ---
 
@@ -167,45 +123,6 @@ async function fetchAiAnalysis<T>({
     return offlineGenerator(entity, errorReason);
   }
 }
-
-// --- Schema Definitions ---
-
-const characterAnalysisSchema: Schema = {
-  type: Type.OBJECT,
-  properties: {
-    char: { type: Type.STRING },
-    pinyin: { type: Type.STRING },
-    meaning: { type: Type.STRING },
-    radical: { type: Type.STRING },
-    strokeCount: { type: Type.INTEGER },
-    etymology: { type: Type.STRING },
-    mnemonic: { type: Type.STRING },
-    examples: {
-      type: Type.ARRAY,
-      items: {
-        type: Type.OBJECT,
-        properties: {
-          word: { type: Type.STRING },
-          pinyin: { type: Type.STRING },
-          meaning: { type: Type.STRING },
-        }
-      }
-    }
-  },
-  required: ["char", "pinyin", "meaning", "radical", "strokeCount", "etymology", "mnemonic", "examples"]
-};
-
-const idiomAnalysisSchema: Schema = {
-  type: Type.OBJECT,
-  properties: {
-    idiom: { type: Type.STRING },
-    pinyin: { type: Type.STRING },
-    meaning: { type: Type.STRING },
-    origin: { type: Type.STRING },
-    usage: { type: Type.STRING }
-  },
-  required: ["idiom", "pinyin", "meaning", "origin", "usage"]
-};
 
 // --- Exported Service Functions ---
 

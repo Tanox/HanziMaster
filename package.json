@@ -1,7 +1,7 @@
 {
   "name": "hanzimaster",
   "private": true,
-  "version": "1.3.4",
+  "version": "1.3.6",
   "author": "Sut",
   "license": "GPL-3.0",
   "type": "module",

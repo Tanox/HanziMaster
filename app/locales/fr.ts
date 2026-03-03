@@ -184,7 +184,7 @@ export const fr: UILabels = {
   singlesDay: 'Jour des Célibataires',
   christmas: 'Noël',
   progressTitle: "Progression de l'Apprentissage",
-  statsTotal: "Total",
+  statsLearned: "Total",
   statsNew: "Nouveau",
   statsApprentice: "Apprenti",
   statsGuru: "Gourou",

@@ -1,4 +1,4 @@
-// app/components/Controls.tsx v1.3.4
+// app/components/Controls.tsx v1.3.7
 import React from 'react';
 import { Play, Pause, RotateCcw, PenTool, Eye } from 'lucide-react';
 import { AnimationState, InteractionMode } from '../types';
@@ -65,16 +65,22 @@ const Controls: React.FC<ControlsProps> = ({
 
       <div id="playback-controls-container" className="flex flex-col items-center gap-4 transition-all duration-300 pt-2">
         <div className="flex items-center justify-center gap-3">
-            {animationState === AnimationState.PLAYING ? (
+            {isPractice ? (
+                <button
+                    id="btn-reset"
+                    onClick={onReset}
+                    className="w-16 h-16 flex items-center justify-center text-white bg-amber-500 hover:bg-amber-600 dark:bg-amber-600 dark:hover:bg-amber-700 rounded-full transform transition-all hover:scale-105 shadow-md"
+                    title={labels.reset || 'Clear Strokes'}
+                    aria-label={labels.reset || 'Clear Strokes'}
+                >
+                    <RotateCcw size={28} />
+                </button>
+            ) : animationState === AnimationState.PLAYING ? (
             <button
                 id="btn-pause"
                 onClick={onPause}
                 disabled={isPractice}
-                className={`w-16 h-16 flex items-center justify-center text-white bg-teal-600 dark:bg-teal-500 rounded-full transform transition-all ${
-                    isPractice
-                    ? 'opacity-30 cursor-not-allowed grayscale'
-                    : 'hover:bg-teal-700 dark:hover:bg-teal-600 hover:scale-105'
-                }`}
+                className="w-16 h-16 flex items-center justify-center text-white bg-teal-600 dark:bg-teal-500 rounded-full transform transition-all hover:bg-teal-700 dark:hover:bg-teal-600 hover:scale-105 shadow-md"
                 title={labels.pause}
                 aria-label={labels.pause}
             >
@@ -85,11 +91,7 @@ const Controls: React.FC<ControlsProps> = ({
                 id="btn-play"
                 onClick={onPlay}
                 disabled={isPractice}
-                className={`w-16 h-16 flex items-center justify-center text-white bg-teal-600 dark:bg-teal-500 rounded-full transform transition-all ${
-                    isPractice
-                    ? 'opacity-30 cursor-not-allowed grayscale'
-                    : 'hover:bg-teal-700 dark:hover:bg-teal-600 hover:scale-105'
-                }`}
+                className="w-16 h-16 flex items-center justify-center text-white bg-teal-600 dark:bg-teal-500 rounded-full transform transition-all hover:bg-teal-700 dark:hover:bg-teal-600 hover:scale-105 shadow-md"
                 title={labels.play}
                 aria-label={labels.play}
             >

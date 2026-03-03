@@ -174,7 +174,7 @@ export const zhCN: UILabels = {
   learningPathL3Title: 'L3: 意境',
   learningPathL3Desc: '复杂笔画与文化主题',
   progressTitle: "学习进度",
-  statsTotal: "已学汉字",
+  statsLearned: "已学汉字",
   statsNew: "初学",
   statsApprentice: "熟练",
   statsGuru: "精通",

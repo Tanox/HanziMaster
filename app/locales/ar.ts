@@ -190,7 +190,7 @@ export const ar: UILabels = {
   learningPathL3Title: 'L3: الإتقان',
   learningPathL3Desc: 'الأحرف المعقدة والثقافة',
   progressTitle: "تقدم التعلم",
-  statsTotal: "إجمالي العناصر",
+  statsLearned: "إجمالي العناصر",
   statsNew: "جديد",
   statsApprentice: "متدرب",
   statsGuru: "خبير",

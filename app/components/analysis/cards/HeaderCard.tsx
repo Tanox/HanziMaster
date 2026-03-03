@@ -1,5 +1,5 @@
 
-// app/components/analysis/cards/HeaderCard.tsx v1.3.4
+// app/components/analysis/cards/HeaderCard.tsx v1.3.6
 import React from 'react';
 import { CharacterAnalysis, AppSettings, HanziData, UILabels } from '../../../types';
 import PronunciationButton from '../../PronunciationButton';
@@ -30,7 +30,11 @@ const HeaderCard: React.FC<HeaderCardProps> = ({ analysis, hanziData, labels, is
             </ruby>
           </div>
           <div className="flex items-center -mr-2">
-            {!isFallback && <PronunciationButton text={analysis.char} />}
+            {!isFallback && (
+              <div className="lg:hidden">
+                <PronunciationButton text={analysis.char} />
+              </div>
+            )}
             <ShareImageButton analysis={analysis} />
           </div>
         </div>

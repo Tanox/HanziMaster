@@ -1,3 +1,4 @@
+// app/page.tsx v1.3.5
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -13,16 +14,17 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import ViewerSection from './components/dashboard/ViewerSection';
 import AnalysisSection from './components/dashboard/AnalysisSection';
+import ActionButtons from './components/dashboard/ActionButtons';
+import WelcomeContent from './components/dashboard/WelcomeContent';
+import MobileTabs from './components/dashboard/MobileTabs';
 const CommonCharacters = dynamic(() => import('./components/CommonCharacters'));
 const ChallengeModal = dynamic(() => import('./components/ChallengeModal'));
-const LearningPath = dynamic(() => import('./components/LearningPath'));
 import { UI_LABELS } from './locales';
-import { AlertCircle, Brush, BookOpen, Settings, Video, Share2, Trophy } from 'lucide-react';
-import ShareButton from './components/ShareButton';
+import { AlertCircle } from 'lucide-react';
 import { AchievementsPanel } from './components/AchievementsPanel';
 import { AchievementToast } from './components/AchievementToast';
 
-const APP_VERSION = '1.3.4';
+const APP_VERSION = '1.3.6';
 
 export default function Home() {
   const { state, actions } = useAppController();
@@ -103,104 +105,25 @@ export default function Home() {
               />
             </div>
             
-            <div className="flex items-center gap-2 md:gap-3 mb-8 md:mb-0">
-               <ShareButton
-                  title={labels.shareAppTitle || "Share HanziMaster"}
-                  text={(labels.shareAppText || "Check out HanziMaster: {url}").replace('{url}', typeof window !== 'undefined' ? window.location.origin : '')}
-                  url={typeof window !== 'undefined' ? window.location.origin : ''}
-                  labels={labels}
-                  size={20}
-                  className="p-3 bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-teal-600 dark:hover:text-teal-400 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm transition-all active:scale-95"
-               />
-               {state.activeChar && (
-                 <button 
-                   onClick={() => setIsVideoModalOpen(true)} 
-                   className="p-3 bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-teal-600 dark:hover:text-teal-400 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm transition-all active:scale-95"
-                   aria-label={labels.generateVideo || 'Generate Video'}
-                   title={labels.generateVideo || 'Generate Video'}
-                 >
-                   <Video size={20} />
-                 </button>
-               )}
-               <button 
-                 onClick={actions.startChallenge} 
-                 className="p-3 bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-teal-600 dark:hover:text-teal-400 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm transition-all active:scale-95"
-                 aria-label={labels.startChallenge || 'Start Challenge'}
-                 title={labels.startChallenge || 'Start Challenge'}
-               >
-                 <Brush size={20} />
-               </button>
-               <button 
-                 onClick={() => setShowAchievements(true)} 
-                 className="p-3 bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-teal-600 dark:hover:text-teal-400 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm transition-all active:scale-95 relative"
-                 aria-label="Achievements"
-                 title="Achievements"
-               >
-                 <Trophy size={20} />
-                 {state.newlyUnlocked && state.newlyUnlocked.length > 0 && (
-                    <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-white dark:border-slate-800" />
-                 )}
-               </button>
-               <button 
-                 onClick={() => actions.setIsSettingsOpen(true)} 
-                 className="p-3 bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-teal-600 dark:hover:text-teal-400 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm transition-all active:scale-95"
-                 aria-label="Settings"
-                 title={labels.settingsTitle || 'Settings'}
-               >
-                 <Settings size={20} />
-               </button>
-            </div>
+            <ActionButtons 
+              labels={labels}
+              activeChar={state.activeChar}
+              newlyUnlocked={state.newlyUnlocked}
+              onOpenVideoModal={() => setIsVideoModalOpen(true)}
+              onStartChallenge={actions.startChallenge}
+              onShowAchievements={() => setShowAchievements(true)}
+              onOpenSettings={() => actions.setIsSettingsOpen(true)}
+            />
           </div>
 
           {!state.activeChar && !state.loading && (
-            <div className="mt-8 flex flex-col items-center gap-6 animate-in fade-in slide-in-from-bottom-2 duration-700 delay-300">
-              {state.history && state.history.length > 0 && (
-                <div className="w-full max-w-lg">
-                  <div className="flex items-center justify-between mb-3 px-1">
-                    <span className="text-xs text-slate-400 dark:text-slate-500 uppercase tracking-widest font-bold">{labels.recentHistory}</span>
-                    <button 
-                      onClick={actions.clearAllProgress}
-                      className="text-[10px] text-slate-400 hover:text-red-500 transition-colors uppercase tracking-tighter"
-                    >
-                      {labels.clearBtn}
-                    </button>
-                  </div>
-                  <div className="flex flex-wrap justify-center gap-2">
-                    {state.history.slice(0, 8).map((item) => (
-                      <button
-                        key={`${item.char}-${item.timestamp}`}
-                        onClick={() => actions.handleSearch(item.char, state.currentLang)}
-                        className="px-4 py-2 text-lg font-hanzi bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-900/30 hover:text-teal-600 dark:hover:text-teal-400 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm transition-all active:scale-95"
-                      >
-                        {item.char}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <div className="w-full max-w-lg">
-                <div className="flex items-center justify-center mb-3">
-                  <span className="text-xs text-slate-400 dark:text-slate-500 uppercase tracking-widest font-bold">{labels.tryCharacters}</span>
-                </div>
-                <div className="flex flex-wrap justify-center gap-2">
-                  {['永', '福', '爱', '和', '梦', '龙', '静', '美'].map((char) => (
-                    <button
-                      key={char}
-                      onClick={() => actions.handleSearch(char, state.currentLang)}
-                      className="px-4 py-2 text-lg font-hanzi bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 hover:bg-teal-50 dark:hover:bg-teal-900/30 hover:text-teal-600 dark:hover:text-teal-400 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 transition-all active:scale-95"
-                    >
-                      {char}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <LearningPath 
-                labels={labels} 
-                onSelectChar={(char) => actions.handleSearch(char, state.currentLang)} 
-              />
-            </div>
+            <WelcomeContent 
+              labels={labels}
+              history={state.history}
+              currentLang={state.currentLang}
+              onSearch={actions.handleSearch}
+              onClearProgress={actions.clearAllProgress}
+            />
           )}
           
           <div className="h-14 overflow-hidden">
@@ -215,31 +138,11 @@ export default function Home() {
 
         <div id="content-wrapper" className="w-full flex flex-col lg:flex-row lg:gap-12">
           
-          {/* Mobile Tabs */}
-          <div className="lg:hidden w-full max-w-md mx-auto mb-6 flex p-1 bg-slate-100 dark:bg-slate-800/50 rounded-xl">
-            <button
-              onClick={() => setActiveTab('viewer')}
-              className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-medium rounded-lg transition-all ${
-                activeTab === 'viewer'
-                  ? 'bg-white dark:bg-slate-700 text-teal-600 dark:text-teal-400 shadow-sm'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
-              }`}
-            >
-              <Brush size={16} />
-              {labels.viewMode || 'Watch'}
-            </button>
-            <button
-              onClick={() => setActiveTab('analysis')}
-              className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-medium rounded-lg transition-all ${
-                activeTab === 'analysis'
-                  ? 'bg-white dark:bg-slate-700 text-teal-600 dark:text-teal-400 shadow-sm'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
-              }`}
-            >
-              <BookOpen size={16} />
-              {labels.sectionContent || 'Content'}
-            </button>
-          </div>
+          <MobileTabs 
+            activeTab={activeTab} 
+            setActiveTab={setActiveTab} 
+            labels={labels} 
+          />
 
           <div id="viewer-and-suggestions-column" className={`w-full lg:w-5/12 ${activeTab === 'viewer' ? 'block' : 'hidden lg:block'}`}>
             <ViewerSection 

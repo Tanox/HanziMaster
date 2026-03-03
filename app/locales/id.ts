@@ -190,7 +190,7 @@ export const id: UILabels = {
   learningPathL3Title: 'L3: Penguasaan',
   learningPathL3Desc: 'Karakter kompleks & budaya',
   progressTitle: "Kemajuan Belajar",
-  statsTotal: "Total",
+  statsLearned: "Total",
   statsNew: "Baru",
   statsApprentice: "Magang",
   statsGuru: "Guru",

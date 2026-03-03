@@ -164,7 +164,7 @@ export const zhTW: UILabels = {
   learningPathL3Title: 'L3: 意境',
   learningPathL3Desc: '複雜筆畫與文化主題',
   progressTitle: "學習進度",
-  statsTotal: "已學漢字",
+  statsLearned: "已學漢字",
   statsNew: "初學",
   statsApprentice: "熟練",
   statsGuru: "精通",

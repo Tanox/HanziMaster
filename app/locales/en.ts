@@ -174,7 +174,7 @@ export const en: UILabels = {
   learningPathL3Title: 'L3: Mastery',
   learningPathL3Desc: 'Complex characters & culture',
   progressTitle: "Learning Progress",
-  statsTotal: "Total Items",
+  statsLearned: "Total Items",
   statsNew: "New",
   statsApprentice: "Apprentice",
   statsGuru: "Guru",

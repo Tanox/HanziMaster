@@ -1,5 +1,5 @@
 
-// app/components/StrokeViewer.tsx v1.3.4
+// app/components/StrokeViewer.tsx v1.3.7
 import React, { useRef, useMemo } from 'react';
 import { HanziData, AnimationState, InteractionMode, AppSettings, UILabels, Grade, PracticeResult, CharacterAnalysis } from '../types';
 import { PenTool } from 'lucide-react';
@@ -107,8 +107,8 @@ const StrokeViewer: React.FC<StrokeViewerProps> = ({
                       <path 
                         key={i} 
                         d={stroke} 
-                        className={`fill-none stroke-vermilion-200 dark:stroke-white/30 ${showGhostHint ? 'opacity-80 animate-pulse' : 'opacity-60'}`} 
-                        strokeWidth="4" 
+                        className={`fill-none stroke-teal-500 dark:stroke-teal-400 ${showGhostHint ? 'opacity-100 animate-pulse' : 'opacity-80'}`} 
+                        strokeWidth="8" 
                       />
                   ) : null;
               }
