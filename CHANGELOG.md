@@ -1,6 +1,17 @@
 
 # Changelog
 
+## [1.4.0] - 2026-03-04
+- Added dedicated **About** page with project vision and feature highlights.
+- Added dedicated **Changelog** page that dynamically renders the project history.
+- Localized About and Changelog pages in all 15 supported languages.
+- Improved typography and layout for informational pages.
+- Updated version to v1.4.0.
+
+## [1.3.9] - 2026-03-04
+- Optimized footer menu: replaced redundant links with Changelog and About pages.
+- Updated version to v1.3.9.
+
 ## [1.3.8]
 
 ### UI

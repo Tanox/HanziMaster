@@ -1,6 +1,6 @@
 
-// app/hooks/useAppController.ts v1.3.4
-import { useState, useEffect, useCallback } from 'react';
+// app/hooks/useAppController.ts v1.4.0
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { AppSettings, InteractionMode, AnimationState, PracticeResult } from '../types';
 import { Score } from '../components/Leaderboard';
 import { COMMON_CHARS } from '../constants/commonChars';
@@ -9,6 +9,7 @@ import { useInteractionState } from './useInteractionState';
 import { useContentFetcher } from './useContentFetcher';
 import { useUserProgress } from './useUserProgress';
 import { soundService } from '../services/soundService';
+import { UI_LABELS } from '../locales';
 
 const DEFAULT_SETTINGS: AppSettings = {
   gridStyle: 'rice',
@@ -37,6 +38,8 @@ export const useAppController = () => {
   const [activeCharIndex, setActiveCharIndex] = useState<number>(0);
   const [currentLang, setCurrentLang] = useState<string>('zh-CN');
   
+  const labels = useMemo(() => UI_LABELS[currentLang] || UI_LABELS['en'], [currentLang]);
+
   const [scores, setScores] = useLocalStorage<Score[]>('leaderboardScores', []);
   const [isChallengeActive, setIsChallengeActive] = useState<boolean>(false);
   const [challengeCharacter, setChallengeCharacter] = useState<string>('');
@@ -245,6 +248,7 @@ export const useAppController = () => {
       activeChar,
       activeCharIndex,
       currentLang,
+      labels,
       ...content.state,
       ...interaction.state,
       ...userProgress.state,

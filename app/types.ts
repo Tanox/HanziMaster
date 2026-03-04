@@ -297,5 +297,21 @@ export interface UILabels {
   learningPathL2Desc?: string;
   learningPathL3Title?: string;
   learningPathL3Desc?: string;
+  footerChangelog: string;
+  footerAbout: string;
+  aboutTitle: string;
+  aboutSubtitle: string;
+  aboutVisionTitle: string;
+  aboutVisionDesc: string;
+  aboutFeature1Title: string;
+  aboutFeature1Desc: string;
+  aboutFeature2Title: string;
+  aboutFeature2Desc: string;
+  aboutFeature3Title: string;
+  aboutFeature3Desc: string;
+  aboutFeature4Title: string;
+  aboutFeature4Desc: string;
+  backToHome: string;
+  aboutIntro: string;
   [key: string]: string | undefined; 
 }
