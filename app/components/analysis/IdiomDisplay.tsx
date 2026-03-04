@@ -1,4 +1,4 @@
-// app/components/analysis/IdiomDisplay.tsx v1.3.4
+// app/components/analysis/IdiomDisplay.tsx v1.4.2
 import React from 'react';
 import { ScrollText, Quote } from 'lucide-react';
 import { IdiomAnalysis, UILabels } from '../../types';
@@ -25,11 +25,11 @@ const IdiomDisplay: React.FC<IdiomDisplayProps> = ({ data, labels }) => {
                      <div className="flex items-center gap-2 mb-1">
                         <span className="text-[10px] font-bold uppercase tracking-widest text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/30 px-2 py-0.5 rounded">{labels.idiomTitle || 'Idiom'}</span>
                      </div>
-                     <h2 className="text-4xl md:text-5xl font-hanzi font-bold text-slate-800 dark:text-white mb-2">{data.idiom}</h2>
+                     <h2 className="text-4xl md:text-5xl font-hanzi font-bold text-slate-800 dark:text-white mb-2 whitespace-nowrap">{data.idiom}</h2>
                      <div className="flex items-center gap-1 -ml-2">
                          <PronunciationButton text={data.idiom} size={20} />
                          <ShareButton title={shareTitle} text={shareText} url={shareUrl} labels={labels} className="text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-300" />
-                         <span className="text-xl text-teal-600 dark:text-teal-400 font-medium tracking-wide ml-1">{data.pinyin}</span>
+                         <span className="text-xl text-teal-600 dark:text-teal-400 font-medium tracking-wide ml-1 whitespace-nowrap">{data.pinyin}</span>
                      </div>
                 </div>
                 <div className="md:text-right max-w-lg"><p className="text-lg text-slate-700 dark:text-slate-200 font-medium leading-relaxed">{data.meaning}</p></div>

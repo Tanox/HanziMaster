@@ -1,6 +1,15 @@
 
 # Changelog
 
+## [1.4.3]
+- **UI**: Moved the "Random Character" button from the search bar to the main controls panel (left of the Play button) for better accessibility.
+
+## [1.4.2]
+- **UI**: Optimized idiom display layout to prevent text wrapping for better readability.
+
+## [1.4.1]
+- **L10N**: Updated the "Random Character" button label to "探索汉字" (Explore Hanzi) in Simplified Chinese.
+
 ## [1.4.0] - 2026-03-04
 - Added dedicated **About** page with project vision and feature highlights.
 - Added dedicated **Changelog** page that dynamically renders the project history.

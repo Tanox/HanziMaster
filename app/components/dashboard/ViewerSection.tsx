@@ -1,4 +1,4 @@
-// app/components/dashboard/ViewerSection.tsx v1.3.8
+// app/components/dashboard/ViewerSection.tsx v1.4.3
 import React, { useMemo } from 'react';
 import IdiomNavigator from '../IdiomNavigator';
 import StrokeViewer from '../StrokeViewer';
@@ -20,11 +20,13 @@ interface ViewerSectionProps {
   loading: boolean;
   error: string | null;
   labels: UILabels;
+  randomButtonLabel: string;
   actions: {
     handleCharSelect: (char: string, explicitMode?: InteractionMode, index?: number) => void;
     setAnimationState: (state: AnimationState) => void;
     setInteractionMode: (mode: InteractionMode) => void;
     handlePracticeComplete: (result: PracticeResult) => void;
+    handleRandom: () => void;
   };
 }
 
@@ -42,6 +44,7 @@ const ViewerSection: React.FC<ViewerSectionProps> = ({
   loading,
   error,
   labels,
+  randomButtonLabel,
   actions
 }) => {
   const [practiceKey, setPracticeKey] = React.useState(0);
@@ -95,6 +98,7 @@ const ViewerSection: React.FC<ViewerSectionProps> = ({
                         actions.setInteractionMode(InteractionMode.VIEW);
                     }
                 }}
+                onRandom={actions.handleRandom}
                 mode={interactionMode}
                 onToggleMode={() => {
                     const newMode = interactionMode === InteractionMode.VIEW ? InteractionMode.PRACTICE : InteractionMode.VIEW;
@@ -110,7 +114,8 @@ const ViewerSection: React.FC<ViewerSectionProps> = ({
                     reset: labels.controlsReset,
                     speed: labels.controlsSpeed,
                     practiceMode: labels.practiceMode || "Practice",
-                    viewMode: labels.viewMode || "Watch"
+                    viewMode: labels.viewMode || "Watch",
+                    random: randomButtonLabel
                 }}
               />
           </>

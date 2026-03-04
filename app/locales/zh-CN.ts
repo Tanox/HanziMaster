@@ -1,5 +1,5 @@
 
-// app/locales/zh-CN.ts v1.3.4
+// app/locales/zh-CN.ts v1.4.1
 import { UILabels } from '../types';
 
 export const zhCN: UILabels = {
@@ -36,7 +36,7 @@ export const zhCN: UILabels = {
   controlsSpeed: '速度',
   viewMode: '演示',
   practiceMode: '临摹',
-  randomBtn: '随机一字',
+  randomBtn: '探索汉字',
   settingsTitle: '设置中心',
   settingGridStyle: '格线样式',
   settingGridRice: '米字',

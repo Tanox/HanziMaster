@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v1.4.0",
-  "version": "1.4.0",
-  "description": "v1.4.0: Added dedicated About and Changelog pages with improved typography and layout.",
+  "name": "HanziMaster 汉字大师 v1.4.3",
+  "version": "1.4.3",
+  "description": "v1.4.3: Moved Random Character button to Controls panel.",
   "keywords": [
     "Chinese characters",
     "Hanzi",

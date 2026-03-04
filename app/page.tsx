@@ -1,4 +1,4 @@
-// app/page.tsx v1.3.8
+// app/page.tsx v1.4.2
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -22,7 +22,7 @@ import { AlertCircle } from 'lucide-react';
 import { AchievementsPanel } from './components/AchievementsPanel';
 import { AchievementToast } from './components/AchievementToast';
 
-const APP_VERSION = '1.3.8';
+const APP_VERSION = '1.4.3';
 
 export default function Home() {
   const { state, actions } = useAppController();
@@ -89,11 +89,9 @@ export default function Home() {
             <div className="w-full max-w-md">
               <SearchInput 
                 onSearch={(term) => actions.handleSearch(term, state.currentLang)} 
-                onRandom={actions.handleRandom}
                 isLoading={state.loading} 
                 placeholderText={labels.searchPlaceholder}
                 invalidCharMessage={labels.errorInvalidChar}
-                randomButtonLabel={labels.randomBtn}
                 activeChar={state.activeChar}
                 activeTerm={state.activeTerm}
                 className="mb-0"
@@ -144,11 +142,13 @@ export default function Home() {
               loading={state.loading}
               error={state.error}
               labels={labels}
+              randomButtonLabel={labels.randomBtn}
               actions={{
                 handleCharSelect: actions.handleCharSelect,
                 setAnimationState: actions.setAnimationState,
                 setInteractionMode: actions.setInteractionMode,
-                handlePracticeComplete: actions.handlePracticeComplete
+                handlePracticeComplete: actions.handlePracticeComplete,
+                handleRandom: actions.handleRandom
               }}
             />
             {state.settings.showRandomSuggestions && (

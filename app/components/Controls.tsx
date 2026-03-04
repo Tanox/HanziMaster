@@ -1,6 +1,6 @@
-// app/components/Controls.tsx v1.3.8
+// app/components/Controls.tsx v1.4.3
 import React from 'react';
-import { Play, Pause, RotateCcw, PenTool, Eye } from 'lucide-react';
+import { Play, Pause, RotateCcw, PenTool, Eye, Shuffle } from 'lucide-react';
 import { AnimationState, InteractionMode } from '../types';
 import PronunciationButton from './PronunciationButton';
 
@@ -9,6 +9,7 @@ interface ControlsProps {
   onPlay: () => void;
   onPause: () => void;
   onReset: () => void;
+  onRandom: () => void;
   mode: InteractionMode;
   onToggleMode: () => void;
   char: string;
@@ -19,6 +20,7 @@ interface ControlsProps {
     speed: string;
     practiceMode: string;
     viewMode: string;
+    random: string;
   };
 }
 
@@ -27,6 +29,7 @@ const Controls: React.FC<ControlsProps> = ({
   onPlay,
   onPause,
   onReset,
+  onRandom,
   mode,
   onToggleMode,
   char,
@@ -65,6 +68,16 @@ const Controls: React.FC<ControlsProps> = ({
 
       <div id="playback-controls-container" className="flex flex-col items-center gap-4 transition-all duration-300 pt-2">
         <div className="flex items-center justify-center gap-3">
+            <button
+                id="btn-random"
+                onClick={onRandom}
+                className="w-12 h-12 flex items-center justify-center text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full hover:text-teal-600 dark:hover:text-teal-400 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm hover:shadow-md active:scale-95"
+                title={labels.random}
+                aria-label={labels.random}
+            >
+                <Shuffle size={20} />
+            </button>
+
             {isPractice ? (
                 <button
                     id="btn-reset"
@@ -102,7 +115,7 @@ const Controls: React.FC<ControlsProps> = ({
             <PronunciationButton
                 text={char}
                 size={28}
-                className="w-16 h-16 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-md"
+                className="w-12 h-12 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md text-slate-500 dark:text-slate-400 hover:text-teal-600 dark:hover:text-teal-400"
             />
         </div>
       </div>

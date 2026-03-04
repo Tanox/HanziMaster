@@ -1,17 +1,15 @@
-// app/components/SearchInput.tsx v1.3.4
+// app/components/SearchInput.tsx v1.3.5
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Search, Shuffle, X } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
 
 interface SearchInputProps {
   onSearch: (char: string) => void;
-  onRandom: () => void;
   isLoading: boolean;
   placeholderText: string;
   invalidCharMessage: string;
-  randomButtonLabel: string;
   activeChar?: string;
   activeTerm?: string;
   className?: string;
@@ -19,11 +17,9 @@ interface SearchInputProps {
 
 const SearchInput: React.FC<SearchInputProps> = ({ 
   onSearch, 
-  onRandom,
   isLoading, 
   placeholderText, 
   invalidCharMessage,
-  randomButtonLabel,
   activeChar,
   activeTerm,
   className = ''
@@ -54,26 +50,13 @@ const SearchInput: React.FC<SearchInputProps> = ({
   return (
     <form id="search-form" onSubmit={handleSubmit} className={`w-full max-w-[340px] mx-auto transition-all duration-300 ${className || 'mb-8'}`}>
       <div id="search-input-container" className="relative flex items-center group">
-        <div className="absolute left-1.5 z-10">
-            <button
-              id="search-random-btn"
-              type="button"
-              onClick={onRandom}
-              disabled={isLoading}
-              className="p-2.5 text-slate-400 hover:text-teal-600 dark:text-slate-500 dark:hover:text-teal-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-all active:scale-90"
-              title={randomButtonLabel}
-            >
-              <Shuffle size={20} />
-            </button>
-        </div>
-
         <input
           id="main-search-input"
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder={placeholderText}
-          className="w-full pl-12 pr-24 py-3 text-xl text-center bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-900 dark:white rounded-full focus:outline-none focus:border-teal-500 dark:focus:border-teal-500 focus:ring-2 focus:ring-teal-200 dark:focus:ring-teal-900/50 transition-all font-hanzi placeholder-slate-400 dark:placeholder-slate-500 shadow-sm group-hover:shadow-md group-hover:border-slate-300 dark:group-hover:border-slate-600"
+          className="w-full px-12 py-3 text-xl text-center bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-900 dark:white rounded-full focus:outline-none focus:border-teal-500 dark:focus:border-teal-500 focus:ring-2 focus:ring-teal-200 dark:focus:ring-teal-900/50 transition-all font-hanzi placeholder-slate-400 dark:placeholder-slate-500 shadow-sm group-hover:shadow-md group-hover:border-slate-300 dark:group-hover:border-slate-600"
           disabled={isLoading}
           maxLength={4}
         />
