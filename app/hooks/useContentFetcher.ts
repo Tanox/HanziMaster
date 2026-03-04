@@ -1,10 +1,11 @@
-// app/hooks/useContentFetcher.ts v1.3.4
+// app/hooks/useContentFetcher.ts v1.3.8
 import { useState } from 'react';
-import { HanziData, CharacterAnalysis, IdiomAnalysis, AppSettings } from '../types';
 import { useLocalStorage } from './useLocalStorage';
+import { HanziData, CharacterAnalysis, IdiomAnalysis, AppSettings } from '../types';
 import { fetchHanziData } from '../services/hanziService';
 import { analyzeCharacter, analyzeIdiom } from '../services/geminiService';
 import { LANGUAGES, UI_LABELS } from '../locales';
+import { getCacheItem, setCacheItem } from '../utils/cacheUtils';
 
 export const useContentFetcher = (settings: AppSettings) => {
   const [hanziData, setHanziData] = useState<HanziData | null>(null);
@@ -15,12 +16,6 @@ export const useContentFetcher = (settings: AppSettings) => {
   const [error, setError] = useState<string | null>(null);
 
   const [pinyinCache] = useLocalStorage<Record<string, string>>('ai_pinyin_cache', {});
-  const [analysisCache, setAnalysisCache] = useLocalStorage<Record<string, CharacterAnalysis>>('ai_analysis_cache', {});
-  const [idiomCache, setIdiomCache] = useLocalStorage<Record<string, IdiomAnalysis>>('ai_idiom_cache', {});
-
-  const updateCache = <T>(key: string, data: T, setter: any) => {
-    setter((prev: any) => ({ ...prev, [key]: data }));
-  };
 
   const fetchCharacter = async (char: string, langCode: string) => {
     const langName = LANGUAGES.find(l => l.code === langCode)?.name || 'English';
@@ -37,13 +32,14 @@ export const useContentFetcher = (settings: AppSettings) => {
 
       setHanziData(fetchedData);
       
-      if (analysisCache[char]) {
-        setAnalysis(analysisCache[char]);
+      const cached = getCacheItem<CharacterAnalysis>('ai_analysis_cache', char);
+      if (cached) {
+        setAnalysis(cached);
       } else {
         const res = await analyzeCharacter(char, langName, settings.offlineMode);
         if (res) {
           setAnalysis(res);
-          if (!res.meaning.startsWith('Mode:')) updateCache(char, res, setAnalysisCache);
+          if (!res.meaning.startsWith('Mode:')) setCacheItem('ai_analysis_cache', char, res);
         }
       }
       return fetchedData;
@@ -56,14 +52,15 @@ export const useContentFetcher = (settings: AppSettings) => {
 
   const fetchIdiom = async (term: string, langCode: string) => {
     try {
-      if (idiomCache[term]) {
-        setIdiomAnalysis(idiomCache[term]);
+      const cached = getCacheItem<IdiomAnalysis>('ai_idiom_cache', term);
+      if (cached) {
+        setIdiomAnalysis(cached);
       } else {
         const langName = LANGUAGES.find(l => l.code === langCode)?.name || 'English';
         const res = await analyzeIdiom(term, langName, settings.offlineMode);
         if (res) {
           setIdiomAnalysis(res);
-          if (!res.meaning.startsWith('Mode:')) updateCache(term, res, setIdiomCache);
+          if (!res.meaning.startsWith('Mode:')) setCacheItem('ai_idiom_cache', term, res);
         }
       }
     } catch (err) {

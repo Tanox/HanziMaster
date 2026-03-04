@@ -22,6 +22,33 @@ function getAiInstance(): GoogleGenAI | null {
 
 // --- Core Request & Parsing Logic ---
 
+async function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function callGeminiWithRetry(
+  ai: GoogleGenAI,
+  prompt: string,
+  config: any,
+  retries: number = 3,
+  delay: number = 2000
+): Promise<any> {
+  try {
+    return await ai.models.generateContent({
+      model: 'gemini-3-flash-preview',
+      contents: prompt,
+      config: config
+    });
+  } catch (error: any) {
+    if (retries > 0 && (error.status === 429 || error.message?.includes('429'))) {
+      console.warn(`Quota exceeded, retrying in ${delay}ms... (${retries} retries left)`);
+      await sleep(delay);
+      return callGeminiWithRetry(ai, prompt, config, retries - 1, delay * 2);
+    }
+    throw error;
+  }
+}
+
 const commonConfig = {
   responseMimeType: "application/json",
   safetySettings: [
@@ -101,14 +128,10 @@ async function fetchAiAnalysis<T>({
   }
 
   try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
-      contents: promptGenerator(entity, languageName),
-      config: {
-        ...commonConfig,
-        systemInstruction: systemInstructionGenerator(languageName),
-        responseSchema: responseSchema,
-      }
+    const response = await callGeminiWithRetry(ai, promptGenerator(entity, languageName), {
+      ...commonConfig,
+      systemInstruction: systemInstructionGenerator(languageName),
+      responseSchema: responseSchema,
     });
 
     const jsonText = cleanJsonResponse(response.text || "");
