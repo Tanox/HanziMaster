@@ -1,5 +1,6 @@
 // app/services/hanziService.ts v1.3.4
 import { HanziData } from '../types';
+import { getCacheItem, setCacheItem } from '../utils/cacheUtils';
 
 const CDN_BASE_URL = 'https://cdn.jsdelivr.net/npm/hanzi-writer-data@2.0';
 const LOCAL_API_URL = '/api/hanzi';
@@ -44,6 +45,9 @@ async function fetchWithRetry(url: string, options: RequestInit = {}, retries = 
  * Fetches stroke data with multi-tier fallback and integrity check.
  */
 export const fetchHanziData = async (char: string): Promise<HanziData | null> => {
+  const cached = getCacheItem<HanziData>('hanzi_data_cache', char);
+  if (cached) return cached;
+
   try {
     // Tier 1: Try Local API (which handles public/hanzi-data and node_modules fallback)
     try {
@@ -77,7 +81,10 @@ export const fetchHanziData = async (char: string): Promise<HanziData | null> =>
     }
 
     const cdnData = await response.json();
-    if (isValidHanziData(cdnData)) return cdnData;
+    if (isValidHanziData(cdnData)) {
+      setCacheItem('hanzi_data_cache', char, cdnData);
+      return cdnData;
+    }
     
     throw new Error(`Fetched data for ${char} failed validation.`);
   } catch (error) {

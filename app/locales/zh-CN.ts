@@ -1,5 +1,5 @@
 
-// app/locales/zh-CN.ts v1.4.1
+// app/locales/zh-CN.ts v1.6.0
 import { UILabels } from '../types';
 
 export const zhCN: UILabels = {
@@ -36,7 +36,7 @@ export const zhCN: UILabels = {
   controlsSpeed: '速度',
   viewMode: '演示',
   practiceMode: '临摹',
-  randomBtn: '探索汉字',
+  randomBtn: '随机一字',
   settingsTitle: '设置中心',
   settingGridStyle: '格线样式',
   settingGridRice: '米字',
@@ -195,4 +195,16 @@ export const zhCN: UILabels = {
   aboutFeature4Desc: '所有练习数据均存储在本地，尊重用户隐私，无需强制注册。',
   backToHome: '返回首页',
   aboutIntro: '汉字大师 (HanziMaster) 是一款致力于通过现代科技传承书法艺术的交互式学习平台。我们相信，书写不仅是记录语言的工具，更是一种连接心灵与文化的桥梁。',
+  login: '登录',
+  register: '注册',
+  logout: '退出登录',
+  email: '电子邮箱',
+  password: '密码',
+  signIn: '登录',
+  signUp: '注册',
+  authTitle: '账号中心',
+  authSubtitle: '同步您的学习进度与成就。',
+  noAccount: '还没有账号？',
+  hasAccount: '已有账号？',
+  guestMode: '以游客身份继续',
 };

@@ -1,6 +1,23 @@
 
 # Changelog
 
+## [1.6.0]
+- **Auth**: Integrated real Firebase Authentication for secure user accounts.
+- **Auth**: Added support for Email/Password, Google, and GitHub login providers.
+- **Auth**: Implemented automatic auth state synchronization across the application.
+- **Dev**: Added `.env.example` with required Firebase configuration variables.
+- **Versioning**: Updated project version to v1.6.0.
+
+## [1.5.0]
+- **Auth**: Added user authentication flow with login/registration UI.
+- **Auth**: Added "Login" entry points in Header and Welcome sections.
+- **UI**: Replaced `<img>` with Next.js `<Image />` for better performance and SEO.
+- **Versioning**: Updated project version to v1.5.0.
+
+## [1.4.4]
+- **UI**: Integrated total stroke count into the character structure card for a more consolidated view.
+- **Feature**: Enhanced pronunciation functionality to ensure full words and idioms are spoken completely.
+
 ## [1.4.3]
 - **UI**: Moved the "Random Character" button from the search bar to the main controls panel (left of the Play button) for better accessibility.
 

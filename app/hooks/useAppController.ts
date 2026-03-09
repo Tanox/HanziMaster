@@ -1,7 +1,7 @@
 
-// app/hooks/useAppController.ts v1.4.0
+// app/hooks/useAppController.ts v1.6.0
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { AppSettings, InteractionMode, AnimationState, PracticeResult } from '../types';
+import { AppSettings, InteractionMode, AnimationState, PracticeResult, User } from '../types';
 import { Score } from '../components/Leaderboard';
 import { COMMON_CHARS } from '../constants/commonChars';
 import { useLocalStorage } from './useLocalStorage';
@@ -10,6 +10,8 @@ import { useContentFetcher } from './useContentFetcher';
 import { useUserProgress } from './useUserProgress';
 import { soundService } from '../services/soundService';
 import { UI_LABELS } from '../locales';
+import { auth } from '../services/firebase';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 
 const DEFAULT_SETTINGS: AppSettings = {
   gridStyle: 'rice',
@@ -32,6 +34,8 @@ export const useAppController = () => {
   const [settings, setSettings] = useLocalStorage<AppSettings>('appSettings', DEFAULT_SETTINGS);
   const [theme, setTheme] = useLocalStorage<'light' | 'dark'>('theme', 'light');
   const [hasSeenWelcome, setHasSeenWelcome] = useLocalStorage<boolean>('hasSeenWelcome', false);
+  const [user, setUser] = useLocalStorage<User | null>('user', null);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
   
   const [activeTerm, setActiveTerm] = useState<string>('一');
   const [activeChar, setActiveChar] = useState<string>('一');
@@ -51,6 +55,22 @@ export const useAppController = () => {
   const interaction = useInteractionState();
   const content = useContentFetcher(settings);
   const userProgress = useUserProgress();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        setUser({
+          id: firebaseUser.uid,
+          email: firebaseUser.email,
+          displayName: firebaseUser.displayName,
+          photoURL: firebaseUser.photoURL,
+        });
+      } else {
+        setUser(null);
+      }
+    });
+    return () => unsubscribe();
+  }, [setUser]);
 
   useEffect(() => {
     setIsOffline(!navigator.onLine);
@@ -237,12 +257,23 @@ export const useAppController = () => {
     setScores([]);
   };
 
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setUser(null);
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
   return {
     state: {
       settings,
       theme,
       isOffline,
       isSettingsOpen,
+      isAuthOpen,
+      user,
       showWelcome,
       activeTerm,
       activeChar,
@@ -261,6 +292,9 @@ export const useAppController = () => {
       toggleTheme,
       setIsOffline,
       setIsSettingsOpen,
+      setIsAuthOpen,
+      setUser,
+      handleLogout,
       handleDismissWelcome,
       handleSearch,
       handleRandom,

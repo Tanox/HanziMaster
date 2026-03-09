@@ -1,5 +1,5 @@
 
-// app/locales/en.ts v1.3.4
+// app/locales/en.ts v1.6.0
 import { UILabels } from '../types';
 
 export const en: UILabels = {
@@ -195,4 +195,16 @@ export const en: UILabels = {
   aboutFeature4Desc: 'All practice data is stored locally, respecting user privacy without mandatory registration.',
   backToHome: 'Back to Home',
   aboutIntro: 'HanziMaster is an interactive learning platform dedicated to preserving the art of calligraphy through modern technology. We believe writing is not just a tool for recording language, but a bridge connecting hearts and cultures.',
+  login: 'Login',
+  register: 'Register',
+  logout: 'Logout',
+  email: 'Email',
+  password: 'Password',
+  signIn: 'Sign In',
+  signUp: 'Sign Up',
+  authTitle: 'Account',
+  authSubtitle: 'Sync your progress across devices.',
+  noAccount: "Don't have an account?",
+  hasAccount: 'Already have an account?',
+  guestMode: 'Continue as Guest',
 };

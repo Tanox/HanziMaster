@@ -1,4 +1,4 @@
-// app/page.tsx v1.4.2
+// app/page.tsx v1.6.0
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -8,6 +8,7 @@ import SearchInput from './components/SearchInput';
 import ReloadPrompt from './components/ReloadPrompt';
 const RandomSuggestions = dynamic(() => import('./components/RandomSuggestions'));
 const SettingsModal = dynamic(() => import('./components/SettingsModal'));
+const AuthModal = dynamic(() => import('./components/auth/AuthModal'));
 const WelcomeScreen = dynamic(() => import('./components/WelcomeScreen'));
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -22,7 +23,7 @@ import { AlertCircle } from 'lucide-react';
 import { AchievementsPanel } from './components/AchievementsPanel';
 import { AchievementToast } from './components/AchievementToast';
 
-const APP_VERSION = '1.4.3';
+const APP_VERSION = '1.5.0';
 
 export default function Home() {
   const { state, actions } = useAppController();
@@ -66,10 +67,13 @@ export default function Home() {
         labels={labels} 
         isOffline={state.isOffline || state.settings.offlineMode}
         version={APP_VERSION}
+        user={state.user}
         newlyUnlocked={state.newlyUnlocked}
         onStartChallenge={actions.startChallenge}
         onShowAchievements={() => setShowAchievements(true)}
         onOpenSettings={() => actions.setIsSettingsOpen(true)}
+        onOpenAuth={() => actions.setIsAuthOpen(true)}
+        onLogout={actions.handleLogout}
       />
 
       <main id="app-main-content" className="max-w-5xl w-full mx-auto px-4 py-8 flex-grow flex flex-col items-center">
@@ -104,8 +108,10 @@ export default function Home() {
               labels={labels}
               history={state.history}
               currentLang={state.currentLang}
+              user={state.user}
               onSearch={actions.handleSearch}
               onClearProgress={actions.clearAllProgress}
+              onOpenAuth={() => actions.setIsAuthOpen(true)}
             />
           )}
           
@@ -223,6 +229,13 @@ export default function Home() {
           achievements={state.newlyUnlocked} 
           onDismiss={actions.clearNewUnlocked} 
           labels={labels}
+        />
+
+        <AuthModal 
+          isOpen={state.isAuthOpen}
+          onClose={() => actions.setIsAuthOpen(false)}
+          labels={labels}
+          onSuccess={actions.setUser}
         />
       </main>
       <Footer labels={labels} version={APP_VERSION} />

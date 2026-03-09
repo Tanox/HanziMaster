@@ -22,6 +22,7 @@ export const useContentFetcher = (settings: AppSettings) => {
     const labels = UI_LABELS[langCode] || UI_LABELS['en'];
 
     try {
+      // Priority 1: Fetch Hanzi Stroke Data
       const fetchedData = await fetchHanziData(char);
       
       if (!fetchedData) {
@@ -32,6 +33,8 @@ export const useContentFetcher = (settings: AppSettings) => {
 
       setHanziData(fetchedData);
       
+      // Priority 2: Fetch Analysis Data (Delayed)
+      setIsAnalysisLoading(true);
       const cached = getCacheItem<CharacterAnalysis>('ai_analysis_cache', char);
       if (cached) {
         setAnalysis(cached);
@@ -42,10 +45,13 @@ export const useContentFetcher = (settings: AppSettings) => {
           if (!res.meaning.startsWith('Mode:')) setCacheItem('ai_analysis_cache', char, res);
         }
       }
+      setIsAnalysisLoading(false);
+      
       return fetchedData;
     } catch (err) {
       console.error("Error in fetchCharacter:", err);
       setError(labels.errorGeneral || "An unexpected error occurred. Please try again.");
+      setIsAnalysisLoading(false);
       return null;
     }
   };

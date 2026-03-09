@@ -1,10 +1,9 @@
 
-// app/components/analysis/CharacterDisplay.tsx v1.3.4
+// app/components/analysis/CharacterDisplay.tsx v1.4.4
 import React from 'react';
 import { CharacterAnalysis, AppSettings, HanziData, UILabels } from '../../types';
 import HeaderCard from './cards/HeaderCard';
 import StructureCard from './cards/StructureCard';
-import StrokeCountCard from './cards/StrokeCountCard';
 import EtymologyCard from './cards/EtymologyCard';
 import MnemonicCard from './cards/MnemonicCard';
 import ExampleWordsCard from './cards/ExampleWordsCard';
@@ -30,8 +29,7 @@ const CharacterDisplay: React.FC<CharacterDisplayProps> = ({ analysis, hanziData
   return (
     <div id="character-analysis-grid" className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-min">
       <HeaderCard analysis={analysis} hanziData={hanziData} settings={settings} labels={labels} compact={compact} isFallback={isFallback} fullWidth={!hasStrokeCount && !showRichContent} />
-      {settings.showStructure && showRichContent && <StructureCard radical={analysis.radical} structure={analysis.structure} labels={labels} />}
-      {settings.showStructure && hasStrokeCount && <StrokeCountCard count={definitiveStrokeCount} labels={labels} fullWidth={!showRichContent} />}
+      {settings.showStructure && showRichContent && <StructureCard radical={analysis.radical} structure={analysis.structure} strokeCount={definitiveStrokeCount} labels={labels} />}
       {settings.showEtymology && showRichContent && <EtymologyCard content={analysis.etymology} labels={labels} />}
       {settings.showMnemonic && showRichContent && <MnemonicCard content={analysis.mnemonic} labels={labels} />}
       {settings.showExamples && showRichContent && <ExampleWordsCard examples={analysis.examples} labels={labels} onSearch={onSearch} />}

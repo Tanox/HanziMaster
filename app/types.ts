@@ -1,5 +1,5 @@
 
-// app/types.ts v1.3.4
+// app/types.ts v1.6.0
 export interface Point {
   x: number;
   y: number;
@@ -134,6 +134,13 @@ export interface Achievement {
   unlocked: boolean;
   unlockedAt?: number;
   reward?: string;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  displayName?: string;
+  photoURL?: string;
 }
 
 export interface UserStats {
@@ -313,5 +320,17 @@ export interface UILabels {
   aboutFeature4Desc: string;
   backToHome: string;
   aboutIntro: string;
+  login: string;
+  register: string;
+  logout: string;
+  email: string;
+  password: string;
+  signIn: string;
+  signUp: string;
+  authTitle: string;
+  authSubtitle: string;
+  noAccount: string;
+  hasAccount: string;
+  guestMode: string;
   [key: string]: string | undefined; 
 }

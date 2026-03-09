@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v1.4.3",
-  "version": "1.4.3",
-  "description": "v1.4.3: Moved Random Character button to Controls panel.",
+  "name": "HanziMaster 汉字大师 v1.6.0",
+  "version": "1.6.0",
+  "description": "v1.6.0: Integrated real Firebase Authentication for secure user accounts and progress synchronization.",
   "keywords": [
     "Chinese characters",
     "Hanzi",

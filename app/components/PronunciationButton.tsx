@@ -1,4 +1,4 @@
-// app/components/PronunciationButton.tsx v1.3.4
+// app/components/PronunciationButton.tsx v1.4.4
 'use client';
 
 import React, { useState } from 'react';
@@ -21,6 +21,7 @@ const PronunciationButton: React.FC<PronunciationButtonProps> = ({ text, size = 
     setIsPlaying(true);
     setError(false);
     try {
+      // The text prop contains the full word/idiom
       await playPronunciation(text, 'zh-CN');
     } catch (err) {
       setError(true);
