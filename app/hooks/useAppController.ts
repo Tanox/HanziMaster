@@ -57,13 +57,14 @@ export const useAppController = () => {
   const userProgress = useUserProgress();
 
   useEffect(() => {
+    if (!auth) return;
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
         setUser({
           id: firebaseUser.uid,
-          email: firebaseUser.email,
-          displayName: firebaseUser.displayName,
-          photoURL: firebaseUser.photoURL,
+          email: firebaseUser.email || '',
+          displayName: firebaseUser.displayName || undefined,
+          photoURL: firebaseUser.photoURL || undefined,
         });
       } else {
         setUser(null);
@@ -258,6 +259,7 @@ export const useAppController = () => {
   };
 
   const handleLogout = async () => {
+    if (!auth) return;
     try {
       await signOut(auth);
       setUser(null);

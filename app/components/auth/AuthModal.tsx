@@ -53,6 +53,12 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, labels, onSucces
     setIsLoading(true);
     setError('');
 
+    if (!auth) {
+      setError('Authentication is not configured. Please check your environment variables.');
+      setIsLoading(false);
+      return;
+    }
+
     try {
       let userCredential;
       if (mode === 'login') {
@@ -68,9 +74,9 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, labels, onSucces
       const user = userCredential.user;
       const userData = {
         id: user.uid,
-        email: user.email,
+        email: user.email || '',
         displayName: user.displayName || email.split('@')[0],
-        photoURL: user.photoURL
+        photoURL: user.photoURL || undefined
       };
       
       if (onSuccess) onSuccess(userData);
@@ -86,6 +92,12 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, labels, onSucces
     setIsLoading(true);
     setError('');
     
+    if (!auth) {
+      setError('Authentication is not configured. Please check your environment variables.');
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const provider = providerType === 'google' 
         ? new GoogleAuthProvider() 
@@ -96,9 +108,9 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, labels, onSucces
       
       const userData = {
         id: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-        photoURL: user.photoURL
+        email: user.email || '',
+        displayName: user.displayName || undefined,
+        photoURL: user.photoURL || undefined
       };
       
       if (onSuccess) onSuccess(userData);
@@ -224,7 +236,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, labels, onSucces
                   disabled={isLoading}
                   className="flex items-center justify-center gap-2 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-300 text-sm font-medium disabled:opacity-50"
                 >
-                  <svg size={18} viewBox="0 0 24 24" className="w-[18px] h-[18px]">
+                  <svg viewBox="0 0 24 24" className="w-[18px] h-[18px]">
                     <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                     <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
                     <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
