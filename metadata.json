@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v1.6.0",
-  "version": "1.6.0",
-  "description": "v1.6.0: Integrated real Firebase Authentication for secure user accounts and progress synchronization.",
+  "name": "HanziMaster 汉字大师 v1.6.1",
+  "version": "1.6.1",
+  "description": "v1.6.1: Added user profile card with quick settings to the dashboard.",
   "keywords": [
     "Chinese characters",
     "Hanzi",

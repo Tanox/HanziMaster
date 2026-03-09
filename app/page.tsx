@@ -1,4 +1,4 @@
-// app/page.tsx v1.6.0
+// app/page.tsx v1.6.1
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -112,6 +112,13 @@ export default function Home() {
               onSearch={actions.handleSearch}
               onClearProgress={actions.clearAllProgress}
               onOpenAuth={() => actions.setIsAuthOpen(true)}
+              onOpenSettings={() => actions.setIsSettingsOpen(true)}
+              onLogout={actions.handleLogout}
+              theme={state.theme}
+              onThemeChange={actions.toggleTheme}
+              onLanguageChange={actions.handleLanguageChange}
+              settings={state.settings}
+              onUpdateSettings={actions.setSettings}
             />
           )}
           

@@ -1,6 +1,11 @@
 
 # Changelog
 
+## [1.6.1]
+- **Dashboard**: Added a User Profile Card to the dashboard (WelcomeContent) for logged-in users.
+- **Settings**: Integrated quick settings (Theme, Language, Offline Mode) directly into the User Profile Card.
+- **Versioning**: Updated project version to v1.6.1.
+
 ## [1.6.0]
 - **Auth**: Integrated real Firebase Authentication for secure user accounts.
 - **Auth**: Added support for Email/Password, Google, and GitHub login providers.
