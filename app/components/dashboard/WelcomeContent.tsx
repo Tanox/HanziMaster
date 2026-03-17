@@ -1,4 +1,4 @@
-// app/components/dashboard/WelcomeContent.tsx v1.6.1
+// app/components/dashboard/WelcomeContent.tsx v2.0.0
 import React from 'react';
 import Image from 'next/image';
 import { UILabels, HistoryItem, User, AppSettings } from '../../types';

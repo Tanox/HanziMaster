@@ -1,6 +1,10 @@
 
 # Changelog
 
+## [2.0.0]
+- **Fix**: Configured Next.js image optimization for Google (`lh3.googleusercontent.com`) and GitHub (`avatars.githubusercontent.com`) avatars.
+- **Versioning**: Major version jump to v2.0.0.
+
 ## [1.6.1]
 - **Dashboard**: Added a User Profile Card to the dashboard (WelcomeContent) for logged-in users.
 - **Settings**: Integrated quick settings (Theme, Language, Offline Mode) directly into the User Profile Card.
