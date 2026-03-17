@@ -2,6 +2,9 @@
 # Changelog
 
 ## [2.1.1]
+- **PWA**: Optimized `manifest.json` for PWABuilder with `id`, `dir`, `lang`, `orientation`, `categories`, `shortcuts`, and `screenshots`.
+- **PWA**: Added placeholder SVG screenshots for desktop and mobile to meet PWABuilder requirements.
+- **PWA**: Added `apple-touch-icon` to `app/layout.tsx` metadata.
 - **Docs**: Updated `README.md` and `README_CN.md` to reflect new features (PWA, User Profiles, Avatars).
 - **Docs**: Synchronized code feature details to `openspec` documentation.
 - **Test**: Tested application robustness.

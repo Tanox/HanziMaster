@@ -20,6 +20,9 @@ export const metadata: Metadata = {
     statusBarStyle: 'default',
     title: 'HanziMaster',
   },
+  icons: {
+    apple: '/icon.svg',
+  },
 };
 
 export default function RootLayout({
