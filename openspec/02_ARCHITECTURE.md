@@ -1,7 +1,7 @@
 # 02. 应用架构设计 (Architecture Design)
 
 **项目**: HanziMaster (汉字大师)
-**版本**: v1.4.0
+**版本**: v2.1.1
 **状态**: 现行规范
 
 ## 1. 架构概览 (Architecture Overview)
@@ -13,6 +13,8 @@ HanziMaster 采用 **现代化的单页应用 (SPA) 架构**，结合 **Serverle
 ### 2.1 前端 (Frontend)
 *   **框架**: **Next.js 15 (App Router)**
     *   *理由*: 业内领先的 React 框架，支持 SSR/SSG，SEO 友好，且 App Router 提供了优秀的路由和数据获取体验。
+*   **PWA 支持**: **next-pwa**
+    *   *理由*: 提供离线缓存、Service Worker 自动注册和应用安装能力。
 *   **语言**: **TypeScript**
     *   *理由*: 强类型系统，提高代码质量和可维护性，减少运行时错误。
 *   **样式**: **Tailwind CSS v4**

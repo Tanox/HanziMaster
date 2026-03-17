@@ -1,6 +1,17 @@
 
 # Changelog
 
+## [2.1.1]
+- **Docs**: Updated `README.md` and `README_CN.md` to reflect new features (PWA, User Profiles, Avatars).
+- **Docs**: Synchronized code feature details to `openspec` documentation.
+- **Test**: Tested application robustness.
+- **Versioning**: Updated all file versions to v2.1.1.
+
+## [2.1.0]
+- **Feature**: Added PWA support using `@ducanh2912/next-pwa`.
+- **Feature**: Created `manifest.json` and configured PWA metadata in `app/layout.tsx`.
+- **Versioning**: Updated project version to v2.1.0.
+
 ## [2.0.0]
 - **Fix**: Configured Next.js image optimization for Google (`lh3.googleusercontent.com`) and GitHub (`avatars.githubusercontent.com`) avatars.
 - **Versioning**: Major version jump to v2.0.0.

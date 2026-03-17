@@ -12,8 +12,14 @@ const notoSerifSC = Noto_Serif_SC({
 });
 
 export const metadata: Metadata = {
-  title: 'HanziMaster v2.0.0 - Interactive Calligraphy & AI Scoring',
+  title: 'HanziMaster v2.1.1 - Interactive Calligraphy & AI Scoring',
   description: 'Master Chinese characters with stroke animations and intelligent scoring engine.',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'HanziMaster',
+  },
 };
 
 export default function RootLayout({
