@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { UI_LABELS } from '../locales';
 import { useAuth } from './useAuth';
-import { useAppSettings } from './useAppSettings';
+import { useAppSettings, DEFAULT_SETTINGS } from './useAppSettings';
 import { useSearchNavigation } from './useSearchNavigation';
 import { useChallengeMode } from './useChallengeMode';
 import { useOffline } from './useOffline';
@@ -20,15 +20,17 @@ export const useAppController = () => {
   const [currentLang, setCurrentLang] = useState<string>('zh-CN');
   const labels = useMemo(() => UI_LABELS[currentLang] || UI_LABELS['en'], [currentLang]);
 
+  const currentSettings = settings.state.settings || DEFAULT_SETTINGS;
+  
   const interaction = useInteractionState();
-  const content = useContentFetcher(settings.state.settings);
+  const content = useContentFetcher(currentSettings);
   const userProgress = useUserProgress();
 
   const navigation = useSearchNavigation(
     {
       currentLang,
-      autoPlay: settings.state.settings.autoPlay,
-      continuousMode: settings.state.settings.continuousMode,
+      autoPlay: currentSettings.autoPlay,
+      continuousMode: currentSettings.continuousMode,
     },
     {
       content,

@@ -20,6 +20,8 @@ const DEFAULT_SETTINGS: AppSettings = {
   showCommonCharacters: true,
 };
 
+export { DEFAULT_SETTINGS };
+
 export const useAppSettings = () => {
   const [settings, setSettings] = useLocalStorage<AppSettings>('appSettings', DEFAULT_SETTINGS);
   const [theme, setTheme] = useLocalStorage<'light' | 'dark'>('theme', 'light');
