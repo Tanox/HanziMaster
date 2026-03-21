@@ -1,7 +1,7 @@
-// app/components/ShareButton.tsx v1.3.4
+// app/components/ShareButton.tsx v2.1.1
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Share2, Check } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
 
@@ -20,10 +20,16 @@ interface ShareButtonProps {
 
 const ShareButton: React.FC<ShareButtonProps> = ({ title, text, url, size = 18, className = "", labels }) => {
   const [isCopied, setIsCopied] = useState(false);
+  const [effectiveUrl, setEffectiveUrl] = useState('');
   const { showToast } = useToast();
-  const effectiveUrl = url || window.location.origin;
+
+  useEffect(() => {
+    setEffectiveUrl(url || window.location.origin);
+  }, [url]);
 
   const handleShare = async () => {
+    if (!effectiveUrl) return;
+    
     const hasUrlInText = text.includes(effectiveUrl);
     const fullText = hasUrlInText ? text : `${text}\n\n${effectiveUrl}`;
     const shareData: ShareData = { title, text: fullText };
@@ -38,7 +44,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({ title, text, url, size = 18, 
         console.warn('Web Share API failed, falling back to clipboard:', err);
       }
     }
-    
+
     if (!shared) {
       try {
         await navigator.clipboard.writeText(fullText);
@@ -50,7 +56,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({ title, text, url, size = 18, 
       }
     }
   };
-  
+
   const tooltip = isCopied ? labels.shareMessageCopied : labels.shareAction;
 
   return (

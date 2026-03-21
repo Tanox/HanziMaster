@@ -1,4 +1,4 @@
-// app/components/ChallengeModal.tsx v1.3.4
+// app/components/ChallengeModal.tsx v2.1.1
 
 'use client';
 
@@ -6,7 +6,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import HanziWriter from 'hanzi-writer';
 import { UILabels } from '../types';
 import { fetchHanziData } from '../services/hanziService';
-
+import { useToast } from '../context/ToastContext';
 import Leaderboard, { Score } from './Leaderboard';
 
 interface ChallengeModalProps {
@@ -23,6 +23,7 @@ const CHALLENGE_DURATION = 30; // 30 seconds per character
 
 const ChallengeModal: React.FC<ChallengeModalProps> = ({ isOpen, onClose, character, labels, onSubmitScore, scores, onClearScores }) => {
   const [timeLeft, setTimeLeft] = useState(CHALLENGE_DURATION);
+  const { showToast } = useToast();
   const timeLeftRef = useRef(CHALLENGE_DURATION);
   const writerRef = useRef<HanziWriter | null>(null);
   const targetRef = useRef<HTMLDivElement>(null);
@@ -32,9 +33,8 @@ const ChallengeModal: React.FC<ChallengeModalProps> = ({ isOpen, onClose, charac
   }, [timeLeft]);
 
   const handleTimeUp = React.useCallback(() => {
-    // Logic when time runs out
-    alert(labels.timeUp || 'Time is up!');
-    onSubmitScore(0); // Submit a score of 0
+    showToast(labels.timeUp || 'Time is up!', 'info');
+    onSubmitScore(0);
     onClose();
   }, [labels.timeUp, onSubmitScore, onClose]);
 
@@ -59,7 +59,7 @@ const ChallengeModal: React.FC<ChallengeModalProps> = ({ isOpen, onClose, charac
               if (data) {
                 onComplete(data);
               } else {
-                alert('Failed to load character data.');
+                showToast('Failed to load character data.', 'error');
                 onClose();
               }
             });
@@ -69,10 +69,9 @@ const ChallengeModal: React.FC<ChallengeModalProps> = ({ isOpen, onClose, charac
         writerRef.current.quiz({
           onComplete: (summary) => {
             const mistakes = summary.totalMistakes;
-            // Simplified scoring: Base 1000, minus 50 per mistake, plus 20 per second left
             const score = Math.max(0, 1000 - (mistakes * 50)) + (timeLeftRef.current * 20);
             onSubmitScore(score);
-            alert(`Challenge Complete! Score: ${score}`);
+            showToast(`Challenge Complete! Score: ${score}`, 'success');
             onClose();
           }
         });
