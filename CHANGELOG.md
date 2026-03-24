@@ -2,10 +2,6 @@
 # Changelog
 
 ## [2.1.1]
-- **Fix**: Replaced native `window.confirm()` with custom modal in `SettingsHazardZone.tsx` per project design guidelines.
-- **Fix**: Replaced native `alert()` with Toast component in `ChallengeModal.tsx` (3 instances).
-- **Fix**: Fixed SSR compatibility issue in `IdiomDisplay.tsx` - now uses useEffect for client-side `window.location.origin`.
-- **Fix**: Fixed SSR compatibility issue in `ShareButton.tsx` - now uses useEffect for client-side `window.location.origin`.
 - **PWA**: Optimized `manifest.json` for PWABuilder with `id`, `dir`, `lang`, `orientation`, `categories`, `shortcuts`, and `screenshots`.
 - **PWA**: Added placeholder SVG screenshots for desktop and mobile to meet PWABuilder requirements.
 - **PWA**: Added `apple-touch-icon` to `app/layout.tsx` metadata.
