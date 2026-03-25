@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v2.1.1",
-  "version": "2.1.1",
-  "description": "v2.1.1: Tested application robustness, updated README, synced features to openspec, and bumped version to v2.1.1.",
+  "name": "HanziMaster 汉字大师 v2.1.2",
+  "version": "2.1.2",
+  "description": "v2.1.2: Refactored large components and hooks (useAppController, AuthModal, VeoVideoGenerator) for better maintainability and code organization.",
   "keywords": [
     "Chinese characters",
     "Hanzi",

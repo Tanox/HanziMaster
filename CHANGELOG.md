@@ -1,6 +1,13 @@
 
 # Changelog
 
+## [2.1.2]
+- **Refactor**: Split `app/hooks/useAppController.ts` by extracting `useChallenge`, `useAuthController`, and `useSearchController` hooks to improve maintainability.
+- **Refactor**: Split `app/components/auth/AuthModal.tsx` into smaller components (`AuthForm.tsx`, `SocialLoginButtons.tsx`, and `AuthHeader.tsx`) for better code organization.
+- **Refactor**: Extracted main content from `app/page.tsx` into `MainContent.tsx`.
+- **Refactor**: Extracted video generation logic from `app/components/VeoVideoGenerator.tsx` into a custom `useVeoVideoGenerator.ts` hook.
+- **Versioning**: Updated project version to v2.1.2.
+
 ## [2.1.1]
 - **PWA**: Optimized `manifest.json` for PWABuilder with `id`, `dir`, `lang`, `orientation`, `categories`, `shortcuts`, and `screenshots`.
 - **PWA**: Added placeholder SVG screenshots for desktop and mobile to meet PWABuilder requirements.
