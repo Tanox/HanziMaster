@@ -1,6 +1,0 @@
-<!-- public/maskable-icon.svg v0.7.1 -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" fill="#bc221b"/>
-  <!-- Central Character within 80% safe zone -->
-  <text x="50%" y="50%" dx="0" dy="25" text-anchor="middle" dominant-baseline="central" fill="#fdfbf7" font-family="'Noto Serif SC', serif" font-weight="bold" font-size="260">汉</text>
-</svg>

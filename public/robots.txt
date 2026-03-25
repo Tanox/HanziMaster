@@ -1,5 +1,0 @@
-# public/robots.txt v0.7.1
-User-agent: *
-Allow: /
-
-Sitemap: https://hanzimaster.app/sitemap.xml
