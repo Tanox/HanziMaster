@@ -1,5 +1,9 @@
+// app/app.routes.ts v2.1.3
 import { Routes } from '@angular/router';
 
+/**
+ * Application routes configuration
+ */
 export const routes: Routes = [
   {
     path: '',

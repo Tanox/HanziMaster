@@ -1,3 +1,4 @@
+// app/app.ts v2.1.3
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { ThemeToggle } from './components/theme-toggle';
@@ -24,8 +25,8 @@ import { ThemeToggle } from './components/theme-toggle';
         <router-outlet></router-outlet>
       </main>
 
-      <footer class="bg-white border-t border-slate-200 py-8 px-6 text-center">
-        <p class="text-sm text-slate-500">© 2026 HanziMaster 汉字大师 v2.1.2. All rights reserved.</p>
+      <footer class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 py-8 px-6 text-center">
+        <p class="text-sm text-slate-500 dark:text-slate-400">© 2026 HanziMaster 汉字大师 v2.1.3. All rights reserved.</p>
       </footer>
     </div>
   `,
