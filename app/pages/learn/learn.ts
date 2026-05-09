@@ -40,18 +40,18 @@ interface Character {
         }
       </div>
 
-      @if (selectedCharacter()) {
+      @if (selectedCharacter(); as char) {
         <div class="mt-12 bg-white dark:bg-slate-800 rounded-3xl p-8 border border-slate-100 dark:border-slate-700 shadow-lg">
           <div class="flex flex-col md:flex-row gap-8 items-center">
             <div class="w-40 h-40 bg-slate-50 dark:bg-slate-900 rounded-2xl flex items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-600">
-              <span class="text-8xl text-slate-800 dark:text-slate-200 hanzi-font">{{ selectedCharacter()!.hanzi }}</span>
+              <span class="text-8xl text-slate-800 dark:text-slate-200 hanzi-font">{{ char.hanzi }}</span>
             </div>
             <div class="flex-1">
               <div class="flex items-center gap-4 mb-4">
-                <h3 class="text-3xl font-bold text-slate-900 dark:text-white hanzi-font">{{ selectedCharacter()!.hanzi }}</h3>
-                <span class="text-xl text-slate-500 dark:text-slate-400">{{ selectedCharacter()!.pinyin }}</span>
+                <h3 class="text-3xl font-bold text-slate-900 dark:text-white hanzi-font">{{ char.hanzi }}</h3>
+                <span class="text-xl text-slate-500 dark:text-slate-400">{{ char.pinyin }}</span>
               </div>
-              <p class="text-slate-600 dark:text-slate-300 text-lg mb-6">{{ selectedCharacter()!.meaning }}</p>
+              <p class="text-slate-600 dark:text-slate-300 text-lg mb-6">{{ char.meaning }}</p>
               <div class="flex gap-4">
                 <button class="bg-emerald-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-emerald-700 transition-colors flex items-center gap-2">
                   <mat-icon>edit</mat-icon>
