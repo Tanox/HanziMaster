@@ -1,4 +1,4 @@
-// app/pages/home/home.ts v2.1.3
+// app/pages/home/home.ts v2.1.4
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';

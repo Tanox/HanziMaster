@@ -1,4 +1,4 @@
-// app/pages/learn/learn.ts v2.1.3
+// app/pages/learn/learn.ts v2.1.4
 import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 

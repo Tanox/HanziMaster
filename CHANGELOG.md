@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.1.4]
+- Fixed CSS comment format (changed from /* */ to // style).
+- Added proper file headers to all configuration files (tsconfig, index.html).
+- Updated Tailwind theme configuration with --font-hanzi variable.
+- Updated .hanzi-font class to use CSS variable.
+- Added OpenSpec documentation for project standards.
+- Fixed duplicate header in tsconfig.json.
+- Updated all version references (v2.1.3 → v2.1.4).
+
 ## [2.1.3]
 - Added file header comments to all source files with versioning.
 - Implemented localStorage theme persistence for dark/light mode.

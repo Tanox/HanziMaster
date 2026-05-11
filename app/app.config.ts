@@ -1,4 +1,4 @@
-// app/app.config.ts v2.1.3
+// app/app.config.ts v2.1.4
 import { ApplicationConfig, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';

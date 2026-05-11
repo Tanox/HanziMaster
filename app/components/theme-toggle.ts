@@ -1,4 +1,4 @@
-// app/components/theme-toggle.ts v2.1.3
+// app/components/theme-toggle.ts v2.1.4
 import { Component, ChangeDetectionStrategy, signal, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 

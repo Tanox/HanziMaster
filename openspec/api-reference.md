@@ -1,50 +1,50 @@
-# API 참조
+# API 参考
 
-## 환경 변수
-애플리케이션은 다음 환경 변수를 사용합니다:
+## 环境变量
+应用程序使用以下环境变量：
 
 ```bash
-GEMINI_API_KEY=<your-api-key>
-APP_URL=<application-url>
-SHARED_APP_URL=<shared-application-url>
+GEMINI_API_KEY=<您的API密钥>
+APP_URL=<应用程序URL>
+SHARED_APP_URL=<共享应用程序URL>
 ```
 
-## 브라우저 요구사항
-- 최신 웹 브라우저 (Chrome, Firefox, Safari, Edge)
-- JavaScript 활성화 필요
-- localStorage 지원 필요
+## 浏览器要求
+- 现代浏览器 (Chrome, Firefox, Safari, Edge)
+- 需要启用 JavaScript
+- 需要支持 localStorage
 
-## 빌드 및 배포
+## 构建和部署
 
-### 개발 서버 시작
+### 启动开发服务器
 ```bash
 npm install
 npm start
 ```
-개발 서버: http://localhost:3000
+开发服务器: http://localhost:3000
 
-### 프로덕션 빌드
+### 生产构建
 ```bash
 npm run build
 ```
-출력 디렉토리: `dist/hanzi-master`
+输出目录: `dist/hanzi-master`
 
-### 테스트 실행
+### 运行测试
 ```bash
 npm test
 ```
 
-### 린트 검사
+### 运行代码检查
 ```bash
 npm run lint
 ```
 
-## 번들 크기 예산
-- 초기 번들: 최대 500KB (현재 594KB - 최적화 필요)
-- 컴포넌트 스타일: 최대 4KB
+## 包大小预算
+- 初始包: 最大 500KB (当前 594KB - 需要优化)
+- 组件样式: 最大 4KB
 
-## 애니메이션 프로바이더
-Angular Material 애니메이션을 위해 `provideAnimationsAsync()` 사용:
+## 动画提供者
+Angular Material 动画使用 `provideAnimationsAsync()`：
 
 ```typescript
 // app/app.config.ts
@@ -56,3 +56,16 @@ export const appConfig: ApplicationConfig = {
   ]
 };
 ```
+
+## 主题切换
+主题切换组件支持：
+- localStorage 持久化
+- 系统偏好检测
+- DOM 状态检查
+- 深色/浅色模式平滑切换
+
+## 字体配置
+Tailwind 主题中配置的字体：
+- `--font-sans`: Inter 字体
+- `--font-mono`: JetBrains Mono 字体
+- `--font-hanzi`: Noto Sans SC 中文字体

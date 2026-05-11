@@ -1,38 +1,38 @@
-# Git 커밋 템플릿
+# Git 提交模板
 
-## 커밋 메시지 규칙
-Angular 커밋 규칙 기반:
+## 提交消息规范
+基于 Angular 提交规范：
 
 ```
-<type>: <description>
+<类型>: <描述>
 
-[optional body]
+[可选正文]
 
-[optional footer]
+[可选页脚]
 ```
 
-## 타입 (Type)
-- `feat`: 새 기능
-- `fix`: 버그 수정
-- `docs`: 문서 변경
-- `style`: 코드 스타일 변경 (기능에 영향 없음)
-- `refactor`: 코드 리팩토링
-- `perf`: 성능 개선
-- `test`: 테스트 추가/수정
-- `build`: 빌드 시스템 변경
-- `ci`: CI/CD 변경
-- `chore`: 기타 변경사항
+## 类型 (Type)
+- `feat`: 新功能
+- `fix`: 缺陷修复
+- `docs`: 文档变更
+- `style`: 代码格式变更（不影响功能）
+- `refactor`: 代码重构
+- `perf`: 性能优化
+- `test`: 测试添加/修改
+- `build`: 构建系统变更
+- `ci`: CI/CD 配置变更
+- `chore`: 其他杂项变更
 
-## 규칙
-- 제목은 50자 이내
-- 소문자로 시작
-- 명령형 어조 사용
-- 마침표 사용 안 함
+## 规范
+- 标题限制在 50 字符以内
+- 首字母小写
+- 使用祈使语气
+- 不使用句号结尾
 
-## 예시
+## 示例
 ```
-feat: Implement character selection in Learn page
-fix: Resolve theme toggle initialization issue
-docs: Update README with new features
-refactor: Optimize theme persistence logic
+feat: 在学习页面实现字符选择功能
+fix: 解决主题切换组件初始化问题
+docs: 更新项目概述文档
+refactor: 优化主题持久化逻辑
 ```

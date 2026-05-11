@@ -1,4 +1,4 @@
-// app/main.ts v2.1.3
+// app/main.ts v2.1.4
 import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app.config';
 import { App } from './app';
