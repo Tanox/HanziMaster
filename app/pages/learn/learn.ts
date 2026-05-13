@@ -1,6 +1,7 @@
-// app/pages/learn/learn.ts v2.1.4
-import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
+// app/pages/learn/learn.ts v2.2.0
+import { Component, ChangeDetectionStrategy, signal, inject, computed } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { I18nService } from '../../i18n/i18n.service';
 
 interface Character {
   id: number;
@@ -16,18 +17,18 @@ interface Character {
     <div class="max-w-7xl mx-auto px-6 py-12">
       <div class="flex justify-between items-end mb-12">
         <div>
-          <h2 class="text-3xl font-bold tracking-tight mb-2 text-slate-900 dark:text-white">Daily Practice</h2>
-          <p class="text-slate-500 dark:text-slate-400">Master the most common 100 characters.</p>
+          <h2 class="text-3xl font-bold tracking-tight mb-2 text-slate-900 dark:text-white">{{ i18n.t().learn.title }}</h2>
+          <p class="text-slate-500 dark:text-slate-400">{{ i18n.t().learn.subtitle }}</p>
         </div>
         <div class="flex items-center gap-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-2 rounded-full">
           <mat-icon class="text-sm">local_fire_department</mat-icon>
-          <span>5 Day Streak</span>
+          <span>{{ i18n.t().learn.streak }}</span>
         </div>
       </div>
 
       <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
         @for (char of characters(); track char.id) {
-          <button 
+          <button
             (click)="selectCharacter(char)"
             class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all group text-center relative overflow-hidden"
           >
@@ -55,11 +56,11 @@ interface Character {
               <div class="flex gap-4">
                 <button class="bg-emerald-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-emerald-700 transition-colors flex items-center gap-2">
                   <mat-icon>edit</mat-icon>
-                  Practice Writing
+                  {{ i18n.t().learn.practiceWriting }}
                 </button>
                 <button class="bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 px-6 py-3 rounded-xl font-semibold hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors flex items-center gap-2">
                   <mat-icon>volume_up</mat-icon>
-                  Hear Pronunciation
+                  {{ i18n.t().learn.hearPronunciation }}
                 </button>
               </div>
             </div>
@@ -71,20 +72,30 @@ interface Character {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Learn {
-  characters = signal<Character[]>([
-    { id: 1, hanzi: '一', pinyin: 'yī', meaning: 'One' },
-    { id: 2, hanzi: '二', pinyin: 'èr', meaning: 'Two' },
-    { id: 3, hanzi: '三', pinyin: 'sān', meaning: 'Three' },
-    { id: 4, hanzi: '人', pinyin: 'rén', meaning: 'Person' },
-    { id: 5, hanzi: '大', pinyin: 'dà', meaning: 'Big' },
-    { id: 6, hanzi: '小', pinyin: 'xiǎo', meaning: 'Small' },
-    { id: 7, hanzi: '口', pinyin: 'kǒu', meaning: 'Mouth' },
-    { id: 8, hanzi: '日', pinyin: 'rì', meaning: 'Sun/Day' },
-    { id: 9, hanzi: '月', pinyin: 'yuè', meaning: 'Moon/Month' },
-    { id: 10, hanzi: '山', pinyin: 'shān', meaning: 'Mountain' },
-    { id: 11, hanzi: '水', pinyin: 'shuǐ', meaning: 'Water' },
-    { id: 12, hanzi: '火', pinyin: 'huǒ', meaning: 'Fire' },
-  ]);
+  i18n = inject(I18nService);
+
+  baseCharacters = [
+    { id: 1, hanzi: '一', pinyin: 'yī' },
+    { id: 2, hanzi: '二', pinyin: 'èr' },
+    { id: 3, hanzi: '三', pinyin: 'sān' },
+    { id: 4, hanzi: '人', pinyin: 'rén' },
+    { id: 5, hanzi: '大', pinyin: 'dà' },
+    { id: 6, hanzi: '小', pinyin: 'xiǎo' },
+    { id: 7, hanzi: '口', pinyin: 'kǒu' },
+    { id: 8, hanzi: '日', pinyin: 'rì' },
+    { id: 9, hanzi: '月', pinyin: 'yuè' },
+    { id: 10, hanzi: '山', pinyin: 'shān' },
+    { id: 11, hanzi: '水', pinyin: 'shuǐ' },
+    { id: 12, hanzi: '火', pinyin: 'huǒ' },
+  ] as const;
+
+  characters = computed<Character[]>(() => {
+    const translations = this.i18n.t().learn.characters;
+    return this.baseCharacters.map(char => ({
+      ...char,
+      meaning: translations[char.hanzi as keyof typeof translations]?.meaning || ''
+    }));
+  });
 
   selectedCharacterId = signal<number | null>(null);
   selectedCharacter = signal<Character | null>(null);

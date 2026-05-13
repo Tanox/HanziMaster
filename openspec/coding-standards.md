@@ -8,7 +8,7 @@
 
 示例：
 ```typescript
-// app/app.ts v2.1.4
+// app/app.ts v2.2.0
 ```
 
 ## 版本管理 (SemVer 2.0.0)
@@ -51,3 +51,12 @@
 - 所有函数必须包含简洁的注释
 - 复杂逻辑添加说明注释
 - 注释尽量单行简洁
+
+## 国际化 (i18n) 规范
+- 所有用户可见的文本必须通过 `I18nService` 进行翻译
+- 翻译文件位于 `app/i18n/locales/` 目录
+- 支持的语言: en, zh-CN, zh-TW, es, ar, fr, pt-BR, de, ja, ko, ru
+- 使用 `inject(I18nService)` 访问翻译服务
+- 通过 `i18n.t()` 访问翻译数据
+- 语言选择器使用 `LocaleToggle` 组件
+- 用户语言偏好自动保存到 localStorage

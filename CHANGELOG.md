@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.2.0]
+- Added complete i18n internationalization support with 11 languages: English, Simplified Chinese, Traditional Chinese, Spanish, Arabic, French, Portuguese (Brazil), German, Japanese, Korean, and Russian.
+- Created I18nService with automatic browser language detection and localStorage persistence.
+- Added LocaleToggle component for language switching.
+- Updated all components (App, Home, Learn) to use i18n translations.
+- Fixed vite.config.ts with proper version header and path alias.
+- Fixed angular.json test configuration with correct styles path.
+- Created missing tsconfig.spec.json file.
+- Updated all file headers with v2.2.0.
+- Updated metadata.json, package.json, and README files.
+- Updated CHANGELOG.md with v2.2.0 release notes.
+
 ## [2.1.4]
 - Fixed CSS comment format (changed from /* */ to // style).
 - Added proper file headers to all configuration files (tsconfig, index.html).

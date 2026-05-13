@@ -1,13 +1,15 @@
 {
-  "name": "HanziMaster 汉字大师 v2.1.4",
-  "version": "2.1.4",
-  "description": "v2.1.4: Fixed CSS comment format, added proper file headers for all files, updated font configuration in Tailwind theme, and added OpenSpec documentation for project standards.",
+  "name": "HanziMaster 汉字大师 v2.2.0",
+  "version": "2.2.0",
+  "description": "v2.2.0: Added complete i18n internationalization support with 11 languages, updated all components to use i18n, fixed configuration files, added locale switcher component, and updated all documentation.",
   "keywords": [
     "Chinese characters",
     "Hanzi",
     "OpenSpec",
     "PWA",
-    "Gemini AI"
+    "Gemini AI",
+    "i18n",
+    "internationalization"
   ],
   "requestFramePermissions": [],
   "googleAnalyticsId": "G-TZG68T8J31"

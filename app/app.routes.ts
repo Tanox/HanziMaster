@@ -1,4 +1,4 @@
-// app/app.routes.ts v2.1.4
+// app/app.routes.ts v2.2.0
 import { Routes } from '@angular/router';
 
 /**

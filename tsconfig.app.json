@@ -1,4 +1,4 @@
-// tsconfig.app.json v2.1.4
+// tsconfig.app.json v2.2.0
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {

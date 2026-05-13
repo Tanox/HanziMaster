@@ -1,4 +1,4 @@
-# HanziMaster 汉字大师 v2.1.3
+# HanziMaster 汉字大师 v2.2.0
 
 [English](README.md) | [简体中文](README_CN.md)
 
@@ -12,6 +12,8 @@ HanziMaster is a modern, AI-powered platform for learning Chinese characters. It
 - **Tailwind CSS 4.0**: Beautiful, responsive design.
 - **Dark/Light Mode**: Persistent theme preference with system detection.
 - **Chinese Font Support**: Noto Sans SC for elegant character display.
+- **Internationalization (i18n)**: Support for 11 languages including English, Chinese (Simplified/Traditional), Spanish, Arabic, French, Portuguese, German, Japanese, Korean, and Russian.
+- **Language Switcher**: Easy language switching with persistence.
 
 ## Tech Stack
 - **Framework**: Angular 21 (Zoneless)
@@ -20,6 +22,7 @@ HanziMaster is a modern, AI-powered platform for learning Chinese characters. It
 - **Icons**: Angular Material Icons
 - **Animations**: Motion (Vanilla JS)
 - **Fonts**: Inter, JetBrains Mono, Noto Sans SC
+- **Internationalization**: Custom i18n service with 11 languages
 
 ## Getting Started
 1. Install dependencies: `npm install`
