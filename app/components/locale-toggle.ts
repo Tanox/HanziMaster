@@ -1,7 +1,9 @@
 // app/components/locale-toggle.ts v2.2.0
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { I18nService } from '../i18n/i18n.service';
+
+type Locale = 'en' | 'zh-CN' | 'zh-TW' | 'es' | 'ar' | 'fr' | 'pt-BR' | 'de' | 'ja' | 'ko' | 'ru';
 
 @Component({
   selector: 'app-locale-toggle',
@@ -11,9 +13,9 @@ import { I18nService } from '../i18n/i18n.service';
       <button (click)="toggleMenu()" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
         <mat-icon>language</mat-icon>
       </button>
-      @if (isMenuOpen) {
+      @if (isMenuOpen()) {
         <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 z-50">
-          @for (locale of availableLocales; track locale) {
+          @for (locale of availableLocales(); track locale) {
             <button
               (click)="selectLocale(locale)"
               [class.bg-emerald-50]="i18n.getLocale() === locale"
@@ -33,10 +35,10 @@ import { I18nService } from '../i18n/i18n.service';
 })
 export class LocaleToggle {
   i18n = inject(I18nService);
-  isMenuOpen = false;
-  availableLocales = this.i18n.getAvailableLocales();
+  isMenuOpen = signal(false);
+  availableLocales = signal<Locale[]>(this.i18n.getAvailableLocales());
 
-  localeNames: Record<string, string> = {
+  localeNames: Record<Locale, string> = {
     'en': 'English',
     'zh-CN': '简体中文',
     'zh-TW': '繁體中文',
@@ -51,11 +53,11 @@ export class LocaleToggle {
   };
 
   toggleMenu() {
-    this.isMenuOpen = !this.isMenuOpen;
+    this.isMenuOpen.update(open => !open);
   }
 
-  selectLocale(locale: string) {
-    this.i18n.setLocale(locale as any);
-    this.isMenuOpen = false;
+  selectLocale(locale: Locale) {
+    this.i18n.setLocale(locale);
+    this.isMenuOpen.set(false);
   }
 }
