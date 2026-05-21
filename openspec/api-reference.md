@@ -1,49 +1,61 @@
 # API 参考
 
-## 环境变量
+## 1. 环境变量
+
 应用程序使用以下环境变量：
 
-```bash
-GEMINI_API_KEY=<您的API密钥>
-APP_URL=<应用程序URL>
-SHARED_APP_URL=<共享应用程序URL>
-```
+| 变量名 | 说明 |
+|--------|------|
+| `GEMINI_API_KEY` | Gemini AI API 密钥 |
+| `APP_URL` | 应用程序 URL |
+| `SHARED_APP_URL` | 共享应用程序 URL |
 
-## 浏览器要求
+## 2. 浏览器要求
+
 - 现代浏览器 (Chrome, Firefox, Safari, Edge)
 - 需要启用 JavaScript
 - 需要支持 localStorage
 
-## 构建和部署
+## 3. 构建和部署
 
-### 启动开发服务器
+### 3.1 启动开发服务器
+
 ```bash
 npm install
 npm start
 ```
-开发服务器: http://localhost:3000
 
-### 生产构建
+开发服务器: `http://localhost:3000`
+
+### 3.2 生产构建
+
 ```bash
 npm run build
 ```
+
 输出目录: `dist/hanzi-master`
 
-### 运行测试
+### 3.3 运行测试
+
 ```bash
 npm test
 ```
 
-### 运行代码检查
+### 3.4 运行代码检查
+
 ```bash
 npm run lint
 ```
 
-## 包大小预算
-- 初始包: 最大 500KB (当前约 629KB)
-- 组件样式: 最大 4KB
+## 4. 包大小预算
 
-## 动画提供者
+| 资源类型 | 限制 | 当前值 |
+|----------|------|--------|
+| 初始包 | 最大 500KB | 约 629KB |
+| 组件样式 | 最大 4KB | - |
+
+## 5. 动画提供者
+
 Angular Material 动画使用 `provideAnimationsAsync()`：
 
 ```typescript
@@ -57,14 +69,16 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-## 主题切换
+## 6. 主题切换
+
 主题切换组件支持：
 - localStorage 持久化（key: `hanzi-master-theme`）
 - 系统偏好检测（`prefers-color-scheme: dark`）
 - DOM 状态检查（`dark` class）
 - 深色/浅色模式平滑切换
 
-### ThemeToggle 组件
+### 6.1 ThemeToggle 组件
+
 ```typescript
 // app/components/theme-toggle.ts
 @Component({
@@ -84,9 +98,10 @@ export class ThemeToggle implements OnInit {
 }
 ```
 
-## 国际化 (i18n) 服务
+## 7. 国际化 (i18n) 服务
 
-### I18nService API
+### 7.1 I18nService API
+
 I18nService 提供完整的国际化支持：
 
 ```typescript
@@ -107,7 +122,8 @@ export class I18nService {
 }
 ```
 
-### 支持的语言
+### 7.2 支持的语言
+
 ```typescript
 type Locale = 
   | 'en'           // 英语
@@ -123,7 +139,8 @@ type Locale =
   | 'ru';          // 俄语
 ```
 
-### 语言文件结构
+### 7.3 语言文件结构
+
 ```typescript
 // app/i18n/locales/en.ts
 export const en = {
@@ -175,7 +192,8 @@ export const en = {
 };
 ```
 
-### LocaleToggle 组件
+### 7.4 LocaleToggle 组件
+
 语言切换器组件：
 
 ```typescript
@@ -183,13 +201,14 @@ export const en = {
 @Component({
   selector: 'app-locale-toggle',
   imports: [MatIconModule],
-  template: `...`
+  template: `...`,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LocaleToggle {
   i18n = inject(I18nService);
+  isMenuOpen = signal(false);
   
-  // 语言名称映射
-  localeNames: Record<string, string> = {
+  localeNames: Record<Locale, string> = {
     'en': 'English',
     'zh-CN': '简体中文',
     'zh-TW': '繁體中文',
@@ -204,11 +223,12 @@ export class LocaleToggle {
   };
   
   toggleMenu(): void;
-  selectLocale(locale: string): void;
+  selectLocale(locale: Locale): void;
 }
 ```
 
-### 在组件中使用 i18n
+### 7.5 在组件中使用 i18n
+
 ```typescript
 // app/pages/home/home.ts
 @Component({ ... })
@@ -221,18 +241,24 @@ export class Home {
 }
 ```
 
-### 语言检测优先级
+### 7.6 语言检测优先级
+
 1. localStorage 中保存的用户偏好（key: `hanzi-master-locale`）
 2. 浏览器语言设置
 3. 默认语言（英语）
 
-## 字体配置
-Tailwind 主题中配置的字体：
-- `--font-sans`: Inter 字体
-- `--font-mono`: JetBrains Mono 字体
-- `--font-hanzi`: Noto Sans SC 中文字体
+## 8. 字体配置
 
-### hanzi-font 类
+Tailwind 主题中配置的字体：
+
+| 字体变量 | 字体名称 |
+|----------|----------|
+| `--font-sans` | Inter |
+| `--font-mono` | JetBrains Mono |
+| `--font-hanzi` | Noto Sans SC |
+
+### 8.1 hanzi-font 类
+
 用于显示汉字的专用类：
 
 ```css
@@ -243,11 +269,13 @@ Tailwind 主题中配置的字体：
 ```
 
 使用示例：
+
 ```html
 <span class="text-4xl font-bold hanzi-font">永</span>
 ```
 
-## 路由配置
+## 9. 路由配置
+
 应用使用懒加载路由：
 
 ```typescript
@@ -264,9 +292,10 @@ export const routes: Routes = [
 ];
 ```
 
-## 数据结构
+## 10. 数据结构
 
-### Character 接口
+### 10.1 Character 接口
+
 ```typescript
 // app/pages/learn/learn.ts
 interface Character {
@@ -277,15 +306,17 @@ interface Character {
 }
 ```
 
-## 组件规范
+## 11. 组件规范
 
-### 必需的导入
+### 11.1 必需的导入
+
 ```typescript
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 ```
 
-### 组件装饰器
+### 11.2 组件装饰器
+
 ```typescript
 @Component({
   selector: 'app-[component-name]',
@@ -294,3 +325,9 @@ import { MatIconModule } from '@angular/material/icon';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 ```
+
+## 12. 相关文档
+
+- [项目概述](overview.md) - 项目基本信息和技术栈
+- [编码规范](coding-standards.md) - 项目编码标准和最佳实践
+- [提交模板](commit-template.md) - Git 提交消息规范
