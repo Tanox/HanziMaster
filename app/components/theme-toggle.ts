@@ -21,17 +21,23 @@ export class ThemeToggle implements OnInit {
    * Initialize theme from localStorage, system preference, or DOM state
    */
   ngOnInit() {
-    const savedTheme = localStorage.getItem(STORAGE_KEY);
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const hasDarkClass = document.documentElement.classList.contains('dark');
+    let shouldBeDark: boolean = false;
     
-    let shouldBeDark: boolean;
-    if (savedTheme !== null) {
-      shouldBeDark = savedTheme === 'dark';
-    } else {
-      shouldBeDark = hasDarkClass || prefersDark;
+    try {
+      const savedTheme = localStorage.getItem(STORAGE_KEY);
+      if (savedTheme !== null) {
+        shouldBeDark = savedTheme === 'dark';
+      } else {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        shouldBeDark = prefersDark;
+      }
+    } catch (e) {
+      console.warn('Failed to read theme from localStorage:', e);
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      shouldBeDark = prefersDark;
     }
     
+    const hasDarkClass = document.documentElement.classList.contains('dark');
     this.isDark.set(shouldBeDark);
     
     if (shouldBeDark && !hasDarkClass) {
@@ -55,6 +61,10 @@ export class ThemeToggle implements OnInit {
       document.documentElement.classList.remove('dark');
     }
     
-    localStorage.setItem(STORAGE_KEY, newTheme);
+    try {
+      localStorage.setItem(STORAGE_KEY, newTheme);
+    } catch (e) {
+      console.warn('Failed to save theme to localStorage:', e);
+    }
   }
 }

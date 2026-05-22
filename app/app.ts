@@ -17,7 +17,7 @@ import { I18nService } from './i18n/i18n.service';
         </a>
         <nav class="flex items-center gap-4">
           <a routerLink="/learn" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition-colors">{{ i18n.t().app.learn }}</a>
-          <button class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition-colors">{{ i18n.t().app.practice }}</button>
+          <a routerLink="/learn" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition-colors">{{ i18n.t().app.practice }}</a>
           <app-locale-toggle></app-locale-toggle>
           <app-theme-toggle></app-theme-toggle>
           <button class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700 transition-colors">{{ i18n.t().app.signIn }}</button>

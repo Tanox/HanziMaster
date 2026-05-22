@@ -43,13 +43,18 @@ export class I18nService {
   }
 
   private initLocale() {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved && saved in locales) {
-      this.currentLocale.set(saved as Locale);
-    } else {
-      const browserLocale = this.getBrowserLocale();
-      this.currentLocale.set(browserLocale);
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved && saved in locales) {
+        this.currentLocale.set(saved as Locale);
+        return;
+      }
+    } catch (e) {
+      console.warn('Failed to read from localStorage:', e);
     }
+    
+    const browserLocale = this.getBrowserLocale();
+    this.currentLocale.set(browserLocale);
   }
 
   private getBrowserLocale(): Locale {
@@ -70,7 +75,11 @@ export class I18nService {
 
   setLocale(locale: Locale) {
     this.currentLocale.set(locale);
-    localStorage.setItem(STORAGE_KEY, locale);
+    try {
+      localStorage.setItem(STORAGE_KEY, locale);
+    } catch (e) {
+      console.warn('Failed to write to localStorage:', e);
+    }
   }
 
   getLocale() {

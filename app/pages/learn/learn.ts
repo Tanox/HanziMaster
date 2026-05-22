@@ -1,5 +1,5 @@
 // app/pages/learn/learn.ts v2.2.0
-import { Component, ChangeDetectionStrategy, signal, inject, computed } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, inject, computed, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { I18nService } from '../../i18n/i18n.service';
 
@@ -71,7 +71,7 @@ interface Character {
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Learn {
+export class Learn implements OnInit {
   i18n = inject(I18nService);
 
   baseCharacters = [
@@ -100,11 +100,22 @@ export class Learn {
   selectedCharacterId = signal<number | null>(null);
   selectedCharacter = signal<Character | null>(null);
 
+  ngOnInit() {
+    if (this.characters().length > 0) {
+      this.selectCharacter(this.characters()[0]);
+    }
+  }
+
   /**
-   * Select a character to view details
+   * Select a character to view details, or deselect if already selected
    */
   selectCharacter(char: Character) {
-    this.selectedCharacterId.set(char.id);
-    this.selectedCharacter.set(char);
+    if (this.selectedCharacterId() === char.id) {
+      this.selectedCharacterId.set(null);
+      this.selectedCharacter.set(null);
+    } else {
+      this.selectedCharacterId.set(char.id);
+      this.selectedCharacter.set(char);
+    }
   }
 }
