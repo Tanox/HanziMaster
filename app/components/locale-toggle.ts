@@ -9,7 +9,7 @@ type Locale = 'en' | 'zh-CN' | 'zh-TW' | 'es' | 'ar' | 'fr' | 'pt-BR' | 'de' | '
   selector: 'app-locale-toggle',
   imports: [MatIconModule],
   template: `
-    <div class="relative" #menuContainer>
+    <div class="relative">
       <button (click)="toggleMenu($event)" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
         <mat-icon>language</mat-icon>
       </button>
