@@ -1,0 +1,11 @@
+{
+  "buildCommand": "npm run build:prod",
+  "outputDirectory": "dist/hanzi-master",
+  "framework": null,
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
