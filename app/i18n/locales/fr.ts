@@ -41,7 +41,7 @@ export const fr = {
   },
   learn: {
     title: 'Pratique Quotidienne',
-    subtitle: 'Maîtrisez les 100 caractères les plus courants.',
+    subtitle: 'Maîtrisez les 12 caractères les plus courants.',
     streak: 'Série de 5 Jours',
     practiceWriting: 'Pratique de l\'écriture',
     hearPronunciation: 'Écouter la Prononciation',

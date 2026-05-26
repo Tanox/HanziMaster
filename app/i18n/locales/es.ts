@@ -41,7 +41,7 @@ export const es = {
   },
   learn: {
     title: 'Práctica Diaria',
-    subtitle: 'Domina los 100 caracteres más comunes.',
+    subtitle: 'Domina los 12 caracteres más comunes.',
     streak: 'Racha de 5 Días',
     practiceWriting: 'Practicar Escritura',
     hearPronunciation: 'Escuchar Pronunciación',

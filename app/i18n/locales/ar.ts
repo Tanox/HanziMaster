@@ -41,7 +41,7 @@ export const ar = {
   },
   learn: {
     title: 'ممارسة يومية',
-    subtitle: 'أتقن 100 حرف الأكثر استخداماً.',
+    subtitle: 'أتقن 12 حرف الأكثر استخداماً.',
     streak: 'سلسلة 5 أيام',
     practiceWriting: 'ممارسة الكتابة',
     hearPronunciation: 'استمع إلى النطق',

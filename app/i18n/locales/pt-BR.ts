@@ -41,7 +41,7 @@ export const ptBR = {
   },
   learn: {
     title: 'Prática Diária',
-    subtitle: 'Domine os 100 caracteres mais comuns.',
+    subtitle: 'Domine os 12 caracteres mais comuns.',
     streak: 'Sequência de 5 Dias',
     practiceWriting: 'Praticar Escrita',
     hearPronunciation: 'Ouvir Pronúncia',

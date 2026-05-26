@@ -41,7 +41,7 @@ export const zhTW = {
   },
   learn: {
     title: '每日練習',
-    subtitle: '掌握最常用的 100 個漢字。',
+    subtitle: '掌握最常用的 12 個漢字。',
     streak: '連續 5 天',
     practiceWriting: '練習書寫',
     hearPronunciation: '聽發音',

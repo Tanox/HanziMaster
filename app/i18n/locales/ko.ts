@@ -41,7 +41,7 @@ export const ko = {
   },
   learn: {
     title: '매일 연습',
-    subtitle: '가장 일반적인 100자를 마스터하세요.',
+    subtitle: '가장 일반적인 12자를 마스터하세요.',
     streak: '5일 연속',
     practiceWriting: '쓰기 연습',
     hearPronunciation: '발음 듣기',

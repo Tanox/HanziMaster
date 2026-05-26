@@ -41,7 +41,7 @@ export const ja = {
   },
   learn: {
     title: '毎日の練習',
-    subtitle: '最も一般的な100文字をマスターしましょう。',
+    subtitle: '最も一般的な12文字をマスターしましょう。',
     streak: '5日連続',
     practiceWriting: '書き方練習',
     hearPronunciation: '発音を聞く',
