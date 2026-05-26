@@ -41,7 +41,7 @@ export const de = {
   },
   learn: {
     title: 'Tägliche Übung',
-    subtitle: 'Meistern Sie die 100 häufigsten Zeichen.',
+    subtitle: 'Meistern Sie die 12 häufigsten Zeichen.',
     streak: '5 Tage Streak',
     practiceWriting: 'Schreiben üben',
     hearPronunciation: 'Aussprache hören',
