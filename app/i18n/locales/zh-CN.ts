@@ -41,23 +41,23 @@ export const zhCN = {
   },
   learn: {
     title: '每日练习',
-    subtitle: '掌握最常用的 100 个汉字。',
+    subtitle: '掌握最常用的 12 个汉字。',
     streak: '连续 5 天',
     practiceWriting: '练习书写',
     hearPronunciation: '听发音',
     characters: {
-      '一': { meaning: '一' },
-      '二': { meaning: '二' },
-      '三': { meaning: '三' },
-      '人': { meaning: '人' },
-      '大': { meaning: '大' },
-      '小': { meaning: '小' },
-      '口': { meaning: '口' },
-      '日': { meaning: '日' },
-      '月': { meaning: '月' },
-      '山': { meaning: '山' },
-      '水': { meaning: '水' },
-      '火': { meaning: '火' }
+      '一': { meaning: '一（数字1）' },
+      '二': { meaning: '二（数字2）' },
+      '三': { meaning: '三（数字3）' },
+      '人': { meaning: '人（人类）' },
+      '大': { meaning: '大（大小）' },
+      '小': { meaning: '小（大小）' },
+      '口': { meaning: '口（嘴巴）' },
+      '日': { meaning: '日（太阳/天）' },
+      '月': { meaning: '月（月亮/月份）' },
+      '山': { meaning: '山（山脉）' },
+      '水': { meaning: '水（水）' },
+      '火': { meaning: '火（火）' }
     }
   },
   theme: {

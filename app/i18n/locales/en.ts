@@ -41,7 +41,7 @@ export const en = {
   },
   learn: {
     title: 'Daily Practice',
-    subtitle: 'Master the most common 100 characters.',
+    subtitle: 'Master the most common 12 characters.',
     streak: '5 Day Streak',
     practiceWriting: 'Practice Writing',
     hearPronunciation: 'Hear Pronunciation',
