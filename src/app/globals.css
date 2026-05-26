@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&display=swap');
+
+:root {
+  --primary: #10b981;
+  --primary-dark: #059669;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+@layer utilities {
+  .hanzi-font {
+    font-family: var(--font-hanzi);
+  }
+}
+
+@layer base {
+  :root {
+    --background: #f8fafc;
+    --foreground: #0f172a;
+  }
+
+  .dark {
+    --background: #0f172a;
+    --foreground: #f1f5f9;
+  }
+}
