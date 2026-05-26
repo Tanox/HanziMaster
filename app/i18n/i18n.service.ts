@@ -47,6 +47,7 @@ export class I18nService {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved && saved in locales) {
         this.currentLocale.set(saved as Locale);
+        document.documentElement.lang = saved;
         return;
       }
     } catch (e) {
@@ -55,6 +56,7 @@ export class I18nService {
     
     const browserLocale = this.getBrowserLocale();
     this.currentLocale.set(browserLocale);
+    document.documentElement.lang = browserLocale;
   }
 
   private getBrowserLocale(): Locale {
@@ -75,6 +77,7 @@ export class I18nService {
 
   setLocale(locale: Locale) {
     this.currentLocale.set(locale);
+    document.documentElement.lang = locale;
     try {
       localStorage.setItem(STORAGE_KEY, locale);
     } catch (e) {
