@@ -1,6 +1,6 @@
+// vite.config.ts v2.2.0
 import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
-
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => {
       },
       resolve: {
         alias: {
-          '@': path.resolve(__dirname, '.'),
+          '@app': path.resolve(__dirname, './app'),
         }
       }
     };

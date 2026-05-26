@@ -1,3 +1,4 @@
+// tsconfig.json v2.2.0
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -22,7 +23,7 @@
     ],
     "baseUrl": "./",
     "paths": {
-      "@app/*": ["src/app/*"]
+      "@app/*": ["app/*"]
     }
   },
   "angularCompilerOptions": {
