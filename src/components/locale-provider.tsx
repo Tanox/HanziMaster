@@ -1,8 +1,7 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect } from 'react';
-
-type Locale = 'en' | 'zh-CN' | 'zh-TW' | 'es' | 'ar' | 'fr' | 'pt-BR' | 'de' | 'ja' | 'ko' | 'ru';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { Locale, Translations, translations, locales } from '@/lib/i18n';
 
 type LocaleProviderProps = {
   children: React.ReactNode;
@@ -12,16 +11,22 @@ type LocaleProviderProps = {
 
 type LocaleProviderState = {
   locale: Locale;
+  t: (key: string) => string;
   setLocale: (locale: Locale) => void;
   availableLocales: Locale[];
 };
 
 const STORAGE_KEY = 'hanzi-master-locale';
 
-const locales: Locale[] = ['en', 'zh-CN', 'zh-TW', 'es', 'ar', 'fr', 'pt-BR', 'de', 'ja', 'ko', 'ru'];
+const getNestedValue = (obj: any, path: string): string => {
+  return path.split('.').reduce((current, key) => {
+    return current && current[key] !== undefined ? current[key] : path;
+  }, obj);
+};
 
 const initialState: LocaleProviderState = {
   locale: 'en',
+  t: (key: string) => key,
   setLocale: () => null,
   availableLocales: locales,
 };
@@ -73,7 +78,7 @@ export function LocaleProvider({
     return 'en';
   };
 
-  const setLocale = (newLocale: Locale) => {
+  const setLocale = useCallback((newLocale: Locale) => {
     try {
       localStorage.setItem(storageKey, newLocale);
       setLocaleState(newLocale);
@@ -81,10 +86,15 @@ export function LocaleProvider({
     } catch (e) {
       console.warn('Failed to write to localStorage:', e);
     }
-  };
+  }, [storageKey]);
+
+  const t = useCallback((key: string): string => {
+    return getNestedValue(translations[locale], key);
+  }, [locale]);
 
   const value = {
     locale,
+    t,
     setLocale,
     availableLocales: locales,
   };
@@ -103,4 +113,9 @@ export const useLocale = () => {
     throw new Error('useLocale must be used within a LocaleProvider');
 
   return context;
+};
+
+export const useTranslation = () => {
+  const { t } = useLocale();
+  return { t };
 };
