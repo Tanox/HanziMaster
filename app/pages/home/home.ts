@@ -13,22 +13,22 @@ import { I18nService } from '../../i18n/i18n.service';
         <div class="space-y-8 animate-fade-in">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-semibold uppercase tracking-wider">
             <mat-icon class="text-xs">auto_awesome</mat-icon>
-            <span>{{ i18n.t().home.poweredBy }}</span>
+            <span>{{ t().home.poweredBy }}</span>
           </div>
           <h2 class="text-5xl lg:text-7xl font-bold tracking-tight text-slate-900 dark:text-white leading-[1.1]">
-            {{ i18n.t().home.hero.title1 }} <br/>
-            <span class="text-emerald-600 italic">{{ i18n.t().home.hero.title2 }}</span> {{ i18n.t().home.hero.title3 }}
+            {{ t().home.hero.title1 }} <br/>
+            <span class="text-emerald-600 italic">{{ t().home.hero.title2 }}</span> {{ t().home.hero.title3 }}
           </h2>
           <p class="text-lg text-slate-600 dark:text-slate-300 max-w-lg leading-relaxed">
-            {{ i18n.t().home.hero.description }}
+            {{ t().home.hero.description }}
           </p>
           <div class="flex flex-wrap gap-4 pt-4">
             <button routerLink="/learn" class="bg-emerald-600 text-white px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-200 dark:shadow-emerald-900/20 hover:scale-105 active:scale-95 flex items-center gap-2">
-              {{ i18n.t().home.hero.startLearning }}
+              {{ t().home.hero.startLearning }}
               <mat-icon>arrow_forward</mat-icon>
             </button>
             <button class="bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center gap-2">
-              {{ i18n.t().home.hero.exploreLibrary }}
+              {{ t().home.hero.exploreLibrary }}
               <mat-icon>library_books</mat-icon>
             </button>
           </div>
@@ -40,7 +40,7 @@ import { I18nService } from '../../i18n/i18n.service';
             <div class="flex justify-between items-start mb-8">
               <div>
                 <span class="text-4xl font-bold text-slate-900 dark:text-white hanzi-font">永</span>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">{{ i18n.t().home.demoCard.characterLabel }}</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">{{ t().home.demoCard.characterLabel }}</p>
               </div>
               <div class="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 p-2 rounded-xl">
                 <mat-icon>brush</mat-icon>
@@ -56,13 +56,13 @@ import { I18nService } from '../../i18n/i18n.service';
 
             <div class="mt-8 space-y-4">
               <div class="flex justify-between items-center text-sm">
-                <span class="text-slate-500 dark:text-slate-400">{{ i18n.t().home.demoCard.strokeCountLabel }}</span>
-                <span class="font-semibold text-slate-900 dark:text-white">{{ i18n.t().home.demoCard.strokeCountValue }}</span>
+                <span class="text-slate-500 dark:text-slate-400">{{ t().home.demoCard.strokeCountLabel }}</span>
+                <span class="font-semibold text-slate-900 dark:text-white">{{ t().home.demoCard.strokeCountValue }}</span>
               </div>
               <div class="w-full bg-slate-100 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
                 <div class="bg-emerald-500 h-full w-3/5"></div>
               </div>
-              <p class="text-xs text-slate-400 dark:text-slate-500 text-center italic">{{ i18n.t().home.demoCard.note }}</p>
+              <p class="text-xs text-slate-400 dark:text-slate-500 text-center italic">{{ t().home.demoCard.note }}</p>
             </div>
           </div>
         </div>
@@ -73,27 +73,27 @@ import { I18nService } from '../../i18n/i18n.service';
           <div class="w-12 h-12 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
             <mat-icon>psychology</mat-icon>
           </div>
-          <h3 class="text-xl font-bold mb-3 text-slate-900 dark:text-white">{{ i18n.t().home.features.aiInsights.title }}</h3>
+          <h3 class="text-xl font-bold mb-3 text-slate-900 dark:text-white">{{ t().home.features.aiInsights.title }}</h3>
           <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
-            {{ i18n.t().home.features.aiInsights.description }}
+            {{ t().home.features.aiInsights.description }}
           </p>
         </div>
         <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow group">
           <div class="w-12 h-12 bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
             <mat-icon>history_edu</mat-icon>
           </div>
-          <h3 class="text-xl font-bold mb-3 text-slate-900 dark:text-white">{{ i18n.t().home.features.etymology.title }}</h3>
+          <h3 class="text-xl font-bold mb-3 text-slate-900 dark:text-white">{{ t().home.features.etymology.title }}</h3>
           <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
-            {{ i18n.t().home.features.etymology.description }}
+            {{ t().home.features.etymology.description }}
           </p>
         </div>
         <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow group">
           <div class="w-12 h-12 bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
             <mat-icon>track_changes</mat-icon>
           </div>
-          <h3 class="text-xl font-bold mb-3 text-slate-900 dark:text-white">{{ i18n.t().home.features.adaptiveLearning.title }}</h3>
+          <h3 class="text-xl font-bold mb-3 text-slate-900 dark:text-white">{{ t().home.features.adaptiveLearning.title }}</h3>
           <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
-            {{ i18n.t().home.features.adaptiveLearning.description }}
+            {{ t().home.features.adaptiveLearning.description }}
           </p>
         </div>
       </div>
@@ -103,4 +103,5 @@ import { I18nService } from '../../i18n/i18n.service';
 })
 export class Home {
   i18n = inject(I18nService);
+  t = this.i18n.t;
 }

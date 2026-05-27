@@ -17,12 +17,12 @@ interface Character {
     <div class="max-w-7xl mx-auto px-6 py-12">
       <div class="flex justify-between items-end mb-12">
         <div>
-          <h2 class="text-3xl font-bold tracking-tight mb-2 text-slate-900 dark:text-white">{{ i18n.t().learn.title }}</h2>
-          <p class="text-slate-500 dark:text-slate-400">{{ i18n.t().learn.subtitle }}</p>
+          <h2 class="text-3xl font-bold tracking-tight mb-2 text-slate-900 dark:text-white">{{ t().learn.title }}</h2>
+          <p class="text-slate-500 dark:text-slate-400">{{ t().learn.subtitle }}</p>
         </div>
         <div class="flex items-center gap-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-2 rounded-full">
           <mat-icon class="text-sm">local_fire_department</mat-icon>
-          <span>{{ i18n.t().learn.streak }}</span>
+          <span>{{ t().learn.streak }}</span>
         </div>
       </div>
 
@@ -56,11 +56,11 @@ interface Character {
               <div class="flex gap-4">
                 <button class="bg-emerald-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-emerald-700 transition-colors flex items-center gap-2">
                   <mat-icon>edit</mat-icon>
-                  {{ i18n.t().learn.practiceWriting }}
+                  {{ t().learn.practiceWriting }}
                 </button>
                 <button class="bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 px-6 py-3 rounded-xl font-semibold hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors flex items-center gap-2">
                   <mat-icon>volume_up</mat-icon>
-                  {{ i18n.t().learn.hearPronunciation }}
+                  {{ t().learn.hearPronunciation }}
                 </button>
               </div>
             </div>
@@ -73,6 +73,7 @@ interface Character {
 })
 export class Learn implements OnInit {
   i18n = inject(I18nService);
+  t = this.i18n.t;
 
   baseCharacters = [
     { id: 1, hanzi: '一', pinyin: 'yī' },
@@ -90,7 +91,7 @@ export class Learn implements OnInit {
   ] as const;
 
   characters = computed<Character[]>(() => {
-    const translations = this.i18n.t().learn.characters;
+    const translations = this.t().learn.characters;
     return this.baseCharacters.map(char => ({
       ...char,
       meaning: translations[char.hanzi as keyof typeof translations]?.meaning || ''
@@ -98,11 +99,16 @@ export class Learn implements OnInit {
   });
 
   selectedCharacterId = signal<number | null>(null);
-  selectedCharacter = signal<Character | null>(null);
+  
+  selectedCharacter = computed(() => {
+    const id = this.selectedCharacterId();
+    if (id === null) return null;
+    return this.characters().find(c => c.id === id) || null;
+  });
 
   ngOnInit() {
     if (this.characters().length > 0) {
-      this.selectCharacter(this.characters()[0]);
+      this.selectedCharacterId.set(this.characters()[0].id);
     }
   }
 
@@ -112,10 +118,8 @@ export class Learn implements OnInit {
   selectCharacter(char: Character) {
     if (this.selectedCharacterId() === char.id) {
       this.selectedCharacterId.set(null);
-      this.selectedCharacter.set(null);
     } else {
       this.selectedCharacterId.set(char.id);
-      this.selectedCharacter.set(char);
     }
   }
 }

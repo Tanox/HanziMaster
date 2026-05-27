@@ -16,11 +16,11 @@ import { I18nService } from './i18n/i18n.service';
           <h1 class="text-xl font-semibold tracking-tight">HanziMaster</h1>
         </a>
         <nav class="flex items-center gap-4">
-          <a routerLink="/learn" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition-colors">{{ i18n.t().app.learn }}</a>
-          <a routerLink="/learn" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition-colors">{{ i18n.t().app.practice }}</a>
+          <a routerLink="/learn" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition-colors">{{ t().app.learn }}</a>
+          <a routerLink="/learn" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition-colors">{{ t().app.practice }}</a>
           <app-locale-toggle></app-locale-toggle>
           <app-theme-toggle></app-theme-toggle>
-          <button class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700 transition-colors">{{ i18n.t().app.signIn }}</button>
+          <button class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700 transition-colors">{{ t().app.signIn }}</button>
         </nav>
       </header>
 
@@ -29,7 +29,7 @@ import { I18nService } from './i18n/i18n.service';
       </main>
 
       <footer class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 py-8 px-6 text-center">
-        <p class="text-sm text-slate-500 dark:text-slate-400">{{ i18n.t().app.copyright }}</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400">{{ t().app.copyright }}</p>
       </footer>
     </div>
   `,
@@ -37,4 +37,5 @@ import { I18nService } from './i18n/i18n.service';
 })
 export class App {
   i18n = inject(I18nService);
+  t = this.i18n.t;
 }
