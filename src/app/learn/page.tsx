@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslation } from '@/components/locale-provider';
 
 const STORAGE_KEY = 'hanzi-master-theme';
 
@@ -9,25 +10,27 @@ interface Character {
   hanzi: string;
   pinyin: string;
   meaning: string;
+  translationKey: string;
 }
 
 export default function LearnPage() {
+  const { t } = useTranslation();
   const [selectedCharacterId, setSelectedCharacterId] = useState<number | null>(null);
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
 
-  const baseCharacters = [
-    { id: 1, hanzi: '一', pinyin: 'yī', meaning: 'One' },
-    { id: 2, hanzi: '二', pinyin: 'èr', meaning: 'Two' },
-    { id: 3, hanzi: '三', pinyin: 'sān', meaning: 'Three' },
-    { id: 4, hanzi: '人', pinyin: 'rén', meaning: 'Person' },
-    { id: 5, hanzi: '大', pinyin: 'dà', meaning: 'Big' },
-    { id: 6, hanzi: '小', pinyin: 'xiǎo', meaning: 'Small' },
-    { id: 7, hanzi: '口', pinyin: 'kǒu', meaning: 'Mouth' },
-    { id: 8, hanzi: '日', pinyin: 'rì', meaning: 'Sun/Day' },
-    { id: 9, hanzi: '月', pinyin: 'yuè', meaning: 'Moon/Month' },
-    { id: 10, hanzi: '山', pinyin: 'shān', meaning: 'Mountain' },
-    { id: 11, hanzi: '水', pinyin: 'shuǐ', meaning: 'Water' },
-    { id: 12, hanzi: '火', pinyin: 'huǒ', meaning: 'Fire' },
+  const baseCharacters: Character[] = [
+    { id: 1, hanzi: '一', pinyin: 'yī', meaning: '', translationKey: 'learn.one' },
+    { id: 2, hanzi: '二', pinyin: 'èr', meaning: '', translationKey: 'learn.two' },
+    { id: 3, hanzi: '三', pinyin: 'sān', meaning: '', translationKey: 'learn.three' },
+    { id: 4, hanzi: '人', pinyin: 'rén', meaning: '', translationKey: 'learn.person' },
+    { id: 5, hanzi: '大', pinyin: 'dà', meaning: '', translationKey: 'learn.big' },
+    { id: 6, hanzi: '小', pinyin: 'xiǎo', meaning: '', translationKey: 'learn.small' },
+    { id: 7, hanzi: '口', pinyin: 'kǒu', meaning: '', translationKey: 'learn.mouth' },
+    { id: 8, hanzi: '日', pinyin: 'rì', meaning: '', translationKey: 'learn.sunDay' },
+    { id: 9, hanzi: '月', pinyin: 'yuè', meaning: '', translationKey: 'learn.moonMonth' },
+    { id: 10, hanzi: '山', pinyin: 'shān', meaning: '', translationKey: 'learn.mountain' },
+    { id: 11, hanzi: '水', pinyin: 'shuǐ', meaning: '', translationKey: 'learn.water' },
+    { id: 12, hanzi: '火', pinyin: 'huǒ', meaning: '', translationKey: 'learn.fire' },
   ];
 
   useEffect(() => {
@@ -51,14 +54,14 @@ export default function LearnPage() {
     <div className="max-w-7xl mx-auto px-6 py-12">
       <div className="flex justify-between items-end mb-12">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight mb-2 text-slate-900 dark:text-white">Daily Practice</h2>
-          <p className="text-slate-500 dark:text-slate-400">Master the most common 12 characters.</p>
+          <h2 className="text-3xl font-bold tracking-tight mb-2 text-slate-900 dark:text-white">{t('common.dailyPractice')}</h2>
+          <p className="text-slate-500 dark:text-slate-400">{t('common.masterCharacters')}</p>
         </div>
         <div className="flex items-center gap-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-2 rounded-full">
           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
           </svg>
-          <span>5 Day Streak</span>
+          <span>5 {t('common.dayStreak')}</span>
         </div>
       </div>
 
@@ -92,19 +95,19 @@ export default function LearnPage() {
                 <h3 className="text-3xl font-bold text-slate-900 dark:text-white hanzi-font">{selectedCharacter.hanzi}</h3>
                 <span className="text-xl text-slate-500 dark:text-slate-400">{selectedCharacter.pinyin}</span>
               </div>
-              <p className="text-slate-600 dark:text-slate-300 text-lg mb-6">{selectedCharacter.meaning}</p>
+              <p className="text-slate-600 dark:text-slate-300 text-lg mb-6">{t(selectedCharacter.translationKey)}</p>
               <div className="flex gap-4">
                 <button className="bg-emerald-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-emerald-700 transition-colors flex items-center gap-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                   </svg>
-                  Practice Writing
+                  {t('common.practiceWriting')}
                 </button>
                 <button className="bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 px-6 py-3 rounded-xl font-semibold hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors flex items-center gap-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                   </svg>
-                  Hear Pronunciation
+                  {t('common.hearPronunciation')}
                 </button>
               </div>
             </div>

@@ -1,31 +1,34 @@
 'use client';
 
 import Link from 'next/link';
+import { useTranslation } from '@/components/locale-provider';
 
 export default function HomePage() {
+  const { t } = useTranslation();
+
   return (
     <div className="max-w-7xl mx-auto px-6 py-12 lg:py-24">
       <div className="grid lg:grid-cols-2 gap-12 items-center">
         <div className="space-y-8 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-semibold uppercase tracking-wider">
-            <span>Powered by Gemini AI</span>
+            <span>{t('home.poweredByGemini')}</span>
           </div>
           <h2 className="text-5xl lg:text-7xl font-bold tracking-tight text-slate-900 dark:text-white leading-[1.1]">
-            Master Chinese <br/>
-            <span className="text-emerald-600 italic">One Stroke</span> at a Time.
+            {t('home.heroTitle')} <br/>
+            <span className="text-emerald-600 italic">{t('home.heroSubtitle')}</span> at a Time.
           </h2>
           <p className="text-lg text-slate-600 dark:text-slate-300 max-w-lg leading-relaxed">
-            HanziMaster uses advanced AI to guide you through the intricate art of Chinese characters. Personalized learning paths, real-time feedback, and immersive practice.
+            {t('home.heroDescription')}
           </p>
           <div className="flex flex-wrap gap-4 pt-4">
             <Link href="/learn" className="bg-emerald-600 text-white px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-200 dark:shadow-emerald-900/20 hover:scale-105 active:scale-95 flex items-center gap-2">
-              Start Learning Now
+              {t('common.startLearning')}
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Link>
             <button className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center gap-2">
-              Explore Library
+              {t('common.exploreLibrary')}
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
@@ -57,13 +60,13 @@ export default function HomePage() {
 
             <div className="mt-8 space-y-4">
               <div className="flex justify-between items-center text-sm">
-                <span className="text-slate-500 dark:text-slate-400">Stroke Count</span>
-                <span className="font-semibold text-slate-900 dark:text-white">5 Strokes</span>
+                <span className="text-slate-500 dark:text-slate-400">{t('common.strokeCount')}</span>
+                <span className="font-semibold text-slate-900 dark:text-white">5 {t('common.strokes')}</span>
               </div>
               <div className="w-full bg-slate-100 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
                 <div className="bg-emerald-500 h-full w-3/5"></div>
               </div>
-              <p className="text-xs text-slate-400 dark:text-slate-500 text-center italic">"The character for 'forever' contains all 8 basic strokes."</p>
+              <p className="text-xs text-slate-400 dark:text-slate-500 text-center italic">{t('common.foreverQuote')}</p>
             </div>
           </div>
         </div>
@@ -76,9 +79,9 @@ export default function HomePage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
             </svg>
           </div>
-          <h3 className="text-xl font-bold mb-3 text-slate-900 dark:text-white">AI-Powered Insights</h3>
+          <h3 className="text-xl font-bold mb-3 text-slate-900 dark:text-white">{t('home.aiInsightsTitle')}</h3>
           <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
-            Gemini AI analyzes your handwriting and provides instant feedback on stroke order, balance, and aesthetics.
+            {t('home.aiInsightsDesc')}
           </p>
         </div>
         <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow group">
@@ -87,9 +90,9 @@ export default function HomePage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
             </svg>
           </div>
-          <h3 className="text-xl font-bold mb-3 text-slate-900 dark:text-white">Etymology & Culture</h3>
+          <h3 className="text-xl font-bold mb-3 text-slate-900 dark:text-white">{t('home.etymologyTitle')}</h3>
           <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
-            Discover the stories behind the characters. Understand how they evolved from ancient pictographs to modern forms.
+            {t('home.etymologyDesc')}
           </p>
         </div>
         <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow group">
@@ -98,9 +101,9 @@ export default function HomePage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
           </div>
-          <h3 className="text-xl font-bold mb-3 text-slate-900 dark:text-white">Adaptive Learning</h3>
+          <h3 className="text-xl font-bold mb-3 text-slate-900 dark:text-white">{t('home.adaptiveTitle')}</h3>
           <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
-            Our algorithm adapts to your pace, focusing on the characters you find challenging while reinforcing what you know.
+            {t('home.adaptiveDesc')}
           </p>
         </div>
       </div>
