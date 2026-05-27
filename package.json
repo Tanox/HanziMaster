@@ -1,31 +1,30 @@
-
 {
-  "name": "hanzimaster",
+  "name": "hanzi-master",
+  "version": "2.2.0",
   "private": true,
-  "version": "0.4.3",
-  "license": "GPL-3.0",
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "npm run copy-data && tsc && vite build",
-    "preview": "vite preview",
-    "copy-data": "node scripts/copyHanziData.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "@google/genai": "^0.2.0",
-    "lucide-react": "^0.469.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "uuid": "^11.0.3"
+    "@google/generative-ai": "^0.24.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "autoprefixer": "^10.4.20",
+    "next": "^15.2.0",
+    "postcss": "^8.5.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwindcss": "^4.0.12",
+    "typescript": "^5.7.3"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
-    "@types/react": "^18.3.1",
-    "@types/react-dom": "^18.3.1",
-    "@vitejs/plugin-react": "^4.3.4",
-    "hanzi-writer-data": "^2.0.1",
-    "typescript": "^5.7.2",
-    "vite": "^6.0.3",
-    "vite-plugin-pwa": "^0.21.1"
+    "@tailwindcss/vite": "^4.2.11"
+  },
+  "engines": {
+    "node": ">=24.5.0"
   }
 }

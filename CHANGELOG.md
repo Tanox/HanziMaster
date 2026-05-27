@@ -1,54 +1,41 @@
-
 # Changelog
 
-All notable changes to this project will be documented in this file.
+## [2.2.0]
+- Added complete i18n internationalization support with 11 languages: English, Simplified Chinese, Traditional Chinese, Spanish, Arabic, French, Portuguese (Brazil), German, Japanese, Korean, and Russian.
+- Created I18nService with automatic browser language detection and localStorage persistence.
+- Added LocaleToggle component for language switching.
+- Updated all components (App, Home, Learn) to use i18n translations.
+- Fixed vite.config.ts with proper version header and path alias.
+- Fixed angular.json test configuration with correct styles path.
+- Created missing tsconfig.spec.json file.
+- Updated all file headers with v2.2.0.
+- Updated metadata.json, package.json, and README files.
+- Updated CHANGELOG.md with v2.2.0 release notes.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [2.1.4]
+- Fixed CSS comment format (changed from /* */ to // style).
+- Added proper file headers to all configuration files (tsconfig, index.html).
+- Updated Tailwind theme configuration with --font-hanzi variable.
+- Updated .hanzi-font class to use CSS variable.
+- Added OpenSpec documentation for project standards.
+- Fixed duplicate header in tsconfig.json.
+- Updated all version references (v2.1.3 → v2.1.4).
 
-## [0.4.3] - 2025-05-22
+## [2.1.3]
+- Added file header comments to all source files with versioning.
+- Implemented localStorage theme persistence for dark/light mode.
+- Added Noto Sans SC font for better Chinese character display.
+- Improved dark mode support across all components (home, learn, app).
+- Enhanced Learn page with character selection and detail panel.
+- Added proper TypeScript interfaces and function comments.
+- Added provideAnimations to app configuration.
+- Fixed footer dark mode styling.
+- Updated all version references (v2.1.2 → v2.1.3).
 
-### Fixed
-- **Circular Dependency**: Fixed a critical circular dependency between `ToastContext` and `Toast` component that caused application load failure in some environments.
-- **Locale Compatibility**: Made new Welcome Screen translation keys optional to prevent crashes when using legacy locale files (es, fr, de, etc.).
-- **App Version**: Bumped version to v0.4.3.
-
-## [0.4.2] - 2025-05-22
-
-### Added
-- **Global Toast System**: Replaced native alerts with a custom, non-intrusive Toast notification system (`ToastContext`, `Toast` component).
-- **Database Audit**: Added a data health check in Settings to view local Pinyin coverage and copy missing characters.
-- **App Reset**: Added a "Hazard Zone" in Settings to factory reset the application (clear LocalStorage and Caches).
-- **OpenSpec**: Complete project specification documents added to `openspec/` directory.
-
-### Changed
-- Refactored `App.tsx` to use `ToastProvider`.
-- Updated `SettingsModal` UI for better accessibility and grouping.
-- Optimized `StrokeViewer` rendering logic for View/Practice mode switching.
-- Standardized project structure to flat root-level layout.
-
-### Fixed
-- Fixed an issue where `practiceStrokeIndex` was not resetting correctly when switching characters.
-- Fixed dark mode color contrast issues in the Settings modal.
-- Removed deprecated hooks from the root directory.
-
-## [0.4.0] - 2025-05-15
-
-### Added
-- **Share as Image**: Users can now generate and share images of their practice or character analysis.
-- **Seasonal Suggestions**: The "Random" suggestions now prioritize seasonal terms (e.g., Spring Festival, Dragon Boat Festival) based on current date.
-
-### Changed
-- Upgraded Gemini API SDK to v0.2.0.
-
-## [0.3.5] - 2025-05-01
-
-### Added
-- **Idiom Support**: Added `IdiomNavigator` for learning 4-character idioms stroke by stroke.
-- **Gemini AI Analysis**: Integrated Gemini 3 Flash for etymology and mnemonic generation.
-
-## [0.1.0] - 2025-04-01
-
-### Added
-- Initial release with Stroke Order visualization.
-- Basic Offline support with PWA.
+## [2.1.2]
+- Re-initialized project as a modern Angular 21 application.
+- Implemented zoneless change detection for better performance.
+- Integrated Tailwind CSS 4.0.0 for styling.
+- Added Material Icons for iconography.
+- Created responsive hero section with AI-powered learning theme.
+- Configured environment variables and global type declarations.
