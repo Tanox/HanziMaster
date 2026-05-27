@@ -1,0 +1,15 @@
+// tsconfig.app.json v2.2.0
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist/out-tsc",
+    "types": []
+  },
+  "files": [
+    "app/main.ts"
+  ],
+  "include": [
+    "app/**/*.d.ts",
+    "app/**/*.ts"
+  ]
+}

@@ -2,33 +2,32 @@
 
 [English](README_EN.md) | [简体中文](README.md)
 
-HanziMaster is a modern, AI-powered Chinese character learning platform. It uses Gemini AI to provide personalized feedback on stroke order, balance, and aesthetics.
+HanziMaster is a modern, AI-powered platform for learning Chinese characters. It uses Gemini AI to provide personalized feedback on stroke order, balance, and aesthetics.
 
 ## Features
 - **AI-Powered Insights**: Real-time feedback on your handwriting.
-- **Adaptive Learning**: Personalized learning paths that adjust to your progress.
+- **Adaptive Learning**: Personalized learning paths that adapt to your progress.
 - **Etymology & Culture**: Discover the stories behind the characters.
-- **Next.js 15**: High-performance, modern React framework.
-- **React 19**: Using the latest version of the React ecosystem.
-- **Tailwind CSS 3.4**: Beautiful, responsive design.
-- **Dark/Light Mode**: System detection and persistent theme preferences.
-- **Chinese Font Support**: Elegant display of Chinese characters using Noto Sans SC.
-- **Internationalization (i18n)**: Supports 11 languages including English, Simplified Chinese, Traditional Chinese, Spanish, Arabic, French, Portuguese, German, Japanese, Korean, and Russian.
-- **Locale Switcher**: Convenient language switching with persistence.
+- **Zoneless Angular 21**: High-performance, modern architecture.
+- **Tailwind CSS 4.0**: Beautiful, responsive design.
+- **Dark/Light Mode**: Persistent theme preference with system detection.
+- **Chinese Font Support**: Noto Sans SC for elegant character display.
+- **Internationalization (i18n)**: Support for 11 languages including English, Chinese (Simplified/Traditional), Spanish, Arabic, French, Portuguese, German, Japanese, Korean, and Russian.
+- **Language Switcher**: Easy language switching with persistence.
 
 ## Tech Stack
-- **Framework**: Next.js 15 (React 19)
-- **Styling**: Tailwind CSS 3.4
+- **Framework**: Angular 21 (Zoneless)
+- **Styling**: Tailwind CSS 4.0
 - **AI**: Google Gemini AI
-- **Icons**: Lucide React
-- **Animation**: Motion (Vanilla JS)
+- **Icons**: Angular Material Icons
+- **Animations**: Motion (Vanilla JS)
 - **Fonts**: Inter, JetBrains Mono, Noto Sans SC
-- **i18n**: React Context API + Custom i18n Provider, supporting 11 languages
+- **Internationalization**: Custom i18n service with 11 languages
 
 ## Getting Started
 1. Install dependencies: `npm install`
-2. Start development server: `npm run dev`
-3. Production build: `npm run build`
+2. Start the development server: `npm start`
+3. Build for production: `npm run build`
 
 ## Supported Languages
 HanziMaster supports the following 11 languages:
@@ -46,32 +45,22 @@ HanziMaster supports the following 11 languages:
 
 ## Project Structure
 ```
-src/
-├── app/                 # Next.js App Router directory
-│   ├── page.tsx       # Home page
-│   ├── learn/         # Learn page
-│   ├── layout.tsx     # Root layout
-│   └── globals.css    # Global styles
-├── components/         # React components directory
-│   ├── theme-provider.tsx    # Theme provider
-│   ├── theme-toggle.tsx       # Theme toggle component
-│   ├── locale-provider.tsx   # Locale provider
-│   └── locale-toggle.tsx     # Locale toggle component
-├── public/            # Static assets
-└── package.json       # Project configuration
+app/
+├── components/          # Components directory
+│   ├── theme-toggle.ts # Theme toggle component
+│   └── locale-toggle.ts # Language switcher component
+├── pages/             # Pages directory
+│   ├── home/          # Home page
+│   └── learn/          # Learn page
+├── i18n/              # Internationalization directory
+│   ├── locales/       # Language files
+│   └── i18n.service.ts # i18n service
+├── app.config.ts      # App configuration
+├── app.routes.ts      # Route configuration
+├── app.ts            # Root component
+├── main.ts          # Entry point
+└── styles.css        # Global styles
 ```
 
-## Migration from Angular to Next.js
-
-This project has been migrated from Angular 21 to Next.js 15. Key changes include:
-
-- **Routing**: Migrated from Angular Router to Next.js App Router
-- **Components**: Migrated from Angular components to React functional components
-- **State Management**: Migrated from Angular Signals to React Hooks (useState, useEffect)
-- **Styling**: Maintained Tailwind CSS, upgraded to version 3.4
-- **Icons**: Migrated from Angular Material Icons to Lucide React
-- **Internationalization**: Migrated from Angular service to React Context API
-- **Build Tool**: Migrated from Angular CLI to Next.js + TypeScript
-
 ## License
-© 2026 HanziMaster. All rights reserved.
+© 2026 HanziMaster 汉字大师. All rights reserved.
