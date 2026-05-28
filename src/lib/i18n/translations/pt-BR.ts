@@ -16,12 +16,11 @@ export const ptBR = {
     foreverQuote: 'O caractere de "sempre" contém os 8 traços básicos.',
   },
   home: {
-    poweredByGemini: 'Potenciado por Gemini AI',
     heroTitle: 'Domine o chinês',
     heroSubtitle: 'Um traço de cada vez',
     heroDescription: 'HanziMaster usa IA avançada para guiar você através da arte intrincada dos caracteres chineses. Caminhos de aprendizagem personalizados, feedback em tempo real e prática imersiva.',
     aiInsightsTitle: 'Insights alimentados por IA',
-    aiInsightsDesc: 'Gemini AI analisa sua escrita e fornece feedback instantâneo sobre ordem de traços, equilíbrio e estética.',
+    aiInsightsDesc: 'Nossa IA analisa sua escrita e fornece feedback instantâneo sobre ordem de traços, equilíbrio e estética.',
     etymologyTitle: 'Etimologia e cultura',
     etymologyDesc: 'Descubra as histórias por trás dos caracteres. Entenda como eles evoluíram de pictogramas antigos para formas modernas.',
     adaptiveTitle: 'Aprendizado adaptativo',

@@ -16,12 +16,11 @@ export const de = {
     foreverQuote: 'Das Zeichen für "immer" enthält alle 8 Grundstriche.',
   },
   home: {
-    poweredByGemini: 'Unterstützt von Gemini AI',
     heroTitle: 'Chinesisch meistern',
     heroSubtitle: 'Ein Strich nach dem anderen',
     heroDescription: 'HanziMaster nutzt fortschrittliche KI, um Sie durch die komplexe Kunst der chinesischen Zeichen zu führen. Personalisierte Lernpfade, Echtzeit-Feedback und immersive Praxis.',
     aiInsightsTitle: 'KI-gestützte Einblicke',
-    aiInsightsDesc: 'Gemini AI analysiert Ihre Schrift und liefert sofortiges Feedback zu Strichreihenfolge, Gleichgewicht und Ästhetik.',
+    aiInsightsDesc: 'Unsere KI analysiert Ihre Schrift und liefert sofortiges Feedback zu Strichreihenfolge, Gleichgewicht und Ästhetik.',
     etymologyTitle: 'Etymologie & Kultur',
     etymologyDesc: 'Entdecken Sie die Geschichten hinter den Zeichen. Verstehen Sie, wie sie sich von alten Pictogrammen zu modernen Formen entwickelt haben.',
     adaptiveTitle: 'Adaptives Lernen',

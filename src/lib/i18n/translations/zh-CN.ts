@@ -16,12 +16,11 @@ export const zhCN = {
     foreverQuote: '“永”字包含了所有8种基本笔画。',
   },
   home: {
-    poweredByGemini: '由 Gemini AI 驱动',
     heroTitle: '精通中文',
     heroSubtitle: '一笔一划',
     heroDescription: '汉字大师使用先进的 AI 技术，引导您领略汉字的精妙艺术。提供个性化学习路径、实时反馈和沉浸式练习。',
     aiInsightsTitle: 'AI 驱动洞察',
-    aiInsightsDesc: 'Gemini AI 分析您的书写，提供关于笔画顺序、平衡和美感的即时反馈。',
+    aiInsightsDesc: '我们的 AI 分析您的书写，提供关于笔画顺序、平衡和美感的即时反馈。',
     etymologyTitle: '词源与文化',
     etymologyDesc: '发现汉字背后的故事。了解它们如何从古代象形文字演变为现代形态。',
     adaptiveTitle: '自适应学习',

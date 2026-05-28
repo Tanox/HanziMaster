@@ -16,12 +16,11 @@ export const ko = {
     foreverQuote: '「영」자에는 8가지 기본 획이 모두 포함되어 있습니다.',
   },
   home: {
-    poweredByGemini: 'Gemini AI 기반',
     heroTitle: '중국어 마스터',
     heroSubtitle: '한 획씩',
     heroDescription: 'HanziMaster는 고급 AI를 사용하여 한자의 복잡한 예술을 안내합니다. 개인화된 학습 경로, 실시간 피드백, 몰입형 연습.',
     aiInsightsTitle: 'AI 기반 인사이트',
-    aiInsightsDesc: 'Gemini AI가 당신의 글씨를 분석하고 획 순서, 균형, 미학에 대해 즉각적인 피드백을 제공합니다.',
+    aiInsightsDesc: '우리의 AI가 당신의 글씨를 분석하고 획 순서, 균형, 미학에 대해 즉각적인 피드백을 제공합니다.',
     etymologyTitle: '어원과 문화',
     etymologyDesc: '한자 뒤에 숨겨진 이야기를 발견하세요. 고대 상형문자에서 현대 형태로 진화한 방법을 이해하세요.',
     adaptiveTitle: '적응형 학습',

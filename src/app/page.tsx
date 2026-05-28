@@ -10,9 +10,6 @@ export default function HomePage() {
     <div className="max-w-7xl mx-auto px-6 py-12 lg:py-24">
       <div className="grid lg:grid-cols-2 gap-12 items-center">
         <div className="space-y-8 animate-fade-in">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-semibold uppercase tracking-wider">
-            <span>{t('home.poweredByGemini')}</span>
-          </div>
           <h2 className="text-5xl lg:text-7xl font-bold tracking-tight text-slate-900 dark:text-white leading-[1.1]">
             {t('home.heroTitle')} <br/>
             <span className="text-emerald-600 italic">{t('home.heroSubtitle')}</span> at a Time.

@@ -16,12 +16,11 @@ export const en = {
     foreverQuote: 'The character for "forever" contains all 8 basic strokes.',
   },
   home: {
-    poweredByGemini: 'Powered by Gemini AI',
     heroTitle: 'Master Chinese',
     heroSubtitle: 'One Stroke',
     heroDescription: 'HanziMaster uses advanced AI to guide you through the intricate art of Chinese characters. Personalized learning paths, real-time feedback, and immersive practice.',
     aiInsightsTitle: 'AI-Powered Insights',
-    aiInsightsDesc: 'Gemini AI analyzes your handwriting and provides instant feedback on stroke order, balance, and aesthetics.',
+    aiInsightsDesc: 'Our AI analyzes your handwriting and provides instant feedback on stroke order, balance, and aesthetics.',
     etymologyTitle: 'Etymology & Culture',
     etymologyDesc: 'Discover the stories behind the characters. Understand how they evolved from ancient pictographs to modern forms.',
     adaptiveTitle: 'Adaptive Learning',
