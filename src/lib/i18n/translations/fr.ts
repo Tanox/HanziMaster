@@ -16,12 +16,11 @@ export const fr = {
     foreverQuote: 'Le caractère "pour toujours" contient les 8 traits de base.',
   },
   home: {
-    poweredByGemini: 'Propulsé par Gemini AI',
     heroTitle: 'Maîtrisez le chinois',
     heroSubtitle: 'Un trait à la fois',
     heroDescription: 'HanziMaster utilise une IA avancée pour vous guider à travers l’art complexe des caractères chinois. Parcs d’apprentissage personnalisés, rétroaction en temps réel et pratique immersive.',
     aiInsightsTitle: 'Perspectives alimentées par l’IA',
-    aiInsightsDesc: 'Gemini AI analyse votre écriture et fournit une rétroaction instantanée sur l’ordre des traits, l’équilibre et l’esthétique.',
+    aiInsightsDesc: 'Notre IA analyse votre écriture et fournit une rétroaction instantanée sur l’ordre des traits, l’équilibre et l’esthétique.',
     etymologyTitle: 'Étymologie et culture',
     etymologyDesc: 'Découvrez les histoires derrière les caractères. Comprenez comment ils ont évolué des pictogrammes anciens aux formes modernes.',
     adaptiveTitle: 'Apprentissage adaptatif',

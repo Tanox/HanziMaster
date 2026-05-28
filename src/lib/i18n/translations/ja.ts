@@ -16,12 +16,11 @@ export const ja = {
     foreverQuote: '「永」の文字には8つの基本画がすべて含まれています。',
   },
   home: {
-    poweredByGemini: 'Gemini AI 搭載',
     heroTitle: '中国語をマスター',
     heroSubtitle: '一画ずつ',
     heroDescription: 'HanziMaster は、高度な AI を使用して漢字の複雑な芸術をガイドします。パーソナライズされた学習パス、リアルタイムのフィードバック、没入型の練習。',
     aiInsightsTitle: 'AI 駆動のインサイト',
-    aiInsightsDesc: 'Gemini AI があなたの書き方を分析し、画数の順番、バランス、美しさについて即座にフィードバックを提供します。',
+    aiInsightsDesc: '私たちの AI があなたの書き方を分析し、画数の順番、バランス、美しさについて即座にフィードバックを提供します。',
     etymologyTitle: '語源と文化',
     etymologyDesc: '漢字の背後にある物語を発見しましょう。古代の象形文字から現代の形へ進化した方法を理解しましょう。',
     adaptiveTitle: 'アダプティブラーニング',
