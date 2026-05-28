@@ -3,18 +3,18 @@
 
 ## 1. 测试框架
 
-项目使用 Angular 内置的测试工具：
+项目使用 Next.js 推荐的测试工具：
 
 | 工具 | 用途 |
 |------|------|
-| Karma | 测试运行器 |
-| Jasmine | 测试框架 |
+| Jest | 测试框架 |
+| React Testing Library | React 组件测试 |
 
 ## 2. 测试类型
 
 | 测试类型 | 说明 | 优先级 |
 |---------|------|--------|
-| 单元测试 | 测试独立的组件、服务和函数 | 高 |
+| 单元测试 | 测试独立的组件、hooks 和函数 | 高 |
 | 集成测试 | 测试组件间的交互 | 中 |
 | 端到端测试 | 测试完整的用户流程 | 低 |
 
@@ -24,7 +24,7 @@
 |------|------|
 | `npm test` | 运行测试 |
 | `npm test -- --watch` | 运行测试并监听文件变化 |
-| `npm test -- --code-coverage` | 运行测试并生成覆盖率报告 |
+| `npm test -- --coverage` | 运行测试并生成覆盖率报告 |
 
 ## 4. 测试文件组织
 
@@ -33,40 +33,40 @@
 测试文件应与源代码放在同一目录下，命名规则为：
 
 ```
-[source-file-name].spec.ts
+[source-file-name].test.tsx
 ```
 
 **示例：**
 
 ```
-app/components/
-├── theme-toggle.ts
-└── theme-toggle.spec.ts
+src/components/
+├── theme-toggle.tsx
+└── theme-toggle.test.tsx
 
-app/pages/home/
-├── home.ts
-└── home.spec.ts
+src/app/
+├── page.tsx
+└── page.test.tsx
 ```
 
 ### 4.2 目录结构
 
 ```
-app/
+src/
 ├── components/
-│   ├── theme-toggle.ts
-│   ├── theme-toggle.spec.ts
-│   ├── locale-toggle.ts
-│   └── locale-toggle.spec.ts
-├── pages/
-│   ├── home/
-│   │   ├── home.ts
-│   │   └── home.spec.ts
+│   ├── theme-toggle.tsx
+│   ├── theme-toggle.test.tsx
+│   ├── locale-toggle.tsx
+│   └── locale-toggle.test.tsx
+├── app/
+│   ├── page.tsx
+│   ├── page.test.tsx
 │   └── learn/
-│       ├── learn.ts
-│       └── learn.spec.ts
-└── i18n/
-    ├── i18n.service.ts
-    └── i18n.service.spec.ts
+│       ├── page.tsx
+│       └── page.test.tsx
+└── lib/
+    └── i18n/
+        ├── index.ts
+        └── index.test.ts
 ```
 
 ## 5. 测试编写规范
@@ -93,7 +93,7 @@ describe('MyComponent', () => {
 测试描述应清晰说明测试的预期行为，使用 "should" 开头：
 
 ```typescript
-it('should create the component', () => { /* ... */ });
+it('should render correctly', () => { /* ... */ });
 it('should update theme when toggle button clicked', () => { /* ... */ });
 it('should save preference to localStorage', () => { /* ... */ });
 ```
@@ -103,82 +103,71 @@ it('should save preference to localStorage', () => { /* ... */ });
 #### 5.3.1 组件测试
 
 ```typescript
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ThemeToggle } from './theme-toggle';
-import { MatIconModule } from '@angular/material/icon';
+import { render, screen, fireEvent } from '@testing-library/react';
+import ThemeToggleClient from './theme-toggle';
 
-describe('ThemeToggle', () => {
-  let component: ThemeToggle;
-  let fixture: ComponentFixture<ThemeToggle>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ThemeToggle, MatIconModule]
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(ThemeToggle);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+describe('ThemeToggleClient', () => {
+  beforeEach(() => {
+    // Mock localStorage
+    Storage.prototype.setItem = jest.fn();
+    Storage.prototype.getItem = jest.fn(() => 'light');
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should initialize with correct theme', () => {
-    // 测试初始化逻辑
+  it('should render the toggle button', () => {
+    render(<ThemeToggleClient />);
+    expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
   it('should toggle theme when button clicked', () => {
-    // 测试交互逻辑
+    render(<ThemeToggleClient />);
+    const button = screen.getByRole('button');
+    
+    fireEvent.click(button);
+    
+    expect(localStorage.setItem).toHaveBeenCalledWith('hanzi-master-theme', 'dark');
   });
 });
 ```
 
-#### 5.3.2 服务测试
+#### 5.3.2 Hook 测试
 
 ```typescript
-import { TestBed } from '@angular/core/testing';
-import { I18nService } from './i18n.service';
+import { renderHook, act } from '@testing-library/react';
+import { useTranslation } from './locale-provider';
 
-describe('I18nService', () => {
-  let service: I18nService;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(I18nService);
+describe('useTranslation', () => {
+  it('should return translation function', () => {
+    const { result } = renderHook(() => useTranslation());
+    
+    expect(result.current.t).toBeDefined();
+    expect(typeof result.current.t).toBe('function');
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
-  it('should set and get locale correctly', () => {
-    service.setLocale('zh-CN');
-    expect(service.getLocale()).toBe('zh-CN');
-  });
-
-  it('should return correct translations for current locale', () => {
-    service.setLocale('en');
-    expect(service.t().app.title).toBe('HanziMaster');
+  it('should return translated text', () => {
+    const { result } = renderHook(() => useTranslation());
+    
+    const translated = result.current.t('common.learn');
+    expect(typeof translated).toBe('string');
   });
 });
 ```
 
 ### 5.4 Mock 依赖
 
-使用 Angular 的测试工具来 Mock 依赖：
+使用 Jest 来 Mock 依赖：
 
 ```typescript
-// Mock 服务
-const mockService = jasmine.createSpyObj('MyService', ['method1', 'method2']);
+// Mock localStorage
+const mockSetItem = jest.fn();
+const mockGetItem = jest.fn(() => 'en');
 
 beforeEach(() => {
-  TestBed.configureTestingModule({
-    providers: [
-      { provide: MyService, useValue: mockService }
-    ]
-  });
+  Storage.prototype.setItem = mockSetItem;
+  Storage.prototype.getItem = mockGetItem;
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
 });
 ```
 
@@ -206,13 +195,15 @@ beforeEach(() => {
 ```typescript
 it('should toggle theme', () => {
   // Arrange
-  component.isDark.set(false);
+  const { result } = renderHook(() => useTheme());
   
   // Act
-  component.toggleTheme();
+  act(() => {
+    result.current.toggleTheme();
+  });
   
   // Assert
-  expect(component.isDark()).toBe(true);
+  expect(result.current.isDark).toBe(true);
 });
 ```
 

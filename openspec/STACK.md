@@ -4,29 +4,22 @@
 
 | 技术 | 版本 | 用途 |
 |-----|------|-----|
-| Angular | 21.0.0 | 前端应用框架 |
-| TypeScript | ~5.9.0 | 编程语言 |
+| Next.js | ^15.2.0 | 前端应用框架 |
+| React | ^19.1.0 | UI 组件库 |
+| TypeScript | ^5.7.3 | 编程语言 |
 
 ## UI 与样式
 
 | 技术 | 版本 | 用途 |
 |-----|------|-----|
-| Tailwind CSS | 4.0.0 | 样式框架 |
-| Angular Material | 21.0.0 | UI 组件库 |
-| Angular CDK | 21.0.0 | 组件开发工具包 |
-
-## 动画与交互
-
-| 技术 | 版本 | 用途 |
-|-----|------|-----|
-| Motion | 11.11.17 | 动画库 |
-| Angular Animations | 21.0.0 | Angular 动画模块 |
+| Tailwind CSS | ^4.0.12 | 样式框架 |
+| Lucide React | 图标库 |
 
 ## AI 集成
 
 | 技术 | 版本 | 用途 |
 |-----|------|-----|
-| @google/genai | latest | Google Gemini AI SDK |
+| @google/generative-ai | ^0.24.0 | Google Gemini AI SDK |
 
 ## 字体
 
@@ -40,15 +33,16 @@
 
 | 技术 | 版本 | 用途 |
 |-----|------|-----|
-| Angular CLI | 21.0.0 | 项目构建工具 |
-| Vite | (通过 Angular) | 开发服务器和构建工具 |
-| PostCSS | 8.4.0 | CSS 处理工具 |
+| Next.js CLI | ^15.2.0 | 项目构建工具 |
+| Vite | 通过 Next.js | 开发服务器和构建工具 |
+| PostCSS | ^8.5.1 | CSS 处理工具 |
+| Autoprefixer | ^10.4.20 | CSS 自动前缀 |
 
 ## 运行时环境
 
 | 环境 | 要求 |
 |-----|------|
-| Node.js | >= 20.11.0 |
+| Node.js | >= 24.5.0 |
 | 浏览器 | 现代浏览器（Chrome、Firefox、Safari、Edge） |
 
 ## 部署平台
@@ -58,7 +52,8 @@
 
 ## 核心技术特性
 
-1. **Zoneless Change Detection**：无 Zone.js 的变更检测，提升性能
-2. **Standalone Components**：独立组件，无需 NgModule
-3. **Lazy Loading**：路由级别的懒加载，优化初始加载
-4. **OnPush Change Detection**：组件级别的变更检测策略
+1. **React Server Components**：支持服务端渲染和客户端组件
+2. **App Router**：Next.js 13+ 新路由系统
+3. **Client Components**：使用 `'use client'` 指令标记客户端组件
+4. **React Context API**：用于状态管理和国际化
+5. **Tailwind CSS 4.0**：零 JS 配置的 CSS-in-CSS 方案
