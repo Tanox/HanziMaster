@@ -1,9 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useTranslation } from '@/components/locale-provider';
-
-const STORAGE_KEY = 'hanzi-master-theme';
 
 interface Character {
   id: number;
@@ -13,32 +11,25 @@ interface Character {
   translationKey: string;
 }
 
+const baseCharacters: Character[] = [
+  { id: 1, hanzi: '一', pinyin: 'yī', meaning: '', translationKey: 'learn.one' },
+  { id: 2, hanzi: '二', pinyin: 'èr', meaning: '', translationKey: 'learn.two' },
+  { id: 3, hanzi: '三', pinyin: 'sān', meaning: '', translationKey: 'learn.three' },
+  { id: 4, hanzi: '人', pinyin: 'rén', meaning: '', translationKey: 'learn.person' },
+  { id: 5, hanzi: '大', pinyin: 'dà', meaning: '', translationKey: 'learn.big' },
+  { id: 6, hanzi: '小', pinyin: 'xiǎo', meaning: '', translationKey: 'learn.small' },
+  { id: 7, hanzi: '口', pinyin: 'kǒu', meaning: '', translationKey: 'learn.mouth' },
+  { id: 8, hanzi: '日', pinyin: 'rì', meaning: '', translationKey: 'learn.sunDay' },
+  { id: 9, hanzi: '月', pinyin: 'yuè', meaning: '', translationKey: 'learn.moonMonth' },
+  { id: 10, hanzi: '山', pinyin: 'shān', meaning: '', translationKey: 'learn.mountain' },
+  { id: 11, hanzi: '水', pinyin: 'shuǐ', meaning: '', translationKey: 'learn.water' },
+  { id: 12, hanzi: '火', pinyin: 'huǒ', meaning: '', translationKey: 'learn.fire' },
+];
+
 export default function LearnPage() {
   const { t } = useTranslation();
-  const [selectedCharacterId, setSelectedCharacterId] = useState<number | null>(null);
-  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
-
-  const baseCharacters: Character[] = [
-    { id: 1, hanzi: '一', pinyin: 'yī', meaning: '', translationKey: 'learn.one' },
-    { id: 2, hanzi: '二', pinyin: 'èr', meaning: '', translationKey: 'learn.two' },
-    { id: 3, hanzi: '三', pinyin: 'sān', meaning: '', translationKey: 'learn.three' },
-    { id: 4, hanzi: '人', pinyin: 'rén', meaning: '', translationKey: 'learn.person' },
-    { id: 5, hanzi: '大', pinyin: 'dà', meaning: '', translationKey: 'learn.big' },
-    { id: 6, hanzi: '小', pinyin: 'xiǎo', meaning: '', translationKey: 'learn.small' },
-    { id: 7, hanzi: '口', pinyin: 'kǒu', meaning: '', translationKey: 'learn.mouth' },
-    { id: 8, hanzi: '日', pinyin: 'rì', meaning: '', translationKey: 'learn.sunDay' },
-    { id: 9, hanzi: '月', pinyin: 'yuè', meaning: '', translationKey: 'learn.moonMonth' },
-    { id: 10, hanzi: '山', pinyin: 'shān', meaning: '', translationKey: 'learn.mountain' },
-    { id: 11, hanzi: '水', pinyin: 'shuǐ', meaning: '', translationKey: 'learn.water' },
-    { id: 12, hanzi: '火', pinyin: 'huǒ', meaning: '', translationKey: 'learn.fire' },
-  ];
-
-  useEffect(() => {
-    if (baseCharacters.length > 0) {
-      setSelectedCharacter(baseCharacters[0]);
-      setSelectedCharacterId(baseCharacters[0].id);
-    }
-  }, []);
+  const [selectedCharacterId, setSelectedCharacterId] = useState<number | null>(baseCharacters[0]?.id ?? null);
+  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(baseCharacters[0] ?? null);
 
   const selectCharacter = (char: Character) => {
     if (selectedCharacterId === char.id) {

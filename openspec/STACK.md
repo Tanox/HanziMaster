@@ -13,13 +13,7 @@
 | 技术 | 版本 | 用途 |
 |-----|------|-----|
 | Tailwind CSS | ^4.0.12 | 样式框架 |
-| Lucide React | 图标库 |
-
-## AI 集成
-
-| 技术 | 版本 | 用途 |
-|-----|------|-----|
-| @google/generative-ai | ^0.24.0 | Google Gemini AI SDK |
+| SVG Icons | - | 图标 |
 
 ## 字体
 
@@ -37,6 +31,7 @@
 | Vite | 通过 Next.js | 开发服务器和构建工具 |
 | PostCSS | ^8.5.1 | CSS 处理工具 |
 | Autoprefixer | ^10.4.20 | CSS 自动前缀 |
+| ESLint | ^9.x | 代码检查工具 |
 
 ## 运行时环境
 

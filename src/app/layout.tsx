@@ -24,7 +24,7 @@ function LayoutContent({
           <a href="/learn" className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition-colors">
             {t('common.learn')}
           </a>
-          <a href="/learn" className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition-colors">
+          <a href="/practice" className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition-colors">
             {t('common.practice')}
           </a>
           <LocaleToggleClient />
