@@ -7,7 +7,7 @@
 | 项目名称 | HanziMaster 汉字大师 |
 | 版本 | v2.2.0 |
 | 说明 | AI驱动的中文字符学习平台 |
-| 框架 | Angular 21 (Zoneless) |
+| 框架 | Next.js 15 + React 19 |
 | 样式 | Tailwind CSS 4.0 |
 
 ## 2. 核心功能
@@ -23,56 +23,54 @@
 
 | 分类 | 技术 |
 |------|------|
-| 前端框架 | Angular 21 |
+| 前端框架 | Next.js 15 + React 19 |
 | 样式框架 | Tailwind CSS 4.0 |
-| AI服务 | Google Gemini AI |
-| 图标库 | Angular Material Icons |
-| 动画库 | Motion (Vanilla JS) |
+| 图标 | SVG Icons |
 | 字体 | Inter, JetBrains Mono, Noto Sans SC |
 | 国际化 | 自定义 i18n 服务 |
+| 构建工具 | Next.js CLI |
 
 ## 4. 项目结构
 
 ```
-app/
+src/
+├── app/                  # Next.js App Router 目录
+│   ├── learn/            # 学习页面路由
+│   │   └── page.tsx      # 学习页面组件
+│   ├── globals.css       # 全局样式（Tailwind CSS）
+│   ├── layout.tsx        # 根布局组件
+│   └── page.tsx          # 首页组件
 ├── components/           # 通用组件
-│   ├── theme-toggle.ts   # 主题切换组件
-│   └── locale-toggle.ts  # 语言切换组件
-├── pages/               # 页面组件
-│   ├── home/
-│   │   └── home.ts
-│   └── learn/
-│       └── learn.ts
-├── i18n/                # 国际化模块
-│   ├── index.ts
-│   ├── i18n.service.ts  # 国际化服务
-│   └── locales/         # 语言文件目录
-│       ├── en.ts, zh-CN.ts, zh-TW.ts, es.ts, ar.ts
-│       └── fr.ts, pt-BR.ts, de.ts, ja.ts, ko.ts, ru.ts
-├── app.config.ts        # 应用配置
-├── app.routes.ts        # 路由配置
-├── app.ts               # 根组件
-├── globals.d.ts         # 全局类型定义
-├── index.html           # 入口HTML
-├── main.ts              # 应用入口
-└── styles.css           # 全局样式
+│   ├── locale-provider.tsx    # 国际化上下文提供组件
+│   ├── locale-toggle.tsx      # 语言切换组件
+│   ├── theme-provider.tsx     # 主题上下文提供组件
+│   └── theme-toggle.tsx       # 主题切换组件
+└── lib/                  # 工具函数和配置
+    └── i18n/            # 国际化模块
+        ├── translations/ # 翻译文件目录
+        │   ├── en.ts, zh-CN.ts, zh-TW.ts, es.ts, ar.ts
+        │   └── fr.ts, pt-BR.ts, de.ts, ja.ts, ko.ts, ru.ts
+        └── index.ts      # 国际化配置导出
 openspec/                # 项目规范文档
 ├── overview.md          # 项目概述（本文档）
-├── api-reference.md     # API参考文档
+├── ARCHITECTURE.md      # 架构设计文档
+├── CONVENTIONS.md       # 开发规范
 ├── coding-standards.md  # 编码规范
 └── commit-template.md   # Git提交模板
 ```
 
-## 5. 环境变量
+## 5. 开发命令
 
-| 变量名 | 说明 |
-|--------|------|
-| `GEMINI_API_KEY` | Gemini AI API 密钥 |
-| `APP_URL` | 应用程序URL |
-| `SHARED_APP_URL` | 共享应用程序URL |
+| 命令 | 说明 |
+|------|------|
+| `npm install` | 安装依赖 |
+| `npm run dev` | 启动开发服务器 |
+| `npm run build` | 构建生产版本 |
+| `npm run lint` | 代码检查 |
 
 ## 6. 相关文档
 
-- [API 参考](api-reference.md) - 详细的 API 文档和代码示例
+- [架构设计](ARCHITECTURE.md) - 项目架构和目录结构
+- [开发规范](CONVENTIONS.md) - 开发流程和代码规范
 - [编码规范](coding-standards.md) - 项目编码标准和最佳实践
 - [提交模板](commit-template.md) - Git 提交消息规范
