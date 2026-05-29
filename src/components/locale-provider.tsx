@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { Locale, Translations, translations, locales } from '@/lib/i18n';
+import { Locale, translations, locales } from '@/lib/i18n';
 
 type LocaleProviderProps = {
   children: React.ReactNode;
