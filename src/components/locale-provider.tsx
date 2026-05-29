@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { Locale, translations, locales } from '@/lib/i18n';
+import { Locale, Translations, translations, locales } from '@/lib/i18n';
 
 type LocaleProviderProps = {
   children: React.ReactNode;
@@ -53,7 +53,7 @@ export function LocaleProvider({
       } catch (e) {
         console.warn('Failed to read from localStorage:', e);
       }
-      
+
       const browserLocale = getBrowserLocale();
       setLocaleState(browserLocale);
       document.documentElement.lang = browserLocale;

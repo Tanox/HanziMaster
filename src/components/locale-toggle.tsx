@@ -61,8 +61,8 @@ export function LocaleToggleClient() {
               key={loc}
               onClick={() => selectLocale(loc)}
               className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-lg last:rounded-b-lg ${
-                locale === loc 
-                  ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-900 dark:text-emerald-400' 
+                locale === loc
+                  ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-900 dark:text-emerald-400'
                   : ''
               }`}
             >
