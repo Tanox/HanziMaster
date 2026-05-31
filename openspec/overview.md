@@ -25,6 +25,7 @@
 |------|------|
 | 前端框架 | Next.js 15 + React 19 |
 | 样式框架 | Tailwind CSS 4.0 |
+| AI服务 | Google Gemini AI |
 | 图标 | SVG Icons |
 | 字体 | Inter, JetBrains Mono, Noto Sans SC |
 | 国际化 | 自定义 i18n 服务 |
@@ -55,8 +56,9 @@ openspec/                # 项目规范文档
 ├── overview.md          # 项目概述（本文档）
 ├── ARCHITECTURE.md      # 架构设计文档
 ├── CONVENTIONS.md       # 开发规范
-├── coding-standards.md  # 编码规范
-└── commit-template.md   # Git提交模板
+├── PROJECT.md           # 项目说明
+├── STACK.md             # 技术栈文档
+└── coding-standards.md  # 编码规范
 ```
 
 ## 5. 开发命令
@@ -72,5 +74,6 @@ openspec/                # 项目规范文档
 
 - [架构设计](ARCHITECTURE.md) - 项目架构和目录结构
 - [开发规范](CONVENTIONS.md) - 开发流程和代码规范
+- [项目说明](PROJECT.md) - 项目概述和核心功能
+- [技术栈](STACK.md) - 技术栈详情
 - [编码规范](coding-standards.md) - 项目编码标准和最佳实践
-- [提交模板](commit-template.md) - Git 提交消息规范

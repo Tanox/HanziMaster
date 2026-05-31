@@ -53,7 +53,7 @@ export function LocaleProvider({
       } catch (e) {
         console.warn('Failed to read from localStorage:', e);
       }
-      
+
       const browserLocale = getBrowserLocale();
       setLocaleState(browserLocale);
       document.documentElement.lang = browserLocale;
