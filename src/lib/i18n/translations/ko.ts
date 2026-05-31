@@ -18,6 +18,7 @@ export const ko = {
   home: {
     heroTitle: '중국어 마스터',
     heroSubtitle: '한 획씩',
+    heroSuffix: '',
     heroDescription: 'HanziMaster는 고급 AI를 사용하여 한자의 복잡한 예술을 안내합니다. 개인화된 학습 경로, 실시간 피드백, 몰입형 연습.',
     aiInsightsTitle: 'AI 기반 인사이트',
     aiInsightsDesc: '우리의 AI가 당신의 글씨를 분석하고 획 순서, 균형, 미학에 대해 즉각적인 피드백을 제공합니다.',

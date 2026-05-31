@@ -18,6 +18,7 @@ export const en = {
   home: {
     heroTitle: 'Master Chinese',
     heroSubtitle: 'One Stroke',
+    heroSuffix: ' at a Time',
     heroDescription: 'HanziMaster uses advanced AI to guide you through the intricate art of Chinese characters. Personalized learning paths, real-time feedback, and immersive practice.',
     aiInsightsTitle: 'AI-Powered Insights',
     aiInsightsDesc: 'Our AI analyzes your handwriting and provides instant feedback on stroke order, balance, and aesthetics.',

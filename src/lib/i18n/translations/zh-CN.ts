@@ -18,6 +18,7 @@ export const zhCN = {
   home: {
     heroTitle: '精通中文',
     heroSubtitle: '一笔一划',
+    heroSuffix: '',
     heroDescription: '汉字大师使用先进的 AI 技术，引导您领略汉字的精妙艺术。提供个性化学习路径、实时反馈和沉浸式练习。',
     aiInsightsTitle: 'AI 驱动洞察',
     aiInsightsDesc: '我们的 AI 分析您的书写，提供关于笔画顺序、平衡和美感的即时反馈。',

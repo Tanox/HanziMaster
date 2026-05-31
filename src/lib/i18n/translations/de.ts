@@ -18,6 +18,7 @@ export const de = {
   home: {
     heroTitle: 'Chinesisch meistern',
     heroSubtitle: 'Ein Strich nach dem anderen',
+    heroSuffix: '',
     heroDescription: 'HanziMaster nutzt fortschrittliche KI, um Sie durch die komplexe Kunst der chinesischen Zeichen zu führen. Personalisierte Lernpfade, Echtzeit-Feedback und immersive Praxis.',
     aiInsightsTitle: 'KI-gestützte Einblicke',
     aiInsightsDesc: 'Unsere KI analysiert Ihre Schrift und liefert sofortiges Feedback zu Strichreihenfolge, Gleichgewicht und Ästhetik.',

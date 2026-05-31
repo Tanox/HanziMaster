@@ -18,6 +18,7 @@ export const es = {
   home: {
     heroTitle: 'Domina el chino',
     heroSubtitle: 'Un trazo a la vez',
+    heroSuffix: '',
     heroDescription: 'HanziMaster utiliza IA avanzada para guiarte a través del intrincado arte de los caracteres chinos. Rutas de aprendizaje personalizadas, retroalimentación en tiempo real y práctica inmersiva.',
     aiInsightsTitle: 'Perspectivas con IA',
     aiInsightsDesc: 'Nuestra IA analiza tu escritura y proporciona retroalimentación instantánea sobre el orden de trazos, equilibrio y estética.',

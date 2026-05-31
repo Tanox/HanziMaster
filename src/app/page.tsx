@@ -12,7 +12,7 @@ export default function HomePage() {
         <div className="space-y-8 animate-fade-in">
           <h2 className="text-5xl lg:text-7xl font-bold tracking-tight text-slate-900 dark:text-white leading-[1.1]">
             {t('home.heroTitle')} <br/>
-            <span className="text-emerald-600 italic">{t('home.heroSubtitle')}</span> at a Time.
+            <span className="text-emerald-600 italic">{t('home.heroSubtitle')}</span>{t('home.heroSuffix')}
           </h2>
           <p className="text-lg text-slate-600 dark:text-slate-300 max-w-lg leading-relaxed">
             {t('home.heroDescription')}

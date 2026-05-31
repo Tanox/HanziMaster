@@ -18,6 +18,7 @@ export const zhTW = {
   home: {
     heroTitle: '精通中文',
     heroSubtitle: '一筆一劃',
+    heroSuffix: '',
     heroDescription: '漢字大師使用先進的 AI 技術，引導您領略漢字的精妙藝術。提供個性化學習路徑、即時反饋和沉浸式練習。',
     aiInsightsTitle: 'AI 驅動洞察',
     aiInsightsDesc: '我們的 AI 分析您的書寫，提供關於筆畫順序、平衡和美感的即時反饋。',
