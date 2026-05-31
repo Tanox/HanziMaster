@@ -13,13 +13,7 @@
 | 技术 | 版本 | 用途 |
 |-----|------|-----|
 | Tailwind CSS | ^4.0.12 | 样式框架 |
-| Lucide React | 图标库 |
-
-## AI 集成
-
-| 技术 | 版本 | 用途 |
-|-----|------|-----|
-| @google/generative-ai | ^0.24.0 | Google Gemini AI SDK |
+| SVG Icons | - | 图标 |
 
 ## 字体
 

@@ -2,14 +2,14 @@
 export const fr = {
   common: {
     learn: 'Apprendre',
-    practice: 'Practiquer',
+    practice: 'Pratique',
     signIn: 'Se connecter',
     startLearning: 'Commencer à apprendre maintenant',
     exploreLibrary: 'Explorer la bibliothèque',
     dailyPractice: 'Pratique quotidienne',
     masterCharacters: 'Maîtrisez les 12 caractères les plus courants.',
     dayStreak: 'Jours consécutifs',
-    practiceWriting: 'Practiquer l’écriture',
+    practiceWriting: 'Pratiquer l’écriture',
     hearPronunciation: 'Écouter la prononciation',
     strokeCount: 'Nombre de traits',
     strokes: 'Traits',
@@ -18,7 +18,7 @@ export const fr = {
   home: {
     heroTitle: 'Maîtrisez le chinois',
     heroSubtitle: 'Un trait à la fois',
-    heroDescription: 'HanziMaster utilise une IA avancée pour vous guider à travers l’art complexe des caractères chinois. Parcs d’apprentissage personnalisés, rétroaction en temps réel et pratique immersive.',
+    heroDescription: 'HanziMaster utilise une IA avancée pour vous guider à travers l’art complexe des caractères chinois. Parcours d’apprentissage personnalisés, rétroaction en temps réel et pratique immersive.',
     aiInsightsTitle: 'Perspectives alimentées par l’IA',
     aiInsightsDesc: 'Notre IA analyse votre écriture et fournit une rétroaction instantanée sur l’ordre des traits, l’équilibre et l’esthétique.',
     etymologyTitle: 'Étymologie et culture',

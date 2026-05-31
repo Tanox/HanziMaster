@@ -80,7 +80,6 @@ HanziMaster 采用 Next.js 15 的 App Router 架构，结合 React Server Compon
 
 1. **主题管理**：通过 `ThemeProvider` 使用 Context 管理主题状态，持久化到 localStorage
 2. **国际化**：通过 `LocaleProvider` 使用 Context 管理语言状态，自动检测浏览器语言，支持手动切换
-3. **AI 集成**：与 Google Gemini AI 集成进行智能汉字分析
 
 ## 设计原则
 
