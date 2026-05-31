@@ -18,6 +18,7 @@ export const ja = {
   home: {
     heroTitle: '中国語をマスター',
     heroSubtitle: '一画ずつ',
+    heroSuffix: '',
     heroDescription: 'HanziMaster は、高度な AI を使用して漢字の複雑な芸術をガイドします。パーソナライズされた学習パス、リアルタイムのフィードバック、没入型の練習。',
     aiInsightsTitle: 'AI 駆動のインサイト',
     aiInsightsDesc: '私たちの AI があなたの書き方を分析し、画数の順番、バランス、美しさについて即座にフィードバックを提供します。',

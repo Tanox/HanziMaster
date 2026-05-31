@@ -29,15 +29,14 @@ const baseCharacters: Character[] = [
 export default function LearnPage() {
   const { t } = useTranslation();
   const [selectedCharacterId, setSelectedCharacterId] = useState<number | null>(baseCharacters[0]?.id ?? null);
-  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(baseCharacters[0] ?? null);
+  
+  const selectedCharacter = baseCharacters.find(char => char.id === selectedCharacterId) ?? null;
 
   const selectCharacter = (char: Character) => {
     if (selectedCharacterId === char.id) {
       setSelectedCharacterId(null);
-      setSelectedCharacter(null);
     } else {
       setSelectedCharacterId(char.id);
-      setSelectedCharacter(char);
     }
   };
 

@@ -18,6 +18,7 @@ export const fr = {
   home: {
     heroTitle: 'Maîtrisez le chinois',
     heroSubtitle: 'Un trait à la fois',
+    heroSuffix: '',
     heroDescription: 'HanziMaster utilise une IA avancée pour vous guider à travers l’art complexe des caractères chinois. Parcours d’apprentissage personnalisés, rétroaction en temps réel et pratique immersive.',
     aiInsightsTitle: 'Perspectives alimentées par l’IA',
     aiInsightsDesc: 'Notre IA analyse votre écriture et fournit une rétroaction instantanée sur l’ordre des traits, l’équilibre et l’esthétique.',

@@ -16,17 +16,16 @@
 - **语言切换器**: 便捷的语言切换并支持持久化。
 
 ## 技术栈
-- **框架**: Angular 21 (Zoneless)
+- **框架**: Next.js 15
+- **UI 库**: React 19
 - **样式**: Tailwind CSS 4.0
 - **AI**: Google Gemini AI
-- **图标**: Angular Material 图标
-- **动画**: Motion (Vanilla JS)
 - **字体**: Inter, JetBrains Mono, Noto Sans SC
-- **国际化**: 自定义 i18n 服务，支持 11 种语言
+- **国际化**: 自定义 i18n 上下文，支持 11 种语言
 
 ## 开始使用
 1. 安装依赖: `npm install`
-2. 启动开发服务器: `npm start`
+2. 启动开发服务器: `npm run dev`
 3. 生产环境构建: `npm run build`
 
 ## 支持的语言
@@ -45,21 +44,24 @@ HanziMaster 支持以下 11 种语言：
 
 ## 项目结构
 ```
-app/
-├── components/          # 组件目录
-│   ├── theme-toggle.ts # 主题切换组件
-│   └── locale-toggle.ts # 语言切换组件
-├── pages/             # 页面目录
-│   ├── home/          # 首页
-│   └── learn/          # 学习页
-├── i18n/              # 国际化目录
-│   ├── locales/       # 语言文件
-│   └── i18n.service.ts # i18n 服务
-├── app.config.ts      # 应用配置
-├── app.routes.ts      # 路由配置
-├── app.ts            # 根组件
-├── main.ts          # 入口文件
-└── styles.css        # 全局样式
+src/
+├── app/               # Next.js App Router
+│   ├── globals.css    # 全局样式
+│   ├── layout.tsx     # 根布局
+│   ├── page.tsx       # 首页
+│   ├── learn/         # 学习页
+│   │   └── page.tsx
+│   └── practice/      # 练习页
+│       └── page.tsx
+├── components/        # React 组件
+│   ├── theme-provider.tsx # 主题上下文
+│   ├── theme-toggle.tsx   # 主题切换
+│   ├── locale-provider.tsx # 国际化上下文
+│   └── locale-toggle.tsx  # 语言切换
+└── lib/              # 工具库
+    └── i18n/         # 国际化
+        ├── index.ts
+        └── translations/ # 翻译文件
 ```
 
 ## 许可证
