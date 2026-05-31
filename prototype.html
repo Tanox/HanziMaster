@@ -16,24 +16,43 @@
         }
 
         * {
-            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            font-family: 'Noto Sans SC', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .hanzi-font {
-            font-family: 'Noto Sans SC', sans-serif;
+            font-family: 'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            font-weight: 700;
         }
 
         .page {
             display: none;
             opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.4s ease, transform 0.4s ease;
+            transform: translateY(20px);
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .page.active {
             display: block;
             opacity: 1;
             transform: translateY(0);
+            animation: pageIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes pageIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.98);
+            }
+            50% {
+                opacity: 0.7;
+                transform: translateY(5px) scale(1.01);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         @keyframes float {
@@ -104,6 +123,56 @@
         .character-grid-item.selected {
             border-color: var(--emerald-500);
             box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+        }
+
+        .character-grid-item .status-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .character-grid-item.status-new .status-badge {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+        }
+
+        .character-grid-item.status-review .status-badge {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            color: #1e40af;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        }
+
+        .character-grid-item.status-mastered .status-badge {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+
+        .progress-indicator {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #e2e8f0;
+            border-radius: 0 0 12px 12px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--emerald-500), var(--emerald-600));
+            transition: width 0.5s ease;
         }
 
         .character-grid-item > * {
@@ -177,12 +246,15 @@
         .nav-link {
             position: relative;
             transition: all 0.2s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem;
+            color: rgb(71 85 105);
         }
 
         .nav-link::after {
             content: '';
             position: absolute;
-            bottom: -2px;
+            bottom: 4px;
             left: 50%;
             width: 0;
             height: 2px;
@@ -192,13 +264,23 @@
             border-radius: 2px;
         }
 
-        .nav-link:hover::after,
-        .nav-link.active::after {
-            width: 100%;
+        .nav-link:hover::after {
+            width: calc(100% - 2rem);
         }
 
         .nav-link:hover {
-            color: var(--emerald-600);
+            color: var(--emerald-700);
+            background-color: rgb(240 253 244);
+        }
+
+        .nav-link.active {
+            color: var(--emerald-700);
+            background: linear-gradient(135deg, rgb(220 252 231), rgb(236 253 245));
+            font-weight: 600;
+        }
+
+        .nav-link.active::after {
+            width: calc(100% - 2rem);
         }
 
         .feature-icon {
@@ -263,6 +345,31 @@
         .stagger-1 { top: 10%; left: 10%; width: 300px; height: 300px; background: var(--emerald-100); animation-delay: 0s; }
         .stagger-2 { bottom: 20%; right: 15%; width: 250px; height: 250px; background: #dbeafe; animation-delay: 2s; }
         .stagger-3 { top: 40%; right: 30%; width: 200px; height: 200px; background: #fef3c7; animation-delay: 4s; }
+
+        .hero-pattern {
+            position: absolute;
+            inset: 0;
+            opacity: 0.03;
+            background-image: 
+                linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+        }
+
+        .hero-character {
+            position: absolute;
+            font-size: 12rem;
+            font-weight: 900;
+            opacity: 0.03;
+            color: var(--emerald-700);
+            pointer-events: none;
+            user-select: none;
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+
+        .hero-char-1 { top: 15%; right: 5%; transform: rotate(-15deg); }
+        .hero-char-2 { bottom: 10%; left: 3%; transform: rotate(10deg); font-size: 8rem; }
     </style>
 </head>
 <body class="bg-slate-50 antialiased">
@@ -278,8 +385,9 @@
                     </a>
 
                     <nav class="flex items-center gap-8">
-                        <a href="#" onclick="switchToPage('learn')" class="nav-link text-sm font-medium text-slate-600" id="nav-learn">学习</a>
-                        <a href="#" onclick="switchToPage('practice')" class="nav-link text-sm font-medium text-slate-600" id="nav-practice">练习</a>
+                        <a href="#" onclick="switchToPage('home')" class="nav-link text-sm font-medium" id="nav-home">首页</a>
+                        <a href="#" onclick="switchToPage('learn')" class="nav-link text-sm font-medium" id="nav-learn">学习</a>
+                        <a href="#" onclick="switchToPage('practice')" class="nav-link text-sm font-medium" id="nav-practice">练习</a>
 
                         <div class="flex items-center gap-2">
                             <button class="p-2.5 rounded-xl hover:bg-slate-100 transition-colors" title="语言设置">
@@ -305,6 +413,9 @@
         <main class="flex-1">
             <div id="page-home" class="page active">
                 <section class="relative min-h-[90vh] flex items-center overflow-hidden">
+                    <div class="hero-pattern"></div>
+                    <div class="hero-character hero-char-1">学</div>
+                    <div class="hero-character hero-char-2">习</div>
                     <div class="hero-decoration stagger-1 floating-card"></div>
                     <div class="hero-decoration stagger-2 floating-card"></div>
                     <div class="hero-decoration stagger-3 floating-card"></div>
@@ -452,53 +563,95 @@
                     </div>
 
                     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-5 mb-12">
-                        <button onclick="selectCharacter(1)" class="character-grid-item bg-white p-6 rounded-2xl border-2 border-slate-100 text-center" data-id="1">
+                        <button onclick="selectCharacter(1)" class="character-grid-item bg-white p-6 rounded-2xl border-2 border-slate-100 text-center status-mastered" data-id="1">
+                            <div class="status-badge">✓</div>
                             <span class="text-4xl font-bold text-slate-900 mb-2 block hanzi-font">一</span>
                             <span class="text-xs text-slate-400 uppercase tracking-wider font-medium">yī</span>
+                            <div class="progress-indicator">
+                                <div class="progress-bar" style="width: 100%"></div>
+                            </div>
                         </button>
-                        <button onclick="selectCharacter(2)" class="character-grid-item bg-white p-6 rounded-2xl border-2 border-slate-100 text-center" data-id="2">
+                        <button onclick="selectCharacter(2)" class="character-grid-item bg-white p-6 rounded-2xl border-2 border-slate-100 text-center status-mastered" data-id="2">
+                            <div class="status-badge">✓</div>
                             <span class="text-4xl font-bold text-slate-900 mb-2 block hanzi-font">二</span>
                             <span class="text-xs text-slate-400 uppercase tracking-wider font-medium">èr</span>
+                            <div class="progress-indicator">
+                                <div class="progress-bar" style="width: 95%"></div>
+                            </div>
                         </button>
-                        <button onclick="selectCharacter(3)" class="character-grid-item bg-white p-6 rounded-2xl border-2 border-slate-100 text-center" data-id="3">
+                        <button onclick="selectCharacter(3)" class="character-grid-item bg-white p-6 rounded-2xl border-2 border-slate-100 text-center status-review" data-id="3">
+                            <div class="status-badge">←</div>
                             <span class="text-4xl font-bold text-slate-900 mb-2 block hanzi-font">三</span>
                             <span class="text-xs text-slate-400 uppercase tracking-wider font-medium">sān</span>
+                            <div class="progress-indicator">
+                                <div class="progress-bar" style="width: 70%"></div>
+                            </div>
                         </button>
-                        <button onclick="selectCharacter(4)" class="character-grid-item bg-white p-6 rounded-2xl border-2 border-slate-100 text-center" data-id="4">
+                        <button onclick="selectCharacter(4)" class="character-grid-item bg-white p-6 rounded-2xl border-2 border-slate-100 text-center status-review" data-id="4">
+                            <div class="status-badge">←</div>
                             <span class="text-4xl font-bold text-slate-900 mb-2 block hanzi-font">人</span>
                             <span class="text-xs text-slate-400 uppercase tracking-wider font-medium">rén</span>
+                            <div class="progress-indicator">
+                                <div class="progress-bar" style="width: 60%"></div>
+                            </div>
                         </button>
-                        <button onclick="selectCharacter(5)" class="character-grid-item bg-white p-6 rounded-2xl border-2 border-slate-100 text-center" data-id="5">
+                        <button onclick="selectCharacter(5)" class="character-grid-item bg-white p-6 rounded-2xl border-2 border-slate-100 text-center status-new" data-id="5">
+                            <div class="status-badge">★</div>
                             <span class="text-4xl font-bold text-slate-900 mb-2 block hanzi-font">大</span>
                             <span class="text-xs text-slate-400 uppercase tracking-wider font-medium">dà</span>
+                            <div class="progress-indicator">
+                                <div class="progress-bar" style="width: 30%"></div>
+                            </div>
                         </button>
-                        <button onclick="selectCharacter(6)" class="character-grid-item bg-white p-6 rounded-2xl border-2 border-slate-100 text-center" data-id="6">
+                        <button onclick="selectCharacter(6)" class="character-grid-item bg-white p-6 rounded-2xl border-2 border-slate-100 text-center status-new" data-id="6">
+                            <div class="status-badge">★</div>
                             <span class="text-4xl font-bold text-slate-900 mb-2 block hanzi-font">小</span>
                             <span class="text-xs text-slate-400 uppercase tracking-wider font-medium">xiǎo</span>
+                            <div class="progress-indicator">
+                                <div class="progress-bar" style="width: 20%"></div>
+                            </div>
                         </button>
                         <button onclick="selectCharacter(7)" class="character-grid-item bg-white p-6 rounded-2xl border-2 border-slate-100 text-center" data-id="7">
                             <span class="text-4xl font-bold text-slate-900 mb-2 block hanzi-font">口</span>
                             <span class="text-xs text-slate-400 uppercase tracking-wider font-medium">kǒu</span>
+                            <div class="progress-indicator">
+                                <div class="progress-bar" style="width: 0%"></div>
+                            </div>
                         </button>
                         <button onclick="selectCharacter(8)" class="character-grid-item bg-white p-6 rounded-2xl border-2 border-slate-100 text-center" data-id="8">
                             <span class="text-4xl font-bold text-slate-900 mb-2 block hanzi-font">日</span>
                             <span class="text-xs text-slate-400 uppercase tracking-wider font-medium">rì</span>
+                            <div class="progress-indicator">
+                                <div class="progress-bar" style="width: 0%"></div>
+                            </div>
                         </button>
                         <button onclick="selectCharacter(9)" class="character-grid-item bg-white p-6 rounded-2xl border-2 border-slate-100 text-center" data-id="9">
                             <span class="text-4xl font-bold text-slate-900 mb-2 block hanzi-font">月</span>
                             <span class="text-xs text-slate-400 uppercase tracking-wider font-medium">yuè</span>
+                            <div class="progress-indicator">
+                                <div class="progress-bar" style="width: 0%"></div>
+                            </div>
                         </button>
                         <button onclick="selectCharacter(10)" class="character-grid-item bg-white p-6 rounded-2xl border-2 border-slate-100 text-center" data-id="10">
                             <span class="text-4xl font-bold text-slate-900 mb-2 block hanzi-font">山</span>
                             <span class="text-xs text-slate-400 uppercase tracking-wider font-medium">shān</span>
+                            <div class="progress-indicator">
+                                <div class="progress-bar" style="width: 0%"></div>
+                            </div>
                         </button>
                         <button onclick="selectCharacter(11)" class="character-grid-item bg-white p-6 rounded-2xl border-2 border-slate-100 text-center" data-id="11">
                             <span class="text-4xl font-bold text-slate-900 mb-2 block hanzi-font">水</span>
                             <span class="text-xs text-slate-400 uppercase tracking-wider font-medium">shuǐ</span>
+                            <div class="progress-indicator">
+                                <div class="progress-bar" style="width: 0%"></div>
+                            </div>
                         </button>
                         <button onclick="selectCharacter(12)" class="character-grid-item bg-white p-6 rounded-2xl border-2 border-slate-100 text-center" data-id="12">
                             <span class="text-4xl font-bold text-slate-900 mb-2 block hanzi-font">火</span>
                             <span class="text-xs text-slate-400 uppercase tracking-wider font-medium">huǒ</span>
+                            <div class="progress-indicator">
+                                <div class="progress-bar" style="width: 0%"></div>
+                            </div>
                         </button>
                     </div>
 
@@ -779,6 +932,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            switchToPage('home');
             selectCharacter(1);
         });
     </script>
