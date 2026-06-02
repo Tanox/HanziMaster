@@ -445,6 +445,6 @@ interface APIError {
 
 ---
 
-**文档版本**: v2.2.0
+**文档版本**: v2.2.1
 **最后更新**: 2026-05-31
 **维护者**: HanziMaster Team

@@ -1,3 +1,4 @@
+// src/components/locale-toggle.tsx v2.2.1
 'use client';
 
 import { useState, useEffect, useRef } from 'react';

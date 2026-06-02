@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v2.2.0",
-  "version": "2.2.0",
-  "description": "v2.2.0: Added complete i18n internationalization support with 11 languages, updated all components to use i18n, fixed configuration files, added locale switcher component, and updated all documentation.",
+  "name": "HanziMaster 汉字大师 v2.2.1",
+  "version": "2.2.1",
+  "description": "v2.2.1: Fixed practice page i18n, added complete translations for all 11 languages, fixed README documentation consistency, updated all file versions to v2.2.1, and ensured code compliance with project specifications.",
   "keywords": [
     "Chinese characters",
     "Hanzi",

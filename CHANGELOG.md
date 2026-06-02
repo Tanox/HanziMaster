@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.2.1]
+- Fixed practice page to use i18n translations properly.
+- Added complete practice page translations to all 11 language files.
+- Fixed README_EN.md incorrect tech stack description (was Angular 21, now correctly Next.js 15 + React 19).
+- Added missing file headers to all source code files.
+- Updated all source files to version v2.2.1.
+- Verified i18n completeness across all language files.
+- Added practice page translations for all supported languages.
+- Fixed documentation consistency between README.md and README_EN.md.
+- Ensured all components follow project specification guidelines.
+
 ## [2.2.0]
 - Added complete i18n internationalization support with 11 languages: English, Simplified Chinese, Traditional Chinese, Spanish, Arabic, French, Portuguese (Brazil), German, Japanese, Korean, and Russian.
 - Created I18nService with automatic browser language detection and localStorage persistence.
