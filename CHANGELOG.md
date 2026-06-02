@@ -34,7 +34,22 @@
 - Added `will-change: background-position` to skeleton loading animation
 - Created `container-page` utility class for consistent page containers
 - Footer: removed dead "About" and "Contact" `#` links
-- Footer: removed unused "Sign In" button from desktop header
+- Desktop header: removed non-functional "Sign In" button
+- Dark mode: improved footer divider contrast (`border-slate-600/60`)
+- Dark mode: focus ring uses brighter `#34d399` emerald tint
+
+### Code Quality
+- Removed `as any` type assertion from locale-toggle (proper `Locale` type import)
+- Updated version string to v2.2.1 throughout
+
+### Learn Page
+- Added character grid loading skeleton with shimmer animation (12 placeholder cards)
+- Skeleton uses `role="status"` and `sr-only` for accessibility
+
+### Practice Page
+- Fixed re-clicking selected mode no longer de-selects (anti-pattern fix)
+- Added selected card background fill and subtle ring for better visual feedback
+- Card backgrounds change to tinted color when selected (emerald/blue/purple)
 
 ### Documentation
 - Added `UI_UX_REVIEW.md` - comprehensive professional UI/UX audit report
