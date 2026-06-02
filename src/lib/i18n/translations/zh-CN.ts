@@ -68,6 +68,8 @@ export const zhCN = {
     mountain: '山',
     water: '水',
     fire: '火',
+    radical: '部首',
+    structure: '结构',
   },
   footer: {
     copyright: '© 2026 汉字大师 HanziMaster v2.2.0. 保留所有权利。',

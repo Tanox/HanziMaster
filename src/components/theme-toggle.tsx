@@ -17,6 +17,8 @@ export function ThemeToggleClient() {
     <button 
       onClick={toggleTheme} 
       className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+      aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+      style={{ minWidth: 44, minHeight: 44 }}
     >
       {theme === 'dark' ? (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

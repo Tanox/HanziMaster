@@ -68,6 +68,8 @@ export const en = {
     mountain: 'Mountain',
     water: 'Water',
     fire: 'Fire',
+    radical: 'Radical',
+    structure: 'Structure',
   },
   footer: {
     copyright: '© 2026 HanziMaster 汉字大师 v2.2.0. All rights reserved.',
