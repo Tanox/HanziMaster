@@ -1,3 +1,4 @@
+// src/app/page.tsx v2.2.0
 'use client';
 
 import Link from 'next/link';
