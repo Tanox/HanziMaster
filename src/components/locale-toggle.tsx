@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocale } from './locale-provider';
+import type { Locale } from '@/lib/i18n';
 
 const localeNames: Record<string, string> = {
   'en': 'English',
@@ -30,8 +31,8 @@ export function LocaleToggleClient() {
     buttonRef.current?.focus();
   }, []);
 
-  const selectLocale = useCallback((newLocale: string) => {
-    setLocale(newLocale as any);
+  const selectLocale = useCallback((newLocale: Locale) => {
+    setLocale(newLocale);
     close();
   }, [setLocale, close]);
 

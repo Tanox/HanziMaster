@@ -47,18 +47,21 @@ export default function PracticePage() {
         text: isSelected ? 'text-white' : 'text-emerald-600 dark:text-emerald-400',
         border: isSelected ? 'border-emerald-500' : 'border-emerald-200 dark:border-emerald-800',
         hover: 'hover:border-emerald-500',
+        card: isSelected ? 'bg-emerald-50 dark:bg-emerald-900/20 ring-2 ring-emerald-500/30' : 'bg-white dark:bg-slate-800',
       },
       blue: {
         bg: isSelected ? 'bg-blue-500' : 'bg-blue-50 dark:bg-blue-900/30',
         text: isSelected ? 'text-white' : 'text-blue-600 dark:text-blue-400',
         border: isSelected ? 'border-blue-500' : 'border-blue-200 dark:border-blue-800',
         hover: 'hover:border-blue-500',
+        card: isSelected ? 'bg-blue-50 dark:bg-blue-900/20 ring-2 ring-blue-500/30' : 'bg-white dark:bg-slate-800',
       },
       purple: {
         bg: isSelected ? 'bg-purple-500' : 'bg-purple-50 dark:bg-purple-900/30',
         text: isSelected ? 'text-white' : 'text-purple-600 dark:text-purple-400',
         border: isSelected ? 'border-purple-500' : 'border-purple-200 dark:border-purple-800',
         hover: 'hover:border-purple-500',
+        card: isSelected ? 'bg-purple-50 dark:bg-purple-900/20 ring-2 ring-purple-500/30' : 'bg-white dark:bg-slate-800',
       },
     };
     return colors[color as keyof typeof colors] || colors.emerald;
@@ -105,8 +108,8 @@ export default function PracticePage() {
           return (
             <button
               key={option.id}
-              onClick={() => setSelectedOption(selectedOption === option.id ? null : option.id)}
-              className={`group bg-white dark:bg-slate-800 p-6 sm:p-10 rounded-2xl sm:rounded-3xl border-2 shadow-sm hover:shadow-xl transition-all duration-300 text-left sm:hover:-translate-y-2 active:scale-[0.98] ${colorClasses.border} ${colorClasses.hover}`}
+              onClick={() => setSelectedOption(option.id)}
+              className={`group p-6 sm:p-10 rounded-2xl sm:rounded-3xl border-2 shadow-sm hover:shadow-xl transition-all duration-300 text-left sm:hover:-translate-y-2 active:scale-[0.98] ${colorClasses.card} ${colorClasses.border} ${colorClasses.hover}`}
             >
               <div className={`w-12 h-12 sm:w-16 sm:h-16 ${colorClasses.bg} rounded-2xl flex items-center justify-center mb-5 sm:mb-8 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
                 {getIcon(option.icon, colorClasses)}

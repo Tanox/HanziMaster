@@ -38,6 +38,10 @@
   border-radius: 4px;
 }
 
+.dark *:focus-visible {
+  outline-color: #34d399;
+}
+
 /* Suppress default focus ring on mouse clicks while keeping keyboard focus */
 :focus:not(:focus-visible) {
   outline: none;

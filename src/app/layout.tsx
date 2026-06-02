@@ -96,7 +96,7 @@ function MobileNav({
 
         <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-slate-100 dark:border-slate-800 text-center">
           <p className="text-xs text-slate-400 dark:text-slate-500">
-            HanziMaster v2.2.0
+            HanziMaster v2.2.1
           </p>
         </div>
       </nav>
@@ -183,12 +183,6 @@ function LayoutContent({
 
           <LocaleToggleClient />
           <ThemeToggleClient />
-
-          <button className="ml-2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:from-emerald-600 hover:to-emerald-700 transition-all shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 active:scale-95"
-            style={{ minHeight: 40 }}
-          >
-            {t("common.signIn")}
-          </button>
         </nav>
 
         {/* Mobile: controls strip */}
@@ -219,7 +213,7 @@ function LayoutContent({
       </main>
 
       {/* ─── Footer ─── */}
-      <footer className="bg-white dark:bg-slate-800/50 border-t border-slate-200/50 dark:border-slate-700/50 py-10 sm:py-12 px-6">
+      <footer className="bg-white dark:bg-slate-800/50 border-t border-slate-200/60 dark:border-slate-600/60 py-10 sm:py-12 px-6">
         <div className="max-w-7xl mx-auto flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center">

@@ -58,7 +58,7 @@ export default function HomePage() {
               </h1>
 
               {/* Description */}
-              <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-lg leading-relaxed">
+              <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-lg lg:max-w-xl leading-relaxed">
                 {t('home.heroDescription')}
               </p>
 
