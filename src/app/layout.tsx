@@ -84,28 +84,20 @@ function MobileNav({
 
         <div className="flex flex-col gap-2 p-4">
           <Link href="/" onClick={onClose} className={linkClass("/")}>
-            🏠 Home
+            Home
           </Link>
           <Link href="/learn" onClick={onClose} className={linkClass("/learn")}>
-            📖 {t("common.learn")}
+            {t("common.learn")}
           </Link>
           <Link href="/practice" onClick={onClose} className={linkClass("/practice")}>
-            ✏️ {t("common.practice")}
+            {t("common.practice")}
           </Link>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-slate-100 dark:border-slate-800">
-          <div className="flex items-center justify-between">
-            <LocaleToggleClient />
-            <ThemeToggleClient />
-          </div>
-          <button
-            onClick={onClose}
-            className="mt-4 w-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 rounded-xl text-base font-semibold hover:from-emerald-600 hover:to-emerald-700 transition-all shadow-lg shadow-emerald-500/25"
-            style={{ minHeight: 48 }}
-          >
-            {t("common.signIn")}
-          </button>
+        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-slate-100 dark:border-slate-800 text-center">
+          <p className="text-xs text-slate-400 dark:text-slate-500">
+            HanziMaster v2.2.0
+          </p>
         </div>
       </nav>
     </>
@@ -222,7 +214,7 @@ function LayoutContent({
       <MobileNav isOpen={mobileNavOpen} onClose={closeMobileNav} t={t} />
 
       {/* ─── Main Content ─── */}
-      <main id="main-content" className="flex-1">
+      <main id="main-content" className="flex-1 animate-fade-in-up" key={pathname}>
         {children}
       </main>
 
@@ -238,8 +230,6 @@ function LayoutContent({
           <nav className="flex flex-wrap justify-center gap-4 sm:gap-8 text-sm text-slate-500 dark:text-slate-400">
             <Link href="/learn" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{t("common.learn")}</Link>
             <Link href="/practice" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{t("common.practice")}</Link>
-            <a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">About</a>
-            <a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Contact</a>
           </nav>
           <p className="text-xs sm:text-sm text-slate-400 dark:text-slate-500 text-center">{t("footer.copyright")}</p>
         </div>

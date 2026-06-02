@@ -44,15 +44,16 @@ export default function HomePage() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
-                AI {t('home.heroTitle')}
+                AI-Powered Learning
               </div>
 
               {/* Main Heading */}
-              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.1]">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.1]">
                 {t('home.heroTitle')} <br/>
                 <span className="bg-gradient-to-r from-emerald-500 via-emerald-600 to-cyan-500 dark:from-emerald-400 dark:via-emerald-500 dark:to-cyan-400 bg-clip-text text-transparent italic font-black">
                   {t('home.heroSubtitle')}
                 </span>
+                <span> </span>
                 {t('home.heroSuffix')}
               </h1>
 
