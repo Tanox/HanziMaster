@@ -16,6 +16,21 @@
   --touch-target-min: 44px;
 }
 
+/* ====== Font Loading ====== */
+@font-face {
+  font-family: 'Inter';
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Noto Sans SC';
+  font-display: swap;
+}
+
+/* ====== Responsive container utility ====== */
+@utility container-page {
+  @apply max-w-7xl mx-auto px-4 sm:px-6;
+}
+
 /* ====== Focus Visible: keyboard accessibility ====== */
 *:focus-visible {
   outline: 2px solid #10b981;
@@ -118,6 +133,7 @@ body {
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
     border-radius: 8px;
+    will-change: background-position;
   }
 
   .dark .skeleton {

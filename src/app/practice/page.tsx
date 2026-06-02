@@ -87,34 +87,34 @@ export default function PracticePage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 safe-bottom">
       {/* Header Section */}
-      <div className="text-center mb-16">
-        <h2 className="text-4xl lg:text-5xl font-bold tracking-tight mb-4 text-slate-900 dark:text-white">
+      <div className="text-center mb-10 sm:mb-16">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-3 sm:mb-4 text-slate-900 dark:text-white">
           {t('common.practice')} {t('practice.center')}
         </h2>
-        <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+        <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
           {t('practice.subtitle')}
         </p>
       </div>
 
       {/* Practice Options Grid */}
-      <div className="grid md:grid-cols-3 gap-8 mb-16">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
         {practiceOptions.map((option) => {
           const colorClasses = getColorClasses(option.color, selectedOption === option.id);
           return (
             <button
               key={option.id}
               onClick={() => setSelectedOption(selectedOption === option.id ? null : option.id)}
-              className={`group bg-white dark:bg-slate-800 p-10 rounded-3xl border-2 shadow-sm hover:shadow-xl transition-all duration-300 text-left hover:-translate-y-2 ${colorClasses.border} ${colorClasses.hover}`}
+              className={`group bg-white dark:bg-slate-800 p-6 sm:p-10 rounded-2xl sm:rounded-3xl border-2 shadow-sm hover:shadow-xl transition-all duration-300 text-left sm:hover:-translate-y-2 active:scale-[0.98] ${colorClasses.border} ${colorClasses.hover}`}
             >
-              <div className={`w-16 h-16 ${colorClasses.bg} rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
+              <div className={`w-12 h-12 sm:w-16 sm:h-16 ${colorClasses.bg} rounded-2xl flex items-center justify-center mb-5 sm:mb-8 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
                 {getIcon(option.icon, colorClasses)}
               </div>
-              <h3 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">
+              <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-slate-900 dark:text-white">
                 {t(option.titleKey)}
               </h3>
-              <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+              <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed mb-4 sm:mb-6">
                 {t(option.descKey)}
               </p>
               <div className={`flex items-center gap-2 font-semibold ${colorClasses.text} group`}>
@@ -129,32 +129,33 @@ export default function PracticePage() {
       </div>
 
       {/* Weekly Progress Section */}
-      <div className="bg-white dark:bg-slate-800 rounded-3xl p-10 border border-slate-100 dark:border-slate-700 shadow-lg">
-        <h3 className="text-2xl font-bold mb-8 text-slate-900 dark:text-white">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl sm:rounded-3xl p-6 sm:p-10 border border-slate-100 dark:border-slate-700 shadow-lg">
+        <h3 className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 text-slate-900 dark:text-white">
           {t('practice.weeklyProgress')}
         </h3>
 
         {/* Week Days Grid */}
-        <div className="grid grid-cols-7 gap-4 mb-10">
+        <div className="grid grid-cols-7 gap-1 sm:gap-3 lg:gap-4 mb-8 sm:mb-10">
           {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => (
             <div
               key={day}
-              className={`flex flex-col items-center p-4 rounded-2xl ${
+              className={`flex flex-col items-center p-2 sm:p-4 rounded-xl sm:rounded-2xl ${
                 index < 5
                   ? 'bg-gradient-to-br from-emerald-500 to-emerald-600 text-white'
                   : 'bg-slate-100 dark:bg-slate-700 text-slate-400 dark:text-slate-500'
               } ${index === 4 ? 'ring-2 ring-emerald-500 ring-offset-2 dark:ring-offset-slate-800' : ''}`}
+              style={{ minHeight: 72 }}
             >
-              <p className="text-xs mb-3 font-medium">{t(`practice.${day.toLowerCase()}`)}</p>
-              <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${
+              <p className="text-[10px] sm:text-xs mb-2 sm:mb-3 font-medium">{t(`practice.${day.toLowerCase()}`)}</p>
+              <div className={`w-8 h-8 sm:w-14 sm:h-14 rounded-lg sm:rounded-xl flex items-center justify-center ${
                 index < 5 ? 'bg-white/20' : 'bg-white dark:bg-slate-600'
               }`}>
                 {index < 5 ? (
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                   </svg>
                 ) : (
-                  <span className="text-sm font-medium">{index === 4 ? t('practice.today') : t('practice.pending')}</span>
+                  <span className="text-[10px] sm:text-sm font-medium">{index === 4 ? t('practice.today') : t('practice.pending')}</span>
                 )}
               </div>
             </div>
@@ -168,8 +169,8 @@ export default function PracticePage() {
             { label: 'practice.dayStreak', value: '5', icon: 'fire' },
             { label: 'practice.accuracy', value: '87%', icon: 'check' },
           ].map((stat) => (
-            <div key={stat.label} className="bg-slate-50 dark:bg-slate-900/50 p-8 rounded-2xl text-center hover:scale-105 transition-transform duration-300">
-              <div className="inline-flex items-center justify-center w-14 h-14 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-2xl mb-4">
+            <div key={stat.label} className="bg-slate-50 dark:bg-slate-900/50 p-6 sm:p-8 rounded-xl sm:rounded-2xl text-center hover:scale-105 transition-transform duration-300">
+              <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-xl sm:rounded-2xl mb-3 sm:mb-4">
                 {stat.icon === 'book' && (
                   <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.7: 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -186,7 +187,7 @@ export default function PracticePage() {
                   </svg>
                 )}
               </div>
-              <div className="text-4xl font-extrabold text-slate-900 dark:text-white mb-2">{stat.value}</div>
+              <div className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-1 sm:mb-2">{stat.value}</div>
               <div className="text-sm text-slate-500 dark:text-slate-400 font-medium">{t(stat.label)}</div>
             </div>
           ))}

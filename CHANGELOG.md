@@ -1,5 +1,44 @@
 # Changelog
 
+## [2.2.1] - UI/UX Professional Review & Optimization
+### Theme System
+- Added 3-state theme toggle: light → dark → system (previously lost system mode after manual toggle)
+- Added hover tooltip showing current theme mode
+
+### Accessibility
+- Locale dropdown: added `aria-expanded`, `aria-haspopup`, `role="listbox"`, `role="option"`, `aria-selected`
+- Locale dropdown: added keyboard navigation (Arrow keys, Escape to close)
+- Locale dropdown: added `max-h-[70vh]` scroll for overflow on small screens
+- Mobile drawer: removed duplicate theme/locale toggles (already in header)
+- Mobile drawer: removed non-functional "Sign In" button
+
+### Visual & Layout
+- Fixed Home page CTA buttons: "Start Learning" → `/learn`, "Explore Library" → `/practice` (previously both `/learn`)
+- Status badge text changed to "AI-Powered Learning" (was misusing heroTitle translation)
+- Hero heading: reduced max font size from `text-7xl` to `text-6xl` for better proportion
+- Mobile nav: removed emoji icons (🏠📖✏️) for professional consistency
+- Practice page: unified responsive padding to `px-4 sm:px-6` (was fixed `px-6`)
+- Practice page: added `sm:grid-cols-2` breakpoint for tablet optimization
+- Weekly progress grid: responsive sizing with `gap-1 sm:gap-3 lg:gap-4`
+- Weekly progress day cells: `minHeight: 72` for touch-friendly tapping
+- Practice cards: added `active:scale-[0.98]` press feedback
+- Stats cards: consistent responsive sizing (`text-3xl sm:text-4xl`)
+
+### Interaction
+- Learn page: re-clicking selected character no longer de-selects (was confusing UX)
+- Learn page: added `grid-cols-2 xs:grid-cols-3` for very small screens
+- Added `key={pathname}` to `<main>` for page transition animation via `animate-fade-in-up`
+
+### Performance
+- Added `font-display: swap` CSS declarations for Inter and Noto Sans SC fonts
+- Added `will-change: background-position` to skeleton loading animation
+- Created `container-page` utility class for consistent page containers
+- Footer: removed dead "About" and "Contact" `#` links
+- Footer: removed unused "Sign In" button from desktop header
+
+### Documentation
+- Added `UI_UX_REVIEW.md` - comprehensive professional UI/UX audit report
+
 ## [2.2.0]
 - Added complete i18n internationalization support with 11 languages: English, Simplified Chinese, Traditional Chinese, Spanish, Arabic, French, Portuguese (Brazil), German, Japanese, Korean, and Russian.
 - Created I18nService with automatic browser language detection and localStorage persistence.

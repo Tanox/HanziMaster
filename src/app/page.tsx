@@ -75,7 +75,7 @@ export default function HomePage() {
                   </svg>
                 </Link>
                 <Link 
-                  href="/learn" 
+                  href="/practice" 
                   className="group bg-white dark:bg-slate-800 text-slate-900 dark:text-white border-2 border-slate-200 dark:border-slate-700 px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl text-base sm:text-lg font-bold hover:border-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all flex items-center justify-center gap-3 sm:hover:-translate-y-1 active:scale-95"
                   style={{ minHeight: 52 }}
                 >

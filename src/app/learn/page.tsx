@@ -37,7 +37,7 @@ export default function LearnPage() {
   const selectedCharacter = baseCharacters.find(char => char.id === selectedCharacterId) ?? null;
 
   const selectCharacter = useCallback((char: Character) => {
-    setSelectedCharacterId(prev => (prev === char.id ? null : char.id));
+    setSelectedCharacterId(char.id);
   }, []);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent, char: Character) => {
@@ -69,7 +69,7 @@ export default function LearnPage() {
 
       {/* Character Grid */}
       <div
-        className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 lg:gap-5 mb-8 sm:mb-12"
+        className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2.5 sm:gap-4 lg:gap-5 mb-8 sm:mb-12"
         role="listbox"
         aria-label={t('common.masterCharacters')}
       >
