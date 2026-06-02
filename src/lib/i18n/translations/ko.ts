@@ -1,9 +1,9 @@
-// src/lib/i18n/translations/ko.ts v2.2.0
+// src/lib/i18n/translations/ko.ts v2.2.1
 export const ko = {
   common: {
+    home: '홈',
     learn: '학습',
     practice: '연습',
-    signIn: '로그인',
     startLearning: '지금 학습 시작',
     exploreLibrary: '라이브러리 탐색',
     dailyPractice: '매일 연습',
@@ -16,6 +16,11 @@ export const ko = {
     foreverQuote: '「영」자에는 8가지 기본 획이 모두 포함되어 있습니다.',
     learners: '학습자',
     strokeMastery: '획 숙달도',
+    theme: {
+      light: '라이트',
+      dark: '다크',
+      system: '시스템',
+    },
   },
   home: {
     heroTitle: '중국어 마스터',
@@ -72,7 +77,7 @@ export const ko = {
     structure: '구조',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v2.2.0. 모든 권리 보유.',
+    copyright: '© 2026 HanziMaster 汉字大师 v2.2.1. 모든 권리 보유.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

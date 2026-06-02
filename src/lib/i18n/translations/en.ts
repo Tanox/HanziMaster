@@ -1,9 +1,9 @@
-// src/lib/i18n/translations/en.ts v2.2.0
+// src/lib/i18n/translations/en.ts v2.2.1
 export const en = {
   common: {
+    home: 'Home',
     learn: 'Learn',
     practice: 'Practice',
-    signIn: 'Sign In',
     startLearning: 'Start Learning Now',
     exploreLibrary: 'Explore Library',
     dailyPractice: 'Daily Practice',
@@ -16,6 +16,11 @@ export const en = {
     foreverQuote: 'The character for "forever" contains all 8 basic strokes.',
     learners: 'learners studying',
     strokeMastery: 'Stroke Mastery',
+    theme: {
+      light: 'Light',
+      dark: 'Dark',
+      system: 'System',
+    },
   },
   home: {
     heroTitle: 'Master Chinese',
@@ -72,7 +77,7 @@ export const en = {
     structure: 'Structure',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v2.2.0. All rights reserved.',
+    copyright: '© 2026 HanziMaster 汉字大师 v2.2.1. All rights reserved.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

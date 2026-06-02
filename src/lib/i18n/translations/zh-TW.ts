@@ -1,9 +1,9 @@
-// src/lib/i18n/translations/zh-TW.ts v2.2.0
+// src/lib/i18n/translations/zh-TW.ts v2.2.1
 export const zhTW = {
   common: {
+    home: '首頁',
     learn: '學習',
     practice: '練習',
-    signIn: '登入',
     startLearning: '立即開始學習',
     exploreLibrary: '瀏覽字庫',
     dailyPractice: '每日練習',
@@ -16,6 +16,11 @@ export const zhTW = {
     foreverQuote: '「永」字包含了所有8種基本筆畫。',
     learners: '學員正在學習',
     strokeMastery: '筆畫掌握度',
+    theme: {
+      light: '淺色',
+      dark: '深色',
+      system: '跟隨系統',
+    },
   },
   home: {
     heroTitle: '精通中文',
@@ -72,7 +77,7 @@ export const zhTW = {
     structure: '結構',
   },
   footer: {
-    copyright: '© 2026 漢字大師 HanziMaster v2.2.0. 保留所有權利。',
+    copyright: '© 2026 漢字大師 HanziMaster v2.2.1. 保留所有權利。',
   },
   meta: {
     title: 'HanziMaster 漢字大師',

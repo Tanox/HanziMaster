@@ -1,9 +1,9 @@
-// src/lib/i18n/translations/zh-CN.ts v2.2.0
+// src/lib/i18n/translations/zh-CN.ts v2.2.1
 export const zhCN = {
   common: {
+    home: '首页',
     learn: '学习',
     practice: '练习',
-    signIn: '登录',
     startLearning: '立即开始学习',
     exploreLibrary: '浏览字库',
     dailyPractice: '每日练习',
@@ -16,6 +16,11 @@ export const zhCN = {
     foreverQuote: '“永”字包含了所有8种基本笔画。',
     learners: '学员正在学习',
     strokeMastery: '笔画掌握度',
+    theme: {
+      light: '浅色',
+      dark: '深色',
+      system: '跟随系统',
+    },
   },
   home: {
     heroTitle: '精通中文',
@@ -72,7 +77,7 @@ export const zhCN = {
     structure: '结构',
   },
   footer: {
-    copyright: '© 2026 汉字大师 HanziMaster v2.2.0. 保留所有权利。',
+    copyright: '© 2026 汉字大师 HanziMaster v2.2.1. 保留所有权利。',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

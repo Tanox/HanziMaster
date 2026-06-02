@@ -1,9 +1,9 @@
-// src/lib/i18n/translations/pt-BR.ts v2.2.0
+// src/lib/i18n/translations/pt-BR.ts v2.2.1
 export const ptBR = {
   common: {
+    home: 'Início',
     learn: 'Aprender',
     practice: 'Praticar',
-    signIn: 'Entrar',
     startLearning: 'Começar a aprender agora',
     exploreLibrary: 'Explorar biblioteca',
     dailyPractice: 'Prática diária',
@@ -16,6 +16,11 @@ export const ptBR = {
     foreverQuote: 'O caractere de "sempre" contém os 8 traços básicos.',
     learners: 'alunos estudando',
     strokeMastery: 'Domínio de traços',
+    theme: {
+      light: 'Claro',
+      dark: 'Escuro',
+      system: 'Sistema',
+    },
   },
   home: {
     heroTitle: 'Domine o chinês',
@@ -72,7 +77,7 @@ export const ptBR = {
     structure: 'Estrutura',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v2.2.0. Todos os direitos reservados.',
+    copyright: '© 2026 HanziMaster 汉字大师 v2.2.1. Todos os direitos reservados.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

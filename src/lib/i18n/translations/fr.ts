@@ -1,9 +1,9 @@
-// src/lib/i18n/translations/fr.ts v2.2.0
+// src/lib/i18n/translations/fr.ts v2.2.1
 export const fr = {
   common: {
+    home: 'Accueil',
     learn: 'Apprendre',
     practice: 'Pratique',
-    signIn: 'Se connecter',
     startLearning: 'Commencer à apprendre maintenant',
     exploreLibrary: 'Explorer la bibliothèque',
     dailyPractice: 'Pratique quotidienne',
@@ -16,6 +16,11 @@ export const fr = {
     foreverQuote: 'Le caractère "pour toujours" contient les 8 traits de base.',
     learners: 'apprenants',
     strokeMastery: 'Maîtrise des traits',
+    theme: {
+      light: 'Clair',
+      dark: 'Sombre',
+      system: 'Système',
+    },
   },
   home: {
     heroTitle: 'Maîtrisez le chinois',
@@ -72,7 +77,7 @@ export const fr = {
     structure: 'Structure',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v2.2.0. Tous droits réservés.',
+    copyright: '© 2026 HanziMaster 汉字大师 v2.2.1. Tous droits réservés.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

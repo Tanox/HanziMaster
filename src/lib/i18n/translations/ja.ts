@@ -1,9 +1,9 @@
-// src/lib/i18n/translations/ja.ts v2.2.0
+// src/lib/i18n/translations/ja.ts v2.2.1
 export const ja = {
   common: {
+    home: 'ホーム',
     learn: '学習',
     practice: '練習',
-    signIn: 'サインイン',
     startLearning: '今すぐ学習を開始',
     exploreLibrary: 'ライブラリを探索',
     dailyPractice: '毎日の練習',
@@ -16,6 +16,11 @@ export const ja = {
     foreverQuote: '「永」の文字には8つの基本画がすべて含まれています。',
     learners: '学習者',
     strokeMastery: '画の習得度',
+    theme: {
+      light: 'ライト',
+      dark: 'ダーク',
+      system: 'システム',
+    },
   },
   home: {
     heroTitle: '中国語をマスター',
@@ -72,7 +77,7 @@ export const ja = {
     structure: '構造',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v2.2.0. 全著作権所有。',
+    copyright: '© 2026 HanziMaster 汉字大师 v2.2.1. 全著作権所有。',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

@@ -1,9 +1,9 @@
-// src/lib/i18n/translations/es.ts v2.2.0
+// src/lib/i18n/translations/es.ts v2.2.1
 export const es = {
   common: {
+    home: 'Inicio',
     learn: 'Aprender',
     practice: 'Practicar',
-    signIn: 'Iniciar sesión',
     startLearning: 'Comenzar a aprender ahora',
     exploreLibrary: 'Explorar biblioteca',
     dailyPractice: 'Práctica diaria',
@@ -16,6 +16,11 @@ export const es = {
     foreverQuote: 'El carácter de "siempre" contiene los 8 trazos básicos.',
     learners: 'estudiantes aprendiendo',
     strokeMastery: 'Dominio de trazos',
+    theme: {
+      light: 'Claro',
+      dark: 'Oscuro',
+      system: 'Sistema',
+    },
   },
   home: {
     heroTitle: 'Domina el chino',
@@ -72,7 +77,7 @@ export const es = {
     structure: 'Estructura',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v2.2.0. Todos los derechos reservados.',
+    copyright: '© 2026 HanziMaster 汉字大师 v2.2.1. Todos los derechos reservados.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

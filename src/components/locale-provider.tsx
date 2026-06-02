@@ -1,8 +1,8 @@
-// src/components/locale-provider.tsx v2.2.0
+// src/components/locale-provider.tsx v2.2.1
 'use client';
 
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { Locale, translations, locales } from '@/lib/i18n';
+import { Locale, translations, locales, Translations } from '@/lib/i18n';
 
 type LocaleProviderProps = {
   children: React.ReactNode;
@@ -19,7 +19,7 @@ type LocaleProviderState = {
 
 const STORAGE_KEY = 'hanzi-master-locale';
 
-const getNestedValue = (obj: any, path: string): string => {
+const getNestedValue = (obj: Translations, path: string): string => {
   return path.split('.').reduce((current, key) => {
     return current && current[key] !== undefined ? current[key] : path;
   }, obj);

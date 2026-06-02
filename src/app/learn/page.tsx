@@ -1,7 +1,7 @@
-// src/app/learn/page.tsx v2.2.0
+// src/app/learn/page.tsx v2.2.1
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { useTranslation } from '@/components/locale-provider';
 
 interface Character {
@@ -33,13 +33,6 @@ const baseCharacters: Character[] = [
 export default function LearnPage() {
   const { t } = useTranslation();
   const [selectedCharacterId, setSelectedCharacterId] = useState<number | null>(baseCharacters[0]?.id ?? null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate async data load; remove when real data fetching is added
-    const timer = setTimeout(() => setIsLoading(false), 300);
-    return () => clearTimeout(timer);
-  }, []);
 
   const selectedCharacter = baseCharacters.find(char => char.id === selectedCharacterId) ?? null;
 
@@ -75,25 +68,6 @@ export default function LearnPage() {
       </div>
 
       {/* Character Grid */}
-      {isLoading ? (
-        <div
-          className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2.5 sm:gap-4 lg:gap-5 mb-8 sm:mb-12"
-          role="status"
-          aria-label="Loading characters"
-        >
-          {Array.from({ length: 12 }).map((_, i) => (
-            <div
-              key={i}
-              className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-2xl border-2 border-slate-100 dark:border-slate-700 flex flex-col items-center justify-center gap-2"
-              style={{ minHeight: 88, minWidth: 72 }}
-            >
-              <div className="skeleton w-10 h-10 sm:w-12 sm:h-12 rounded-lg" />
-              <div className="skeleton w-12 h-3 rounded" />
-            </div>
-          ))}
-          <span className="sr-only">Loading characters...</span>
-        </div>
-      ) : (
       <div
         className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2.5 sm:gap-4 lg:gap-5 mb-8 sm:mb-12"
         role="listbox"
@@ -138,7 +112,6 @@ export default function LearnPage() {
           );
         })}
       </div>
-      )}
 
       {/* Character Detail Panel */}
       {selectedCharacter && (

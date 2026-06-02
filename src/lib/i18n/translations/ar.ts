@@ -1,9 +1,9 @@
-// src/lib/i18n/translations/ar.ts v2.2.0
+// src/lib/i18n/translations/ar.ts v2.2.1
 export const ar = {
   common: {
+    home: 'الرئيسية',
     learn: 'تعلم',
     practice: 'ممارسة',
-    signIn: 'تسجيل الدخول',
     startLearning: 'ابدأ التعلم الآن',
     exploreLibrary: 'استكشف المكتبة',
     dailyPractice: 'ممارسة يومية',
@@ -16,6 +16,11 @@ export const ar = {
     foreverQuote: 'حرف "الأبد" يحتوي على جميع ضربات القلم الأساسية الثمانية.',
     learners: 'متعلم يدرسون',
     strokeMastery: 'إتقان الضربات',
+    theme: {
+      light: 'فاتح',
+      dark: 'داكن',
+      system: 'النظام',
+    },
   },
   home: {
     heroTitle: 'أتقن الصينية',
@@ -72,7 +77,7 @@ export const ar = {
     structure: 'البنية',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v2.2.0. جميع الحقوق محفوظة.',
+    copyright: '© 2026 HanziMaster 汉字大师 v2.2.1. جميع الحقوق محفوظة.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

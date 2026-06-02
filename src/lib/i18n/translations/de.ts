@@ -1,9 +1,9 @@
-// src/lib/i18n/translations/de.ts v2.2.0
+// src/lib/i18n/translations/de.ts v2.2.1
 export const de = {
   common: {
+    home: 'Start',
     learn: 'Lernen',
     practice: 'Üben',
-    signIn: 'Anmelden',
     startLearning: 'Jetzt anfangen zu lernen',
     exploreLibrary: 'Bibliothek erkunden',
     dailyPractice: 'Tägliche Übung',
@@ -16,6 +16,11 @@ export const de = {
     foreverQuote: 'Das Zeichen für "immer" enthält alle 8 Grundstriche.',
     learners: 'Lernende',
     strokeMastery: 'Strichbeherrschung',
+    theme: {
+      light: 'Hell',
+      dark: 'Dunkel',
+      system: 'System',
+    },
   },
   home: {
     heroTitle: 'Chinesisch meistern',
@@ -72,7 +77,7 @@ export const de = {
     structure: 'Struktur',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v2.2.0. Alle Rechte vorbehalten.',
+    copyright: '© 2026 HanziMaster 汉字大师 v2.2.1. Alle Rechte vorbehalten.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

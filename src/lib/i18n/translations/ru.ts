@@ -1,9 +1,9 @@
-// src/lib/i18n/translations/ru.ts v2.2.0
+// src/lib/i18n/translations/ru.ts v2.2.1
 export const ru = {
   common: {
+    home: 'Главная',
     learn: 'Учиться',
     practice: 'Практиковать',
-    signIn: 'Войти',
     startLearning: 'Начать учиться сейчас',
     exploreLibrary: 'Изучить библиотеку',
     dailyPractice: 'Ежедневная практика',
@@ -16,6 +16,11 @@ export const ru = {
     foreverQuote: 'Иероглиф "вечность" содержит все 8 основных штрихов.',
     learners: 'учащихся',
     strokeMastery: 'Владение штрихами',
+    theme: {
+      light: 'Светлая',
+      dark: 'Тёмная',
+      system: 'Системная',
+    },
   },
   home: {
     heroTitle: 'Освой китайский',
@@ -72,7 +77,7 @@ export const ru = {
     structure: 'Структура',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v2.2.0. Все права защищены.',
+    copyright: '© 2026 HanziMaster 汉字大师 v2.2.1. Все права защищены.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

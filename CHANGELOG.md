@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.2.1] - UI/UX Professional Review & Optimization
+## [2.2.1] - UI/UX Professional Review & Optimization (Complete)
 ### Theme System
 - Added 3-state theme toggle: light → dark → system (previously lost system mode after manual toggle)
 - Added hover tooltip showing current theme mode
@@ -53,6 +53,24 @@
 
 ### Documentation
 - Added `UI_UX_REVIEW.md` - comprehensive professional UI/UX audit report
+
+### Bug Fixes (Round 3 - Final)
+- Fixed `@tailwindcss/vite` → `@tailwindcss/postcss` (Vite plugin incompatible with Next.js)
+- Fixed deprecated `images.domains` → `images.remotePatterns` in next.config.js
+- Synced all file header versions to v2.2.1 (11 source files + 11 translation files)
+- Synced package.json version to 2.2.1
+- Fixed all translation footer copyright versions to v2.2.1
+
+### Code Quality (Round 3)
+- Removed `any` type from `getNestedValue()` → typed as `Translations`
+- Removed `any` type from `getIcon()` → typed as `Record<string, string>`
+- Removed dead `common.signIn` translation key from all 11 language files
+- Added `common.theme.*` translations (light/dark/system) for all 11 languages
+- Theme toggle tooltip now uses i18n translation instead of hardcoded English
+
+### Learn Page
+- Removed 300ms fake loading simulation (was decorative, no real data fetching)
+- Page now renders instantly with character grid
 
 ## [2.2.0]
 - Added complete i18n internationalization support with 11 languages: English, Simplified Chinese, Traditional Chinese, Spanish, Arabic, French, Portuguese (Brazil), German, Japanese, Korean, and Russian.

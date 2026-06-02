@@ -1,7 +1,8 @@
-// src/components/theme-toggle.tsx v2.2.0
+// src/components/theme-toggle.tsx v2.2.1
 'use client';
 
 import { useTheme } from './theme-provider';
+import { useTranslation } from './locale-provider';
 
 const themeIcons = {
   light: (
@@ -35,6 +36,7 @@ const ariaLabels = {
 
 export function ThemeToggleClient() {
   const { theme, setTheme } = useTheme();
+  const { t } = useTranslation();
 
   const cycleTheme = () => {
     setTheme(themeCycle[theme] || 'system');
@@ -45,13 +47,14 @@ export function ThemeToggleClient() {
       onClick={cycleTheme}
       className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors relative group"
       aria-label={ariaLabels[theme]}
+      title={t(`common.theme.${theme}`)}
       style={{ minWidth: 44, minHeight: 44 }}
     >
       {themeIcons[theme] || themeIcons.system}
 
       {/* Tooltip on hover */}
       <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-800 text-[10px] font-medium px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap hidden sm:block">
-        {theme === 'light' ? 'Light' : theme === 'dark' ? 'Dark' : 'System'}
+        {t(`common.theme.${theme}`)}
       </span>
     </button>
   );
