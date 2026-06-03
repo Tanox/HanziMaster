@@ -87,7 +87,7 @@ function LayoutContent({
       <MobileNav isOpen={mobileNavOpen} onClose={closeMobileNav} t={t} />
 
       {/* ─── Main Content ─── */}
-      <main id="main-content" className="flex-1 animate-fade-in-up" key={pathname}>
+      <main id="main-content" className="flex-1 page-transition" key={pathname}>
         {children}
       </main>
 
