@@ -56,8 +56,10 @@ HanziMaster 采用 Next.js 15 的 App Router 架构，结合 React Server Compon
 src/
 └── app/
     ├── page.tsx           // 首页 (/)
-    └── learn/
-        └── page.tsx       // 学习页 (/learn)
+    ├── learn/
+    │   └── page.tsx       // 学习页 (/learn)
+    └── practice/
+        └── page.tsx       // 练习页 (/practice)
 ```
 
 ### 3.3 页面层
@@ -66,6 +68,7 @@ src/
 |---------|------|---------|
 | Home | 首页，展示应用介绍、功能特性和演示 | [src/app/page.tsx](../src/app/page.tsx) |
 | Learn | 学习页面，提供汉字学习和选择功能 | [src/app/learn/page.tsx](../src/app/learn/page.tsx) |
+| Practice | 练习页面，提供书写练习、记忆测验和进度追踪 | [src/app/practice/page.tsx](../src/app/practice/page.tsx) |
 
 ### 3.4 组件层
 

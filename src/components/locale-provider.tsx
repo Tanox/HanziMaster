@@ -20,9 +20,16 @@ type LocaleProviderState = {
 const STORAGE_KEY = 'hanzi-master-locale';
 
 const getNestedValue = (obj: Translations, path: string): string => {
-  return path.split('.').reduce((current, key) => {
-    return current && current[key] !== undefined ? current[key] : path;
-  }, obj);
+  const keys = path.split('.');
+  let current: unknown = obj;
+  for (const key of keys) {
+    if (current && typeof current === 'object' && key in current) {
+      current = (current as Record<string, unknown>)[key];
+    } else {
+      return path;
+    }
+  }
+  return typeof current === 'string' ? current : path;
 };
 
 const initialState: LocaleProviderState = {
