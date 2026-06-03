@@ -35,6 +35,7 @@ export const zhTW = {
     adaptiveDesc: '我們的演算法適應您的節奏，專注於您覺得有挑戰性的漢字，同時鞏固您已掌握的知識。',
     featuresTitle: '為什麼選擇漢字大師',
     featuresSubtitle: '體驗未來漢字學習，我們前沿的功能專為加速您的學習進度而設計。',
+    aiBadge: 'AI 驅動學習',
   },
   practice: {
     center: '中心',

@@ -35,6 +35,7 @@ export const ptBR = {
     adaptiveDesc: 'Nosso algoritmo se adapta ao seu ritmo, focando nos caracteres que você acha desafiadores enquanto reforça o que você já sabe.',
     featuresTitle: 'Por Que Escolher HanziMaster',
     featuresSubtitle: 'Experimente o futuro do aprendizado de caracteres chineses com nossos recursos de ponta projetados para acelerar seu progresso.',
+    aiBadge: 'Aprendizado com IA',
   },
   practice: {
     center: 'Centro',

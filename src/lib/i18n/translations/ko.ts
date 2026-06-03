@@ -35,6 +35,7 @@ export const ko = {
     adaptiveDesc: '우리의 알고리즘이 당신의 속도에 적응하여 어려운 한자에 집중하면서 이미 알고 있는 것을 강화합니다.',
     featuresTitle: '왜 HanziMaster인가',
     featuresSubtitle: '진보를 가속화하도록 설계된 최첨단 기능으로 중국 한자 학습의 미래를 경험하세요.',
+    aiBadge: 'AI 기반 학습',
   },
   practice: {
     center: '센터',

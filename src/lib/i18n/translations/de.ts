@@ -35,6 +35,7 @@ export const de = {
     adaptiveDesc: 'Unser Algorithmus passt sich Ihrem Tempo an und konzentriert sich auf die Zeichen, die Sie herausfordernd finden, während er das stärkt, was Sie wissen.',
     featuresTitle: 'Warum HanziMaster Wählen',
     featuresSubtitle: 'Erleben Sie die Zukunft des chinesischen Zeichnenlernens mit unseren hochmodernen Funktionen, die entwickelt wurden, um Ihren Fortschritt zu beschleunigen.',
+    aiBadge: 'KI-gestütztes Lernen',
   },
   practice: {
     center: 'Zentrum',

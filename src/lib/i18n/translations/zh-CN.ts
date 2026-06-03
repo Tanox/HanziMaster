@@ -35,6 +35,7 @@ export const zhCN = {
     adaptiveDesc: '我们的算法适应您的节奏，专注于您觉得有挑战性的汉字，同时巩固您已掌握的知识。',
     featuresTitle: '为什么选择汉字大师',
     featuresSubtitle: '体验未来汉字学习，我们前沿的功能专为加速您的学习进度而设计。',
+    aiBadge: 'AI 驱动学习',
   },
   practice: {
     center: '中心',

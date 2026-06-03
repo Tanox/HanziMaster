@@ -35,6 +35,7 @@ export const ja = {
     adaptiveDesc: '私たちのアルゴリズムはあなたのペースに適応し、難しい文字に焦点を当てながら、すでに知っていることを強化します。',
     featuresTitle: 'なぜHanziMasterなのか',
     featuresSubtitle: '学習の進捗を加速するために設計された最先端の機能で、中国語文字学習の未来を体験してください。',
+    aiBadge: 'AI搭載学習',
   },
   practice: {
     center: 'センター',

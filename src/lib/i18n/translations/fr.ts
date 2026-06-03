@@ -35,6 +35,7 @@ export const fr = {
     adaptiveDesc: 'Notre algorithme s\'adapte à votre rythme, en se concentrant sur les caractères que vous trouvez difficiles tout en renforçant ce que vous savez.',
     featuresTitle: 'Pourquoi Choisir HanziMaster',
     featuresSubtitle: 'Découvrez l\'avenir de l\'apprentissage des caractères chinois avec nos fonctionnalités de pointe conçues pour accélérer vos progrès.',
+    aiBadge: 'Apprentissage par IA',
   },
   practice: {
     center: 'Centre',
