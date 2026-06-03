@@ -1,9 +1,9 @@
-// src/lib/i18n/translations/ko.ts v2.2.0
+// src/lib/i18n/translations/ko.ts v2.2.1
 export const ko = {
   common: {
+    home: '홈',
     learn: '학습',
     practice: '연습',
-    signIn: '로그인',
     startLearning: '지금 학습 시작',
     exploreLibrary: '라이브러리 탐색',
     dailyPractice: '매일 연습',
@@ -14,6 +14,13 @@ export const ko = {
     strokeCount: '획수',
     strokes: '획',
     foreverQuote: '「영」자에는 8가지 기본 획이 모두 포함되어 있습니다.',
+    learners: '학습자',
+    strokeMastery: '획 숙달도',
+    theme: {
+      light: '라이트',
+      dark: '다크',
+      system: '시스템',
+    },
   },
   home: {
     heroTitle: '중국어 마스터',
@@ -26,6 +33,32 @@ export const ko = {
     etymologyDesc: '한자 뒤에 숨겨진 이야기를 발견하세요. 고대 상형문자에서 현대 형태로 진화한 방법을 이해하세요.',
     adaptiveTitle: '적응형 학습',
     adaptiveDesc: '우리의 알고리즘은 당신의 페이스에 맞춰지고, 당신이 알고 있는 것을 강화하면서 도전적인 문자에 집중합니다.',
+    featuresTitle: 'HanziMaster를 선택하는 이유',
+    featuresSubtitle: '진도를 가속화하도록 설계된 최첨단 기능으로 한자 학습의 미래를 경험하세요.',
+  },
+  practice: {
+    center: '센터',
+    subtitle: '모든 각도에서 한자를 마스터하기 위한 다양한 연습 모드.',
+    writingTitle: '쓰기 연습',
+    writingDesc: 'AI 실시간 피드백과 안내로 스마트 캔버스에서 쓰기를 연습하세요.',
+    quizTitle: '기억 퀴즈',
+    quizDesc: '한자 의미와 발음을 강화하는 재미있는 퀴즈.',
+    progressTitle: '학습 진도',
+    progressDesc: '학습 여정과 성장을 추적하는 상세한 분석.',
+    startNow: '지금 시작',
+    weeklyProgress: '주간 진도',
+    mon: '월',
+    tue: '화',
+    wed: '수',
+    thu: '목',
+    fri: '금',
+    sat: '토',
+    sun: '일',
+    today: '오늘',
+    pending: '대기 중',
+    charactersLearned: '학습한 문자',
+    dayStreak: '연속 일수',
+    accuracy: '정확도',
   },
   learn: {
     one: '일',
@@ -40,9 +73,11 @@ export const ko = {
     mountain: '산',
     water: '물',
     fire: '불',
+    radical: '부수',
+    structure: '구조',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v2.2.0. 모든 권리 보유.',
+    copyright: '© 2026 HanziMaster 汉字大师 v2.2.1. 모든 권리 보유.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

@@ -56,8 +56,10 @@ HanziMaster 采用 Next.js 15 的 App Router 架构，结合 React Server Compon
 src/
 └── app/
     ├── page.tsx           // 首页 (/)
-    └── learn/
-        └── page.tsx       // 学习页 (/learn)
+    ├── learn/
+    │   └── page.tsx       // 学习页 (/learn)
+    └── practice/
+        └── page.tsx       // 练习页 (/practice)
 ```
 
 ### 3.3 页面层
@@ -66,6 +68,7 @@ src/
 |---------|------|---------|
 | Home | 首页，展示应用介绍、功能特性和演示 | [src/app/page.tsx](../src/app/page.tsx) |
 | Learn | 学习页面，提供汉字学习和选择功能 | [src/app/learn/page.tsx](../src/app/learn/page.tsx) |
+| Practice | 练习页面，提供书写练习、记忆测验和进度追踪 | [src/app/practice/page.tsx](../src/app/practice/page.tsx) |
 
 ### 3.4 组件层
 
@@ -75,6 +78,10 @@ src/
 | LocaleToggle | 语言切换组件，支持 11 种语言 | [src/components/locale-toggle.tsx](../src/components/locale-toggle.tsx) |
 | ThemeProvider | 主题上下文提供组件，管理深色/浅色模式 | [src/components/theme-provider.tsx](../src/components/theme-provider.tsx) |
 | ThemeToggle | 主题切换组件，支持深色/浅色模式 | [src/components/theme-toggle.tsx](../src/components/theme-toggle.tsx) |
+| MobileNav | 移动端导航抽屉组件，提供响应式导航菜单 | [src/components/mobile-nav.tsx](../src/components/mobile-nav.tsx) |
+| NavLink | 导航链接组件，带有活跃状态指示器 | [src/components/nav-link.tsx](../src/components/nav-link.tsx) |
+| FeatureCard | 功能特性卡片组件，展示 AI 洞察、词源文化等特性 | [src/components/feature-card.tsx](../src/components/feature-card.tsx) |
+| StatsCard | 统计数据卡片组件，显示学习统计信息 | [src/components/stats-card.tsx](../src/components/stats-card.tsx) |
 
 ### 3.5 国际化模块
 

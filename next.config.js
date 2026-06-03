@@ -2,7 +2,16 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['fonts.googleapis.com', 'fonts.gstatic.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'fonts.googleapis.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'fonts.gstatic.com',
+      },
+    ],
   },
 };
 

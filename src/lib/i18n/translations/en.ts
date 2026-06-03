@@ -1,9 +1,9 @@
-// src/lib/i18n/translations/en.ts v2.2.0
+// src/lib/i18n/translations/en.ts v2.2.1
 export const en = {
   common: {
+    home: 'Home',
     learn: 'Learn',
     practice: 'Practice',
-    signIn: 'Sign In',
     startLearning: 'Start Learning Now',
     exploreLibrary: 'Explore Library',
     dailyPractice: 'Daily Practice',
@@ -14,6 +14,13 @@ export const en = {
     strokeCount: 'Stroke Count',
     strokes: 'Strokes',
     foreverQuote: 'The character for "forever" contains all 8 basic strokes.',
+    learners: 'learners studying',
+    strokeMastery: 'Stroke Mastery',
+    theme: {
+      light: 'Light',
+      dark: 'Dark',
+      system: 'System',
+    },
   },
   home: {
     heroTitle: 'Master Chinese',
@@ -26,6 +33,32 @@ export const en = {
     etymologyDesc: 'Discover the stories behind the characters. Understand how they evolved from ancient pictographs to modern forms.',
     adaptiveTitle: 'Adaptive Learning',
     adaptiveDesc: 'Our algorithm adapts to your pace, focusing on the characters you find challenging while reinforcing what you know.',
+    featuresTitle: 'Why Choose HanziMaster',
+    featuresSubtitle: 'Experience the future of Chinese character learning with our cutting-edge features designed to accelerate your progress.',
+  },
+  practice: {
+    center: 'Center',
+    subtitle: 'Multiple practice modes to master Chinese characters from all angles.',
+    writingTitle: 'Writing Practice',
+    writingDesc: 'Practice writing on the smart canvas with AI real-time feedback and guidance.',
+    quizTitle: 'Memory Quiz',
+    quizDesc: 'Fun quizzes to reinforce character meanings and pronunciations.',
+    progressTitle: 'Learning Progress',
+    progressDesc: 'Detailed analytics to track your learning journey and growth.',
+    startNow: 'Start Now',
+    weeklyProgress: 'Weekly Progress',
+    mon: 'Mon',
+    tue: 'Tue',
+    wed: 'Wed',
+    thu: 'Thu',
+    fri: 'Fri',
+    sat: 'Sat',
+    sun: 'Sun',
+    today: 'Today',
+    pending: 'Pending',
+    charactersLearned: 'Characters Learned',
+    dayStreak: 'Day Streak',
+    accuracy: 'Accuracy',
   },
   learn: {
     one: 'One',
@@ -40,9 +73,11 @@ export const en = {
     mountain: 'Mountain',
     water: 'Water',
     fire: 'Fire',
+    radical: 'Radical',
+    structure: 'Structure',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v2.2.0. All rights reserved.',
+    copyright: '© 2026 HanziMaster 汉字大师 v2.2.1. All rights reserved.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&display=swap');
-
+/* src/app/globals.css v2.2.1 */
 @import "tailwindcss";
 
 @theme {
@@ -12,6 +11,103 @@
 
   --color-background: #f8fafc;
   --color-foreground: #0f172a;
+
+  /* Design tokens: touch-friendly minimum sizes */
+  --touch-target-min: 44px;
+}
+
+/* ====== Font Loading ====== */
+@font-face {
+  font-family: 'Inter';
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Noto Sans SC';
+  font-display: swap;
+}
+
+/* ====== Responsive container utility ====== */
+@utility container-page {
+  @apply max-w-7xl mx-auto px-4 sm:px-6;
+}
+
+/* ====== Focus Visible: keyboard accessibility ====== */
+*:focus-visible {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.dark *:focus-visible {
+  outline-color: #34d399;
+}
+
+/* Suppress default focus ring on mouse clicks while keeping keyboard focus */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ====== Smooth Scrolling ====== */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ====== Skip to Content (visually hidden until focused) ====== */
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 100;
+  padding: 12px 20px;
+  background: #10b981;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+
+.skip-to-content:focus {
+  top: 16px;
+}
+
+/* ====== Custom Animations ====== */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
 body {
@@ -21,5 +117,43 @@ body {
 @layer utilities {
   .hanzi-font {
     font-family: var(--font-hanzi);
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.6s ease-out both;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.3s ease-out both;
+  }
+
+  .animate-slide-in-right {
+    animation: slide-in-right 0.3s ease-out both;
+  }
+
+  /* Skeleton loading shimmer */
+  .skeleton {
+    background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 8px;
+    will-change: background-position;
+  }
+
+  .dark .skeleton {
+    background: linear-gradient(90deg, #334155 25%, #475569 50%, #334155 75%);
+    background-size: 200% 100%;
+  }
+
+  /* Mobile-safe bottom padding for devices with home indicator */
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 16px);
+  }
+}
+
+/* ====== Touch-Only Styles (no hover on touch devices) ====== */
+@media (hover: none) and (pointer: coarse) {
+  .hover-lift {
+    transform: none !important;
   }
 }
