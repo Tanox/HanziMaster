@@ -65,7 +65,7 @@ function getIcon(iconName: string, className: string) {
   );
 }
 
-const weekDays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']; as const;
+const weekDays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as const;
 
 export default function PracticePage() {
   const { t } = useTranslation();
