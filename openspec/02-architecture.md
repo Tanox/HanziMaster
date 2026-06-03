@@ -78,6 +78,10 @@ src/
 | LocaleToggle | 语言切换组件，支持 11 种语言 | [src/components/locale-toggle.tsx](../src/components/locale-toggle.tsx) |
 | ThemeProvider | 主题上下文提供组件，管理深色/浅色模式 | [src/components/theme-provider.tsx](../src/components/theme-provider.tsx) |
 | ThemeToggle | 主题切换组件，支持深色/浅色模式 | [src/components/theme-toggle.tsx](../src/components/theme-toggle.tsx) |
+| MobileNav | 移动端导航抽屉组件，提供响应式导航菜单 | [src/components/mobile-nav.tsx](../src/components/mobile-nav.tsx) |
+| NavLink | 导航链接组件，带有活跃状态指示器 | [src/components/nav-link.tsx](../src/components/nav-link.tsx) |
+| FeatureCard | 功能特性卡片组件，展示 AI 洞察、词源文化等特性 | [src/components/feature-card.tsx](../src/components/feature-card.tsx) |
+| StatsCard | 统计数据卡片组件，显示学习统计信息 | [src/components/stats-card.tsx](../src/components/stats-card.tsx) |
 
 ### 3.5 国际化模块
 
