@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HanziMaster 汉字大师 - AI 驱动的中文字符学习平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+            hanzi: ['Noto Sans SC', 'sans-serif']
+          },
+          colors: {
+            primary: '#10b981',
+            'primary-dark': '#059669'
+          },
+          animation: {
+            'ping-slow': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+            'fade-in-up': 'fadeInUp 0.6s ease-out',
+            'float': 'float 6s ease-in-out infinite'
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+              '50%': { transform: 'translateY(-20px) rotate(5deg)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .hanzi-font { font-family: 'Noto Sans SC', sans-serif; }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-up { animation: fadeInUp 0.6s ease-out; }
+  </style>
+</head>
+<body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-sans transition-colors duration-300">
+  
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <a href="/" class="flex items-center gap-2 group">
+          <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
+            <span class="text-white text-xl font-bold hanzi-font">汉</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-bold text-lg text-slate-900 dark:text-white">HanziMaster</span>
+            <span class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">汉字大师</span>
+          </div>
+        </a>
+        
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex items-center gap-1">
+          <a href="/" class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-medium">首页</a>
+          <a href="/learn" class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-medium">学习</a>
+          <a href="/practice" class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-medium">练习</a>
+        </div>
+        
+        <!-- Right Actions -->
+        <div class="flex items-center gap-2">
+          <!-- Theme Toggle -->
+          <button id="themeToggle" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="Switch theme">
+            <!-- Sun Icon (Light) -->
+            <svg class="w-5 h-5 sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+            <!-- Moon Icon (Dark) -->
+            <svg class="w-5 h-5 moon-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+            </svg>
+            <!-- System Icon (System) -->
+            <svg class="w-5 h-5 system-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+            </svg>
+          </button>
+          
+          <!-- Language Toggle -->
+          <button id="langToggle" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+            </svg>
+          </button>
+          
+          <!-- Mobile Menu Toggle -->
+          <button id="mobileMenuToggle" class="md:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/50" id="mobileMenuOverlay"></div>
+    <div class="absolute right-0 top-0 h-full w-72 bg-white dark:bg-slate-900 shadow-2xl transform transition-transform">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-8">
+          <span class="font-bold text-lg">菜单</span>
+          <button id="closeMobileMenu" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <nav class="space-y-2">
+          <a href="/" class="block px-4 py-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-medium">首页</a>
+          <a href="/learn" class="block px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">学习</a>
+          <a href="/practice" class="block px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">练习</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="pt-16">
+    
+    <!-- Hero Section -->
+    <section class="relative min-h-[90vh] flex items-center overflow-hidden">
+      <!-- Background Decorations -->
+      <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-20 left-10 w-72 h-72 bg-emerald-200 dark:bg-emerald-900/30 rounded-full blur-3xl opacity-30 animate-pulse"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-cyan-200 dark:bg-cyan-900/30 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+        <div class="absolute inset-0 opacity-[0.02] dark:opacity-[0.05]" style="background-image: linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px); background-size: 40px 40px;"></div>
+        <div class="hidden lg:block absolute top-20 right-20 text-[200px] font-bold text-slate-100 dark:text-slate-800/50 select-none hanzi-font opacity-40 animate-float">学</div>
+        <div class="hidden lg:block absolute bottom-20 left-10 text-[150px] font-bold text-slate-100 dark:text-slate-800/50 select-none hanzi-font opacity-30" style="transform: rotate(12deg); animation: float 6s ease-in-out infinite 1s;">习</div>
+      </div>
+      
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 relative z-10">
+        <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <!-- Left Column -->
+          <div class="space-y-8 animate-fade-in-up">
+            <!-- Status Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 text-sm font-medium">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              AI-Powered Learning
+            </div>
+            
+            <!-- Main Heading -->
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1]">
+              <span class="text-slate-900 dark:text-white">AI 驱动的</span><br>
+              <span class="bg-gradient-to-r from-emerald-500 via-emerald-600 to-cyan-500 dark:from-emerald-400 dark:via-emerald-500 dark:to-cyan-400 bg-clip-text text-transparent italic font-black">中文学习平台</span>
+            </h1>
+            
+            <!-- Description -->
+            <p class="text-lg text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed">
+              利用 Google Gemini AI 提供关于笔画顺序、平衡和美感的个性化反馈，帮助你高效学习汉字。体验未来汉字学习方式。
+            </p>
+            
+            <!-- CTA Buttons -->
+            <div class="flex flex-wrap gap-4">
+              <a href="/learn" class="group bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-8 py-4 rounded-2xl text-lg font-bold hover:from-emerald-600 hover:to-emerald-700 transition-all shadow-xl shadow-emerald-500/25 hover:shadow-2xl hover:shadow-emerald-500/40 hover:-translate-y-1 active:scale-95 flex items-center gap-3">
+                开始学习
+                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+              </a>
+              <a href="/practice" class="group bg-white dark:bg-slate-800 text-slate-900 dark:text-white border-2 border-slate-200 dark:border-slate-700 px-8 py-4 rounded-2xl text-lg font-bold hover:border-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all hover:-translate-y-1 active:scale-95 flex items-center gap-3">
+                探索字库
+                <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                </svg>
+              </a>
+            </div>
+            
+            <!-- Social Proof -->
+            <div class="flex items-center gap-4 pt-4">
+              <div class="flex -space-x-3">
+                <div class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/50 border-2 border-white dark:border-slate-800 flex items-center justify-center text-sm font-bold text-emerald-600 dark:text-emerald-400 hanzi-font">永</div>
+                <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/50 border-2 border-white dark:border-slate-800 flex items-center justify-center text-sm font-bold text-blue-600 dark:text-blue-400 hanzi-font">山</div>
+                <div class="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/50 border-2 border-white dark:border-slate-800 flex items-center justify-center text-sm font-bold text-purple-600 dark:text-purple-400 hanzi-font">水</div>
+              </div>
+              <div class="text-sm">
+                <span class="font-bold text-slate-900 dark:text-white">10,000+</span> <span class="text-slate-600 dark:text-slate-400">学员正在学习</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Right Column - Demo Card -->
+          <div class="relative flex items-center justify-center lg:h-[600px] mt-8 lg:mt-0">
+            <div class="absolute inset-0 bg-gradient-to-br from-emerald-100 to-cyan-100 dark:from-emerald-900/20 dark:to-cyan-900/20 rounded-[5rem] rotate-3 -z-10 opacity-60"></div>
+            
+            <div class="bg-white dark:bg-slate-800 p-10 rounded-[3.5rem] shadow-2xl border border-slate-100 dark:border-slate-700 w-full max-w-lg transform -rotate-2 hover:rotate-0 transition-transform duration-700">
+              <!-- Card Header -->
+              <div class="flex justify-between items-start mb-8">
+                <div>
+                  <span class="text-5xl font-bold text-slate-900 dark:text-white hanzi-font">永</span>
+                  <p class="text-base text-slate-500 dark:text-slate-400 mt-2 font-medium">yǒng • Forever</p>
+                </div>
+                <div class="bg-emerald-50 dark:bg-emerald-900/30 p-3 rounded-2xl">
+                  <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                </div>
+              </div>
+              
+              <!-- Character Display -->
+              <div class="aspect-square bg-gradient-to-br from-slate-50 to-emerald-50/30 dark:from-slate-900 dark:to-emerald-900/20 rounded-3xl border-2 border-dashed border-emerald-200/50 dark:border-emerald-800/50 flex items-center justify-center relative overflow-hidden group">
+                <span class="text-[10rem] text-slate-200/80 dark:text-slate-700/80 hanzi-font transition-all duration-500 group-hover:scale-110">永</span>
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="relative">
+                    <div class="absolute inset-0 w-4 h-4 bg-emerald-500 rounded-full opacity-20 animate-ping"></div>
+                    <div class="w-4 h-4 bg-emerald-500 rounded-full relative"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Progress Section -->
+              <div class="mt-10 space-y-5">
+                <div class="flex justify-between items-center">
+                  <span class="text-sm font-medium text-slate-500 dark:text-slate-400">笔画掌握度</span>
+                  <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400">68%</span>
+                </div>
+                <div class="w-full h-3 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full transition-all duration-1000" style="width: 68%;"></div>
+                </div>
+                <p class="text-xs text-slate-400 dark:text-slate-500 text-center italic pt-2">永字八法，品味汉字之美</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-24 px-4 sm:px-6">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">
+            为什么选择汉字大师
+          </h2>
+          <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+            体验未来汉字学习
+          </p>
+        </div>
+        
+        <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
+          <!-- AI Insights Card -->
+          <div class="group bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 p-8 rounded-3xl hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+            <div class="w-14 h-14 bg-blue-100 dark:bg-blue-900/50 rounded-2xl flex items-center justify-center mb-6 text-blue-600 dark:text-blue-400">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">AI 智能洞察</h3>
+            <p class="text-slate-600 dark:text-slate-300">Google Gemini AI 驱动的实时反馈，分析你的笔画顺序、平衡性和整体美学。</p>
+          </div>
+          
+          <!-- Etymology Card -->
+          <div class="group bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/30 dark:to-amber-800/30 p-8 rounded-3xl hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+            <div class="w-14 h-14 bg-amber-100 dark:bg-amber-900/50 rounded-2xl flex items-center justify-center mb-6 text-amber-600 dark:text-amber-400">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">词源与文化</h3>
+            <p class="text-slate-600 dark:text-slate-300">探索汉字背后的历史故事，了解每个字符的演变和文化内涵。</p>
+          </div>
+          
+          <!-- Adaptive Learning Card -->
+          <div class="group bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 p-8 rounded-3xl hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+            <div class="w-14 h-14 bg-purple-100 dark:bg-purple-900/50 rounded-2xl flex items-center justify-center mb-6 text-purple-600 dark:text-purple-400">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">自适应学习</h3>
+            <p class="text-slate-600 dark:text-slate-300">智能算法根据你的学习进度调整个性化学习路径，提高学习效率。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Learn Page Preview -->
+    <section class="py-24 px-4 sm:px-6 bg-slate-50 dark:bg-slate-800/50">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">
+            选择汉字开始学习
+          </h2>
+          <p class="text-lg text-slate-600 dark:text-slate-300">
+            从常用汉字开始，逐步掌握
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3">
+          <!-- Character Grid -->
+          <div class="aspect-square bg-white dark:bg-slate-700 rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-110 hover:shadow-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200 border-2 border-emerald-500">永</div>
+          <div class="aspect-square bg-white dark:bg-slate-700 rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-110 hover:shadow-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200">山</div>
+          <div class="aspect-square bg-white dark:bg-slate-700 rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-110 hover:shadow-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200">水</div>
+          <div class="aspect-square bg-white dark:bg-slate-700 rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-110 hover:shadow-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200">人</div>
+          <div class="aspect-square bg-white dark:bg-slate-700 rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-110 hover:shadow-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200">大</div>
+          <div class="aspect-square bg-white dark:bg-slate-700 rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-110 hover:shadow-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200">小</div>
+          <div class="aspect-square bg-white dark:bg-slate-700 rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-110 hover:shadow-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200">中</div>
+          <div class="aspect-square bg-white dark:bg-slate-700 rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-110 hover:shadow-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200">国</div>
+          <div class="aspect-square bg-white dark:bg-slate-700 rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-110 hover:shadow-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200">文</div>
+          <div class="aspect-square bg-white dark:bg-slate-700 rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-110 hover:shadow-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200">学</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Practice Page Preview -->
+    <section class="py-24 px-4 sm:px-6">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">
+            多种练习模式
+          </h2>
+          <p class="text-lg text-slate-600 dark:text-slate-300">
+            选择适合你的学习方式
+          </p>
+        </div>
+        
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Writing Practice Card -->
+          <div class="group bg-white dark:bg-slate-800 p-8 rounded-3xl border-2 border-slate-200 dark:border-slate-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition-all cursor-pointer hover:shadow-xl">
+            <div class="w-16 h-16 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-emerald-500/30">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">书写练习</h3>
+            <p class="text-slate-600 dark:text-slate-300 mb-6">在画布上书写汉字，AI 实时分析你的笔画顺序和结构。</p>
+            <span class="inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-medium group-hover:gap-3 transition-all">
+              立即开始
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              </svg>
+            </span>
+          </div>
+          
+          <!-- Quiz Card -->
+          <div class="group bg-white dark:bg-slate-800 p-8 rounded-3xl border-2 border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-500 transition-all cursor-pointer hover:shadow-xl">
+            <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/30">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">记忆测验</h3>
+            <p class="text-slate-600 dark:text-slate-300 mb-6">测试你对汉字的识别和记忆，巩固学习成果。</p>
+            <span class="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 font-medium group-hover:gap-3 transition-all">
+              立即开始
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              </svg>
+            </span>
+          </div>
+          
+          <!-- Progress Card -->
+          <div class="group bg-white dark:bg-slate-800 p-8 rounded-3xl border-2 border-slate-200 dark:border-slate-700 hover:border-purple-500 dark:hover:border-purple-500 transition-all cursor-pointer hover:shadow-xl">
+            <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-purple-500/30">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">学习进度</h3>
+            <p class="text-slate-600 dark:text-slate-300 mb-6">追踪你的学习进度，查看统计和成就。</p>
+            <span class="inline-flex items-center gap-2 text-purple-600 dark:text-purple-400 font-medium group-hover:gap-3 transition-all">
+              查看详情
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-24 px-4 sm:px-6 bg-gradient-to-r from-emerald-500 to-cyan-500">
+      <div class="max-w-7xl mx-auto">
+        <div class="grid sm:grid-cols-3 gap-8 text-white">
+          <div class="text-center">
+            <div class="text-5xl sm:text-6xl font-bold mb-2">10,000+</div>
+            <div class="text-emerald-100">活跃学习者</div>
+          </div>
+          <div class="text-center">
+            <div class="text-5xl sm:text-6xl font-bold mb-2">500+</div>
+            <div class="text-emerald-100">常用汉字</div>
+          </div>
+          <div class="text-center">
+            <div class="text-5xl sm:text-6xl font-bold mb-2">98%</div>
+            <div class="text-emerald-100">用户满意度</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-12 px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid md:grid-cols-4 gap-8 mb-8">
+        <!-- Brand -->
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center">
+              <span class="text-white text-xl font-bold hanzi-font">汉</span>
+            </div>
+            <span class="font-bold text-lg">HanziMaster</span>
+          </div>
+          <p class="text-slate-600 dark:text-slate-400 max-w-md">
+            利用 AI 技术让汉字学习变得更加高效和有趣。探索汉字之美，传承中华文化。
+          </p>
+        </div>
+        
+        <!-- Quick Links -->
+        <div>
+          <h4 class="font-bold mb-4">快速链接</h4>
+          <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+            <li><a href="/learn" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">学习</a></li>
+            <li><a href="/practice" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">练习</a></li>
+            <li><a href="#" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">关于我们</a></li>
+          </ul>
+        </div>
+        
+        <!-- Resources -->
+        <div>
+          <h4 class="font-bold mb-4">资源</h4>
+          <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+            <li><a href="#" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">帮助中心</a></li>
+            <li><a href="#" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">开发者</a></li>
+            <li><a href="#" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">隐私政策</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="pt-8 border-t border-slate-200 dark:border-slate-800 text-center text-slate-500 dark:text-slate-400 text-sm">
+        <p>&copy; 2024 HanziMaster. 保留所有权利。</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Theme Toggle - Three-state cycling: Light → Dark → System → Light
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    
+    // Theme cycle: light → dark → system → light
+    const themeCycle = {
+      light: 'dark',
+      dark: 'system',
+      system: 'light'
+    };
+    
+    // Theme icons
+    const sunIcon = document.querySelector('.sun-icon');
+    const moonIcon = document.querySelector('.moon-icon');
+    const systemIcon = document.querySelector('.system-icon');
+    
+    // Check for saved theme or system preference
+    const savedTheme = localStorage.getItem('hanzi-master-theme') || 'system';
+    let currentTheme = savedTheme;
+    
+    function applyTheme(theme) {
+      currentTheme = theme;
+      html.classList.remove('light', 'dark');
+      
+      if (theme === 'system') {
+        // Detect system preference
+        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (systemDark) {
+          html.classList.add('dark');
+        }
+        // Show system icon
+        if (sunIcon) sunIcon.classList.add('hidden');
+        if (moonIcon) moonIcon.classList.add('hidden');
+        if (systemIcon) systemIcon.classList.remove('hidden');
+      } else {
+        html.classList.add(theme);
+        if (theme === 'dark') {
+          if (sunIcon) sunIcon.classList.add('hidden');
+          if (moonIcon) moonIcon.classList.remove('hidden');
+          if (systemIcon) systemIcon.classList.add('hidden');
+        } else {
+          if (sunIcon) sunIcon.classList.remove('hidden');
+          if (moonIcon) moonIcon.classList.add('hidden');
+          if (systemIcon) systemIcon.classList.add('hidden');
+        }
+      }
+      
+      localStorage.setItem('hanzi-master-theme', theme);
+      updateAriaLabel();
+    }
+    
+    function updateAriaLabel() {
+      const ariaLabels = {
+        light: 'Switch to dark mode',
+        dark: 'Switch to system mode',
+        system: 'Switch to light mode'
+      };
+      if (themeToggle) {
+        themeToggle.setAttribute('aria-label', ariaLabels[currentTheme]);
+      }
+    }
+    
+    // Initialize theme
+    applyTheme(savedTheme);
+    
+    themeToggle.addEventListener('click', () => {
+      const nextTheme = themeCycle[currentTheme];
+      applyTheme(nextTheme);
+    });
+    
+    // Mobile Menu
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const closeMobileMenu = document.getElementById('closeMobileMenu');
+    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+    
+    function openMobileMenu() {
+      mobileMenu.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeMobileMenuFn() {
+      mobileMenu.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+    
+    mobileMenuToggle.addEventListener('click', openMobileMenu);
+    closeMobileMenu.addEventListener('click', closeMobileMenuFn);
+    mobileMenuOverlay.addEventListener('click', closeMobileMenuFn);
+    
+    // Escape key to close mobile menu
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !mobileMenu.classList.contains('hidden')) {
+        closeMobileMenuFn();
+      }
+    });
+  </script>
+</body>
+</html>

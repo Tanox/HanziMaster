@@ -139,7 +139,7 @@ src/
 | App Router | Next.js 13+ 新路由系统，文件系统路由 |
 | React Context API | 用于主题和国际化状态管理 |
 | 响应式设计 | Tailwind CSS 提供完全响应式布局 |
-| 深色模式 | 完整的深色/浅色模式支持，持久化用户偏好 |
+| 主题系统 | 完整的深色/浅色/系统主题支持，持久化用户偏好 |
 | 国际化 | 支持 11 种语言，浏览器语言自动检测 |
 
 ## 6. 数据流
@@ -156,11 +156,12 @@ AI 服务（按需调用）
 
 ### 6.1 主题切换流程
 
-1. 用户点击主题切换按钮
+1. 用户选择主题（dark/light/system）
 2. `ThemeProvider` 更新主题状态
-3. 同步更新 `document.documentElement.classList`
-4. 保存到 `localStorage`（key: `hanzi-master-theme`）
-5. 视图自动更新
+3. 如果选择 system，则根据系统主题偏好切换
+4. 同步更新 `document.documentElement.classList`
+5. 保存到 `localStorage`（key: `hanzi-master-theme`）
+6. 视图自动更新
 
 ### 6.2 语言切换流程
 
