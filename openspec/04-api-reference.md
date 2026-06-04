@@ -131,7 +131,7 @@ function MyComponent() {
 
 ### 3.1 组件概述
 
-主题上下文提供组件，管理深色/浅色/系统主题。
+主题上下文提供组件，管理深色/浅色/系统主题三态切换。
 
 **文件路径：** [src/components/theme-provider.tsx](../src/components/theme-provider.tsx)
 
@@ -167,23 +167,63 @@ function MyComponent() {
 - **LocalStorage Key：** `hanzi-master-theme`
 - **值：** `'dark'`, `'light'`, 或 `'system'`
 
+### 3.5 主题翻译键
+
+翻译文件中需包含以下键：
+
+```typescript
+common: {
+  theme: {
+    light: '浅色' | 'Light',
+    dark: '深色' | 'Dark',
+    system: '跟随系统' | 'System'
+  }
+}
+```
+
 ## 4. ThemeToggle 主题切换组件
 
 ### 4.1 组件概述
 
-主题切换组件，支持深色/浅色模式切换，自动持久化用户偏好。
+主题切换组件，支持深色/浅色/系统主题三态循环切换，自动持久化用户偏好。
 
 **文件路径：** [src/components/theme-toggle.tsx](../src/components/theme-toggle.tsx)
 
-### 4.2 使用示例
+### 4.2 功能特性
+
+- 三态循环切换：Light → Dark → System → Light
+- 每个状态对应不同的 SVG 图标
+- 悬停显示工具提示（使用翻译键 `common.theme.${theme}`）
+- 支持无障碍访问（ARIA label）
+- 最小触控区域 44x44px
+
+### 4.3 使用示例
 
 ```typescript
 'use client';
 
 import { ThemeToggleClient } from '@/components/theme-toggle';
 
-function MyComponent() {
+function Header() {
   return <ThemeToggleClient />;
+}
+```
+
+### 4.4 主题切换顺序
+
+```
+Light → Dark → System → Light
+```
+
+### 4.5 翻译键要求
+
+```typescript
+common: {
+  theme: {
+    light: '浅色' | 'Light',
+    dark: '深色' | 'Dark',
+    system: '跟随系统' | 'System'
+  }
 }
 ```
 
@@ -191,23 +231,33 @@ function MyComponent() {
 
 ### 5.1 组件概述
 
-语言切换组件，提供下拉菜单选择 11 种语言。
+语言切换组件，提供下拉菜单选择 11 种语言，支持完整的无障碍访问。
 
 **文件路径：** [src/components/locale-toggle.tsx](../src/components/locale-toggle.tsx)
 
-### 5.2 使用示例
+### 5.2 功能特性
+
+- 支持 11 种语言切换
+- 完整的 ARIA 属性支持（`role="listbox"`, `aria-expanded`, `aria-haspopup`）
+- 键盘导航支持（Escape 关闭，Arrow 键上下移动）
+- 点击外部自动关闭
+- 最大高度限制（70vh）防止溢出
+- 选中状态高亮显示
+- 最小触控区域 44x44px
+
+### 5.3 使用示例
 
 ```typescript
 'use client';
 
 import { LocaleToggleClient } from '@/components/locale-toggle';
 
-function MyComponent() {
+function Header() {
   return <LocaleToggleClient />;
 }
 ```
 
-### 5.3 语言名称映射
+### 5.4 语言名称映射
 
 ```typescript
 {
@@ -224,6 +274,17 @@ function MyComponent() {
   'ru': 'Русский'
 }
 ```
+
+### 5.5 无障碍特性
+
+| 特性 | 实现 |
+|------|------|
+| `aria-expanded` | 展开/收起状态 |
+| `aria-haspopup` | listbox |
+| `role="listbox"` | 下拉列表容器 |
+| `role="option"` | 语言选项 |
+| `aria-selected` | 当前选中语言 |
+| 键盘导航 | Escape, Arrow Up/Down |
 
 ## 6. 国际化模块
 
