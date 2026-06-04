@@ -51,6 +51,7 @@
 
 | 文档 | 文件名 | 说明 | 日期 |
 |------|--------|------|------|
+| 📋 项目结构说明 | [PROJECT_STRUCTURE.md](../docs/PROJECT_STRUCTURE.md) | 项目目录结构和文件分布 | 2026-06-04 |
 | 🎯 UI/UX 审查报告 | [UI_UX_REVIEW.md](../docs/UI_UX_REVIEW.md) | 专业的 UI/UX 评估报告 | 2026-06-02 |
 | ⚡ 优化总结 | [OPTIMIZATION_SUMMARY.md](../docs/OPTIMIZATION_SUMMARY.md) | 项目优化执行总结 | 2026-06-02 |
 

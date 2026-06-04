@@ -222,7 +222,7 @@
 
 项目包含一个高保真的 HTML 原型图文件，位于项目根目录：
 
-**文件路径：** [../../prototype.html](../../prototype.html)
+**文件路径：** [../prototype.html](../prototype.html)
 
 **功能特性：**
 - 完整的响应式设计，支持桌面端、平板和移动端

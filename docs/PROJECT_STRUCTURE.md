@@ -85,41 +85,42 @@
 
 | 文档 | 路径 | 说明 |
 |------|------|------|
-| 文档索引 | [openspec/index.md](openspec/index.md) | 项目所有文档的导航和索引 |
-| 项目概述 | [openspec/01-overview.md](openspec/01-overview.md) | 项目基本信息、技术栈、核心功能 |
-| 开发指南 | [openspec/03-development.md](openspec/03-development.md) | 开发环境搭建、项目命令、编码规范 |
+| 文档索引 | [openspec/index.md](../openspec/index.md) | 项目所有文档的导航和索引 |
+| 项目概述 | [openspec/01-overview.md](../openspec/01-overview.md) | 项目基本信息、技术栈、核心功能 |
+| 开发指南 | [openspec/03-development.md](../openspec/03-development.md) | 开发环境搭建、项目命令、编码规范 |
 
 ### 🔧 开发人员必读
 
 | 文档 | 路径 | 说明 |
 |------|------|------|
-| API 参考 | [openspec/04-api-reference.md](openspec/04-api-reference.md) | 所有组件的 API 文档 |
-| 编码标准 | [openspec/coding-standards.md](openspec/coding-standards.md) | 代码风格、最佳实践 |
-| 提交模板 | [openspec/commit-template.md](openspec/commit-template.md) | Git 提交规范 |
+| API 参考 | [openspec/04-api-reference.md](../openspec/04-api-reference.md) | 所有组件的 API 文档 |
+| 编码标准 | [openspec/coding-standards.md](../openspec/coding-standards.md) | 代码风格、最佳实践 |
+| 提交模板 | [openspec/commit-template.md](../openspec/commit-template.md) | Git 提交规范 |
 
 ### 🎨 设计师必读
 
 | 文档 | 路径 | 说明 |
 |------|------|------|
-| 原型设计 | [openspec/07-design-prototype.md](openspec/07-design-prototype.md) | 设计规范、原型说明 |
-| HTML 原型 | [prototype.html](prototype.html) | 可直接在浏览器打开的高保真原型 |
+| 原型设计 | [openspec/07-design-prototype.md](../openspec/07-design-prototype.md) | 设计规范、原型说明 |
+| HTML 原型 | [prototype.html](../prototype.html) | 可直接在浏览器打开的高保真原型 |
 
 ---
 
 ## 🔗 快速链接
 
 ### 在线资源
-- [项目文档索引](openspec/index.md) - 所有文档的导航
-- [HTML 原型图](prototype.html) - 可视化原型预览
+- [项目文档索引](../openspec/index.md) - 所有文档的导航
+- [HTML 原型图](../prototype.html) - 可视化原型预览
 
 ### 核心文档
-- [项目概述](openspec/01-overview.md) - 了解项目基本信息
-- [技术架构](openspec/02-architecture.md) - 了解系统架构
-- [API 参考](openspec/04-api-reference.md) - 查看组件 API
+- [项目概述](../openspec/01-overview.md) - 了解项目基本信息
+- [技术架构](../openspec/02-architecture.md) - 了解系统架构
+- [API 参考](../openspec/04-api-reference.md) - 查看组件 API
 
 ### 辅助文档
-- [UI/UX 审查报告](docs/UI_UX_REVIEW.md) - 专业设计评估
-- [优化总结](docs/OPTIMIZATION_SUMMARY.md) - 历史优化记录
+- [项目结构说明](./PROJECT_STRUCTURE.md) - 项目目录结构和文件分布
+- [UI/UX 审查报告](./UI_UX_REVIEW.md) - 专业设计评估
+- [优化总结](./OPTIMIZATION_SUMMARY.md) - 历史优化记录
 
 ---
 
@@ -128,7 +129,7 @@
 | 类别 | 数量 | 说明 |
 |------|------|------|
 | 核心规范文档 | 10 | openspec/ 目录下的所有文档 |
-| 项目报告 | 2 | docs/ 目录下的报告文档 |
+| 项目报告 | 3 | docs/ 目录下的报告文档 |
 | 源代码文件 | 12 | src/ 目录下的 TSX/TS 文件 |
 | 翻译文件 | 11 | 11种语言的翻译 |
 | 配置文件 | 8 | 根目录下的配置文件 |

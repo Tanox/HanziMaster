@@ -227,6 +227,70 @@ common: {
 }
 ```
 
+## 4.1 NavLink 导航链接组件
+
+### 4.1.1 组件概述
+
+导航链接组件，用于桌面端导航栏，支持活跃状态高亮和动画效果。
+
+**文件路径：** [src/components/nav-link.tsx](../src/components/nav-link.tsx)
+
+### 4.1.2 功能特性
+
+- 根据当前路由自动判断活跃状态
+- 活跃状态高亮显示（绿色背景 + 下划线指示器）
+- 悬停效果和过渡动画
+- 最小触控区域 40px
+
+### 4.1.3 使用示例
+
+```typescript
+import { NavLink } from '@/components/nav-link';
+
+<NavLink href="/learn">学习</NavLink>
+```
+
+### 4.1.4 样式说明
+
+| 状态 | 样式 |
+|------|------|
+| 默认 | 灰色文字 + 透明背景 |
+| 悬停 | 绿色文字 + 浅色背景 |
+| 活跃 | 绿色文字 + 绿色背景 + 下划线 |
+
+## 4.2 MobileNav 移动端导航组件
+
+### 4.2.1 组件概述
+
+移动端抽屉导航组件，提供侧边栏导航菜单。
+
+**文件路径：** [src/components/mobile-nav.tsx](../src/components/mobile-nav.tsx)
+
+### 4.2.2 功能特性
+
+- 侧边栏抽屉式导航
+- 背景遮罩层
+- Escape 键关闭
+- 滚动锁定
+- 无障碍支持（role="dialog", aria-modal）
+- 当前路由高亮显示
+
+### 4.2.3 使用示例
+
+```typescript
+import { MobileNav } from '@/components/mobile-nav';
+
+<MobileNav isOpen={isOpen} onClose={closeNav} t={t} />
+```
+
+### 4.2.4 Props
+
+| Prop | 类型 | 说明 |
+|------|------|------|
+| `isOpen` | `boolean` | 是否展开 |
+| `onClose` | `() => void` | 关闭回调 |
+| `t` | `(key: string) => string` | 翻译函数 |
+
 ## 5. LocaleToggle 语言切换组件
 
 ### 5.1 组件概述
