@@ -121,19 +121,19 @@ export default function PracticePage() {
         </h3>
 
         {/* Week Days Grid */}
-        <div className="grid grid-cols-7 gap-1 sm:gap-3 lg:gap-4 mb-8 sm:mb-10">
+        <div className="grid grid-cols-7 gap-1.5 sm:gap-3 lg:gap-4 mb-8 sm:mb-10">
           {weekDays.map((day, index) => (
             <div
               key={day}
-              className={`flex flex-col items-center p-2 sm:p-4 rounded-xl sm:rounded-2xl ${
+              className={`flex flex-col items-center p-2.5 sm:p-4 rounded-xl sm:rounded-2xl ${
                 index < 5
                   ? 'bg-gradient-to-br from-emerald-500 to-emerald-600 text-white'
                   : 'bg-slate-100 dark:bg-slate-700 text-slate-400 dark:text-slate-500'
               } ${index === 4 ? 'ring-2 ring-emerald-500 ring-offset-2 dark:ring-offset-slate-800' : ''}`}
-              style={{ minHeight: 72 }}
+              style={{ minHeight: 80 }}
             >
               <p className="text-[10px] sm:text-xs mb-2 sm:mb-3 font-medium">{t(`practice.${day}`)}</p>
-              <div className={`w-8 h-8 sm:w-14 sm:h-14 rounded-lg sm:rounded-xl flex items-center justify-center ${
+              <div className={`w-9 h-9 sm:w-14 sm:h-14 rounded-lg sm:rounded-xl flex items-center justify-center ${
                 index < 5 ? 'bg-white/20' : 'bg-white dark:bg-slate-600'
               }`}>
                 {index < 5 ? (

@@ -7,7 +7,7 @@ const pluginTs = require("@typescript-eslint/eslint-plugin");
 
 module.exports = [
   {
-    ignores: ["eslint.config.js", "next.config.js", "postcss.config.js"],
+    ignores: ["eslint.config.js", "next.config.js", "postcss.config.js", ".next/**"],
   },
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
@@ -32,6 +32,8 @@ module.exports = [
       "react/react-in-jsx-scope": "off",
       "react/no-unescaped-entities": "off",
       "@typescript-eslint/no-unused-vars": ["error", { varsIgnorePattern: "^_" }],
+      // Next.js recommended rules
+      "@next/next/no-html-link-for-pages": "warn",
     },
   },
   pluginJs.configs.recommended,

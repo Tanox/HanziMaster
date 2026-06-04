@@ -1,0 +1,16 @@
+{
+  "name": "HanziMaster 汉字大师 v2.2.1",
+  "version": "2.2.1",
+  "description": "v2.2.1: Complete i18n internationalization support with 11 languages, professional UI/UX optimization, responsive design, accessibility improvements, and comprehensive OpenSpec documentation with UI prototype.",
+  "keywords": [
+    "Chinese characters",
+    "Hanzi",
+    "OpenSpec",
+    "PWA",
+    "Gemini AI",
+    "i18n",
+    "internationalization"
+  ],
+  "requestFramePermissions": [],
+  "googleAnalyticsId": "G-TZG68T8J31"
+}

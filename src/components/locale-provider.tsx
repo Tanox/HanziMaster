@@ -41,6 +41,22 @@ const initialState: LocaleProviderState = {
 
 const LocaleProviderContext = createContext<LocaleProviderState>(initialState);
 
+const getBrowserLocale = (): Locale => {
+  const browserLang = navigator.language;
+  if (browserLang.startsWith('zh')) {
+    return browserLang.includes('TW') || browserLang.includes('HK') ? 'zh-TW' : 'zh-CN';
+  }
+  const localeMap: Record<string, Locale> = {
+    'es': 'es', 'ar': 'ar', 'fr': 'fr',
+    'pt': 'pt-BR', 'de': 'de', 'ja': 'ja',
+    'ko': 'ko', 'ru': 'ru'
+  };
+  for (const [lang, locale] of Object.entries(localeMap)) {
+    if (browserLang.startsWith(lang)) return locale;
+  }
+  return 'en';
+};
+
 export function LocaleProvider({
   children,
   defaultLocale = 'en',
@@ -69,22 +85,6 @@ export function LocaleProvider({
 
     initLocale();
   }, [storageKey]);
-
-  const getBrowserLocale = (): Locale => {
-    const browserLang = navigator.language;
-    if (browserLang.startsWith('zh')) {
-      return browserLang.includes('TW') || browserLang.includes('HK') ? 'zh-TW' : 'zh-CN';
-    }
-    const localeMap: Record<string, Locale> = {
-      'es': 'es', 'ar': 'ar', 'fr': 'fr',
-      'pt': 'pt-BR', 'de': 'de', 'ja': 'ja',
-      'ko': 'ko', 'ru': 'ru'
-    };
-    for (const [lang, locale] of Object.entries(localeMap)) {
-      if (browserLang.startsWith(lang)) return locale;
-    }
-    return 'en';
-  };
 
   const setLocale = useCallback((newLocale: Locale) => {
     try {
