@@ -13,6 +13,7 @@
 | API 参考 | [04-api-reference.md](04-api-reference.md) | 详细的 API 文档和代码示例 |
 | 部署指南 | [05-deployment.md](05-deployment.md) | 部署流程、环境配置和运维指南 |
 | 测试规范 | [06-testing.md](06-testing.md) | 测试策略、框架和最佳实践 |
+| 原型设计 | [07-design-prototype.md](07-design-prototype.md) | 界面原型设计、配色方案和交互说明 |
 | 编码规范 | [coding-standards.md](coding-standards.md) | 项目编码标准、最佳实践和代码风格指南 |
 | 提交模板 | [commit-template.md](commit-template.md) | Git 提交消息规范和模板 |
 

@@ -131,7 +131,7 @@ function MyComponent() {
 
 ### 3.1 组件概述
 
-主题上下文提供组件，管理深色/浅色模式。
+主题上下文提供组件，管理深色/浅色/系统主题。
 
 **文件路径：** [src/components/theme-provider.tsx](../src/components/theme-provider.tsx)
 
@@ -139,8 +139,8 @@ function MyComponent() {
 
 | API | 类型 | 说明 |
 |------|------|------|
-| `isDark` | `boolean` | 当前是否为深色模式 |
-| `toggleTheme()` | `void` | 切换主题 |
+| `theme` | `'dark' \| 'light' \| 'system'` | 当前主题 |
+| `setTheme(theme)` | `void` | 设置主题 |
 
 ### 3.3 使用示例
 
@@ -150,12 +150,14 @@ function MyComponent() {
 import { useTheme } from '@/components/theme-provider';
 
 function MyComponent() {
-  const { isDark, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   
   return (
-    <button onClick={toggleTheme}>
-      {isDark ? 'Switch to Light' : 'Switch to Dark'}
-    </button>
+    <div>
+      <button onClick={() => setTheme('light')}>Light</button>
+      <button onClick={() => setTheme('dark')}>Dark</button>
+      <button onClick={() => setTheme('system')}>System</button>
+    </div>
   );
 }
 ```
@@ -163,7 +165,7 @@ function MyComponent() {
 ### 3.4 持久化
 
 - **LocalStorage Key：** `hanzi-master-theme`
-- **值：** `'dark'` 或 `'light'`
+- **值：** `'dark'`, `'light'`, 或 `'system'`
 
 ## 4. ThemeToggle 主题切换组件
 
