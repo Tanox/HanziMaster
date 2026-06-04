@@ -174,7 +174,7 @@ function MyComponent() {
 
 ## 10. 相关文档
 
-- [项目概述](overview.md) - 项目基本信息和技术栈
-- [架构设计](ARCHITECTURE.md) - 项目架构和目录结构
-- [开发规范](CONVENTIONS.md) - 开发流程和代码规范
+- [项目概述](01-overview.md) - 项目基本信息和技术栈
+- [技术架构](02-architecture.md) - 系统架构设计和技术选型
+- [开发指南](03-development.md) - 开发环境配置和编码规范
 - [提交模板](commit-template.md) - Git 提交消息规范
