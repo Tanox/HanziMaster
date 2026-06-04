@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HanziMaster 原型图 v2.2.1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* 基础样式 */
+    :root {
+      --emerald-500: #10b981;
+      --emerald-600: #059669;
+      --slate-900: #0f172a;
+      --slate-700: #334155;
+      --slate-500: #64748b;
+      --slate-300: #cbd5e1;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      --white: #ffffff;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--slate-100);
+      color: var(--slate-900);
+      line-height: 1.5;
+    }
+    
+    .hanzi-font {
+      font-family: 'Noto Sans SC', sans-serif;
+    }
+    
+    /* 原型容器 */
+    .prototype-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .prototype-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: linear-gradient(135deg, var(--emerald-500), var(--emerald-600));
+      border-radius: 1rem;
+      color: var(--white);
+    }
+    
+    .prototype-header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .prototype-header p {
+      opacity: 0.9;
+      font-size: 1.1rem;
+    }
+    
+    /* 页面展示区 */
+    .pages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+    }
+    
+    .page-card {
+      background: var(--white);
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    
+    .page-header {
+      background: var(--slate-900);
+      color: var(--white);
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .page-header h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    
+    .page-header .route {
+      font-family: monospace;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.25rem 0.75rem;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+    }
+    
+    .page-content {
+      padding: 1.5rem;
+    }
+    
+    /* 组件展示 */
+    .component-section {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--slate-300);
+    }
+    
+    .component-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .component-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--slate-500);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+    
+    /* 模拟组件样式 */
+    .mock-header {
+      background: var(--white);
+      border-bottom: 1px solid var(--slate-300);
+      padding: 0.75rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 0.5rem;
+    }
+    
+    .mock-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .mock-logo-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: linear-gradient(135deg, var(--emerald-500), var(--emerald-600));
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-weight: 700;
+    }
+    
+    .mock-nav {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .mock-nav-item {
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--slate-700);
+      background: var(--slate-50);
+    }
+    
+    .mock-btn-primary {
+      background: linear-gradient(135deg, var(--emerald-500), var(--emerald-600));
+      color: var(--white);
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .mock-btn-secondary {
+      background: var(--white);
+      border: 2px solid var(--slate-300);
+      color: var(--slate-900);
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+    }
+    
+    /* Hero 区域模拟 */
+    .mock-hero {
+      background: linear-gradient(135deg, var(--slate-50), rgba(16, 185, 129, 0.1));
+      padding: 2rem;
+      border-radius: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    
+    .mock-hero h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .mock-hero p {
+      color: var(--slate-500);
+      margin-bottom: 1rem;
+    }
+    
+    /* 字符卡片 */
+    .mock-char-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+    }
+    
+    .mock-char-card {
+      background: var(--white);
+      border: 2px solid var(--slate-100);
+      border-radius: 0.75rem;
+      padding: 1rem;
+      text-align: center;
+    }
+    
+    .mock-char-card.selected {
+      border-color: var(--emerald-500);
+      background: rgba(16, 185, 129, 0.05);
+    }
+    
+    .mock-char-card .char {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--slate-900);
+    }
+    
+    .mock-char-card .pinyin {
+      font-size: 0.75rem;
+      color: var(--slate-500);
+    }
+    
+    /* 练习选项卡片 */
+    .mock-practice-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+    }
+    
+    .mock-practice-card {
+      background: var(--white);
+      border: 2px solid var(--slate-100);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+    }
+    
+    .mock-practice-card .icon {
+      width: 3rem;
+      height: 3rem;
+      background: var(--slate-50);
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.75rem;
+      font-size: 1.5rem;
+    }
+    
+    .mock-practice-card h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    
+    .mock-practice-card p {
+      font-size: 0.75rem;
+      color: var(--slate-500);
+    }
+    
+    /* 周进度 */
+    .mock-week-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.5rem;
+    }
+    
+    .mock-day-cell {
+      background: var(--slate-50);
+      border-radius: 0.5rem;
+      padding: 0.75rem 0.5rem;
+      text-align: center;
+    }
+    
+    .mock-day-cell.completed {
+      background: linear-gradient(135deg, var(--emerald-500), var(--emerald-600));
+      color: var(--white);
+    }
+    
+    .mock-day-cell .day-name {
+      font-size: 0.625rem;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+    
+    .mock-day-cell .check {
+      width: 1.5rem;
+      height: 1.5rem;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 0.25rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* 统计卡片 */
+    .mock-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    
+    .mock-stat-card {
+      background: var(--slate-50);
+      border-radius: 0.75rem;
+      padding: 1rem;
+      text-align: center;
+    }
+    
+    .mock-stat-card .value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--emerald-600);
+    }
+    
+    .mock-stat-card .label {
+      font-size: 0.75rem;
+      color: var(--slate-500);
+    }
+    
+    /* 功能特性卡片 */
+    .mock-feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+    }
+    
+    .mock-feature-card {
+      background: var(--slate-50);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+    }
+    
+    .mock-feature-card .icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: var(--white);
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.75rem;
+      font-size: 1.25rem;
+    }
+    
+    .mock-feature-card h4 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    
+    .mock-feature-card p {
+      font-size: 0.75rem;
+      color: var(--slate-500);
+      line-height: 1.4;
+    }
+    
+    /* 页脚 */
+    .mock-footer {
+      background: var(--white);
+      border-top: 1px solid var(--slate-300);
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--slate-500);
+      border-radius: 0.5rem;
+    }
+    
+    /* 规格说明 */
+    .specs-section {
+      margin-top: 3rem;
+      background: var(--white);
+      border-radius: 1rem;
+      padding: 2rem;
+    }
+    
+    .specs-section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--slate-900);
+    }
+    
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .spec-card {
+      background: var(--slate-50);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+    }
+    
+    .spec-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--emerald-600);
+    }
+    
+    .spec-card ul {
+      list-style: none;
+      font-size: 0.875rem;
+      color: var(--slate-700);
+    }
+    
+    .spec-card li {
+      padding: 0.25rem 0;
+      padding-left: 1rem;
+      position: relative;
+    }
+    
+    .spec-card li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--emerald-500);
+    }
+    
+    /* 响应式设计标记 */
+    .responsive-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--emerald-600);
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      margin-left: 0.5rem;
+    }
+    
+    /* 交互说明 */
+    .interaction-note {
+      background: #fef3c7;
+      border-left: 3px solid #f59e0b;
+      padding: 0.75rem 1rem;
+      font-size: 0.875rem;
+      margin-top: 0.75rem;
+      border-radius: 0 0.5rem 0.5rem 0;
+    }
+    
+    /* 组件列表 */
+    .component-list {
+      background: var(--slate-50);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .component-list h4 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .component-list ul {
+      list-style: none;
+      font-size: 0.8rem;
+      color: var(--slate-600);
+    }
+    
+    .component-list li {
+      padding: 0.25rem 0;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="prototype-container">
+    <!-- 原型头部 -->
+    <header class="prototype-header">
+      <h1 class="hanzi-font">HanziMaster 汉字大师</h1>
+      <p>UI 原型设计规范 v2.2.1 | AI 驱动的汉字学习平台</p>
+    </header>
+    
+    <!-- 页面展示区 -->
+    <div class="pages-grid">
+      <!-- 首页原型 -->
+      <article class="page-card">
+        <header class="page-header">
+          <h2>首页 (Home)</h2>
+          <span class="route">/</span>
+        </header>
+        <div class="page-content">
+          <!-- 导航栏 -->
+          <section class="component-section">
+            <div class="component-title">导航栏 (Header)</div>
+            <div class="mock-header">
+              <div class="mock-logo">
+                <div class="mock-logo-icon hanzi-font">汉</div>
+                <span style="font-weight: 600;">HanziMaster</span>
+              </div>
+              <nav class="mock-nav">
+                <span class="mock-nav-item">学习</span>
+                <span class="mock-nav-item">练习</span>
+                <span class="mock-nav-item">🌐</span>
+                <span class="mock-nav-item">🌙</span>
+              </nav>
+            </div>
+            <div class="component-list">
+              <h4>组件构成:</h4>
+              <ul>
+                <li>Logo (Link to /)</li>
+                <li>NavLink: /learn, /practice</li>
+                <li>LocaleToggleClient</li>
+                <li>ThemeToggleClient</li>
+                <li>MobileNav (移动端)</li>
+              </ul>
+            </div>
+          </section>
+          
+          <!-- Hero 区域 -->
+          <section class="component-section">
+            <div class="component-title">Hero 区域 <span class="responsive-badge">响应式</span></div>
+            <div class="mock-hero">
+              <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(16, 185, 129, 0.1); padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.75rem; color: var(--emerald-600); margin-bottom: 0.75rem;">
+                <span style="width: 6px; height: 6px; background: var(--emerald-500); border-radius: 50%;"></span>
+                AI 驱动学习
+              </div>
+              <h3>精通中文 <span style="background: linear-gradient(90deg, var(--emerald-500), #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">一笔一划</span></h3>
+              <p>汉字大师使用先进的 AI 技术，引导您领略汉字的精妙艺术...</p>
+              <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                <span class="mock-btn-primary">立即开始学习 →</span>
+                <span class="mock-btn-secondary">浏览字库</span>
+              </div>
+            </div>
+            <div class="interaction-note">
+              <strong>交互:</strong> CTA按钮 "立即开始学习" → /learn, "浏览字库" → /practice
+            </div>
+          </section>
+          
+          <!-- 功能特性 -->
+          <section class="component-section">
+            <div class="component-title">功能特性 (Features) <span class="responsive-badge">3列网格</span></div>
+            <div class="mock-feature-grid">
+              <div class="mock-feature-card">
+                <div class="icon">💡</div>
+                <h4>AI 驱动洞察</h4>
+                <p>分析书写，提供笔画顺序、平衡和美感的即时反馈</p>
+              </div>
+              <div class="mock-feature-card">
+                <div class="icon">📚</div>
+                <h4>词源与文化</h4>
+                <p>发现汉字背后的故事，了解演变历程</p>
+              </div>
+              <div class="mock-feature-card">
+                <div class="icon">📊</div>
+                <h4>自适应学习</h4>
+                <p>算法适应您的节奏，专注有挑战性的汉字</p>
+              </div>
+            </div>
+            <div class="component-list">
+              <h4>组件:</h4>
+              <ul>
+                <li>FeatureCard x 3</li>
+              </ul>
+            </div>
+          </section>
+          
+          <!-- 页脚 -->
+          <section class="component-section">
+            <div class="component-title">页脚 (Footer)</div>
+            <div class="mock-footer">
+              <div style="display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 0.5rem;">
+                <span>学习</span>
+                <span>练习</span>
+              </div>
+              © 2026 汉字大师 HanziMaster v2.2.1
+            </div>
+          </section>
+        </div>
+      </article>
+      
+      <!-- 学习页原型 -->
+      <article class="page-card">
+        <header class="page-header">
+          <h2>学习页 (Learn)</h2>
+          <span class="route">/learn</span>
+        </header>
+        <div class="page-content">
+          <!-- 页面头部 -->
+          <section class="component-section">
+            <div class="component-title">页面头部</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <div>
+                <h3 style="font-size: 1.25rem; font-weight: 700;">每日练习</h3>
+                <p style="font-size: 0.875rem; color: var(--slate-500);">掌握最常用的12个汉字</p>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem; background: rgba(16, 185, 129, 0.1); padding: 0.5rem 1rem; border-radius: 1rem; font-size: 0.875rem; color: var(--emerald-600);">
+                ✓ 5 天连续学习
+              </div>
+            </div>
+          </section>
+          
+          <!-- 字符网格 -->
+          <section class="component-section">
+            <div class="component-title">字符选择网格 <span class="responsive-badge">2-6列响应式</span></div>
+            <div class="mock-char-grid">
+              <div class="mock-char-card selected">
+                <div class="char hanzi-font">一</div>
+                <div class="pinyin">yī</div>
+              </div>
+              <div class="mock-char-card">
+                <div class="char hanzi-font">二</div>
+                <div class="pinyin">èr</div>
+              </div>
+              <div class="mock-char-card">
+                <div class="char hanzi-font">三</div>
+                <div class="pinyin">sān</div>
+              </div>
+              <div class="mock-char-card">
+                <div class="char hanzi-font">人</div>
+                <div class="pinyin">rén</div>
+              </div>
+              <div class="mock-char-card">
+                <div class="char hanzi-font">大</div>
+                <div class="pinyin">dà</div>
+              </div>
+              <div class="mock-char-card">
+                <div class="char hanzi-font">小</div>
+                <div class="pinyin">xiǎo</div>
+              </div>
+              <div class="mock-char-card">
+                <div class="char hanzi-font">口</div>
+                <div class="pinyin">kǒu</div>
+              </div>
+              <div class="mock-char-card">
+                <div class="char hanzi-font">日</div>
+                <div class="pinyin">rì</div>
+              </div>
+            </div>
+            <div class="interaction-note">
+              <strong>交互:</strong> 点击选择字符，选中状态显示绿色边框和顶部指示条。支持键盘导航 (Enter/Space)。
+            </div>
+            <div class="component-list">
+              <h4>数据:</h4>
+              <ul>
+                <li>baseCharacters: 12个基础汉字</li>
+                <li>属性: id, hanzi, pinyin, meaning, translationKey, strokes, radical, structure</li>
+              </ul>
+            </div>
+          </section>
+          
+          <!-- 字符详情面板 -->
+          <section class="component-section">
+            <div class="component-title">字符详情面板 <span class="responsive-badge">动画进入</span></div>
+            <div style="background: var(--slate-50); border-radius: 0.75rem; padding: 1.5rem;">
+              <div style="display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;">
+                <div style="width: 80px; height: 80px; background: var(--white); border: 2px dashed var(--emerald-500); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center;">
+                  <span style="font-size: 3rem; font-weight: 700;" class="hanzi-font">一</span>
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                  <div style="display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.75rem;">
+                    <span style="font-size: 1.5rem; font-weight: 700;" class="hanzi-font">一</span>
+                    <span style="color: var(--slate-500);">yī</span>
+                    <span style="background: rgba(16, 185, 129, 0.1); color: var(--emerald-600); padding: 0.125rem 0.5rem; border-radius: 1rem; font-size: 0.75rem;">一</span>
+                  </div>
+                  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;">
+                    <div style="background: var(--white); padding: 0.5rem; border-radius: 0.5rem; text-align: center;">
+                      <div style="font-size: 0.625rem; color: var(--slate-500);">笔画数</div>
+                      <div style="font-weight: 600;">1 画</div>
+                    </div>
+                    <div style="background: var(--white); padding: 0.5rem; border-radius: 0.5rem; text-align: center;">
+                      <div style="font-size: 0.625rem; color: var(--slate-500);">部首</div>
+                      <div style="font-weight: 600;" class="hanzi-font">一</div>
+                    </div>
+                    <div style="background: var(--white); padding: 0.5rem; border-radius: 0.5rem; text-align: center;">
+                      <div style="font-size: 0.625rem; color: var(--slate-500);">结构</div>
+                      <div style="font-weight: 600;">独体</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style="display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap;">
+                <span class="mock-btn-primary">✏️ 练习书写</span>
+                <span class="mock-btn-secondary">🔊 听发音</span>
+              </div>
+            </div>
+          </section>
+        </div>
+      </article>
+      
+      <!-- 练习页原型 -->
+      <article class="page-card">
+        <header class="page-header">
+          <h2>练习页 (Practice)</h2>
+          <span class="route">/practice</span>
+        </header>
+        <div class="page-content">
+          <!-- 页面头部 -->
+          <section class="component-section">
+            <div class="component-title">页面头部</div>
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+              <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">练习中心</h3>
+              <p style="color: var(--slate-500); font-size: 0.875rem;">多种练习方式，全方位提升您的汉字掌握程度</p>
+            </div>
+          </section>
+          
+          <!-- 练习选项 -->
+          <section class="component-section">
+            <div class="component-title">练习选项 <span class="responsive-badge">1-3列响应式</span></div>
+            <div class="mock-practice-grid">
+              <div class="mock-practice-card">
+                <div class="icon">✏️</div>
+                <h4>书写练习</h4>
+                <p>在智能画布上练习书写，获得 AI 实时反馈</p>
+              </div>
+              <div class="mock-practice-card">
+                <div class="icon">❓</div>
+                <h4>记忆测验</h4>
+                <p>趣味测验巩固汉字含义与读音</p>
+              </div>
+              <div class="mock-practice-card">
+                <div class="icon">📊</div>
+                <h4>学习进度</h4>
+                <p>详细数据分析，了解学习轨迹</p>
+              </div>
+            </div>
+            <div class="interaction-note">
+              <strong>交互:</strong> 点击选中显示彩色背景和环形指示器，再次点击不会取消选中。
+            </div>
+          </section>
+          
+          <!-- 周进度 -->
+          <section class="component-section">
+            <div class="component-title">本周学习进度 <span class="responsive-badge">7列网格</span></div>
+            <div style="background: var(--slate-50); border-radius: 0.75rem; padding: 1rem;">
+              <h4 style="font-weight: 600; margin-bottom: 0.75rem;">本周学习进度</h4>
+              <div class="mock-week-grid">
+                <div class="mock-day-cell completed">
+                  <div class="day-name">周一</div>
+                  <div class="check">✓</div>
+                </div>
+                <div class="mock-day-cell completed">
+                  <div class="day-name">周二</div>
+                  <div class="check">✓</div>
+                </div>
+                <div class="mock-day-cell completed">
+                  <div class="day-name">周三</div>
+                  <div class="check">✓</div>
+                </div>
+                <div class="mock-day-cell completed">
+                  <div class="day-name">周四</div>
+                  <div class="check">✓</div>
+                </div>
+                <div class="mock-day-cell completed" style="box-shadow: 0 0 0 2px var(--emerald-500);">
+                  <div class="day-name">周五</div>
+                  <div class="check">今</div>
+                </div>
+                <div class="mock-day-cell">
+                  <div class="day-name">周六</div>
+                  <div class="check" style="background: var(--white);">待学</div>
+                </div>
+                <div class="mock-day-cell">
+                  <div class="day-name">周日</div>
+                  <div class="check" style="background: var(--white);">待学</div>
+                </div>
+              </div>
+              
+              <!-- 统计数据 -->
+              <div class="mock-stats-grid">
+                <div class="mock-stat-card">
+                  <div class="value">12</div>
+                  <div class="label">已学汉字</div>
+                </div>
+                <div class="mock-stat-card">
+                  <div class="value">5</div>
+                  <div class="label">连续学习天数</div>
+                </div>
+                <div class="mock-stat-card">
+                  <div class="value">87%</div>
+                  <div class="label">正确率</div>
+                </div>
+              </div>
+            </div>
+            <div class="component-list">
+              <h4>组件:</h4>
+              <ul>
+                <li>StatsCard x 3</li>
+              </ul>
+            </div>
+          </section>
+        </div>
+      </article>
+    </div>
+    
+    <!-- 规格说明 -->
+    <section class="specs-section">
+      <h2>设计规格说明</h2>
+      <div class="specs-grid">
+        <div class="spec-card">
+          <h3>响应式断点</h3>
+          <ul>
+            <li><strong>xs:</strong> 475px - 超小屏幕</li>
+            <li><strong>sm:</strong> 640px - 小屏幕</li>
+            <li><strong>md:</strong> 768px - 中等屏幕</li>
+            <li><strong>lg:</strong> 1024px - 大屏幕</li>
+            <li><strong>xl:</strong> 1280px - 超大屏幕</li>
+          </ul>
+        </div>
+        
+        <div class="spec-card">
+          <h3>颜色系统</h3>
+          <ul>
+            <li><strong>主色:</strong> Emerald (emerald-500: #10b981)</li>
+            <li><strong>辅助色:</strong> Cyan, Blue, Purple</li>
+            <li><strong>中性色:</strong> Slate 系列</li>
+            <li><strong>深色模式:</strong> dark: 前缀</li>
+          </ul>
+        </div>
+        
+        <div class="spec-card">
+          <h3>字体系统</h3>
+          <ul>
+            <li><strong>界面字体:</strong> Inter</li>
+            <li><strong>汉字字体:</strong> Noto Sans SC</li>
+            <li><strong>代码字体:</strong> JetBrains Mono</li>
+            <li><strong>汉字类:</strong> .hanzi-font</li>
+          </ul>
+        </div>
+        
+        <div class="spec-card">
+          <h3>间距规范</h3>
+          <ul>
+            <li><strong>页面容器:</strong> max-w-7xl mx-auto px-4 sm:px-6</li>
+            <li><strong>卡片间距:</strong> gap-4 sm:gap-6 lg:gap-8</li>
+            <li><strong>内边距:</strong> p-4 sm:p-6 lg:p-8</li>
+            <li><strong>安全区域:</strong> safe-bottom (底部)</li>
+          </ul>
+        </div>
+        
+        <div class="spec-card">
+          <h3>动画效果</h3>
+          <ul>
+            <li><strong>页面过渡:</strong> page-transition (淡入)</li>
+            <li><strong>缩放进入:</strong> animate-scale-in</li>
+            <li><strong>悬停效果:</strong> hover:-translate-y-1</li>
+            <li><strong>点击反馈:</strong> active:scale-95</li>
+          </ul>
+        </div>
+        
+        <div class="spec-card">
+          <h3>国际化 (i18n)</h3>
+          <ul>
+            <li><strong>支持语言:</strong> 11种</li>
+            <li><strong>翻译函数:</strong> t('key.path')</li>
+            <li><strong>存储键:</strong> hanzi-master-locale</li>
+            <li><strong>自动检测:</strong> 浏览器语言</li>
+          </ul>
+        </div>
+        
+        <div class="spec-card">
+          <h3>主题系统</h3>
+          <ul>
+            <li><strong>模式:</strong> light / dark / system</li>
+            <li><strong>存储键:</strong> hanzi-master-theme</li>
+            <li><strong>Provider:</strong> ThemeProvider</li>
+            <li><strong>切换组件:</strong> ThemeToggleClient</li>
+          </ul>
+        </div>
+        
+        <div class="spec-card">
+          <h3>无障碍 (A11y)</h3>
+          <ul>
+            <li><strong>语义化:</strong> header, main, nav, footer</li>
+            <li><strong>ARIA:</strong> aria-expanded, aria-selected</li>
+            <li><strong>键盘导航:</strong> Tab, Enter, Space, Escape</li>
+            <li><strong>跳转链接:</strong> Skip to content</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 组件清单 -->
+    <section class="specs-section" style="margin-top: 2rem;">
+      <h2>组件清单</h2>
+      <div class="specs-grid">
+        <div class="spec-card">
+          <h3>页面组件 (src/app/)</h3>
+          <ul>
+            <li>page.tsx - 首页</li>
+            <li>layout.tsx - 根布局</li>
+            <li>learn/page.tsx - 学习页</li>
+            <li>practice/page.tsx - 练习页</li>
+            <li>globals.css - 全局样式</li>
+          </ul>
+        </div>
+        
+        <div class="spec-card">
+          <h3>可复用组件 (src/components/)</h3>
+          <ul>
+            <li>locale-provider.tsx - 国际化上下文</li>
+            <li>locale-toggle.tsx - 语言切换</li>
+            <li>theme-provider.tsx - 主题上下文</li>
+            <li>theme-toggle.tsx - 主题切换</li>
+            <li>mobile-nav.tsx - 移动端导航</li>
+            <li>nav-link.tsx - 导航链接</li>
+            <li>feature-card.tsx - 功能卡片</li>
+            <li>stats-card.tsx - 统计卡片</li>
+          </ul>
+        </div>
+        
+        <div class="spec-card">
+          <h3>i18n 模块 (src/lib/i18n/)</h3>
+          <ul>
+            <li>index.ts - 配置导出</li>
+            <li>translations/en.ts - 英语</li>
+            <li>translations/zh-CN.ts - 简体中文</li>
+            <li>translations/zh-TW.ts - 繁体中文</li>
+            <li>translations/es.ts - 西班牙语</li>
+            <li>translations/ar.ts - 阿拉伯语</li>
+            <li>+ 6种其他语言</li>
+          </ul>
+        </div>
+        
+        <div class="spec-card">
+          <h3>配置文件</h3>
+          <ul>
+            <li>package.json - 项目配置</li>
+            <li>tsconfig.json - TypeScript 配置</li>
+            <li>next.config.js - Next.js 配置</li>
+            <li>tailwind.config.ts - Tailwind 配置</li>
+            <li>eslint.config.js - ESLint 配置</li>
+            <li>vercel.json - 部署配置</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
