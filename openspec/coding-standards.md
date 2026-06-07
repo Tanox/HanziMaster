@@ -207,7 +207,7 @@ function MyComponent() {
 ## 11. 相关文档
 
 - [项目概述](01-overview.md) - 项目基本信息和技术栈
-- [技术架构](02-architecture.md) - 项目架构和目录结构
+- [技术架构](02-architecture.md) - 系统架构和目录结构
 - [开发指南](03-development.md) - 开发流程和代码规范
 - [API 参考](04-api-reference.md) - 组件 API 文档
 - [提交模板](commit-template.md) - Git 提交消息规范
