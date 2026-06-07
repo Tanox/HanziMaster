@@ -131,7 +131,7 @@ function MyComponent() {
 
 ### 3.1 组件概述
 
-主题上下文提供组件，管理深色/浅色模式。
+主题上下文提供组件，管理深色/浅色/系统主题三态切换。
 
 **文件路径：** [src/components/theme-provider.tsx](../src/components/theme-provider.tsx)
 
@@ -139,8 +139,8 @@ function MyComponent() {
 
 | API | 类型 | 说明 |
 |------|------|------|
-| `isDark` | `boolean` | 当前是否为深色模式 |
-| `toggleTheme()` | `void` | 切换主题 |
+| `theme` | `'dark' \| 'light' \| 'system'` | 当前主题 |
+| `setTheme(theme)` | `void` | 设置主题 |
 
 ### 3.3 使用示例
 
@@ -150,12 +150,14 @@ function MyComponent() {
 import { useTheme } from '@/components/theme-provider';
 
 function MyComponent() {
-  const { isDark, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   
   return (
-    <button onClick={toggleTheme}>
-      {isDark ? 'Switch to Light' : 'Switch to Dark'}
-    </button>
+    <div>
+      <button onClick={() => setTheme('light')}>Light</button>
+      <button onClick={() => setTheme('dark')}>Dark</button>
+      <button onClick={() => setTheme('system')}>System</button>
+    </div>
   );
 }
 ```
@@ -163,49 +165,163 @@ function MyComponent() {
 ### 3.4 持久化
 
 - **LocalStorage Key：** `hanzi-master-theme`
-- **值：** `'dark'` 或 `'light'`
+- **值：** `'dark'`, `'light'`, 或 `'system'`
+
+### 3.5 主题翻译键
+
+翻译文件中需包含以下键：
+
+```typescript
+common: {
+  theme: {
+    light: '浅色' | 'Light',
+    dark: '深色' | 'Dark',
+    system: '跟随系统' | 'System'
+  }
+}
+```
 
 ## 4. ThemeToggle 主题切换组件
 
 ### 4.1 组件概述
 
-主题切换组件，支持深色/浅色模式切换，自动持久化用户偏好。
+主题切换组件，支持深色/浅色/系统主题三态循环切换，自动持久化用户偏好。
 
 **文件路径：** [src/components/theme-toggle.tsx](../src/components/theme-toggle.tsx)
 
-### 4.2 使用示例
+### 4.2 功能特性
+
+- 三态循环切换：Light → Dark → System → Light
+- 每个状态对应不同的 SVG 图标
+- 悬停显示工具提示（使用翻译键 `common.theme.${theme}`）
+- 支持无障碍访问（ARIA label）
+- 最小触控区域 44x44px
+
+### 4.3 使用示例
 
 ```typescript
 'use client';
 
 import { ThemeToggleClient } from '@/components/theme-toggle';
 
-function MyComponent() {
+function Header() {
   return <ThemeToggleClient />;
 }
 ```
+
+### 4.4 主题切换顺序
+
+```
+Light → Dark → System → Light
+```
+
+### 4.5 翻译键要求
+
+```typescript
+common: {
+  theme: {
+    light: '浅色' | 'Light',
+    dark: '深色' | 'Dark',
+    system: '跟随系统' | 'System'
+  }
+}
+```
+
+## 4.1 NavLink 导航链接组件
+
+### 4.1.1 组件概述
+
+导航链接组件，用于桌面端导航栏，支持活跃状态高亮和动画效果。
+
+**文件路径：** [src/components/nav-link.tsx](../src/components/nav-link.tsx)
+
+### 4.1.2 功能特性
+
+- 根据当前路由自动判断活跃状态
+- 活跃状态高亮显示（绿色背景 + 下划线指示器）
+- 悬停效果和过渡动画
+- 最小触控区域 40px
+
+### 4.1.3 使用示例
+
+```typescript
+import { NavLink } from '@/components/nav-link';
+
+<NavLink href="/learn">学习</NavLink>
+```
+
+### 4.1.4 样式说明
+
+| 状态 | 样式 |
+|------|------|
+| 默认 | 灰色文字 + 透明背景 |
+| 悬停 | 绿色文字 + 浅色背景 |
+| 活跃 | 绿色文字 + 绿色背景 + 下划线 |
+
+## 4.2 MobileNav 移动端导航组件
+
+### 4.2.1 组件概述
+
+移动端抽屉导航组件，提供侧边栏导航菜单。
+
+**文件路径：** [src/components/mobile-nav.tsx](../src/components/mobile-nav.tsx)
+
+### 4.2.2 功能特性
+
+- 侧边栏抽屉式导航
+- 背景遮罩层
+- Escape 键关闭
+- 滚动锁定
+- 无障碍支持（role="dialog", aria-modal）
+- 当前路由高亮显示
+
+### 4.2.3 使用示例
+
+```typescript
+import { MobileNav } from '@/components/mobile-nav';
+
+<MobileNav isOpen={isOpen} onClose={closeNav} t={t} />
+```
+
+### 4.2.4 Props
+
+| Prop | 类型 | 说明 |
+|------|------|------|
+| `isOpen` | `boolean` | 是否展开 |
+| `onClose` | `() => void` | 关闭回调 |
+| `t` | `(key: string) => string` | 翻译函数 |
 
 ## 5. LocaleToggle 语言切换组件
 
 ### 5.1 组件概述
 
-语言切换组件，提供下拉菜单选择 11 种语言。
+语言切换组件，提供下拉菜单选择 11 种语言，支持完整的无障碍访问。
 
 **文件路径：** [src/components/locale-toggle.tsx](../src/components/locale-toggle.tsx)
 
-### 5.2 使用示例
+### 5.2 功能特性
+
+- 支持 11 种语言切换
+- 完整的 ARIA 属性支持（`role="listbox"`, `aria-expanded`, `aria-haspopup`）
+- 键盘导航支持（Escape 关闭，Arrow 键上下移动）
+- 点击外部自动关闭
+- 最大高度限制（70vh）防止溢出
+- 选中状态高亮显示
+- 最小触控区域 44x44px
+
+### 5.3 使用示例
 
 ```typescript
 'use client';
 
 import { LocaleToggleClient } from '@/components/locale-toggle';
 
-function MyComponent() {
+function Header() {
   return <LocaleToggleClient />;
 }
 ```
 
-### 5.3 语言名称映射
+### 5.4 语言名称映射
 
 ```typescript
 {
@@ -222,6 +338,17 @@ function MyComponent() {
   'ru': 'Русский'
 }
 ```
+
+### 5.5 无障碍特性
+
+| 特性 | 实现 |
+|------|------|
+| `aria-expanded` | 展开/收起状态 |
+| `aria-haspopup` | listbox |
+| `role="listbox"` | 下拉列表容器 |
+| `role="option"` | 语言选项 |
+| `aria-selected` | 当前选中语言 |
+| 键盘导航 | Escape, Arrow Up/Down |
 
 ## 6. 国际化模块
 
