@@ -2,8 +2,8 @@
 
 本文档记录项目规范文档、原型图与代码实现的对齐情况。
 
-**版本**: v2.2.1  
-**检查日期**: 2026-06-07
+**版本**: v3.0.0  
+**检查日期**: 2026-06-08
 
 ---
 
@@ -23,23 +23,23 @@
 
 | 组件 | 规范文档 | 原型图 | 代码实现 | 文件头版本 | 状态 |
 |------|---------|--------|---------|-----------|------|
-| LocaleProvider | ✅ 04-api-reference.md | - | ✅ locale-provider.tsx | v2.2.1 | ✅ 对齐 |
-| LocaleToggleClient | ✅ 04-api-reference.md | ✅ 导航栏 | ✅ locale-toggle.tsx | v2.2.1 | ✅ 对齐 |
-| ThemeProvider | ✅ 04-api-reference.md | - | ✅ theme-provider.tsx | v2.2.1 | ✅ 对齐 |
-| ThemeToggleClient | ✅ 04-api-reference.md | ✅ 导航栏 | ✅ theme-toggle.tsx | v2.2.1 | ✅ 对齐 |
-| MobileNav | ✅ 02-architecture.md | - | ✅ mobile-nav.tsx | v2.2.1 | ✅ 对齐 |
-| NavLink | ✅ 02-architecture.md | ✅ 导航栏 | ✅ nav-link.tsx | v2.2.1 | ✅ 对齐 |
-| FeatureCard | ✅ 02-architecture.md | ✅ 功能特性 | ✅ feature-card.tsx | v2.2.1 | ✅ 对齐 |
-| StatsCard | ✅ 02-architecture.md | ✅ 统计数据 | ✅ stats-card.tsx | v2.2.1 | ✅ 对齐 |
+| LocaleProvider | ✅ 04-api-reference.md | - | ✅ locale-provider.tsx | v3.0.0 | ✅ 对齐 |
+| LocaleToggleClient | ✅ 04-api-reference.md | ✅ 导航栏 | ✅ locale-toggle.tsx | v3.0.0 | ✅ 对齐 |
+| ThemeProvider | ✅ 04-api-reference.md | - | ✅ theme-provider.tsx | v3.0.0 | ✅ 对齐 |
+| ThemeToggleClient | ✅ 04-api-reference.md | ✅ 导航栏 | ✅ theme-toggle.tsx | v3.0.0 | ✅ 对齐 |
+| MobileNav | ✅ 02-architecture.md | - | ✅ mobile-nav.tsx | v3.0.0 | ✅ 对齐 |
+| NavLink | ✅ 02-architecture.md | ✅ 导航栏 | ✅ nav-link.tsx | v3.0.0 | ✅ 对齐 |
+| FeatureCard | ✅ 02-architecture.md | ✅ 功能特性 | ✅ feature-card.tsx | v3.0.0 | ✅ 对齐 |
+| StatsCard | ✅ 02-architecture.md | ✅ 统计数据 | ✅ stats-card.tsx | v3.0.0 | ✅ 对齐 |
 
 ### 2.2 页面组件
 
 | 组件 | 规范文档 | 原型图 | 文件头版本 | 状态 |
 |------|---------|--------|-----------|------|
-| HomePage | ✅ 02-architecture.md | ✅ 首页 | v2.2.1 | ✅ 对齐 |
-| LearnPage | ✅ 02-architecture.md | ✅ 学习页 | v2.2.1 | ✅ 对齐 |
-| PracticePage | ✅ 02-architecture.md | ✅ 练习页 | v2.2.1 | ✅ 对齐 |
-| RootLayout | ✅ 02-architecture.md | ✅ 布局 | v2.2.1 | ✅ 对齐 |
+| HomePage | ✅ 02-architecture.md | ✅ 首页 | v3.0.0 | ✅ 对齐 |
+| LearnPage | ✅ 02-architecture.md | ✅ 学习页 | v3.0.0 | ✅ 对齐 |
+| PracticePage | ✅ 02-architecture.md | ✅ 练习页 | v3.0.0 | ✅ 对齐 |
+| RootLayout | ✅ 02-architecture.md | ✅ 布局 | v3.0.0 | ✅ 对齐 |
 
 ---
 
@@ -91,8 +91,10 @@
 
 | 颜色 | 规范文档 | globals.css | tailwind.config.ts | 状态 |
 |------|---------|-------------|-------------------|------|
-| primary (#10b981) | ✅ 04-api-reference.md | ✅ | ✅ | ✅ 对齐 |
-| primary-dark (#059669) | ✅ 04-api-reference.md | ✅ | ✅ | ✅ 对齐 |
+| primary (#007aff) | ✅ prototype.html | ✅ | ✅ | ✅ 对齐 |
+| primary-dark (#5856d6) | ✅ prototype.html | ✅ | ✅ | ✅ 对齐 |
+| 背景色 (#ffffff) | ✅ prototype.html | ✅ | ✅ | ✅ 对齐 |
+| 前景色 (#000000) | ✅ prototype.html | ✅ | ✅ | ✅ 对齐 |
 
 ### 4.3 动画类
 
@@ -147,13 +149,13 @@
 
 | 配置文件 | 规范文档 | 存在 | 版本一致性 | 状态 |
 |----------|---------|------|-----------|------|
-| package.json | ✅ 01-overview.md | ✅ | v2.2.1 | ✅ 对齐 |
+| package.json | ✅ 01-overview.md | ✅ | v3.0.0 | ✅ 对齐 |
 | tsconfig.json | ✅ 03-development.md | ✅ | strict:true | ✅ 对齐 |
 | next.config.js | ✅ 01-overview.md | ✅ | - | ✅ 对齐 |
 | tailwind.config.ts | ✅ 03-development.md | ✅ | - | ✅ 对齐 |
 | eslint.config.js | ✅ 03-development.md | ✅ | - | ✅ 对齐 |
 | vercel.json | ✅ 05-deployment.md | ✅ | - | ✅ 对齐 |
-| metadata.json | ✅ 01-overview.md | ✅ | v2.2.1 | ✅ 对齐 |
+| .nvmrc | ✅ 03-development.md | ✅ | 24.5.0 | ✅ 对齐 |
 
 ---
 
@@ -175,44 +177,44 @@
 
 ## 9. 原型图对齐检查
 
-### 9.1 首页原型
+### 9.1 首页原型 (Apple 风格)
 
 | 区域 | 原型图描述 | 代码实现 | 状态 |
 |------|-----------|---------|------|
-| 导航栏 | Logo + NavLink + LocaleToggle + ThemeToggle | ✅ layout.tsx | ✅ 对齐 |
-| Hero区域 | AI徽章 + 标题 + 描述 + CTA按钮 | ✅ page.tsx | ✅ 对齐 |
-| 功能特性 | 3列网格 FeatureCard | ✅ page.tsx | ✅ 对齐 |
-| 页脚 | Logo + 导航链接 + 版权 | ✅ layout.tsx | ✅ 对齐 |
+| 导航栏 | Logo + NavLink + LocaleToggle + ThemeToggle (Glassmorphism) | ✅ layout.tsx | ✅ 对齐 |
+| Hero区域 | 极小间距 + 超大字号 + 清晰CTA + 视觉卡片 | ✅ page.tsx | ✅ 对齐 |
+| 功能特性 | 3列网格 FeatureCard (极简风格) | ✅ page.tsx | ✅ 对齐 |
+| 页脚 | 简洁的版权和导航链接 | ✅ layout.tsx | ✅ 对齐 |
 
-### 9.2 学习页原型
-
-| 区域 | 原型图描述 | 代码实现 | 状态 |
-|------|-----------|---------|------|
-| 页面头部 | 标题 + 连续学习天数 | ✅ learn/page.tsx | ✅ 对齐 |
-| 字符网格 | 12个字符卡片，选中状态 | ✅ learn/page.tsx | ✅ 对齐 |
-| 详情面板 | 字符展示 + 信息 + 操作按钮 | ✅ learn/page.tsx | ✅ 对齐 |
-
-### 9.3 练习页原型
+### 9.2 学习页原型 (Apple 风格)
 
 | 区域 | 原型图描述 | 代码实现 | 状态 |
 |------|-----------|---------|------|
-| 页面头部 | 标题 + 描述 | ✅ practice/page.tsx | ✅ 对齐 |
-| 练习选项 | 3个选项卡片 | ✅ practice/page.tsx | ✅ 对齐 |
+| 页面头部 | 居中大标题 + 简洁描述 | ✅ learn/page.tsx | ✅ 对齐 |
+| 字符网格 | 12个字符卡片，选中深色背景 | ✅ learn/page.tsx | ✅ 对齐 |
+| 详情面板 | 大字体字符展示 + 简洁信息卡片 | ✅ learn/page.tsx | ✅ 对齐 |
+
+### 9.3 练习页原型 (Apple 风格)
+
+| 区域 | 原型图描述 | 代码实现 | 状态 |
+|------|-----------|---------|------|
+| 页面头部 | 超大字号标题 + 简洁描述 | ✅ practice/page.tsx | ✅ 对齐 |
+| 练习选项 | 3个选项卡片，极简设计 | ✅ practice/page.tsx | ✅ 对齐 |
 | 周进度 | 7天网格 + 统计卡片 | ✅ practice/page.tsx | ✅ 对齐 |
 
 ---
 
 ## 10. 版本一致性检查
 
-| 文件类型 | 文件数 | 版本 v2.2.1 | 状态 |
+| 文件类型 | 文件数 | 版本 v3.0.0 | 状态 |
 |----------|-------|------------|------|
 | 页面组件 (src/app/) | 4 | 4 | ✅ 对齐 |
 | 可复用组件 (src/components/) | 8 | 8 | ✅ 对齐 |
 | i18n配置 (src/lib/i18n/) | 1 | 1 | ✅ 对齐 |
 | 翻译文件 (translations/) | 11 | 11 | ✅ 对齐 |
 | 全局样式 (globals.css) | 1 | 1 | ✅ 对齐 |
-| package.json | 1 | v2.2.1 | ✅ 对齐 |
-| metadata.json | 1 | v2.2.1 | ✅ 对齐 |
+| package.json | 1 | v3.0.0 | ✅ 对齐 |
+| .nvmrc | 1 | 24.5.0 | ✅ 对齐 |
 
 ---
 
@@ -240,37 +242,41 @@
 ✅ **所有规范文档、原型图与代码实现已完全对齐**
 
 - 项目目录结构规范，无冗余文件
-- 所有组件文件头版本号一致 (v2.2.1)
+- 所有组件文件头版本号一致 (v3.0.0)
 - 所有规范文档内部链接正确
-- 原型图准确反映UI设计和交互逻辑
+- 原型图准确反映UI设计和交互逻辑 (Apple 风格)
 - 代码实现与规范文档描述一致
 - 国际化翻译完整，所有语言文件版本一致
 
 ---
 
-## 12. UI/UX 审查报告
+## 12. Apple 风格设计规范
 
-### 12.1 新增文档
-| 文档 | 路径 | 状态 | 说明 |
-|------|------|------|------|
-| UI/UX 审查报告 | openspec/ui-ux-review-report.md | ✅ 已创建 | 从设计师角度的优化建议 |
-| 增强原型图 | openspec/prototype.html | ✅ 已升级 | 增加深色模式切换、状态展示 |
+### 12.1 设计原则
+- **极简主义**: 去除一切非必要元素，突出核心内容
+- **大图展示**: 使用超大字号和图片，创造视觉冲击力
+- **充足留白**: 给内容充分的呼吸空间，提升可读性
+- **清晰层次**: 通过字号和权重明确信息层级
+- **微交互**: 简洁的悬停和点击反馈
 
-### 12.2 原型图增强内容
-| 增强功能 | 状态 | 说明 |
-|---------|------|------|
-| 深色/浅色模式切换 | ✅ 已实现 | 右上角主题切换器，交互生效 |
-| 按钮交互状态展示 | ✅ 已添加 | 默认/悬停/激活/禁用状态 |
-| 空状态设计 | ✅ 已添加 | 友好的无数据提示页面 |
-| 错误状态设计 | ✅ 已添加 | 网络错误等异常处理页面 |
-| 加载状态设计 | ✅ 已添加 | 骨架屏动画效果 |
+### 12.2 色彩系统
+| 用途 | 颜色值 | 说明 |
+|------|--------|------|
+| 主色 | #007aff | Apple Blue，用于链接和强调 |
+| 主深色 | #5856d6 | 渐变色，配合主色使用 |
+| 背景色 | #ffffff | 纯白背景 |
+| 前景色 | #000000 | 纯黑文字 |
+| 次要色 | #6e6e73 | 辅助文字 |
+| 边框色 | #d2d2d7 | 卡片边框 |
 
-### 12.3 UI/UX 优化建议优先级
-| 优先级 | 建议项 | 说明 |
-|--------|--------|------|
-| 高 | 添加空状态/错误状态 | 完善边缘情况的用户体验 |
-| 中 | 增加滚动出现动画 | 提升页面的生动感 |
-| 低 | 添加快捷键提示 | 增强高级用户体验 |
+### 12.3 圆角规范
+| 类型 | 圆角值 | 用途 |
+|------|--------|------|
+| 小圆角 | 16px | 小卡片、按钮 |
+| 中圆角 | 20px | 功能卡片 |
+| 大圆角 | 24px | 主要卡片、内容块 |
+| 超大圆角 | 32px | 页面级容器 |
+| 完全圆角 | 980px | Pill形按钮 |
 
 ---
 
@@ -279,33 +285,39 @@
 ### 13.1 文档文件
 | 文件 | 路径 | 最新更新 |
 |------|------|---------|
-| README | /workspace/README.md | 2026-06-07 |
-| 项目索引 | /workspace/openspec/index.md | v2.2.1 |
-| 项目概述 | /workspace/openspec/01-overview.md | v2.2.1 |
-| 架构文档 | /workspace/openspec/02-architecture.md | v2.2.1 |
-| 开发指南 | /workspace/openspec/03-development.md | v2.2.1 |
-| API参考 | /workspace/openspec/04-api-reference.md | v2.2.1 |
-| 部署文档 | /workspace/openspec/05-deployment.md | v2.2.1 |
-| 测试文档 | /workspace/openspec/06-testing.md | v2.2.1 |
-| 编码规范 | /workspace/openspec/coding-standards.md | v2.2.1 |
-| 提交模板 | /workspace/openspec/commit-template.md | v2.2.1 |
-| **原型图** | /workspace/openspec/prototype.html | **2026-06-07 增强版** |
-| 对齐清单 | /workspace/openspec/alignment-checklist.md | 2026-06-07 |
-| **UI/UX审查报告** | /workspace/openspec/ui-ux-review-report.md | **2026-06-07 新增** |
+| README | /workspace/README.md | 2026-06-08 |
+| 项目索引 | /workspace/openspec/index.md | v3.0.0 |
+| 项目概述 | /workspace/openspec/01-overview.md | v3.0.0 |
+| 架构文档 | /workspace/openspec/02-architecture.md | v3.0.0 |
+| 开发指南 | /workspace/openspec/03-development.md | v3.0.0 |
+| API参考 | /workspace/openspec/04-api-reference.md | v3.0.0 |
+| 部署文档 | /workspace/openspec/05-deployment.md | v3.0.0 |
+| 测试文档 | /workspace/openspec/06-testing.md | v3.0.0 |
+| 编码规范 | /workspace/openspec/coding-standards.md | v3.0.0 |
+| 提交模板 | /workspace/openspec/commit-template.md | v3.0.0 |
+| **原型图** | /workspace/openspec/prototype.html | **2026-06-08 Apple风格** |
+| 对齐清单 | /workspace/openspec/alignment-checklist.md | 2026-06-08 |
+| UI/UX审查报告 | /workspace/openspec/ui-ux-review-report.md | 2026-06-07 |
 
 ### 13.2 最终总结
 
-✅ **项目所有文档、原型图与代码已完全对齐，UI/UX设计已优化完善**
+✅ **项目所有文档、原型图与代码已完全对齐，Apple风格设计已全面应用**
 
 **完成的工作**：
-1. 创建了从UI设计师视角的完整优化改进报告
-2. 增强了原型图，增加了深色模式切换、状态展示等功能
-3. 更新了对齐检查清单，反映最新状态
-4. 确保了代码与所有规范文档的一致性
+1. 按照Apple设计风格全面升级了原型图
+2. 优化了首页代码，采用极简设计和超大字号
+3. 更新了布局组件，采用Glassmorphism导航栏
+4. 优化了学习页和练习页，采用Apple风格UI
+5. 更新了所有可复用组件（FeatureCard、StatsCard）
+6. 统一了全局样式系统，采用Apple色彩规范
+7. 更新了对齐检查清单，反映v3.0.0版本状态
+8. 精简了项目目录，删除了冗余文件
+9. 更新了Node.js版本要求到24.5.0
 
 **项目质量状态**：
+- ✅ Apple风格设计：极简主义、大图展示、充足留白
 - ✅ 响应式设计：完善的移动端和桌面端适配
 - ✅ 主题系统：深色/浅色模式切换
 - ✅ 无障碍支持：语义化HTML和键盘导航
-- ✅ 动画效果：流畅的交互动画
+- ✅ 动画效果：简洁的交互动画
 - ✅ 国际化：11种语言完整支持
