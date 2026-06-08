@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HanziMaster 汉字大师 - 完整原型设计 v2.2.2</title>
+  <title>HanziMaster 汉字大师</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -15,12 +15,7 @@
         extend: {
           fontFamily: {
             sans: ['Inter', 'system-ui', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
             hanzi: ['Noto Sans SC', 'sans-serif']
-          },
-          colors: {
-            primary: '#10b981',
-            'primary-dark': '#059669'
           }
         }
       }
@@ -28,138 +23,105 @@
   </script>
   <style>
     .hanzi-font { font-family: 'Noto Sans SC', sans-serif; }
-    
-    /* ==================== 页面过渡动画 ==================== */
-    .page-section { 
-      display: none; 
+
+    /* ==================== Apple-Style 页面过渡 ==================== */
+    .page-section {
+      display: none;
       opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+      transform: translateY(8px);
+      transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
     }
-    .page-section.active { 
+    .page-section.active {
       display: block;
       opacity: 1;
       transform: translateY(0);
     }
-    
-    /* ==================== 触摸涟漪效果 ==================== */
-    .touch-ripple {
+
+    /* ==================== Apple 风格阴影系统 ==================== */
+    .apple-shadow-sm {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+    .apple-shadow {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+    .apple-shadow-lg {
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+    }
+    .apple-shadow-xl {
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+    }
+
+    /* ==================== 字符卡片 Apple 风格 ==================== */
+    .char-card {
       position: relative;
-      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
-    .touch-ripple::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.4);
-      transform: translate(-50%, -50%);
-      transition: width 0.5s ease-out, height 0.5s ease-out;
+    .dark .char-card {
+      background: rgba(30, 41, 59, 0.8);
     }
-    .touch-ripple:active::before {
-      width: 250px;
-      height: 250px;
+    .char-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px -10px rgba(16, 185, 129, 0.3);
     }
-    
-    /* ==================== 骨架屏加载 ==================== */
+    .char-card.selected {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    /* ==================== Apple 风格按钮 ==================== */
+    .btn-apple-primary {
+      position: relative;
+      background: #0071e3;
+      transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+    .btn-apple-primary:hover {
+      background: #0077ed;
+      transform: scale(1.02);
+    }
+    .btn-apple-primary:active {
+      transform: scale(0.98);
+    }
+
+    .btn-apple-secondary {
+      position: relative;
+      background: transparent;
+      border: 1px solid #86868b;
+      transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+    .btn-apple-secondary:hover {
+      border-color: #1d1d1f;
+      color: #1d1d1f;
+    }
+    .dark .btn-apple-secondary:hover {
+      border-color: #f5f5f7;
+      color: #f5f5f7;
+    }
+
+    /* ==================== 骨架屏 ==================== */
     .skeleton {
-      background: linear-gradient(90deg, #e2e8f0 0%, #f1f5f9 50%, #e2e8f0 100%);
+      background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
       background-size: 200% 100%;
       animation: skeleton-loading 1.5s ease-in-out infinite;
     }
     .dark .skeleton {
-      background: linear-gradient(90deg, #334155 0%, #475569 50%, #334155 100%);
+      background: linear-gradient(90deg, #1e293b 0%, #334155 50%, #1e293b 100%);
       background-size: 200% 100%;
     }
     @keyframes skeleton-loading {
       0% { background-position: 200% 0; }
       100% { background-position: -200% 0; }
     }
-    
-    /* ==================== 卡片进入动画 ==================== */
-    @keyframes cardStagger {
-      from { opacity: 0; transform: translateY(20px) scale(0.95); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    .char-card {
-      animation: cardStagger 0.4s ease-out backwards;
-    }
-    .char-card:nth-child(1) { animation-delay: 0ms; }
-    .char-card:nth-child(2) { animation-delay: 40ms; }
-    .char-card:nth-child(3) { animation-delay: 80ms; }
-    .char-card:nth-child(4) { animation-delay: 120ms; }
-    .char-card:nth-child(5) { animation-delay: 160ms; }
-    .char-card:nth-child(6) { animation-delay: 200ms; }
-    .char-card:nth-child(7) { animation-delay: 240ms; }
-    .char-card:nth-child(8) { animation-delay: 280ms; }
-    .char-card:nth-child(9) { animation-delay: 320ms; }
-    .char-card:nth-child(10) { animation-delay: 360ms; }
-    .char-card:nth-child(11) { animation-delay: 400ms; }
-    .char-card:nth-child(12) { animation-delay: 440ms; }
-    
-    /* ==================== 进度条闪烁动画 ==================== */
+
+    /* ==================== 进度条 Apple 风格 ==================== */
     .progress-fill {
-      background: linear-gradient(90deg, #34d399, #10b981, #059669);
-      background-size: 200% 100%;
-      animation: progressShimmer 2s linear infinite;
+      background: linear-gradient(90deg, #34d399, #10b981);
+      border-radius: 4px;
     }
-    @keyframes progressShimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-    
-    /* ==================== 字符卡片交互 ==================== */
-    .char-card {
-      position: relative;
-      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .char-card::before {
-      content: '';
-      position: absolute;
-      inset: -2px;
-      border-radius: inherit;
-      background: linear-gradient(135deg, #10b981, #06b6d4);
-      opacity: 0;
-      z-index: -1;
-      transition: opacity 0.2s;
-    }
-    .char-card:hover::before {
-      opacity: 1;
-    }
-    .char-card:hover {
-      transform: translateY(-4px) scale(1.02);
-    }
-    .char-card.selected { 
-      border-color: #10b981; 
-      background: rgba(16, 185, 129, 0.08);
-      box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
-    }
-    
-    /* ==================== 移动端菜单 ==================== */
-    .mobile-menu { transform: translateX(100%); transition: transform 0.3s ease; }
-    .mobile-menu.open { transform: translateX(0); }
-    
-    /* ==================== 语言下拉菜单 ==================== */
-    .lang-dropdown { opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.2s ease; }
-    .lang-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0); }
-    
-    /* ==================== 进度条动画 ==================== */
-    .progress-bar { transition: width 1s ease-out; }
-    
-    /* ==================== 卡片悬停效果 ==================== */
-    .card-hover { transition: all 0.3s ease; }
-    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
-    
-    /* ==================== 原型导航指示器 ==================== */
-    .nav-indicator { transition: all 0.3s ease; }
-    
-    /* ==================== 深色模式过渡 ==================== */
-    body { transition: background-color 0.3s ease, color 0.3s ease; }
-    
-    /* ==================== 焦点管理 (A11y) ==================== */
+
+    /* ==================== 焦点管理 ==================== */
     :focus-visible {
       outline: 2px solid #10b981;
       outline-offset: 2px;
@@ -167,7 +129,7 @@
     :focus:not(:focus-visible) {
       outline: none;
     }
-    
+
     /* ==================== 跳过链接 ==================== */
     .skip-link {
       position: absolute;
@@ -185,36 +147,7 @@
     .skip-link:focus {
       top: 12px;
     }
-    
-    /* ==================== 按钮涟漪效果 ==================== */
-    .btn-primary {
-      position: relative;
-      overflow: hidden;
-    }
-    .btn-primary::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-    .btn-primary:hover::after {
-      opacity: 1;
-    }
-    .btn-primary:active {
-      transform: scale(0.98);
-    }
-    
-    /* ==================== 成功反馈动画 ==================== */
-    .success-pop {
-      animation: successPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    @keyframes successPop {
-      0% { transform: scale(0); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    
+
     /* ==================== 减少动画偏好 ==================== */
     @media (prefers-reduced-motion: reduce) {
       *,
@@ -226,36 +159,71 @@
         scroll-behavior: auto !important;
       }
     }
-    
+
     /* ==================== 安全区域支持 ==================== */
     .safe-area-bottom {
       padding-bottom: env(safe-area-inset-bottom, 0px);
     }
-    
+
     /* ==================== 触摸目标尺寸 ==================== */
     .touch-target {
       min-width: 44px;
       min-height: 44px;
     }
+
+    /* ==================== Apple 风格链接 ==================== */
+    .apple-link {
+      color: #0071e3;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .apple-link:hover {
+      text-decoration: underline;
+    }
+
+    /* ==================== Hero 字符动画 ==================== */
+    @keyframes heroCharFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(2deg); }
+    }
+    .hero-char {
+      animation: heroCharFloat 6s ease-in-out infinite;
+    }
+
+    /* ==================== 渐变文字 ==================== */
+    .gradient-text {
+      background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ==================== 卡片悬停 ==================== */
+    .feature-card {
+      transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+    }
   </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-sans min-h-screen">
+<body class="bg-white dark:bg-black text-gray-900 dark:text-white font-sans antialiased min-h-screen">
   
-  <!-- 跳过链接 (A11y) -->
+  <!-- 跳过链接 -->
   <a href="#main-content" class="skip-link">跳转到主要内容</a>
 
   <!-- 原型导航器 -->
-  <div class="fixed top-4 left-4 z-[100] bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 p-2 flex flex-col gap-1">
-    <div class="px-3 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 border-b border-slate-100 dark:border-slate-700">原型预览</div>
-    <button onclick="showPage('home')" class="nav-btn px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-left transition-colors" data-page="home">首页</button>
-    <button onclick="showPage('learn')" class="nav-btn px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-left transition-colors" data-page="learn">学习页</button>
-    <button onclick="showPage('practice')" class="nav-btn px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-left transition-colors" data-page="practice">练习页</button>
-    <div class="px-3 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700 border-b border-slate-100 dark:border-slate-700 mt-1">视图</div>
-    <button onclick="toggleMobilePreview()" class="px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-left transition-colors" id="deviceToggle">
+  <div class="fixed top-4 left-4 z-[100] bg-white/80 dark:bg-black/80 backdrop-blur-xl rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-800/50 p-2 flex flex-col gap-1">
+    <div class="px-3 py-2 text-xs font-semibold text-gray-400 border-b border-gray-200/50 dark:border-gray-800/50">原型预览</div>
+    <button onclick="showPage('home')" class="nav-btn px-3 py-2 text-sm rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-left transition-colors" data-page="home">首页</button>
+    <button onclick="showPage('learn')" class="nav-btn px-3 py-2 text-sm rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-left transition-colors" data-page="learn">学习页</button>
+    <button onclick="showPage('practice')" class="nav-btn px-3 py-2 text-sm rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-left transition-colors" data-page="practice">练习页</button>
+    <div class="px-3 py-2 text-xs font-semibold text-gray-400 border-t border-gray-200/50 dark:border-gray-800/50 border-b border-gray-200/50 dark:border-gray-800/50 mt-1">视图</div>
+    <button onclick="toggleMobilePreview()" class="px-3 py-2 text-sm rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-left transition-colors" id="deviceToggle">
       <span id="deviceLabel">桌面端</span>
     </button>
-    <div class="px-3 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700 border-b border-slate-100 dark:border-slate-700 mt-1">主题</div>
-    <button onclick="cycleTheme()" class="px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-left transition-colors flex items-center gap-2" id="themeBtn">
+    <div class="px-3 py-2 text-xs font-semibold text-gray-400 border-t border-gray-200/50 dark:border-gray-800/50 border-b border-gray-200/50 dark:border-gray-800/50 mt-1">主题</div>
+    <button onclick="cycleTheme()" class="px-3 py-2 text-sm rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-left transition-colors flex items-center gap-2" id="themeBtn">
       <span id="themeIcon">☀️</span>
       <span id="themeLabel">浅色</span>
     </button>
@@ -265,73 +233,44 @@
   <div id="previewContainer" class="transition-all duration-300">
     <div id="previewFrame" class="mx-auto transition-all duration-300">
       
-      <!-- ==================== 首页 ==================== -->
+      <!-- ==================== 首页 - Apple 风格 ==================== -->
       <div id="page-home" class="page-section active">
-        <!-- 导航栏 -->
-        <nav class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
-          <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="flex items-center justify-between h-16">
+        
+        <!-- 顶部导航 - Apple 风格极简 -->
+        <nav class="sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-800/50">
+          <div class="max-w-6xl mx-auto px-6">
+            <div class="flex items-center justify-between h-14">
               <!-- Logo -->
-              <a href="#" class="flex items-center gap-2 group">
-                <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
-                  <span class="text-white text-xl font-bold hanzi-font">汉</span>
+              <a href="#" class="flex items-center gap-3 group">
+                <div class="w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center">
+                  <span class="text-white text-sm font-bold hanzi-font">汉</span>
                 </div>
-                <div class="flex flex-col">
-                  <span class="font-bold text-lg text-slate-900 dark:text-white">HanziMaster</span>
-                  <span class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">汉字大师</span>
-                </div>
+                <span class="font-semibold text-base text-gray-900 dark:text-white">HanziMaster</span>
               </a>
               
-              <!-- 桌面导航 -->
-              <div class="hidden md:flex items-center gap-1">
-                <a href="#" onclick="showPage('home'); return false;" class="px-4 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-medium transition-colors">首页</a>
-                <a href="#" onclick="showPage('learn'); return false;" class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-medium">学习</a>
-                <a href="#" onclick="showPage('practice'); return false;" class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-medium">练习</a>
+              <!-- 桌面导航 - Apple 风格 -->
+              <div class="hidden md:flex items-center gap-8">
+                <a href="#" onclick="showPage('home'); return false;" class="text-sm font-medium text-gray-900 dark:text-white">首页</a>
+                <a href="#" onclick="showPage('learn'); return false;" class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">学习</a>
+                <a href="#" onclick="showPage('practice'); return false;" class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">练习</a>
               </div>
               
               <!-- 右侧操作 -->
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-4">
                 <!-- 主题切换 -->
-                <button onclick="cycleTheme()" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="切换主题">
+                <button onclick="cycleTheme()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="切换主题">
                   <svg id="sunIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                   </svg>
                   <svg id="moonIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
                   </svg>
                 </button>
                 
-                <!-- 语言切换 -->
-                <div class="relative">
-                  <button onclick="toggleLangDropdown()" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex items-center gap-1" id="langToggleBtn">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
-                    </svg>
-                    <span class="hidden sm:inline text-sm">简体中文</span>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                  </button>
-                  <!-- 语言下拉菜单 -->
-                  <div id="langDropdown" class="lang-dropdown absolute right-0 mt-2 w-48 max-h-64 overflow-y-auto bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-50">
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-emerald-600 dark:text-emerald-400 font-semibold" onclick="selectLang('简体中文')">🇨🇳 简体中文</button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-slate-700 dark:text-slate-200" onclick="selectLang('繁體中文')">🇹🇼 繁體中文</button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-slate-700 dark:text-slate-200" onclick="selectLang('English')">🇺🇸 English</button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-slate-700 dark:text-slate-200" onclick="selectLang('Español')">🇪🇸 Español</button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-slate-700 dark:text-slate-200" onclick="selectLang('العربية')">🇸🇦 العربية</button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-slate-700 dark:text-slate-200" onclick="selectLang('Français')">🇫🇷 Français</button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-slate-700 dark:text-slate-200" onclick="selectLang('Português')">🇧🇷 Português</button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-slate-700 dark:text-slate-200" onclick="selectLang('Deutsch')">🇩🇪 Deutsch</button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-slate-700 dark:text-slate-200" onclick="selectLang('日本語')">🇯🇵 日本語</button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-slate-700 dark:text-slate-200" onclick="selectLang('한국어')">🇰🇷 한국어</button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-slate-700 dark:text-slate-200" onclick="selectLang('Русский')">🇷🇺 Русский</button>
-                  </div>
-                </div>
-                
                 <!-- 移动端菜单按钮 -->
-                <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" id="mobileMenuBtn">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" id="mobileMenuBtn">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
                   </svg>
                 </button>
               </div>
@@ -341,249 +280,198 @@
 
         <!-- 移动端菜单 -->
         <div id="mobileMenu" class="mobile-menu fixed inset-0 z-[60] hidden">
-          <div class="absolute inset-0 bg-black/50" onclick="toggleMobileMenu()"></div>
-          <div class="absolute right-0 top-0 h-full w-72 bg-white dark:bg-slate-900 shadow-2xl">
-            <div class="p-6">
-              <div class="flex justify-between items-center mb-8">
-                <span class="font-bold text-lg">菜单</span>
-                <button onclick="toggleMobileMenu()" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="toggleMobileMenu()"></div>
+          <div class="absolute right-0 top-0 h-full w-80 bg-white dark:bg-black">
+            <div class="p-8">
+              <div class="flex justify-between items-center mb-12">
+                <span class="font-semibold text-lg">菜单</span>
+                <button onclick="toggleMobileMenu()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
                   </svg>
                 </button>
               </div>
               <nav class="space-y-2">
-                <a href="#" onclick="showPage('home'); toggleMobileMenu(); return false;" class="block px-4 py-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-medium">首页</a>
-                <a href="#" onclick="showPage('learn'); toggleMobileMenu(); return false;" class="block px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">学习</a>
-                <a href="#" onclick="showPage('practice'); toggleMobileMenu(); return false;" class="block px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">练习</a>
+                <a href="#" onclick="showPage('home'); toggleMobileMenu(); return false;" class="block px-4 py-3 rounded-xl text-gray-900 dark:text-white font-medium">首页</a>
+                <a href="#" onclick="showPage('learn'); toggleMobileMenu(); return false;" class="block px-4 py-3 rounded-xl text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">学习</a>
+                <a href="#" onclick="showPage('practice'); toggleMobileMenu(); return false;" class="block px-4 py-3 rounded-xl text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">练习</a>
               </nav>
-              <div class="mt-8 pt-8 border-t border-slate-200 dark:border-slate-700">
-                <button onclick="cycleTheme()" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors w-full">
-                  <svg id="mobileSunIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                  </svg>
-                  <span id="mobileThemeLabel">浅色模式</span>
-                </button>
-              </div>
             </div>
           </div>
         </div>
 
         <!-- 主要内容 -->
         <main id="main-content" class="pb-20 md:pb-0">
-          <!-- Hero 区域 -->
-          <section class="relative min-h-[85vh] flex items-center overflow-hidden bg-gradient-to-br from-slate-50 via-emerald-50/30 to-cyan-50/20 dark:from-slate-900 dark:via-emerald-900/20 dark:to-cyan-900/10">
-            <!-- 背景装饰 -->
-            <div class="absolute inset-0 overflow-hidden pointer-events-none">
-              <div class="absolute top-20 left-10 w-72 h-72 bg-emerald-200/30 dark:bg-emerald-900/30 rounded-full blur-3xl"></div>
-              <div class="absolute bottom-20 right-10 w-96 h-96 bg-cyan-200/20 dark:bg-cyan-900/20 rounded-full blur-3xl"></div>
-              <div class="absolute inset-0 opacity-[0.02]" style="background-image: linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px); background-size: 40px 40px;"></div>
-            </div>
-            
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 relative z-10">
-              <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-                <!-- 左侧内容 -->
-                <div class="space-y-8 animate-fade-in-up">
-                  <!-- 状态徽章 -->
-                  <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 text-sm font-medium">
-                    <span class="relative flex h-2 w-2">
-                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                      <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                    </span>
-                    AI 驱动学习
-                  </div>
-                  
-                  <!-- 主标题 -->
-                  <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1]">
-                    <span class="text-slate-900 dark:text-white">AI 驱动的</span><br>
-                    <span class="bg-gradient-to-r from-emerald-500 via-emerald-600 to-cyan-500 dark:from-emerald-400 dark:via-emerald-500 dark:to-cyan-400 bg-clip-text text-transparent italic font-black">中文学习平台</span>
+          
+          <!-- Hero 区域 - Apple 风格大图展示 -->
+          <section class="relative min-h-[90vh] flex items-center overflow-hidden">
+            <div class="max-w-6xl mx-auto px-6 py-20 w-full">
+              <div class="grid lg:grid-cols-2 gap-16 items-center">
+                
+                <!-- 左侧 - 简洁文案 Apple 风格 -->
+                <div class="space-y-8">
+                  <!-- 极简标题 Apple 风格 -->
+                  <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05]">
+                    <span class="text-gray-900 dark:text-white">汉字学习</span><br>
+                    <span class="gradient-text">全新境界</span>
                   </h1>
                   
-                  <!-- 描述 -->
-                  <p class="text-lg text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed">
-                    利用 AI 技术提供关于笔画顺序、平衡和美感的个性化反馈，帮助你高效学习汉字。体验未来汉字学习方式。
+                  <!-- 简洁描述 -->
+                  <p class="text-xl text-gray-500 dark:text-gray-400 max-w-md leading-relaxed">
+                    AI 驱动的智能书写练习，获得实时笔画反馈。
                   </p>
                   
-                  <!-- CTA 按钮 -->
-                  <div class="flex flex-wrap gap-4">
-                    <a href="#" onclick="showPage('learn'); return false;" class="btn-primary touch-ripple group bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-6 py-3.5 rounded-xl text-base font-bold hover:from-emerald-600 hover:to-emerald-700 transition-all shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/40 hover:-translate-y-0.5 active:scale-[0.98] flex items-center gap-2">
+                  <!-- Apple 风格按钮组 -->
+                  <div class="flex flex-wrap gap-4 pt-2">
+                    <button onclick="showPage('learn')" class="btn-apple-primary text-white px-8 py-4 rounded-full text-base font-medium">
                       开始学习
-                      <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                      </svg>
-                    </a>
-                    <a href="#" onclick="showPage('practice'); return false;" class="btn-primary touch-ripple group bg-white dark:bg-slate-800 text-slate-900 dark:text-white border-2 border-slate-200 dark:border-slate-700 px-6 py-3.5 rounded-xl text-base font-bold hover:border-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all hover:-translate-y-0.5 active:scale-[0.98] flex items-center gap-2">
-                      探索字库
-                      <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                      </svg>
-                    </a>
-                  </div>
-                  
-                  <!-- 用户数据 -->
-                  <div class="flex items-center gap-4 pt-4">
-                    <div class="flex -space-x-3">
-                      <div class="w-9 h-9 rounded-full bg-emerald-100 dark:bg-emerald-900/50 border-2 border-white dark:border-slate-800 flex items-center justify-center text-xs font-bold text-emerald-600 dark:text-emerald-400 hanzi-font">永</div>
-                      <div class="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900/50 border-2 border-white dark:border-slate-800 flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-400 hanzi-font">山</div>
-                      <div class="w-9 h-9 rounded-full bg-purple-100 dark:bg-purple-900/50 border-2 border-white dark:border-slate-800 flex items-center justify-center text-xs font-bold text-purple-600 dark:text-purple-400 hanzi-font">水</div>
-                    </div>
-                    <div class="text-sm">
-                      <span class="font-bold text-slate-900 dark:text-white">10,000+</span> <span class="text-slate-600 dark:text-slate-400">学员正在学习</span>
-                    </div>
+                    </button>
+                    <button onclick="showPage('practice')" class="btn-apple-secondary text-gray-900 dark:text-white px-8 py-4 rounded-full text-base font-medium">
+                      探索更多
+                    </button>
                   </div>
                 </div>
                 
-                <!-- 右侧 - 演示卡片 -->
-                <div class="relative flex items-center justify-center lg:h-[500px] mt-8 lg:mt-0">
-                  <div class="absolute inset-0 bg-gradient-to-br from-emerald-100 to-cyan-100 dark:from-emerald-900/20 dark:to-cyan-900/20 rounded-[4rem] rotate-3 -z-10 opacity-60"></div>
-                  
-                  <div class="bg-white dark:bg-slate-800 p-8 rounded-[3rem] shadow-2xl border border-slate-100 dark:border-slate-700 w-full max-w-md transform -rotate-2 hover:rotate-0 transition-transform duration-700">
-                    <!-- 卡片头部 -->
-                    <div class="flex justify-between items-start mb-6">
-                      <div>
-                        <span class="text-4xl font-bold text-slate-900 dark:text-white hanzi-font">永</span>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium">yǒng • Forever</p>
-                      </div>
-                      <div class="bg-emerald-50 dark:bg-emerald-900/30 p-2.5 rounded-xl">
-                        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                      </div>
-                    </div>
+                <!-- 右侧 - 大字符展示 Apple 风格 -->
+                <div class="relative flex items-center justify-center">
+                  <div class="relative">
+                    <!-- 背景装饰 - 极简 -->
+                    <div class="absolute inset-0 bg-gradient-to-br from-emerald-50 to-cyan-50 dark:from-emerald-950/30 dark:to-cyan-950/30 rounded-[3rem] -z-10 transform rotate-3"></div>
                     
-                    <!-- 字符展示 -->
-                    <div class="aspect-square bg-gradient-to-br from-slate-50 to-emerald-50/30 dark:from-slate-900 dark:to-emerald-900/20 rounded-2xl border-2 border-dashed border-emerald-200/50 dark:border-emerald-800/50 flex items-center justify-center relative overflow-hidden group">
-                      <span class="text-[8rem] text-slate-200/80 dark:text-slate-700/80 hanzi-font transition-all duration-500 group-hover:scale-110">永</span>
-                      <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="relative">
-                          <div class="absolute inset-0 w-4 h-4 bg-emerald-500 rounded-full opacity-20 animate-ping"></div>
-                          <div class="w-4 h-4 bg-emerald-500 rounded-full relative"></div>
+                    <!-- 主字符卡片 Apple 风格 -->
+                    <div class="bg-white dark:bg-gray-900 rounded-[2.5rem] p-12 apple-shadow-xl">
+                      <div class="text-center">
+                        <span class="text-[10rem] sm:text-[12rem] font-bold hanzi-font text-gray-100 dark:text-gray-800 hero-char select-none">永</span>
+                        <div class="mt-6">
+                          <p class="text-3xl font-semibold hanzi-font text-gray-900 dark:text-white">永</p>
+                          <p class="text-base text-gray-400 mt-1">yǒng · Forever</p>
+                        </div>
+                      </div>
+                      
+                      <!-- 进度指示 -->
+                      <div class="mt-10 space-y-3">
+                        <div class="flex justify-between text-sm">
+                          <span class="text-gray-500">掌握度</span>
+                          <span class="font-medium text-emerald-600 dark:text-emerald-400">68%</span>
+                        </div>
+                        <div class="w-full h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                          <div class="progress-fill h-full" style="width: 68%;"></div>
                         </div>
                       </div>
                     </div>
-                    
-                    <!-- 进度 -->
-                    <div class="mt-8 space-y-4">
-                      <div class="flex justify-between items-center">
-                        <span class="text-sm font-medium text-slate-500 dark:text-slate-400">笔画掌握度</span>
-                        <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400">68%</span>
-                      </div>
-                      <div class="w-full h-2.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                        <div class="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full progress-bar" style="width: 68%;"></div>
-                      </div>
-                      <p class="text-xs text-slate-400 dark:text-slate-500 text-center italic pt-1">永字八法，品味汉字之美</p>
-                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </section>
 
-          <!-- 功能特性 -->
-          <section class="py-20 px-4 sm:px-6">
-            <div class="max-w-7xl mx-auto">
-              <div class="text-center mb-14">
-                <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white mb-3">
-                  为什么选择汉字大师
+          <!-- 功能介绍 - Apple 风格卡片 -->
+          <section class="py-32 px-6 bg-gray-50 dark:bg-gray-900/50">
+            <div class="max-w-6xl mx-auto">
+              
+              <div class="text-center mb-20">
+                <h2 class="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">
+                  为什么选择我们
                 </h2>
-                <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-                  体验未来汉字学习
+                <p class="text-xl text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
+                  极简设计，专注核心学习体验
                 </p>
               </div>
               
-              <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- AI 洞察 -->
-                <div class="card-hover bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-900/30 dark:to-blue-800/30 p-8 rounded-2xl border border-blue-100 dark:border-blue-800/30">
-                  <div class="w-14 h-14 bg-blue-100 dark:bg-blue-900/50 rounded-2xl flex items-center justify-center mb-5 text-blue-600 dark:text-blue-400">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+              <div class="grid md:grid-cols-3 gap-8">
+                <!-- 功能卡片 1 -->
+                <div class="feature-card bg-white dark:bg-gray-900 rounded-3xl p-10 apple-shadow-sm">
+                  <div class="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/30 rounded-2xl flex items-center justify-center mb-6">
+                    <svg class="w-7 h-7 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
                     </svg>
                   </div>
-                  <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">AI 智能洞察</h3>
-                  <p class="text-slate-600 dark:text-slate-300">Gemini AI 驱动的实时反馈，分析笔画顺序、平衡性和整体美学。</p>
+                  <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">AI 智能反馈</h3>
+                  <p class="text-gray-500 dark:text-gray-400 leading-relaxed">实时分析笔画顺序与结构，给出专业改进建议</p>
                 </div>
                 
-                <!-- 词源文化 -->
-                <div class="card-hover bg-gradient-to-br from-amber-50 to-amber-100/50 dark:from-amber-900/30 dark:to-amber-800/30 p-8 rounded-2xl border border-amber-100 dark:border-amber-800/30">
-                  <div class="w-14 h-14 bg-amber-100 dark:bg-amber-900/50 rounded-2xl flex items-center justify-center mb-5 text-amber-600 dark:text-amber-400">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                <!-- 功能卡片 2 -->
+                <div class="feature-card bg-white dark:bg-gray-900 rounded-3xl p-10 apple-shadow-sm">
+                  <div class="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mb-6">
+                    <svg class="w-7 h-7 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                     </svg>
                   </div>
-                  <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">词源与文化</h3>
-                  <p class="text-slate-600 dark:text-slate-300">探索汉字背后的历史故事，了解每个字符的演变和文化内涵。</p>
+                  <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">词源文化</h3>
+                  <p class="text-gray-500 dark:text-gray-400 leading-relaxed">探索汉字背后的历史故事与文化内涵</p>
                 </div>
                 
-                <!-- 自适应学习 -->
-                <div class="card-hover bg-gradient-to-br from-purple-50 to-purple-100/50 dark:from-purple-900/30 dark:to-purple-800/30 p-8 rounded-2xl border border-purple-100 dark:border-purple-800/30">
-                  <div class="w-14 h-14 bg-purple-100 dark:bg-purple-900/50 rounded-2xl flex items-center justify-center mb-5 text-purple-600 dark:text-purple-400">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                <!-- 功能卡片 3 -->
+                <div class="feature-card bg-white dark:bg-gray-900 rounded-3xl p-10 apple-shadow-sm">
+                  <div class="w-14 h-14 bg-purple-100 dark:bg-purple-900/30 rounded-2xl flex items-center justify-center mb-6">
+                    <svg class="w-7 h-7 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                     </svg>
                   </div>
-                  <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">自适应学习</h3>
-                  <p class="text-slate-600 dark:text-slate-300">智能算法根据你的学习进度调整个性化学习路径，提高学习效率。</p>
+                  <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">自适应学习</h3>
+                  <p class="text-gray-500 dark:text-gray-400 leading-relaxed">智能算法个性化调整学习路径</p>
                 </div>
               </div>
             </div>
           </section>
 
-          <!-- 统计 -->
-          <section class="py-16 px-4 sm:px-6 bg-gradient-to-r from-emerald-500 to-cyan-500">
-            <div class="max-w-7xl mx-auto">
-              <div class="grid sm:grid-cols-3 gap-8 text-white text-center">
+          <!-- 数据展示 - Apple 风格 -->
+          <section class="py-24 bg-black dark:bg-white">
+            <div class="max-w-6xl mx-auto px-6">
+              <div class="grid sm:grid-cols-3 gap-12 text-center">
                 <div>
-                  <div class="text-4xl sm:text-5xl font-bold mb-1">10,000+</div>
-                  <div class="text-emerald-100">活跃学习者</div>
+                  <div class="text-5xl sm:text-6xl font-bold text-white dark:text-gray-900 mb-2">10,000+</div>
+                  <div class="text-lg text-gray-400 dark:text-gray-500">活跃学习者</div>
                 </div>
                 <div>
-                  <div class="text-4xl sm:text-5xl font-bold mb-1">500+</div>
-                  <div class="text-emerald-100">常用汉字</div>
+                  <div class="text-5xl sm:text-6xl font-bold text-white dark:text-gray-900 mb-2">500+</div>
+                  <div class="text-lg text-gray-400 dark:text-gray-500">常用汉字</div>
                 </div>
                 <div>
-                  <div class="text-4xl sm:text-5xl font-bold mb-1">98%</div>
-                  <div class="text-emerald-100">用户满意度</div>
+                  <div class="text-5xl sm:text-6xl font-bold text-white dark:text-gray-900 mb-2">98%</div>
+                  <div class="text-lg text-gray-400 dark:text-gray-500">用户满意度</div>
                 </div>
               </div>
             </div>
           </section>
+
         </main>
 
-        <!-- 页脚 -->
-        <footer class="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-10 px-4 sm:px-6 safe-area-bottom">
-          <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-              <div class="flex items-center gap-2">
+        <!-- 页脚 - Apple 风格 -->
+        <footer class="bg-gray-50 dark:bg-black border-t border-gray-200 dark:border-gray-800 py-12 px-6 safe-area-bottom">
+          <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-6">
+              <div class="flex items-center gap-3">
                 <div class="w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center">
                   <span class="text-white text-sm font-bold hanzi-font">汉</span>
                 </div>
-                <span class="font-bold text-slate-900 dark:text-white">HanziMaster</span>
+                <span class="font-semibold text-gray-900 dark:text-white">HanziMaster</span>
               </div>
-              <div class="text-sm text-slate-500 dark:text-slate-400">
-                © 2026 汉字大师. 保留所有权利。
+              <div class="text-sm text-gray-500 dark:text-gray-400">
+                © 2026 HanziMaster. 保留所有权利。
               </div>
             </div>
           </div>
         </footer>
         
         <!-- 移动端底部导航栏 -->
-        <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 md:hidden z-50 safe-area-bottom" aria-label="移动端底部导航">
-          <div class="flex justify-around py-2" style="padding-bottom: max(8px, env(safe-area-inset-bottom));">
+        <nav class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-black/90 backdrop-blur-xl border-t border-gray-200/50 dark:border-gray-800/50 md:hidden z-50 safe-area-bottom" aria-label="移动端底部导航">
+          <div class="flex justify-around py-3" style="padding-bottom: max(12px, env(safe-area-inset-bottom));">
             <a href="#" onclick="showPage('home'); return false;" class="flex flex-col items-center gap-1 px-4 py-2 touch-target text-emerald-600 dark:text-emerald-400" aria-current="page">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
               </svg>
               <span class="text-xs font-medium">首页</span>
             </a>
-            <a href="#" onclick="showPage('learn'); return false;" class="flex flex-col items-center gap-1 px-4 py-2 touch-target text-slate-500 dark:text-slate-400">
+            <a href="#" onclick="showPage('learn'); return false;" class="flex flex-col items-center gap-1 px-4 py-2 touch-target text-gray-500 dark:text-gray-400">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
               </svg>
               <span class="text-xs font-medium">学习</span>
             </a>
-            <a href="#" onclick="showPage('practice'); return false;" class="flex flex-col items-center gap-1 px-4 py-2 touch-target text-slate-500 dark:text-slate-400">
+            <a href="#" onclick="showPage('practice'); return false;" class="flex flex-col items-center gap-1 px-4 py-2 touch-target text-gray-500 dark:text-gray-400">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
               </svg>
               <span class="text-xs font-medium">练习</span>
             </a>
@@ -591,32 +479,32 @@
         </nav>
       </div>
 
-      <!-- ==================== 学习页 ==================== -->
+      <!-- ==================== 学习页 - Apple 风格 ==================== -->
       <div id="page-learn" class="page-section">
-        <!-- 导航栏 (复用) -->
-        <nav class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
-          <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="flex items-center justify-between h-16">
-              <a href="#" class="flex items-center gap-2 group" onclick="showPage('home'); return false;">
-                <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
-                  <span class="text-white text-xl font-bold hanzi-font">汉</span>
+        <!-- 导航栏 -->
+        <nav class="sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-800/50">
+          <div class="max-w-6xl mx-auto px-6">
+            <div class="flex items-center justify-between h-14">
+              <a href="#" class="flex items-center gap-3" onclick="showPage('home'); return false;">
+                <div class="w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center">
+                  <span class="text-white text-sm font-bold hanzi-font">汉</span>
                 </div>
-                <span class="font-bold text-lg text-slate-900 dark:text-white">HanziMaster</span>
+                <span class="font-semibold text-base text-gray-900 dark:text-white">HanziMaster</span>
               </a>
-              <div class="hidden md:flex items-center gap-1">
-                <a href="#" onclick="showPage('home'); return false;" class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-medium">首页</a>
-                <a href="#" onclick="showPage('learn'); return false;" class="px-4 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-medium transition-colors">学习</a>
-                <a href="#" onclick="showPage('practice'); return false;" class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-medium">练习</a>
+              <div class="hidden md:flex items-center gap-8">
+                <a href="#" onclick="showPage('home'); return false;" class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">首页</a>
+                <a href="#" onclick="showPage('learn'); return false;" class="text-sm font-medium text-gray-900 dark:text-white">学习</a>
+                <a href="#" onclick="showPage('practice'); return false;" class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">练习</a>
               </div>
-              <div class="flex items-center gap-2">
-                <button onclick="cycleTheme()" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+              <div class="flex items-center gap-4">
+                <button onclick="cycleTheme()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                   </svg>
                 </button>
-                <button class="md:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" onclick="toggleMobileMenu()">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                <button class="md:hidden p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" onclick="toggleMobileMenu()">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
                   </svg>
                 </button>
               </div>
@@ -625,131 +513,118 @@
         </nav>
 
         <!-- 主要内容 -->
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 pb-24 md:pb-8">
-          <!-- 页面头部 -->
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-            <div>
-              <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">每日练习</h1>
-              <p class="text-slate-600 dark:text-slate-400 mt-1">掌握最常用的 12 个汉字</p>
-            </div>
-            <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-sm font-medium">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              5 天连续学习
-            </div>
+        <main class="max-w-6xl mx-auto px-6 py-16 pb-24 md:pb-16">
+          
+          <!-- 页面头部 - Apple 风格 -->
+          <div class="text-center mb-16">
+            <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">每日练习</h1>
+            <p class="text-xl text-gray-500 dark:text-gray-400">掌握最常用的汉字</p>
           </div>
 
-          <div class="grid lg:grid-cols-3 gap-8">
+          <div class="grid lg:grid-cols-3 gap-12">
+            
             <!-- 字符网格 -->
             <div class="lg:col-span-2">
-              <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700">
-                <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-4">选择汉字</h2>
-                <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-3" role="listbox" aria-label="选择要学习的汉字">
-                  <button class="char-card selected aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer border-2 border-emerald-500 shadow-md" data-char="一" role="option" aria-selected="true" aria-label="汉字 一, 拼音 yī">一</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-emerald-300" data-char="二" role="option" aria-selected="false" aria-label="汉字 二, 拼音 èr">二</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-emerald-300" data-char="三" role="option" aria-selected="false" aria-label="汉字 三, 拼音 sān">三</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-emerald-300" data-char="人" role="option" aria-selected="false" aria-label="汉字 人, 拼音 rén">人</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-emerald-300" data-char="大" role="option" aria-selected="false" aria-label="汉字 大, 拼音 dà">大</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-emerald-300" data-char="小" role="option" aria-selected="false" aria-label="汉字 小, 拼音 xiǎo">小</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-emerald-300" data-char="口" role="option" aria-selected="false" aria-label="汉字 口, 拼音 kǒu">口</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-emerald-300" data-char="日" role="option" aria-selected="false" aria-label="汉字 日, 拼音 rì">日</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-emerald-300" data-char="月" role="option" aria-selected="false" aria-label="汉字 月, 拼音 yuè">月</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-emerald-300" data-char="山" role="option" aria-selected="false" aria-label="汉字 山, 拼音 shān">山</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-emerald-300" data-char="水" role="option" aria-selected="false" aria-label="汉字 水, 拼音 shuǐ">水</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-emerald-300" data-char="火" role="option" aria-selected="false" aria-label="汉字 火, 拼音 huǒ">火</button>
+              <div class="bg-gray-50 dark:bg-gray-900 rounded-3xl p-8">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-6">选择汉字</h2>
+                <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-4" role="listbox" aria-label="选择要学习的汉字">
+                  <button class="char-card aspect-square rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-gray-900 dark:text-white cursor-pointer border-2 border-emerald-500" data-char="一" role="option" aria-selected="true" aria-label="汉字 一, 拼音 yī">一</button>
+                  <button class="char-card aspect-square rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-gray-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-700" data-char="二" role="option" aria-selected="false" aria-label="汉字 二, 拼音 èr">二</button>
+                  <button class="char-card aspect-square rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-gray-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-700" data-char="三" role="option" aria-selected="false" aria-label="汉字 三, 拼音 sān">三</button>
+                  <button class="char-card aspect-square rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-gray-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-700" data-char="人" role="option" aria-selected="false" aria-label="汉字 人, 拼音 rén">人</button>
+                  <button class="char-card aspect-square rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-gray-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-700" data-char="大" role="option" aria-selected="false" aria-label="汉字 大, 拼音 dà">大</button>
+                  <button class="char-card aspect-square rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-gray-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-700" data-char="小" role="option" aria-selected="false" aria-label="汉字 小, 拼音 xiǎo">小</button>
+                  <button class="char-card aspect-square rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-gray-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-700" data-char="口" role="option" aria-selected="false" aria-label="汉字 口, 拼音 kǒu">口</button>
+                  <button class="char-card aspect-square rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-gray-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-700" data-char="日" role="option" aria-selected="false" aria-label="汉字 日, 拼音 rì">日</button>
+                  <button class="char-card aspect-square rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-gray-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-700" data-char="月" role="option" aria-selected="false" aria-label="汉字 月, 拼音 yuè">月</button>
+                  <button class="char-card aspect-square rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-gray-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-700" data-char="山" role="option" aria-selected="false" aria-label="汉字 山, 拼音 shān">山</button>
+                  <button class="char-card aspect-square rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-gray-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-700" data-char="水" role="option" aria-selected="false" aria-label="汉字 水, 拼音 shuǐ">水</button>
+                  <button class="char-card aspect-square rounded-2xl flex items-center justify-center text-3xl font-bold hanzi-font text-gray-900 dark:text-white cursor-pointer border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-700" data-char="火" role="option" aria-selected="false" aria-label="汉字 火, 拼音 huǒ">火</button>
                 </div>
               </div>
             </div>
 
-            <!-- 字符详情 -->
+            <!-- 字符详情 - Apple 风格 -->
             <div class="lg:col-span-1">
-              <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 sticky top-24">
-                <div class="flex items-start gap-4 mb-6">
-                  <div class="w-20 h-20 bg-gradient-to-br from-slate-50 to-emerald-50/30 dark:from-slate-900 dark:to-emerald-900/20 rounded-2xl border-2 border-dashed border-emerald-300 dark:border-emerald-700 flex items-center justify-center flex-shrink-0">
-                    <span class="text-5xl font-bold hanzi-font text-slate-900 dark:text-white">一</span>
+              <div class="bg-gray-50 dark:bg-gray-900 rounded-3xl p-8 sticky top-24">
+                <!-- 字符展示 -->
+                <div class="text-center mb-8">
+                  <div class="w-24 h-24 mx-auto bg-white dark:bg-gray-800 rounded-2xl flex items-center justify-center mb-4 apple-shadow-sm">
+                    <span class="text-5xl font-bold hanzi-font text-gray-900 dark:text-white">一</span>
                   </div>
-                  <div class="flex-1">
-                    <div class="flex items-center gap-2 mb-1">
-                      <span class="text-2xl font-bold hanzi-font text-slate-900 dark:text-white">一</span>
-                      <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400 text-xs font-medium rounded-full">yī</span>
-                    </div>
-                    <p class="text-sm text-slate-500 dark:text-slate-400">One / 一二三的一</p>
+                  <div class="flex items-center justify-center gap-2 mb-1">
+                    <span class="text-2xl font-bold hanzi-font text-gray-900 dark:text-white">一</span>
+                    <span class="px-2.5 py-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-sm font-medium rounded-full">yī</span>
+                  </div>
+                  <p class="text-sm text-gray-500 dark:text-gray-400">One / 一二三的一</p>
+                </div>
+
+                <!-- 详细信息 -->
+                <div class="grid grid-cols-3 gap-4 mb-8">
+                  <div class="bg-white dark:bg-gray-800 rounded-xl p-4 text-center apple-shadow-sm">
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">笔画</div>
+                    <div class="font-semibold text-gray-900 dark:text-white">1</div>
+                  </div>
+                  <div class="bg-white dark:bg-gray-800 rounded-xl p-4 text-center apple-shadow-sm">
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">部首</div>
+                    <div class="font-semibold text-gray-900 dark:text-white hanzi-font">一</div>
+                  </div>
+                  <div class="bg-white dark:bg-gray-800 rounded-xl p-4 text-center apple-shadow-sm">
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">结构</div>
+                    <div class="font-semibold text-gray-900 dark:text-white">独体</div>
                   </div>
                 </div>
 
-                <div class="grid grid-cols-3 gap-3 mb-6">
-                  <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-3 text-center">
-                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">笔画数</div>
-                    <div class="font-bold text-slate-900 dark:text-white">1 画</div>
+                <!-- 进度 -->
+                <div class="space-y-3 mb-8">
+                  <div class="flex justify-between text-sm">
+                    <span class="text-gray-500 dark:text-gray-400">掌握度</span>
+                    <span class="font-medium text-emerald-600 dark:text-emerald-400">85%</span>
                   </div>
-                  <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-3 text-center">
-                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">部首</div>
-                    <div class="font-bold text-slate-900 dark:text-white hanzi-font">一</div>
-                  </div>
-                  <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-3 text-center">
-                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">结构</div>
-                    <div class="font-bold text-slate-900 dark:text-white">独体</div>
+                  <div role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" aria-label="笔画掌握度" class="w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div class="progress-fill h-full" style="width: 85%;"></div>
                   </div>
                 </div>
 
-                <div class="space-y-3 mb-6">
-                  <div>
-                    <div class="flex justify-between text-sm mb-1">
-                      <span class="text-slate-600 dark:text-slate-400">掌握度</span>
-                      <span class="font-medium text-emerald-600 dark:text-emerald-400">85%</span>
-                    </div>
-                    <div role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" aria-label="笔画掌握度" class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                      <div class="progress-fill h-full rounded-full" style="width: 85%;"></div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="flex gap-3">
-                  <button class="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-emerald-700 transition-all flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
-                    </svg>
-                    练习书写
-                  </button>
-                  <button class="p-3 bg-slate-100 dark:bg-slate-700 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors" aria-label="听发音">
-                    <svg class="w-5 h-5 text-slate-600 dark:text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
-                    </svg>
-                  </button>
-                </div>
+                <!-- 按钮 -->
+                <button onclick="showPage('practice')" class="w-full btn-apple-primary text-white py-4 rounded-full font-medium flex items-center justify-center gap-2">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                  </svg>
+                  练习书写
+                </button>
               </div>
             </div>
           </div>
         </main>
       </div>
 
-      <!-- ==================== 练习页 ==================== -->
+      <!-- ==================== 练习页 - Apple 风格 ==================== -->
       <div id="page-practice" class="page-section">
-        <!-- 导航栏 (复用) -->
-        <nav class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
-          <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="flex items-center justify-between h-16">
-              <a href="#" class="flex items-center gap-2 group" onclick="showPage('home'); return false;">
-                <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
-                  <span class="text-white text-xl font-bold hanzi-font">汉</span>
+        <!-- 导航栏 -->
+        <nav class="sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-800/50">
+          <div class="max-w-6xl mx-auto px-6">
+            <div class="flex items-center justify-between h-14">
+              <a href="#" class="flex items-center gap-3" onclick="showPage('home'); return false;">
+                <div class="w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center">
+                  <span class="text-white text-sm font-bold hanzi-font">汉</span>
                 </div>
-                <span class="font-bold text-lg text-slate-900 dark:text-white">HanziMaster</span>
+                <span class="font-semibold text-base text-gray-900 dark:text-white">HanziMaster</span>
               </a>
-              <div class="hidden md:flex items-center gap-1">
-                <a href="#" onclick="showPage('home'); return false;" class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-medium">首页</a>
-                <a href="#" onclick="showPage('learn'); return false;" class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-medium">学习</a>
-                <a href="#" onclick="showPage('practice'); return false;" class="px-4 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-medium transition-colors">练习</a>
+              <div class="hidden md:flex items-center gap-8">
+                <a href="#" onclick="showPage('home'); return false;" class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">首页</a>
+                <a href="#" onclick="showPage('learn'); return false;" class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">学习</a>
+                <a href="#" onclick="showPage('practice'); return false;" class="text-sm font-medium text-gray-900 dark:text-white">练习</a>
               </div>
-              <div class="flex items-center gap-2">
-                <button onclick="cycleTheme()" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+              <div class="flex items-center gap-4">
+                <button onclick="cycleTheme()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                   </svg>
                 </button>
-                <button class="md:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" onclick="toggleMobileMenu()">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                <button class="md:hidden p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" onclick="toggleMobileMenu()">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
                   </svg>
                 </button>
               </div>
@@ -758,130 +633,109 @@
         </nav>
 
         <!-- 主要内容 -->
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 pb-24 md:pb-8">
+        <main class="max-w-6xl mx-auto px-6 py-16 pb-24 md:pb-16">
+          
           <!-- 页面头部 -->
-          <div class="text-center mb-10">
-            <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">练习中心</h1>
-            <p class="text-slate-600 dark:text-slate-400 mt-2">多种练习方式，全方位提升您的汉字掌握程度</p>
+          <div class="text-center mb-16">
+            <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">练习中心</h1>
+            <p class="text-xl text-gray-500 dark:text-gray-400">全方位提升汉字掌握程度</p>
           </div>
 
-          <!-- 练习选项 -->
-          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+          <!-- 练习选项 - Apple 风格卡片 -->
+          <div class="grid md:grid-cols-3 gap-8 mb-16">
+            
             <!-- 书写练习 -->
-            <div class="card-hover bg-white dark:bg-slate-800 p-6 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition-all cursor-pointer">
-              <div class="w-14 h-14 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-emerald-500/30">
+            <div class="feature-card bg-gray-50 dark:bg-gray-900 rounded-3xl p-10 cursor-pointer">
+              <div class="w-14 h-14 bg-emerald-500 rounded-2xl flex items-center justify-center mb-6">
                 <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                 </svg>
               </div>
-              <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">书写练习</h3>
-              <p class="text-slate-600 dark:text-slate-400 mb-4">在智能画布上练习书写，获得 AI 实时反馈</p>
-              <span class="inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-medium">
-                立即开始
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                </svg>
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">书写练习</h3>
+              <p class="text-gray-500 dark:text-gray-400 mb-6">智能画布实时反馈</p>
+              <span class="apple-link text-emerald-600 dark:text-emerald-400 font-medium text-sm">
+                立即开始 →
               </span>
             </div>
 
             <!-- 记忆测验 -->
-            <div class="card-hover bg-white dark:bg-slate-800 p-6 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-500 transition-all cursor-pointer">
-              <div class="w-14 h-14 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-blue-500/30">
+            <div class="feature-card bg-gray-50 dark:bg-gray-900 rounded-3xl p-10 cursor-pointer">
+              <div class="w-14 h-14 bg-blue-500 rounded-2xl flex items-center justify-center mb-6">
                 <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
                 </svg>
               </div>
-              <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">记忆测验</h3>
-              <p class="text-slate-600 dark:text-slate-400 mb-4">趣味测验巩固汉字含义与读音</p>
-              <span class="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 font-medium">
-                立即开始
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                </svg>
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">记忆测验</h3>
+              <p class="text-gray-500 dark:text-gray-400 mb-6">巩固汉字含义与读音</p>
+              <span class="apple-link text-blue-600 dark:text-blue-400 font-medium text-sm">
+                立即开始 →
               </span>
             </div>
 
             <!-- 学习进度 -->
-            <div class="card-hover bg-white dark:bg-slate-800 p-6 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-purple-500 dark:hover:border-purple-500 transition-all cursor-pointer">
-              <div class="w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-purple-500/30">
+            <div class="feature-card bg-gray-50 dark:bg-gray-900 rounded-3xl p-10 cursor-pointer">
+              <div class="w-14 h-14 bg-purple-500 rounded-2xl flex items-center justify-center mb-6">
                 <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                 </svg>
               </div>
-              <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">学习进度</h3>
-              <p class="text-slate-600 dark:text-slate-400 mb-4">详细数据分析，了解学习轨迹</p>
-              <span class="inline-flex items-center gap-2 text-purple-600 dark:text-purple-400 font-medium">
-                查看详情
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                </svg>
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">学习进度</h3>
+              <p class="text-gray-500 dark:text-gray-400 mb-6">详细数据分析</p>
+              <span class="apple-link text-purple-600 dark:text-purple-400 font-medium text-sm">
+                查看详情 →
               </span>
             </div>
           </div>
 
           <!-- 本周学习进度 -->
-          <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700">
-            <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-6">本周学习进度</h2>
+          <div class="bg-gray-50 dark:bg-gray-900 rounded-3xl p-10">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-10">本周学习进度</h2>
             
             <!-- 周进度 -->
-            <div class="grid grid-cols-7 gap-2 mb-8">
+            <div class="grid grid-cols-7 gap-4 mb-10">
               <div class="text-center">
-                <div class="flex flex-col items-center">
-                  <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center text-white font-bold mb-2">一</div>
-                  <span class="text-xs text-slate-500 dark:text-slate-400">周一</span>
-                </div>
+                <div class="w-12 h-12 mx-auto bg-emerald-500 rounded-xl flex items-center justify-center text-white font-bold mb-2">一</div>
+                <span class="text-xs text-gray-500 dark:text-gray-400">周一</span>
               </div>
               <div class="text-center">
-                <div class="flex flex-col items-center">
-                  <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center text-white font-bold mb-2">二</div>
-                  <span class="text-xs text-slate-500 dark:text-slate-400">周二</span>
-                </div>
+                <div class="w-12 h-12 mx-auto bg-emerald-500 rounded-xl flex items-center justify-center text-white font-bold mb-2">二</div>
+                <span class="text-xs text-gray-500 dark:text-gray-400">周二</span>
               </div>
               <div class="text-center">
-                <div class="flex flex-col items-center">
-                  <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center text-white font-bold mb-2">三</div>
-                  <span class="text-xs text-slate-500 dark:text-slate-400">周三</span>
-                </div>
+                <div class="w-12 h-12 mx-auto bg-emerald-500 rounded-xl flex items-center justify-center text-white font-bold mb-2">三</div>
+                <span class="text-xs text-gray-500 dark:text-gray-400">周三</span>
               </div>
               <div class="text-center">
-                <div class="flex flex-col items-center">
-                  <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center text-white font-bold mb-2">四</div>
-                  <span class="text-xs text-slate-500 dark:text-slate-400">周四</span>
-                </div>
+                <div class="w-12 h-12 mx-auto bg-emerald-500 rounded-xl flex items-center justify-center text-white font-bold mb-2">四</div>
+                <span class="text-xs text-gray-500 dark:text-gray-400">周四</span>
               </div>
               <div class="text-center">
-                <div class="flex flex-col items-center">
-                  <div class="w-10 h-10 bg-white dark:bg-slate-700 border-2 border-emerald-500 rounded-lg flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold mb-2">五</div>
-                  <span class="text-xs text-emerald-600 dark:text-emerald-400 font-medium">今天</span>
-                </div>
+                <div class="w-12 h-12 mx-auto bg-white dark:bg-gray-800 border-2 border-emerald-500 rounded-xl flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold mb-2">五</div>
+                <span class="text-xs text-emerald-600 dark:text-emerald-400 font-medium">今天</span>
               </div>
-              <div class="text-center opacity-50">
-                <div class="flex flex-col items-center">
-                  <div class="w-10 h-10 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center text-slate-400 dark:text-slate-500 font-bold mb-2">六</div>
-                  <span class="text-xs text-slate-400 dark:text-slate-500">周六</span>
-                </div>
+              <div class="text-center opacity-40">
+                <div class="w-12 h-12 mx-auto bg-gray-200 dark:bg-gray-700 rounded-xl flex items-center justify-center text-gray-400 dark:text-gray-500 font-bold mb-2">六</div>
+                <span class="text-xs text-gray-400 dark:text-gray-500">周六</span>
               </div>
-              <div class="text-center opacity-50">
-                <div class="flex flex-col items-center">
-                  <div class="w-10 h-10 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center text-slate-400 dark:text-slate-500 font-bold mb-2">日</div>
-                  <span class="text-xs text-slate-400 dark:text-slate-500">周日</span>
-                </div>
+              <div class="text-center opacity-40">
+                <div class="w-12 h-12 mx-auto bg-gray-200 dark:bg-gray-700 rounded-xl flex items-center justify-center text-gray-400 dark:text-gray-500 font-bold mb-2">日</div>
+                <span class="text-xs text-gray-400 dark:text-gray-500">周日</span>
               </div>
             </div>
 
             <!-- 统计数据 -->
-            <div class="grid grid-cols-3 gap-4">
-              <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 text-center">
-                <div class="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-1">12</div>
-                <div class="text-sm text-slate-500 dark:text-slate-400">已学汉字</div>
+            <div class="grid grid-cols-3 gap-6">
+              <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 text-center apple-shadow-sm">
+                <div class="text-4xl font-bold text-emerald-600 dark:text-emerald-400 mb-1">12</div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">已学汉字</div>
               </div>
-              <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 text-center">
-                <div class="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-1">5</div>
-                <div class="text-sm text-slate-500 dark:text-slate-400">连续学习天数</div>
+              <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 text-center apple-shadow-sm">
+                <div class="text-4xl font-bold text-emerald-600 dark:text-emerald-400 mb-1">5</div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">连续天数</div>
               </div>
-              <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 text-center">
-                <div class="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-1">87%</div>
-                <div class="text-sm text-slate-500 dark:text-slate-400">正确率</div>
+              <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 text-center apple-shadow-sm">
+                <div class="text-4xl font-bold text-emerald-600 dark:text-emerald-400 mb-1">87%</div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">正确率</div>
               </div>
             </div>
           </div>
@@ -907,14 +761,13 @@
       const pages = document.querySelectorAll('.page-section');
       
       if (prefersReducedMotion) {
-        // 立即切换，无动画
         pages.forEach(el => el.classList.remove('active'));
         document.getElementById('page-' + page).classList.add('active');
       } else {
         pages.forEach(el => {
           if (el.classList.contains('active')) {
             el.style.opacity = '0';
-            el.style.transform = 'translateY(-10px)';
+            el.style.transform = 'translateY(-8px)';
             setTimeout(() => {
               el.classList.remove('active');
               el.style.opacity = '';
@@ -930,9 +783,9 @@
       
       // 更新导航按钮
       document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.remove('bg-emerald-100', 'dark:bg-emerald-900/50', 'text-emerald-700', 'dark:text-emerald-400');
+        btn.classList.remove('bg-gray-100', 'dark:bg-gray-800', 'text-gray-900', 'dark:text-white');
         if (btn.dataset.page === page) {
-          btn.classList.add('bg-emerald-100', 'dark:bg-emerald-900/50', 'text-emerald-700', 'dark:text-emerald-400');
+          btn.classList.add('bg-gray-100', 'dark:bg-gray-800', 'text-gray-900', 'dark:text-white');
         }
       });
       
@@ -948,11 +801,11 @@
       const bottomNavItems = document.querySelectorAll('nav[aria-label="移动端底部导航"] a');
       bottomNavItems.forEach(item => {
         item.classList.remove('text-emerald-600', 'dark:text-emerald-400');
-        item.classList.add('text-slate-500', 'dark:text-slate-400');
+        item.classList.add('text-gray-500', 'dark:text-gray-400');
         item.removeAttribute('aria-current');
         
         if (item.textContent.includes(getPageName(page))) {
-          item.classList.remove('text-slate-500', 'dark:text-slate-400');
+          item.classList.remove('text-gray-500', 'dark:text-gray-400');
           item.classList.add('text-emerald-600', 'dark:text-emerald-400');
           item.setAttribute('aria-current', 'page');
         }
@@ -969,14 +822,13 @@
     function toggleMobilePreview() {
       isMobileView = !isMobileView;
       const container = document.getElementById('previewContainer');
-      const frame = document.getElementById('previewFrame');
       const label = document.getElementById('deviceLabel');
       
       if (isMobileView) {
-        container.classList.add('max-w-[390px]', 'mx-auto', 'border-2', 'border-slate-300', 'dark:border-slate-600', 'rounded-3xl', 'overflow-hidden');
+        container.classList.add('max-w-[390px]', 'mx-auto', 'border-2', 'border-gray-200', 'dark:border-gray-800', 'rounded-3xl', 'overflow-hidden');
         label.textContent = '移动端';
       } else {
-        container.classList.remove('max-w-[390px]', 'mx-auto', 'border-2', 'border-slate-300', 'dark:border-slate-600', 'rounded-3xl', 'overflow-hidden');
+        container.classList.remove('max-w-[390px]', 'mx-auto', 'border-2', 'border-gray-200', 'dark:border-gray-800', 'rounded-3xl', 'overflow-hidden');
         label.textContent = '桌面端';
       }
     }
@@ -992,7 +844,6 @@
       
       document.getElementById('themeLabel').textContent = labels[currentTheme];
       document.getElementById('themeIcon').textContent = icons[currentTheme];
-      document.getElementById('mobileThemeLabel').textContent = labels[currentTheme] + '模式';
       
       if (currentTheme === 'dark') {
         document.documentElement.classList.add('dark');
@@ -1014,32 +865,17 @@
       }
     }
     
-    // 语言下拉菜单
-    function toggleLangDropdown() {
-      const dropdown = document.getElementById('langDropdown');
-      dropdown.classList.toggle('open');
-    }
-    
-    function selectLang(lang) {
-      document.getElementById('langDropdown').classList.remove('open');
-      // 更新按钮文本
-      const btn = document.getElementById('langToggleBtn');
-      btn.querySelector('span:not(.hidden)').textContent = lang;
-    }
-    
     // 字符卡片选择
     document.querySelectorAll('.char-card').forEach(card => {
       card.addEventListener('click', function() {
         document.querySelectorAll('.char-card').forEach(c => {
-          c.classList.remove('selected', 'border-emerald-500', 'shadow-md');
+          c.classList.remove('border-emerald-500', 'border-transparent');
           c.classList.add('border-transparent');
           c.setAttribute('aria-selected', 'false');
-          c.setAttribute('aria-label', c.getAttribute('aria-label').replace('已选择, ', ''));
         });
-        this.classList.add('selected', 'border-emerald-500', 'shadow-md');
         this.classList.remove('border-transparent');
+        this.classList.add('border-emerald-500');
         this.setAttribute('aria-selected', 'true');
-        this.setAttribute('aria-label', '已选择, ' + this.getAttribute('aria-label'));
       });
       
       // 键盘支持
@@ -1051,15 +887,6 @@
       });
     });
     
-    // 点击外部关闭语言下拉菜单
-    document.addEventListener('click', function(e) {
-      const dropdown = document.getElementById('langDropdown');
-      const btn = document.getElementById('langToggleBtn');
-      if (!dropdown.contains(e.target) && !btn.contains(e.target)) {
-        dropdown.classList.remove('open');
-      }
-    });
-    
     // ESC 关闭移动端菜单
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape') {
@@ -1067,7 +894,6 @@
         if (!menu.classList.contains('hidden')) {
           toggleMobileMenu();
         }
-        document.getElementById('langDropdown').classList.remove('open');
       }
     });
     
