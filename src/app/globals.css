@@ -278,6 +278,57 @@ nav, .apple-nav {
   border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
+/* ====== Apple Style Extra Large Shadow v2.3.1 ====== */
+.apple-shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+/* ====== Progress Animated Width ====== */
+.progress-animated {
+  transition: width 1.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* ====== Stroke Pulse (Writing Feedback) ====== */
+@keyframes strokePulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+.stroke-pulse {
+  animation: strokePulse 2s ease-in-out infinite;
+}
+
+/* ====== Emerald Glow (CTA Button Highlight) ====== */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  50% { box-shadow: 0 0 30px 10px rgba(16, 185, 129, 0.15); }
+}
+.glow-emerald {
+  animation: glowPulse 2.5s ease-in-out infinite;
+}
+
+/* ====== Writing Canvas Grid ====== */
+.writing-canvas {
+  background-image:
+    linear-gradient(rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.dark .writing-canvas {
+  background-image:
+    linear-gradient(rgba(16, 185, 129, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 185, 129, 0.08) 1px, transparent 1px);
+}
+
+/* ====== Card Interleave Entrance ====== */
+@keyframes staggerIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+.stagger-item {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: staggerIn 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
 @layer utilities {
   .hanzi-font {
     font-family: var(--font-hanzi);

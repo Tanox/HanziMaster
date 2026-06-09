@@ -37,7 +37,7 @@
       transform: translateY(0);
     }
 
-    /* ==================== Apple 风格阴影系统 ==================== */
+    /* ==================== Apple 风格阴影系统 v2.3.1 ==================== */
     .apple-shadow-sm {
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
     }
@@ -49,6 +49,111 @@
     }
     .apple-shadow-xl {
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+    }
+    .apple-shadow-2xl {
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.04);
+    }
+
+    /* ==================== 字符轮播动画 ==================== */
+    .char-slot {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .char-enter {
+      animation: charEnter 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+    .char-exit {
+      animation: charExit 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+    @keyframes charEnter {
+      0% { opacity: 0; transform: translateY(20px) scale(0.8); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes charExit {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-20px) scale(0.8); }
+    }
+
+    /* ==================== 笔画高亮动画 ==================== */
+    .stroke-pulse {
+      animation: strokePulse 2s ease-in-out infinite;
+    }
+    @keyframes strokePulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.02); }
+    }
+
+    /* ==================== 数字滚动动画 ==================== */
+    .count-up {
+      display: inline-block;
+      animation: countFade 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+    @keyframes countFade {
+      0% { opacity: 0; transform: translateY(5px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==================== 进度条平滑增长 ==================== */
+    .progress-animated {
+      transition: width 1.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    /* ==================== 发光效果 (书写反馈) ==================== */
+    .glow-emerald {
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+      animation: glowPulse 2s ease-in-out infinite;
+    }
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+      50% { box-shadow: 0 0 30px 10px rgba(16, 185, 129, 0.15); }
+    }
+
+    /* ==================== 卡片交错动画 ==================== */
+    .stagger-item {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: staggerIn 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    }
+    @keyframes staggerIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==================== 输入框书写模拟 ==================== */
+    .writing-canvas {
+      background:
+        linear-gradient(rgba(16, 185, 129, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 185, 129, 0.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .dark .writing-canvas {
+      background:
+        linear-gradient(rgba(16, 185, 129, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 185, 129, 0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* ==================== 流程步骤指示器 ==================== */
+    .step-indicator {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .step-indicator::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 100%;
+      width: 100%;
+      height: 2px;
+      background: #e5e7eb;
+      transform: translateY(-50%);
+    }
+    .dark .step-indicator::before {
+      background: #374151;
+    }
+    .step-indicator.active::before {
+      background: linear-gradient(90deg, #10b981, #06b6d4);
     }
 
     /* ==================== 字符卡片 Apple 风格 ==================== */
@@ -332,30 +437,54 @@
                   </div>
                 </div>
                 
-                <!-- 右侧 - 大字符展示 Apple 风格 -->
+                <!-- 右侧 - 大字符展示 + 字符切换交互 -->
                 <div class="relative flex items-center justify-center">
-                  <div class="relative">
+                  <div class="relative w-full">
                     <!-- 背景装饰 - 极简 -->
                     <div class="absolute inset-0 bg-gradient-to-br from-emerald-50 to-cyan-50 dark:from-emerald-950/30 dark:to-cyan-950/30 rounded-[3rem] -z-10 transform rotate-3"></div>
-                    
+
                     <!-- 主字符卡片 Apple 风格 -->
                     <div class="bg-white dark:bg-gray-900 rounded-[2.5rem] p-12 apple-shadow-xl">
                       <div class="text-center">
-                        <span class="text-[10rem] sm:text-[12rem] font-bold hanzi-font text-gray-100 dark:text-gray-800 hero-char select-none">永</span>
+                        <span id="heroBigChar" class="text-[10rem] sm:text-[12rem] font-bold hanzi-font text-gray-100 dark:text-gray-800 select-none">永</span>
                         <div class="mt-6">
-                          <p class="text-3xl font-semibold hanzi-font text-gray-900 dark:text-white">永</p>
-                          <p class="text-base text-gray-400 mt-1">yǒng · Forever</p>
+                          <p id="heroMainChar" class="text-3xl font-semibold hanzi-font text-gray-900 dark:text-white">永</p>
+                          <p id="heroPinyin" class="text-base text-gray-400 mt-1">yǒng · Forever</p>
                         </div>
                       </div>
-                      
+
+                      <!-- 字符切换导航点 -->
+                      <div class="flex justify-center items-center gap-2 mt-8">
+                        <button onclick="setHeroChar(0)" class="hero-dot w-2 h-2 rounded-full bg-emerald-500 transition-all" data-idx="0" aria-label="永"></button>
+                        <button onclick="setHeroChar(1)" class="hero-dot w-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 transition-all" data-idx="1" aria-label="学"></button>
+                        <button onclick="setHeroChar(2)" class="hero-dot w-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 transition-all" data-idx="2" aria-label="爱"></button>
+                        <button onclick="setHeroChar(3)" class="hero-dot w-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 transition-all" data-idx="3" aria-label="明"></button>
+                      </div>
+
                       <!-- 进度指示 -->
-                      <div class="mt-10 space-y-3">
+                      <div class="mt-8 space-y-3">
                         <div class="flex justify-between text-sm">
                           <span class="text-gray-500">掌握度</span>
-                          <span class="font-medium text-emerald-600 dark:text-emerald-400">68%</span>
+                          <span class="font-medium text-emerald-600 dark:text-emerald-400"><span id="heroProgressNum">68</span>%</span>
                         </div>
                         <div class="w-full h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
-                          <div class="progress-fill h-full" style="width: 68%;"></div>
+                          <div id="heroProgressBar" class="progress-fill h-full progress-animated" style="width: 68%;"></div>
+                        </div>
+                      </div>
+
+                      <!-- 迷你统计 -->
+                      <div class="grid grid-cols-3 gap-3 mt-8 pt-6 border-t border-gray-100 dark:border-gray-800">
+                        <div class="text-center">
+                          <div class="text-xl font-bold text-gray-900 dark:text-white" id="heroStrokes">5</div>
+                          <div class="text-xs text-gray-400 mt-1">笔画</div>
+                        </div>
+                        <div class="text-center">
+                          <div class="text-xl font-bold text-gray-900 dark:text-white">常用</div>
+                          <div class="text-xs text-gray-400 mt-1">级别</div>
+                        </div>
+                        <div class="text-center">
+                          <div class="text-xl font-bold text-gray-900 dark:text-white" id="heroDays">12</div>
+                          <div class="text-xs text-gray-400 mt-1">学习天数</div>
                         </div>
                       </div>
                     </div>
@@ -410,6 +539,172 @@
                   </div>
                   <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">自适应学习</h3>
                   <p class="text-gray-500 dark:text-gray-400 leading-relaxed">智能算法个性化调整学习路径</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 学习流程 - 四步体验 -->
+          <section class="py-28 px-6">
+            <div class="max-w-6xl mx-auto">
+              <div class="text-center mb-16">
+                <p class="text-emerald-600 dark:text-emerald-400 text-sm font-semibold tracking-wider uppercase mb-3">学习体验</p>
+                <h2 class="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">从认识到精通</h2>
+                <p class="text-xl text-gray-500 dark:text-gray-400 max-w-xl mx-auto">四步递进，科学掌握每个汉字</p>
+              </div>
+
+              <div class="grid md:grid-cols-4 gap-6">
+                <div class="stagger-item feature-card bg-white dark:bg-gray-900 rounded-3xl p-8 apple-shadow-sm" style="animation-delay: 0.05s;">
+                  <div class="flex items-center justify-between mb-5">
+                    <div class="w-10 h-10 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold text-sm">01</div>
+                    <svg class="w-5 h-5 text-gray-300 dark:text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                  </div>
+                  <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">认识字形</h3>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">观察汉字结构与笔画组成，建立第一印象</p>
+                </div>
+
+                <div class="stagger-item feature-card bg-white dark:bg-gray-900 rounded-3xl p-8 apple-shadow-sm" style="animation-delay: 0.15s;">
+                  <div class="flex items-center justify-between mb-5">
+                    <div class="w-10 h-10 bg-cyan-50 dark:bg-cyan-950/40 rounded-xl flex items-center justify-center text-cyan-600 dark:text-cyan-400 font-bold text-sm">02</div>
+                    <svg class="w-5 h-5 text-gray-300 dark:text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                  </div>
+                  <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">笔顺学习</h3>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">动画展示正确书写顺序，逐步引导模仿</p>
+                </div>
+
+                <div class="stagger-item feature-card bg-white dark:bg-gray-900 rounded-3xl p-8 apple-shadow-sm" style="animation-delay: 0.25s;">
+                  <div class="flex items-center justify-between mb-5">
+                    <div class="w-10 h-10 bg-blue-50 dark:bg-blue-950/40 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-sm">03</div>
+                    <svg class="w-5 h-5 text-gray-300 dark:text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                  </div>
+                  <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">智能练习</h3>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">AI 实时识别笔画，即时反馈修正建议</p>
+                </div>
+
+                <div class="stagger-item feature-card bg-white dark:bg-gray-900 rounded-3xl p-8 apple-shadow-sm" style="animation-delay: 0.35s;">
+                  <div class="flex items-center justify-between mb-5">
+                    <div class="w-10 h-10 bg-purple-50 dark:bg-purple-950/40 rounded-xl flex items-center justify-center text-purple-600 dark:text-purple-400 font-bold text-sm">04</div>
+                    <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">巩固记忆</h3>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">间隔复习确保长期记忆，掌握度稳步提升</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 书写画布预览 - 展示核心功能 -->
+          <section class="py-28 px-6 bg-gray-50 dark:bg-gray-900/50">
+            <div class="max-w-6xl mx-auto">
+              <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <!-- 左侧 - 内容 -->
+                <div>
+                  <p class="text-emerald-600 dark:text-emerald-400 text-sm font-semibold tracking-wider uppercase mb-3">核心功能</p>
+                  <h2 class="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-6">像老师一样<br>手把手教你写</h2>
+                  <p class="text-lg text-gray-500 dark:text-gray-400 leading-relaxed mb-8 max-w-md">
+                    智能画布实时跟踪您的每一笔书写，AI 算法分析笔画顺序、方向与结构，给出精准的改进建议。
+                  </p>
+
+                  <!-- 特性列表 -->
+                  <div class="space-y-4 mb-8">
+                    <div class="flex items-start gap-3">
+                      <div class="w-5 h-5 rounded-full bg-emerald-500 dark:bg-emerald-400 flex-shrink-0 mt-1 flex items-center justify-center">
+                        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                      </div>
+                      <div>
+                        <div class="font-medium text-gray-900 dark:text-white">毫秒级笔画识别</div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400">下笔即检测，零延迟反馈</div>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                      <div class="w-5 h-5 rounded-full bg-emerald-500 dark:bg-emerald-400 flex-shrink-0 mt-1 flex items-center justify-center">
+                        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                      </div>
+                      <div>
+                        <div class="font-medium text-gray-900 dark:text-white">笔顺自动验证</div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400">避免养成错误书写习惯</div>
+                      </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                      <div class="w-5 h-5 rounded-full bg-emerald-500 dark:bg-emerald-400 flex-shrink-0 mt-1 flex items-center justify-center">
+                        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                      </div>
+                      <div>
+                        <div class="font-medium text-gray-900 dark:text-white">结构评分系统</div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400">间架结构、比例平衡可视化</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button onclick="showPage('learn')" class="btn-apple-primary text-white px-6 py-3 rounded-full text-sm font-medium inline-flex items-center gap-2">
+                    立即体验
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                  </button>
+                </div>
+
+                <!-- 右侧 - 书写画布模拟 -->
+                <div class="relative">
+                  <div class="bg-white dark:bg-gray-900 rounded-[2.5rem] p-8 apple-shadow-2xl">
+                    <!-- 顶部栏 -->
+                    <div class="flex items-center justify-between mb-6">
+                      <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-950/40 rounded-xl flex items-center justify-center text-2xl hanzi-font text-emerald-600 dark:text-emerald-400">永</div>
+                        <div>
+                          <div class="font-semibold text-gray-900 dark:text-white text-sm">练习进行中</div>
+                          <div class="text-xs text-gray-400">第 3/5 笔</div>
+                        </div>
+                      </div>
+                      <div class="text-right">
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">92<span class="text-sm text-gray-400">分</span></div>
+                        <div class="text-xs text-emerald-500">结构优秀</div>
+                      </div>
+                    </div>
+
+                    <!-- 书写区域 - 带网格 -->
+                    <div class="relative aspect-square rounded-3xl writing-canvas bg-gray-50 dark:bg-gray-950 overflow-hidden">
+                      <!-- 米字格 -->
+                      <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <div class="w-[85%] h-[85%] border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-2xl relative">
+                          <!-- 对角线 -->
+                          <div class="absolute inset-0 overflow-hidden rounded-2xl">
+                            <div class="absolute top-1/2 left-0 right-0 border-t border-gray-200 dark:border-gray-800"></div>
+                            <div class="absolute left-1/2 top-0 bottom-0 border-l border-gray-200 dark:border-gray-800"></div>
+                          </div>
+                          <!-- 字符参考 -->
+                          <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-[12rem] font-bold hanzi-font text-gray-200 dark:text-gray-800/50 select-none">永</span>
+                          </div>
+                          <!-- SVG 笔画模拟 -->
+                          <svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 200">
+                            <path d="M 100 40 L 100 160" stroke="#10b981" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.9" />
+                            <path d="M 60 70 L 140 70" stroke="#10b981" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.7" />
+                            <path d="M 50 110 L 150 110" stroke="#10b981" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.5" />
+                            <path d="M 65 135 Q 100 155 135 135" stroke="#94a3b8" stroke-width="3" stroke-dasharray="6 6" fill="none" opacity="0.4" />
+                          </svg>
+                          <!-- 动画光点 -->
+                          <div class="absolute" style="top: 55%; left: 32%;">
+                            <div class="w-4 h-4 bg-emerald-400 rounded-full stroke-pulse shadow-lg shadow-emerald-400/50"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 底部工具栏 -->
+                    <div class="flex items-center justify-between mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
+                      <div class="flex gap-2">
+                        <button class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" aria-label="撤销">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path></svg>
+                        </button>
+                        <button class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" aria-label="清空">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22"></path></svg>
+                        </button>
+                      </div>
+                      <button class="btn-apple-primary text-white px-5 py-2.5 rounded-full text-sm font-medium flex items-center gap-2 glow-emerald">
+                        完成
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -897,6 +1192,67 @@
       }
     });
     
+    // Hero 字符数据
+    const heroChars = [
+      { char: '永', pinyin: 'yǒng · Forever', strokes: 5, progress: 68, days: 12 },
+      { char: '学', pinyin: 'xué · Learn', strokes: 8, progress: 82, days: 18 },
+      { char: '爱', pinyin: 'ài · Love', strokes: 10, progress: 55, days: 7 },
+      { char: '明', pinyin: 'míng · Bright', strokes: 8, progress: 91, days: 25 }
+    ];
+    let currentHeroIndex = 0;
+    let heroAutoTimer = null;
+
+    function setHeroChar(idx) {
+      currentHeroIndex = idx;
+      const data = heroChars[idx];
+
+      // 动画更新字符
+      const bigChar = document.getElementById('heroBigChar');
+      const mainChar = document.getElementById('heroMainChar');
+      const pinyin = document.getElementById('heroPinyin');
+      const strokes = document.getElementById('heroStrokes');
+      const days = document.getElementById('heroDays');
+      const progressNum = document.getElementById('heroProgressNum');
+      const progressBar = document.getElementById('heroProgressBar');
+
+      if (bigChar) {
+        bigChar.style.opacity = '0.3';
+        bigChar.style.transform = 'scale(0.95)';
+        bigChar.style.transition = 'all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)';
+        setTimeout(() => {
+          bigChar.textContent = data.char;
+          bigChar.style.opacity = '1';
+          bigChar.style.transform = 'scale(1)';
+        }, 300);
+      }
+      if (mainChar) mainChar.textContent = data.char;
+      if (pinyin) pinyin.textContent = data.pinyin;
+      if (strokes) strokes.textContent = data.strokes;
+      if (days) days.textContent = data.days;
+      if (progressNum) progressNum.textContent = data.progress;
+      if (progressBar) progressBar.style.width = data.progress + '%';
+
+      // 更新点状态
+      document.querySelectorAll('.hero-dot').forEach((dot, i) => {
+        if (i === idx) {
+          dot.classList.remove('bg-gray-200', 'dark:bg-gray-700');
+          dot.classList.add('bg-emerald-500', 'w-6');
+        } else {
+          dot.classList.remove('bg-emerald-500', 'w-6');
+          dot.classList.add('bg-gray-200', 'dark:bg-gray-700');
+        }
+      });
+
+      // 重启自动轮播计时器
+      if (heroAutoTimer) clearInterval(heroAutoTimer);
+      heroAutoTimer = setInterval(() => {
+        setHeroChar((currentHeroIndex + 1) % heroChars.length);
+      }, 5000);
+    }
+
+    // 启动 Hero 字符自动轮播
+    setHeroChar(0);
+
     // 初始化
     showPage('home');
     updateBottomNav('home');

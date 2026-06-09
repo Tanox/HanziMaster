@@ -1,4 +1,4 @@
-// src/components/locale-provider.tsx v2.2.1
+// src/components/locale-provider.tsx v2.3.1
 'use client';
 
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
@@ -10,9 +10,11 @@ type LocaleProviderProps = {
   storageKey?: string;
 };
 
+type TranslationParams = Record<string, string | number>;
+
 type LocaleProviderState = {
   locale: Locale;
-  t: (key: string) => string;
+  t: (key: string, params?: TranslationParams) => string;
   setLocale: (locale: Locale) => void;
   availableLocales: Locale[];
 };
@@ -30,6 +32,11 @@ const getNestedValue = (obj: Translations, path: string): string => {
     }
   }
   return typeof current === 'string' ? current : path;
+};
+
+const interpolate = (template: string, params?: TranslationParams): string => {
+  if (!params) return template;
+  return template.replace(/\{(\w+)\}/g, (_, key) => String(params[key] ?? `{${key}}`));
 };
 
 const initialState: LocaleProviderState = {
@@ -96,8 +103,9 @@ export function LocaleProvider({
     }
   }, [storageKey]);
 
-  const t = useCallback((key: string): string => {
-    return getNestedValue(translations[locale], key);
+  const t = useCallback((key: string, params?: TranslationParams): string => {
+    const template = getNestedValue(translations[locale], key);
+    return interpolate(template, params);
   }, [locale]);
 
   const value = {

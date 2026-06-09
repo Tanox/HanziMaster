@@ -1,6 +1,6 @@
 # HanziMaster OpenSpec 规范文档
 
-**版本：** v2.3.0
+**版本：** v2.3.1
 **项目名称：** HanziMaster 汉字大师
 **设计风格：** Apple Design Style
 **最后更新：** 2026-06-09
@@ -8,6 +8,45 @@
 ---
 
 ## 一、变更日志 (Changelog)
+
+### v2.3.1 (2026-06-09) - 深化原型：Hero 交互 + 学习流程 + 书写画布
+
+#### 新增区块与组件
+
+| 文件 | 变更类型 | 说明 |
+|------|----------|------|
+| prototype/index.html | 增强 | Hero 字符自动轮播、学习流程四步区块、书写画布预览区块 |
+| src/app/page.tsx | 增强 | Hero 字符切换动画、学习流程区块、书写画布预览区块 |
+| src/app/globals.css | 增强 | apple-shadow-2xl, progress-animated, stroke-pulse, glow-emerald, writing-canvas, stagger-item 新样式 |
+| prototype/OpenSpec.md | 文档 | 新增 v2.3.1 变更日志 |
+
+#### Hero 字符轮播系统
+- 每 5 秒自动切换汉字（永→学→爱→明→循环）
+- 点击底部圆点可手动切换并重启自动轮播计时器
+- 字符淡出→切换→淡入，配合缩放与透明度动画
+- 实时显示当前汉字的笔画数、掌握度、学习天数
+
+#### 学习流程四步区块
+- 认识字形 → 笔顺学习 → 智能练习 → 巩固记忆
+- 每张卡片使用 Emerald/Cyan/Blue/Purple 四色递进
+- 交错入场动画（staggered entrance）
+- hover 状态带轻微上浮与阴影扩散
+
+#### 书写画布预览区块
+- 左侧：标题 + 描述 + 三项核心功能打勾列表 + CTA 按钮
+- 右侧：模拟书写画布（米字格 + 汉字半透明参考 + 绿色笔画轨迹 + 下一笔虚线路径 + 光点动画）
+- 顶部信息栏：当前汉字 / 练习进度 / 当前笔画 / 总分
+- 底部工具栏：撤销 / 清空 / 完成（CTA 按钮带 glow-emerald 脉冲动画）
+
+#### 新增 CSS 设计令牌
+- `.apple-shadow-2xl`：增强版大卡片阴影（画布预览使用）
+- `.progress-animated`：进度条宽度过渡动画
+- `.stroke-pulse`：笔画光点脉冲动画
+- `.glow-emerald`：CTA 按钮发光脉冲
+- `.writing-canvas`：书写画布细网格背景
+- `.stagger-item`：卡片交错入场动画
+
+---
 
 ### v2.3.0 (2026-06-09) - 项目代码与原型对齐
 
