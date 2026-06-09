@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ar.ts v2.2.1
+// src/lib/i18n/translations/ar.ts v3.0.0
 export const ar = {
   common: {
     home: 'الرئيسية',
@@ -36,6 +36,9 @@ export const ar = {
     featuresTitle: 'لماذا تختار HanziMaster',
     featuresSubtitle: 'اختبر مستقبل تعلم الحروف الصينية مع ميزاتنا المتطورة المصممة لتسريع تقدمك.',
     aiBadge: 'تعلم بالذكاء الاصطناعي',
+    yongCharacterTitle: 'الثمانية خطوط لـ 永',
+    yongCharacterDesc: 'أتقن الثمانية خطوط الأساسية من خلال الحرف 永، مما يفتح جوهر الخط الصيني',
+    yongCharacterStrokes: 'إتقان الخطوط',
   },
   practice: {
     center: 'المركز',
@@ -78,7 +81,7 @@ export const ar = {
     structure: 'البنية',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v2.2.1. جميع الحقوق محفوظة.',
+    copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. جميع الحقوق محفوظة.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

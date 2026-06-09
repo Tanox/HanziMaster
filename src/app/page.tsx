@@ -19,9 +19,9 @@ export default function HomePage() {
           
           {/* Main Heading */}
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-black dark:text-white mb-6 leading-[1.05]">
-            精通中文，
+            {t('home.heroTitle')}，
             <span className="block mt-2">
-              <span className="hanzi-font">一笔一画</span>
+              <span className="hanzi-font">{t('home.heroSubtitle')}</span>
             </span>
           </h1>
           
@@ -65,14 +65,14 @@ export default function HomePage() {
               {/* Info Side */}
               <div className="text-left">
                 <h3 className="text-3xl font-semibold text-black dark:text-white mb-4">
-                  永字八法
+                  {t('home.yongCharacterTitle')}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 text-lg mb-8">
-                  掌握永字的八个基本笔画，打开汉字书写的精髓
+                  {t('home.yongCharacterDesc')}
                 </p>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center text-base">
-                    <span className="text-gray-600 dark:text-gray-400">笔画掌握</span>
+                    <span className="text-gray-600 dark:text-gray-400">{t('home.yongCharacterStrokes')}</span>
                     <span className="font-semibold text-gray-900 dark:text-gray-100">72%</span>
                   </div>
                   <div className="h-2 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">

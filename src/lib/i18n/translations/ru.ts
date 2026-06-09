@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ru.ts v2.2.1
+// src/lib/i18n/translations/ru.ts v3.0.0
 export const ru = {
   common: {
     home: 'Главная',
@@ -36,6 +36,9 @@ export const ru = {
     featuresTitle: 'Почему HanziMaster',
     featuresSubtitle: 'Оцените будущее изучения китайских иероглифов с нашими передовыми функциями, разработанными для ускорения вашего прогресса.',
     aiBadge: 'Обучение с ИИ',
+    yongCharacterTitle: 'Восемь черт иероглифа 永',
+    yongCharacterDesc: 'Освойте восемь основных черт через иероглиф 永, открывая суть китайской каллиграфии',
+    yongCharacterStrokes: 'Владение чертами',
   },
   practice: {
     center: 'Центр',
@@ -78,7 +81,7 @@ export const ru = {
     structure: 'Структура',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v2.2.1. Все права защищены.',
+    copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. Все права защищены.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ko.ts v2.2.1
+// src/lib/i18n/translations/ko.ts v3.0.0
 export const ko = {
   common: {
     home: '홈',
@@ -36,6 +36,9 @@ export const ko = {
     featuresTitle: '왜 HanziMaster인가',
     featuresSubtitle: '진보를 가속화하도록 설계된 최첨단 기능으로 중국 한자 학습의 미래를 경험하세요.',
     aiBadge: 'AI 기반 학습',
+    yongCharacterTitle: '永의 팔법',
+    yongCharacterDesc: '永 한자를 통해 8가지 기본 획을 마스터하고 중국 서예의 본질을解锁하세요',
+    yongCharacterStrokes: '획 마스터리',
   },
   practice: {
     center: '센터',
@@ -78,7 +81,7 @@ export const ko = {
     structure: '구조',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v2.2.1. All rights reserved.',
+    copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. All rights reserved.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

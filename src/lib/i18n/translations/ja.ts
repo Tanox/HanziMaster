@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ja.ts v2.2.1
+// src/lib/i18n/translations/ja.ts v3.0.0
 export const ja = {
   common: {
     home: 'ホーム',
@@ -36,6 +36,9 @@ export const ja = {
     featuresTitle: 'なぜHanziMasterなのか',
     featuresSubtitle: '学習の進捗を加速するために設計された最先端の機能で、中国語文字学習の未来を体験してください。',
     aiBadge: 'AI搭載学習',
+    yongCharacterTitle: '永の八法',
+    yongCharacterDesc: '永という文字を通じて8つの基本笔画をマスターし、中国書道の真髄を解锁する',
+    yongCharacterStrokes: '笔画掌握度',
   },
   practice: {
     center: 'センター',
@@ -78,7 +81,7 @@ export const ja = {
     structure: '構造',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v2.2.1. All rights reserved.',
+    copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. All rights reserved.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',
