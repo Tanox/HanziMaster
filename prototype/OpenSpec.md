@@ -3,13 +3,38 @@
 **版本：** v2.3.0
 **项目名称：** HanziMaster 汉字大师
 **设计风格：** Apple Design Style
-**最后更新：** 2026-06-08
+**最后更新：** 2026-06-09
 
 ---
 
 ## 一、变更日志 (Changelog)
 
-### v2.3.0 (2026-06-08) - Apple Design Style 重大更新
+### v2.3.0 (2026-06-09) - 项目代码与原型对齐
+
+#### 代码对齐变更
+
+| 文件 | 变更类型 | 说明 |
+|------|----------|------|
+| src/app/globals.css | 更新 | 添加 Apple 风格设计令牌、阴影系统、按钮样式 |
+| src/app/layout.tsx | 更新 | Apple 风格导航栏、纯白/纯黑背景 |
+| src/app/page.tsx | 更新 | Apple 风格首页、胶囊按钮、简化布局 |
+| src/app/learn/page.tsx | 更新 | Apple 风格学习页面、字符卡片 |
+| src/app/practice/page.tsx | 更新 | Apple 风格练习页面 |
+| src/components/feature-card.tsx | 更新 | Apple 风格卡片组件 |
+| prototype/index.html | 原型 | 保持 Apple 设计风格 |
+| prototype/OpenSpec.md | 文档 | 同步更新 |
+
+#### 设计规范同步
+
+所有项目代码现在与原型设计完全对齐：
+- **背景色**: 纯白 (#ffffff) / 纯黑 (#000000)
+- **按钮样式**: Apple 胶囊按钮 (#0071e3)
+- **阴影系统**: Apple 轻柔阴影
+- **导航栏**: 毛玻璃效果 (backdrop-blur-xl)
+- **留白**: 大量留白 (py-32, gap-16)
+- **排版**: tracking-tight, font-bold
+
+### v2.2.0 (2026-06-08) - Apple Design Style 重大更新
 
 #### 设计变更
 
@@ -390,11 +415,27 @@ transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
 
 ## 八、文件清单 (Files)
 
+### 原型文件 (prototype/)
+
 | 文件 | 描述 | 版本 |
 |------|------|------|
 | index.html | 完整原型页面 | v2.3.0 |
 | UI_OPTIMIZATION.md | UI/UX 优化建议 | v2.3.0 |
 | OpenSpec.md | 规范文档 | v2.3.0 |
+
+### 项目源码 (src/)
+
+| 文件 | 描述 | 版本 |
+|------|------|------|
+| src/app/globals.css | 全局样式与设计令牌 | v2.3.0 |
+| src/app/layout.tsx | 根布局组件 | v2.3.0 |
+| src/app/page.tsx | 首页 | v2.3.0 |
+| src/app/learn/page.tsx | 学习页面 | v2.3.0 |
+| src/app/practice/page.tsx | 练习页面 | v2.3.0 |
+| src/components/feature-card.tsx | 功能卡片组件 | v2.3.0 |
+| src/components/theme-toggle.tsx | 主题切换组件 | - |
+| src/components/locale-toggle.tsx | 语言切换组件 | - |
+| src/components/mobile-nav.tsx | 移动端导航组件 | - |
 
 ---
 
