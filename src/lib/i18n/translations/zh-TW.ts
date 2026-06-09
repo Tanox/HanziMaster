@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/zh-TW.ts v2.2.1
+// src/lib/i18n/translations/zh-TW.ts v3.0.0
 export const zhTW = {
   common: {
     home: '首頁',
@@ -36,6 +36,9 @@ export const zhTW = {
     featuresTitle: '為什麼選擇漢字大師',
     featuresSubtitle: '體驗未來漢字學習，我們前沿的功能專為加速您的學習進度而設計。',
     aiBadge: 'AI 驅動學習',
+    yongCharacterTitle: '永字八法',
+    yongCharacterDesc: '掌握永字的八個基本筆畫，打開漢字書寫的精髓',
+    yongCharacterStrokes: '筆畫掌握',
   },
   practice: {
     center: '中心',
@@ -78,7 +81,7 @@ export const zhTW = {
     structure: '結構',
   },
   footer: {
-    copyright: '© 2026 漢字大師 HanziMaster v2.2.1. 保留所有權利。',
+    copyright: '© 2026 漢字大師 HanziMaster v3.0.0. 保留所有權利。',
   },
   meta: {
     title: 'HanziMaster 漢字大師',

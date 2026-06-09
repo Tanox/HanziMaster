@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/zh-CN.ts v2.2.1
+// src/lib/i18n/translations/zh-CN.ts v3.0.0
 export const zhCN = {
   common: {
     home: '首页',
@@ -36,6 +36,9 @@ export const zhCN = {
     featuresTitle: '为什么选择汉字大师',
     featuresSubtitle: '体验未来汉字学习，我们前沿的功能专为加速您的学习进度而设计。',
     aiBadge: 'AI 驱动学习',
+    yongCharacterTitle: '永字八法',
+    yongCharacterDesc: '掌握永字的八个基本笔画，打开汉字书写的精髓',
+    yongCharacterStrokes: '笔画掌握',
   },
   practice: {
     center: '中心',
@@ -78,7 +81,7 @@ export const zhCN = {
     structure: '结构',
   },
   footer: {
-    copyright: '© 2026 汉字大师 HanziMaster v2.2.1. 保留所有权利。',
+    copyright: '© 2026 汉字大师 HanziMaster v3.0.0. 保留所有权利。',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

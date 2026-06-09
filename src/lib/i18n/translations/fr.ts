@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/fr.ts v2.2.1
+// src/lib/i18n/translations/fr.ts v3.0.0
 export const fr = {
   common: {
     home: 'Accueil',
@@ -36,6 +36,9 @@ export const fr = {
     featuresTitle: 'Pourquoi Choisir HanziMaster',
     featuresSubtitle: 'Découvrez l\'avenir de l\'apprentissage des caractères chinois avec nos fonctionnalités de pointe conçues pour accélérer vos progrès.',
     aiBadge: 'Apprentissage par IA',
+    yongCharacterTitle: 'Les Huit Traits de 永',
+    yongCharacterDesc: 'Maîtrisez les huit traits de base à travers le caractère 永, débloquant l\'essence de la calligraphie chinoise',
+    yongCharacterStrokes: 'Maîtrise des Traits',
   },
   practice: {
     center: 'Centre',
@@ -78,7 +81,7 @@ export const fr = {
     structure: 'Structure',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v2.2.1. Tous droits réservés.',
+    copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. Tous droits réservés.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/en.ts v2.2.1
+// src/lib/i18n/translations/en.ts v3.0.0
 export const en = {
   common: {
     home: 'Home',
@@ -36,6 +36,9 @@ export const en = {
     featuresTitle: 'Why Choose HanziMaster',
     featuresSubtitle: 'Experience the future of Chinese character learning with our cutting-edge features designed to accelerate your progress.',
     aiBadge: 'AI-Powered Learning',
+    yongCharacterTitle: 'Eight Strokes of 永',
+    yongCharacterDesc: 'Master the eight basic strokes through the character 永, unlocking the essence of Chinese calligraphy',
+    yongCharacterStrokes: 'Stroke Mastery',
   },
   practice: {
     center: 'Center',
@@ -78,7 +81,7 @@ export const en = {
     structure: 'Structure',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v2.2.1. All rights reserved.',
+    copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. All rights reserved.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

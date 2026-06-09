@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/de.ts v2.2.1
+// src/lib/i18n/translations/de.ts v3.0.0
 export const de = {
   common: {
     home: 'Startseite',
@@ -36,6 +36,9 @@ export const de = {
     featuresTitle: 'Warum HanziMaster Wählen',
     featuresSubtitle: 'Erleben Sie die Zukunft des chinesischen Zeichnenlernens mit unseren hochmodernen Funktionen, die entwickelt wurden, um Ihren Fortschritt zu beschleunigen.',
     aiBadge: 'KI-gestütztes Lernen',
+    yongCharacterTitle: 'Die Acht Striche von 永',
+    yongCharacterDesc: 'Meistern Sie die acht Grundstriche durch das Zeichen 永 und erschließen Sie das Wesen der chinesischen Kalligrafie',
+    yongCharacterStrokes: 'Strichbeherrschung',
   },
   practice: {
     center: 'Zentrum',
@@ -78,7 +81,7 @@ export const de = {
     structure: 'Struktur',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v2.2.1. Alle Rechte vorbehalten.',
+    copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. Alle Rechte vorbehalten.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',
