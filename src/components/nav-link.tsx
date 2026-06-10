@@ -1,4 +1,4 @@
-// src/components/nav-link.tsx v2.2.1
+// src/components/nav-link.tsx v2.3.1 - Apple Design Style
 'use client';
 
 import Link from 'next/link';
@@ -16,17 +16,14 @@ export function NavLink({ href, children }: NavLinkProps) {
   return (
     <Link
       href={href}
-      className={`px-4 py-2.5 rounded-xl font-medium transition-all duration-200 relative group ${
+      aria-current={isActive ? 'page' : undefined}
+      className={`touch-target px-4 py-2.5 rounded-full font-medium transition-all duration-200 ease-out relative inline-flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 ${
         isActive
-          ? 'bg-emerald-50 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400'
-          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
+          ? 'bg-emerald-500 text-white shadow-[0_4px_14px_rgba(16,185,129,0.4)]'
+          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
       }`}
     >
       {children}
-      {/* Active indicator dot */}
-      {isActive && (
-        <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-emerald-500 rounded-full" />
-      )}
     </Link>
   );
 }

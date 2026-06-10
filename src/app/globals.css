@@ -1,4 +1,4 @@
-/* src/app/globals.css v2.3.0 - Apple Design Style */
+/* src/app/globals.css v2.3.1 - Apple Design Style */
 @import "tailwindcss";
 
 @theme {
@@ -6,21 +6,21 @@
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
   --font-hanzi: 'Noto Sans SC', sans-serif;
 
-  /* Brand Colors */
+  /* Brand Colors - Emerald */
   --color-primary: #10b981;
   --color-primary-dark: #059669;
   --color-primary-light: #34d399;
 
-  /* Apple Style Colors */
-  --color-apple-blue: #0071e3;
-  --color-apple-blue-hover: #0077ed;
-  
-  /* Apple Neutrals */
+  /* Apple Style Neutral Colors */
   --color-black: #000000;
   --color-white: #ffffff;
   --color-gray-900: #1d1d1f;
   --color-gray-500: #86868b;
   --color-gray-100: #f5f5f7;
+
+  /* Apple Blue (Primary Button) */
+  --color-apple-blue: #0071e3;
+  --color-apple-blue-hover: #0077ed;
 
   /* Semantic Colors */
   --color-success: #34d399;
@@ -28,7 +28,7 @@
   --color-warning: #f59e0b;
   --color-info: #3b82f6;
 
-  /* Design tokens: touch-friendly minimum sizes */
+  /* Touch-friendly minimum sizes */
   --touch-target-min: 44px;
 }
 
@@ -80,7 +80,7 @@ html {
   font-weight: 600;
   border-radius: 8px;
   text-decoration: none;
-  transition: top 0.2s ease;
+  transition: top 0.2s;
 }
 
 .skip-to-content:focus {
@@ -146,11 +146,65 @@ html {
   }
 }
 
+/* ====== Hero Character Float Animation v2.3.1 ====== */
+@keyframes heroCharFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+.hero-char {
+  animation: heroCharFloat 6s ease-in-out infinite;
+}
+
+/* ====== Character Card Switch Animation v2.3.1 ====== */
+@keyframes charEnter {
+  0% { opacity: 0; transform: translateY(20px) scale(0.8); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes charExit {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-20px) scale(0.8); }
+}
+.char-enter {
+  animation: charEnter 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.char-exit {
+  animation: charExit 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* ====== Stroke Pulse Animation (Writing Feedback) v2.3.1 ====== */
+@keyframes strokePulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+.stroke-pulse {
+  animation: strokePulse 2s ease-in-out infinite;
+}
+
+/* ====== Emerald Glow Animation (CTA Highlight) v2.3.1 ====== */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  50% { box-shadow: 0 0 30px 10px rgba(16, 185, 129, 0.15); }
+}
+.glow-emerald {
+  animation: glowPulse 2.5s ease-in-out infinite;
+}
+
+/* ====== Stagger Item Entrance v2.3.1 ====== */
+@keyframes staggerIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+.stagger-item {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: staggerIn 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+/* ====== Body Base ====== */
 body {
   font-family: var(--font-sans);
 }
 
-/* ====== Apple Style Shadow System ====== */
+/* ====== Apple Style Shadow System v2.3.1 ====== */
 .apple-shadow-sm {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
 }
@@ -163,8 +217,11 @@ body {
 .apple-shadow-xl {
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
 }
+.apple-shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.04);
+}
 
-/* ====== Apple Style Button System ====== */
+/* ====== Apple Style Button System v2.3.1 ====== */
 .btn-apple-primary {
   background: #0071e3;
   color: white;
@@ -191,13 +248,14 @@ body {
 }
 .btn-apple-secondary:hover {
   border-color: #1d1d1f;
+  color: #1d1d1f;
 }
 .dark .btn-apple-secondary:hover {
   border-color: #f5f5f7;
   color: #f5f5f7;
 }
 
-/* ====== Apple Style Link ====== */
+/* ====== Apple Style Link v2.3.1 ====== */
 .apple-link {
   color: #0071e3;
   text-decoration: none;
@@ -207,7 +265,7 @@ body {
   text-decoration: underline;
 }
 
-/* ====== Apple Style Card ====== */
+/* ====== Apple Style Card v2.3.1 ====== */
 .feature-card {
   background: #ffffff;
   border-radius: 24px;
@@ -223,7 +281,7 @@ body {
   background: #1c1c1e;
 }
 
-/* ====== Character Card - Apple Style ====== */
+/* ====== Character Card - Apple Style v2.3.1 ====== */
 .char-card {
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
@@ -243,70 +301,18 @@ body {
   background: rgba(16, 185, 129, 0.08);
 }
 
-/* ====== Apple Style Progress Bar ====== */
+/* ====== Apple Style Progress Bar Fill v2.3.1 ====== */
 .progress-fill {
   background: linear-gradient(90deg, #34d399, #10b981);
   border-radius: 4px;
 }
 
-/* ====== Hero Character Animation ====== */
-@keyframes heroCharFloat {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-10px) rotate(2deg); }
-}
-.hero-char {
-  animation: heroCharFloat 6s ease-in-out infinite;
-}
-
-/* ====== Gradient Text ====== */
-.gradient-text {
-  background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ====== Apple Style Nav (Frosted Glass) ====== */
-nav, .apple-nav {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-.dark nav, .dark .apple-nav {
-  background: rgba(0, 0, 0, 0.8);
-  border-bottom-color: rgba(255, 255, 255, 0.1);
-}
-
-/* ====== Apple Style Extra Large Shadow v2.3.1 ====== */
-.apple-shadow-2xl {
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.04);
-}
-
-/* ====== Progress Animated Width ====== */
+/* ====== Progress Bar Smooth Width Animation v2.3.1 ====== */
 .progress-animated {
   transition: width 1.2s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-/* ====== Stroke Pulse (Writing Feedback) ====== */
-@keyframes strokePulse {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.08); }
-}
-.stroke-pulse {
-  animation: strokePulse 2s ease-in-out infinite;
-}
-
-/* ====== Emerald Glow (CTA Button Highlight) ====== */
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-  50% { box-shadow: 0 0 30px 10px rgba(16, 185, 129, 0.15); }
-}
-.glow-emerald {
-  animation: glowPulse 2.5s ease-in-out infinite;
-}
-
-/* ====== Writing Canvas Grid ====== */
+/* ====== Writing Canvas Grid v2.3.1 ====== */
 .writing-canvas {
   background-image:
     linear-gradient(rgba(16, 185, 129, 0.05) 1px, transparent 1px),
@@ -319,14 +325,35 @@ nav, .apple-nav {
     linear-gradient(90deg, rgba(16, 185, 129, 0.08) 1px, transparent 1px);
 }
 
-/* ====== Card Interleave Entrance ====== */
-@keyframes staggerIn {
-  to { opacity: 1; transform: translateY(0); }
+/* ====== Gradient Text Utility v2.3.1 ====== */
+.gradient-text {
+  background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-.stagger-item {
-  opacity: 0;
-  transform: translateY(16px);
-  animation: staggerIn 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+
+/* ====== Apple Style Nav (Frosted Glass) v2.3.1 ====== */
+nav, .apple-nav {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.dark nav, .dark .apple-nav {
+  background: rgba(0, 0, 0, 0.8);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ====== Touch Target Helper ====== */
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* ====== Safe Area Bottom for Mobile ====== */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 @layer utilities {
@@ -386,14 +413,26 @@ nav, .apple-nav {
   }
 }
 
-/* ====== Apple Style Reduced Motion ====== */
+/* ====== Apple Style Reduced Motion v2.3.1 ====== */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
+    animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    animation-delay: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+    transform: none !important;
+  }
+  .hero-char,
+  .stroke-pulse,
+  .glow-emerald,
+  .skeleton {
+    animation: none !important;
+  }
+  html {
     scroll-behavior: auto !important;
   }
 }

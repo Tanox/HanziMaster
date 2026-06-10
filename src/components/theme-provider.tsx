@@ -1,7 +1,7 @@
-// src/components/theme-provider.tsx v2.2.1
+// src/components/theme-provider.tsx v2.3.1 - Apple Design Style
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 
 type Theme = 'dark' | 'light' | 'system';
 
@@ -29,38 +29,60 @@ export function ThemeProvider({
   storageKey = 'hanzi-master-theme',
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(defaultTheme);
+  const [theme, setThemeState] = useState<Theme>(defaultTheme);
 
   useEffect(() => {
-    const stored = localStorage.getItem(storageKey) as Theme;
-    if (stored) {
-      setTheme(stored);
+    try {
+      const stored = localStorage.getItem(storageKey) as Theme;
+      if (stored) {
+        setThemeState(stored);
+      }
+    } catch {
+      // localStorage may be unavailable; use default theme
     }
   }, [storageKey]);
 
   useEffect(() => {
     const root = window.document.documentElement;
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-    root.classList.remove('light', 'dark');
+    const applyTheme = () => {
+      root.classList.remove('light', 'dark');
+
+      const resolvedTheme = theme === 'system'
+        ? mediaQuery.matches
+          ? 'dark'
+          : 'light'
+        : theme;
+
+      root.classList.add(resolvedTheme);
+      root.style.colorScheme = resolvedTheme;
+    };
+
+    applyTheme();
 
     if (theme === 'system') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? 'dark'
-        : 'light';
-
-      root.classList.add(systemTheme);
-      return;
+      const handleChange = () => applyTheme();
+      mediaQuery.addEventListener('change', handleChange);
+      return () => mediaQuery.removeEventListener('change', handleChange);
     }
-
-    root.classList.add(theme);
   }, [theme]);
+
+  const setTheme = useCallback(
+    (newTheme: Theme) => {
+      try {
+        localStorage.setItem(storageKey, newTheme);
+      } catch {
+        // localStorage may be unavailable; proceed without persisting
+      }
+      setThemeState(newTheme);
+    },
+    [storageKey]
+  );
 
   const value = {
     theme,
-    setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme);
-      setTheme(theme);
-    },
+    setTheme,
   };
 
   return (
@@ -73,8 +95,9 @@ export function ThemeProvider({
 export const useTheme = () => {
   const context = useContext(ThemeProviderContext);
 
-  if (context === undefined)
+  if (context === undefined) {
     throw new Error('useTheme must be used within a ThemeProvider');
+  }
 
   return context;
 };
