@@ -6,6 +6,7 @@
       "DOM",
       "DOM.Iterable"
     ],
+    "types": ["@testing-library/jest-dom"],
     "module": "ESNext",
     "moduleResolution": "bundler",
     "strict": true,

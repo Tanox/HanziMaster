@@ -1,4 +1,4 @@
-// src/app/layout.tsx v2.3.1 - Apple Design Style
+// src/app/layout.tsx v2.4.0 - Apple Design Style
 'use client';
 
 import './globals.css';
@@ -11,6 +11,7 @@ import { ThemeToggleClient } from '@/components/theme-toggle';
 import { LocaleToggleClient } from '@/components/locale-toggle';
 import { MobileNav } from '@/components/mobile-nav';
 import { NavLink } from '@/components/nav-link';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 /* ───────── Main Layout ───────── */
 function LayoutContent({
@@ -94,7 +95,7 @@ function LayoutContent({
 
       {/* ─── Main Content ─── */}
       <main id="main-content" className="flex-1 page-transition">
-        {children}
+        <ErrorBoundary>{children}</ErrorBoundary>
       </main>
 
       {/* ─── Footer ─── */}
