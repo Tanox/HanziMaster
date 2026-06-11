@@ -1,271 +1,234 @@
-// src/app/practice/page.tsx v2.3.1 - Apple Design Style
+// src/app/practice/page.tsx v2.4.0 - Apple Design Style
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useTranslation } from '@/components/locale-provider';
+import { useProgress } from '@/hooks/useProgress';
 import { StatsCard } from '@/components/stats-card';
 
-interface PracticeOption {
-  id: string;
-  titleKey: string;
-  descKey: string;
-  icon: 'pencil' | 'question' | 'chart';
-  color: 'emerald' | 'blue' | 'purple';
-}
-
-const practiceOptions: PracticeOption[] = [
-  { id: 'writing', titleKey: 'practice.writingTitle', descKey: 'practice.writingDesc', icon: 'pencil', color: 'emerald' },
-  { id: 'quiz', titleKey: 'practice.quizTitle', descKey: 'practice.quizDesc', icon: 'question', color: 'blue' },
-  { id: 'progress', titleKey: 'practice.progressTitle', descKey: 'practice.progressDesc', icon: 'chart', color: 'purple' },
-];
-
-const colorPresets = {
-  emerald: {
-    bg: (s: boolean) => s ? 'bg-emerald-500' : 'bg-emerald-50 dark:bg-emerald-900/30',
-    text: (s: boolean) => s ? 'text-white' : 'text-emerald-600 dark:text-emerald-400',
-    iconBg: 'bg-emerald-500',
-    ring: 'ring-emerald-500',
-    border: 'border-emerald-500',
-  } as const,
-  blue: {
-    bg: (s: boolean) => s ? 'bg-blue-500' : 'bg-blue-50 dark:bg-blue-900/30',
-    text: (s: boolean) => s ? 'text-white' : 'text-blue-600 dark:text-blue-400',
-    iconBg: 'bg-blue-500',
-    ring: 'ring-blue-500',
-    border: 'border-blue-500',
-  } as const,
-  purple: {
-    bg: (s: boolean) => s ? 'bg-purple-500' : 'bg-purple-50 dark:bg-purple-900/30',
-    text: (s: boolean) => s ? 'text-white' : 'text-purple-600 dark:text-purple-400',
-    iconBg: 'bg-purple-500',
-    ring: 'ring-purple-500',
-    border: 'border-purple-500',
-  } as const,
-};
-
-function getIcon(iconName: string, className: string) {
-  if (iconName === 'pencil') {
-    return (
-      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-      </svg>
-    );
-  }
-  if (iconName === 'question') {
-    return (
-      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-      </svg>
-    );
-  }
-  return (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-    </svg>
-  );
-}
-
-const weekDays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as const;
+type PracticeMode = 'writing' | 'quiz' | 'progress';
 
 export default function PracticePage() {
   const { t } = useTranslation();
-  const [selectedOption, setSelectedOption] = useState<string | null>('writing');
+  const { stats, weeklyData } = useProgress();
+  const [selectedMode, setSelectedMode] = useState<PracticeMode>('writing');
+
+  const handleModeSelect = useCallback((mode: PracticeMode) => {
+    setSelectedMode(mode);
+  }, []);
+
+  const practiceModes = [
+    {
+      id: 'writing' as PracticeMode,
+      title: t('practice.writingTitle'),
+      desc: t('practice.writingDesc'),
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+        </svg>
+      ),
+      color: 'emerald',
+    },
+    {
+      id: 'quiz' as PracticeMode,
+      title: t('practice.quizTitle'),
+      desc: t('practice.quizDesc'),
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.228 9a4.5 4.5 0 011.37-3.084A4.5 4.5 0 0112 4.5a4.5 4.5 0 012.402 1.084A4.5 4.5 0 0115.772 9M12 12h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+      ),
+      color: 'blue',
+    },
+    {
+      id: 'progress' as PracticeMode,
+      title: t('practice.progressTitle'),
+      desc: t('practice.progressDesc'),
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+      ),
+      color: 'purple',
+    },
+  ];
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16 safe-area-bottom" role="main" aria-label={t('practice.pageTitle')}>
-      {/* ─── Page Header - Apple Style ─── */}
-      <header className="text-center mb-12 md:mb-16" aria-label={t('practice.pageHeader')}>
-        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">
-          <span className="gradient-text">{t('practice.pageTitle')}</span>
-        </h1>
-        <p className="text-lg sm:text-xl text-gray-500 dark:text-gray-400">
-          {t('practice.pageSubtitle')}
-        </p>
-      </header>
+    <div className="min-h-screen bg-white dark:bg-black py-8 px-4 sm:px-6 safe-area-bottom" role="main">
+      <div className="max-w-6xl mx-auto">
+        {/* 页面标题 */}
+        <header className="text-center mb-12">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-3">
+            <span className="gradient-text">{t('practice.title')}</span>
+          </h1>
+          <p className="text-gray-500 dark:text-gray-400 text-lg">
+            {t('practice.subtitle')}
+          </p>
+        </header>
 
-      {/* ─── Practice Options - Apple Style Cards ─── */}
-      <section
-        className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16"
-        aria-label={t('practice.optionsLabel')}
-        role="radiogroup"
-      >
-        {practiceOptions.map((option, index) => {
-          const isSelected = selectedOption === option.id;
-          const c = colorPresets[option.color];
-          return (
-            <button
-              key={option.id}
-              role="radio"
-              aria-checked={isSelected}
-              aria-current={isSelected ? 'true' : 'false'}
-              aria-label={t(option.titleKey)}
-              onClick={() => setSelectedOption(option.id)}
-              className={`feature-card text-left cursor-pointer touch-target apple-shadow-xl hover:apple-shadow-2xl ${
-                isSelected ? `ring-2 ${c.ring} border-2 ${c.border}` : ''
-              }`}
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <div className={`w-14 h-14 ${c.iconBg} rounded-2xl flex items-center justify-center mb-6 glow-emerald`}>
-                {getIcon(option.icon, 'w-7 h-7 text-white')}
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                {t(option.titleKey)}
-              </h3>
-              <p className="text-gray-500 dark:text-gray-400 mb-6 leading-relaxed">
-                {t(option.descKey)}
-              </p>
-              {isSelected ? (
-                <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-medium text-sm">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>{t('practice.selected')}</span>
-                </div>
-              ) : (
-                <span className="apple-link font-medium text-sm">
-                  {t('practice.startNow')} →
-                </span>
-              )}
-            </button>
-          );
-        })}
-      </section>
-
-      {/* ─── Weekly Progress - Apple Style ─── */}
-      <section
-        className="bg-white dark:bg-gray-900 rounded-3xl p-8 md:p-10 apple-shadow-xl mb-12 md:mb-16"
-        aria-label={t('practice.weeklyProgressLabel')}
-      >
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 md:mb-10">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
-            {t('practice.weeklyProgress')}
-          </h2>
-          <div className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400 font-medium bg-emerald-50 dark:bg-emerald-900/30 px-4 py-2 rounded-full apple-shadow-sm">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-            </svg>
-            <span>{t('practice.progressTrend')}</span>
-          </div>
-        </div>
-
-        {/* Week Days Grid */}
-        <div className="grid grid-cols-7 gap-3 md:gap-4 mb-8 md:mb-10" role="list" aria-label={t('practice.weekGrid')}>
-          {weekDays.map((day, index) => {
-            const isCompleted = index < 5;
-            const isToday = index === 4;
-            return (
-              <div key={day} className="text-center" role="listitem" aria-label={t(`practice.${day}`)}>
-                <div
-                  className={`w-12 h-12 md:w-14 md:h-14 mx-auto ${
-                    isCompleted
-                      ? 'bg-emerald-500'
-                      : 'bg-gray-200 dark:bg-gray-700'
-                  } rounded-xl flex items-center justify-center font-bold mb-2 md:mb-3 touch-target transition-all duration-300 ${
-                    isToday ? `ring-2 ring-emerald-500 ring-offset-2 dark:ring-offset-gray-900 glow-emerald` : ''
-                  } ${isCompleted ? 'text-white' : 'text-gray-400 dark:text-gray-500'}`}
-                  aria-current={isToday ? 'true' : 'false'}
+        {/* 练习模式选择 */}
+        <section className="mb-12" aria-label={t('practice.chooseMode')}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {practiceModes.map((mode) => {
+              const isSelected = selectedMode === mode.id;
+              const colorClasses: Record<'emerald' | 'blue' | 'purple', string> = {
+                emerald: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400',
+                blue: 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400',
+                purple: 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400',
+              };
+              
+              return (
+                <button
+                  key={mode.id}
+                  onClick={() => handleModeSelect(mode.id)}
+                  className={`
+                    feature-card apple-shadow-sm p-6 text-left transition-all duration-300
+                    ${isSelected ? 'ring-2 ring-emerald-500 border-2 border-emerald-500' : ''}
+                  `}
+                  role="radio"
+                  aria-checked={isSelected}
                 >
-                  {isCompleted ? (
-                    <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                    </svg>
-                  ) : (
-                    <span className="text-lg md:text-xl">{t('practice.pending')}</span>
+                  <div className={`w-12 h-12 rounded-xl ${colorClasses[mode.color as 'emerald' | 'blue' | 'purple']} flex items-center justify-center mb-4`}>
+                    {mode.icon}
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    {mode.title}
+                  </h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    {mode.desc}
+                  </p>
+                  {isSelected && (
+                    <div className="mt-4 flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-sm">
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                      已选中
+                    </div>
                   )}
-                </div>
-                <span
-                  className={`text-xs md:text-sm font-medium ${
-                    isToday
-                      ? 'text-emerald-600 dark:text-emerald-400'
-                      : 'text-gray-500 dark:text-gray-400'
-                  }`}
-                >
-                  {t(`practice.${day}`)}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* 周学习进度 */}
+        <section className="mb-12" aria-label={t('practice.weeklyProgress')}>
+          <div className="feature-card apple-shadow-xl">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+              {t('practice.weeklyProgress')}
+            </h2>
+            
+            <div className="grid grid-cols-7 gap-2 mb-6">
+              {weeklyData.map((day) => {
+                const dayLabels: Record<string, string> = {
+                  mon: t('practice.mon'),
+                  tue: t('practice.tue'),
+                  wed: t('practice.wed'),
+                  thu: t('practice.thu'),
+                  fri: t('practice.fri'),
+                  sat: t('practice.sat'),
+                  sun: t('practice.sun'),
+                };
+                
+                return (
+                  <div
+                    key={day.day}
+                    className={`
+                      text-center p-3 rounded-xl transition-all duration-300
+                      ${day.practiced ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-gray-50 dark:bg-gray-800/50'}
+                      ${day.isToday ? 'ring-2 ring-emerald-500 glow-emerald' : ''}
+                    `}
+                    aria-label={`${dayLabels[day.day]} ${day.practiced ? '已完成' : '未完成'}`}
+                  >
+                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+                      {dayLabels[day.day]}
+                    </div>
+                    <div className={`w-8 h-8 mx-auto rounded-full flex items-center justify-center ${
+                      day.practiced
+                        ? 'bg-emerald-500 text-white'
+                        : 'bg-gray-200 dark:bg-gray-700 text-gray-400'
+                    }`}>
+                      {day.practiced ? (
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      ) : (
+                        <span className="text-xs">-</span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* 进度条 */}
+            <div className="mb-4">
+              <div className="flex justify-between text-sm mb-2">
+                <span className="text-gray-500 dark:text-gray-400">本周进度</span>
+                <span className="font-medium text-emerald-600 dark:text-emerald-400">
+                  {stats.progressPercent}%
                 </span>
               </div>
-            );
-          })}
-        </div>
-
-        {/* Progress Bar */}
-        <div className="mb-8 md:mb-10" aria-label={t('practice.progressBarLabel')}>
-          <div className="flex justify-between items-center mb-3 md:mb-4">
-            <span className="text-sm md:text-base font-medium text-gray-700 dark:text-gray-300">
-              {t('practice.weekProgressLabel')}
-            </span>
-            <span className="text-sm md:text-base font-bold text-emerald-600 dark:text-emerald-400">
-              71%
-            </span>
+              <div className="h-3 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                <div
+                  className="h-full progress-fill progress-animated"
+                  style={{ width: `${stats.progressPercent}%` }}
+                  role="progressbar"
+                  aria-valuenow={stats.progressPercent}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                />
+              </div>
+            </div>
           </div>
-          <div className="h-3 md:h-4 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden apple-shadow-sm">
-            <div
-              className="h-full progress-fill progress-animated rounded-full"
-              style={{ width: '71%' }}
-              role="progressbar"
-              aria-valuenow={71}
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-label={t('practice.weekProgressLabel')}
-            />
-          </div>
-        </div>
+        </section>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6" role="list" aria-label={t('practice.statsLabel')}>
-          <div role="listitem">
+        {/* 统计数据 */}
+        <section className="mb-12" aria-label={t('practice.statsSummary')}>
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+            {t('practice.statsSummary')}
+          </h2>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <StatsCard
-              label="practice.charactersLearned"
-              value="12"
+              label={t('practice.charactersLearned')}
+              value={stats.masteredCharacters.toString()}
               icon={
-                <svg className="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              }
+            />
+            <StatsCard
+              label={t('practice.dayStreak')}
+              value={stats.streak.toString()}
+              icon={
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.97 7.97 0 0020 14a7.97 7.97 0 01-2.343 4.657z" />
+                </svg>
+              }
+            />
+            <StatsCard
+              label={t('practice.accuracy')}
+              value={`${stats.averageAccuracy}%`}
+              icon={
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                 </svg>
               }
             />
           </div>
-          <div role="listitem">
-            <StatsCard
-              label="practice.dayStreak"
-              value="5"
-              icon={
-                <svg className="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-                </svg>
-              }
-            />
-          </div>
-          <div role="listitem">
-            <StatsCard
-              label="practice.accuracy"
-              value="87%"
-              icon={
-                <svg className="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              }
-            />
-          </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ─── Action Buttons - Apple Style ─── */}
-      <section
-        className="flex flex-col sm:flex-row items-center justify-center gap-4 safe-area-bottom"
-        aria-label={t('practice.actionsLabel')}
-      >
-        <button
-          className="btn-apple-primary w-full sm:w-auto touch-target glow-emerald"
-          aria-label={t('practice.startPractice')}
-        >
-          {t('practice.startPractice')}
-        </button>
-        <button
-          className="btn-apple-secondary w-full sm:w-auto touch-target"
-          aria-label={t('practice.viewHistory')}
-        >
-          {t('practice.viewHistory')}
-        </button>
-      </section>
+        {/* 开始按钮 */}
+        <div className="text-center">
+          <button className="btn-apple-primary glow-emerald px-8 py-4 text-lg">
+            {selectedMode === 'writing' && t('practice.startWriting')}
+            {selectedMode === 'quiz' && t('practice.startQuiz')}
+            {selectedMode === 'progress' && t('practice.viewProgress')}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

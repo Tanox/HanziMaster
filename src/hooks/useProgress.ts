@@ -7,6 +7,38 @@ import { useLearningStore } from '@/store/learning';
 export function useProgress() {
   const { progress, characters } = useLearningStore();
 
+  const calculateStreak = (progress: Record<string, any>): number => {
+    const dates = Object.values(progress)
+      .filter((p: any) => p.lastPracticed)
+      .map((p: any) => new Date(p.lastPracticed).toDateString())
+      .sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
+    
+    if (dates.length === 0) return 0;
+    
+    let count = 1;
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    
+    if (dates[0] !== today.toDateString() && dates[0] !== yesterday.toDateString()) {
+      return 0;
+    }
+    
+    for (let i = 0; i < dates.length - 1; i++) {
+      const current = new Date(dates[i]);
+      const next = new Date(dates[i + 1]);
+      current.setDate(current.getDate() - 1);
+      
+      if (current.toDateString() === next.toDateString()) {
+        count++;
+      } else {
+        break;
+      }
+    }
+    
+    return count;
+  };
+
   const stats = useMemo(() => {
     const total = characters.length;
     const practiced = Object.keys(progress).length;
@@ -15,37 +47,7 @@ export function useProgress() {
       ? Math.round(Object.values(progress).reduce((sum, p) => sum + p.accuracy, 0) / practiced)
       : 0;
     
-    const streak = useMemo(() => {
-      const dates = Object.values(progress)
-        .filter(p => p.lastPracticed)
-        .map(p => new Date(p.lastPracticed!).toDateString())
-        .sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
-      
-      if (dates.length === 0) return 0;
-      
-      let count = 1;
-      const today = new Date();
-      const yesterday = new Date(today);
-      yesterday.setDate(yesterday.getDate() - 1);
-      
-      if (dates[0] !== today.toDateString() && dates[0] !== yesterday.toDateString()) {
-        return 0;
-      }
-      
-      for (let i = 0; i < dates.length - 1; i++) {
-        const current = new Date(dates[i]);
-        const next = new Date(dates[i + 1]);
-        current.setDate(current.getDate() - 1);
-        
-        if (current.toDateString() === next.toDateString()) {
-          count++;
-        } else {
-          break;
-        }
-      }
-      
-      return count;
-    }, [progress]);
+    const streak = calculateStreak(progress);
 
     return {
       totalCharacters: total,
