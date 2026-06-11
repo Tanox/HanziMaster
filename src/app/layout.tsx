@@ -13,6 +13,12 @@ import { MobileNav } from '@/components/mobile-nav';
 import { NavLink } from '@/components/nav-link';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { QueryProvider } from '@/components/query-provider';
+import { Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
+import { TooltipProvider } from "@/components/ui/tooltip";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+
 
 /* ───────── Main Layout ───────── */
 function LayoutContent({
@@ -168,7 +174,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <head>
         {/* Preconnect for faster font loading */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -183,13 +189,15 @@ export default function RootLayout({
         <title>HanziMaster | AI 汉字学习平台</title>
       </head>
       <body className="antialiased">
-        <QueryProvider>
-          <ThemeProvider>
-            <LocaleProvider>
-              <LayoutContent>{children}</LayoutContent>
-            </LocaleProvider>
-          </ThemeProvider>
-        </QueryProvider>
+        <TooltipProvider>
+          <QueryProvider>
+            <ThemeProvider>
+              <LocaleProvider>
+                <LayoutContent>{children}</LayoutContent>
+              </LocaleProvider>
+            </ThemeProvider>
+          </QueryProvider>
+        </TooltipProvider>
       </body>
     </html>
   );

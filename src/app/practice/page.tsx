@@ -1,9 +1,15 @@
-// src/app/practice/page.tsx v2.4.0 - Apple Design Style
+// src/app/practice/page.tsx v2.4.0 - shadcn/ui
 'use client';
 
+import * as React from "react"
 import { useState, useCallback } from 'react';
 import { useTranslation } from '@/components/locale-provider';
 import { useProgress } from '@/hooks/useProgress';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Progress } from "@/components/ui/progress"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { cn } from "@/lib/utils"
 import { StatsCard } from '@/components/stats-card';
 
 type PracticeMode = 'writing' | 'quiz' | 'progress';
@@ -58,10 +64,10 @@ export default function PracticePage() {
       <div className="max-w-6xl mx-auto">
         {/* 页面标题 */}
         <header className="text-center mb-12">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-3">
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-3">
             <span className="gradient-text">{t('practice.title')}</span>
           </h1>
-          <p className="text-gray-500 dark:text-gray-400 text-lg">
+          <p className="text-slate-500 dark:text-slate-400 text-lg">
             {t('practice.subtitle')}
           </p>
         </header>
@@ -71,7 +77,7 @@ export default function PracticePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {practiceModes.map((mode) => {
               const isSelected = selectedMode === mode.id;
-              const colorClasses: Record<'emerald' | 'blue' | 'purple', string> = {
+              const colorClasses = {
                 emerald: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400',
                 blue: 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400',
                 purple: 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400',
@@ -81,30 +87,32 @@ export default function PracticePage() {
                 <button
                   key={mode.id}
                   onClick={() => handleModeSelect(mode.id)}
-                  className={`
-                    feature-card apple-shadow-sm p-6 text-left transition-all duration-300
-                    ${isSelected ? 'ring-2 ring-emerald-500 border-2 border-emerald-500' : ''}
-                  `}
+                  className={cn(
+                    "text-left transition-all duration-300",
+                    isSelected ? "ring-2 ring-emerald-500" : ""
+                  )}
                   role="radio"
                   aria-checked={isSelected}
                 >
-                  <div className={`w-12 h-12 rounded-xl ${colorClasses[mode.color as 'emerald' | 'blue' | 'purple']} flex items-center justify-center mb-4`}>
-                    {mode.icon}
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                    {mode.title}
-                  </h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {mode.desc}
-                  </p>
-                  {isSelected && (
-                    <div className="mt-4 flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-sm">
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                      已选中
-                    </div>
-                  )}
+                  <Card className={cn(
+                    "bg-white/70 dark:bg-slate-800/50 backdrop-blur-xl hover:shadow-lg transition-all",
+                    isSelected ? "border-emerald-500" : ""
+                  )}>
+                    <CardHeader className="pb-2">
+                      <div className="flex items-center justify-between">
+                        <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center", colorClasses[mode.color as keyof typeof colorClasses])}>
+                          {mode.icon}
+                        </div>
+                        {isSelected && (
+                          <Badge variant="default" className="bg-emerald-500">已选中</Badge>
+                        )}
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <CardTitle className="text-lg mb-2">{mode.title}</CardTitle>
+                      <CardDescription>{mode.desc}</CardDescription>
+                    </CardContent>
+                  </Card>
                 </button>
               );
             })}
@@ -113,79 +121,74 @@ export default function PracticePage() {
 
         {/* 周学习进度 */}
         <section className="mb-12" aria-label={t('practice.weeklyProgress')}>
-          <div className="feature-card apple-shadow-xl">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
-              {t('practice.weeklyProgress')}
-            </h2>
-            
-            <div className="grid grid-cols-7 gap-2 mb-6">
-              {weeklyData.map((day) => {
-                const dayLabels: Record<string, string> = {
-                  mon: t('practice.mon'),
-                  tue: t('practice.tue'),
-                  wed: t('practice.wed'),
-                  thu: t('practice.thu'),
-                  fri: t('practice.fri'),
-                  sat: t('practice.sat'),
-                  sun: t('practice.sun'),
-                };
-                
-                return (
-                  <div
-                    key={day.day}
-                    className={`
-                      text-center p-3 rounded-xl transition-all duration-300
-                      ${day.practiced ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-gray-50 dark:bg-gray-800/50'}
-                      ${day.isToday ? 'ring-2 ring-emerald-500 glow-emerald' : ''}
-                    `}
-                    aria-label={`${dayLabels[day.day]} ${day.practiced ? '已完成' : '未完成'}`}
-                  >
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">
-                      {dayLabels[day.day]}
-                    </div>
-                    <div className={`w-8 h-8 mx-auto rounded-full flex items-center justify-center ${
-                      day.practiced
-                        ? 'bg-emerald-500 text-white'
-                        : 'bg-gray-200 dark:bg-gray-700 text-gray-400'
-                    }`}>
-                      {day.practiced ? (
-                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                      ) : (
-                        <span className="text-xs">-</span>
+          <Card className="bg-white/70 dark:bg-slate-800/50 backdrop-blur-xl">
+            <CardHeader>
+              <CardTitle>{t('practice.weeklyProgress')}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-7 gap-2">
+                {weeklyData.map((day) => {
+                  const dayLabels: Record<string, string> = {
+                    mon: t('practice.mon'),
+                    tue: t('practice.tue'),
+                    wed: t('practice.wed'),
+                    thu: t('practice.thu'),
+                    fri: t('practice.fri'),
+                    sat: t('practice.sat'),
+                    sun: t('practice.sun'),
+                  };
+                  
+                  return (
+                    <div
+                      key={day.day}
+                      className={cn(
+                        "text-center p-3 rounded-xl transition-all duration-300",
+                        day.practiced ? "bg-emerald-100 dark:bg-emerald-900/30" : "bg-slate-50 dark:bg-slate-800/50",
+                        day.isToday ? "ring-2 ring-emerald-500" : ""
                       )}
+                      aria-label={`${dayLabels[day.day]} ${day.practiced ? '已完成' : '未完成'}`}
+                    >
+                      <div className="text-xs text-slate-500 dark:text-slate-400 mb-2">
+                        {dayLabels[day.day]}
+                      </div>
+                      <div className={cn(
+                        "w-8 h-8 mx-auto rounded-full flex items-center justify-center",
+                        day.practiced ? "bg-emerald-500 text-white" : "bg-slate-200 dark:bg-slate-700 text-slate-400"
+                      )}>
+                        {day.practiced ? (
+                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        ) : (
+                          <span className="text-xs">-</span>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* 进度条 */}
-            <div className="mb-4">
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-gray-500 dark:text-gray-400">本周进度</span>
-                <span className="font-medium text-emerald-600 dark:text-emerald-400">
-                  {stats.progressPercent}%
-                </span>
+                  );
+                })}
               </div>
-              <div className="h-3 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
-                <div
-                  className="h-full progress-fill progress-animated"
-                  style={{ width: `${stats.progressPercent}%` }}
-                  role="progressbar"
-                  aria-valuenow={stats.progressPercent}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
+
+              {/* 进度条 */}
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-500 dark:text-slate-400">本周进度</span>
+                  <span className="font-medium text-emerald-600 dark:text-emerald-400">
+                    {stats.progressPercent}%
+                  </span>
+                </div>
+                <Progress 
+                  value={stats.progressPercent} 
+                  className="h-3"
+                  aria-label={`本周进度: ${stats.progressPercent}%`}
                 />
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </section>
 
         {/* 统计数据 */}
         <section className="mb-12" aria-label={t('practice.statsSummary')}>
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-6">
             {t('practice.statsSummary')}
           </h2>
           
@@ -222,11 +225,11 @@ export default function PracticePage() {
 
         {/* 开始按钮 */}
         <div className="text-center">
-          <button className="btn-apple-primary glow-emerald px-8 py-4 text-lg">
+          <Button className="bg-emerald-500 hover:bg-emerald-600 px-8 py-6 text-lg">
             {selectedMode === 'writing' && t('practice.startWriting')}
             {selectedMode === 'quiz' && t('practice.startQuiz')}
             {selectedMode === 'progress' && t('practice.viewProgress')}
-          </button>
+          </Button>
         </div>
       </div>
     </div>
