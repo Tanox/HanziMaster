@@ -12,6 +12,7 @@ import { LocaleToggleClient } from '@/components/locale-toggle';
 import { MobileNav } from '@/components/mobile-nav';
 import { NavLink } from '@/components/nav-link';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { QueryProvider } from '@/components/query-provider';
 
 /* ───────── Main Layout ───────── */
 function LayoutContent({
@@ -182,11 +183,13 @@ export default function RootLayout({
         <title>HanziMaster | AI 汉字学习平台</title>
       </head>
       <body className="antialiased">
-        <ThemeProvider>
-          <LocaleProvider>
-            <LayoutContent>{children}</LayoutContent>
-          </LocaleProvider>
-        </ThemeProvider>
+        <QueryProvider>
+          <ThemeProvider>
+            <LocaleProvider>
+              <LayoutContent>{children}</LayoutContent>
+            </LocaleProvider>
+          </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );
