@@ -1,4 +1,5 @@
 // src/components/feature-card.test.tsx v2.4.0
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { FeatureCard } from './feature-card';
 
@@ -17,6 +18,8 @@ describe('FeatureCard', () => {
     );
 
     expect(screen.getByTestId('icon')).toBeInTheDocument();
+    expect(screen.getByText('common.home')).toBeInTheDocument();
+    expect(screen.getByText('common.learn')).toBeInTheDocument();
   });
 
   it('should apply correct styling classes', () => {
@@ -31,8 +34,8 @@ describe('FeatureCard', () => {
     );
 
     const card = container.firstChild;
-    expect(card).toHaveClass('feature-card');
-    expect(card).toHaveClass('apple-shadow-sm');
+    expect(card).toHaveClass('backdrop-blur-xl');
+    expect(card).toHaveClass('transition-all');
   });
 
   it('should support gradient prop', () => {
