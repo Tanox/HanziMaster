@@ -10,6 +10,12 @@ import { ThemeToggleClient } from "@/components/theme-toggle";
 import { LocaleToggleClient } from "@/components/locale-toggle";
 import { MobileNav } from "@/components/mobile-nav";
 import { NavLink } from "@/components/nav-link";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+
 
 function LayoutContent({
   children,
@@ -27,14 +33,14 @@ function LayoutContent({
   }, [pathname]);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white flex flex-col">
+    <div className="min-h-screen bg-background text-foreground flex flex-col">
       {/* Skip to content - accessibility */}
       <a href="#main-content" className="skip-to-content">
         Skip to content
       </a>
 
-      {/* Header - Apple Style */}
-      <header className="bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-800/50 py-4 px-6 flex justify-between items-center sticky top-0 z-50">
+      {/* Header - Apple Style with Glassmorphism */}
+      <header className="bg-background/80 backdrop-blur-xl border-b border-border/50 py-4 px-6 flex justify-between items-center sticky top-0 z-50">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group shrink-0">
           <div className="w-9 h-9 bg-gradient-to-br from-[#007aff] to-[#5856d6] rounded-xl flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-200">
@@ -49,7 +55,7 @@ function LayoutContent({
         <nav className="hidden lg:flex items-center gap-8">
           <NavLink href="/learn">{t("common.learn")}</NavLink>
           <NavLink href="/practice">{t("common.practice")}</NavLink>
-          <div className="w-px h-6 bg-gray-200 dark:bg-gray-700"></div>
+          <div className="w-px h-6 bg-border"></div>
           <LocaleToggleClient />
           <ThemeToggleClient />
         </nav>
@@ -60,7 +66,7 @@ function LayoutContent({
           <LocaleToggleClient />
           <button
             onClick={() => setMobileNavOpen(true)}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            className="p-2 rounded-lg hover:bg-accent transition-colors"
             aria-label="Open menu"
             aria-expanded={mobileNavOpen}
             style={{ minWidth: 44, minHeight: 44 }}
@@ -81,7 +87,7 @@ function LayoutContent({
       </main>
 
       {/* Footer - Apple Style */}
-      <footer className="bg-[#f5f5f7] dark:bg-[#1d1d1f] border-t border-gray-200/50 dark:border-gray-800/50 py-12 px-6">
+      <footer className="bg-muted border-t border-border/50 py-12 px-6">
         <div className="max-w-6xl mx-auto flex flex-col items-center gap-6">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-gradient-to-br from-[#007aff] to-[#5856d6] rounded-lg flex items-center justify-center">
@@ -89,11 +95,11 @@ function LayoutContent({
             </div>
             <span className="text-lg font-semibold">HanziMaster</span>
           </div>
-          <nav className="flex flex-wrap justify-center gap-8 text-sm text-gray-600 dark:text-gray-400">
+          <nav className="flex flex-wrap justify-center gap-8 text-sm text-muted-foreground">
             <Link href="/learn" className="hover:text-[#007aff] dark:hover:text-[#2997ff] transition-colors">{t("common.learn")}</Link>
             <Link href="/practice" className="hover:text-[#007aff] dark:hover:text-[#2997ff] transition-colors">{t("common.practice")}</Link>
           </nav>
-          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-500 text-center">{t("footer.copyright")}</p>
+          <p className="text-xs sm:text-sm text-muted-foreground text-center">{t("footer.copyright")}</p>
         </div>
       </footer>
     </div>
@@ -106,7 +112,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com"/>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
@@ -119,7 +125,9 @@ export default function RootLayout({
       <body className="antialiased">
         <ThemeProvider>
           <LocaleProvider>
-            <LayoutContent>{children}</LayoutContent>
+            <TooltipProvider>
+              <LayoutContent>{children}</LayoutContent>
+            </TooltipProvider>
           </LocaleProvider>
         </ThemeProvider>
       </body>

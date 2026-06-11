@@ -48,10 +48,10 @@ export default function PracticePage() {
   return (
     <div className="max-w-6xl mx-auto px-6 py-16 safe-bottom">
       <div className="text-center mb-16">
-        <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 text-black dark:text-white">
+        <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 text-foreground">
           {t('common.practice')} {t('practice.center')}
         </h2>
-        <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
           {t('practice.subtitle')}
         </p>
       </div>
@@ -63,8 +63,8 @@ export default function PracticePage() {
             <button
               key={option.id}
               onClick={() => setSelectedOption(option.id)}
-              className={`group bg-[#fbfbfd] dark:bg-[#1d1d1f] p-10 rounded-[24px] border border-gray-200 dark:border-gray-800 hover:border-[#007aff] dark:hover:border-[#2997ff] hover:-translate-y-1 transition-all duration-300 text-left ${
-                isSelected ? 'border-black dark:border-white bg-white dark:bg-black' : ''
+              className={`group bg-muted dark:bg-card p-10 rounded-3xl border-2 border-transparent hover:border-[#007aff] dark:hover:border-[#2997ff] hover:-translate-y-1 transition-all duration-300 text-left ${
+                isSelected ? 'border-[#007aff] bg-background dark:bg-foreground/5' : ''
               }`}
             >
               <div className={`w-20 h-20 bg-gradient-to-br from-[#007aff]/10 to-[#af52de]/10 dark:from-[#007aff]/20 dark:to-[#af52de]/20 rounded-[20px] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 text-[#007aff] ${
@@ -72,13 +72,13 @@ export default function PracticePage() {
               }`}>
                 {getIcon(option.icon, 'w-8 h-8')}
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-black dark:text-white">
+              <h3 className="text-xl font-semibold mb-3 text-foreground">
                 {t(option.titleKey)}
               </h3>
-              <p className="text-base text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
+              <p className="text-base text-muted-foreground leading-relaxed mb-6">
                 {t(option.descKey)}
               </p>
-              <div className={`flex items-center gap-2 font-semibold ${isSelected ? 'text-black dark:text-white' : 'text-[#007aff]'} group`}>
+              <div className={`flex items-center gap-2 font-semibold ${isSelected ? 'text-foreground' : 'text-[#007aff]'} group`}>
                 <span>{t('practice.startNow')}</span>
                 <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l-4 4m0 0l-4 4m4-4H3" />
@@ -89,8 +89,8 @@ export default function PracticePage() {
         })}
       </div>
 
-      <div className="bg-[#fbfbfd] dark:bg-[#1d1d1f] rounded-[32px] p-10 border border-gray-200 dark:border-gray-800">
-        <h3 className="text-2xl font-semibold mb-10 text-black dark:text-white">
+      <div className="bg-muted dark:bg-card rounded-[32px] p-10 border border-border">
+        <h3 className="text-2xl font-semibold mb-10 text-foreground">
           {t('practice.weeklyProgress')}
         </h3>
 
@@ -100,13 +100,13 @@ export default function PracticePage() {
               key={day}
               className={`flex flex-col items-center p-5 rounded-[20px] ${
                 index < 5
-                  ? 'bg-gradient-to-br from-black to-[#1d1d1f] dark:from-white dark:to-gray-100 text-white dark:text-black'
-                  : 'bg-white dark:bg-black text-gray-500 dark:text-gray-500 border border-gray-200 dark:border-gray-800'
+                  ? 'bg-gradient-to-br from-primary to-primary/80 text-primary-foreground'
+                  : 'bg-background dark:bg-foreground/5 text-muted-foreground border border-border'
               } ${index === 4 ? 'ring-2 ring-[#007aff]' : ''}`}
             >
               <p className="text-xs mb-3 font-medium">{t(`practice.${day}`)}</p>
               <div className={`w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center ${
-                index < 5 ? 'bg-white/20 dark:bg-black/10' : 'bg-[#f5f5f7] dark:bg-[#1d1d1f]'
+                index < 5 ? 'bg-white/20 dark:bg-black/10' : 'bg-muted dark:bg-foreground/10'
               }`}>
                 {index < 5 ? (
                   <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

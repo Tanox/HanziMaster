@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useTranslation } from '@/components/locale-provider';
 import { FeatureCard } from '@/components/feature-card';
+import { Button } from '@/components/ui/button';
 
 export default function HomePage() {
   const { t } = useTranslation();
@@ -18,7 +19,7 @@ export default function HomePage() {
           </div>
           
           {/* Main Heading */}
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-black dark:text-white mb-6 leading-[1.05]">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-foreground mb-6 leading-[1.05]">
             {t('home.heroTitle')}，
             <span className="block mt-2">
               <span className="hanzi-font">{t('home.heroSubtitle')}</span>
@@ -26,56 +27,48 @@ export default function HomePage() {
           </h1>
           
           {/* Subtitle */}
-          <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-10 leading-relaxed">
+          <p className="text-xl sm:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10 leading-relaxed">
             {t('home.heroDescription')}
           </p>
           
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row justify-center gap-4 mb-16">
-            <Link 
-              href="/learn" 
-              className="group bg-black dark:bg-white text-white dark:text-black px-8 py-4 rounded-[980px] text-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-200 flex items-center justify-center gap-2"
-            >
-              {t('common.startLearning')}
-              <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </Link>
-            <Link 
-              href="/practice" 
-              className="group text-[#007aff] text-lg font-medium hover:opacity-70 transition-opacity flex items-center justify-center gap-2"
-            >
-              {t('common.exploreLibrary')}
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </Link>
+            <Button asChild size="lg" className="rounded-full">
+              <Link href="/learn">
+                {t('common.startLearning')}
+              </Link>
+            </Button>
+            <Button asChild variant="ghost" size="lg" className="rounded-full text-[#007aff]">
+              <Link href="/practice">
+                {t('common.exploreLibrary')}
+              </Link>
+            </Button>
           </div>
           
           {/* Visual Card */}
-          <div className="bg-gradient-to-b from-[#f5f5f7] to-white dark:from-[#1d1d1f] dark:to-black rounded-[32px] p-10 sm:p-12 border border-gray-200/50 dark:border-gray-800/50 max-w-4xl mx-auto">
+          <div className="bg-gradient-to-b from-muted to-background rounded-[32px] p-10 sm:p-12 border border-border max-w-4xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-10 items-center">
               {/* Large Character */}
               <div className="text-center">
-                <div className="text-[160px] sm:text-[200px] font-light hanzi-font bg-gradient-to-b from-gray-600 to-gray-800 dark:from-gray-300 dark:to-gray-500 bg-clip-text text-transparent">
+                <div className="text-[160px] sm:text-[200px] font-light hanzi-font bg-gradient-to-b from-foreground/60 to-foreground bg-clip-text text-transparent">
                   永
                 </div>
               </div>
               
               {/* Info Side */}
               <div className="text-left">
-                <h3 className="text-3xl font-semibold text-black dark:text-white mb-4">
+                <h3 className="text-3xl font-semibold text-foreground mb-4">
                   {t('home.yongCharacterTitle')}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 text-lg mb-8">
+                <p className="text-muted-foreground text-lg mb-8">
                   {t('home.yongCharacterDesc')}
                 </p>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center text-base">
-                    <span className="text-gray-600 dark:text-gray-400">{t('home.yongCharacterStrokes')}</span>
-                    <span className="font-semibold text-gray-900 dark:text-gray-100">72%</span>
+                    <span className="text-muted-foreground">{t('home.yongCharacterStrokes')}</span>
+                    <span className="font-semibold">72%</span>
                   </div>
-                  <div className="h-2 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
+                  <div className="h-2 bg-muted rounded-full overflow-hidden">
                     <div className="h-full w-[72%] bg-gradient-to-r from-[#007aff] to-[#af52de] rounded-full"></div>
                   </div>
                 </div>
@@ -86,13 +79,13 @@ export default function HomePage() {
       </section>
 
       {/* Features Section - Apple Style */}
-      <section className="py-24 px-6 bg-white dark:bg-black">
+      <section className="py-24 px-6 bg-background">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-black dark:text-white mb-4">
+            <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-4">
               {t('home.featuresTitle')}
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
+            <p className="text-xl text-muted-foreground">
               {t('home.featuresSubtitle')}
             </p>
           </div>

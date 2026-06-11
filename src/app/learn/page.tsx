@@ -2,6 +2,8 @@
 
 import { useState, useCallback } from 'react';
 import { useTranslation } from '@/components/locale-provider';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 interface Character {
   id: number;
@@ -49,10 +51,10 @@ export default function LearnPage() {
   return (
     <div className="max-w-6xl mx-auto px-6 py-16 safe-bottom">
       <div className="text-center mb-12">
-        <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-3 text-black dark:text-white">
+        <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-3 text-foreground">
           {t('common.dailyPractice')}
         </h2>
-        <p className="text-xl text-gray-600 dark:text-gray-400">
+        <p className="text-xl text-muted-foreground">
           {t('common.masterCharacters')}
         </p>
       </div>
@@ -72,21 +74,21 @@ export default function LearnPage() {
               role="option"
               aria-selected={isSelected}
               tabIndex={0}
-              className={`group bg-[#fbfbfd] dark:bg-[#1d1d1f] aspect-square rounded-[24px] border border-gray-200 dark:border-gray-800 hover:border-[#007aff] dark:hover:border-[#2997ff] hover:bg-[#007aff]/5 dark:hover:bg-[#007aff]/10 transition-all duration-300 text-center relative overflow-hidden outline-none ${
+              className={`group bg-muted dark:bg-card aspect-square rounded-3xl border-2 border-transparent hover:border-[#007aff] dark:hover:border-[#2997ff] hover:bg-[#007aff]/5 dark:hover:bg-[#007aff]/10 transition-all duration-300 text-center relative overflow-hidden outline-none ${
                 isSelected
-                  ? 'bg-black dark:bg-white border-black dark:border-white'
+                  ? 'bg-primary border-primary'
                   : ''
               }`}
             >
               <span className={`text-4xl sm:text-5xl font-light mb-2 block transition-colors hanzi-font ${
                 isSelected
-                  ? 'text-white dark:text-black'
-                  : 'text-black dark:text-white'
+                  ? 'text-primary-foreground'
+                  : 'text-foreground'
               }`}>
                 {char.hanzi}
               </span>
-              <span className={`text-xs text-gray-500 dark:text-gray-500 uppercase tracking-wider font-medium ${
-                isSelected ? 'text-white/70 dark:text-black/70' : ''
+              <span className={`text-xs text-muted-foreground uppercase tracking-wider font-medium ${
+                isSelected ? 'text-primary-foreground/70' : ''
               }`}>
                 {char.pinyin}
               </span>
@@ -96,73 +98,67 @@ export default function LearnPage() {
       </div>
 
       {selectedCharacter && (
-        <div className="bg-[#fbfbfd] dark:bg-[#1d1d1f] rounded-[32px] p-10 border border-gray-200 dark:border-gray-800 animate-scale-in">
+        <div className="bg-muted dark:bg-card rounded-[32px] p-10 border border-border animate-scale-in">
           <div className="flex flex-col md:flex-row gap-10 items-center md:items-start">
-            <div className="w-48 h-48 sm:w-56 sm:h-56 bg-gradient-to-br from-white to-[#f5f5f7] dark:from-[#1d1d1f] dark:to-black rounded-[24px] flex items-center justify-center border border-gray-200 dark:border-gray-800 shrink-0 relative group">
-              <span className="text-[120px] sm:text-[140px] font-light text-gray-700 dark:text-gray-300 hanzi-font transition-all duration-500 group-hover:scale-110">
+            <div className="w-48 h-48 sm:w-56 sm:h-56 bg-gradient-to-br from-background to-muted dark:from-card dark:to-background rounded-[24px] flex items-center justify-center border border-border shrink-0 relative group">
+              <span className="text-[120px] sm:text-[140px] font-light text-muted-foreground hanzi-font transition-all duration-500 group-hover:scale-110">
                 {selectedCharacter.hanzi}
               </span>
             </div>
 
             <div className="flex-1 text-center md:text-left">
               <div className="flex flex-col sm:flex-row items-center sm:items-baseline gap-4 mb-8">
-                <h3 className="text-4xl sm:text-5xl font-semibold text-black dark:text-white hanzi-font">
+                <h3 className="text-4xl sm:text-5xl font-semibold text-foreground hanzi-font">
                   {selectedCharacter.hanzi}
                 </h3>
-                <span className="text-2xl text-gray-500 dark:text-gray-400 font-medium">
+                <span className="text-2xl text-muted-foreground font-medium">
                   {selectedCharacter.pinyin}
                 </span>
-                <span className="inline-block px-4 py-2 bg-[#007aff]/10 text-[#007aff] rounded-full text-sm font-semibold">
+                <Badge variant="secondary" className="text-sm font-semibold">
                   {t(selectedCharacter.translationKey)}
-                </span>
+                </Badge>
               </div>
 
               <div className="grid grid-cols-3 gap-4 mb-8">
-                <div className="bg-white dark:bg-black rounded-[20px] p-5">
-                  <div className="text-xs text-gray-500 dark:text-gray-500 uppercase tracking-wider mb-2 font-medium">
+                <div className="bg-background dark:bg-foreground/5 rounded-[20px] p-5">
+                  <div className="text-xs text-muted-foreground uppercase tracking-wider mb-2 font-medium">
                     {t('common.strokeCount')}
                   </div>
-                  <div className="text-2xl font-semibold text-black dark:text-white">
+                  <div className="text-2xl font-semibold text-foreground">
                     {selectedCharacter.strokes} {t('common.strokes')}
                   </div>
                 </div>
-                <div className="bg-white dark:bg-black rounded-[20px] p-5">
-                  <div className="text-xs text-gray-500 dark:text-gray-500 uppercase tracking-wider mb-2 font-medium">
+                <div className="bg-background dark:bg-foreground/5 rounded-[20px] p-5">
+                  <div className="text-xs text-muted-foreground uppercase tracking-wider mb-2 font-medium">
                     {t('learn.radical')}
                   </div>
-                  <div className="text-2xl font-semibold text-black dark:text-white hanzi-font">
+                  <div className="text-2xl font-semibold text-foreground hanzi-font">
                     {selectedCharacter.radical}
                   </div>
                 </div>
-                <div className="bg-white dark:bg-black rounded-[20px] p-5">
-                  <div className="text-xs text-gray-500 dark:text-gray-500 uppercase tracking-wider mb-2 font-medium">
+                <div className="bg-background dark:bg-foreground/5 rounded-[20px] p-5">
+                  <div className="text-xs text-muted-foreground uppercase tracking-wider mb-2 font-medium">
                     {t('learn.structure')}
                   </div>
-                  <div className="text-2xl font-semibold text-black dark:text-white">
+                  <div className="text-2xl font-semibold text-foreground">
                     {selectedCharacter.structure}
                   </div>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center md:justify-start">
-                <button
-                  className="group bg-black dark:bg-white text-white dark:text-black px-8 py-4 rounded-[980px] text-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-200 flex items-center justify-center gap-2"
-                  aria-label={`${t('common.practiceWriting')} ${selectedCharacter.hanzi}`}
-                >
+                <Button size="lg" className="rounded-full">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                   </svg>
                   {t('common.practiceWriting')}
-                </button>
-                <button
-                  className="group text-[#007aff] text-lg font-medium hover:opacity-70 transition-opacity flex items-center justify-center gap-2"
-                  aria-label={`${t('common.hearPronunciation')} ${selectedCharacter.hanzi}`}
-                >
+                </Button>
+                <Button variant="ghost" size="lg" className="rounded-full text-[#007aff]">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                   </svg>
                   {t('common.hearPronunciation')}
-                </button>
+                </Button>
               </div>
             </div>
           </div>
