@@ -20,20 +20,20 @@ const practiceOptions: PracticeOption[] = [
 function getIcon(iconName: string, className: string) {
   if (iconName === 'pencil') {
     return (
-      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
       </svg>
     );
   }
   if (iconName === 'question') {
     return (
-      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
     );
   }
   return (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h2a2 2 0 01-2-2z" />
     </svg>
   );
@@ -64,7 +64,7 @@ export default function PracticePage() {
               key={option.id}
               onClick={() => setSelectedOption(option.id)}
               className={`group bg-muted dark:bg-card p-10 rounded-3xl border-2 border-transparent hover:border-[#007aff] dark:hover:border-[#2997ff] hover:-translate-y-1 transition-all duration-300 text-left ${
-                isSelected ? 'border-[#007aff] bg-background dark:bg-foreground/5' : ''
+                isSelected ? 'border-[#007aff] bg-background dark:bg-foreground/5' : 'transition-colors duration-300'
               }`}
             >
               <div className={`w-20 h-20 bg-gradient-to-br from-[#007aff]/10 to-[#af52de]/10 dark:from-[#007aff]/20 dark:to-[#af52de]/20 rounded-[20px] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 text-[#007aff] ${
@@ -80,7 +80,7 @@ export default function PracticePage() {
               </p>
               <div className={`flex items-center gap-2 font-semibold ${isSelected ? 'text-foreground' : 'text-[#007aff]'} group`}>
                 <span>{t('practice.startNow')}</span>
-                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l-4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </div>
@@ -109,7 +109,7 @@ export default function PracticePage() {
                 index < 5 ? 'bg-white/20 dark:bg-black/10' : 'bg-muted dark:bg-foreground/10'
               }`}>
                 {index < 5 ? (
-                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                   </svg>
                 ) : (

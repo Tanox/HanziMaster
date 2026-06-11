@@ -66,12 +66,12 @@ function LayoutContent({
           <LocaleToggleClient />
           <button
             onClick={() => setMobileNavOpen(true)}
-            className="p-2 rounded-lg hover:bg-accent transition-colors"
+            className="p-2 rounded-lg hover:bg-accent transition-colors duration-200"
             aria-label="Open menu"
             aria-expanded={mobileNavOpen}
             style={{ minWidth: 44, minHeight: 44 }}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16"/>
             </svg>
           </button>
@@ -121,6 +121,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+        <meta name="theme-color" content="#ffffff"/>
       </head>
       <body className="antialiased">
         <ThemeProvider>
