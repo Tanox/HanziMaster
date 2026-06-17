@@ -1,16 +1,48 @@
 @import "tailwindcss";
 
 @theme {
+  /* Font family */
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
   --font-hanzi: 'Noto Sans SC', sans-serif;
 
+  /* Apple Brand Colors */
+  --color-brand-blue: #007aff;
+  --color-brand-indigo: #5856d6;
+  --color-brand-purple: #af52de;
+  --color-brand-pink: #ff2d55;
+  --color-brand-orange: #ff9500;
+  --color-brand-green: #34c759;
+  --color-brand-red: #ff3b30;
+  --color-brand-yellow: #ffcc00;
+  --color-brand-teal: #30b0c7;
+
+  /* Apple Neutral Colors */
+  --color-apple-black: #000000;
+  --color-apple-900: #1d1d1f;
+  --color-apple-800: #2c2c2e;
+  --color-apple-700: #48484a;
+  --color-apple-600: #6e6e73;
+  --color-apple-500: #86888a;
+  --color-apple-400: #a1a1a6;
+  --color-apple-300: #d2d2d7;
+  --color-apple-200: #e8e8ed;
+  --color-apple-100: #f5f5f7;
+  --color-apple-50: #fbfbfd;
+  --color-apple-white: #ffffff;
+
+  /* Semantic - legacy names */
   --color-primary: #007aff;
   --color-primary-dark: #5856d6;
+  --color-success: #34c759;
+  --color-warning: #ff9500;
+  --color-error: #ff3b30;
 
+  /* Background / Foreground */
   --color-background: #ffffff;
-  --color-foreground: #000000;
+  --color-foreground: #1d1d1f;
 
+  /* Touch target */
   --touch-target-min: 44px;
 }
 
@@ -37,24 +69,7 @@ html {
   scroll-behavior: smooth;
 }
 
-.skip-to-content {
-  position: absolute;
-  top: -100%;
-  left: 16px;
-  z-index: 100;
-  padding: 12px 20px;
-  background: #007aff;
-  color: white;
-  font-weight: 600;
-  border-radius: 8px;
-  text-decoration: none;
-  transition: top 0.2s ease;
-}
-
-.skip-to-content:focus {
-  top: 16px;
-}
-
+/* Animations */
 @keyframes fade-in-up {
   from {
     opacity: 0;
