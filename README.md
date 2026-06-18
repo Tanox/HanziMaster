@@ -101,9 +101,10 @@
 
 ## 项目文档
 
-- [原型图预览](prototype/index.html) - 查看应用界面设计
+- [高保真原型](prototype/index.html) - 首页/学习/练习三页交互原型
+- [设计系统规范](prototype/design-system.html) — Apple HIG 风格的色彩/字体/间距/图标/动效规范
+- [组件库规范](prototype/components.html) — 基础/复合/业务组件 + 交互标准
 - [项目规范](openspec/) - 详细的功能和技术文档
-- [目录结构](openspec/03-technical-architecture.md) - 项目文件组织方式
 
 ## 版本信息
 

@@ -3,814 +3,1302 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HanziMaster 汉字大师 - 完整原型设计 v2.2.1</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-            hanzi: ['Noto Sans SC', 'sans-serif']
-          },
-          colors: {
-            primary: '#10b981',
-            'primary-dark': '#059669'
-          }
-        }
-      }
-    }
-  </script>
+  <title>HanziMaster 汉字大师 — 高保真原型 v3.0.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;700;800&display=swap" rel="stylesheet">
   <style>
-    .hanzi-font { font-family: 'Noto Sans SC', sans-serif; }
-    
-    /* 页面切换动画 */
-    .page-section { display: none; }
-    .page-section.active { display: block; }
-    
-    /* 动画 */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    :root {
+      --apple-blue: #007aff;
+      --apple-blue-light: #2997ff;
+      --apple-purple: #af52de;
+      --apple-pink: #ff2d55;
+      --apple-green: #34c759;
+      --apple-orange: #ff9500;
+      --apple-red: #ff3b30;
+      --apple-yellow: #ffcc00;
+      --apple-teal: #30b0c7;
+
+      --apple-black: #000000;
+      --apple-gray-900: #1d1d1f;
+      --apple-gray-800: #2c2c2e;
+      --apple-gray-700: #48484a;
+      --apple-gray-600: #6e6e73;
+      --apple-gray-500: #86888a;
+      --apple-gray-300: #d2d2d7;
+      --apple-gray-200: #e8e8ed;
+      --apple-gray-100: #f5f5f7;
+      --apple-gray-050: #fbfbfd;
+      --apple-white: #ffffff;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-xl: 20px;
+      --radius-2xl: 24px;
+      --radius-3xl: 32px;
+      --radius-pill: 980px;
+
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 32px rgba(0,0,0,0.12);
+      --shadow-xl: 0 20px 48px rgba(0,0,0,0.16);
+
+      --font-display: 'Inter', system-ui, sans-serif;
+      --font-hanzi: 'Noto Sans SC', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
     }
-    .animate-fade-in-up { animation: fadeInUp 0.6s ease-out; }
-    
-    /* 移动端菜单 */
-    .mobile-menu { transform: translateX(100%); transition: transform 0.3s ease; }
-    .mobile-menu.open { transform: translateX(0); }
-    
-    /* 语言下拉菜单 */
-    .lang-dropdown { opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.2s ease; }
-    .lang-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0); }
-    
-    /* 进度条动画 */
-    .progress-bar { transition: width 1s ease-out; }
-    
-    /* 卡片悬停效果 */
-    .card-hover { transition: all 0.3s ease; }
-    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
-    
-    /* 字符卡片选中状态 */
-    .char-card.selected { border-color: #10b981; background: rgba(16, 185, 129, 0.05); }
-    
-    /* 原型导航指示器 */
-    .nav-indicator { transition: all 0.3s ease; }
-    
-    /* 深色模式下的过渡 */
-    body { transition: background-color 0.3s ease, color 0.3s ease; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      background: var(--apple-gray-050);
+      color: var(--apple-gray-900);
+      font-family: var(--font-display);
+      font-size: 17px;
+      line-height: 1.47;
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+
+    .hanzi-font { font-family: var(--font-hanzi); }
+
+    /* Prototype Preview Panel */
+    .preview-panel {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      background: var(--apple-white);
+      border: 1px solid var(--apple-gray-200);
+      border-radius: var(--radius-xl);
+      padding: 16px;
+      box-shadow: var(--shadow-lg);
+      width: 200px;
+    }
+
+    .preview-panel-title {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--apple-gray-500);
+      margin-bottom: 12px;
+    }
+
+    .page-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .page-btn {
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      background: var(--apple-gray-100);
+      color: var(--apple-gray-700);
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-align: left;
+      transition: all .15s ease;
+      font-family: var(--font-display);
+    }
+
+    .page-btn:hover { background: var(--apple-gray-200); }
+    .page-btn.active { background: var(--apple-gray-900); color: white; }
+
+    .panel-divider {
+      height: 1px;
+      background: var(--apple-gray-200);
+      margin: 12px 0;
+    }
+
+    .panel-link {
+      display: block;
+      padding: 8px 12px;
+      font-size: 13px;
+      color: var(--apple-gray-600);
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      transition: all .15s ease;
+    }
+
+    .panel-link:hover { background: var(--apple-gray-100); color: var(--apple-blue); }
+
+    /* App Shell - the actual app */
+    .app {
+      max-width: 1440px;
+      margin: 0 auto;
+      background: var(--apple-gray-050);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--apple-gray-200);
+      padding: 0 40px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .app-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .app-logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--apple-blue), var(--apple-purple));
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      font-weight: 700;
+      transition: transform .2s ease;
+    }
+
+    .app-logo:hover .app-logo-icon { transform: scale(1.06) rotate(-3deg); }
+
+    .app-logo-text {
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .app-nav {
+      display: flex;
+      gap: 40px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .app-nav-link {
+      font-size: 15px;
+      color: var(--apple-gray-600);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color .2s ease;
+      position: relative;
+      padding: 8px 0;
+      cursor: pointer;
+    }
+
+    .app-nav-link:hover { color: var(--apple-gray-900); }
+
+    .app-nav-link.active { color: var(--apple-gray-900); }
+
+    .app-nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0; right: 0;
+      height: 2px;
+      background: var(--apple-blue);
+      border-radius: 1px;
+    }
+
+    .app-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: background .2s;
+      color: var(--apple-gray-700);
+      background: transparent;
+      border: none;
+    }
+
+    .icon-btn:hover { background: var(--apple-gray-100); }
+    .icon-btn svg { width: 20px; height: 20px; }
+
+    /* Page sections */
+    .page { display: none; animation: pageIn .5s ease-out; }
+    .page.active { display: block; }
+
+    @keyframes pageIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* HERO - Home */
+    .hero {
+      padding: 120px 40px 100px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--apple-blue);
+      margin-bottom: 28px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--apple-blue);
+      box-shadow: 0 0 0 4px rgba(0,122,255,0.15);
+    }
+
+    .hero-title {
+      font-size: clamp(48px, 6vw, 80px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+
+    .hero-title .zh {
+      display: block;
+      font-family: var(--font-hanzi);
+      margin-top: 8px;
+      background: linear-gradient(135deg, var(--apple-blue) 0%, var(--apple-purple) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 22px;
+      color: var(--apple-gray-600);
+      max-width: 640px;
+      margin: 0 auto 40px;
+      line-height: 1.5;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 80px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px 32px;
+      font-size: 17px;
+      font-weight: 500;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      transition: all .2s ease;
+      font-family: var(--font-display);
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--apple-gray-900);
+      color: white;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--apple-blue);
+      padding: 12px 16px;
+      font-size: 16px;
+    }
+    .btn-secondary:hover { background: rgba(0,122,255,0.08); }
+
+    /* Hero showcase card */
+    .hero-showcase {
+      max-width: 1080px;
+      margin: 0 auto;
+      background: linear-gradient(180deg, var(--apple-white) 0%, var(--apple-gray-100) 100%);
+      border: 1px solid var(--apple-gray-200);
+      border-radius: var(--radius-3xl);
+      padding: 56px;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .showcase-char-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .showcase-char {
+      font-size: clamp(160px, 22vw, 280px);
+      font-weight: 300;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--apple-gray-900) 0%, var(--apple-gray-600) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transition: transform .6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .showcase-char-wrap:hover .showcase-char { transform: scale(1.03) rotate(-1deg); }
+
+    .showcase-char-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 18px;
+      color: var(--apple-gray-600);
+    }
+
+    .showcase-char-meta span.hanzi { font-size: 22px; font-weight: 600; color: var(--apple-gray-900); }
+
+    .showcase-info h3 {
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .showcase-info p {
+      font-size: 18px;
+      color: var(--apple-gray-600);
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .progress-list { display: flex; flex-direction: column; gap: 18px; }
+
+    .progress-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .progress-label {
+      font-size: 14px;
+      color: var(--apple-gray-600);
+      min-width: 60px;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 8px;
+      background: var(--apple-gray-200);
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--apple-blue), var(--apple-purple));
+      border-radius: var(--radius-pill);
+      transition: width .6s ease;
+    }
+
+    .progress-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--apple-gray-900);
+      min-width: 40px;
+      text-align: right;
+    }
+
+    /* Features */
+    .features {
+      padding: 120px 40px;
+      text-align: center;
+    }
+
+    .section-header { margin-bottom: 56px; }
+
+    .section-headline {
+      font-size: clamp(36px, 4vw, 48px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      font-size: 20px;
+      color: var(--apple-gray-600);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .feature-card {
+      background: var(--apple-white);
+      border: 1px solid var(--apple-gray-200);
+      border-radius: var(--radius-2xl);
+      padding: 40px 32px;
+      transition: all .3s ease;
+      cursor: pointer;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--apple-gray-300);
+    }
+
+    .feature-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, rgba(0,122,255,0.12), rgba(175,82,222,0.12));
+      border-radius: var(--radius-xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .feature-card:hover .feature-icon { transform: scale(1.08) rotate(-5deg); }
+
+    .feature-icon svg { width: 26px; height: 26px; color: var(--apple-blue); }
+
+    .feature-card h4 {
+      font-size: 21px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .feature-card p {
+      font-size: 16px;
+      color: var(--apple-gray-600);
+      line-height: 1.6;
+    }
+
+    /* Stats strip */
+    .stats-strip {
+      padding: 80px 40px;
+      background: var(--apple-gray-900);
+      color: white;
+    }
+
+    .stats-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 48px;
+      text-align: center;
+    }
+
+    .stats-item-value {
+      font-size: 56px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff, #a0a0a8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stats-item-label {
+      font-size: 16px;
+      color: #a0a0a8;
+      margin-top: 8px;
+    }
+
+    /* LEARN PAGE */
+    .learn {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 40px;
+    }
+
+    .learn-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .learn-title {
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .learn-sub {
+      font-size: 19px;
+      color: var(--apple-gray-600);
+    }
+
+    .char-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 16px;
+      margin-bottom: 56px;
+    }
+
+    .char-card {
+      aspect-ratio: 1;
+      background: var(--apple-white);
+      border: 1px solid var(--apple-gray-200);
+      border-radius: var(--radius-2xl);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      transition: all .25s ease;
+      cursor: pointer;
+    }
+
+    .char-card:hover {
+      border-color: var(--apple-blue);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: var(--shadow-md);
+    }
+
+    .char-card.selected {
+      background: var(--apple-gray-900);
+      border-color: var(--apple-gray-900);
+    }
+
+    .char-card .char {
+      font-size: 44px;
+      font-weight: 400;
+      margin-bottom: 8px;
+      font-family: var(--font-hanzi);
+      color: var(--apple-gray-900);
+      transition: color .2s;
+    }
+
+    .char-card.selected .char, .char-card.selected .py { color: white; }
+
+    .char-card .py {
+      font-size: 13px;
+      color: var(--apple-gray-500);
+      font-weight: 500;
+    }
+
+    .char-detail {
+      background: var(--apple-white);
+      border: 1px solid var(--apple-gray-200);
+      border-radius: var(--radius-3xl);
+      padding: 48px;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .char-detail-visual {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, var(--apple-gray-050), var(--apple-gray-100));
+      border: 1px solid var(--apple-gray-200);
+      border-radius: var(--radius-2xl);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .char-detail-visual::before {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(0,122,255,0.06) 0%, transparent 60%);
+      animation: pulse-soft 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse-soft {
+      0%, 100% { transform: scale(0.85); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+
+    .char-detail-visual .char {
+      font-size: 140px;
+      font-weight: 300;
+      position: relative;
+      z-index: 1;
+      font-family: var(--font-hanzi);
+    }
+
+    .char-detail-visual .py {
+      font-size: 20px;
+      color: var(--apple-gray-600);
+      font-weight: 500;
+      position: relative;
+      z-index: 1;
+    }
+
+    .char-detail-info h3 {
+      font-size: 36px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .char-detail-info > p {
+      font-size: 18px;
+      color: var(--apple-gray-600);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .char-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .char-stat {
+      background: var(--apple-gray-050);
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      text-align: center;
+      border: 1px solid var(--apple-gray-200);
+    }
+
+    .char-stat-label {
+      font-size: 12px;
+      color: var(--apple-gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .char-stat-value {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--apple-gray-900);
+    }
+
+    .char-stat-value.hanzi { font-family: var(--font-hanzi); }
+
+    .char-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* PRACTICE PAGE */
+    .practice {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 40px;
+    }
+
+    .practice-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .practice-title {
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .practice-sub {
+      font-size: 19px;
+      color: var(--apple-gray-600);
+    }
+
+    .practice-modes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      margin-bottom: 64px;
+    }
+
+    .practice-mode {
+      background: var(--apple-white);
+      border: 2px solid var(--apple-gray-200);
+      border-radius: var(--radius-2xl);
+      padding: 40px 32px;
+      text-align: center;
+      transition: all .25s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .practice-mode:hover {
+      border-color: var(--apple-blue);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .practice-mode.selected {
+      border-color: var(--apple-gray-900);
+      background: var(--apple-gray-900);
+      color: white;
+    }
+
+    .practice-mode.selected .practice-mode-icon { background: linear-gradient(135deg, white, #c0c0c8); }
+    .practice-mode.selected .practice-mode-icon svg { color: var(--apple-gray-900); }
+    .practice-mode.selected p { color: rgba(255,255,255,0.7); }
+
+    .practice-mode-icon {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, rgba(0,122,255,0.12), rgba(175,82,222,0.12));
+      border-radius: var(--radius-xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      color: var(--apple-blue);
+      transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .practice-mode:hover .practice-mode-icon { transform: scale(1.1) rotate(-6deg); }
+    .practice-mode-icon svg { width: 32px; height: 32px; }
+
+    .practice-mode h4 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .practice-mode p {
+      font-size: 15px;
+      color: var(--apple-gray-600);
+      line-height: 1.5;
+    }
+
+    .practice-mode-tag {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: var(--radius-pill);
+      background: rgba(0,122,255,0.12);
+      color: var(--apple-blue);
+    }
+
+    .practice-mode.selected .practice-mode-tag { background: rgba(255,255,255,0.2); color: white; }
+
+    /* Weekly progress panel */
+    .weekly-panel {
+      background: var(--apple-white);
+      border: 1px solid var(--apple-gray-200);
+      border-radius: var(--radius-3xl);
+      padding: 48px;
+    }
+
+    .weekly-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .weekly-head h3 {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .weekly-head p {
+      font-size: 15px;
+      color: var(--apple-gray-600);
+    }
+
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+
+    .week-day {
+      padding: 24px 8px;
+      background: var(--apple-gray-050);
+      border: 1px solid var(--apple-gray-200);
+      border-radius: var(--radius-xl);
+      text-align: center;
+      transition: all .2s ease;
+    }
+
+    .week-day.completed {
+      background: var(--apple-gray-900);
+      border-color: var(--apple-gray-900);
+      color: white;
+    }
+
+    .week-day.today {
+      border-color: var(--apple-blue);
+      box-shadow: 0 0 0 3px rgba(0,122,255,0.15);
+    }
+
+    .week-day-label {
+      font-size: 13px;
+      opacity: 0.7;
+      margin-bottom: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .week-day-icon {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .summary-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 20px;
+    }
+
+    .summary-stat {
+      background: var(--apple-gray-050);
+      border: 1px solid var(--apple-gray-200);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      text-align: center;
+    }
+
+    .summary-stat .v {
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--apple-blue), var(--apple-purple));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .summary-stat .l {
+      font-size: 14px;
+      color: var(--apple-gray-600);
+      margin-top: 8px;
+    }
+
+    /* Footer */
+    footer.app-footer {
+      background: var(--apple-gray-100);
+      padding: 60px 40px;
+      text-align: center;
+      border-top: 1px solid var(--apple-gray-200);
+      margin-top: 80px;
+    }
+
+    .footer-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .footer-logo .ico {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, var(--apple-blue), var(--apple-purple));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 700;
+    }
+
+    .footer-logo span { font-size: 17px; font-weight: 600; }
+
+    footer nav {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    footer nav a {
+      font-size: 15px;
+      color: var(--apple-gray-600);
+      text-decoration: none;
+      transition: color .2s;
+    }
+
+    footer nav a:hover { color: var(--apple-blue); }
+
+    footer p {
+      font-size: 13px;
+      color: var(--apple-gray-500);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .preview-panel { display: none; }
+      .app-nav { position: static; transform: none; }
+      .showcase-grid { grid-template-columns: 1fr; }
+      .char-detail { grid-template-columns: 1fr; }
+      .char-stats { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .app-header { padding: 0 20px; height: 60px; }
+      .app-nav { display: none; }
+      .hero { padding: 80px 20px 60px; }
+      .features { padding: 80px 20px; }
+      .learn, .practice { padding: 60px 20px; }
+      .hero-showcase { padding: 40px 24px; }
+      .char-detail, .weekly-panel { padding: 32px 24px; }
+      .week-grid { grid-template-columns: repeat(7, 1fr); gap: 8px; }
+      .week-day { padding: 16px 4px; }
+      .week-day-icon { font-size: 18px; }
+      .char-grid { grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 10px; }
+      .char-card .char { font-size: 32px; }
+    }
   </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-sans min-h-screen">
-  
-  <!-- 原型导航器 -->
-  <div class="fixed top-4 left-4 z-[100] bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 p-2 flex flex-col gap-1">
-    <div class="px-3 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 border-b border-slate-100 dark:border-slate-700">原型预览</div>
-    <button onclick="showPage('home')" class="nav-btn px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-left transition-colors" data-page="home">首页</button>
-    <button onclick="showPage('learn')" class="nav-btn px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-left transition-colors" data-page="learn">学习页</button>
-    <button onclick="showPage('practice')" class="nav-btn px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-left transition-colors" data-page="practice">练习页</button>
-    <div class="px-3 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700 border-b border-slate-100 dark:border-slate-700 mt-1">视图</div>
-    <button onclick="toggleMobilePreview()" class="px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-left transition-colors" id="deviceToggle">
-      <span id="deviceLabel">桌面端</span>
-    </button>
-    <div class="px-3 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700 border-b border-slate-100 dark:border-slate-700 mt-1">主题</div>
-    <button onclick="cycleTheme()" class="px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-left transition-colors flex items-center gap-2" id="themeBtn">
-      <span id="themeIcon">☀️</span>
-      <span id="themeLabel">浅色</span>
-    </button>
-  </div>
+<body>
 
-  <!-- 原型预览容器 -->
-  <div id="previewContainer" class="transition-all duration-300">
-    <div id="previewFrame" class="mx-auto transition-all duration-300">
-      
-      <!-- ==================== 首页 ==================== -->
-      <div id="page-home" class="page-section active">
-        <!-- 导航栏 -->
-        <nav class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
-          <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="flex items-center justify-between h-16">
-              <!-- Logo -->
-              <a href="#" class="flex items-center gap-2 group">
-                <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
-                  <span class="text-white text-xl font-bold hanzi-font">汉</span>
-                </div>
-                <div class="flex flex-col">
-                  <span class="font-bold text-lg text-slate-900 dark:text-white">HanziMaster</span>
-                  <span class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">汉字大师</span>
-                </div>
-              </a>
-              
-              <!-- 桌面导航 -->
-              <div class="hidden md:flex items-center gap-1">
-                <a href="#" onclick="showPage('home'); return false;" class="px-4 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-medium transition-colors">首页</a>
-                <a href="#" onclick="showPage('learn'); return false;" class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-medium">学习</a>
-                <a href="#" onclick="showPage('practice'); return false;" class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-medium">练习</a>
-              </div>
-              
-              <!-- 右侧操作 -->
-              <div class="flex items-center gap-2">
-                <!-- 主题切换 -->
-                <button onclick="cycleTheme()" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="切换主题">
-                  <svg id="sunIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                  </svg>
-                  <svg id="moonIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-                  </svg>
-                </button>
-                
-                <!-- 语言切换 -->
-                <div class="relative">
-                  <button onclick="toggleLangDropdown()" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex items-center gap-1" id="langToggleBtn">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
-                    </svg>
-                    <span class="hidden sm:inline text-sm">简体中文</span>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                  </button>
-                  <!-- 语言下拉菜单 -->
-                  <div id="langDropdown" class="lang-dropdown absolute right-0 mt-2 w-48 max-h-64 overflow-y-auto bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-50">
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-emerald-600 dark:text-emerald-400 font-semibold" onclick="selectLang('简体中文')">🇨🇳 简体中文</button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-slate-700 dark:text-slate-200" onclick="selectLang('繁體中文')">🇹🇼 繁體中文</button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-slate-700 dark:text-slate-200" onclick="selectLang('English')">🇺🇸 English</button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-slate-700 dark:text-slate-200" onclick="selectLang('Español')">🇪🇸 Español</button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-slate-700 dark:text-slate-200" onclick="selectLang('العربية')">🇸🇦 العربية</button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-slate-700 dark:text-slate-200" onclick="selectLang('Français')">🇫🇷 Français</button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-slate-700 dark:text-slate-200" onclick="selectLang('Português')">🇧🇷 Português</button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-slate-700 dark:text-slate-200" onclick="selectLang('Deutsch')">🇩🇪 Deutsch</button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-slate-700 dark:text-slate-200" onclick="selectLang('日本語')">🇯🇵 日本語</button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-slate-700 dark:text-slate-200" onclick="selectLang('한국어')">🇰🇷 한국어</button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-xl last:rounded-b-xl text-slate-700 dark:text-slate-200" onclick="selectLang('Русский')">🇷🇺 Русский</button>
-                  </div>
-                </div>
-                
-                <!-- 移动端菜单按钮 -->
-                <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" id="mobileMenuBtn">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                  </svg>
-                </button>
+  <!-- Preview panel (prototype only) -->
+  <aside class="preview-panel">
+    <div class="preview-panel-title">📱 页面预览</div>
+    <div class="page-buttons">
+      <button class="page-btn active" onclick="switchPage('home', this)">首页 Home</button>
+      <button class="page-btn" onclick="switchPage('learn', this)">学习 Learn</button>
+      <button class="page-btn" onclick="switchPage('practice', this)">练习 Practice</button>
+    </div>
+    <div class="panel-divider"></div>
+    <div class="preview-panel-title">📚 设计文档</div>
+    <a class="panel-link" href="design-system.html">→ 设计系统规范</a>
+    <a class="panel-link" href="components.html">→ 组件库规范</a>
+  </aside>
+
+  <!-- App shell -->
+  <div class="app">
+    <header class="app-header">
+      <div class="app-logo" onclick="switchPage('home', document.querySelectorAll('.page-btn')[0])">
+        <div class="app-logo-icon hanzi-font">汉</div>
+        <span class="app-logo-text">HanziMaster</span>
+      </div>
+
+      <nav class="app-nav">
+        <a class="app-nav-link active" onclick="switchPage('home', document.querySelectorAll('.page-btn')[0])">首页</a>
+        <a class="app-nav-link" onclick="switchPage('learn', document.querySelectorAll('.page-btn')[1])">学习</a>
+        <a class="app-nav-link" onclick="switchPage('practice', document.querySelectorAll('.page-btn')[2])">练习</a>
+      </nav>
+
+      <div class="app-actions">
+        <button class="icon-btn" aria-label="搜索">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <button class="icon-btn" aria-label="通知">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        </button>
+        <button class="icon-btn" aria-label="账户">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ======= PAGE: HOME ======= -->
+    <section class="page active" id="page-home">
+      <div class="hero">
+        <div class="hero-eyebrow">AI 驱动的汉字学习平台</div>
+        <h1 class="hero-title">Master the Art of<br><span class="zh">汉字</span></h1>
+        <p class="hero-subtitle">利用 AI 技术提供关于笔画顺序、平衡和美感的个性化反馈，帮助您高效学习汉字书写。</p>
+        <div class="hero-cta">
+          <button class="btn btn-primary" onclick="switchPage('learn', document.querySelectorAll('.page-btn')[1])">
+            开始学习
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+          <button class="btn btn-secondary" onclick="switchPage('practice', document.querySelectorAll('.page-btn')[2])">
+            探索字库 →
+          </button>
+        </div>
+
+        <div class="hero-showcase">
+          <div class="showcase-grid">
+            <div class="showcase-char-wrap">
+              <div class="showcase-char hanzi-font">永</div>
+              <div class="showcase-char-meta">
+                <span class="hanzi-font hanzi">永</span>
+                <span>·</span>
+                <span>yǒng</span>
+                <span>·</span>
+                <span>永恒 Forever</span>
               </div>
             </div>
-          </div>
-        </nav>
-
-        <!-- 移动端菜单 -->
-        <div id="mobileMenu" class="mobile-menu fixed inset-0 z-[60] hidden">
-          <div class="absolute inset-0 bg-black/50" onclick="toggleMobileMenu()"></div>
-          <div class="absolute right-0 top-0 h-full w-72 bg-white dark:bg-slate-900 shadow-2xl">
-            <div class="p-6">
-              <div class="flex justify-between items-center mb-8">
-                <span class="font-bold text-lg">菜单</span>
-                <button onclick="toggleMobileMenu()" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                  </svg>
-                </button>
-              </div>
-              <nav class="space-y-2">
-                <a href="#" onclick="showPage('home'); toggleMobileMenu(); return false;" class="block px-4 py-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-medium">首页</a>
-                <a href="#" onclick="showPage('learn'); toggleMobileMenu(); return false;" class="block px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">学习</a>
-                <a href="#" onclick="showPage('practice'); toggleMobileMenu(); return false;" class="block px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">练习</a>
-              </nav>
-              <div class="mt-8 pt-8 border-t border-slate-200 dark:border-slate-700">
-                <button onclick="cycleTheme()" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors w-full">
-                  <svg id="mobileSunIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                  </svg>
-                  <span id="mobileThemeLabel">浅色模式</span>
-                </button>
+            <div class="showcase-info">
+              <h3>永字八法 · 汉字之美</h3>
+              <p>掌握永字的八个基本笔画，打开汉字书写的精髓之门。从点到线，从线到面，构建完整的书写体系。</p>
+              <div class="progress-list">
+                <div class="progress-row"><span class="progress-label">笔画</span><div class="progress-bar"><div class="progress-fill" style="width: 72%"></div></div><span class="progress-value">72%</span></div>
+                <div class="progress-row"><span class="progress-label">结构</span><div class="progress-bar"><div class="progress-fill" style="width: 58%"></div></div><span class="progress-value">58%</span></div>
+                <div class="progress-row"><span class="progress-label">平衡</span><div class="progress-bar"><div class="progress-fill" style="width: 84%"></div></div><span class="progress-value">84%</span></div>
+                <div class="progress-row"><span class="progress-label">美感</span><div class="progress-bar"><div class="progress-fill" style="width: 63%"></div></div><span class="progress-value">63%</span></div>
               </div>
             </div>
           </div>
         </div>
-
-        <!-- 主要内容 -->
-        <main>
-          <!-- Hero 区域 -->
-          <section class="relative min-h-[85vh] flex items-center overflow-hidden bg-gradient-to-br from-slate-50 via-emerald-50/30 to-cyan-50/20 dark:from-slate-900 dark:via-emerald-900/20 dark:to-cyan-900/10">
-            <!-- 背景装饰 -->
-            <div class="absolute inset-0 overflow-hidden pointer-events-none">
-              <div class="absolute top-20 left-10 w-72 h-72 bg-emerald-200/30 dark:bg-emerald-900/30 rounded-full blur-3xl"></div>
-              <div class="absolute bottom-20 right-10 w-96 h-96 bg-cyan-200/20 dark:bg-cyan-900/20 rounded-full blur-3xl"></div>
-              <div class="absolute inset-0 opacity-[0.02]" style="background-image: linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px); background-size: 40px 40px;"></div>
-            </div>
-            
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 relative z-10">
-              <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-                <!-- 左侧内容 -->
-                <div class="space-y-8 animate-fade-in-up">
-                  <!-- 状态徽章 -->
-                  <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 text-sm font-medium">
-                    <span class="relative flex h-2 w-2">
-                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                      <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                    </span>
-                    AI 驱动学习
-                  </div>
-                  
-                  <!-- 主标题 -->
-                  <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1]">
-                    <span class="text-slate-900 dark:text-white">AI 驱动的</span><br>
-                    <span class="bg-gradient-to-r from-emerald-500 via-emerald-600 to-cyan-500 dark:from-emerald-400 dark:via-emerald-500 dark:to-cyan-400 bg-clip-text text-transparent italic font-black">中文学习平台</span>
-                  </h1>
-                  
-                  <!-- 描述 -->
-                  <p class="text-lg text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed">
-                    利用 AI 技术提供关于笔画顺序、平衡和美感的个性化反馈，帮助你高效学习汉字。体验未来汉字学习方式。
-                  </p>
-                  
-                  <!-- CTA 按钮 -->
-                  <div class="flex flex-wrap gap-4">
-                    <a href="#" onclick="showPage('learn'); return false;" class="group bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-6 py-3.5 rounded-xl text-base font-bold hover:from-emerald-600 hover:to-emerald-700 transition-all shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/40 hover:-translate-y-0.5 active:scale-[0.98] flex items-center gap-2">
-                      开始学习
-                      <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                      </svg>
-                    </a>
-                    <a href="#" onclick="showPage('practice'); return false;" class="group bg-white dark:bg-slate-800 text-slate-900 dark:text-white border-2 border-slate-200 dark:border-slate-700 px-6 py-3.5 rounded-xl text-base font-bold hover:border-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all hover:-translate-y-0.5 active:scale-[0.98] flex items-center gap-2">
-                      探索字库
-                      <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                      </svg>
-                    </a>
-                  </div>
-                  
-                  <!-- 用户数据 -->
-                  <div class="flex items-center gap-4 pt-4">
-                    <div class="flex -space-x-3">
-                      <div class="w-9 h-9 rounded-full bg-emerald-100 dark:bg-emerald-900/50 border-2 border-white dark:border-slate-800 flex items-center justify-center text-xs font-bold text-emerald-600 dark:text-emerald-400 hanzi-font">永</div>
-                      <div class="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900/50 border-2 border-white dark:border-slate-800 flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-400 hanzi-font">山</div>
-                      <div class="w-9 h-9 rounded-full bg-purple-100 dark:bg-purple-900/50 border-2 border-white dark:border-slate-800 flex items-center justify-center text-xs font-bold text-purple-600 dark:text-purple-400 hanzi-font">水</div>
-                    </div>
-                    <div class="text-sm">
-                      <span class="font-bold text-slate-900 dark:text-white">10,000+</span> <span class="text-slate-600 dark:text-slate-400">学员正在学习</span>
-                    </div>
-                  </div>
-                </div>
-                
-                <!-- 右侧 - 演示卡片 -->
-                <div class="relative flex items-center justify-center lg:h-[500px] mt-8 lg:mt-0">
-                  <div class="absolute inset-0 bg-gradient-to-br from-emerald-100 to-cyan-100 dark:from-emerald-900/20 dark:to-cyan-900/20 rounded-[4rem] rotate-3 -z-10 opacity-60"></div>
-                  
-                  <div class="bg-white dark:bg-slate-800 p-8 rounded-[3rem] shadow-2xl border border-slate-100 dark:border-slate-700 w-full max-w-md transform -rotate-2 hover:rotate-0 transition-transform duration-700">
-                    <!-- 卡片头部 -->
-                    <div class="flex justify-between items-start mb-6">
-                      <div>
-                        <span class="text-4xl font-bold text-slate-900 dark:text-white hanzi-font">永</span>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium">yǒng • Forever</p>
-                      </div>
-                      <div class="bg-emerald-50 dark:bg-emerald-900/30 p-2.5 rounded-xl">
-                        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                      </div>
-                    </div>
-                    
-                    <!-- 字符展示 -->
-                    <div class="aspect-square bg-gradient-to-br from-slate-50 to-emerald-50/30 dark:from-slate-900 dark:to-emerald-900/20 rounded-2xl border-2 border-dashed border-emerald-200/50 dark:border-emerald-800/50 flex items-center justify-center relative overflow-hidden group">
-                      <span class="text-[8rem] text-slate-200/80 dark:text-slate-700/80 hanzi-font transition-all duration-500 group-hover:scale-110">永</span>
-                      <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="relative">
-                          <div class="absolute inset-0 w-4 h-4 bg-emerald-500 rounded-full opacity-20 animate-ping"></div>
-                          <div class="w-4 h-4 bg-emerald-500 rounded-full relative"></div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <!-- 进度 -->
-                    <div class="mt-8 space-y-4">
-                      <div class="flex justify-between items-center">
-                        <span class="text-sm font-medium text-slate-500 dark:text-slate-400">笔画掌握度</span>
-                        <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400">68%</span>
-                      </div>
-                      <div class="w-full h-2.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                        <div class="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full progress-bar" style="width: 68%;"></div>
-                      </div>
-                      <p class="text-xs text-slate-400 dark:text-slate-500 text-center italic pt-1">永字八法，品味汉字之美</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- 功能特性 -->
-          <section class="py-20 px-4 sm:px-6">
-            <div class="max-w-7xl mx-auto">
-              <div class="text-center mb-14">
-                <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white mb-3">
-                  为什么选择汉字大师
-                </h2>
-                <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-                  体验未来汉字学习
-                </p>
-              </div>
-              
-              <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- AI 洞察 -->
-                <div class="card-hover bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-900/30 dark:to-blue-800/30 p-8 rounded-2xl border border-blue-100 dark:border-blue-800/30">
-                  <div class="w-14 h-14 bg-blue-100 dark:bg-blue-900/50 rounded-2xl flex items-center justify-center mb-5 text-blue-600 dark:text-blue-400">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-                    </svg>
-                  </div>
-                  <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">AI 智能洞察</h3>
-                  <p class="text-slate-600 dark:text-slate-300">Gemini AI 驱动的实时反馈，分析笔画顺序、平衡性和整体美学。</p>
-                </div>
-                
-                <!-- 词源文化 -->
-                <div class="card-hover bg-gradient-to-br from-amber-50 to-amber-100/50 dark:from-amber-900/30 dark:to-amber-800/30 p-8 rounded-2xl border border-amber-100 dark:border-amber-800/30">
-                  <div class="w-14 h-14 bg-amber-100 dark:bg-amber-900/50 rounded-2xl flex items-center justify-center mb-5 text-amber-600 dark:text-amber-400">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                    </svg>
-                  </div>
-                  <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">词源与文化</h3>
-                  <p class="text-slate-600 dark:text-slate-300">探索汉字背后的历史故事，了解每个字符的演变和文化内涵。</p>
-                </div>
-                
-                <!-- 自适应学习 -->
-                <div class="card-hover bg-gradient-to-br from-purple-50 to-purple-100/50 dark:from-purple-900/30 dark:to-purple-800/30 p-8 rounded-2xl border border-purple-100 dark:border-purple-800/30">
-                  <div class="w-14 h-14 bg-purple-100 dark:bg-purple-900/50 rounded-2xl flex items-center justify-center mb-5 text-purple-600 dark:text-purple-400">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                    </svg>
-                  </div>
-                  <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">自适应学习</h3>
-                  <p class="text-slate-600 dark:text-slate-300">智能算法根据你的学习进度调整个性化学习路径，提高学习效率。</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- 统计 -->
-          <section class="py-16 px-4 sm:px-6 bg-gradient-to-r from-emerald-500 to-cyan-500">
-            <div class="max-w-7xl mx-auto">
-              <div class="grid sm:grid-cols-3 gap-8 text-white text-center">
-                <div>
-                  <div class="text-4xl sm:text-5xl font-bold mb-1">10,000+</div>
-                  <div class="text-emerald-100">活跃学习者</div>
-                </div>
-                <div>
-                  <div class="text-4xl sm:text-5xl font-bold mb-1">500+</div>
-                  <div class="text-emerald-100">常用汉字</div>
-                </div>
-                <div>
-                  <div class="text-4xl sm:text-5xl font-bold mb-1">98%</div>
-                  <div class="text-emerald-100">用户满意度</div>
-                </div>
-              </div>
-            </div>
-          </section>
-        </main>
-
-        <!-- 页脚 -->
-        <footer class="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-10 px-4 sm:px-6">
-          <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-              <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center">
-                  <span class="text-white text-sm font-bold hanzi-font">汉</span>
-                </div>
-                <span class="font-bold text-slate-900 dark:text-white">HanziMaster</span>
-              </div>
-              <div class="text-sm text-slate-500 dark:text-slate-400">
-                © 2026 汉字大师. 保留所有权利。
-              </div>
-            </div>
-          </div>
-        </footer>
       </div>
 
-      <!-- ==================== 学习页 ==================== -->
-      <div id="page-learn" class="page-section">
-        <!-- 导航栏 (复用) -->
-        <nav class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
-          <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="flex items-center justify-between h-16">
-              <a href="#" class="flex items-center gap-2 group" onclick="showPage('home'); return false;">
-                <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
-                  <span class="text-white text-xl font-bold hanzi-font">汉</span>
-                </div>
-                <span class="font-bold text-lg text-slate-900 dark:text-white">HanziMaster</span>
-              </a>
-              <div class="hidden md:flex items-center gap-1">
-                <a href="#" onclick="showPage('home'); return false;" class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-medium">首页</a>
-                <a href="#" onclick="showPage('learn'); return false;" class="px-4 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-medium transition-colors">学习</a>
-                <a href="#" onclick="showPage('practice'); return false;" class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-medium">练习</a>
-              </div>
-              <div class="flex items-center gap-2">
-                <button onclick="cycleTheme()" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                  </svg>
-                </button>
-                <button class="md:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" onclick="toggleMobileMenu()">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                  </svg>
-                </button>
-              </div>
+      <section class="features">
+        <div class="section-header">
+          <h2 class="section-headline">为什么选择汉字大师</h2>
+          <p class="section-desc">从基础笔画到文化内涵，全方位提升您的中文水平</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            </div>
+            <h4>AI 智能洞察</h4>
+            <p>Gemini AI 驱动的实时反馈系统，分析您的笔画顺序、平衡性和整体美学，提供专业书写建议。</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="background: linear-gradient(135deg, rgba(175,82,222,0.12), rgba(255,45,85,0.12));">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--apple-purple);"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            </div>
+            <h4>词源与文化</h4>
+            <p>探索汉字背后的历史故事，了解每个字符的演变过程。从甲骨文到现代简体，感受中华文化的厚重。</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="background: linear-gradient(135deg, rgba(52,199,89,0.12), rgba(48,176,199,0.12));">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--apple-green);"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            </div>
+            <h4>自适应学习</h4>
+            <p>智能算法根据您的学习进度调整个性化学习路径。专注您的薄弱环节，事半功倍地提升汉字掌握度。</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="background: linear-gradient(135deg, rgba(255,149,0,0.12), rgba(255,45,48,0.12));">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--apple-orange);"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+            </div>
+            <h4>智能书写画布</h4>
+            <p>Canvas API 驱动的真实书写体验。在数字画布上自由挥毫，AI 即时评分，追踪每一笔的进步。</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="background: linear-gradient(135deg, rgba(0,122,255,0.12), rgba(175,82,222,0.12));">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--apple-purple);"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm0 18a8 8 0 118-8 8 8 0 01-8 8z"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <h4>科学记忆曲线</h4>
+            <p>基于艾宾浩斯遗忘曲线的复习提醒机制。在最佳时刻复习已学汉字，让记忆更加持久牢固。</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="background: linear-gradient(135deg, rgba(48,176,199,0.12), rgba(0,122,255,0.12));">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--apple-teal);"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
+            </div>
+            <h4>详细学习报告</h4>
+            <p>每日、每周、每月的学习数据分析。了解学习趋势、掌握速度、正确率，量化您的成长轨迹。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats-strip">
+        <div class="stats-grid">
+          <div><div class="stats-item-value">10,000+</div><div class="stats-item-label">活跃学习者</div></div>
+          <div><div class="stats-item-value">500+</div><div class="stats-item-label">常用汉字</div></div>
+          <div><div class="stats-item-value">98%</div><div class="stats-item-label">用户满意度</div></div>
+          <div><div class="stats-item-value">4.9</div><div class="stats-item-label">应用商店评分</div></div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ======= PAGE: LEARN ======= -->
+    <section class="page" id="page-learn">
+      <div class="learn">
+        <div class="learn-header">
+          <h2 class="learn-title">每日学习</h2>
+          <p class="learn-sub">今天我们掌握 12 个基础汉字</p>
+        </div>
+
+        <div class="char-grid" id="charGrid">
+          <div class="char-card selected" onclick="selectChar(this, '一', 'yī', 'one', 1, '一', '独体', 85)"><span class="char hanzi-font">一</span><span class="py">yī</span></div>
+          <div class="char-card" onclick="selectChar(this, '二', 'èr', 'two', 2, '二', '独体', 72)"><span class="char hanzi-font">二</span><span class="py">èr</span></div>
+          <div class="char-card" onclick="selectChar(this, '三', 'sān', 'three', 3, '一', '独体', 68)"><span class="char hanzi-font">三</span><span class="py">sān</span></div>
+          <div class="char-card" onclick="selectChar(this, '人', 'rén', 'person', 2, '人', '独体', 76)"><span class="char hanzi-font">人</span><span class="py">rén</span></div>
+          <div class="char-card" onclick="selectChar(this, '大', 'dà', 'big', 3, '大', '独体', 81)"><span class="char hanzi-font">大</span><span class="py">dà</span></div>
+          <div class="char-card" onclick="selectChar(this, '小', 'xiǎo', 'small', 3, '小', '独体', 59)"><span class="char hanzi-font">小</span><span class="py">xiǎo</span></div>
+          <div class="char-card" onclick="selectChar(this, '口', 'kǒu', 'mouth', 3, '口', '独体', 74)"><span class="char hanzi-font">口</span><span class="py">kǒu</span></div>
+          <div class="char-card" onclick="selectChar(this, '日', 'rì', 'sun/day', 4, '日', '独体', 88)"><span class="char hanzi-font">日</span><span class="py">rì</span></div>
+          <div class="char-card" onclick="selectChar(this, '月', 'yuè', 'moon/month', 4, '月', '独体', 66)"><span class="char hanzi-font">月</span><span class="py">yuè</span></div>
+          <div class="char-card" onclick="selectChar(this, '山', 'shān', 'mountain', 3, '山', '独体', 54)"><span class="char hanzi-font">山</span><span class="py">shān</span></div>
+          <div class="char-card" onclick="selectChar(this, '水', 'shuǐ', 'water', 4, '水', '独体', 71)"><span class="char hanzi-font">水</span><span class="py">shuǐ</span></div>
+          <div class="char-card" onclick="selectChar(this, '火', 'huǒ', 'fire', 4, '火', '独体', 48)"><span class="char hanzi-font">火</span><span class="py">huǒ</span></div>
+        </div>
+
+        <div class="char-detail" id="charDetail">
+          <div class="char-detail-visual">
+            <span class="char hanzi-font" id="detailChar">一</span>
+            <span class="py" id="detailPy">yī</span>
+          </div>
+          <div class="char-detail-info">
+            <h3 class="hanzi-font" id="detailTitle">一 · one</h3>
+            <p id="detailDesc">最基础的汉字。一横，表示数字一。也可引申为"全部"、"相同"、"一旦"等含义。是学习所有汉字的起点。</p>
+            <div class="char-stats">
+              <div class="char-stat"><div class="char-stat-label">笔画</div><div class="char-stat-value" id="statStrokes">1 画</div></div>
+              <div class="char-stat"><div class="char-stat-label">部首</div><div class="char-stat-value hanzi-font" id="statRadical">一</div></div>
+              <div class="char-stat"><div class="char-stat-label">结构</div><div class="char-stat-value" id="statStructure">独体</div></div>
+              <div class="char-stat"><div class="char-stat-label">掌握度</div><div class="char-stat-value" id="statMastery">85%</div></div>
+            </div>
+            <div class="char-actions">
+              <button class="btn btn-primary">✏️ 练习书写</button>
+              <button class="btn btn-secondary">🔊 听发音</button>
+              <button class="btn btn-secondary">📖 词源</button>
             </div>
           </div>
-        </nav>
-
-        <!-- 主要内容 -->
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-          <!-- 页面头部 -->
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-            <div>
-              <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">每日练习</h1>
-              <p class="text-slate-600 dark:text-slate-400 mt-1">掌握最常用的 12 个汉字</p>
-            </div>
-            <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-sm font-medium">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              5 天连续学习
-            </div>
-          </div>
-
-          <div class="grid lg:grid-cols-3 gap-8">
-            <!-- 字符网格 -->
-            <div class="lg:col-span-2">
-              <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700">
-                <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-4">选择汉字</h2>
-                <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-3">
-                  <button class="char-card selected aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-105 transition-all border-2 border-emerald-500 shadow-md" data-char="一">一</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-105 transition-all border-2 border-transparent hover:border-emerald-300" data-char="二">二</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-105 transition-all border-2 border-transparent hover:border-emerald-300" data-char="三">三</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-105 transition-all border-2 border-transparent hover:border-emerald-300" data-char="人">人</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-105 transition-all border-2 border-transparent hover:border-emerald-300" data-char="大">大</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-105 transition-all border-2 border-transparent hover:border-emerald-300" data-char="小">小</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-105 transition-all border-2 border-transparent hover:border-emerald-300" data-char="口">口</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-105 transition-all border-2 border-transparent hover:border-emerald-300" data-char="日">日</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-105 transition-all border-2 border-transparent hover:border-emerald-300" data-char="月">月</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-105 transition-all border-2 border-transparent hover:border-emerald-300" data-char="山">山</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-105 transition-all border-2 border-transparent hover:border-emerald-300" data-char="水">水</button>
-                  <button class="char-card aspect-square bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-3xl font-bold hanzi-font text-slate-900 dark:text-white cursor-pointer hover:scale-105 transition-all border-2 border-transparent hover:border-emerald-300" data-char="火">火</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- 字符详情 -->
-            <div class="lg:col-span-1">
-              <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 sticky top-24">
-                <div class="flex items-start gap-4 mb-6">
-                  <div class="w-20 h-20 bg-gradient-to-br from-slate-50 to-emerald-50/30 dark:from-slate-900 dark:to-emerald-900/20 rounded-2xl border-2 border-dashed border-emerald-300 dark:border-emerald-700 flex items-center justify-center flex-shrink-0">
-                    <span class="text-5xl font-bold hanzi-font text-slate-900 dark:text-white">一</span>
-                  </div>
-                  <div class="flex-1">
-                    <div class="flex items-center gap-2 mb-1">
-                      <span class="text-2xl font-bold hanzi-font text-slate-900 dark:text-white">一</span>
-                      <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400 text-xs font-medium rounded-full">yī</span>
-                    </div>
-                    <p class="text-sm text-slate-500 dark:text-slate-400">One / 一二三的一</p>
-                  </div>
-                </div>
-
-                <div class="grid grid-cols-3 gap-3 mb-6">
-                  <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-3 text-center">
-                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">笔画数</div>
-                    <div class="font-bold text-slate-900 dark:text-white">1 画</div>
-                  </div>
-                  <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-3 text-center">
-                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">部首</div>
-                    <div class="font-bold text-slate-900 dark:text-white hanzi-font">一</div>
-                  </div>
-                  <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-3 text-center">
-                    <div class="text-xs text-slate-500 dark:text-slate-400 mb-1">结构</div>
-                    <div class="font-bold text-slate-900 dark:text-white">独体</div>
-                  </div>
-                </div>
-
-                <div class="space-y-3 mb-6">
-                  <div>
-                    <div class="flex justify-between text-sm mb-1">
-                      <span class="text-slate-600 dark:text-slate-400">掌握度</span>
-                      <span class="font-medium text-emerald-600 dark:text-emerald-400">85%</span>
-                    </div>
-                    <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                      <div class="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full" style="width: 85%;"></div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="flex gap-3">
-                  <button class="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-emerald-700 transition-all flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
-                    </svg>
-                    练习书写
-                  </button>
-                  <button class="p-3 bg-slate-100 dark:bg-slate-700 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors" aria-label="听发音">
-                    <svg class="w-5 h-5 text-slate-600 dark:text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </main>
+        </div>
       </div>
+    </section>
 
-      <!-- ==================== 练习页 ==================== -->
-      <div id="page-practice" class="page-section">
-        <!-- 导航栏 (复用) -->
-        <nav class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
-          <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="flex items-center justify-between h-16">
-              <a href="#" class="flex items-center gap-2 group" onclick="showPage('home'); return false;">
-                <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
-                  <span class="text-white text-xl font-bold hanzi-font">汉</span>
-                </div>
-                <span class="font-bold text-lg text-slate-900 dark:text-white">HanziMaster</span>
-              </a>
-              <div class="hidden md:flex items-center gap-1">
-                <a href="#" onclick="showPage('home'); return false;" class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-medium">首页</a>
-                <a href="#" onclick="showPage('learn'); return false;" class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-medium">学习</a>
-                <a href="#" onclick="showPage('practice'); return false;" class="px-4 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-medium transition-colors">练习</a>
-              </div>
-              <div class="flex items-center gap-2">
-                <button onclick="cycleTheme()" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                  </svg>
-                </button>
-                <button class="md:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" onclick="toggleMobileMenu()">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                  </svg>
-                </button>
-              </div>
+    <!-- ======= PAGE: PRACTICE ======= -->
+    <section class="page" id="page-practice">
+      <div class="practice">
+        <div class="practice-header">
+          <h2 class="practice-title">练习中心</h2>
+          <p class="practice-sub">多种练习模式，全方位提升您的汉字掌握程度</p>
+        </div>
+
+        <div class="practice-modes">
+          <div class="practice-mode selected" onclick="selectPractice(this)">
+            <div class="practice-mode-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
             </div>
+            <h4>书写练习</h4>
+            <p>在智能画布上练习书写，获得 AI 实时反馈</p>
+            <div class="practice-mode-tag">今日目标：8 字</div>
           </div>
-        </nav>
-
-        <!-- 主要内容 -->
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-          <!-- 页面头部 -->
-          <div class="text-center mb-10">
-            <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">练习中心</h1>
-            <p class="text-slate-600 dark:text-slate-400 mt-2">多种练习方式，全方位提升您的汉字掌握程度</p>
+          <div class="practice-mode" onclick="selectPractice(this)">
+            <div class="practice-mode-icon" style="background: linear-gradient(135deg, rgba(175,82,222,0.12), rgba(255,45,85,0.12)); color: var(--apple-purple);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <h4>记忆测验</h4>
+            <p>趣味测验巩固汉字含义与读音</p>
+            <div class="practice-mode-tag">推荐：每日 15 分钟</div>
           </div>
-
-          <!-- 练习选项 -->
-          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-            <!-- 书写练习 -->
-            <div class="card-hover bg-white dark:bg-slate-800 p-6 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-emerald-500 dark:hover:border-emerald-500 transition-all cursor-pointer">
-              <div class="w-14 h-14 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-emerald-500/30">
-                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">书写练习</h3>
-              <p class="text-slate-600 dark:text-slate-400 mb-4">在智能画布上练习书写，获得 AI 实时反馈</p>
-              <span class="inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-medium">
-                立即开始
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                </svg>
-              </span>
+          <div class="practice-mode" onclick="selectPractice(this)">
+            <div class="practice-mode-icon" style="background: linear-gradient(135deg, rgba(52,199,89,0.12), rgba(48,176,199,0.12)); color: var(--apple-green);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
             </div>
+            <h4>学习统计</h4>
+            <p>详细数据分析，了解您的学习轨迹</p>
+            <div class="practice-mode-tag">本周报告</div>
+          </div>
+        </div>
 
-            <!-- 记忆测验 -->
-            <div class="card-hover bg-white dark:bg-slate-800 p-6 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-500 transition-all cursor-pointer">
-              <div class="w-14 h-14 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-blue-500/30">
-                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">记忆测验</h3>
-              <p class="text-slate-600 dark:text-slate-400 mb-4">趣味测验巩固汉字含义与读音</p>
-              <span class="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 font-medium">
-                立即开始
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                </svg>
-              </span>
-            </div>
-
-            <!-- 学习进度 -->
-            <div class="card-hover bg-white dark:bg-slate-800 p-6 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-purple-500 dark:hover:border-purple-500 transition-all cursor-pointer">
-              <div class="w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-purple-500/30">
-                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">学习进度</h3>
-              <p class="text-slate-600 dark:text-slate-400 mb-4">详细数据分析，了解学习轨迹</p>
-              <span class="inline-flex items-center gap-2 text-purple-600 dark:text-purple-400 font-medium">
-                查看详情
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                </svg>
-              </span>
-            </div>
+        <div class="weekly-panel">
+          <div class="weekly-head">
+            <h3>本周学习进度</h3>
+            <p>6 月 9 日 — 6 月 15 日 · 连续 5 天 ✓</p>
           </div>
 
-          <!-- 本周学习进度 -->
-          <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700">
-            <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-6">本周学习进度</h2>
-            
-            <!-- 周进度 -->
-            <div class="grid grid-cols-7 gap-2 mb-8">
-              <div class="text-center">
-                <div class="flex flex-col items-center">
-                  <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center text-white font-bold mb-2">一</div>
-                  <span class="text-xs text-slate-500 dark:text-slate-400">周一</span>
-                </div>
-              </div>
-              <div class="text-center">
-                <div class="flex flex-col items-center">
-                  <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center text-white font-bold mb-2">二</div>
-                  <span class="text-xs text-slate-500 dark:text-slate-400">周二</span>
-                </div>
-              </div>
-              <div class="text-center">
-                <div class="flex flex-col items-center">
-                  <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center text-white font-bold mb-2">三</div>
-                  <span class="text-xs text-slate-500 dark:text-slate-400">周三</span>
-                </div>
-              </div>
-              <div class="text-center">
-                <div class="flex flex-col items-center">
-                  <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center text-white font-bold mb-2">四</div>
-                  <span class="text-xs text-slate-500 dark:text-slate-400">周四</span>
-                </div>
-              </div>
-              <div class="text-center">
-                <div class="flex flex-col items-center">
-                  <div class="w-10 h-10 bg-white dark:bg-slate-700 border-2 border-emerald-500 rounded-lg flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold mb-2">五</div>
-                  <span class="text-xs text-emerald-600 dark:text-emerald-400 font-medium">今天</span>
-                </div>
-              </div>
-              <div class="text-center opacity-50">
-                <div class="flex flex-col items-center">
-                  <div class="w-10 h-10 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center text-slate-400 dark:text-slate-500 font-bold mb-2">六</div>
-                  <span class="text-xs text-slate-400 dark:text-slate-500">周六</span>
-                </div>
-              </div>
-              <div class="text-center opacity-50">
-                <div class="flex flex-col items-center">
-                  <div class="w-10 h-10 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center text-slate-400 dark:text-slate-500 font-bold mb-2">日</div>
-                  <span class="text-xs text-slate-400 dark:text-slate-500">周日</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- 统计数据 -->
-            <div class="grid grid-cols-3 gap-4">
-              <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 text-center">
-                <div class="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-1">12</div>
-                <div class="text-sm text-slate-500 dark:text-slate-400">已学汉字</div>
-              </div>
-              <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 text-center">
-                <div class="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-1">5</div>
-                <div class="text-sm text-slate-500 dark:text-slate-400">连续学习天数</div>
-              </div>
-              <div class="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 text-center">
-                <div class="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-1">87%</div>
-                <div class="text-sm text-slate-500 dark:text-slate-400">正确率</div>
-              </div>
-            </div>
+          <div class="week-grid">
+            <div class="week-day completed"><div class="week-day-label">周一</div><div class="week-day-icon">✓</div></div>
+            <div class="week-day completed"><div class="week-day-label">周二</div><div class="week-day-icon">✓</div></div>
+            <div class="week-day completed"><div class="week-day-label">周三</div><div class="week-day-icon">✓</div></div>
+            <div class="week-day completed"><div class="week-day-label">周四</div><div class="week-day-icon">✓</div></div>
+            <div class="week-day completed today"><div class="week-day-label">周五</div><div class="week-day-icon">✓</div></div>
+            <div class="week-day"><div class="week-day-label">周六</div><div class="week-day-icon">—</div></div>
+            <div class="week-day"><div class="week-day-label">周日</div><div class="week-day-icon">—</div></div>
           </div>
-        </main>
+
+          <div class="summary-stats">
+            <div class="summary-stat"><div class="v">12</div><div class="l">已学汉字</div></div>
+            <div class="summary-stat"><div class="v">5</div><div class="l">连续学习</div></div>
+            <div class="summary-stat"><div class="v">87%</div><div class="l">正确率</div></div>
+            <div class="summary-stat"><div class="v">2.4h</div><div class="l">累计时长</div></div>
+          </div>
+        </div>
       </div>
+    </section>
 
-    </div>
+    <footer class="app-footer">
+      <div class="footer-logo">
+        <div class="ico hanzi-font">汉</div>
+        <span>HanziMaster · 汉字大师</span>
+      </div>
+      <nav>
+        <a onclick="switchPage('home', document.querySelectorAll('.page-btn')[0])">首页</a>
+        <a onclick="switchPage('learn', document.querySelectorAll('.page-btn')[1])">学习</a>
+        <a onclick="switchPage('practice', document.querySelectorAll('.page-btn')[2])">练习</a>
+        <a href="design-system.html">设计系统</a>
+        <a href="components.html">组件库</a>
+      </nav>
+      <p>© 2026 HanziMaster · 汉字大师 v3.0.0 · Designed with ♥ in China</p>
+    </footer>
   </div>
 
-  <!-- 脚本 -->
   <script>
-    // 状态管理
-    let currentPage = 'home';
-    let isMobileView = false;
-    let currentTheme = 'light';
-    
-    // 页面切换
-    function showPage(page) {
-      currentPage = page;
-      document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+    // Page switching
+    function switchPage(page, btnEl) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-' + page).classList.add('active');
-      
-      // 更新导航按钮
-      document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.remove('bg-emerald-100', 'dark:bg-emerald-900/50', 'text-emerald-700', 'dark:text-emerald-400');
-        if (btn.dataset.page === page) {
-          btn.classList.add('bg-emerald-100', 'dark:bg-emerald-900/50', 'text-emerald-700', 'dark:text-emerald-400');
+
+      document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+
+      document.querySelectorAll('.app-nav-link').forEach((a, idx) => {
+        a.classList.remove('active');
+        if ((page === 'home' && idx === 0) || (page === 'learn' && idx === 1) || (page === 'practice' && idx === 2)) {
+          a.classList.add('active');
         }
       });
-      
-      // 滚动到顶部
-      window.scrollTo(0, 0);
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    
-    // 移动端预览切换
-    function toggleMobilePreview() {
-      isMobileView = !isMobileView;
-      const container = document.getElementById('previewContainer');
-      const frame = document.getElementById('previewFrame');
-      const label = document.getElementById('deviceLabel');
-      
-      if (isMobileView) {
-        container.classList.add('max-w-[390px]', 'mx-auto', 'border-2', 'border-slate-300', 'dark:border-slate-600', 'rounded-3xl', 'overflow-hidden');
-        label.textContent = '移动端';
-      } else {
-        container.classList.remove('max-w-[390px]', 'mx-auto', 'border-2', 'border-slate-300', 'dark:border-slate-600', 'rounded-3xl', 'overflow-hidden');
-        label.textContent = '桌面端';
-      }
+
+    // Character selection
+    function selectChar(el, ch, py, meaning, strokes, radical, structure, mastery) {
+      document.querySelectorAll('#charGrid .char-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      document.getElementById('detailChar').textContent = ch;
+      document.getElementById('detailPy').textContent = py;
+      document.getElementById('detailTitle').innerHTML = ch + ' · ' + meaning;
+      document.getElementById('statStrokes').textContent = strokes + ' 画';
+      document.getElementById('statRadical').textContent = radical;
+      document.getElementById('statStructure').textContent = structure;
+      document.getElementById('statMastery').textContent = mastery + '%';
+
+      const detail = document.getElementById('charDetail');
+      detail.style.animation = 'none';
+      setTimeout(() => { detail.style.animation = 'pageIn .4s ease-out'; }, 10);
     }
-    
-    // 主题切换
-    function cycleTheme() {
-      const themes = ['light', 'dark'];
-      const labels = { light: '浅色', dark: '深色' };
-      const icons = { light: '☀️', dark: '🌙' };
-      
-      const currentIndex = themes.indexOf(currentTheme);
-      currentTheme = themes[(currentIndex + 1) % themes.length];
-      
-      document.getElementById('themeLabel').textContent = labels[currentTheme];
-      document.getElementById('themeIcon').textContent = icons[currentTheme];
-      document.getElementById('mobileThemeLabel').textContent = labels[currentTheme] + '模式';
-      
-      if (currentTheme === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
+
+    // Practice mode selection
+    function selectPractice(el) {
+      document.querySelectorAll('.practice-mode').forEach(m => m.classList.remove('selected'));
+      el.classList.add('selected');
     }
-    
-    // 移动端菜单
-    function toggleMobileMenu() {
-      const menu = document.getElementById('mobileMenu');
-      menu.classList.toggle('hidden');
-      if (!menu.classList.contains('hidden')) {
-        menu.classList.add('open');
-        document.body.style.overflow = 'hidden';
-      } else {
-        menu.classList.remove('open');
-        document.body.style.overflow = '';
-      }
-    }
-    
-    // 语言下拉菜单
-    function toggleLangDropdown() {
-      const dropdown = document.getElementById('langDropdown');
-      dropdown.classList.toggle('open');
-    }
-    
-    function selectLang(lang) {
-      document.getElementById('langDropdown').classList.remove('open');
-      // 更新按钮文本
-      const btn = document.getElementById('langToggleBtn');
-      btn.querySelector('span:not(.hidden)').textContent = lang;
-    }
-    
-    // 字符卡片选择
-    document.querySelectorAll('.char-card').forEach(card => {
-      card.addEventListener('click', function() {
-        document.querySelectorAll('.char-card').forEach(c => {
-          c.classList.remove('selected', 'border-emerald-500', 'shadow-md');
-          c.classList.add('border-transparent');
-        });
-        this.classList.add('selected', 'border-emerald-500', 'shadow-md');
-        this.classList.remove('border-transparent');
-      });
-    });
-    
-    // 点击外部关闭语言下拉菜单
-    document.addEventListener('click', function(e) {
-      const dropdown = document.getElementById('langDropdown');
-      const btn = document.getElementById('langToggleBtn');
-      if (!dropdown.contains(e.target) && !btn.contains(e.target)) {
-        dropdown.classList.remove('open');
-      }
-    });
-    
-    // ESC 关闭移动端菜单
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') {
-        const menu = document.getElementById('mobileMenu');
-        if (!menu.classList.contains('hidden')) {
-          toggleMobileMenu();
-        }
-        document.getElementById('langDropdown').classList.remove('open');
-      }
-    });
-    
-    // 初始化
-    showPage('home');
   </script>
 </body>
 </html>

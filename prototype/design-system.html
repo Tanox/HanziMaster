@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HanziMaster — 设计系统规范 v3.0.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Apple Color System */
+      --apple-blue: #007aff;
+      --apple-blue-light: #2997ff;
+      --apple-purple: #af52de;
+      --apple-pink: #ff2d55;
+      --apple-green: #34c759;
+      --apple-orange: #ff9500;
+      --apple-red: #ff3b30;
+      --apple-yellow: #ffcc00;
+      --apple-teal: #30b0c7;
+      --apple-indigo: #5856d6;
+
+      /* Neutrals */
+      --apple-black: #000000;
+      --apple-gray-900: #1d1d1f;
+      --apple-gray-800: #2c2c2e;
+      --apple-gray-700: #48484a;
+      --apple-gray-600: #6e6e73;
+      --apple-gray-500: #86888a;
+      --apple-gray-400: #a1a1a6;
+      --apple-gray-300: #d2d2d7;
+      --apple-gray-200: #e8e8ed;
+      --apple-gray-100: #f5f5f7;
+      --apple-gray-050: #fbfbfd;
+      --apple-white: #ffffff;
+
+      /* Semantic tokens */
+      --color-bg: #ffffff;
+      --color-fg: #1d1d1f;
+      --color-muted: #6e6e73;
+      --color-border: #e8e8ed;
+      --color-card: #fbfbfd;
+      --color-success: #34c759;
+      --color-warning: #ff9500;
+      --color-error: #ff3b30;
+
+      /* Spacing */
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --space-10: 40px;
+      --space-12: 48px;
+      --space-16: 64px;
+      --space-20: 80px;
+
+      /* Radii */
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --radius-2xl: 24px;
+      --radius-3xl: 32px;
+      --radius-pill: 980px;
+
+      /* Shadows */
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 32px rgba(0,0,0,0.12);
+      --shadow-xl: 0 20px 48px rgba(0,0,0,0.16);
+
+      /* Type scale */
+      --font-display: 'Inter', system-ui, sans-serif;
+      --font-hanzi: 'Noto Sans SC', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      background: var(--apple-gray-050);
+      color: var(--apple-gray-900);
+      font-family: var(--font-display);
+      font-size: 17px;
+      line-height: 1.47;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .hanzi-font { font-family: var(--font-hanzi); }
+
+    /* Navigation */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--apple-gray-200);
+      padding: 0 var(--space-6);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .nav-logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--apple-blue), var(--apple-purple));
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--apple-white);
+      font-weight: 700;
+    }
+
+    .nav-title {
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: var(--space-8);
+    }
+
+    .nav-link {
+      font-size: 14px;
+      color: var(--apple-gray-600);
+      text-decoration: none;
+      cursor: pointer;
+      transition: color .2s ease;
+    }
+
+    .nav-link:hover { color: var(--apple-gray-900); }
+    .nav-link.active { color: var(--apple-blue); font-weight: 500; }
+
+    /* Hero */
+    .hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px var(--space-6) 80px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--apple-blue);
+      letter-spacing: 0.02em;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: clamp(44px, 6vw, 72px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin-bottom: 24px;
+    }
+
+    h1 .zh {
+      display: block;
+      font-family: var(--font-hanzi);
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    .hero p {
+      font-size: 22px;
+      color: var(--apple-gray-600);
+      max-width: 640px;
+      margin: 0 auto 40px;
+    }
+
+    .hero-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-6);
+      font-size: 14px;
+      color: var(--apple-gray-500);
+    }
+
+    .hero-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--apple-gray-400);
+    }
+
+    /* Sections */
+    section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px var(--space-6);
+      border-top: 1px solid var(--apple-gray-200);
+    }
+
+    .section-head {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-label {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--apple-blue);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 44px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      font-size: 19px;
+      color: var(--apple-gray-600);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Color System */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: var(--space-5);
+    }
+
+    .color-card {
+      background: var(--apple-white);
+      border: 1px solid var(--apple-gray-200);
+      border-radius: var(--radius-xl);
+      padding: var(--space-5);
+      transition: all .2s ease;
+    }
+
+    .color-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .color-swatch {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--space-4);
+    }
+
+    .color-name {
+      font-weight: 600;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .color-hex {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--apple-gray-500);
+    }
+
+    .color-group-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--apple-gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 40px 0 20px;
+    }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr auto;
+      gap: var(--space-6);
+      align-items: baseline;
+      padding: var(--space-6) 0;
+      border-bottom: 1px solid var(--apple-gray-200);
+    }
+
+    .type-row:last-child { border-bottom: none; }
+
+    .type-label {
+      font-size: 13px;
+      color: var(--apple-gray-500);
+      font-family: var(--font-mono);
+    }
+
+    .type-sample {
+      color: var(--apple-gray-900);
+    }
+
+    .type-meta {
+      font-size: 13px;
+      color: var(--apple-gray-500);
+      font-family: var(--font-mono);
+    }
+
+    .type-hero { font-size: 80px; font-weight: 700; letter-spacing: -0.03em; }
+    .type-display1 { font-size: 60px; font-weight: 700; letter-spacing: -0.025em; }
+    .type-display2 { font-size: 44px; font-weight: 600; letter-spacing: -0.02em; }
+    .type-h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.015em; }
+    .type-h2 { font-size: 24px; font-weight: 600; }
+    .type-h3 { font-size: 19px; font-weight: 600; }
+    .type-body { font-size: 17px; font-weight: 400; }
+    .type-caption { font-size: 14px; font-weight: 400; color: var(--apple-gray-600); }
+
+    /* Spacing */
+    .spacing-row {
+      display: grid;
+      grid-template-columns: 120px 1fr 120px;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--apple-gray-200);
+    }
+
+    .spacing-row:last-child { border-bottom: none; }
+
+    .spacing-bar {
+      background: linear-gradient(90deg, var(--apple-blue), var(--apple-purple));
+      height: 24px;
+      border-radius: var(--radius-sm);
+    }
+
+    /* Icons */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: var(--space-4);
+    }
+
+    .icon-card {
+      background: var(--apple-white);
+      border: 1px solid var(--apple-gray-200);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      text-align: center;
+      transition: all .2s ease;
+    }
+
+    .icon-card:hover {
+      border-color: var(--apple-blue);
+      background: var(--apple-blue);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .icon-card svg { width: 28px; height: 28px; }
+    .icon-card-label { font-size: 12px; margin-top: var(--space-3); color: var(--apple-gray-600); }
+
+    /* Motion */
+    .motion-demo {
+      background: var(--apple-white);
+      border: 1px solid var(--apple-gray-200);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-10);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: var(--space-8);
+    }
+
+    .motion-item {
+      text-align: center;
+    }
+
+    .motion-box {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(135deg, var(--apple-blue), var(--apple-purple));
+      margin: 0 auto var(--space-4);
+    }
+
+    .fade-in-up { animation: fadeInUp 0.6s ease-out; }
+    .scale-in { animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .pulse-slow { animation: pulse 2s ease-in-out infinite; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.95); } }
+
+    /* Code blocks */
+    .token-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-4) var(--space-5);
+      background: var(--apple-gray-100);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--space-3);
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+
+    .token-name { color: var(--apple-gray-700); }
+    .token-value { margin-left: auto; color: var(--apple-blue); }
+
+    /* Card utility */
+    .card-shell {
+      background: var(--apple-white);
+      border: 1px solid var(--apple-gray-200);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-10);
+    }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-6); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); }
+
+    footer {
+      background: var(--apple-gray-100);
+      padding: 48px var(--space-6);
+      text-align: center;
+      font-size: 13px;
+      color: var(--apple-gray-500);
+      border-top: 1px solid var(--apple-gray-200);
+      margin-top: 80px;
+    }
+
+    @media (max-width: 768px) {
+      .type-row, .spacing-row { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-logo">
+      <div class="nav-logo-icon hanzi-font">汉</div>
+      <span class="nav-title">设计系统</span>
+    </div>
+    <div class="nav-links">
+      <a class="nav-link" href="#colors">色彩</a>
+      <a class="nav-link" href="#typography">字体</a>
+      <a class="nav-link" href="#spacing">间距</a>
+      <a class="nav-link" href="#icons">图标</a>
+      <a class="nav-link" href="#motion">动效</a>
+      <a class="nav-link" href="components.html">组件</a>
+      <a class="nav-link" href="index.html">原型</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <span class="eyebrow">Design System v3.0.0</span>
+    <h1>一致、克制、<span class="zh">优雅</span></h1>
+    <p>基于 Apple Human Interface Guidelines 建立的现代化设计系统，为 HanziMaster 所有界面提供统一的视觉语言。</p>
+    <div class="hero-meta">
+      <span>5 大设计原则<span class="dot"></span></span>
+      <span>9 级色彩系统</span>
+      <span class="dot"></span>
+      <span>8 级字体层级</span>
+      <span class="dot"></span>
+      <span>4 级圆角</span>
+    </div>
+  </div>
+
+  <section id="colors">
+    <div class="section-head">
+      <div class="section-label">01 · Color Palette</div>
+      <h2 class="section-title">色彩系统</h2>
+      <p class="section-subtitle">通过语义化颜色变量，支持深色/浅色模式自适应。</p>
+    </div>
+
+    <div class="card-shell">
+      <div class="color-group-title">品牌色 Brand Colors</div>
+      <div class="color-grid">
+        <div class="color-card"><div class="color-swatch" style="background: var(--apple-blue);"></div><div class="color-name">Blue</div><div class="color-hex">#007AFF</div></div>
+        <div class="color-card"><div class="color-swatch" style="background: var(--apple-purple);"></div><div class="color-name">Purple</div><div class="color-hex">#AF52DE</div></div>
+        <div class="color-card"><div class="color-swatch" style="background: linear-gradient(135deg, var(--apple-blue), var(--apple-purple));"></div><div class="color-name">Gradient</div><div class="color-hex">#007AFF → #AF52DE</div></div>
+      </div>
+
+      <div class="color-group-title">系统色 System Colors</div>
+      <div class="color-grid">
+        <div class="color-card"><div class="color-swatch" style="background: var(--apple-green);"></div><div class="color-name">Green</div><div class="color-hex">#34C759</div></div>
+        <div class="color-card"><div class="color-swatch" style="background: var(--apple-orange);"></div><div class="color-name">Orange</div><div class="color-hex">#FF9500</div></div>
+        <div class="color-card"><div class="color-swatch" style="background: var(--apple-red);"></div><div class="color-name">Red</div><div class="color-hex">#FF3B30</div></div>
+        <div class="color-card"><div class="color-swatch" style="background: var(--apple-yellow);"></div><div class="color-name">Yellow</div><div class="color-hex">#FFCC00</div></div>
+        <div class="color-card"><div class="color-swatch" style="background: var(--apple-pink);"></div><div class="color-name">Pink</div><div class="color-hex">#FF2D55</div></div>
+        <div class="color-card"><div class="color-swatch" style="background: var(--apple-teal);"></div><div class="color-name">Teal</div><div class="color-hex">#30B0C7</div></div>
+      </div>
+
+      <div class="color-group-title">中性色 Neutrals</div>
+      <div class="color-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px;">
+        <div class="color-card" style="padding: 16px;"><div class="color-swatch" style="aspect-ratio: 4/3; background: var(--apple-black);"></div><div class="color-name" style="font-size: 13px;">Black</div><div class="color-hex">#000000</div></div>
+        <div class="color-card" style="padding: 16px;"><div class="color-swatch" style="aspect-ratio: 4/3; background: var(--apple-gray-900);"></div><div class="color-name" style="font-size: 13px;">Gray 900</div><div class="color-hex">#1D1D1F</div></div>
+        <div class="color-card" style="padding: 16px;"><div class="color-swatch" style="aspect-ratio: 4/3; background: var(--apple-gray-500);"></div><div class="color-name" style="font-size: 13px;">Gray 500</div><div class="color-hex">#86888A</div></div>
+        <div class="color-card" style="padding: 16px;"><div class="color-swatch" style="aspect-ratio: 4/3; background: var(--apple-gray-300);"></div><div class="color-name" style="font-size: 13px;">Gray 300</div><div class="color-hex">#D2D2D7</div></div>
+        <div class="color-card" style="padding: 16px;"><div class="color-swatch" style="aspect-ratio: 4/3; background: var(--apple-gray-200);"></div><div class="color-name" style="font-size: 13px;">Gray 200</div><div class="color-hex">#E8E8ED</div></div>
+        <div class="color-card" style="padding: 16px;"><div class="color-swatch" style="aspect-ratio: 4/3; background: var(--apple-gray-100);"></div><div class="color-name" style="font-size: 13px;">Gray 100</div><div class="color-hex">#F5F5F7</div></div>
+        <div class="color-card" style="padding: 16px;"><div class="color-swatch" style="aspect-ratio: 4/3; background: var(--apple-gray-050); border: 1px solid var(--apple-gray-200);"></div><div class="color-name" style="font-size: 13px;">Gray 050</div><div class="color-hex">#FBFBFD</div></div>
+        <div class="color-card" style="padding: 16px;"><div class="color-swatch" style="aspect-ratio: 4/3; background: var(--apple-white); border: 1px solid var(--apple-gray-200);"></div><div class="color-name" style="font-size: 13px;">White</div><div class="color-hex">#FFFFFF</div></div>
+      </div>
+
+      <div class="color-group-title">语义化设计令牌 Semantic Tokens</div>
+      <div class="token-row"><span class="token-name">--color-bg</span><span>页面背景色</span><span class="token-value">#ffffff</span></div>
+      <div class="token-row"><span class="token-name">--color-fg</span><span>主要文字颜色</span><span class="token-value">#1d1d1f</span></div>
+      <div class="token-row"><span class="token-name">--color-muted</span><span>次要文字 / 说明性文字</span><span class="token-value">#6e6e73</span></div>
+      <div class="token-row"><span class="token-name">--color-border</span><span>分隔线 / 边框</span><span class="token-value">#e8e8ed</span></div>
+      <div class="token-row"><span class="token-name">--color-card</span><span>卡片背景</span><span class="token-value">#fbfbfd</span></div>
+      <div class="token-row"><span class="token-name">--color-success</span><span>成功状态</span><span class="token-value">#34c759</span></div>
+      <div class="token-row"><span class="token-name">--color-warning</span><span>警告状态</span><span class="token-value">#ff9500</span></div>
+      <div class="token-row"><span class="token-name">--color-error</span><span>错误状态</span><span class="token-value">#ff3b30</span></div>
+    </div>
+  </section>
+
+  <section id="typography">
+    <div class="section-head">
+      <div class="section-label">02 · Typography</div>
+      <h2 class="section-title">字体系统</h2>
+      <p class="section-subtitle">清晰的层级结构通过大小，区分信息层次。</p>
+    </div>
+
+    <div class="card-shell">
+      <div class="type-row">
+        <span class="type-label">Hero</span>
+        <span class="type-sample type-hero">汉字之美</span>
+        <span class="type-meta">80px / 700</span>
+      </div>
+      <div class="type-row">
+        <span class="type-label">Display 1</span>
+        <span class="type-sample type-display1">Master the art</span>
+        <span class="type-meta">60px / 700</span>
+      </div>
+      <div class="type-row">
+        <span class="type-label">Display 2</span>
+        <span class="type-sample type-display2 hanzi-font">一笔一画</span>
+        <span class="type-meta">44px / 600</span>
+      </div>
+      <div class="type-row">
+        <span class="type-label">Heading 1</span>
+        <span class="type-sample type-h1">每日练习 Daily Practice</span>
+        <span class="type-meta">32px / 600</span>
+      </div>
+      <div class="type-row">
+        <span class="type-label">Heading 2</span>
+        <span class="type-sample type-h2">本周学习进度</span>
+        <span class="type-meta">24px / 600</span>
+      </div>
+      <div class="type-row">
+        <span class="type-label">Heading 3</span>
+        <span class="type-sample type-h3">功能介绍 Feature</span>
+        <span class="type-meta">19px / 600</span>
+      </div>
+      <div class="type-row">
+        <span class="type-label">Body</span>
+        <span class="type-sample type-body">使用先进的 AI 技术，引导您领略汉字的精妙艺术。</span>
+        <span class="type-meta">17px / 400</span>
+      </div>
+      <div class="type-row">
+        <span class="type-label">Caption</span>
+        <span class="type-sample type-caption">已学习 12 个汉字 · 连续 5 天</span>
+        <span class="type-meta">14px / 400</span>
+      </div>
+    </div>
+
+    <div class="card-shell" style="margin-top: var(--space-6);">
+      <div style="font-size: 14px; font-weight: 600; color: var(--apple-gray-500); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 24px;">字体族</div>
+      <div class="grid-3">
+        <div style="padding: 32px; background: var(--apple-gray-100); border-radius: var(--radius-xl); text-align: center;">
+          <div style="font-size: 40px; margin-bottom: 12px;">Inter</div>
+          <div style="font-size: 13px; color: var(--apple-gray-500);">主要界面字体</div>
+        </div>
+        <div style="padding: 32px; background: var(--apple-gray-100); border-radius: var(--radius-xl); text-align: center;">
+          <div class="hanzi-font" style="font-size: 40px; margin-bottom: 12px;">汉字</div>
+          <div style="font-size: 13px; color: var(--apple-gray-500);">汉字字体</div>
+        </div>
+        <div style="padding: 32px; background: var(--apple-gray-100); border-radius: var(--radius-xl); text-align: center;">
+          <div style="font-family: var(--font-mono); font-size: 32px; margin-bottom: 12px;">{ code }</div>
+          <div style="font-size: 13px; color: var(--apple-gray-500);">代码字体</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="spacing">
+    <div class="section-head">
+      <div class="section-label">03 · Spacing & Layout</div>
+      <h2 class="section-title">间距与布局</h2>
+      <p class="section-subtitle">4 的倍数基线，营造舒适的呼吸空间。</p>
+    </div>
+
+    <div class="card-shell">
+      <div style="font-size: 14px; font-weight: 600; color: var(--apple-gray-500); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 24px;">间距刻度 Spacing Scale</div>
+      <div class="spacing-row">
+        <span style="font-family: var(--font-mono); font-size: 13px; color: var(--apple-gray-600);">space-1 · 4px</span>
+        <div class="spacing-bar" style="width: 4px; height: 12px;"></div>
+        <span style="font-size: 13px; color: var(--apple-gray-500); text-align: right;">最小</span>
+      </div>
+      <div class="spacing-row">
+        <span style="font-family: var(--font-mono); font-size: 13px; color: var(--apple-gray-600);">space-2 · 8px</span>
+        <div class="spacing-bar" style="width: 8px; height: 16px;"></div>
+        <span></span>
+      </div>
+      <div class="spacing-row">
+        <span style="font-family: var(--font-mono); font-size: 13px; color: var(--apple-gray-600);">space-4 · 16px</span>
+        <div class="spacing-bar" style="width: 16px;"></div>
+        <span></span>
+      </div>
+      <div class="spacing-row">
+        <span style="font-family: var(--font-mono); font-size: 13px; color: var(--apple-gray-600);">space-6 · 24px</span>
+        <div class="spacing-bar" style="width: 24px;"></div>
+        <span></span>
+      </div>
+      <div class="spacing-row">
+        <span style="font-family: var(--font-mono); font-size: 13px; color: var(--apple-gray-600);">space-8 · 32px</span>
+        <div class="spacing-bar" style="width: 32px;"></div>
+        <span></span>
+      </div>
+      <div class="spacing-row">
+        <span style="font-family: var(--font-mono); font-size: 13px; color: var(--apple-gray-600);">space-12 · 48px</span>
+        <div class="spacing-bar" style="width: 48px;"></div>
+        <span></span>
+      </div>
+      <div class="spacing-row">
+        <span style="font-family: var(--font-mono); font-size: 13px; color: var(--apple-gray-600);">space-20 · 80px</span>
+        <div class="spacing-bar" style="width: 80px;"></div>
+        <span style="font-size: 13px; color: var(--apple-gray-500); text-align: right;">大区域</span>
+      </div>
+    </div>
+
+    <div class="card-shell" style="margin-top: var(--space-6);">
+      <div style="font-size: 14px; font-weight: 600; color: var(--apple-gray-500); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 24px;">圆角 Radius System</div>
+      <div style="display: flex; gap: 24px; flex-wrap: wrap;">
+        <div style="text-align: center;">
+          <div style="width: 80px; height: 80px; background: var(--apple-blue); border-radius: var(--radius-sm); margin: 0 auto 12px;"></div>
+          <div style="font-size: 13px; color: var(--apple-gray-600);">8px</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="width: 80px; height: 80px; background: var(--apple-blue); border-radius: var(--radius-md); margin: 0 auto 12px;"></div>
+          <div style="font-size: 13px; color: var(--apple-gray-600);">12px</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="width: 80px; height: 80px; background: var(--apple-blue); border-radius: var(--radius-xl); margin: 0 auto 12px;"></div>
+          <div style="font-size: 13px; color: var(--apple-gray-600);">20px</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="width: 80px; height: 80px; background: var(--apple-blue); border-radius: var(--radius-2xl); margin: 0 auto 12px;"></div>
+          <div style="font-size: 13px; color: var(--apple-gray-600);">24px</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="width: 80px; height: 80px; background: var(--apple-blue); border-radius: var(--radius-3xl); margin: 0 auto 12px;"></div>
+          <div style="font-size: 13px; color: var(--apple-gray-600);">32px</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="width: 160px; height: 48px; background: var(--apple-blue); border-radius: var(--radius-pill); margin: 16px auto 12px;"></div>
+          <div style="font-size: 13px; color: var(--apple-gray-600);">Pill 980px</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="icons">
+    <div class="section-head">
+      <div class="section-label">04 · Icons</div>
+      <h2 class="section-title">图标规范</h2>
+      <p class="section-subtitle">一致的 stroke 线条图标，2px 统一线宽。</p>
+    </div>
+
+    <div class="icon-grid">
+      <div class="icon-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l4 4-4 4M4 15l4 4 4-4"/></svg>
+      <div class="icon-card-label">学习</div>
+    </div>
+    <div class="icon-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      <div class="icon-card-label">书写</div>
+    </div>
+    <div class="icon-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      <div class="icon-card-label">时间</div>
+    </div>
+    <div class="icon-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
+      <div class="icon-card-label">进度</div>
+    </div>
+    <div class="icon-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 7 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <div class="icon-card-label">设置</div>
+    </div>
+    <div class="icon-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/><circle cx="12" cy="12" r="10"/></svg>
+      <div class="icon-card-label">帮助</div>
+    </div>
+    <div class="icon-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <div class="icon-card-label">消息</div>
+    </div>
+    <div class="icon-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      <div class="icon-card-label">收藏</div>
+    </div>
+    </div>
+  </section>
+
+  <section id="motion">
+    <div class="section-head">
+      <div class="section-label">05 · Motion</div>
+      <h2 class="section-title">动效规范</h2>
+      <p class="section-subtitle">克制、优雅、可感知的微妙动画。</p>
+    </div>
+
+    <div class="card-shell">
+      <div style="font-size: 14px; font-weight: 600; color: var(--apple-gray-500); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 24px;">Easing Curves</div>
+      <div class="grid-3">
+        <div style="padding: 32px; background: var(--apple-gray-100); border-radius: var(--radius-xl); text-align: center;">
+          <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px;">ease-out</div>
+          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--apple-gray-500);">0.25s, 0.1, 0.25, 1</div>
+          <div class="motion-box fade-in-up" style="margin-top: 20px; animation-duration: 1s;"></div>
+        </div>
+        <div style="padding: 32px; background: var(--apple-gray-100); border-radius: var(--radius-xl); text-align: center;">
+          <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px;">spring</div>
+          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--apple-gray-500);">0.4s, 0.175, 0.885, 1.275</div>
+          <div class="motion-box scale-in" style="margin-top: 20px; animation-duration: 1s;"></div>
+        </div>
+        <div style="padding: 32px; background: var(--apple-gray-100); border-radius: var(--radius-xl); text-align: center;">
+          <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px;">pulse</div>
+          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--apple-gray-500);">2s ease-in-out infinite</div>
+          <div class="motion-box pulse-slow" style="margin-top: 20px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-shell" style="margin-top: var(--space-6);">
+      <div style="font-size: 14px; font-weight: 600; color: var(--apple-gray-500); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 24px;">动画使用场景</div>
+      <div class="token-row"><span class="token-name">fade-in-up</span><span>页面加载 / 元素出现</span><span class="token-value">0.5-0.6s</span></div>
+      <div class="token-row"><span class="token-name">scale-in</span><span>模态框 / 弹出菜单</span><span class="token-value">0.3s</span></div>
+      <div class="token-row"><span class="token-name">slide-in-right</span><span>侧栏导航</span><span class="token-value">0.3s</span></div>
+      <div class="token-row"><span class="token-name">hover-lift</span><span>卡片悬停</span><span class="token-value">0.2s</span></div>
+      <div class="token-row"><span class="token-name">pulse</span><span>状态指示器</span><span class="token-value">2s infinite</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <div style="margin-bottom: 12px;">
+      <span class="hanzi-font" style="font-size: 14px;">汉字大师</span> HanziMaster
+    </div>
+    <div>Design System v3.0.0 · © 2026</div>
+  </footer>
+</body>
+</html>

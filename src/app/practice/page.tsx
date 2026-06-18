@@ -9,12 +9,36 @@ interface PracticeOption {
   titleKey: string;
   descKey: string;
   icon: 'pencil' | 'question' | 'chart';
+  iconColor: string;
+  iconGradient: string;
+  tagText?: string;
 }
 
 const practiceOptions: PracticeOption[] = [
-  { id: 'writing', titleKey: 'practice.writingTitle', descKey: 'practice.writingDesc', icon: 'pencil' },
-  { id: 'quiz', titleKey: 'practice.quizTitle', descKey: 'practice.quizDesc', icon: 'question' },
-  { id: 'progress', titleKey: 'practice.progressTitle', descKey: 'practice.progressDesc', icon: 'chart' },
+  {
+    id: 'writing',
+    titleKey: 'practice.writingTitle',
+    descKey: 'practice.writingDesc',
+    icon: 'pencil',
+    iconColor: 'text-[#007aff]',
+    iconGradient: 'from-[#007aff]/10 to-[#af52de]/10 dark:from-[#007aff]/20 dark:to-[#af52de]/20',
+  },
+  {
+    id: 'quiz',
+    titleKey: 'practice.quizTitle',
+    descKey: 'practice.quizDesc',
+    icon: 'question',
+    iconColor: 'text-[#ff9500]',
+    iconGradient: 'from-[#ff9500]/10 to-[#ff2d55]/10 dark:from-[#ff9500]/20 dark:to-[#ff2d55]/20',
+  },
+  {
+    id: 'progress',
+    titleKey: 'practice.progressTitle',
+    descKey: 'practice.progressDesc',
+    icon: 'chart',
+    iconColor: 'text-[#34c759]',
+    iconGradient: 'from-[#34c759]/10 to-[#30b0c7]/10 dark:from-[#34c759]/20 dark:to-[#30b0c7]/20',
+  },
 ];
 
 function getIcon(iconName: string, className: string) {
@@ -34,7 +58,7 @@ function getIcon(iconName: string, className: string) {
   }
   return (
     <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h2a2 2 0 01-2-2z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
     </svg>
   );
 }
@@ -48,7 +72,7 @@ export default function PracticePage() {
   return (
     <div className="max-w-6xl mx-auto px-6 py-16 safe-bottom">
       <div className="text-center mb-16">
-        <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 text-black dark:text-white">
+        <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 text-gray-900 dark:text-white">
           {t('common.practice')} {t('practice.center')}
         </h2>
         <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
@@ -56,6 +80,7 @@ export default function PracticePage() {
         </p>
       </div>
 
+      {/* Practice Mode Cards */}
       <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 mb-16">
         {practiceOptions.map((option) => {
           const isSelected = selectedOption === option.id;
@@ -63,24 +88,22 @@ export default function PracticePage() {
             <button
               key={option.id}
               onClick={() => setSelectedOption(option.id)}
-              className={`group bg-[#fbfbfd] dark:bg-[#1d1d1f] p-10 rounded-[24px] border border-gray-200 dark:border-gray-800 hover:border-[#007aff] dark:hover:border-[#2997ff] hover:-translate-y-1 transition-all duration-300 text-left ${
-                isSelected ? 'border-black dark:border-white bg-white dark:bg-black' : ''
+              className={`group bg-[#fbfbfd] dark:bg-[#1d1d1f] p-10 rounded-[24px] border border-gray-200 dark:border-gray-800 hover:-translate-y-1 transition-all duration-300 text-left ${
+                isSelected ? 'border-black dark:border-white bg-white dark:bg-black shadow-lg' : ''
               }`}
             >
-              <div className={`w-20 h-20 bg-gradient-to-br from-[#007aff]/10 to-[#af52de]/10 dark:from-[#007aff]/20 dark:to-[#af52de]/20 rounded-[20px] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 text-[#007aff] ${
-                isSelected ? 'bg-[#007aff] text-white' : ''
-              }`}>
-                {getIcon(option.icon, 'w-8 h-8')}
+              <div className={`w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br ${option.iconGradient} rounded-[20px] flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-300 ${option.iconColor}`}>
+                {getIcon(option.icon, 'w-8 h-8 sm:w-10 sm:h-10')}
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-black dark:text-white">
+              <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">
                 {t(option.titleKey)}
               </h3>
               <p className="text-base text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
                 {t(option.descKey)}
               </p>
-              <div className={`flex items-center gap-2 font-semibold ${isSelected ? 'text-black dark:text-white' : 'text-[#007aff]'} group`}>
+              <div className={`inline-flex items-center gap-2 font-semibold text-sm px-4 py-2 rounded-pill bg-[#007aff]/10 dark:bg-[#5856d6]/20 ${option.iconColor} group-hover:translate-x-1 transition-transform`}>
                 <span>{t('practice.startNow')}</span>
-                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l-4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </div>
@@ -89,38 +112,52 @@ export default function PracticePage() {
         })}
       </div>
 
+      {/* Weekly Progress Panel */}
       <div className="bg-[#fbfbfd] dark:bg-[#1d1d1f] rounded-[32px] p-10 border border-gray-200 dark:border-gray-800">
-        <h3 className="text-2xl font-semibold mb-10 text-black dark:text-white">
-          {t('practice.weeklyProgress')}
-        </h3>
-
-        <div className="grid grid-cols-7 gap-4 mb-10">
-          {weekDays.map((day, index) => (
-            <div
-              key={day}
-              className={`flex flex-col items-center p-5 rounded-[20px] ${
-                index < 5
-                  ? 'bg-gradient-to-br from-black to-[#1d1d1f] dark:from-white dark:to-gray-100 text-white dark:text-black'
-                  : 'bg-white dark:bg-black text-gray-500 dark:text-gray-500 border border-gray-200 dark:border-gray-800'
-              } ${index === 4 ? 'ring-2 ring-[#007aff]' : ''}`}
-            >
-              <p className="text-xs mb-3 font-medium">{t(`practice.${day}`)}</p>
-              <div className={`w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center ${
-                index < 5 ? 'bg-white/20 dark:bg-black/10' : 'bg-[#f5f5f7] dark:bg-[#1d1d1f]'
-              }`}>
-                {index < 5 ? (
-                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                  </svg>
-                ) : (
-                  <span className="text-xs font-medium">{index === 4 ? t('practice.today') : t('practice.pending')}</span>
-                )}
-              </div>
-            </div>
-          ))}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-baseline gap-4 mb-10">
+          <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
+            {t('practice.weeklyProgress')}
+          </h3>
+          <p className="text-base text-gray-600 dark:text-gray-400">
+            {t('practice.continuousDays').replace('{n}', '5')}
+          </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        {/* Week Grid */}
+        <div className="grid grid-cols-7 gap-3 sm:gap-4 mb-10">
+          {weekDays.map((day, index) => {
+            const isCompleted = index < 5;
+            const isToday = index === 4;
+            return (
+              <div
+                key={day}
+                className={`flex flex-col items-center p-4 sm:p-5 rounded-[20px] transition-all duration-300 ${
+                  isCompleted
+                    ? 'bg-black dark:bg-white text-white dark:text-black shadow-md'
+                    : 'bg-white dark:bg-black text-gray-500 dark:text-gray-500 border border-gray-200 dark:border-gray-800'
+                } ${isToday ? 'ring-2 ring-[#007aff]/30 ring-offset-2 ring-offset-[#fbfbfd] dark:ring-offset-[#1d1d1f]' : ''}`}
+              >
+                <p className="text-xs sm:text-sm mb-3 font-medium uppercase tracking-wider">{t(`practice.${day}`)}</p>
+                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-lg font-bold ${
+                  isCompleted
+                    ? 'bg-white/20 dark:bg-black/10 text-white dark:text-black'
+                    : 'bg-[#f5f5f7] dark:bg-[#1d1d1f] text-gray-500 dark:text-gray-500'
+                }`}>
+                  {isCompleted ? (
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  ) : (
+                    <span className="text-sm">—</span>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Summary Stats */}
+        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
           <StatsCard
             label="practice.charactersLearned"
             value="12"
@@ -145,6 +182,15 @@ export default function PracticePage() {
             icon={
               <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            }
+          />
+          <StatsCard
+            label="practice.totalTime"
+            value="2.4h"
+            icon={
+              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             }
           />
