@@ -1,9 +1,17 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from '@/components/locale-provider';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 interface Character {
   id: number;
@@ -34,6 +42,11 @@ const baseCharacters: Character[] = [
 export default function LearnPage() {
   const { t } = useTranslation();
   const [selectedCharacterId, setSelectedCharacterId] = useState<number | null>(baseCharacters[0]?.id ?? null);
+  const [showWritingDialog, setShowWritingDialog] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const isDrawingRef = useRef(false);
+  const lastPointRef = useRef<{ x: number; y: number } | null>(null);
 
   const selectedCharacter = baseCharacters.find(char => char.id === selectedCharacterId) ?? null;
 
@@ -47,6 +60,217 @@ export default function LearnPage() {
       selectCharacter(char);
     }
   }, [selectCharacter]);
+
+  // --- 发音播放功能 (Web Speech API) ---
+  const handlePronunciation = useCallback(() => {
+    if (!selectedCharacter) return;
+    if (!('speechSynthesis' in window)) {
+      alert(t('common.masterCharacters'));
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(selectedCharacter.hanzi);
+    utterance.lang = 'zh-CN';
+    utterance.rate = 0.8;
+    utterance.pitch = 1;
+
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+
+    // 停止之前的朗读
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  }, [selectedCharacter, t]);
+
+  // --- 书写练习功能 (Canvas) ---
+  useEffect(() => {
+    if (!showWritingDialog || !canvasRef.current) return;
+
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // 设置画布大小（高 DPI 屏）
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr);
+
+    // 初始画布
+    const clearCanvas = () => {
+      const gradient = ctx.createLinearGradient(0, 0, rect.width, rect.height);
+      gradient.addColorStop(0, '#ffffff');
+      gradient.addColorStop(1, '#f5f5f7');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, rect.width, rect.height);
+
+      // 田字格
+      ctx.strokeStyle = '#d1d5db';
+      ctx.lineWidth = 1;
+      const gridSize = rect.width / 4;
+      for (let i = 1; i < 4; i++) {
+        ctx.beginPath();
+        ctx.moveTo(i * gridSize, 0);
+        ctx.lineTo(i * gridSize, rect.height);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, i * gridSize);
+        ctx.lineTo(rect.width, i * gridSize);
+        ctx.stroke();
+      }
+
+      // 对角线
+      ctx.setLineDash([5, 5]);
+      ctx.strokeStyle = '#e5e7eb';
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(rect.width, rect.height);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(rect.width, 0);
+      ctx.lineTo(0, rect.height);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // 中心十字线
+      ctx.strokeStyle = '#e5e7eb';
+      ctx.beginPath();
+      ctx.moveTo(rect.width / 2, 0);
+      ctx.lineTo(rect.width / 2, rect.height);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(0, rect.height / 2);
+      ctx.lineTo(rect.width, rect.height / 2);
+      ctx.stroke();
+
+      // 汉字提示
+      ctx.font = `${Math.min(rect.width, rect.height) * 0.4}px serif`;
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(selectedCharacter?.hanzi || '', rect.width / 2, rect.height / 2);
+    };
+
+    clearCanvas();
+
+    const getPoint = (e: PointerEvent | TouchEvent | MouseEvent): { x: number; y: number } => {
+      const r = canvas.getBoundingClientRect();
+      if ('touches' in e && e.touches.length > 0) {
+        return { x: e.touches[0].clientX - r.left, y: e.touches[0].clientY - r.top };
+      }
+      if ('clientX' in e) {
+        return { x: e.clientX - r.left, y: e.clientY - r.top };
+      }
+      return { x: 0, y: 0 };
+    };
+
+    const startDrawing = (e: PointerEvent) => {
+      isDrawingRef.current = true;
+      lastPointRef.current = getPoint(e);
+      e.preventDefault();
+    };
+
+    const draw = (e: PointerEvent) => {
+      if (!isDrawingRef.current || !lastPointRef.current) return;
+      const point = getPoint(e);
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 3;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+      ctx.moveTo(lastPointRef.current.x, lastPointRef.current.y);
+      ctx.lineTo(point.x, point.y);
+      ctx.stroke();
+      lastPointRef.current = point;
+      e.preventDefault();
+    };
+
+    const stopDrawing = () => {
+      isDrawingRef.current = false;
+      lastPointRef.current = null;
+    };
+
+    canvas.addEventListener('pointerdown', startDrawing);
+    canvas.addEventListener('pointermove', draw);
+    canvas.addEventListener('pointerup', stopDrawing);
+    canvas.addEventListener('pointerleave', stopDrawing);
+    canvas.addEventListener('pointercancel', stopDrawing);
+
+    return () => {
+      canvas.removeEventListener('pointerdown', startDrawing);
+      canvas.removeEventListener('pointermove', draw);
+      canvas.removeEventListener('pointerup', stopDrawing);
+      canvas.removeEventListener('pointerleave', stopDrawing);
+      canvas.removeEventListener('pointercancel', stopDrawing);
+    };
+  }, [showWritingDialog, selectedCharacter]);
+
+  const handleClearCanvas = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(dpr, dpr);
+
+    // 重新绘制空白画布（与初始化逻辑一致）
+    const gradient = ctx.createLinearGradient(0, 0, rect.width, rect.height);
+    gradient.addColorStop(0, '#ffffff');
+    gradient.addColorStop(1, '#f5f5f7');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, rect.width, rect.height);
+
+    // 田字格
+    ctx.strokeStyle = '#d1d5db';
+    ctx.lineWidth = 1;
+    const gridSize = rect.width / 4;
+    for (let i = 1; i < 4; i++) {
+      ctx.beginPath();
+      ctx.moveTo(i * gridSize, 0);
+      ctx.lineTo(i * gridSize, rect.height);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(0, i * gridSize);
+      ctx.lineTo(rect.width, i * gridSize);
+      ctx.stroke();
+    }
+
+    // 对角线
+    ctx.setLineDash([5, 5]);
+    ctx.strokeStyle = '#e5e7eb';
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(rect.width, rect.height);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(rect.width, 0);
+    ctx.lineTo(0, rect.height);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // 中心十字线
+    ctx.strokeStyle = '#e5e7eb';
+    ctx.beginPath();
+    ctx.moveTo(rect.width / 2, 0);
+    ctx.lineTo(rect.width / 2, rect.height);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0, rect.height / 2);
+    ctx.lineTo(rect.width, rect.height / 2);
+    ctx.stroke();
+
+    // 汉字提示
+    ctx.font = `${Math.min(rect.width, rect.height) * 0.4}px serif`;
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(selectedCharacter?.hanzi || '', rect.width / 2, rect.height / 2);
+  }, [selectedCharacter]);
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-16 safe-bottom">
@@ -147,23 +371,67 @@ export default function LearnPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center md:justify-start">
-                <Button size="lg" className="rounded-full">
+                <Button
+                  size="lg"
+                  className="rounded-full"
+                  onClick={() => setShowWritingDialog(true)}
+                >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                   </svg>
                   {t('common.practiceWriting')}
                 </Button>
-                <Button variant="ghost" size="lg" className="rounded-full text-[#007aff]">
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  className="rounded-full text-[#007aff]"
+                  onClick={handlePronunciation}
+                  disabled={isSpeaking}
+                >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                   </svg>
-                  {t('common.hearPronunciation')}
+                  {isSpeaking ? '...' : t('common.hearPronunciation')}
                 </Button>
               </div>
             </div>
           </div>
         </div>
       )}
+
+      {/* 书写练习对话框 */}
+      <Dialog open={showWritingDialog} onOpenChange={setShowWritingDialog}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-semibold hanzi-font">
+              {selectedCharacter?.hanzi} - {t('common.practiceWriting')}
+            </DialogTitle>
+            <DialogDescription>
+              {selectedCharacter?.pinyin} · {selectedCharacter && t(selectedCharacter.translationKey)}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col items-center">
+            <canvas
+              ref={canvasRef}
+              className="w-[320px] h-[320px] sm:w-[400px] sm:h-[400px] rounded-[24px] border-2 border-border cursor-crosshair touch-none shadow-md"
+              aria-label={`Write character ${selectedCharacter?.hanzi}`}
+            />
+          </div>
+          <DialogFooter className="flex flex-row sm:justify-between gap-2">
+            <div className="text-sm text-muted-foreground">
+              在画布上书写汉字
+            </div>
+            <div className="flex gap-2">
+              <Button variant="ghost" onClick={handleClearCanvas}>
+                清除
+              </Button>
+              <Button onClick={() => setShowWritingDialog(false)}>
+                完成
+              </Button>
+            </div>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

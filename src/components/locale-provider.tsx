@@ -1,7 +1,7 @@
 // src/components/locale-provider.tsx v2.3.0
 'use client';
 
-import { createContext, useContext, useState, useEffect, useCallback, cache } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { Locale, translations, locales, Translations } from '@/lib/i18n';
 import { safeGetItem, safeSetItem } from '@/lib/storage';
 
@@ -43,6 +43,7 @@ const initialState: LocaleProviderState = {
 const LocaleProviderContext = createContext<LocaleProviderState>(initialState);
 
 const getBrowserLocale = (): Locale => {
+  if (typeof navigator === 'undefined') return 'en';
   const browserLang = navigator.language;
   if (browserLang.startsWith('zh')) {
     return browserLang.includes('TW') || browserLang.includes('HK') ? 'zh-TW' : 'zh-CN';
@@ -58,10 +59,10 @@ const getBrowserLocale = (): Locale => {
   return 'en';
 };
 
-// Cached translation lookup function
-const cachedGetNestedValue = cache((locale: Locale, key: string): string => {
+// Client-safe translation lookup (cache() is server-only)
+const translate = (locale: Locale, key: string): string => {
   return getNestedValue(translations[locale], key);
-});
+};
 
 export function LocaleProvider({
   children,
@@ -95,9 +96,9 @@ export function LocaleProvider({
     document.documentElement.lang = newLocale;
   }, [storageKey]);
 
-  // Use cached translation function
+  // Use direct translation lookup
   const t = useCallback((key: string): string => {
-    return cachedGetNestedValue(locale, key);
+    return translate(locale, key);
   }, [locale]);
 
   const value = {
