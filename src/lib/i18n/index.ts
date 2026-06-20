@@ -1,4 +1,4 @@
-// src/lib/i18n/index.ts v3.0.0
+// src/lib/i18n/index.ts v2.2.1
 import { en } from './translations/en';
 import { zhCN } from './translations/zh-CN';
 import { zhTW } from './translations/zh-TW';

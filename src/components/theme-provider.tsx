@@ -1,7 +1,8 @@
-// src/components/theme-provider.tsx v3.0.0
+// src/components/theme-provider.tsx v2.3.0
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
+import { safeGetItem, safeSetItem } from '@/lib/storage';
 
 type Theme = 'dark' | 'light' | 'system';
 
@@ -32,11 +33,11 @@ export function ThemeProvider({
   const [theme, setTheme] = useState<Theme>(defaultTheme);
 
   useEffect(() => {
-    const stored = localStorage.getItem(storageKey) as Theme;
+    const stored = safeGetItem<Theme>(storageKey, defaultTheme);
     if (stored) {
       setTheme(stored);
     }
-  }, [storageKey]);
+  }, [storageKey, defaultTheme]);
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -57,9 +58,9 @@ export function ThemeProvider({
 
   const value = {
     theme,
-    setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme);
-      setTheme(theme);
+    setTheme: (newTheme: Theme) => {
+      safeSetItem(storageKey, newTheme);
+      setTheme(newTheme);
     },
   };
 
