@@ -46,8 +46,14 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Local env files
+# Environment variables - NEVER commit these files
+# They may contain sensitive keys (API keys, tokens, etc.)
+.env
+.env.*
 .env*.local
+!.env.example
+
+# Local env files (legacy compatibility)
 
 # Vercel
 .vercel
