@@ -55,6 +55,9 @@ yarn-error.log*
 # TypeScript
 *.tsbuildinfo
 
+# AI Assistant
+/.codebuddy/
+
 # IDE
 .vscode
 .idea
