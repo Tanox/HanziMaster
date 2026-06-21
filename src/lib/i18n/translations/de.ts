@@ -16,7 +16,6 @@ export const de = {
     foreverQuote: 'Das Zeichen für "für immer" enthält alle 8 Grundstriche.',
     learners: 'Lernende lernen',
     strokeMastery: 'Strichbeherrschung',
-    etymology: 'Etymologie',
     theme: {
       light: 'Hell',
       dark: 'Dunkel',
@@ -64,7 +63,6 @@ export const de = {
     charactersLearned: 'Gelernte Zeichen',
     dayStreak: 'Tage Streak',
     accuracy: 'Genauigkeit',
-    totalTime: 'Gesamtzeit',
   },
   learn: {
     one: 'Eins',
@@ -81,7 +79,6 @@ export const de = {
     fire: 'Feuer',
     radical: 'Radikal',
     structure: 'Struktur',
-    mastery: 'Beherrschung',
   },
   footer: {
     copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. Alle Rechte vorbehalten.',

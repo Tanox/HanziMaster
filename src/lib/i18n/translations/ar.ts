@@ -16,7 +16,6 @@ export const ar = {
     foreverQuote: 'حرف "الأبد" يحتوي على جميع الـ 8 خطوط الأساسية.',
     learners: 'متعلمون يدرسون',
     strokeMastery: 'إتقان الخطوط',
-    etymology: 'الأصل',
     theme: {
       light: 'فاتح',
       dark: 'داكن',
@@ -64,7 +63,6 @@ export const ar = {
     charactersLearned: 'حروف تعلمت',
     dayStreak: 'أيام متتالية',
     accuracy: 'الدقة',
-    totalTime: 'الوقت الإجمالي',
   },
   learn: {
     one: 'واحد',
@@ -81,7 +79,6 @@ export const ar = {
     fire: 'نار',
     radical: 'الجذر',
     structure: 'البنية',
-    mastery: 'الإتقان',
   },
   footer: {
     copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. جميع الحقوق محفوظة.',

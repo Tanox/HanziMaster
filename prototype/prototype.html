@@ -1,0 +1,2335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HanziMaster 原型设计 v4.0 - shadcn/ui Apple 风格设计系统</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ==================== shadcn/ui Apple 设计系统 ==================== */
+    :root {
+      /* shadcn/ui 语义化颜色 - Apple 风格 */
+      --background: oklch(1 0 0);
+      --foreground: oklch(0.145 0 0);
+      --card: oklch(1 0 0);
+      --card-foreground: oklch(0.145 0 0);
+      --popover: oklch(1 0 0);
+      --popover-foreground: oklch(0.145 0 0);
+      --primary: oklch(0.205 0 0);
+      --primary-foreground: oklch(0.985 0 0);
+      --secondary: oklch(0.97 0 0);
+      --secondary-foreground: oklch(0.205 0 0);
+      --muted: oklch(0.97 0 0);
+      --muted-foreground: oklch(0.556 0 0);
+      --accent: oklch(0.97 0 0);
+      --accent-foreground: oklch(0.205 0 0);
+      --destructive: oklch(0.577 0.245 27.325);
+      --destructive-foreground: oklch(0.985 0 0);
+      --border: oklch(0.922 0 0);
+      --input: oklch(0.922 0 0);
+      --ring: oklch(0.708 0 0);
+      --radius: 0.625rem;
+      
+      /* Apple 品牌色 */
+      --apple-blue: #007aff;
+      --apple-purple: #af52de;
+      --apple-green: #34c759;
+      --apple-red: #ff3b30;
+      --apple-orange: #ff9500;
+      --apple-pink: #ff2d55;
+      --apple-cyan: #5ac8fa;
+      --apple-teal: #30d158;
+      --apple-indigo: #5856d6;
+      
+      /* 渐变色 */
+      --gradient-primary: linear-gradient(135deg, var(--apple-blue) 0%, var(--apple-purple) 100%);
+      --gradient-secondary: linear-gradient(135deg, var(--apple-purple) 0%, var(--apple-pink) 100%);
+      --gradient-warm: linear-gradient(135deg, var(--apple-orange) 0%, var(--apple-pink) 100%);
+      --gradient-cool: linear-gradient(135deg, var(--apple-cyan) 0%, var(--apple-blue) 100%);
+      --gradient-success: linear-gradient(135deg, var(--apple-green) 0%, var(--apple-teal) 100%);
+      
+      /* Apple 灰度系统 */
+      --apple-black: #000000;
+      --apple-gray-900: #1d1d1f;
+      --apple-gray-800: #424245;
+      --apple-gray-700: #6e6e73;
+      --apple-gray-600: #86868b;
+      --apple-gray-500: #a1a1a6;
+      --apple-gray-400: #c7c7cc;
+      --apple-gray-300: #d1d1d6;
+      --apple-gray-200: #e8e8ed;
+      --apple-gray-100: #f5f5f7;
+      --apple-white: #ffffff;
+      
+      /* 间距系统 */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --space-2xl: 48px;
+      --space-3xl: 64px;
+      --space-4xl: 80px;
+      --space-5xl: 120px;
+      
+      /* Apple 圆角系统 */
+      --radius-xs: 8px;
+      --radius-sm: 12px;
+      --radius-md: 16px;
+      --radius-lg: 20px;
+      --radius-xl: 24px;
+      --radius-2xl: 32px;
+      --radius-3xl: 44px;
+      --radius-pill: 980px;
+      
+      /* 阴影系统 */
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+      --shadow-xl: 0 12px 48px rgba(0,0,0,0.16);
+      --shadow-glow: 0 0 40px rgba(0,122,255,0.15);
+      --shadow-glow-purple: 0 0 40px rgba(175,82,222,0.15);
+      
+      /* 动画系统 */
+      --ease-out: cubic-bezier(0.25, 0.1, 0.25, 1);
+      --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+      --duration-fast: 0.15s;
+      --duration-normal: 0.25s;
+      --duration-slow: 0.4s;
+      --duration-lg: 0.6s;
+      
+      /* 字体大小 - Apple 风格 */
+      --text-xs: 11px;
+      --text-sm: 13px;
+      --text-base: 15px;
+      --text-lg: 17px;
+      --text-xl: 19px;
+      --text-2xl: 24px;
+      --text-3xl: 32px;
+      --text-4xl: 40px;
+      --text-5xl: 56px;
+      --text-6xl: 72px;
+      --text-7xl: 96px;
+    }
+
+    /* 深色模式变量 */
+    .dark {
+      --background: oklch(0.145 0 0);
+      --foreground: oklch(0.985 0 0);
+      --card: oklch(0.205 0 0);
+      --card-foreground: oklch(0.985 0 0);
+      --popover: oklch(0.205 0 0);
+      --popover-foreground: oklch(0.985 0 0);
+      --primary: oklch(0.922 0 0);
+      --primary-foreground: oklch(0.205 0 0);
+      --secondary: oklch(0.269 0 0);
+      --secondary-foreground: oklch(0.985 0 0);
+      --muted: oklch(0.269 0 0);
+      --muted-foreground: oklch(0.708 0 0);
+      --accent: oklch(0.269 0 0);
+      --accent-foreground: oklch(0.985 0 0);
+      --destructive: oklch(0.704 0.191 22.216);
+      --destructive-foreground: oklch(0.985 0 0);
+      --border: oklch(1 0 0 / 10%);
+      --input: oklch(1 0 0 / 15%);
+      --ring: oklch(0.556 0 0);
+      
+      --apple-black: #ffffff;
+      --apple-gray-900: #f5f5f7;
+      --apple-gray-800: #e8e8ed;
+      --apple-gray-700: #a1a1a6;
+      --apple-gray-600: #86868b;
+      --apple-gray-500: #6e6e73;
+      --apple-gray-400: #424245;
+      --apple-gray-300: #3a3a3c;
+      --apple-gray-200: #2d2d2f;
+      --apple-gray-100: #1d1d1f;
+      --apple-white: #000000;
+      
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.24);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.36);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.48);
+      --shadow-xl: 0 12px 48px rgba(0,0,0,0.6);
+      --shadow-glow: 0 0 40px rgba(0,122,255,0.25);
+    }
+
+    /* ==================== 基础样式 ==================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans SC', sans-serif;
+      background: var(--apple-white);
+      color: var(--apple-black);
+      line-height: 1.47;
+      letter-spacing: -0.01em;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .hanzi-font {
+      font-family: 'Noto Sans SC', 'Cormorant Garamond', serif;
+    }
+
+    .display-font {
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .mono-font {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* 背景纹理 */
+    .texture-bg {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle at 25% 25%, rgba(0,122,255,0.02) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(175,82,222,0.02) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ==================== 原型容器 ==================== */
+    .prototype-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 80px 40px 120px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ==================== 原型头部导航 ==================== */
+    .prototype-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: saturate(180%) blur(24px);
+      -webkit-backdrop-filter: saturate(180%) blur(24px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      padding: 0 40px;
+      height: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      transition: background 0.3s var(--ease-smooth), border-color 0.3s var(--ease-smooth);
+    }
+
+    .dark .prototype-nav {
+      background: rgba(0,0,0,0.85);
+      border-bottom-color: rgba(255,255,255,0.06);
+    }
+
+    .prototype-nav.scrolled {
+      background: rgba(255,255,255,0.92);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .prototype-nav-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--apple-black);
+      letter-spacing: -0.02em;
+    }
+
+    .prototype-nav-links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .prototype-nav-link {
+      font-size: 14px;
+      color: var(--apple-gray-700);
+      text-decoration: none;
+      transition: color 0.2s var(--ease-smooth);
+      cursor: pointer;
+      position: relative;
+      padding: 8px 0;
+    }
+
+    .prototype-nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--apple-blue);
+      transition: width 0.3s var(--ease-smooth);
+    }
+
+    .prototype-nav-link:hover {
+      color: var(--apple-black);
+    }
+
+    .prototype-nav-link:hover::after {
+      width: 100%;
+    }
+
+    .prototype-nav-link.active {
+      color: var(--apple-blue);
+      font-weight: 500;
+    }
+
+    .prototype-nav-link.active::after {
+      width: 100%;
+    }
+
+    .prototype-nav-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .theme-toggle {
+      width: 48px;
+      height: 28px;
+      background: var(--apple-gray-200);
+      border-radius: 100px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.3s var(--ease-smooth);
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .theme-toggle::before {
+      content: '🌙';
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 12px;
+      opacity: 0.6;
+    }
+
+    .theme-toggle::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 24px;
+      height: 24px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: var(--shadow-md);
+      transition: transform 0.3s var(--ease-spring);
+    }
+
+    .dark .theme-toggle {
+      background: var(--apple-blue);
+    }
+
+    .dark .theme-toggle::before {
+      content: '☀️';
+      left: 28px;
+    }
+
+    .dark .theme-toggle::after {
+      transform: translateX(20px);
+    }
+
+    /* ==================== 页面切换 ==================== */
+    .page-section {
+      display: none;
+      animation: pageFadeIn 0.4s var(--ease-smooth);
+    }
+
+    .page-section.active {
+      display: block;
+    }
+
+    @keyframes pageFadeIn {
+      from { 
+        opacity: 0; 
+        transform: translateY(30px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+
+    /* ==================== 页面卡片 ==================== */
+    .page-card {
+      background: var(--apple-white);
+      border-radius: var(--radius-2xl);
+      overflow: hidden;
+      border: 1px solid var(--apple-gray-200);
+      margin-bottom: 80px;
+      transition: box-shadow 0.3s var(--ease-smooth);
+    }
+
+    .page-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .dark .page-card {
+      border-color: var(--apple-gray-800);
+    }
+
+    .page-card-header {
+      background: linear-gradient(180deg, #fbfbfd 0%, var(--apple-white) 100%);
+      padding: 40px 50px;
+      border-bottom: 1px solid var(--apple-gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dark .page-card-header {
+      background: linear-gradient(180deg, var(--apple-gray-900) 0%, var(--apple-gray-100) 100%);
+      border-bottom-color: var(--apple-gray-800);
+    }
+
+    .page-card-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(0,122,255,0.03) 0%, transparent 70%);
+    }
+
+    .page-card-header h2 {
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: 0.004em;
+      position: relative;
+      z-index: 1;
+    }
+
+    .page-card-header .route {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      color: var(--apple-gray-600);
+      background: var(--apple-gray-100);
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      font-weight: 500;
+      position: relative;
+      z-index: 1;
+      transition: background 0.2s var(--ease-smooth), color 0.2s var(--ease-smooth);
+    }
+
+    .dark .page-card-header .route {
+      background: var(--apple-gray-900);
+    }
+
+    .page-card-header .route:hover {
+      background: rgba(0,122,255,0.1);
+      color: var(--apple-blue);
+    }
+
+    .page-card-content {
+      padding: 60px 50px;
+    }
+
+    /* ==================== 组件区域 ==================== */
+    .component-section {
+      margin-bottom: 80px;
+    }
+
+    .component-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .component-title {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--apple-gray-500);
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      padding-bottom: 16px;
+    }
+
+    .component-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--apple-blue) 0%, var(--apple-purple) 100%);
+      border-radius: 1px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(0,122,255,0.08);
+      color: var(--apple-blue);
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: 0;
+      transition: background 0.2s var(--ease-smooth), transform 0.2s var(--ease-smooth);
+    }
+
+    .badge:hover {
+      background: rgba(0,122,255,0.15);
+      transform: translateY(-1px);
+    }
+
+    .badge.success {
+      background: rgba(52,199,89,0.08);
+      color: var(--apple-green);
+    }
+
+    .badge.success:hover {
+      background: rgba(52,199,89,0.15);
+    }
+
+    .badge.warning {
+      background: rgba(255,149,0,0.08);
+      color: var(--apple-orange);
+    }
+
+    .badge.warning:hover {
+      background: rgba(255,149,0,0.15);
+    }
+
+    .badge.purple {
+      background: rgba(175,82,222,0.08);
+      color: var(--apple-purple);
+    }
+
+    .badge.purple:hover {
+      background: rgba(175,82,222,0.15);
+    }
+
+    /* ==================== 设计规范展示 ==================== */
+    
+    /* 色彩展示 */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 16px;
+    }
+
+    .color-item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .color-swatch {
+      height: 80px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(0,0,0,0.06);
+      transition: transform 0.2s var(--ease-smooth), box-shadow 0.2s var(--ease-smooth);
+    }
+
+    .color-swatch:hover {
+      transform: scale(1.05);
+      box-shadow: var(--shadow-md);
+    }
+
+    .color-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--apple-black);
+    }
+
+    .color-value {
+      font-size: 11px;
+      color: var(--apple-gray-500);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* 字体展示 */
+    .font-showcase {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .font-item {
+      display: flex;
+      align-items: baseline;
+      gap: 24px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--apple-gray-200);
+    }
+
+    .dark .font-item {
+      border-bottom-color: var(--apple-gray-800);
+    }
+
+    .font-label {
+      font-size: 13px;
+      color: var(--apple-gray-500);
+      min-width: 80px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .font-sample {
+      flex: 1;
+    }
+
+    /* 间距展示 */
+    .spacing-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .spacing-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .spacing-bar {
+      background: var(--gradient-primary);
+      border-radius: 4px;
+      height: 24px;
+    }
+
+    .spacing-label {
+      font-size: 13px;
+      color: var(--apple-gray-500);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* 圆角展示 */
+    .radius-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 24px;
+    }
+
+    .radius-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .radius-box {
+      width: 80px;
+      height: 80px;
+      background: var(--gradient-primary);
+      transition: transform 0.2s var(--ease-smooth);
+    }
+
+    .radius-box:hover {
+      transform: scale(1.1);
+    }
+
+    .radius-label {
+      font-size: 13px;
+      color: var(--apple-gray-500);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* 阴影展示 */
+    .shadow-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 32px;
+    }
+
+    .shadow-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .shadow-box {
+      width: 120px;
+      height: 80px;
+      background: var(--apple-white);
+      border-radius: var(--radius-md);
+      transition: transform 0.2s var(--ease-smooth);
+    }
+
+    .dark .shadow-box {
+      background: var(--apple-gray-800);
+    }
+
+    .shadow-box:hover {
+      transform: translateY(-4px);
+    }
+
+    .shadow-label {
+      font-size: 13px;
+      color: var(--apple-gray-500);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* 动效展示 */
+    .animation-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 24px;
+    }
+
+    .animation-item {
+      background: var(--apple-gray-100);
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s var(--ease-smooth);
+    }
+
+    .dark .animation-item {
+      background: var(--apple-gray-900);
+    }
+
+    .animation-item:hover {
+      transform: scale(1.02);
+    }
+
+    .animation-demo {
+      width: 60px;
+      height: 60px;
+      background: var(--gradient-primary);
+      border-radius: var(--radius-md);
+      margin: 0 auto 16px;
+    }
+
+    .animation-item:hover .animation-demo {
+      animation: pulse-demo 0.6s var(--ease-spring);
+    }
+
+    @keyframes pulse-demo {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    .animation-label {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--apple-black);
+      margin-bottom: 8px;
+    }
+
+    .animation-duration {
+      font-size: 13px;
+      color: var(--apple-gray-500);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ==================== 组件展示 ==================== */
+    
+    /* 按钮组件 */
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .apple-btn {
+      padding: 14px 28px;
+      border-radius: var(--radius-pill);
+      font-size: 17px;
+      font-weight: 500;
+      letter-spacing: -0.022em;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s var(--ease-smooth), box-shadow 0.2s var(--ease-smooth), background 0.2s var(--ease-smooth);
+      border: none;
+      cursor: pointer;
+      min-height: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .apple-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .apple-btn-primary {
+      background: var(--apple-black);
+      color: var(--apple-white);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    }
+
+    .dark .apple-btn-primary {
+      background: var(--apple-white);
+      color: var(--apple-black);
+      box-shadow: 0 4px 14px rgba(255,255,255,0.15);
+    }
+
+    .apple-btn-primary:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.22);
+    }
+
+    .apple-btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    .apple-btn-secondary {
+      background: transparent;
+      color: var(--apple-blue);
+      padding: 12px 20px;
+      font-weight: 500;
+    }
+
+    .apple-btn-secondary:hover {
+      background: rgba(0,122,255,0.08);
+      transform: scale(1.02);
+    }
+
+    .apple-btn-secondary:active {
+      transform: scale(0.98);
+    }
+
+    .apple-btn-outline {
+      background: transparent;
+      border: 1px solid var(--apple-gray-200);
+      color: var(--apple-black);
+    }
+
+    .dark .apple-btn-outline {
+      border-color: var(--apple-gray-700);
+      color: var(--apple-white);
+    }
+
+    .apple-btn-outline:hover {
+      border-color: var(--apple-black);
+      background: rgba(0,0,0,0.02);
+    }
+
+    .dark .apple-btn-outline:hover {
+      border-color: var(--apple-white);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .apple-btn-destructive {
+      background: var(--apple-red);
+      color: white;
+      box-shadow: 0 4px 14px rgba(255,59,48,0.3);
+    }
+
+    .apple-btn-destructive:hover {
+      background: #ff453a;
+      box-shadow: 0 6px 20px rgba(255,59,48,0.4);
+    }
+
+    .apple-btn-success {
+      background: var(--apple-green);
+      color: white;
+      box-shadow: 0 4px 14px rgba(52,199,89,0.3);
+    }
+
+    .apple-btn-success:hover {
+      box-shadow: 0 6px 20px rgba(52,199,89,0.4);
+    }
+
+    .apple-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .apple-btn-icon {
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .btn-size-demo {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-size-item {
+      text-align: center;
+    }
+
+    .btn-size-label {
+      font-size: 12px;
+      color: var(--apple-gray-500);
+      margin-top: 8px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    /* 输入框组件 */
+    .form-section {
+      display: grid;
+      gap: 32px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--apple-gray-700);
+      letter-spacing: 0.02em;
+    }
+
+    .dark .form-label {
+      color: var(--apple-gray-500);
+    }
+
+    .form-input {
+      padding: 14px 18px;
+      border: 1px solid var(--apple-gray-200);
+      border-radius: var(--radius-md);
+      font-size: 17px;
+      background: var(--apple-white);
+      color: var(--apple-black);
+      transition: border-color 0.2s var(--ease-smooth), box-shadow 0.2s var(--ease-smooth);
+      min-height: 50px;
+      font-family: inherit;
+    }
+
+    .dark .form-input {
+      background: var(--apple-gray-900);
+      border-color: var(--apple-gray-700);
+      color: var(--apple-white);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--apple-blue);
+      box-shadow: 0 0 0 4px rgba(0,122,255,0.1);
+    }
+
+    .form-input::placeholder {
+      color: var(--apple-gray-400);
+    }
+
+    .form-input.error {
+      border-color: var(--apple-red);
+      box-shadow: 0 0 0 4px rgba(255,59,48,0.1);
+    }
+
+    .form-input.success {
+      border-color: var(--apple-green);
+      box-shadow: 0 0 0 4px rgba(52,199,89,0.1);
+    }
+
+    .form-hint {
+      font-size: 13px;
+      color: var(--apple-gray-500);
+    }
+
+    .form-error {
+      font-size: 13px;
+      color: var(--apple-red);
+      font-weight: 500;
+    }
+
+    /* 卡片组件 */
+    .card-demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .demo-card {
+      background: var(--card);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: transform 0.3s var(--ease-smooth), box-shadow 0.3s var(--ease-smooth);
+    }
+
+    .demo-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .demo-card-header {
+      padding: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .demo-card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--card-foreground);
+    }
+
+    .demo-card-desc {
+      font-size: 14px;
+      color: var(--muted-foreground);
+      margin-top: 8px;
+    }
+
+    .demo-card-content {
+      padding: 24px;
+    }
+
+    .demo-card-footer {
+      padding: 16px 24px;
+      background: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    /* 空状态 */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 64px 32px;
+      gap: 16px;
+      background: var(--apple-gray-100);
+      border-radius: var(--radius-xl);
+    }
+
+    .dark .empty-state {
+      background: var(--apple-gray-900);
+    }
+
+    .empty-icon {
+      width: 64px;
+      height: 64px;
+      background: var(--muted);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: var(--muted-foreground);
+    }
+
+    .empty-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--foreground);
+    }
+
+    .empty-desc {
+      font-size: 15px;
+      color: var(--muted-foreground);
+      text-align: center;
+      max-width: 280px;
+    }
+
+    /* 交互反馈 */
+    .feedback-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 24px;
+    }
+
+    .feedback-item {
+      padding: 24px;
+      background: var(--apple-gray-100);
+      border-radius: var(--radius-lg);
+      text-align: center;
+      transition: transform 0.2s var(--ease-smooth);
+    }
+
+    .dark .feedback-item {
+      background: var(--apple-gray-900);
+    }
+
+    .feedback-item:hover {
+      transform: scale(1.02);
+    }
+
+    .feedback-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--apple-gray-500);
+      margin-bottom: 16px;
+    }
+
+    /* ==================== 页面原型 ==================== */
+    
+    /* Hero 区域 */
+    .apple-hero {
+      text-align: center;
+      padding: 100px 20px;
+      position: relative;
+    }
+
+    .apple-hero::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(0,122,255,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .apple-eyebrow {
+      font-size: 21px;
+      font-weight: 500;
+      letter-spacing: 0.015em;
+      color: var(--apple-blue);
+      margin-bottom: 20px;
+      animation: fadeInUp 0.8s var(--ease-smooth) 0.1s both;
+    }
+
+    .apple-hero h3 {
+      font-size: 72px;
+      font-weight: 700;
+      letter-spacing: -0.018em;
+      line-height: 1.02;
+      margin-bottom: 24px;
+      animation: fadeInUp 0.8s var(--ease-smooth) 0.2s both;
+    }
+
+    .apple-hero-subtitle {
+      font-size: 28px;
+      font-weight: 400;
+      letter-spacing: 0.007em;
+      color: var(--apple-gray-700);
+      margin-bottom: 56px;
+      animation: fadeInUp 0.8s var(--ease-smooth) 0.3s both;
+    }
+
+    .dark .apple-hero-subtitle {
+      color: var(--apple-gray-500);
+    }
+
+    .apple-hero-cta {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 80px;
+      animation: fadeInUp 0.8s var(--ease-smooth) 0.4s both;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* 功能卡片 */
+    .apple-features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .apple-feature {
+      text-align: center;
+      padding: 48px 36px;
+      border-radius: var(--radius-xl);
+      background: var(--apple-gray-100);
+      border: 1px solid transparent;
+      transition: transform 0.35s var(--ease-smooth), box-shadow 0.35s var(--ease-smooth), border-color 0.35s var(--ease-smooth);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dark .apple-feature {
+      background: var(--apple-gray-900);
+    }
+
+    .apple-feature::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,122,255,0.03) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s var(--ease-smooth);
+    }
+
+    .apple-feature:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--apple-gray-200);
+    }
+
+    .dark .apple-feature:hover {
+      border-color: var(--apple-gray-700);
+    }
+
+    .apple-feature:hover::before {
+      opacity: 1;
+    }
+
+    .apple-feature-icon {
+      width: 96px;
+      height: 96px;
+      border-radius: var(--radius-xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 44px;
+      margin: 0 auto 32px;
+      background: var(--gradient-primary);
+      position: relative;
+      transition: transform 0.35s var(--ease-spring);
+    }
+
+    .apple-feature:hover .apple-feature-icon {
+      transform: scale(1.15) rotate(-3deg);
+    }
+
+    .apple-feature h4 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 0.011em;
+      margin-bottom: 14px;
+      position: relative;
+    }
+
+    .apple-feature p {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--apple-gray-600);
+      line-height: 1.6;
+      position: relative;
+    }
+
+    .dark .apple-feature p {
+      color: var(--apple-gray-500);
+    }
+
+    /* 字符网格 */
+    .apple-char-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 20px;
+    }
+
+    .apple-char-card {
+      aspect-ratio: 1;
+      background: var(--apple-gray-100);
+      border-radius: var(--radius-xl);
+      border: 2px solid transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.3s var(--ease-smooth), box-shadow 0.3s var(--ease-smooth), border-color 0.3s var(--ease-smooth);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dark .apple-char-card {
+      background: var(--apple-gray-900);
+    }
+
+    .apple-char-card:hover {
+      border-color: var(--apple-blue);
+      transform: scale(1.03);
+      box-shadow: var(--shadow-md);
+    }
+
+    .apple-char-card.selected {
+      background: linear-gradient(135deg, var(--apple-black) 0%, var(--apple-gray-900) 100%);
+      border-color: var(--apple-blue);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+      transform: scale(1.05);
+    }
+
+    .dark .apple-char-card.selected {
+      background: linear-gradient(135deg, var(--apple-white) 0%, #f5f5f7 100%);
+      border-color: var(--apple-blue);
+    }
+
+    .apple-char-card .char {
+      font-size: 48px;
+      font-weight: 400;
+      margin-bottom: 8px;
+      transition: transform 0.3s var(--ease-spring);
+    }
+
+    .apple-char-card:hover .char {
+      transform: scale(1.15);
+    }
+
+    .apple-char-card.selected .char {
+      color: var(--apple-white);
+    }
+
+    .dark .apple-char-card.selected .char {
+      color: var(--apple-black);
+    }
+
+    .apple-char-card .pinyin {
+      font-size: 13px;
+      color: var(--apple-gray-500);
+      transition: color 0.2s var(--ease-smooth);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    .apple-char-card.selected .pinyin {
+      color: rgba(255,255,255,0.7);
+    }
+
+    .dark .apple-char-card.selected .pinyin {
+      color: var(--apple-gray-600);
+    }
+
+    /* 统计卡片 */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .stat-card {
+      background: var(--apple-white);
+      padding: 36px;
+      border-radius: var(--radius-lg);
+      text-align: center;
+      border: 1px solid var(--apple-gray-200);
+      transition: transform 0.25s var(--ease-smooth), box-shadow 0.25s var(--ease-smooth);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dark .stat-card {
+      background: var(--apple-gray-800);
+      border-color: var(--apple-gray-700);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      transition: transform 0.3s var(--ease-smooth);
+    }
+
+    .stat-card.blue::before {
+      background: var(--apple-blue);
+    }
+
+    .stat-card.purple::before {
+      background: var(--apple-purple);
+    }
+
+    .stat-card.green::before {
+      background: var(--apple-green);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .stat-card-value {
+      font-size: 44px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .stat-card-value.blue { color: var(--apple-blue); }
+    .stat-card-value.purple { color: var(--apple-purple); }
+    .stat-card-value.green { color: var(--apple-green); }
+
+    .stat-card-label {
+      font-size: 15px;
+      color: var(--apple-gray-600);
+      font-weight: 500;
+    }
+
+    .dark .stat-card-label {
+      color: var(--apple-gray-500);
+    }
+
+    /* ==================== 响应式 ==================== */
+    @media (max-width: 1024px) {
+      .prototype-container {
+        padding: 60px 24px 100px;
+      }
+      
+      .apple-features {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .apple-char-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .prototype-nav {
+        padding: 0 16px;
+      }
+      
+      .prototype-nav-links {
+        display: none;
+      }
+      
+      .prototype-container {
+        padding: 40px 16px 80px;
+      }
+      
+      .page-card-content {
+        padding: 32px 24px;
+      }
+      
+      .apple-hero h3 {
+        font-size: 48px;
+      }
+      
+      .apple-hero-subtitle {
+        font-size: 20px;
+      }
+      
+      .apple-features {
+        grid-template-columns: 1fr;
+      }
+      
+      .apple-char-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .color-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      }
+      
+      .card-demo-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ==================== 无障碍 ==================== */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="texture-bg"></div>
+  
+  <!-- 原型导航 -->
+  <nav class="prototype-nav">
+    <div class="prototype-nav-title">HanziMaster 设计规范 v4.0</div>
+    <div class="prototype-nav-links">
+      <a class="prototype-nav-link active" data-page="design-system">设计系统</a>
+      <a class="prototype-nav-link" data-page="components">组件库</a>
+      <a class="prototype-nav-link" data-page="interactions">交互标准</a>
+      <a class="prototype-nav-link" data-page="pages">页面原型</a>
+    </div>
+    <div class="prototype-nav-actions">
+      <div class="theme-toggle" onclick="toggleTheme()"></div>
+    </div>
+  </nav>
+
+  <div class="prototype-container">
+    
+    <!-- ==================== 设计系统规范 ==================== -->
+    <section class="page-section active" id="design-system">
+      
+      <!-- 色彩规范 -->
+      <div class="page-card">
+        <div class="page-card-header">
+          <h2>色彩规范</h2>
+          <span class="route">/design/colors</span>
+        </div>
+        <div class="page-card-content">
+          <div class="component-section">
+            <h3 class="component-title">语义化颜色 (shadcn/ui)</h3>
+            <div class="color-grid">
+              <div class="color-item">
+                <div class="color-swatch" style="background: var(--background)"></div>
+                <span class="color-name">Background</span>
+                <span class="color-value">oklch(1 0 0)</span>
+              </div>
+              <div class="color-item">
+                <div class="color-swatch" style="background: var(--foreground)"></div>
+                <span class="color-name">Foreground</span>
+                <span class="color-value">oklch(0.145 0 0)</span>
+              </div>
+              <div class="color-item">
+                <div class="color-swatch" style="background: var(--card)"></div>
+                <span class="color-name">Card</span>
+                <span class="color-value">oklch(1 0 0)</span>
+              </div>
+              <div class="color-item">
+                <div class="color-swatch" style="background: var(--primary)"></div>
+                <span class="color-name">Primary</span>
+                <span class="color-value">oklch(0.205 0 0)</span>
+              </div>
+              <div class="color-item">
+                <div class="color-swatch" style="background: var(--secondary)"></div>
+                <span class="color-name">Secondary</span>
+                <span class="color-value">oklch(0.97 0 0)</span>
+              </div>
+              <div class="color-item">
+                <div class="color-swatch" style="background: var(--muted)"></div>
+                <span class="color-name">Muted</span>
+                <span class="color-value">oklch(0.97 0 0)</span>
+              </div>
+              <div class="color-item">
+                <div class="color-swatch" style="background: var(--muted-foreground)"></div>
+                <span class="color-name">Muted Foreground</span>
+                <span class="color-value">oklch(0.556 0 0)</span>
+              </div>
+              <div class="color-item">
+                <div class="color-swatch" style="background: var(--border)"></div>
+                <span class="color-name">Border</span>
+                <span class="color-value">oklch(0.922 0 0)</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="component-section">
+            <h3 class="component-title">Apple 品牌色</h3>
+            <div class="color-grid">
+              <div class="color-item">
+                <div class="color-swatch" style="background: var(--apple-blue)"></div>
+                <span class="color-name">Apple Blue</span>
+                <span class="color-value">#007aff</span>
+              </div>
+              <div class="color-item">
+                <div class="color-swatch" style="background: var(--apple-purple)"></div>
+                <span class="color-name">Apple Purple</span>
+                <span class="color-value">#af52de</span>
+              </div>
+              <div class="color-item">
+                <div class="color-swatch" style="background: var(--apple-green)"></div>
+                <span class="color-name">Apple Green</span>
+                <span class="color-value">#34c759</span>
+              </div>
+              <div class="color-item">
+                <div class="color-swatch" style="background: var(--apple-red)"></div>
+                <span class="color-name">Apple Red</span>
+                <span class="color-value">#ff3b30</span>
+              </div>
+              <div class="color-item">
+                <div class="color-swatch" style="background: var(--apple-orange)"></div>
+                <span class="color-name">Apple Orange</span>
+                <span class="color-value">#ff9500</span>
+              </div>
+              <div class="color-item">
+                <div class="color-swatch" style="background: var(--apple-pink)"></div>
+                <span class="color-name">Apple Pink</span>
+                <span class="color-value">#ff2d55</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="component-section">
+            <h3 class="component-title">渐变色</h3>
+            <div class="color-grid">
+              <div class="color-item">
+                <div class="color-swatch" style="background: var(--gradient-primary)"></div>
+                <span class="color-name">Primary Gradient</span>
+                <span class="color-value">Blue → Purple</span>
+              </div>
+              <div class="color-item">
+                <div class="color-swatch" style="background: var(--gradient-secondary)"></div>
+                <span class="color-name">Secondary Gradient</span>
+                <span class="color-value">Purple → Pink</span>
+              </div>
+              <div class="color-item">
+                <div class="color-swatch" style="background: var(--gradient-cool)"></div>
+                <span class="color-name">Cool Gradient</span>
+                <span class="color-value">Cyan → Blue</span>
+              </div>
+              <div class="color-item">
+                <div class="color-swatch" style="background: var(--gradient-success)"></div>
+                <span class="color-name">Success Gradient</span>
+                <span class="color-value">Green → Teal</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 字体规范 -->
+      <div class="page-card">
+        <div class="page-card-header">
+          <h2>字体规范</h2>
+          <span class="route">/design/typography</span>
+        </div>
+        <div class="page-card-content">
+          <div class="component-section">
+            <h3 class="component-title">字体家族</h3>
+            <div class="font-showcase">
+              <div class="font-item">
+                <span class="font-label">Sans</span>
+                <span class="font-sample" style="font-size: 24px">Inter - 主UI字体</span>
+              </div>
+              <div class="font-item">
+                <span class="font-label">Hanzi</span>
+                <span class="font-sample hanzi-font" style="font-size: 24px">汉字字体 - Noto Sans SC</span>
+              </div>
+              <div class="font-item">
+                <span class="font-label">Mono</span>
+                <span class="font-sample mono-font" style="font-size: 24px">JetBrains Mono - 代码字体</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="component-section">
+            <h3 class="component-title">字体大小系统</h3>
+            <div class="font-showcase">
+              <div class="font-item">
+                <span class="font-label">xs (11px)</span>
+                <span class="font-sample" style="font-size: 11px">辅助标签、徽章</span>
+              </div>
+              <div class="font-item">
+                <span class="font-label">sm (13px)</span>
+                <span class="font-sample" style="font-size: 13px">小型文本、按钮</span>
+              </div>
+              <div class="font-item">
+                <span class="font-label">base (15px)</span>
+                <span class="font-sample" style="font-size: 15px">正文、默认</span>
+              </div>
+              <div class="font-item">
+                <span class="font-label">lg (17px)</span>
+                <span class="font-sample" style="font-size: 17px">强调文本</span>
+              </div>
+              <div class="font-item">
+                <span class="font-label">xl (19px)</span>
+                <span class="font-sample" style="font-size: 19px">小标题</span>
+              </div>
+              <div class="font-item">
+                <span class="font-label">2xl (24px)</span>
+                <span class="font-sample" style="font-size: 24px">中标题</span>
+              </div>
+              <div class="font-item">
+                <span class="font-label">3xl (32px)</span>
+                <span class="font-sample" style="font-size: 32px">大标题</span>
+              </div>
+              <div class="font-item">
+                <span class="font-label">4xl (40px)</span>
+                <span class="font-sample" style="font-size: 40px">页面标题</span>
+              </div>
+              <div class="font-item">
+                <span class="font-label">5xl (56px)</span>
+                <span class="font-sample" style="font-size: 56px; letter-spacing: -0.02em">Hero 标题</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="component-section">
+            <h3 class="component-title">字重规范</h3>
+            <div class="font-showcase">
+              <div class="font-item">
+                <span class="font-label">Light (300)</span>
+                <span class="font-sample" style="font-size: 24px; font-weight: 300">大字展示、装饰性文字</span>
+              </div>
+              <div class="font-item">
+                <span class="font-label">Regular (400)</span>
+                <span class="font-sample" style="font-size: 24px; font-weight: 400">正文、描述文本</span>
+              </div>
+              <div class="font-item">
+                <span class="font-label">Medium (500)</span>
+                <span class="font-sample" style="font-size: 24px; font-weight: 500">按钮、导航、标签</span>
+              </div>
+              <div class="font-item">
+                <span class="font-label">Semibold (600)</span>
+                <span class="font-sample" style="font-size: 24px; font-weight: 600">小标题、强调</span>
+              </div>
+              <div class="font-item">
+                <span class="font-label">Bold (700)</span>
+                <span class="font-sample" style="font-size: 24px; font-weight: 700">大标题、Hero</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 间距与布局规范 -->
+      <div class="page-card">
+        <div class="page-card-header">
+          <h2>间距与布局规范</h2>
+          <span class="route">/design/spacing</span>
+        </div>
+        <div class="page-card-content">
+          <div class="component-section">
+            <h3 class="component-title">间距系统</h3>
+            <div class="spacing-grid">
+              <div class="spacing-item">
+                <div class="spacing-bar" style="width: 4px"></div>
+                <span class="spacing-label">xs: 4px</span>
+              </div>
+              <div class="spacing-item">
+                <div class="spacing-bar" style="width: 8px"></div>
+                <span class="spacing-label">sm: 8px</span>
+              </div>
+              <div class="spacing-item">
+                <div class="spacing-bar" style="width: 16px"></div>
+                <span class="spacing-label">md: 16px</span>
+              </div>
+              <div class="spacing-item">
+                <div class="spacing-bar" style="width: 24px"></div>
+                <span class="spacing-label">lg: 24px</span>
+              </div>
+              <div class="spacing-item">
+                <div class="spacing-bar" style="width: 32px"></div>
+                <span class="spacing-label">xl: 32px</span>
+              </div>
+              <div class="spacing-item">
+                <div class="spacing-bar" style="width: 48px"></div>
+                <span class="spacing-label">2xl: 48px</span>
+              </div>
+              <div class="spacing-item">
+                <div class="spacing-bar" style="width: 64px"></div>
+                <span class="spacing-label">3xl: 64px</span>
+              </div>
+              <div class="spacing-item">
+                <div class="spacing-bar" style="width: 80px"></div>
+                <span class="spacing-label">4xl: 80px</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="component-section">
+            <h3 class="component-title">圆角系统</h3>
+            <div class="radius-grid">
+              <div class="radius-item">
+                <div class="radius-box" style="border-radius: 8px"></div>
+                <span class="radius-label">xs: 8px</span>
+              </div>
+              <div class="radius-item">
+                <div class="radius-box" style="border-radius: 12px"></div>
+                <span class="radius-label">sm: 12px</span>
+              </div>
+              <div class="radius-item">
+                <div class="radius-box" style="border-radius: 16px"></div>
+                <span class="radius-label">md: 16px</span>
+              </div>
+              <div class="radius-item">
+                <div class="radius-box" style="border-radius: 20px"></div>
+                <span class="radius-label">lg: 20px</span>
+              </div>
+              <div class="radius-item">
+                <div class="radius-box" style="border-radius: 24px"></div>
+                <span class="radius-label">xl: 24px</span>
+              </div>
+              <div class="radius-item">
+                <div class="radius-box" style="border-radius: 32px"></div>
+                <span class="radius-label">2xl: 32px</span>
+              </div>
+              <div class="radius-item">
+                <div class="radius-box" style="border-radius: 44px"></div>
+                <span class="radius-label">3xl: 44px</span>
+              </div>
+              <div class="radius-item">
+                <div class="radius-box" style="border-radius: 980px"></div>
+                <span class="radius-label">pill</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="component-section">
+            <h3 class="component-title">阴影系统</h3>
+            <div class="shadow-grid">
+              <div class="shadow-item">
+                <div class="shadow-box" style="box-shadow: var(--shadow-sm)"></div>
+                <span class="shadow-label">shadow-sm</span>
+              </div>
+              <div class="shadow-item">
+                <div class="shadow-box" style="box-shadow: var(--shadow-md)"></div>
+                <span class="shadow-label">shadow-md</span>
+              </div>
+              <div class="shadow-item">
+                <div class="shadow-box" style="box-shadow: var(--shadow-lg)"></div>
+                <span class="shadow-label">shadow-lg</span>
+              </div>
+              <div class="shadow-item">
+                <div class="shadow-box" style="box-shadow: var(--shadow-xl)"></div>
+                <span class="shadow-label">shadow-xl</span>
+              </div>
+              <div class="shadow-item">
+                <div class="shadow-box" style="box-shadow: var(--shadow-glow)"></div>
+                <span class="shadow-label">shadow-glow</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 动效规范 -->
+      <div class="page-card">
+        <div class="page-card-header">
+          <h2>动效规范</h2>
+          <span class="route">/design/animations</span>
+        </div>
+        <div class="page-card-content">
+          <div class="component-section">
+            <h3 class="component-title">动画时长</h3>
+            <div class="animation-grid">
+              <div class="animation-item">
+                <div class="animation-demo"></div>
+                <span class="animation-label">Fast</span>
+                <span class="animation-duration">0.15s</span>
+              </div>
+              <div class="animation-item">
+                <div class="animation-demo"></div>
+                <span class="animation-label">Normal</span>
+                <span class="animation-duration">0.25s</span>
+              </div>
+              <div class="animation-item">
+                <div class="animation-demo"></div>
+                <span class="animation-label">Slow</span>
+                <span class="animation-duration">0.4s</span>
+              </div>
+              <div class="animation-item">
+                <div class="animation-demo"></div>
+                <span class="animation-label">Large</span>
+                <span class="animation-duration">0.6s</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="component-section">
+            <h3 class="component-title">预设动画</h3>
+            <p style="color: var(--muted-foreground); margin-bottom: 24px;">
+              点击下方元素查看动画效果
+            </p>
+            <div class="animation-grid">
+              <div class="animation-item" style="animation: fadeInUp 0.6s ease-out">
+                <div class="animation-demo"></div>
+                <span class="animation-label">fade-in-up</span>
+                <span class="animation-duration">页面进入</span>
+              </div>
+              <div class="animation-item">
+                <div class="animation-demo" style="animation: scale-in 0.3s ease-out"></div>
+                <span class="animation-label">scale-in</span>
+                <span class="animation-duration">弹出层进入</span>
+              </div>
+              <div class="animation-item">
+                <div class="animation-demo" style="animation: slide-in-right 0.3s ease-out"></div>
+                <span class="animation-label">slide-in-right</span>
+                <span class="animation-duration">侧边栏进入</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- ==================== 组件库规范 ==================== -->
+    <section class="page-section" id="components">
+      
+      <!-- 基础组件 -->
+      <div class="page-card">
+        <div class="page-card-header">
+          <h2>基础组件</h2>
+          <span class="route">/components/basic</span>
+        </div>
+        <div class="page-card-content">
+          <div class="component-section">
+            <h3 class="component-title">Button 按钮</h3>
+            
+            <div style="margin-bottom: 32px;">
+              <p style="color: var(--muted-foreground); margin-bottom: 16px;">变体 (Variants)</p>
+              <div class="btn-group">
+                <button class="apple-btn apple-btn-primary">Primary</button>
+                <button class="apple-btn apple-btn-secondary">Secondary</button>
+                <button class="apple-btn apple-btn-outline">Outline</button>
+                <button class="apple-btn apple-btn-destructive">Destructive</button>
+                <button class="apple-btn apple-btn-success">Success</button>
+              </div>
+            </div>
+            
+            <div style="margin-bottom: 32px;">
+              <p style="color: var(--muted-foreground); margin-bottom: 16px;">尺寸 (Sizes)</p>
+              <div class="btn-size-demo">
+                <div class="btn-size-item">
+                  <button class="apple-btn apple-btn-primary" style="padding: 8px 16px; font-size: 13px; min-height: 24px;">XS</button>
+                  <span class="btn-size-label">24px</span>
+                </div>
+                <div class="btn-size-item">
+                  <button class="apple-btn apple-btn-primary" style="padding: 10px 18px; font-size: 14px; min-height: 28px;">SM</button>
+                  <span class="btn-size-label">28px</span>
+                </div>
+                <div class="btn-size-item">
+                  <button class="apple-btn apple-btn-primary">Default</button>
+                  <span class="btn-size-label">32px</span>
+                </div>
+                <div class="btn-size-item">
+                  <button class="apple-btn apple-btn-primary" style="padding: 16px 32px; min-height: 36px;">LG</button>
+                  <span class="btn-size-label">36px</span>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <p style="color: var(--muted-foreground); margin-bottom: 16px;">状态 (States)</p>
+              <div class="btn-group">
+                <button class="apple-btn apple-btn-primary">Normal</button>
+                <button class="apple-btn apple-btn-primary" disabled>Disabled</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="component-section">
+            <h3 class="component-title">Input 输入框</h3>
+            <div class="form-section">
+              <div class="form-group">
+                <label class="form-label">默认状态</label>
+                <input type="text" class="form-input" placeholder="输入汉字...">
+              </div>
+              <div class="form-group">
+                <label class="form-label">焦点状态 (点击查看)</label>
+                <input type="text" class="form-input" placeholder="点击查看焦点效果">
+              </div>
+              <div class="form-group">
+                <label class="form-label">错误状态</label>
+                <input type="text" class="form-input error" value="无效输入">
+                <span class="form-error">请输入有效的汉字</span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">成功状态</label>
+                <input type="text" class="form-input success" value="汉字">
+                <span class="form-hint" style="color: var(--apple-green);">输入有效</span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">禁用状态</label>
+                <input type="text" class="form-input" disabled placeholder="禁用输入框">
+              </div>
+            </div>
+          </div>
+          
+          <div class="component-section">
+            <h3 class="component-title">Badge 徽章</h3>
+            <div class="btn-group">
+              <span class="badge">Default</span>
+              <span class="badge success">Success</span>
+              <span class="badge warning">Warning</span>
+              <span class="badge purple">Purple</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 复合组件 -->
+      <div class="page-card">
+        <div class="page-card-header">
+          <h2>复合组件</h2>
+          <span class="route">/components/composite</span>
+        </div>
+        <div class="page-card-content">
+          <div class="component-section">
+            <h3 class="component-title">Card 卡片</h3>
+            <div class="card-demo-grid">
+              <div class="demo-card">
+                <div class="demo-card-header">
+                  <div class="demo-card-title">卡片标题</div>
+                  <div class="demo-card-desc">卡片描述文本</div>
+                </div>
+                <div class="demo-card-content">
+                  <p style="color: var(--muted-foreground);">卡片内容区域，用于展示主要信息。</p>
+                </div>
+                <div class="demo-card-footer">
+                  <button class="apple-btn apple-btn-secondary" style="padding: 8px 16px; font-size: 14px; min-height: 32px;">操作</button>
+                </div>
+              </div>
+              
+              <div class="demo-card">
+                <div class="demo-card-header">
+                  <div class="demo-card-title">汉字学习进度</div>
+                  <div class="demo-card-desc">本周学习统计</div>
+                </div>
+                <div class="demo-card-content">
+                  <div style="display: flex; gap: 16px;">
+                    <div style="flex: 1; text-align: center;">
+                      <div style="font-size: 32px; font-weight: 700; color: var(--apple-blue);">128</div>
+                      <div style="font-size: 13px; color: var(--muted-foreground);">已学习</div>
+                    </div>
+                    <div style="flex: 1; text-align: center;">
+                      <div style="font-size: 32px; font-weight: 700; color: var(--apple-green);">95%</div>
+                      <div style="font-size: 13px; color: var(--muted-foreground);">正确率</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 业务组件 -->
+      <div class="page-card">
+        <div class="page-card-header">
+          <h2>业务组件</h2>
+          <span class="route">/components/business</span>
+        </div>
+        <div class="page-card-content">
+          <div class="component-section">
+            <h3 class="component-title">FeatureCard 功能卡片</h3>
+            <div class="apple-features">
+              <div class="apple-feature">
+                <div class="apple-feature-icon">📚</div>
+                <h4>学习模式</h4>
+                <p>系统化的汉字学习路径，从基础到进阶</p>
+              </div>
+              <div class="apple-feature">
+                <div class="apple-feature-icon">✏️</div>
+                <h4>练习模式</h4>
+                <p>多种练习方式，巩固学习成果</p>
+              </div>
+              <div class="apple-feature">
+                <div class="apple-feature-icon">📊</div>
+                <h4>进度追踪</h4>
+                <p>实时查看学习进度和统计数据</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="component-section">
+            <h3 class="component-title">StatsCard 统计卡片</h3>
+            <div class="stats-grid">
+              <div class="stat-card blue">
+                <div class="stat-card-value blue">1,234</div>
+                <div class="stat-card-label">已学习汉字</div>
+              </div>
+              <div class="stat-card purple">
+                <div class="stat-card-value purple">56</div>
+                <div class="stat-card-label">本周学习天数</div>
+              </div>
+              <div class="stat-card green">
+                <div class="stat-card-value green">95%</div>
+                <div class="stat-card-label">平均正确率</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- ==================== 交互标准 ==================== -->
+    <section class="page-section" id="interactions">
+      
+      <!-- 交互反馈规范 -->
+      <div class="page-card">
+        <div class="page-card-header">
+          <h2>交互反馈规范</h2>
+          <span class="route">/interactions/feedback</span>
+        </div>
+        <div class="page-card-content">
+          <div class="component-section">
+            <h3 class="component-title">Hover 状态</h3>
+            <div class="feedback-grid">
+              <div class="feedback-item">
+                <span class="feedback-label">按钮 Hover</span>
+                <button class="apple-btn apple-btn-primary" style="padding: 10px 20px; min-height: 40px;">Hover Me</button>
+              </div>
+              <div class="feedback-item">
+                <span class="feedback-label">卡片 Hover</span>
+                <div class="demo-card" style="width: 120px; height: 80px; display: flex; align-items: center; justify-content: center;">
+                  <span style="font-size: 24px;">📦</span>
+                </div>
+              </div>
+              <div class="feedback-item">
+                <span class="feedback-label">链接 Hover</span>
+                <a href="#" style="color: var(--apple-blue); text-decoration: none; transition: text-decoration 0.2s;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">链接文本</a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="component-section">
+            <h3 class="component-title">Focus 状态</h3>
+            <p style="color: var(--muted-foreground); margin-bottom: 24px;">
+              点击输入框查看焦点环效果
+            </p>
+            <div class="form-section">
+              <div class="form-group">
+                <label class="form-label">焦点输入框</label>
+                <input type="text" class="form-input" placeholder="点击查看焦点环">
+              </div>
+              <div class="form-group">
+                <label class="form-label">焦点按钮</label>
+                <button class="apple-btn apple-btn-primary">点击查看焦点</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 错误处理规范 -->
+      <div class="page-card">
+        <div class="page-card-header">
+          <h2>错误处理规范</h2>
+          <span class="route">/interactions/errors</span>
+        </div>
+        <div class="page-card-content">
+          <div class="component-section">
+            <h3 class="component-title">表单错误</h3>
+            <div class="form-section">
+              <div class="form-group">
+                <label class="form-label">汉字输入</label>
+                <input type="text" class="form-input error" value="abc">
+                <span class="form-error">请输入有效的汉字，不能包含字母</span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">拼音输入</label>
+                <input type="text" class="form-input error" value="123">
+                <span class="form-error">请输入有效的拼音格式</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 空状态设计规范 -->
+      <div class="page-card">
+        <div class="page-card-header">
+          <h2>空状态设计规范</h2>
+          <span class="route">/interactions/empty-states</span>
+        </div>
+        <div class="page-card-content">
+          <div class="component-section">
+            <h3 class="component-title">空状态示例</h3>
+            <div class="card-demo-grid">
+              <div class="empty-state">
+                <div class="empty-icon">📚</div>
+                <h3 class="empty-title">暂无学习记录</h3>
+                <p class="empty-desc">开始你的汉字学习之旅，记录每一次进步</p>
+                <button class="apple-btn apple-btn-primary" style="padding: 10px 20px; min-height: 40px;">开始学习</button>
+              </div>
+              
+              <div class="empty-state">
+                <div class="empty-icon">🔍</div>
+                <h3 class="empty-title">未找到结果</h3>
+                <p class="empty-desc">没有找到匹配的汉字，请尝试其他关键词</p>
+                <button class="apple-btn apple-btn-secondary" style="padding: 10px 20px; min-height: 40px;">清除搜索</button>
+              </div>
+              
+              <div class="empty-state">
+                <div class="empty-icon">⚠️</div>
+                <h3 class="empty-title">加载失败</h3>
+                <p class="empty-desc">网络连接出现问题，请稍后重试</p>
+                <button class="apple-btn apple-btn-outline" style="padding: 10px 20px; min-height: 40px;">重新加载</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- ==================== 页面原型 ==================== -->
+    <section class="page-section" id="pages">
+      
+      <!-- 首页原型 -->
+      <div class="page-card">
+        <div class="page-card-header">
+          <h2>首页原型</h2>
+          <span class="route">/</span>
+        </div>
+        <div class="page-card-content">
+          <div class="apple-hero">
+            <div class="apple-eyebrow">汉字学习应用</div>
+            <h3 class="hanzi-font">汉字大师</h3>
+            <p class="apple-hero-subtitle">系统化学习汉字，掌握中文之美</p>
+            <div class="apple-hero-cta">
+              <button class="apple-btn apple-btn-primary">开始学习</button>
+              <button class="apple-btn apple-btn-secondary">了解更多</button>
+            </div>
+          </div>
+          
+          <div class="apple-features">
+            <div class="apple-feature">
+              <div class="apple-feature-icon">📚</div>
+              <h4>智能学习</h4>
+              <p>基于 AI 的个性化学习路径</p>
+            </div>
+            <div class="apple-feature">
+              <div class="apple-feature-icon">✏️</div>
+              <h4>多样练习</h4>
+              <p>书写、拼音、释义多维度练习</p>
+            </div>
+            <div class="apple-feature">
+              <div class="apple-feature-icon">📊</div>
+              <h4>进度追踪</h4>
+              <p>可视化学习进度和成就</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 学习页面原型 -->
+      <div class="page-card">
+        <div class="page-card-header">
+          <h2>学习页面原型</h2>
+          <span class="route">/learn</span>
+        </div>
+        <div class="page-card-content">
+          <div class="component-section">
+            <h3 class="component-title">汉字网格</h3>
+            <div class="apple-char-grid">
+              <div class="apple-char-card">
+                <span class="char hanzi-font">汉</span>
+                <span class="pinyin">hàn</span>
+              </div>
+              <div class="apple-char-card selected">
+                <span class="char hanzi-font">字</span>
+                <span class="pinyin">zì</span>
+              </div>
+              <div class="apple-char-card">
+                <span class="char hanzi-font">学</span>
+                <span class="pinyin">xué</span>
+              </div>
+              <div class="apple-char-card">
+                <span class="char hanzi-font">习</span>
+                <span class="pinyin">xí</span>
+              </div>
+              <div class="apple-char-card">
+                <span class="char hanzi-font">应</span>
+                <span class="pinyin">yìng</span>
+              </div>
+              <div class="apple-char-card">
+                <span class="char hanzi-font">用</span>
+                <span class="pinyin">yòng</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="component-section">
+            <h3 class="component-title">学习统计</h3>
+            <div class="stats-grid">
+              <div class="stat-card blue">
+                <div class="stat-card-value blue">128</div>
+                <div class="stat-card-label">今日已学</div>
+              </div>
+              <div class="stat-card purple">
+                <div class="stat-card-value purple">7</div>
+                <div class="stat-card-label">连续天数</div>
+              </div>
+              <div class="stat-card green">
+                <div class="stat-card-value green">92%</div>
+                <div class="stat-card-label">正确率</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 练习页面原型 -->
+      <div class="page-card">
+        <div class="page-card-header">
+          <h2>练习页面原型</h2>
+          <span class="route">/practice</span>
+        </div>
+        <div class="page-card-content">
+          <div class="component-section">
+            <h3 class="component-title">练习选项</h3>
+            <div class="apple-features">
+              <div class="apple-feature">
+                <div class="apple-feature-icon">✍️</div>
+                <h4>书写练习</h4>
+                <p>练习汉字书写，掌握笔画顺序</p>
+              </div>
+              <div class="apple-feature">
+                <div class="apple-feature-icon">🔊</div>
+                <h4>拼音练习</h4>
+                <p>听音写拼音，强化发音记忆</p>
+              </div>
+              <div class="apple-feature">
+                <div class="apple-feature-icon">📖</div>
+                <h4>释义练习</h4>
+                <p>选择正确的释义，理解汉字含义</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+  </div>
+
+  <script>
+    // 页面切换
+    document.querySelectorAll('.prototype-nav-link').forEach(link => {
+      link.addEventListener('click', function() {
+        const page = this.dataset.page;
+        
+        // 更新导航状态
+        document.querySelectorAll('.prototype-nav-link').forEach(l => l.classList.remove('active'));
+        this.classList.add('active');
+        
+        // 切换页面
+        document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active'));
+        document.getElementById(page).classList.add('active');
+      });
+    });
+
+    // 主题切换
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+    }
+
+    // 导航滚动效果
+    window.addEventListener('scroll', function() {
+      const nav = document.querySelector('.prototype-nav');
+      if (window.scrollY > 20) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+
+    // 字符卡片点击
+    document.querySelectorAll('.apple-char-card').forEach(card => {
+      card.addEventListener('click', function() {
+        document.querySelectorAll('.apple-char-card').forEach(c => c.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+  </script>
+</body>
+</html>

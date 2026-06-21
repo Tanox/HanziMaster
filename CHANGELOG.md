@@ -1,42 +1,5 @@
 # Changelog
 
-## [3.0.0] — Design System Overhaul & High-Fidelity Prototype (BREAKING)
-
-### Design System v3.0 (Apple HIG Inspired)
-- **色彩系统 Color Palette**: 统一品牌色为 Apple-style `#007AFF` → `#AF52DE` 渐变；定义语义化 tokens（bg/fg/border/success/warning/error）；9 级中性色阶；系统色（Green/Orange/Red/Yellow/Pink/Teal/Indigo）
-- **字体系统 Typography**: 定义 8 级字体层级（Hero / Display 1–2 / H1–3 / Body / Caption）；字体族 Inter + Noto Sans SC + JetBrains Mono；`font-display: swap` 避免 FOIT
-- **间距与布局 Spacing & Layout**: 4px 基准网格；`space-1` 至 `space-20` 共 10 档；圆角 4 档 (`8/12/20/24/32/980px pill`)
-- **图标规范 Icons**: 2px stroke 线条图标统一风格；支持 hover 状态反色
-- **动效规范 Motion**: `ease-out` / spring 缓动；页面 `fade-in-up`、模态 `scale-in`、卡片 `hover-lift`；动画时长 0.25–0.6s
-
-### Components v3.0 组件库
-- **基础组件**: Button (primary/secondary/outline/success/danger/icon/disabled)；Input (default/value/error) + `aria-*` keyboard；Toggle switch；Badge
-- **复合组件**: Feature Card；Character Grid (汉字选择网格)；Stats Card；Alert (info/success/warning/error)；Progress Bar (多指标分段展示)；Weekly Progress Panel
-- **业务组件**: Learning Mode Card (书写练习 / 记忆测验 / 学习统计)；Empty State；Character Detail Panel（含笔画/部首/结构/掌握度）
-- **组件使用规则**: 单一职责；可访问性；主题支持；响应式（sm/lg 断点）；`44×44 px` 最小触摸目标
-
-### Interaction Standards 交互标准
-- **交互模式库**: Hover-First / Keyboard-First / Touch-Friendly / Optimal Feedback
-- **交互反馈规范**: 100ms 内视觉响应；`transform: translateY` + `box-shadow` 悬浮反馈；`scale-[0.98]` 按压反馈
-- **错误处理规范**: 表单字段级 + 顶部总结；错误自动聚焦；offline 保留缓存并显示离线徽章
-- **空状态设计规范**: 统一插图 + 文案 + CTA 按钮；避免空白页面
-
-### High-Fidelity Prototype 高保真原型
-- 新增 **prototype/design-system.html**: 完整设计系统规范文档与演示
-- 新增 **prototype/components.html**: 组件库规范与交互演示
-- 重构 **prototype/index.html**: 包含首页、学习、练习三个核心页面，支持页面切换与响应式
-- 所有原型统一使用 v3.0 design tokens（字体、间距、色彩、动效）
-
-### Project Cleanup 项目精简
-- 删除 `prototype/UI_OPTIMIZATION.md`（已并入 CHANGELOG）
-- 删除 `prototype/design-spec.html`（旧版规范已废弃）
-- 删除 `prototype/prototype.html`（旧版原型已被新版 index.html 替代）
-
-### Documentation
-- `prototype/` 下的三个 HTML 文件相互互联，形成完整的设计系统 → 组件库 → 原型的浏览链路
-
----
-
 ## [2.2.1] - UI/UX Professional Review & Optimization (Complete)
 ### Theme System
 - Added 3-state theme toggle: light → dark → system (previously lost system mode after manual toggle)

@@ -1,8 +1,9 @@
-// src/components/locale-provider.tsx v3.0.0
+// src/components/locale-provider.tsx v2.3.0
 'use client';
 
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { Locale, translations, locales, Translations } from '@/lib/i18n';
+import { safeGetItem, safeSetItem } from '@/lib/storage';
 
 type LocaleProviderProps = {
   children: React.ReactNode;
@@ -42,6 +43,7 @@ const initialState: LocaleProviderState = {
 const LocaleProviderContext = createContext<LocaleProviderState>(initialState);
 
 const getBrowserLocale = (): Locale => {
+  if (typeof navigator === 'undefined') return 'en';
   const browserLang = navigator.language;
   if (browserLang.startsWith('zh')) {
     return browserLang.includes('TW') || browserLang.includes('HK') ? 'zh-TW' : 'zh-CN';
@@ -57,6 +59,11 @@ const getBrowserLocale = (): Locale => {
   return 'en';
 };
 
+// Client-safe translation lookup (cache() is server-only)
+const translate = (locale: Locale, key: string): string => {
+  return getNestedValue(translations[locale], key);
+};
+
 export function LocaleProvider({
   children,
   defaultLocale = 'en',
@@ -67,15 +74,12 @@ export function LocaleProvider({
 
   useEffect(() => {
     const initLocale = () => {
-      try {
-        const stored = localStorage.getItem(storageKey) as Locale;
-        if (stored && locales.includes(stored)) {
-          setLocaleState(stored);
-          document.documentElement.lang = stored;
-          return;
-        }
-      } catch (e) {
-        console.warn('Failed to read from localStorage:', e);
+      // Use versioned storage
+      const stored = safeGetItem<Locale>(storageKey, defaultLocale);
+      if (stored && locales.includes(stored)) {
+        setLocaleState(stored);
+        document.documentElement.lang = stored;
+        return;
       }
 
       const browserLocale = getBrowserLocale();
@@ -84,20 +88,17 @@ export function LocaleProvider({
     };
 
     initLocale();
-  }, [storageKey]);
+  }, [storageKey, defaultLocale]);
 
   const setLocale = useCallback((newLocale: Locale) => {
-    try {
-      localStorage.setItem(storageKey, newLocale);
-      setLocaleState(newLocale);
-      document.documentElement.lang = newLocale;
-    } catch (e) {
-      console.warn('Failed to write to localStorage:', e);
-    }
+    safeSetItem(storageKey, newLocale);
+    setLocaleState(newLocale);
+    document.documentElement.lang = newLocale;
   }, [storageKey]);
 
+  // Use direct translation lookup
   const t = useCallback((key: string): string => {
-    return getNestedValue(translations[locale], key);
+    return translate(locale, key);
   }, [locale]);
 
   const value = {

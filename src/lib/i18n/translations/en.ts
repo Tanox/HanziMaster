@@ -16,7 +16,6 @@ export const en = {
     foreverQuote: 'The character for "forever" contains all 8 basic strokes.',
     learners: 'learners studying',
     strokeMastery: 'Stroke Mastery',
-    etymology: 'Etymology',
     theme: {
       light: 'Light',
       dark: 'Dark',
@@ -64,7 +63,6 @@ export const en = {
     charactersLearned: 'Characters Learned',
     dayStreak: 'Day Streak',
     accuracy: 'Accuracy',
-    totalTime: 'Total Time',
   },
   learn: {
     one: 'One',
@@ -81,7 +79,6 @@ export const en = {
     fire: 'Fire',
     radical: 'Radical',
     structure: 'Structure',
-    mastery: 'Mastery',
   },
   footer: {
     copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. All rights reserved.',

@@ -1,7 +1,7 @@
 const globals = require("globals");
 const pluginJs = require("@eslint/js");
 const pluginReact = require("eslint-plugin-react");
-const nextPlugin = require("@next/eslint-plugin-next");
+const pluginNext = require("@next/eslint-plugin-next");
 const parser = require("@typescript-eslint/parser");
 const pluginTs = require("@typescript-eslint/eslint-plugin");
 
@@ -25,16 +25,15 @@ module.exports = [
     },
     plugins: {
       react: pluginReact,
-      "@next/next": nextPlugin,
+      "@next/next": pluginNext,
       "@typescript-eslint": pluginTs,
     },
     rules: {
       "react/react-in-jsx-scope": "off",
       "react/no-unescaped-entities": "off",
       "@typescript-eslint/no-unused-vars": ["error", { varsIgnorePattern: "^_" }],
+      // Next.js recommended rules
       "@next/next/no-html-link-for-pages": "warn",
-      ...nextPlugin.configs.recommended.rules,
-      ...nextPlugin.configs["core-web-vitals"].rules,
     },
   },
   pluginJs.configs.recommended,

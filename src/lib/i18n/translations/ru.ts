@@ -16,7 +16,6 @@ export const ru = {
     foreverQuote: 'Иероглиф «вечность» содержит все 8 основных черт.',
     learners: 'учащихся учатся',
     strokeMastery: 'Владение чертами',
-    etymology: 'Этимология',
     theme: {
       light: 'Светлая',
       dark: 'Тёмная',
@@ -64,7 +63,6 @@ export const ru = {
     charactersLearned: 'Иероглифов Изучено',
     dayStreak: 'Дней Подряд',
     accuracy: 'Точность',
-    totalTime: 'Общее Время',
   },
   learn: {
     one: 'Один',
@@ -81,7 +79,6 @@ export const ru = {
     fire: 'Огонь',
     radical: 'Радикал',
     structure: 'Структура',
-    mastery: 'Владение',
   },
   footer: {
     copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. Все права защищены.',

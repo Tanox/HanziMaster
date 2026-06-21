@@ -16,7 +16,6 @@ export const zhTW = {
     foreverQuote: '「永」字包含了所有8種基本筆畫。',
     learners: '學員正在學習',
     strokeMastery: '筆畫掌握度',
-    etymology: '詞源',
     theme: {
       light: '淺色',
       dark: '深色',
@@ -64,7 +63,6 @@ export const zhTW = {
     charactersLearned: '已學漢字',
     dayStreak: '連續學習天數',
     accuracy: '正確率',
-    totalTime: '總時間',
   },
   learn: {
     one: '一',
@@ -81,7 +79,6 @@ export const zhTW = {
     fire: '火',
     radical: '部首',
     structure: '結構',
-    mastery: '掌握度',
   },
   footer: {
     copyright: '© 2026 漢字大師 HanziMaster v3.0.0. 保留所有權利。',
