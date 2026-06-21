@@ -77,7 +77,7 @@ export function LocaleToggleClient() {
       <button
         ref={buttonRef}
         onClick={() => setIsOpen((v) => !v)}
-        className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
         aria-label={`Change language (current: ${localeNames[locale] || locale})`}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
@@ -92,7 +92,7 @@ export function LocaleToggleClient() {
           ref={listRef}
           role="listbox"
           aria-label="Select language"
-          className="absolute right-0 mt-2 w-48 max-h-[70vh] overflow-y-auto bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 z-50"
+          className="absolute right-0 mt-2 w-48 max-h-[70vh] overflow-y-auto bg-white dark:bg-gray-900 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50"
         >
           {availableLocales.map((loc) => (
             <button
@@ -101,10 +101,10 @@ export function LocaleToggleClient() {
               aria-selected={locale === loc}
               onClick={() => selectLocale(loc)}
               tabIndex={0}
-              className={`w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors first:rounded-t-lg last:rounded-b-lg ${
+              className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors first:rounded-t-lg last:rounded-b-lg ${
                 locale === loc
-                  ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-400 font-semibold'
-                  : 'text-slate-700 dark:text-slate-200'
+                  ? 'bg-[#007aff]/10 dark:bg-[#5856d6]/20 text-[#007aff] dark:text-[#2997ff] font-semibold'
+                  : 'text-gray-700 dark:text-gray-200'
               }`}
               style={{ minHeight: 40 }}
             >

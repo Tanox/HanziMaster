@@ -1,40 +1,19 @@
-const globals = require("globals");
-const pluginJs = require("@eslint/js");
-const pluginReact = require("eslint-plugin-react");
-const pluginNext = require("@next/eslint-plugin-next");
-const parser = require("@typescript-eslint/parser");
+const nextPlugin = require("@next/eslint-plugin-next");
 const pluginTs = require("@typescript-eslint/eslint-plugin");
 
 module.exports = [
   {
-    ignores: ["eslint.config.js", "next.config.js", "postcss.config.js", ".next/**"],
+    ignores: [".next/**", "node_modules/**"],
   },
   {
-    files: ["**/*.{js,jsx,ts,tsx}"],
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-        React: "readonly",
-      },
-      parser: parser,
-      parserOptions: {
-        ecmaFeatures: { jsx: true },
-        project: "./tsconfig.json",
-      },
-    },
     plugins: {
-      react: pluginReact,
-      "@next/next": pluginNext,
+      "@next/next": nextPlugin,
       "@typescript-eslint": pluginTs,
     },
     rules: {
-      "react/react-in-jsx-scope": "off",
-      "react/no-unescaped-entities": "off",
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs["core-web-vitals"].rules,
       "@typescript-eslint/no-unused-vars": ["error", { varsIgnorePattern: "^_" }],
-      // Next.js recommended rules
-      "@next/next/no-html-link-for-pages": "warn",
     },
   },
-  pluginJs.configs.recommended,
 ];
