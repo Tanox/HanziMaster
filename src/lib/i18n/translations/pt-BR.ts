@@ -16,6 +16,7 @@ export const ptBR = {
     foreverQuote: 'O caractere de "para sempre" contém todos os 8 traços básicos.',
     learners: 'aprendizes estudando',
     strokeMastery: 'Domínio de Traços',
+    etymology: 'Etimologia',
     theme: {
       light: 'Claro',
       dark: 'Escuro',
@@ -63,6 +64,7 @@ export const ptBR = {
     charactersLearned: 'Caracteres Aprendidos',
     dayStreak: 'Dias Consecutivos',
     accuracy: 'Precisão',
+    totalTime: 'Tempo Total',
   },
   learn: {
     one: 'Um',
@@ -79,6 +81,7 @@ export const ptBR = {
     fire: 'Fogo',
     radical: 'Radical',
     structure: 'Estrutura',
+    mastery: 'Domínio',
   },
   footer: {
     copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. Todos os direitos reservados.',

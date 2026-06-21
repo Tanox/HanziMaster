@@ -16,6 +16,7 @@ export const zhCN = {
     foreverQuote: '"永"字包含了所有8种基本笔画。',
     learners: '学员正在学习',
     strokeMastery: '笔画掌握度',
+    etymology: '词源',
     theme: {
       light: '浅色',
       dark: '深色',
@@ -63,6 +64,7 @@ export const zhCN = {
     charactersLearned: '已学汉字',
     dayStreak: '连续学习天数',
     accuracy: '正确率',
+    totalTime: '总时间',
   },
   learn: {
     one: '一',
@@ -79,6 +81,7 @@ export const zhCN = {
     fire: '火',
     radical: '部首',
     structure: '结构',
+    mastery: '掌握度',
   },
   footer: {
     copyright: '© 2026 汉字大师 HanziMaster v3.0.0. 保留所有权利。',

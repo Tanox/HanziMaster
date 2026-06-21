@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-  /* Font family */
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
-  --font-hanzi: 'Noto Sans SC', sans-serif;
+  /* Font family - using next/font Google Fonts variables */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-hanzi: var(--font-noto-sans-sc), sans-serif;
 
   /* Apple Brand Colors */
   --color-brand-blue: #007aff;

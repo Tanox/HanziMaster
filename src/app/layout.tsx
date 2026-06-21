@@ -4,12 +4,34 @@ import "./globals.css";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
+import { Inter, Noto_Sans_SC, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LocaleProvider, useTranslation } from "@/components/locale-provider";
 import { ThemeToggleClient } from "@/components/theme-toggle";
 import { LocaleToggleClient } from "@/components/locale-toggle";
 import { MobileNav } from "@/components/mobile-nav";
 import { NavLink } from "@/components/nav-link";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-inter",
+});
+
+const notoSansSC = Noto_Sans_SC({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["300", "400", "500", "700", "800"],
+  variable: "--font-noto-sans-sc",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500"],
+  variable: "--font-jetbrains-mono",
+});
 
 function LayoutContent({
   children,
@@ -106,17 +128,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${notoSansSC.variable} ${jetbrainsMono.variable}`}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com"/>
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;700;800&display=swap"
-          rel="stylesheet"
-        />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
       </head>
-      <body className="antialiased">
+      <body className="antialiased font-sans">
         <ThemeProvider>
           <LocaleProvider>
             <LayoutContent>{children}</LayoutContent>

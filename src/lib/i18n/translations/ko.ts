@@ -16,6 +16,7 @@ export const ko = {
     foreverQuote: '"영원"이라는 한자는 모든 8가지 기본 획을 포함하고 있습니다.',
     learners: '학습자 공부 중',
     strokeMastery: '획 마스터리',
+    etymology: '어원',
     theme: {
       light: '라이트',
       dark: '다크',
@@ -63,6 +64,7 @@ export const ko = {
     charactersLearned: '학습 완료한 한자',
     dayStreak: '연속 일수',
     accuracy: '정확도',
+    totalTime: '총 시간',
   },
   learn: {
     one: '하나',
@@ -79,6 +81,7 @@ export const ko = {
     fire: '불',
     radical: '부수',
     structure: '구조',
+    mastery: '마스터리',
   },
   footer: {
     copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. All rights reserved.',

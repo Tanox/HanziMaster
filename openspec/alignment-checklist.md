@@ -11,9 +11,9 @@
 
 | 路由 | 规范文档 | 原型图 | 代码实现 | 状态 |
 |------|---------|--------|---------|------|
-| `/` | ✅ 01-overview.md | ✅ prototype.html | ✅ src/app/page.tsx | ✅ 对齐 |
-| `/learn` | ✅ 02-architecture.md | ✅ prototype.html | ✅ src/app/learn/page.tsx | ✅ 对齐 |
-| `/practice` | ✅ 02-architecture.md | ✅ prototype.html | ✅ src/app/practice/page.tsx | ✅ 对齐 |
+| `/` | ✅ 01-overview.md | ✅ [../prototype/index.html](../prototype/index.html) | ✅ src/app/page.tsx | ✅ 对齐 |
+| `/learn` | ✅ 02-architecture.md | ✅ [../prototype/index.html](../prototype/index.html) | ✅ src/app/learn/page.tsx | ✅ 对齐 |
+| `/practice` | ✅ 02-architecture.md | ✅ [../prototype/index.html](../prototype/index.html) | ✅ src/app/practice/page.tsx | ✅ 对齐 |
 
 ---
 
@@ -91,19 +91,19 @@
 
 | 颜色 | 规范文档 | globals.css | tailwind.config.ts | 状态 |
 |------|---------|-------------|-------------------|------|
-| primary (#007aff) | ✅ prototype.html | ✅ | ✅ | ✅ 对齐 |
-| primary-dark (#5856d6) | ✅ prototype.html | ✅ | ✅ | ✅ 对齐 |
-| 背景色 (#ffffff) | ✅ prototype.html | ✅ | ✅ | ✅ 对齐 |
-| 前景色 (#000000) | ✅ prototype.html | ✅ | ✅ | ✅ 对齐 |
+| primary (#007aff) | ✅ [../prototype/index.html](../prototype/index.html) | ✅ | ✅ | ✅ 对齐 |
+| primary-dark (#5856d6) | ✅ [../prototype/index.html](../prototype/index.html) | ✅ | ✅ | ✅ 对齐 |
+| 背景色 (#ffffff) | ✅ [../prototype/index.html](../prototype/index.html) | ✅ | ✅ | ✅ 对齐 |
+| 前景色 (#000000) | ✅ [../prototype/index.html](../prototype/index.html) | ✅ | ✅ | ✅ 对齐 |
 
 ### 4.3 动画类
 
 | 动画类 | 规范文档 | globals.css | 代码使用 | 状态 |
 |--------|---------|-------------|---------|------|
-| animate-fade-in-up | ✅ prototype.html | ✅ | ✅ HomePage | ✅ 对齐 |
-| animate-scale-in | ✅ prototype.html | ✅ | ✅ LearnPage | ✅ 对齐 |
+| animate-fade-in-up | ✅ [../prototype/index.html](../prototype/index.html) | ✅ | ✅ HomePage | ✅ 对齐 |
+| animate-scale-in | ✅ [../prototype/index.html](../prototype/index.html) | ✅ | ✅ LearnPage | ✅ 对齐 |
 | animate-slide-in-right | - | ✅ | ✅ MobileNav | ✅ 对齐 |
-| page-transition | ✅ prototype.html | ✅ | ✅ Layout | ✅ 对齐 |
+| page-transition | ✅ [../prototype/index.html](../prototype/index.html) | ✅ | ✅ Layout | ✅ 对齐 |
 | skeleton | - | ✅ | ✅ 加载状态 | ✅ 对齐 |
 
 ---
@@ -114,10 +114,10 @@
 
 | 断点 | 规范文档 | 原型图 | 代码实现 | 状态 |
 |------|---------|--------|---------|------|
-| xs (475px) | ✅ prototype.html | ✅ | ✅ LearnPage grid | ✅ 对齐 |
-| sm (640px) | ✅ prototype.html | ✅ | ✅ 全局使用 | ✅ 对齐 |
-| md (768px) | ✅ prototype.html | ✅ | ✅ 全局使用 | ✅ 对齐 |
-| lg (1024px) | ✅ prototype.html | ✅ | ✅ 全局使用 | ✅ 对齐 |
+| xs (475px) | ✅ [../prototype/index.html](../prototype/index.html) | ✅ | ✅ LearnPage grid | ✅ 对齐 |
+| sm (640px) | ✅ [../prototype/index.html](../prototype/index.html) | ✅ | ✅ 全局使用 | ✅ 对齐 |
+| md (768px) | ✅ [../prototype/index.html](../prototype/index.html) | ✅ | ✅ 全局使用 | ✅ 对齐 |
+| lg (1024px) | ✅ [../prototype/index.html](../prototype/index.html) | ✅ | ✅ 全局使用 | ✅ 对齐 |
 
 ### 5.2 响应式组件
 
@@ -137,11 +137,11 @@
 |------|---------|--------|---------|------|
 | 语义化HTML | ✅ 03-development.md | - | ✅ header/main/nav/footer | ✅ 对齐 |
 | Skip to content | ✅ 03-development.md | - | ✅ layout.tsx | ✅ 对齐 |
-| aria-expanded | ✅ prototype.html | - | ✅ LocaleToggle | ✅ 对齐 |
-| aria-selected | ✅ prototype.html | - | ✅ LocaleToggle | ✅ 对齐 |
-| aria-label | ✅ prototype.html | - | ✅ 所有按钮 | ✅ 对齐 |
-| 键盘导航 | ✅ prototype.html | - | ✅ Escape/Arrow | ✅ 对齐 |
-| 触控目标 44px | ✅ prototype.html | - | ✅ minWidth/minHeight | ✅ 对齐 |
+| aria-expanded | ✅ [../prototype/index.html](../prototype/index.html) | - | ✅ LocaleToggle | ✅ 对齐 |
+| aria-selected | ✅ [../prototype/index.html](../prototype/index.html) | - | ✅ LocaleToggle | ✅ 对齐 |
+| aria-label | ✅ [../prototype/index.html](../prototype/index.html) | - | ✅ 所有按钮 | ✅ 对齐 |
+| 键盘导航 | ✅ [../prototype/index.html](../prototype/index.html) | - | ✅ Escape/Arrow | ✅ 对齐 |
+| 触控目标 44px | ✅ [../prototype/index.html](../prototype/index.html) | - | ✅ minWidth/minHeight | ✅ 对齐 |
 
 ---
 
@@ -295,7 +295,7 @@
 | 测试文档 | /workspace/openspec/06-testing.md | v3.0.0 |
 | 编码规范 | /workspace/openspec/coding-standards.md | v3.0.0 |
 | 提交模板 | /workspace/openspec/commit-template.md | v3.0.0 |
-| **原型图** | /workspace/openspec/prototype.html | **2026-06-08 Apple风格** |
+| **原型图** | /workspace/prototype/index.html | **2026-06-08 Apple风格** |
 | 对齐清单 | /workspace/openspec/alignment-checklist.md | 2026-06-08 |
 | UI/UX审查报告 | /workspace/openspec/ui-ux-review-report.md | 2026-06-07 |
 

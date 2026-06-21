@@ -16,6 +16,7 @@ export const fr = {
     foreverQuote: 'Le caractère "éternel" contient les 8 traits de base.',
     learners: 'apprenants qui estudient',
     strokeMastery: 'Maîtrise des Traits',
+    etymology: 'Étymologie',
     theme: {
       light: 'Clair',
       dark: 'Sombre',
@@ -63,6 +64,7 @@ export const fr = {
     charactersLearned: 'Caractères Appris',
     dayStreak: 'Jours Consécutifs',
     accuracy: 'Précision',
+    totalTime: 'Temps Total',
   },
   learn: {
     one: 'Un',
@@ -79,6 +81,7 @@ export const fr = {
     fire: 'Feu',
     radical: 'Radicaux',
     structure: 'Structure',
+    mastery: 'Maîtrise',
   },
   footer: {
     copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. Tous droits réservés.',

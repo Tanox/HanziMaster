@@ -16,6 +16,7 @@ export const es = {
     foreverQuote: 'El carácter de "para siempre" contiene los 8 trazos básicos.',
     learners: 'aprendices estudiando',
     strokeMastery: 'Dominio de Trazos',
+    etymology: 'Etimología',
     theme: {
       light: 'Claro',
       dark: 'Oscuro',
@@ -63,6 +64,7 @@ export const es = {
     charactersLearned: 'Caracteres Aprendidos',
     dayStreak: 'Días Seguidos',
     accuracy: 'Precisión',
+    totalTime: 'Tiempo Total',
   },
   learn: {
     one: 'Uno',
@@ -79,6 +81,7 @@ export const es = {
     fire: 'Fuego',
     radical: 'Radical',
     structure: 'Estructura',
+    mastery: 'Dominio',
   },
   footer: {
     copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. Todos los derechos reservados.',

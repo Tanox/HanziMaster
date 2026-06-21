@@ -16,6 +16,7 @@ export const ja = {
     foreverQuote: '「永」という文字は8つの基本笔画を含んでいます。',
     learners: '学習者が勉強中',
     strokeMastery: '笔画掌握度',
+    etymology: '語源',
     theme: {
       light: 'ライト',
       dark: 'ダーク',
@@ -63,6 +64,7 @@ export const ja = {
     charactersLearned: '学習済み文字',
     dayStreak: '連続日数',
     accuracy: '正確率',
+    totalTime: '総時間',
   },
   learn: {
     one: '一',
@@ -79,6 +81,7 @@ export const ja = {
     fire: '火',
     radical: '部首',
     structure: '構造',
+    mastery: 'マスタリー',
   },
   footer: {
     copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. All rights reserved.',
