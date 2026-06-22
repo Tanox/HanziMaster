@@ -1,4 +1,4 @@
-# HanziMaster 汉字大师 v2.2.1
+# HanziMaster 汉字大师 v3.0.0
 
 [English](README_EN.md) | [简体中文](README.md)
 

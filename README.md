@@ -11,6 +11,7 @@
 - **个性化进度** - 根据你的学习情况智能推荐
 - **11 种语言** - 简体中文、繁体中文、英语、日语、韩语等
 - **深色模式** - 支持跟随系统或手动切换
+- **Apple 设计系统** - 统一使用 Apple 品牌色彩系统（Blue/Purple）
 - **移动端适配** - 完美支持手机和平板
 
 ## 快速开始
@@ -57,6 +58,15 @@ cp .env.example .env
 | 学习 | `/learn` | 选择汉字，学习发音和书写 |
 | 练习 | `/practice` | 书写练习和记忆测验 |
 
+## 技术栈
+
+- **框架**: Next.js 15 (App Router)
+- **UI 库**: React 19
+- **样式**: Tailwind CSS 4.0 + Apple 设计系统
+- **AI**: Google Gemini AI
+- **字体**: Inter, JetBrains Mono, Noto Sans SC
+- **国际化**: 自定义 i18n 上下文（11 种语言）
+
 ## 支持的语言
 
 简体中文 · 繁體中文 · English · 日本語 · 한국어 · Español · Français · Deutsch · Português · العربية · Русский
@@ -70,4 +80,4 @@ cp .env.example .env
 
 ## 许可证
 
-© 2026 HanziMaster 汉字大师
+© 2026 HanziMaster 汉字大师 v3.0.0
