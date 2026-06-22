@@ -419,14 +419,14 @@ export default function LearnPage() {
           </div>
           <DialogFooter className="flex flex-row sm:justify-between gap-2">
             <div className="text-sm text-muted-foreground">
-              在画布上书写汉字
+              {t('practice.writeOnCanvas')}
             </div>
             <div className="flex gap-2">
               <Button variant="ghost" onClick={handleClearCanvas}>
-                清除
+                {t('practice.clear')}
               </Button>
               <Button onClick={() => setShowWritingDialog(false)}>
-                完成
+                {t('practice.done')}
               </Button>
             </div>
           </DialogFooter>
