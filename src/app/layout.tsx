@@ -1,4 +1,4 @@
-// src/app/layout.tsx v2.3.0
+// src/app/layout.tsx v3.0.0
 import type { Metadata, Viewport } from 'next';
 import { Inter, JetBrains_Mono, Noto_Sans_SC } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';

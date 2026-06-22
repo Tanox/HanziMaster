@@ -1,4 +1,4 @@
-// src/components/locale-provider.tsx v2.3.0
+// src/components/locale-provider.tsx v3.0.0
 'use client';
 
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
