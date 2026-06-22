@@ -1,13 +1,13 @@
 # API 参考
 ============
 
-## 1. I18nService 国际化服务
+## 1. LocaleProvider 国际化上下文组件
 
-### 1.1 服务概述
+### 1.1 组件概述
 
-`I18nService` 是应用的核心国际化服务，提供翻译、语言切换等功能。
+`LocaleProvider` 是应用的核心国际化组件，提供翻译、语言切换等功能。
 
-**文件路径：** [app/i18n/i18n.service.ts](../app/i18n/i18n.service.ts)
+**文件路径：** [src/components/locale-provider.tsx](../src/components/locale-provider.tsx)
 
 ### 1.2 类型定义
 
@@ -30,29 +30,29 @@ type Locale =
 
 | API | 类型 | 说明 |
 |-----|------|------|
-| `t` | `Computed<Translations>` | 计算属性，返回当前语言的翻译对象 |
+| `locale` | `Locale` | 当前语言 |
+| `t(key: string)` | `string` | 翻译函数，根据 key 获取翻译文本 |
 | `setLocale(locale: Locale)` | `void` | 设置当前语言 |
-| `getLocale()` | `Locale` | 获取当前语言 |
-| `getAvailableLocales()` | `Locale[]` | 获取所有支持的语言列表 |
+| `availableLocales` | `Locale[]` | 获取所有支持的语言列表 |
 
 ### 1.4 使用示例
 
 ```typescript
-import { I18nService } from '@app/i18n/i18n.service';
+'use client';
 
-@Component({
-  // ...
-})
-export class MyComponent {
-  i18n = inject(I18nService);
+import { useTranslation } from '@/components/locale-provider';
+
+function MyComponent() {
+  const { t, setLocale, locale } = useTranslation();
   
-  changeLanguage() {
-    this.i18n.setLocale('zh-CN');
-  }
-  
-  getCurrentLanguage() {
-    return this.i18n.getLocale();
-  }
+  return (
+    <div>
+      <h1>{t('home.title')}</h1>
+      <button onClick={() => setLocale('zh-CN')}>
+        Switch to Chinese
+      </button>
+    </div>
+  );
 }
 ```
 
@@ -60,130 +60,268 @@ export class MyComponent {
 
 ```typescript
 {
-  app: {
-    title: string;
+  common: {
     learn: string;
     practice: string;
     signIn: string;
-    copyright: string;
+    strokeCount: string;
+    strokes: string;
+    foreverQuote: string;
+    startLearning: string;
+    exploreLibrary: string;
   },
   home: {
-    poweredBy: string;
-    hero: {
-      title1: string;
-      title2: string;
-      title3: string;
-      description: string;
-      startLearning: string;
-      exploreLibrary: string;
-    },
-    features: {
-      aiInsights: { title: string; description: string; };
-      etymology: { title: string; description: string; };
-      adaptiveLearning: { title: string; description: string; };
-    },
-    demoCard: {
-      characterLabel: string;
-      strokeCountLabel: string;
-      strokeCountValue: string;
-      note: string;
-    };
+    poweredByGemini: string;
+    heroTitle: string;
+    heroSubtitle: string;
+    heroDescription: string;
+    aiInsightsTitle: string;
+    aiInsightsDesc: string;
+    etymologyTitle: string;
+    etymologyDesc: string;
+    adaptiveTitle: string;
+    adaptiveDesc: string;
   },
   learn: {
     title: string;
     subtitle: string;
-    streak: string;
     practiceWriting: string;
     hearPronunciation: string;
-    characters: {
-      [key: string]: { meaning: string; };
-    };
+    selectCharacter: string;
   },
-  theme: {
-    light: string;
-    dark: string;
+  footer: {
+    copyright: string;
+  },
+  meta: {
+    title: string;
+    description: string;
   }
 }
 ```
 
-## 2. ThemeToggle 主题切换组件
+## 2. useTranslation Hook
 
-### 2.1 组件概述
+### 2.1 Hook 概述
 
-主题切换组件，支持深色/浅色模式切换，自动持久化用户偏好。
+`useTranslation` 是一个自定义 hook，用于在组件中获取翻译函数。
 
-**文件路径：** [app/components/theme-toggle.ts](../app/components/theme-toggle.ts)
+**文件路径：** [src/components/locale-provider.tsx](../src/components/locale-provider.tsx)
 
-**选择器：** `app-theme-toggle`
+### 2.2 返回值
 
-### 2.2 输入/输出
+| 属性 | 类型 | 说明 |
+|------|------|------|
+| `t` | `(key: string) => string` | 翻译函数 |
 
-该组件无输入或输出属性。
-
-### 2.3 公共 API（内部）
-
-| 属性/方法 | 类型 | 说明 |
-|----------|------|------|
-| `isDark` | `Signal<boolean>` | 当前是否为深色模式 |
-| `toggleTheme()` | `void` | 切换主题 |
-
-### 2.4 使用示例
+### 2.3 使用示例
 
 ```typescript
-import { ThemeToggle } from '@app/components/theme-toggle';
+'use client';
 
-@Component({
-  imports: [ThemeToggle],
-  template: `
-    <app-theme-toggle></app-theme-toggle>
-  `
-})
-export class MyComponent {}
+import { useTranslation } from '@/components/locale-provider';
+
+function MyComponent() {
+  const { t } = useTranslation();
+  
+  return <h1>{t('home.title')}</h1>;
+}
 ```
 
-### 2.5 持久化
-
-- **LocalStorage Key：** `hanzi-master-theme`
-- **值：** `'dark'` 或 `'light'`
-
-## 3. LocaleToggle 语言切换组件
+## 3. ThemeProvider 主题上下文组件
 
 ### 3.1 组件概述
 
-语言切换组件，提供下拉菜单选择 11 种语言。
+主题上下文提供组件，管理深色/浅色/系统主题三态切换。
 
-**文件路径：** [app/components/locale-toggle.ts](../app/components/locale-toggle.ts)
+**文件路径：** [src/components/theme-provider.tsx](../src/components/theme-provider.tsx)
 
-**选择器：** `app-locale-toggle`
+### 3.2 公共 API
 
-### 3.2 输入/输出
+| API | 类型 | 说明 |
+|------|------|------|
+| `theme` | `'dark' \| 'light' \| 'system'` | 当前主题 |
+| `setTheme(theme)` | `void` | 设置主题 |
 
-该组件无输入或输出属性。
-
-### 3.3 公共 API（内部）
-
-| 属性/方法 | 类型 | 说明 |
-|----------|------|------|
-| `isMenuOpen` | `Signal<boolean>` | 菜单是否打开 |
-| `availableLocales` | `Signal<Locale[]>` | 可用语言列表 |
-| `toggleMenu(event)` | `void` | 切换菜单 |
-| `selectLocale(locale)` | `void` | 选择语言 |
-
-### 3.4 使用示例
+### 3.3 使用示例
 
 ```typescript
-import { LocaleToggle } from '@app/components/locale-toggle';
+'use client';
 
-@Component({
-  imports: [LocaleToggle],
-  template: `
-    <app-locale-toggle></app-locale-toggle>
-  `
-})
-export class MyComponent {}
+import { useTheme } from '@/components/theme-provider';
+
+function MyComponent() {
+  const { theme, setTheme } = useTheme();
+  
+  return (
+    <div>
+      <button onClick={() => setTheme('light')}>Light</button>
+      <button onClick={() => setTheme('dark')}>Dark</button>
+      <button onClick={() => setTheme('system')}>System</button>
+    </div>
+  );
+}
 ```
 
-### 3.5 语言名称映射
+### 3.4 持久化
+
+- **LocalStorage Key：** `hanzi-master-theme`
+- **值：** `'dark'`, `'light'`, 或 `'system'`
+
+### 3.5 主题翻译键
+
+翻译文件中需包含以下键：
+
+```typescript
+common: {
+  theme: {
+    light: '浅色' | 'Light',
+    dark: '深色' | 'Dark',
+    system: '跟随系统' | 'System'
+  }
+}
+```
+
+## 4. ThemeToggle 主题切换组件
+
+### 4.1 组件概述
+
+主题切换组件，支持深色/浅色/系统主题三态循环切换，自动持久化用户偏好。
+
+**文件路径：** [src/components/theme-toggle.tsx](../src/components/theme-toggle.tsx)
+
+### 4.2 功能特性
+
+- 三态循环切换：Light → Dark → System → Light
+- 每个状态对应不同的 SVG 图标
+- 悬停显示工具提示（使用翻译键 `common.theme.${theme}`）
+- 支持无障碍访问（ARIA label）
+- 最小触控区域 44x44px
+
+### 4.3 使用示例
+
+```typescript
+'use client';
+
+import { ThemeToggleClient } from '@/components/theme-toggle';
+
+function Header() {
+  return <ThemeToggleClient />;
+}
+```
+
+### 4.4 主题切换顺序
+
+```
+Light → Dark → System → Light
+```
+
+### 4.5 翻译键要求
+
+```typescript
+common: {
+  theme: {
+    light: '浅色' | 'Light',
+    dark: '深色' | 'Dark',
+    system: '跟随系统' | 'System'
+  }
+}
+```
+
+## 4.1 NavLink 导航链接组件
+
+### 4.1.1 组件概述
+
+导航链接组件，用于桌面端导航栏，支持活跃状态高亮和动画效果。
+
+**文件路径：** [src/components/nav-link.tsx](../src/components/nav-link.tsx)
+
+### 4.1.2 功能特性
+
+- 根据当前路由自动判断活跃状态
+- 活跃状态高亮显示（绿色背景 + 下划线指示器）
+- 悬停效果和过渡动画
+- 最小触控区域 40px
+
+### 4.1.3 使用示例
+
+```typescript
+import { NavLink } from '@/components/nav-link';
+
+<NavLink href="/learn">学习</NavLink>
+```
+
+### 4.1.4 样式说明
+
+| 状态 | 样式 |
+|------|------|
+| 默认 | 灰色文字 + 透明背景 |
+| 悬停 | 绿色文字 + 浅色背景 |
+| 活跃 | 绿色文字 + 绿色背景 + 下划线 |
+
+## 4.2 MobileNav 移动端导航组件
+
+### 4.2.1 组件概述
+
+移动端抽屉导航组件，提供侧边栏导航菜单。
+
+**文件路径：** [src/components/mobile-nav.tsx](../src/components/mobile-nav.tsx)
+
+### 4.2.2 功能特性
+
+- 侧边栏抽屉式导航
+- 背景遮罩层
+- Escape 键关闭
+- 滚动锁定
+- 无障碍支持（role="dialog", aria-modal）
+- 当前路由高亮显示
+
+### 4.2.3 使用示例
+
+```typescript
+import { MobileNav } from '@/components/mobile-nav';
+
+<MobileNav isOpen={isOpen} onClose={closeNav} t={t} />
+```
+
+### 4.2.4 Props
+
+| Prop | 类型 | 说明 |
+|------|------|------|
+| `isOpen` | `boolean` | 是否展开 |
+| `onClose` | `() => void` | 关闭回调 |
+| `t` | `(key: string) => string` | 翻译函数 |
+
+## 5. LocaleToggle 语言切换组件
+
+### 5.1 组件概述
+
+语言切换组件，提供下拉菜单选择 11 种语言，支持完整的无障碍访问。
+
+**文件路径：** [src/components/locale-toggle.tsx](../src/components/locale-toggle.tsx)
+
+### 5.2 功能特性
+
+- 支持 11 种语言切换
+- 完整的 ARIA 属性支持（`role="listbox"`, `aria-expanded`, `aria-haspopup`）
+- 键盘导航支持（Escape 关闭，Arrow 键上下移动）
+- 点击外部自动关闭
+- 最大高度限制（70vh）防止溢出
+- 选中状态高亮显示
+- 最小触控区域 44x44px
+
+### 5.3 使用示例
+
+```typescript
+'use client';
+
+import { LocaleToggleClient } from '@/components/locale-toggle';
+
+function Header() {
+  return <LocaleToggleClient />;
+}
+```
+
+### 5.4 语言名称映射
 
 ```typescript
 {
@@ -201,61 +339,55 @@ export class MyComponent {}
 }
 ```
 
-## 4. 数据结构
+### 5.5 无障碍特性
 
-### 4.1 Character 字符接口
+| 特性 | 实现 |
+|------|------|
+| `aria-expanded` | 展开/收起状态 |
+| `aria-haspopup` | listbox |
+| `role="listbox"` | 下拉列表容器 |
+| `role="option"` | 语言选项 |
+| `aria-selected` | 当前选中语言 |
+| 键盘导航 | Escape, Arrow Up/Down |
 
-```typescript
-interface Character {
-  id: number;
-  hanzi: string;
-  pinyin: string;
-  meaning: string;
-}
-```
+## 6. 国际化模块
 
-**使用位置：** [app/pages/learn/learn.ts](../app/pages/learn/learn.ts)
+### 6.1 i18n 配置
 
-## 5. 应用配置
+**文件路径：** [src/lib/i18n/index.ts](../src/lib/i18n/index.ts)
 
-### 5.1 app.config.ts
+**导出内容：**
 
-**文件路径：** [app/app.config.ts](../app/app.config.ts)
+| 导出项 | 类型 | 说明 |
+|--------|------|------|
+| `translations` | `Record<Locale, Translations>` | 所有语言的翻译数据 |
+| `locales` | `Locale[]` | 支持的语言列表 |
+| `Locale` | `type` | 语言类型定义 |
+| `Translations` | `type` | 翻译对象类型定义 |
 
-**关键配置：**
+### 6.2 翻译文件位置
 
-```typescript
-export const appConfig: ApplicationConfig = {
-  providers: [
-    provideZonelessChangeDetection(),
-    provideRouter(routes, withComponentInputBinding()),
-    provideAnimationsAsync()
-  ]
-};
-```
+翻译文件存放在 `src/lib/i18n/translations/` 目录下：
 
-### 5.2 路由配置
+| 文件 | 语言 |
+|------|------|
+| `en.ts` | 英语 |
+| `zh-CN.ts` | 简体中文 |
+| `zh-TW.ts` | 繁体中文 |
+| `es.ts` | 西班牙语 |
+| `ar.ts` | 阿拉伯语 |
+| `fr.ts` | 法语 |
+| `pt-BR.ts` | 葡萄牙语（巴西） |
+| `de.ts` | 德语 |
+| `ja.ts` | 日语 |
+| `ko.ts` | 韩语 |
+| `ru.ts` | 俄语 |
 
-**文件路径：** [app/app.routes.ts](../app/app.routes.ts)
+## 7. 样式与主题
 
-```typescript
-export const routes: Routes = [
-  {
-    path: '',
-    loadComponent: () => import('./pages/home/home').then(m => m.Home)
-  },
-  {
-    path: 'learn',
-    loadComponent: () => import('./pages/learn/learn').then(m => m.Learn)
-  }
-];
-```
+### 7.1 字体配置
 
-## 6. 样式与主题
-
-### 6.1 字体配置
-
-**文件路径：** [app/styles.css](../app/styles.css)
+**文件路径：** [src/app/globals.css](../src/app/globals.css)
 
 | 字体变量 | 字体名称 | 用途 |
 |----------|----------|------|
@@ -263,7 +395,7 @@ export const routes: Routes = [
 | `--font-mono` | JetBrains Mono | 代码字体 |
 | `--font-hanzi` | Noto Sans SC | 汉字字体 |
 
-### 6.2 hanzi-font 类
+### 7.2 hanzi-font 类
 
 用于显示汉字的专用类：
 
@@ -275,11 +407,11 @@ export const routes: Routes = [
 
 **使用示例：**
 
-```html
-<span class="text-4xl font-bold hanzi-font">永</span>
+```tsx
+<span className="text-4xl font-bold hanzi-font">永</span>
 ```
 
-### 6.3 主题色
+### 7.3 主题色
 
 ```css
 :root {
@@ -288,23 +420,17 @@ export const routes: Routes = [
 }
 ```
 
-## 7. 环境变量
+## 8. 环境变量
 
 | 变量名 | 说明 | 必填 | 示例值 |
 |--------|------|------|--------|
 | `GEMINI_API_KEY` | Google Gemini AI API 密钥 | 否 | `your-api-key-here` |
 
-## 8. 浏览器要求
+## 9. 浏览器要求
 
 - 现代浏览器（Chrome、Firefox、Safari、Edge 最新版）
 - 需要启用 JavaScript
 - 需要支持 localStorage
-
-## 9. 包大小预算
-
-| 资源类型 | 限制 | 当前值 |
-|---------|------|--------|
-| 初始包 | 最大 500KB | 约 630KB |
 
 ## 10. 相关文档
 

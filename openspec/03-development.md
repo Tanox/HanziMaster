@@ -26,7 +26,7 @@ cp .env.example .env
 # 编辑 .env 文件，填写 GEMINI_API_KEY
 
 # 4. 启动开发服务器
-npm start
+npm run dev
 ```
 
 ### 1.3 开发服务器
@@ -37,11 +37,9 @@ npm start
 
 | 命令 | 说明 |
 |------|------|
-| `npm start` | 启动开发服务器 |
-| `npm run build` | 构建开发版本 |
-| `npm run build:prod` | 构建生产版本 |
-| `npm run watch` | 开发模式构建并监听文件变化 |
-| `npm test` | 运行测试 |
+| `npm run dev` | 启动开发服务器 |
+| `npm run build` | 构建生产版本 |
+| `npm run start` | 启动生产服务器 |
 | `npm run lint` | 运行代码检查 |
 
 ## 3. 编码规范
@@ -57,7 +55,7 @@ npm start
 示例：
 
 ```typescript
-// app/app.ts v2.2.0
+// src/lib/i18n/index.ts v2.2.1
 ```
 
 ### 3.2 版本管理 (SemVer 2.0.0)
@@ -67,55 +65,42 @@ npm start
 | 序号 | 更新位置 | 说明 |
 |------|----------|------|
 | 1 | 当前文件头注释 | 更新版本号 |
-| 2 | HTML `<title>` 标签 | 添加版本号后缀 |
-| 3 | `metadata.json` | 更新 `name` 和 `version` 字段 |
-| 4 | `package.json` | 更新 `version` 字段 |
-| 5 | `CHANGELOG.md` | 新增条目（递增补丁版本，不记录日期） |
+| 2 | `package.json` | 更新 `version` 字段 |
+| 3 | `CHANGELOG.md` | 新增条目（递增补丁版本，不记录日期） |
 
 ### 3.3 TypeScript 样式规范
 
 | 规范项 | 要求 |
 |--------|------|
 | 严格模式 | 启用 `strict: true` |
-| 变更检测 | 使用 `ChangeDetectionStrategy.OnPush` |
-| 组件格式 | 所有组件必须使用 standalone 格式 |
-| 状态管理 | 使用 Angular 21 的信号机制 (Signals) |
+| 文件扩展名 | `.ts` 用于工具函数，`.tsx` 用于 React 组件 |
+| 客户端组件 | 使用 `'use client'` 指令标记 |
 
 ### 3.4 命名规范
 
 | 类型 | 规范 | 示例 |
 |------|------|------|
-| 组件类名 | PascalCase | `Home`, `ThemeToggle` |
-| 组件选择器 | kebab-case，带 `app-` 前缀 | `app-home`, `app-theme-toggle` |
-| 文件名 | kebab-case | `theme-toggle.ts`, `home.ts` |
-| 常量 | camelCase | `isDark`, `currentLocale` |
+| 组件函数名 | PascalCase | `LocaleProvider`, `ThemeToggle` |
+| 文件名 | kebab-case | `locale-provider.tsx`, `theme-toggle.tsx` |
+| 常量 | UPPER_CASE | `STORAGE_KEY`, `LOCAL_STORAGE_KEY` |
+| 变量/函数 | camelCase | `isDarkMode`, `getBrowserLocale()` |
 | 接口名 | PascalCase（前缀 I 可选） | `Character`, `ICharacter` |
-| 函数名 | camelCase | `getLocale()`, `toggleTheme()` |
 
-### 3.5 Angular 组件规范
+### 3.5 React 组件规范
 
-#### 3.5.1 组件装饰器模板
+#### 3.5.1 组件类型
 
-```typescript
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-
-@Component({
-  selector: 'app-[component-name]',
-  imports: [/* 需要的模块 */],
-  template: `...`,
-  changeDetection: ChangeDetectionStrategy.OnPush
-})
-export class MyComponent {
-  // 组件逻辑
-}
-```
+| 类型 | 标记 | 使用场景 |
+|-----|------|---------|
+| Server Components | 无标记（默认） | 数据获取、静态内容渲染 |
+| Client Components | `'use client'` | 需要交互、hooks、状态管理 |
 
 #### 3.5.2 组件开发原则
 
-1. **使用 Standalone Components**：所有新组件必须使用 `standalone: true`
-2. **OnPush 变更检测**：减少不必要的变更检测
-3. **Signals 状态管理**：使用 Angular Signals 进行响应式状态管理
-4. **单一职责**：每个组件只负责一个功能
+1. **区分组件类型**：根据需求选择 Server 或 Client 组件
+2. **单一职责**：每个组件只负责一个功能
+3. **类型安全**：使用 TypeScript 严格模式
+4. **可复用性**：设计可复用的通用组件
 
 ### 3.6 CSS/Tailwind 规范
 
@@ -124,7 +109,7 @@ export class MyComponent {
 | 框架版本 | Tailwind CSS 4.0 |
 | 深色模式 | 使用 `dark:` 前缀 |
 | 汉字字体 | 使用 `.hanzi-font` 类 |
-| 页面容器 | 添加语义化的 `id` |
+| 全局样式 | 在 `globals.css` 中定义 |
 | CSS 注释 | 使用 `/* */` 格式 |
 | TS/JS 注释 | 使用 `//` 格式 |
 
@@ -132,12 +117,15 @@ export class MyComponent {
 
 | 规范项 | 要求 |
 |--------|------|
-| 加载方式 | 使用懒加载 `loadComponent` |
-| 路径别名 | `@app/*` → `app/*` |
+| 路由目录 | `src/app/` |
+| 页面文件 | `page.tsx` |
+| 布局文件 | `layout.tsx` |
+| 动态路由 | `[param]/page.tsx` |
+| 路径别名 | `@/` → `src/` |
 
 ### 3.8 注释规范
 
-- 所有函数必须包含简洁的注释
+- 所有公共函数必须包含简洁的 JSDoc 注释
 - 复杂逻辑添加说明注释
 - 注释尽量单行简洁
 - 避免无意义的注释
@@ -148,57 +136,60 @@ export class MyComponent {
 
 | 规范项 | 要求 |
 |--------|------|
-| 用户可见文本 | 必须通过 `I18nService` 进行翻译 |
-| 翻译文件位置 | `app/i18n/locales/` 目录 |
-| 服务注入 | 使用 `inject(I18nService)` |
-| 翻译访问 | 通过 `i18n.t()` 访问翻译数据 |
+| 用户可见文本 | 必须通过 `useTranslation` hook 进行翻译 |
+| 翻译文件位置 | `src/lib/i18n/translations/` 目录 |
+| 翻译访问 | 通过 `t()` 函数访问翻译数据 |
 | 语言选择器 | 使用 `LocaleToggle` 组件 |
 | 偏好存储 | 用户语言偏好自动保存到 localStorage |
 
 ### 4.2 支持的语言
 
-| 语言代码 | 语言名称 |
-|----------|----------|
-| `en` | 英语 |
-| `zh-CN` | 简体中文 |
-| `zh-TW` | 繁体中文 |
-| `es` | 西班牙语 |
-| `ar` | 阿拉伯语 |
-| `fr` | 法语 |
-| `pt-BR` | 葡萄牙语（巴西） |
-| `de` | 德语 |
-| `ja` | 日语 |
-| `ko` | 韩语 |
-| `ru` | 俄语 |
+| 语言代码 | 语言名称 | 文件名 |
+|----------|----------|--------|
+| `en` | 英语 | `en.ts` |
+| `zh-CN` | 简体中文 | `zh-CN.ts` |
+| `zh-TW` | 繁体中文 | `zh-TW.ts` |
+| `es` | 西班牙语 | `es.ts` |
+| `ar` | 阿拉伯语 | `ar.ts` |
+| `fr` | 法语 | `fr.ts` |
+| `pt-BR` | 葡萄牙语（巴西） | `pt-BR.ts` |
+| `de` | 德语 | `de.ts` |
+| `ja` | 日语 | `ja.ts` |
+| `ko` | 韩语 | `ko.ts` |
+| `ru` | 俄语 | `ru.ts` |
 
 ### 4.3 翻译文件结构
 
 翻译文件应按照功能模块组织：
 
 ```typescript
-// app/i18n/locales/en.ts
+// src/lib/i18n/translations/en.ts
 export const en = {
-  app: { /* 应用级翻译 */ },
+  common: { /* 通用翻译 */ },
   home: { /* 首页翻译 */ },
   learn: { /* 学习页翻译 */ },
-  theme: { /* 主题相关翻译 */ }
+  footer: { /* 页脚翻译 */ },
+  meta: { /* 元数据翻译 */ }
 };
 ```
 
 ### 4.4 使用示例
 
 ```typescript
-// 在组件中
-import { I18nService } from '@app/i18n/i18n.service';
+// 在客户端组件中
+'use client';
 
-@Component({
-  // ...
-})
-export class MyComponent {
-  i18n = inject(I18nService);
+import { useTranslation } from '@/components/locale-provider';
+
+function MyComponent() {
+  const { t } = useTranslation();
   
-  // 在模板中使用
-  // {{ i18n.t().home.hero.title }}
+  return (
+    <div>
+      <h1>{t('home.title')}</h1>
+      <p>{t('common.description')}</p>
+    </div>
+  );
 }
 ```
 
@@ -254,34 +245,33 @@ refactor: 优化主题持久化逻辑
 ### 6.1 新增组件
 
 ```
-app/components/
-└── my-component/
-    └── my-component.ts
+src/components/
+└── my-component.tsx
 ```
 
 ### 6.2 新增页面
 
 ```
-app/pages/
+src/app/
 └── my-page/
-    └── my-page.ts
+    └── page.tsx
 ```
 
-### 6.3 新增服务
+### 6.3 新增工具函数
 
 ```
-app/
-└── my-service.service.ts
+src/lib/
+└── my-utility.ts
 ```
 
 ## 7. 最佳实践
 
 ### 7.1 性能优化
 
-1. 使用 `ChangeDetectionStrategy.OnPush`
-2. 路由懒加载
-3. 避免在模板中使用复杂计算
-4. 使用 `trackBy` 优化 `*ngFor`
+1. 使用 React Server Components 进行服务端渲染
+2. 合理使用 Client Components
+3. 避免在渲染函数中进行复杂计算
+4. 使用 React.memo 优化组件重渲染
 
 ### 7.2 可维护性
 

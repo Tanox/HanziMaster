@@ -1,13 +1,52 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import { LocaleProvider } from "@/components/locale-provider";
-import { ThemeToggleClient } from "@/components/theme-toggle";
-import { LocaleToggleClient } from "@/components/locale-toggle";
+// src/app/layout.tsx v3.0.0
+import type { Metadata, Viewport } from 'next';
+import { Inter, JetBrains_Mono, Noto_Sans_SC } from 'next/font/google';
+import { ThemeProvider } from '@/components/theme-provider';
+import { LocaleProvider } from '@/components/locale-provider';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { LayoutClient } from '@/components/layout-client';
+import './globals.css';
+
+// Optimize fonts with next/font
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  display: 'swap',
+});
+
+const notoSansSC = Noto_Sans_SC({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '700', '800'],
+  variable: '--font-hanzi',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
-  title: "HanziMaster 汉字大师",
-  description: "AI-powered Chinese character learning platform",
+  title: 'HanziMaster - AI-Powered Chinese Character Learning',
+  description: 'Master Chinese characters with AI-powered insights, etymology exploration, and adaptive learning.',
+  keywords: ['Chinese', 'Hanzi', 'Learning', 'Education', 'AI', 'Language'],
+  authors: [{ name: 'HanziMaster Team' }],
+  openGraph: {
+    title: 'HanziMaster - AI-Powered Chinese Character Learning',
+    description: 'Master Chinese characters with AI-powered insights.',
+    type: 'website',
+  },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#000000' },
+  ],
 };
 
 export default function RootLayout({
@@ -16,39 +55,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="antialiased">
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable} ${notoSansSC.variable}`}>
+      <head>
+        {/* Preconnect to external resources */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
+      <body className="antialiased font-sans">
         <ThemeProvider>
           <LocaleProvider>
-            <div className="min-h-screen bg-slate-50 dark:bg-slate-900 dark:text-slate-100 flex flex-col">
-              <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 py-4 px-6 flex justify-between items-center sticky top-0 z-50">
-                <a href="/" className="flex items-center gap-2">
-                  <span className="text-2xl font-bold text-emerald-600">汉</span>
-                  <h1 className="text-xl font-semibold tracking-tight">HanziMaster</h1>
-                </a>
-                <nav className="flex items-center gap-4">
-                  <a href="/learn" className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition-colors">
-                    Learn
-                  </a>
-                  <a href="/learn" className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-600 transition-colors">
-                    Practice
-                  </a>
-                  <LocaleToggleClient />
-                  <ThemeToggleClient />
-                  <button className="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700 transition-colors">
-                    Sign In
-                  </button>
-                </nav>
-              </header>
-
-              <main className="flex-1">
-                {children}
-              </main>
-
-              <footer className="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 py-8 px-6 text-center">
-                <p className="text-sm text-slate-500 dark:text-slate-400">© 2026 HanziMaster 汉字大师 v2.2.0. All rights reserved.</p>
-              </footer>
-            </div>
+            <TooltipProvider>
+              <LayoutClient>{children}</LayoutClient>
+            </TooltipProvider>
           </LocaleProvider>
         </ThemeProvider>
       </body>

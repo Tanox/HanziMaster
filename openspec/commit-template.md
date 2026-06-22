@@ -61,6 +61,6 @@ refactor: 优化主题持久化逻辑
 
 ## 6. 相关文档
 
-- [项目概述](overview.md) - 项目基本信息和技术栈
-- [API 参考](api-reference.md) - 详细的 API 文档和代码示例
+- [项目概述](01-overview.md) - 项目基本信息和技术栈
+- [API 参考](04-api-reference.md) - 详细的 API 文档和代码示例
 - [编码规范](coding-standards.md) - 项目编码标准和最佳实践

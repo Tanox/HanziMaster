@@ -3,7 +3,7 @@
 
 ## 1. 架构概述
 
-HanziMaster 采用基于组件的单页应用（SPA）架构，使用 Angular 21 框架和 Zoneless 变更检测策略，确保高性能和良好的用户体验。
+HanziMaster 采用 Next.js 15 的 App Router 架构，结合 React Server Components 和 Client Components，实现高性能的服务端渲染和客户端交互。
 
 ## 2. 系统架构图
 
@@ -14,24 +14,26 @@ HanziMaster 采用基于组件的单页应用（SPA）架构，使用 Angular 21
 │                        用户界面层                             │
 │  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────┐  │
 │  │   Home 页面     │  │   Learn 页面    │  │ 组件库        │  │
+│  │  (Server)       │  │  (Client)       │  │ (Client)     │  │
 │  └─────────────────┘  └─────────────────┘  └──────────────┘  │
 │  ┌───────────────────────────────────────────────────────┐  │
-│  │              App 根组件（布局与导航）                   │  │
+│  │              Root Layout（布局与导航）                  │  │
 │  └───────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
                               │
 ┌─────────────────────────────────────────────────────────────┐
-│                        业务逻辑层                             │
+│                        状态管理层                             │
 │  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────┐  │
-│  │  I18nService   │  │  字符数据服务   │  │  AI 服务     │  │
+│  │  LocaleContext  │  │  ThemeContext   │  │  AI 服务     │  │
+│  │  (i18n)        │  │  (主题)         │  │              │  │
 │  └─────────────────┘  └─────────────────┘  └──────────────┘  │
 └─────────────────────────────────────────────────────────────┘
                               │
 ┌─────────────────────────────────────────────────────────────┐
 │                        基础设施层                             │
 │  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────┐  │
-│  │  Angular 21    │  │  Signals 状态   │  │  LocalStorage│  │
-│  │  Zoneless      │  │  管理           │  │              │  │
+│  │  Next.js 15    │  │  React Context  │  │  LocalStorage│  │
+│  │  App Router    │  │  API            │  │              │  │
 │  └─────────────────┘  └─────────────────┘  └──────────────┘  │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -42,62 +44,67 @@ HanziMaster 采用基于组件的单页应用（SPA）架构，使用 Angular 21
 
 | 文件 | 职责 |
 |------|------|
-| [main.ts](../app/main.ts) | 应用启动入口，配置并启动 Angular 应用 |
-| [app.config.ts](../app/app.config.ts) | 应用配置，包括路由、变更检测策略等 |
-| [app.ts](../app/app.ts) | 根组件，包含布局结构、导航栏和页脚 |
+| [layout.tsx](../src/app/layout.tsx) | 根布局组件，包含主题和国际化 Provider |
+| [page.tsx](../src/app/page.tsx) | 首页组件，展示应用介绍和主要功能 |
 
 ### 3.2 路由系统
 
-项目使用 Angular Router 进行路由管理，支持懒加载优化性能：
+项目使用 Next.js App Router 进行路由管理，默认使用服务端渲染：
 
 ```typescript
-// app/app.routes.ts
-export const routes: Routes = [
-  {
-    path: '',
-    loadComponent: () => import('./pages/home/home').then(m => m.Home)
-  },
-  {
-    path: 'learn',
-    loadComponent: () => import('./pages/learn/learn').then(m => m.Learn)
-  }
-];
+// 路由文件结构
+src/
+└── app/
+    ├── page.tsx           // 首页 (/)
+    ├── learn/
+    │   └── page.tsx       // 学习页 (/learn)
+    └── practice/
+        └── page.tsx       // 练习页 (/practice)
 ```
 
 ### 3.3 页面层
 
 | 页面组件 | 职责 | 文件路径 |
 |---------|------|---------|
-| Home | 首页，展示应用介绍、功能特性和演示 | [app/pages/home/home.ts](../app/pages/home/home.ts) |
-| Learn | 学习页面，提供汉字学习和选择功能 | [app/pages/learn/learn.ts](../app/pages/learn/learn.ts) |
+| Home | 首页，展示应用介绍、功能特性和演示 | [src/app/page.tsx](../src/app/page.tsx) |
+| Learn | 学习页面，提供汉字学习和选择功能 | [src/app/learn/page.tsx](../src/app/learn/page.tsx) |
+| Practice | 练习页面，提供书写练习、记忆测验和进度追踪 | [src/app/practice/page.tsx](../src/app/practice/page.tsx) |
 
 ### 3.4 组件层
 
 | 组件 | 职责 | 文件路径 |
 |------|------|---------|
-| ThemeToggle | 主题切换组件，支持深色/浅色模式 | [app/components/theme-toggle.ts](../app/components/theme-toggle.ts) |
-| LocaleToggle | 语言切换组件，支持 11 种语言 | [app/components/locale-toggle.ts](../app/components/locale-toggle.ts) |
+| LocaleProvider | 国际化上下文提供组件，管理语言切换和翻译 | [src/components/locale-provider.tsx](../src/components/locale-provider.tsx) |
+| LocaleToggle | 语言切换组件，支持 11 种语言 | [src/components/locale-toggle.tsx](../src/components/locale-toggle.tsx) |
+| ThemeProvider | 主题上下文提供组件，管理深色/浅色模式 | [src/components/theme-provider.tsx](../src/components/theme-provider.tsx) |
+| ThemeToggle | 主题切换组件，支持深色/浅色模式 | [src/components/theme-toggle.tsx](../src/components/theme-toggle.tsx) |
+| MobileNav | 移动端导航抽屉组件，提供响应式导航菜单 | [src/components/mobile-nav.tsx](../src/components/mobile-nav.tsx) |
+| NavLink | 导航链接组件，带有活跃状态指示器 | [src/components/nav-link.tsx](../src/components/nav-link.tsx) |
+| FeatureCard | 功能特性卡片组件，展示 AI 洞察、词源文化等特性 | [src/components/feature-card.tsx](../src/components/feature-card.tsx) |
+| StatsCard | 统计数据卡片组件，显示学习统计信息 | [src/components/stats-card.tsx](../src/components/stats-card.tsx) |
 
-### 3.5 服务层
+### 3.5 国际化模块
 
-| 服务 | 职责 | 文件路径 |
+| 文件 | 职责 | 文件路径 |
 |------|------|---------|
-| I18nService | 国际化服务，提供翻译和语言切换功能 | [app/i18n/i18n.service.ts](../app/i18n/i18n.service.ts) |
+| i18n/index.ts | 国际化配置，导出翻译数据和类型定义 | [src/lib/i18n/index.ts](../src/lib/i18n/index.ts) |
+| translations/*.ts | 各语言翻译文件（11种语言） | [src/lib/i18n/translations/](../src/lib/i18n/translations/) |
 
 ## 4. 技术选型说明
 
-### 4.1 前端框架：Angular 21
+### 4.1 前端框架：Next.js 15
 
 **选择理由：**
-- 完整的框架生态系统
-- Zoneless 变更检测策略，性能提升
+- 全栈框架，支持服务端渲染和客户端交互
+- App Router 提供更好的路由管理和数据获取
+- 内置优化，性能优秀
 - 强类型 TypeScript 支持
-- 官方 Material 组件库
 
 **关键特性：**
-- Standalone Components（独立组件）
-- Signals 状态管理
-- OnPush 变更检测策略
+- React Server Components（服务端组件）
+- Client Components（客户端组件）
+- App Router（新路由系统）
+- 自动优化和缓存
 
 ### 4.2 样式框架：Tailwind CSS 4.0
 
@@ -107,13 +114,13 @@ export const routes: Routes = [
 - 响应式设计开箱即用
 - 优秀的性能和可维护性
 
-### 4.3 状态管理：Angular Signals
+### 4.3 状态管理：React Context API
 
 **选择理由：**
 - 框架内置，无需额外依赖
-- 细粒度的响应式更新
-- 与 Zoneless 完美配合
 - 简单直观的 API
+- 适合轻量级状态管理
+- 与 React 完美配合
 
 ### 4.4 AI 服务：Google Gemini
 
@@ -127,21 +134,20 @@ export const routes: Routes = [
 
 | 特性 | 说明 |
 |------|------|
-| Zoneless 变更检测 | 无 Zone.js 的变更检测，减少开销，提升性能 |
-| Standalone Components | 独立组件，无需 NgModule，简化架构 |
-| 路由懒加载 | 使用 `loadComponent` 实现按需加载，优化初始加载 |
-| OnPush 变更检测 | 组件级别的变更检测策略，减少不必要的检查 |
-| Signals 状态管理 | 响应式状态管理，细粒度更新 |
+| React Server Components | 服务端渲染，提升首屏加载性能 |
+| Client Components | 客户端交互，支持 hooks 和状态管理 |
+| App Router | Next.js 13+ 新路由系统，文件系统路由 |
+| React Context API | 用于主题和国际化状态管理 |
 | 响应式设计 | Tailwind CSS 提供完全响应式布局 |
-| 深色模式 | 完整的深色/浅色模式支持，持久化用户偏好 |
+| 主题系统 | 完整的深色/浅色/系统主题支持，持久化用户偏好 |
 | 国际化 | 支持 11 种语言，浏览器语言自动检测 |
 
 ## 6. 数据流
 
-应用采用 Angular 的单向数据流和组件通信模式：
+应用采用 React Context API 进行状态管理：
 
 ```
-用户交互 → 组件事件 → Signals 更新 → 视图更新
+用户交互 → Context 更新 → 组件重渲染 → 视图更新
      ↓
 LocalStorage（持久化）
      ↓
@@ -150,25 +156,26 @@ AI 服务（按需调用）
 
 ### 6.1 主题切换流程
 
-1. 用户点击主题切换按钮
-2. 组件更新 `isDark` signal
-3. 同步更新 `document.documentElement.classList`
-4. 保存到 `localStorage`（key: `hanzi-master-theme`）
-5. 视图自动更新
+1. 用户选择主题（dark/light/system）
+2. `ThemeProvider` 更新主题状态
+3. 如果选择 system，则根据系统主题偏好切换
+4. 同步更新 `document.documentElement.classList`
+5. 保存到 `localStorage`（key: `hanzi-master-theme`）
+6. 视图自动更新
 
 ### 6.2 语言切换流程
 
 1. 用户选择语言
-2. `I18nService` 更新 `currentLocale` signal
+2. `LocaleProvider` 更新 `locale` 状态
 3. 同步更新 `document.documentElement.lang`
 4. 保存到 `localStorage`（key: `hanzi-master-locale`）
-5. 所有使用 `i18n.t()` 的组件自动更新
+5. 所有使用 `t()` 的组件自动更新
 
 ## 7. 设计原则
 
 1. **组件化**：UI 拆分为可复用、独立的组件
 2. **响应式**：使用 Tailwind CSS 实现完全响应式设计
-3. **性能优先**：采用 Zoneless 变更检测和懒加载优化性能
+3. **性能优先**：采用 React Server Components 和 Next.js 优化性能
 4. **可访问性**：支持深色/浅色模式和系统主题检测
 5. **类型安全**：严格的 TypeScript 类型检查
 6. **国际化**：所有用户可见文本支持多语言
@@ -177,13 +184,12 @@ AI 服务（按需调用）
 
 | 文件 | 关键内容 |
 |------|---------|
-| [app/app.config.ts](../app/app.config.ts) | 应用配置：`provideZonelessChangeDetection()`、`provideRouter()`、`provideAnimationsAsync()` |
-| [app/app.routes.ts](../app/app.routes.ts) | 路由配置：懒加载路由定义 |
-| [app/app.ts](../app/app.ts) | 根组件：布局、导航、主题和语言切换 |
-| [app/i18n/i18n.service.ts](../app/i18n/i18n.service.ts) | 国际化服务：翻译、语言切换 |
-| [app/components/theme-toggle.ts](../app/components/theme-toggle.ts) | 主题切换组件 |
-| [app/components/locale-toggle.ts](../app/components/locale-toggle.ts) | 语言切换组件 |
-| [app/styles.css](../app/styles.css) | 全局样式：Tailwind 配置、字体定义 |
+| [src/app/layout.tsx](../src/app/layout.tsx) | 根布局：ThemeProvider、LocaleProvider、导航 |
+| [src/app/page.tsx](../src/app/page.tsx) | 首页组件：Hero 区域、功能特性展示 |
+| [src/components/locale-provider.tsx](../src/components/locale-provider.tsx) | 国际化上下文：语言切换、翻译函数 |
+| [src/components/theme-provider.tsx](../src/components/theme-provider.tsx) | 主题上下文：深色/浅色模式切换 |
+| [src/lib/i18n/index.ts](../src/lib/i18n/index.ts) | 国际化配置：翻译数据导出、类型定义 |
+| [src/app/globals.css](../src/app/globals.css) | 全局样式：Tailwind CSS 导入、字体定义 |
 
 ## 9. 相关文档
 
