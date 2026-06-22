@@ -16,6 +16,42 @@
 - **Apple 设计系统** - 统一使用 Apple 品牌色彩系统（Blue/Purple）
 - **移动端适配** - 完美支持手机和平板
 
+## 快速开始
+
+### 环境要求
+
+- Node.js 20.11.0 或更高版本
+- npm / yarn / pnpm
+
+### 安装
+
+```bash
+# 克隆项目
+git clone <仓库地址>
+cd HanziMaster
+
+# 安装依赖
+npm install
+
+# 启动开发服务器
+npm run dev
+```
+
+访问 `http://localhost:3000` 即可使用。
+
+### 配置 AI（可选）
+
+如果你想使用 AI 分析功能：
+
+```bash
+# 复制环境变量模板
+cp .env.example .env
+```
+
+编辑 `.env` 文件，填入你的 Google Gemini API Key。
+
+> 没有 API Key 也能使用基础功能。
+
 ## 页面介绍
 
 | 页面 | 地址 | 说明 |
