@@ -1,4 +1,4 @@
-// src/components/theme-provider.tsx v2.3.0
+// src/components/theme-provider.tsx v3.0.0
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
