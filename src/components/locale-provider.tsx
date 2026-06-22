@@ -13,7 +13,7 @@ type LocaleProviderProps = {
 
 type LocaleProviderState = {
   locale: Locale;
-  t: (key: string) => string;
+  t: (key: string, params?: Record<string, string | number>) => string;
   setLocale: (locale: Locale) => void;
   availableLocales: Locale[];
 };
@@ -96,9 +96,15 @@ export function LocaleProvider({
     document.documentElement.lang = newLocale;
   }, [storageKey]);
 
-  // Use direct translation lookup
-  const t = useCallback((key: string): string => {
-    return translate(locale, key);
+  // Use direct translation lookup with interpolation support
+  const t = useCallback((key: string, params?: Record<string, string | number>): string => {
+    let result = translate(locale, key);
+    if (params) {
+      Object.entries(params).forEach(([k, v]) => {
+        result = result.replace(new RegExp(`{{${k}}}`, 'g'), String(v));
+      });
+    }
+    return result;
   }, [locale]);
 
   const value = {

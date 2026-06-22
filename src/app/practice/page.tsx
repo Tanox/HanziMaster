@@ -491,7 +491,7 @@ export default function PracticePage() {
               {t('practice.writingTitle')}
             </DialogTitle>
             <DialogDescription>
-              在田字格中练习书写汉字
+              {t('practice.writingDialogDesc')}
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col items-center gap-4">
@@ -512,12 +512,12 @@ export default function PracticePage() {
           </div>
           <DialogFooter className="flex flex-row sm:justify-between gap-2">
             <div className="text-sm text-muted-foreground">
-              字符 {quizCharacters.findIndex(c => c.id === currentWriteChar.id) + 1} / {quizCharacters.length}
+              {t('practice.characterProgress', { current: quizCharacters.findIndex(c => c.id === currentWriteChar.id) + 1, total: quizCharacters.length })}
             </div>
             <div className="flex gap-2">
-              <Button variant="ghost" onClick={handleClearCanvas}>清除</Button>
-              <Button variant="ghost" onClick={handleNextWriteChar}>下一个</Button>
-              <Button onClick={() => setShowWritingDialog(false)}>完成</Button>
+              <Button variant="ghost" onClick={handleClearCanvas}>{t('practice.clear')}</Button>
+              <Button variant="ghost" onClick={handleNextWriteChar}>{t('practice.next')}</Button>
+              <Button onClick={() => setShowWritingDialog(false)}>{t('practice.done')}</Button>
             </div>
           </DialogFooter>
         </DialogContent>
@@ -531,7 +531,7 @@ export default function PracticePage() {
               {t('practice.quizTitle')}
             </DialogTitle>
             <DialogDescription>
-              选择正确的拼音
+              {t('practice.quizDialogDesc')}
             </DialogDescription>
           </DialogHeader>
 
@@ -541,14 +541,14 @@ export default function PracticePage() {
                 {Math.round((quizState.correctCount / quizCharacters.length) * 100)}%
               </div>
               <div className="text-center">
-                <div className="text-xl text-foreground mb-2">测验完成！</div>
+                <div className="text-xl text-foreground mb-2">{t('practice.quizComplete')}</div>
                 <div className="text-muted-foreground">
-                  正确 {quizState.correctCount} 题 · 错误 {quizState.wrongCount} 题
+                  {t('practice.correct')} {quizState.correctCount} · {t('practice.wrong')} {quizState.wrongCount}
                 </div>
               </div>
               <div className="flex gap-2">
-                <Button variant="ghost" onClick={() => setShowQuizDialog(false)}>关闭</Button>
-                <Button onClick={resetQuiz}>重新测验</Button>
+                <Button variant="ghost" onClick={() => setShowQuizDialog(false)}>{t('practice.close')}</Button>
+                <Button onClick={resetQuiz}>{t('practice.retake')}</Button>
               </div>
             </div>
           ) : (
@@ -568,7 +568,7 @@ export default function PracticePage() {
                   {currentQuizChar?.hanzi}
                 </div>
                 <Button variant="ghost" size="sm" onClick={handlePronounceQuiz}>
-                  🔊 听发音
+                  🔊 {t('practice.listenPronunciation')}
                 </Button>
               </div>
 
@@ -602,7 +602,7 @@ export default function PracticePage() {
               {quizState.answered && (
                 <div className="flex justify-end mt-2">
                   <Button onClick={handleNextQuizQuestion}>
-                    {quizState.currentIndex >= quizCharacters.length - 1 ? '查看结果' : '下一题'}
+                    {quizState.currentIndex >= quizCharacters.length - 1 ? t('practice.viewResults') : t('practice.nextQuestion')}
                   </Button>
                 </div>
               )}
@@ -619,7 +619,7 @@ export default function PracticePage() {
               {t('practice.progressTitle')}
             </DialogTitle>
             <DialogDescription>
-              你的学习进展
+              {t('practice.progressDialogDesc')}
             </DialogDescription>
           </DialogHeader>
 
@@ -654,7 +654,7 @@ export default function PracticePage() {
           </div>
 
           <DialogFooter>
-            <Button onClick={() => setShowProgressDialog(false)}>关闭</Button>
+            <Button onClick={() => setShowProgressDialog(false)}>{t('practice.close')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
