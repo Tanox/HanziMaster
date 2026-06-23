@@ -1,157 +1,273 @@
 # HanziMaster 安全最佳实践审查报告
 
-**审查日期**: 2026-06-20
-**项目版本**: v3.0.0
-**技术栈**: TypeScript + Next.js 15.5.18 + React 19.1.0
-**审查范围**: 前端代码 + Next.js 配置
+**项目版本:** v3.0.0  
+**审查日期:** 2026-06-23  
+**审查范围:** Next.js 16 + React 19 + TypeScript 前端项目  
+**参考标准:** Next.js / React / 通用前端安全规范
 
 ---
 
 ## 执行摘要
 
-HanziMaster 项目整体安全态势良好。代码库未发现高危 XSS 漏洞、动态代码执行风险或敏感数据泄露问题。安全响应头配置完善，依赖版本安全。
+本报告对 HanziMaster 项目进行了全面的安全最佳实践审查。项目整体安全状况良好，作为一个纯前端静态应用，不存在后端认证、API 注入等高风险面。
 
-**发现统计**: 3 个中低危问题，0 个高危问题，0 个严重问题。
+**整体评分: 8.5 / 10**
+
+- **严重 (Critical):** 0 个
+- **高危 (High):** 0 个
+- **中危 (Medium):** 2 个
+- **低危 (Low):** 4 个
 
 ---
 
-## 发现详情
+## 项目安全概况
 
-### Finding-001: CSP 配置包含 `unsafe-inline` 和 `unsafe-eval`
+### ✅ 已正确实施的安全措施
 
-| 属性 | 值 |
-|------|-----|
-| **规则 ID** | NEXT-CSP-001 / REACT-CSP-001 |
-| **严重性** | Medium |
-| **位置** | [next.config.js](file:///workspace/next.config.js#L9-L10) |
-| **证据** | `"script-src 'self' 'unsafe-eval' 'unsafe-inline'"` 和 `"style-src 'self' 'unsafe-inline'"` |
+| 类别 | 状态 | 说明 |
+|-----|------|------|
+| XSS 防护 | ✅ 良好 | 无 `dangerouslySetInnerHTML`、无 `innerHTML`、无 `eval`，依赖 React 默认转义 |
+| 依赖安全 | ✅ 良好 | npm audit: 0 vulnerabilities |
+| 安全头 | ✅ 基本完整 | CSP、nosniff、X-Frame-Options、Referrer-Policy、Permissions-Policy |
+| 环境变量 | ✅ 良好 | `.env` 在 `.gitignore` 中，仅 `.env.example` 被提交 |
+| 存储安全 | ✅ 可接受 | localStorage 仅存储主题和语言偏好（非敏感数据） |
+| React StrictMode | ✅ 已启用 | 有助于发现潜在问题 |
+| 图片远程模式 | ✅ 安全 | `remotePatterns` 配置了明确的主机名（非通配符） |
+| 无服务端风险 | ✅ N/A | 无 Server Actions、无 Route Handlers、无 API Routes |
 
-**影响**: 
-`unsafe-inline` 和 `unsafe-eval` 显著削弱 CSP 对 XSS 攻击的防护能力。攻击者若能注入恶意脚本，CSP 将无法阻止其执行。
+---
 
-**修复建议**:
+## 发现的问题
+
+### 🔴 中危 (Medium)
+
+---
+
+#### SEC-001: CSP 使用 `unsafe-inline` 降低 XSS 防护强度
+
+**规则 ID:** NEXT-CSP-001 / REACT-CSP-001  
+**严重程度:** Medium  
+**位置:** [next.config.mjs](file:///workspace/next.config.mjs#L12)
+
+**证据:**
 ```javascript
-// 推荐使用 nonce 或 hash 替代 unsafe-inline
-const securityHeaders = [
-  {
-    key: 'Content-Security-Policy',
-    value: [
-      "default-src 'self'",
-      "script-src 'self'",  // 移除 unsafe-inline/unsafe-eval
-      "style-src 'self' https://fonts.googleapis.com",
-      // 使用 nonce 方式加载内联脚本
-    ].join('; '),
-  },
-];
+// next.config.mjs 第 12 行
+"script-src 'self' 'unsafe-inline'",
+"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
 ```
 
-**缓解措施**: 
-当前项目未使用 `dangerouslySetInnerHTML` 或其他 XSS 卫星，实际风险较低。建议作为后续优化项。
+**影响:**
+`unsafe-inline` 会显著降低 CSP 对 XSS 攻击的防护效果。虽然 Next.js App Router 当前需要内联脚本（用于 hydration），但可以通过 nonce-based CSP 来替代 `unsafe-inline`，从而提供更强的防护。
+
+**修复建议:**
+实现 nonce-based CSP，为内联脚本生成加密随机 nonce，替换 `'unsafe-inline'`。Next.js 提供了 CSP nonce 的官方指南。
+
+**缓解措施:**
+项目是纯前端静态应用，没有用户输入内容渲染到页面的场景，XSS 攻击面很小。当前配置在功能上是安全的。
 
 ---
 
-### Finding-002: .gitignore 未明确排除 `.env` 文件
+#### SEC-002: locale 存储写入时缺少输入验证
 
-| 属性 | 值 |
-|------|-----|
-| **规则 ID** | NEXT-SECRETS-001 |
-| **严重性** | Medium |
-| **位置** | [.gitignore](file:///workspace/.gitignore#L50) |
-| **证据** | 仅包含 `.env*.local`，未排除 `.env`、`.env.production` 等 |
+**规则 ID:** REACT-AUTH-001（存储信任边界）  
+**严重程度:** Medium (Low impact due to data type)  
+**位置:** [locale-provider.tsx](file:///workspace/src/components/locale-provider.tsx#L93-L97)
 
-**影响**: 
-开发者可能意外提交包含敏感密钥的环境变量文件（如 Gemini API Key），导致密钥泄露。
-
-**修复建议**:
-```gitignore
-# Local env files - 更严格的排除规则
-.env
-.env.*
-.env*.local
+**证据:**
+```typescript
+// src/components/locale-provider.tsx 第 93-97 行
+const setLocale = useCallback((newLocale: Locale) => {
+  safeSetItem(storageKey, newLocale);
+  setLocaleState(newLocale);
+  document.documentElement.lang = newLocale;
+}, [storageKey]);
 ```
 
-**当前状态**: 项目中仅存在 `.env.example`（无敏感内容），未发现实际泄露。
+**影响:**
+`setLocale` 直接将 `newLocale` 写入 localStorage 和 `document.documentElement.lang`，没有验证输入是否在 `availableLocales` 列表中。虽然 TypeScript 类型约束了 `Locale` 类型，但类型在运行时无效，攻击者可以通过控制台调用 `setLocale` 注入任意字符串到 `lang` 属性（虽然危害有限）。
+
+**修复建议:**
+在写入前验证 locale 是否在允许列表中：
+
+```typescript
+const setLocale = useCallback((newLocale: Locale) => {
+  if (!locales.includes(newLocale)) return;
+  safeSetItem(storageKey, newLocale);
+  setLocaleState(newLocale);
+  document.documentElement.lang = newLocale;
+}, [storageKey]);
+```
 
 ---
 
-### Finding-003: localStorage 用于存储用户偏好
-
-| 属性 | 值 |
-|------|-----|
-| **规则 ID** | JS-STORAGE-001 / REACT-AUTH-001 |
-| **严重性** | Low |
-| **位置** | [src/lib/storage.ts](file:///workspace/src/lib/storage.ts#L20-L49) |
-| **证据** | `localStorage.getItem(key)` / `localStorage.setItem(key, ...)` |
-
-**影响**: 
-localStorage 存储的数据可被 XSS 攻击读取。当前仅存储主题和语言偏好（非敏感数据），风险较低。
-
-**修复建议**: 
-无需修改。当前实现已包含版本控制和错误处理，且存储内容为非敏感偏好设置。
-
-**缓解措施**: 
-若未来扩展存储认证令牌等敏感数据，应迁移至 HTTPOnly Cookie。
+### 🟡 低危 (Low)
 
 ---
 
-## 安全最佳实践合规检查
+#### SEC-003: 生产环境 console.warn 可能泄露内部信息
 
-### ✅ 已合规项
+**规则 ID:** NEXT-LOG-001  
+**严重程度:** Low  
+**位置:** [storage.ts](file:///workspace/src/lib/storage.ts#L52)
 
-| 规则 ID | 描述 | 状态 |
-|---------|------|------|
-| NEXT-SUPPLY-001 | Next.js 版本安全（15.5.18 >= 15.2.6） | ✅ 不受 react2shell CVE 影响 |
-| NEXT-SECRETS-002 | 无 NEXT_PUBLIC_ 前缀敏感变量 | ✅ 未发现 |
-| NEXT-XSS-001 | 无 dangerouslySetInnerHTML 使用 | ✅ 未发现 |
-| REACT-XSS-001 | 无 dangerouslySetInnerHTML 使用 | ✅ 未发现 |
-| REACT-XSS-002 | 依赖 React 默认转义 | ✅ 所有渲染使用 JSX |
-| REACT-DOM-001 | 无 DOM XSS 注入点 | ✅ 未发现 innerHTML 等 |
-| JS-XSS-001 | 无 innerHTML/outerHTML 使用 | ✅ 未发现 |
-| JS-XSS-003 | 无 eval/new Function 使用 | ✅ 未发现 |
-| NEXT-HEADERS-001 | 安全响应头已配置 | ✅ CSP/X-Frame-Options 等 |
-| NEXT-FILES-001 | 无文件上传功能 | ✅ 不适用 |
-| NEXT-SSRF-001 | 无 SSRF 风险 | ✅ 无 API Routes |
-| NEXT-REDIRECT-001 | 无开放重定向 | ✅ 未发现 |
-| NEXT-AUTH-001 | 无认证端点 | ✅ 不适用 |
-| NEXT-CSRF-001 | 无 CSRF 风险 | ✅ 无 Server Actions/API Routes |
-| REACT-3P-001 | 无第三方脚本 | ✅ 无外部脚本加载 |
-| REACT-SRI-001 | 无 CDN 资源 | ✅ 不适用 |
+**证据:**
+```typescript
+// src/lib/storage.ts 第 52 行
+console.warn('Failed to save to localStorage:', e);
+```
 
-### ⚠️ 需关注项
+**影响:**
+生产环境中 `console.warn` 可能向浏览器控制台暴露内部错误信息。虽然在此场景下风险很低（仅暴露存储配额错误），但最佳实践是生产环境移除或降级控制台输出。
 
-| 规则 ID | 描述 | 状态 |
-|---------|------|------|
-| NEXT-CSP-001 | CSP 配置优化 | ⚠️ 包含 unsafe-inline/unsafe-eval |
-| NEXT-SECRETS-001 | .gitignore 排除规则 | ⚠️ 未明确排除 .env |
+**修复建议:**
+添加环境检测，生产环境不输出详细错误：
+
+```typescript
+if (process.env.NODE_ENV !== 'production') {
+  console.warn('Failed to save to localStorage:', e);
+}
+```
 
 ---
 
-## 依赖版本安全
+#### SEC-004: X-XSS-Protection 头已废弃
 
-| 依赖 | 版本 | 安全状态 |
-|------|------|----------|
-| next | 15.5.18 | ✅ 安全（>= 15.2.6，不受 CVE-2025-66478 影响） |
-| react | 19.1.0 | ✅ 最新版本 |
-| react-dom | 19.1.0 | ✅ 最新版本 |
-| @google/generative-ai | 0.24.0 | ✅ 无已知漏洞 |
+**规则 ID:** NEXT-HEADERS-001  
+**严重程度:** Low  
+**位置:** [next.config.mjs](file:///workspace/next.config.mjs#L38-L40)
 
----
+**证据:**
+```javascript
+// next.config.mjs 第 38-40 行
+{
+  key: 'X-XSS-Protection',
+  value: '1; mode=block',
+},
+```
 
-## 建议优先级
+**影响:**
+`X-XSS-Protection` 头已被现代浏览器废弃（Chrome, Firefox, Edge 均已移除支持）。保留它没有实际安全价值，反而可能给人一种错误的安全感。
 
-| 优先级 | Finding ID | 建议 |
-|--------|------------|------|
-| P2 | Finding-001 | 优化 CSP 配置，移除 unsafe-inline/unsafe-eval |
-| P2 | Finding-002 | 更新 .gitignore 排除所有 .env 文件 |
-| P3 | Finding-003 | 信息性，无需修改 |
-
----
-
-## 结论
-
-HanziMaster 项目遵循了大部分安全最佳实践，代码质量良好。主要改进方向为 CSP 配置优化和 .gitignore 完善。项目当前无高危安全风险，可安全部署。
+**修复建议:**
+移除 `X-XSS-Protection` 头，依赖 CSP 作为主要的 XSS 防护机制。
 
 ---
 
-**审查人**: TRAE Security Review
-**审查标准**: Next.js Security Spec + React Security Spec + OWASP Guidelines
+#### SEC-005: theme 存储读取时缺少验证
+
+**规则 ID:** REACT-AUTH-001（存储信任边界）  
+**严重程度:** Low  
+**位置:** [theme-provider.tsx](file:///workspace/src/components/theme-provider.tsx#L35-L40)
+
+**证据:**
+```typescript
+// src/components/theme-provider.tsx 第 35-40 行
+useEffect(() => {
+  const stored = safeGetItem<Theme>(storageKey, defaultTheme);
+  if (stored) {
+    setTheme(stored);
+  }
+}, [storageKey, defaultTheme]);
+```
+
+**影响:**
+从 localStorage 读取的 theme 值没有验证是否为合法的 `'dark' | 'light' | 'system'`。虽然风险很低（只是主题设置），但遵循安全最佳实践应该验证所有来自不可信存储的数据。
+
+**修复建议:**
+```typescript
+const validThemes: Theme[] = ['dark', 'light', 'system'];
+useEffect(() => {
+  const stored = safeGetItem<Theme>(storageKey, defaultTheme);
+  if (stored && validThemes.includes(stored)) {
+    setTheme(stored);
+  }
+}, [storageKey, defaultTheme]);
+```
+
+---
+
+#### SEC-006: 缺少 `object-src` CSP 指令
+
+**规则 ID:** NEXT-CSP-001  
+**严重程度:** Low  
+**位置:** [next.config.mjs](file:///workspace/next.config.mjs#L9-L27)
+
+**证据:**
+当前 CSP 没有 `object-src` 指令，默认为 `default-src 'self'`。
+
+**影响:**
+虽然 `default-src 'self'` 已经提供了基本保护，但显式设置 `object-src 'none'` 可以更好地防止通过 `<object>`, `<embed>`, `<applet>` 等标签加载插件内容的攻击。
+
+**修复建议:**
+在 CSP 中添加：
+```
+"object-src 'none'",
+```
+
+---
+
+## 安全建议（优先级排序）
+
+### 建议立即处理（中危）
+
+1. **SEC-002**: 为 locale 写入添加输入验证（改动小，收益明确）
+2. **SEC-001**: 评估 nonce-based CSP 的可行性（中等工作量，安全收益高）
+
+### 建议后续处理（低危）
+
+3. **SEC-005**: 为 theme 存储读取添加验证
+4. **SEC-003**: 生产环境移除 console.warn
+5. **SEC-004**: 移除废弃的 X-XSS-Protection 头
+6. **SEC-006**: 添加 `object-src 'none'` 到 CSP
+
+---
+
+## 安全加固建议（可选增强）
+
+### 1. 考虑实现 CSP nonce（中长期）
+
+Next.js 16 支持使用 nonce 的 CSP 配置，可以替代 `unsafe-inline`。这是前端安全的最佳实践。
+
+### 2. 添加 Subresource Integrity (SRI)
+
+对于从第三方 CDN 加载的资源（如 Google Fonts），考虑使用 SRI 确保资源完整性。
+
+### 3. 定期依赖审计
+
+虽然当前 0 vulnerabilities，建议：
+- 在 CI 中添加 `npm audit --audit-level=high` 检查
+- 定期运行 `npm outdated` 检查依赖更新
+- 配置 Dependabot 或 Renovate 自动更新依赖
+
+### 4. 安全头完整性检查
+
+建议部署后使用以下工具验证安全头：
+- Mozilla Observatory: https://observatory.mozilla.org/
+- securityheaders.com: https://securityheaders.com/
+
+---
+
+## 审查方法说明
+
+本次审查遵循以下安全规范文档：
+- `javascript-typescript-nextjs-web-server-security.md` (Next.js 安全规范)
+- `javascript-typescript-react-web-frontend-security.md` (React 安全规范)
+- `javascript-general-web-frontend-security.md` (通用前端安全规范)
+
+审查覆盖的领域：
+- ✅ 部署配置与环境
+- ✅ 认证/会话/Cookie
+- ✅ XSS 与危险渲染模式
+- ✅ 依赖安全
+- ✅ 安全头与 CSP
+- ✅ 本地存储安全
+- ✅ CSRF 防护（N/A - 无 cookie 认证）
+- ✅ Server Actions / API Routes（N/A - 纯前端）
+- ✅ 路径遍历与文件处理（N/A - 无服务端文件操作）
+- ✅ SSRF（N/A - 无服务端请求）
+- ✅ 注入类漏洞（N/A - 无后端数据库）
+
+---
+
+**报告生成时间:** 2026-06-23  
+**审查工具:** 手动代码审查 + npm audit + 安全规范比对
