@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 
-// Security headers - CSP is set dynamically in middleware.ts with nonce
+// Security headers - CSP is set dynamically in proxy.ts with nonce
 const securityHeaders = [
   {
     key: 'X-Content-Type-Options',
