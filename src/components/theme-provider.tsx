@@ -6,6 +6,8 @@ import { safeGetItem, safeSetItem } from '@/lib/storage';
 
 type Theme = 'dark' | 'light' | 'system';
 
+const VALID_THEMES: Theme[] = ['dark', 'light', 'system'];
+
 type ThemeProviderProps = {
   children: React.ReactNode;
   defaultTheme?: Theme;
@@ -34,7 +36,7 @@ export function ThemeProvider({
 
   useEffect(() => {
     const stored = safeGetItem<Theme>(storageKey, defaultTheme);
-    if (stored) {
+    if (stored && VALID_THEMES.includes(stored)) {
       setTheme(stored);
     }
   }, [storageKey, defaultTheme]);
@@ -59,6 +61,7 @@ export function ThemeProvider({
   const value = {
     theme,
     setTheme: (newTheme: Theme) => {
+      if (!VALID_THEMES.includes(newTheme)) return;
       safeSetItem(storageKey, newTheme);
       setTheme(newTheme);
     },

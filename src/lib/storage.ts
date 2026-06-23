@@ -48,8 +48,9 @@ export function safeSetItem<T>(key: string, value: T): void {
     };
     localStorage.setItem(key, JSON.stringify(data));
   } catch (e) {
-    // Silently fail for quota exceeded or other storage errors
-    console.warn('Failed to save to localStorage:', e);
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn('Failed to save to localStorage:', e);
+    }
   }
 }
 
@@ -64,6 +65,8 @@ export function safeRemoveItem(key: string): void {
   try {
     localStorage.removeItem(key);
   } catch (e) {
-    console.warn('Failed to remove from localStorage:', e);
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn('Failed to remove from localStorage:', e);
+    }
   }
 }

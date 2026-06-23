@@ -91,6 +91,7 @@ export function LocaleProvider({
   }, [storageKey, defaultLocale]);
 
   const setLocale = useCallback((newLocale: Locale) => {
+    if (!locales.includes(newLocale)) return;
     safeSetItem(storageKey, newLocale);
     setLocaleState(newLocale);
     document.documentElement.lang = newLocale;
