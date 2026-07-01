@@ -8,6 +8,9 @@ export const ru = {
     exploreLibrary: 'Исследовать Библиотеку',
     dailyPractice: 'Ежедневная Практика',
     masterCharacters: 'Освойте 12 самых распространённых иероглифов.',
+    pronunciationNotSupported: 'Ваш браузер не поддерживает функцию произношения.',
+    skipToContent: 'Перейти к содержимому',
+    openMenu: 'Открыть меню',
     dayStreak: 'Дни подряд',
     practiceWriting: 'Практика Письма',
     hearPronunciation: 'Послушать Произношение',
@@ -42,6 +45,7 @@ export const ru = {
   },
   practice: {
     center: 'Центр',
+    question: 'Вопрос',
     subtitle: 'Несколько режимов практики для освоения китайских иероглифов со всех сторон.',
     writingTitle: 'Практика Письма',
     writingDesc: 'Практикуйте письмо на умной холсте с обратной связью и руководством ИИ в реальном времени.',

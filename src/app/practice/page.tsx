@@ -500,7 +500,7 @@ export default function PracticePage() {
               <Badge variant="secondary" className="text-base">
                 {currentWriteChar.pinyin}
               </Badge>
-              <Button variant="ghost" size="sm" onClick={handlePronounceWrite}>
+              <Button variant="ghost" size="sm" onClick={handlePronounceWrite} aria-label={t('practice.listenPronunciation')}>
                 🔊
               </Button>
             </div>
@@ -555,7 +555,7 @@ export default function PracticePage() {
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between">
                 <div className="text-sm text-muted-foreground">
-                  问题 {quizState.currentIndex + 1} / {quizCharacters.length}
+                  {t('practice.question')} {quizState.currentIndex + 1} / {quizCharacters.length}
                 </div>
                 <div className="flex gap-4 text-sm">
                   <span className="text-green-600">✓ {quizState.correctCount}</span>
@@ -626,20 +626,20 @@ export default function PracticePage() {
           <div className="grid grid-cols-3 gap-4 py-4">
             <div className="bg-muted rounded-[20px] p-6 text-center">
               <div className="text-4xl font-bold text-[#007aff] mb-2">12</div>
-              <div className="text-sm text-muted-foreground">已学汉字</div>
+              <div className="text-sm text-muted-foreground">{t('practice.charactersLearned')}</div>
             </div>
             <div className="bg-muted rounded-[20px] p-6 text-center">
               <div className="text-4xl font-bold text-[#af52de] mb-2">5</div>
-              <div className="text-sm text-muted-foreground">连续天数</div>
+              <div className="text-sm text-muted-foreground">{t('practice.dayStreak')}</div>
             </div>
             <div className="bg-muted rounded-[20px] p-6 text-center">
               <div className="text-4xl font-bold text-green-600 mb-2">87%</div>
-              <div className="text-sm text-muted-foreground">准确率</div>
+              <div className="text-sm text-muted-foreground">{t('practice.accuracy')}</div>
             </div>
           </div>
 
           <div className="py-4">
-            <h4 className="text-lg font-semibold mb-4 text-foreground">学习汉字</h4>
+            <h4 className="text-lg font-semibold mb-4 text-foreground">{t('practice.charactersLearned')}</h4>
             <div className="grid grid-cols-4 sm:grid-cols-6 gap-3">
               {quizCharacters.map((char) => (
                 <div

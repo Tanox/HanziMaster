@@ -384,6 +384,15 @@
       border-top: 1px solid var(--apple-gray-200);
       margin-top: 80px;
     }
+
+    @media (max-width: 768px) {
+      .container { max-width: 100% !important; padding: 0 16px !important; }
+      .component-section { padding: 32px 0 !important; }
+      .component-grid { grid-template-columns: 1fr !important; }
+      .demo-row { flex-direction: column !important; gap: 12px !important; }
+      .nav { flex-wrap: wrap; gap: 8px !important; }
+      .nav-link { font-size: 12px !important; padding: 6px 10px !important; }
+    }
   </style>
 </head>
 <body>
@@ -394,7 +403,7 @@
     </div>
     <div class="nav-links">
       <a class="nav-link" href="design-system.html">设计系统</a>
-      <a class="nav-link active" href="#">基础组件</a>
+      <a class="nav-link active" href="#base">基础组件</a>
       <a class="nav-link" href="#composite">复合组件</a>
       <a class="nav-link" href="#business">业务组件</a>
       <a class="nav-link" href="#interactive">交互标准</a>

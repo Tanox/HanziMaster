@@ -1002,6 +1002,7 @@
     <div class="preview-panel-title">📚 设计文档</div>
     <a class="panel-link" href="design-system.html">→ 设计系统规范</a>
     <a class="panel-link" href="components.html">→ 组件库规范</a>
+    <a class="panel-link" href="prototype.html">→ v4.0 设计系统展示</a>
   </aside>
 
   <!-- App shell -->
@@ -1043,7 +1044,7 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </button>
           <button class="btn btn-secondary" onclick="switchPage('practice', document.querySelectorAll('.page-btn')[2])">
-            探索字库 →
+            练习中心 →
           </button>
         </div>
 
@@ -1172,9 +1173,9 @@
               <div class="char-stat"><div class="char-stat-label">掌握度</div><div class="char-stat-value" id="statMastery">85%</div></div>
             </div>
             <div class="char-actions">
-              <button class="btn btn-primary">✏️ 练习书写</button>
-              <button class="btn btn-secondary">🔊 听发音</button>
-              <button class="btn btn-secondary">📖 词源</button>
+              <button class="btn btn-primary" onclick="switchPage('practice', document.querySelectorAll('.page-btn')[2])">✏️ 练习书写</button>
+              <button class="btn btn-secondary" onclick="alert('发音功能将在正式版中提供')">🔊 听发音</button>
+              <button class="btn btn-secondary" onclick="alert('词源功能将在正式版中提供')">📖 词源</button>
             </div>
           </div>
         </div>
@@ -1253,6 +1254,7 @@
         <a onclick="switchPage('practice', document.querySelectorAll('.page-btn')[2])">练习</a>
         <a href="design-system.html">设计系统</a>
         <a href="components.html">组件库</a>
+        <a href="prototype.html">v4.0 展示</a>
       </nav>
       <p>© 2026 HanziMaster · 汉字大师 v3.0.0 · Designed with ♥ in China</p>
     </footer>

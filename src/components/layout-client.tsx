@@ -30,7 +30,7 @@ export function LayoutClient({ children }: LayoutClientProps) {
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       {/* Skip to content - accessibility */}
       <a href="#main-content" className="skip-to-content">
-        Skip to content
+        {t('common.skipToContent')}
       </a>
 
       {/* Header - Apple Style with Glassmorphism */}
@@ -61,7 +61,7 @@ export function LayoutClient({ children }: LayoutClientProps) {
           <button
             onClick={() => setMobileNavOpen(true)}
             className="p-2 rounded-lg hover:bg-accent transition-colors duration-200"
-            aria-label="Open menu"
+            aria-label={t('common.openMenu')}
             aria-expanded={mobileNavOpen}
             style={{ minWidth: 44, minHeight: 44 }}
           >

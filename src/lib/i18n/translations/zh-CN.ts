@@ -8,6 +8,9 @@ export const zhCN = {
     exploreLibrary: '浏览字库',
     dailyPractice: '每日练习',
     masterCharacters: '掌握最常用的12个汉字。',
+    pronunciationNotSupported: '您的浏览器不支持发音功能。',
+    skipToContent: '跳到主要内容',
+    openMenu: '打开菜单',
     dayStreak: '天连续学习',
     practiceWriting: '练习书写',
     hearPronunciation: '听发音',
@@ -42,6 +45,7 @@ export const zhCN = {
   },
   practice: {
     center: '中心',
+    question: '问题',
     subtitle: '多种练习方式，全方位提升您的汉字掌握程度。',
     writingTitle: '书写练习',
     writingDesc: '在智能画布上练习书写，获得 AI 实时反馈与指导。',

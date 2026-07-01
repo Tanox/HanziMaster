@@ -8,6 +8,9 @@ export const ja = {
     exploreLibrary: 'ライブラリを探索',
     dailyPractice: '每日練習',
     masterCharacters: '最も一般的な12文字をマスターしましょう。',
+    pronunciationNotSupported: 'お使いのブラウザは音声機能に対応していません。',
+    skipToContent: 'メインコンテンツへスキップ',
+    openMenu: 'メニューを開く',
     dayStreak: '連続日数',
     practiceWriting: '書道を練習',
     hearPronunciation: '発音を聴く',
@@ -42,6 +45,7 @@ export const ja = {
   },
   practice: {
     center: 'センター',
+    question: '問題',
     subtitle: '複数の練習モードで、中国語文字をあらゆる角度からマスターしましょう。',
     writingTitle: '書道練習',
     writingDesc: 'AIリアルタイムフィードバックとガイダンスを備えたスマートキャンバスで書く練習をしましょう。',

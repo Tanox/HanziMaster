@@ -8,6 +8,9 @@ export const ar = {
     exploreLibrary: 'استكشف المكتبة',
     dailyPractice: 'التمرين اليومي',
     masterCharacters: 'أتقن الـ 12 حرفًا الأكثر شيوعًا.',
+    pronunciationNotSupported: 'متصفحك لا يدعم ميزة النطق.',
+    skipToContent: 'تخطي إلى المحتوى',
+    openMenu: 'فتح القائمة',
     dayStreak: 'أيام متتالية',
     practiceWriting: 'تدرب على الكتابة',
     hearPronunciation: 'استمع للنطق',
@@ -42,6 +45,7 @@ export const ar = {
   },
   practice: {
     center: 'المركز',
+    question: 'سؤال',
     subtitle: 'أوضاع تدريب متعددة لإتقان الحروف الصينية من جميع الزوايا.',
     writingTitle: 'تدريب الكتابة',
     writingDesc: 'تدرب على الكتابة على اللوحة الذكية مع تغذية راجعة وإرشاد الذكاء الاصطناعي الفوري.',

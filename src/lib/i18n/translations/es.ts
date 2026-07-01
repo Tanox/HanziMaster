@@ -8,6 +8,9 @@ export const es = {
     exploreLibrary: 'Explorar Biblioteca',
     dailyPractice: 'Práctica Diaria',
     masterCharacters: 'Domina los 12 caracteres más comunes.',
+    pronunciationNotSupported: 'Tu navegador no admite la función de pronunciación.',
+    skipToContent: 'Saltar al contenido',
+    openMenu: 'Abrir menú',
     dayStreak: 'Días Seguidos',
     practiceWriting: 'Practicar Escritura',
     hearPronunciation: 'Escuchar Pronunciación',
@@ -42,6 +45,7 @@ export const es = {
   },
   practice: {
     center: 'Centro',
+    question: 'Pregunta',
     subtitle: 'Múltiples modos de práctica para dominar los caracteres chinos desde todos los ángulos.',
     writingTitle: 'Práctica de Escritura',
     writingDesc: 'Practica escribir en el lienzo inteligente con retroalimentación y guía de IA en tiempo real.',

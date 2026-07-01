@@ -64,7 +64,9 @@ export function LocaleToggleClient() {
         const currentIndex = Array.from(items).findIndex((el) => el === document.activeElement);
         const nextIndex = e.key === 'ArrowDown'
           ? (currentIndex + 1) % items.length
-          : (currentIndex - 1 + items.length) % items.length;
+          : currentIndex === -1
+            ? items.length - 1
+            : (currentIndex - 1 + items.length) % items.length;
         items[nextIndex]?.focus();
       }
     };

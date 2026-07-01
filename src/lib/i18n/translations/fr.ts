@@ -8,6 +8,9 @@ export const fr = {
     exploreLibrary: 'Explorer la Bibliothèque',
     dailyPractice: 'Pratique Quotidienne',
     masterCharacters: 'Maîtrisez les 12 caractères les plus courants.',
+    pronunciationNotSupported: 'Votre navigateur ne prend pas en charge la prononciation.',
+    skipToContent: 'Aller au contenu',
+    openMenu: 'Ouvrir le menu',
     dayStreak: 'Jours Consécutifs',
     practiceWriting: 'Pratiquer l\'Écriture',
     hearPronunciation: 'Écouter la Prononciation',
@@ -42,6 +45,7 @@ export const fr = {
   },
   practice: {
     center: 'Centre',
+    question: 'Question',
     subtitle: 'Plusieurs modes de pratique pour maîtriser les caractères chinois sous tous les angles.',
     writingTitle: 'Pratique de l\'Écriture',
     writingDesc: 'Pratiquez l\'écriture sur le canevas intelligent avec des commentaires et des conseils IA en temps réel.',

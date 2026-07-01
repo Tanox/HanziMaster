@@ -8,6 +8,9 @@ export const ko = {
     exploreLibrary: '라이브러리 탐색',
     dailyPractice: '일일 연습',
     masterCharacters: '가장 일반적인 12자를 마스터하세요.',
+    pronunciationNotSupported: '브라우저가 발음 기능을 지원하지 않습니다.',
+    skipToContent: '콘텐츠로 건너뛰기',
+    openMenu: '메뉴 열기',
     dayStreak: '연속 일수',
     practiceWriting: '글씨 연습',
     hearPronunciation: '발음 듣기',
@@ -42,6 +45,7 @@ export const ko = {
   },
   practice: {
     center: '센터',
+    question: '문제',
     subtitle: '다양한 연습 모드로 중국 한자를 모든 각도에서 마스터하세요.',
     writingTitle: '글씨 연습',
     writingDesc: 'AI 실시간 피드백과 안내가 있는 스마트 캔버스에서 글씨 연습을 하세요.',

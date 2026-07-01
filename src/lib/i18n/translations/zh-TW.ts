@@ -8,6 +8,9 @@ export const zhTW = {
     exploreLibrary: '瀏覽字庫',
     dailyPractice: '每日練習',
     masterCharacters: '掌握最常用的12個漢字。',
+    pronunciationNotSupported: '您的瀏覽器不支援發音功能。',
+    skipToContent: '跳到主要內容',
+    openMenu: '開啟選單',
     dayStreak: '天連續學習',
     practiceWriting: '練習書寫',
     hearPronunciation: '聽發音',
@@ -42,6 +45,7 @@ export const zhTW = {
   },
   practice: {
     center: '中心',
+    question: '問題',
     subtitle: '多種練習方式，全方位提升您的漢字掌握程度。',
     writingTitle: '書寫練習',
     writingDesc: '在智慧畫布上練習書寫，獲得 AI 即時回饋與指導。',

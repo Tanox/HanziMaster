@@ -8,6 +8,9 @@ export const ptBR = {
     exploreLibrary: 'Explorar Biblioteca',
     dailyPractice: 'Prática Diária',
     masterCharacters: 'Domine os 12 caracteres mais comuns.',
+    pronunciationNotSupported: 'Seu navegador não suporta a função de pronúncia.',
+    skipToContent: 'Pular para o conteúdo',
+    openMenu: 'Abrir menu',
     dayStreak: 'Dias Consecutivos',
     practiceWriting: 'Praticar Escrita',
     hearPronunciation: 'Ouvir Pronúncia',
@@ -42,6 +45,7 @@ export const ptBR = {
   },
   practice: {
     center: 'Centro',
+    question: 'Pergunta',
     subtitle: 'Múltiplos modos de prática para dominar caracteres chineses de todos os ângulos.',
     writingTitle: 'Prática de Escrita',
     writingDesc: 'Pratique escrever na tela inteligente com feedback e orientação de IA em tempo real.',

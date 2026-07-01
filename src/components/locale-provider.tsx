@@ -33,14 +33,7 @@ const getNestedValue = (obj: Translations, path: string): string => {
   return typeof current === 'string' ? current : path;
 };
 
-const initialState: LocaleProviderState = {
-  locale: 'en',
-  t: (key: string) => key,
-  setLocale: () => null,
-  availableLocales: locales,
-};
-
-const LocaleProviderContext = createContext<LocaleProviderState>(initialState);
+const LocaleProviderContext = createContext<LocaleProviderState | undefined>(undefined);
 
 const getBrowserLocale = (): Locale => {
   if (typeof navigator === 'undefined') return 'en';

@@ -18,15 +18,6 @@
   --touch-target-min: 44px;
 }
 
-@font-face {
-  font-family: 'Inter';
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Noto Sans SC';
-  font-display: swap;
-}
-
 @utility container-page {
   @apply max-w-6xl mx-auto px-6;
 }

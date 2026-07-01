@@ -22,9 +22,6 @@ const securityHeaders = [
 
 const nextConfig = {
   reactStrictMode: true,
-  allowedDevOrigins: [
-    'run-agent-6a1fc1711968305f5b17855f-mqqt0ye0.remote-agent.svc.cluster.local',
-  ],
   // Apply security headers to all routes
   async headers() {
     return [

@@ -20,7 +20,7 @@ export default function HomePage() {
           
           {/* Main Heading */}
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-foreground mb-6 leading-[1.05]">
-            {t('home.heroTitle')}，
+            {t('home.heroTitle')}{t('home.heroSuffix')}
             <span className="block mt-2">
               <span className="hanzi-font">{t('home.heroSubtitle')}</span>
             </span>

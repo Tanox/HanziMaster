@@ -178,19 +178,6 @@ gap-16 /* 64px */
 
 | 变量 | 值 | 用途 |
 |------|------|------|
-| `--radius` | 10px (0.625rem) | 默认圆角 |
-| `--radius-sm` | 6px | 小元素圆角 |
-| `--radius-md` | 8px | 中等元素圆角 |
-| `--radius-lg` | 10px | 大元素圆角 |
-| `--radius-xl` | 14px | 卡片圆角 |
-| `--radius-2xl` | 18px | 大卡片圆角 |
-| `--radius-3xl` | 22px | Hero 区域圆角 |
-| `--radius-4xl` | 26px | 特大元素圆角 |
-
-#### Apple 风格圆角
-
-| 变量 | 值 | 用途 |
-|------|------|------|
 | `--radius-xs` | 8px | 按钮、小卡片 |
 | `--radius-sm` | 12px | 中等元素 |
 | `--radius-md` | 16px | 卡片、面板 |

@@ -8,6 +8,9 @@ export const en = {
     exploreLibrary: 'Explore Library',
     dailyPractice: 'Daily Practice',
     masterCharacters: 'Master the most common 12 characters.',
+    pronunciationNotSupported: 'Pronunciation is not supported in your browser.',
+    skipToContent: 'Skip to content',
+    openMenu: 'Open menu',
     dayStreak: 'Day Streak',
     practiceWriting: 'Practice Writing',
     hearPronunciation: 'Hear Pronunciation',
@@ -42,6 +45,7 @@ export const en = {
   },
   practice: {
     center: 'Center',
+    question: 'Question',
     subtitle: 'Multiple practice modes to master Chinese characters from all angles.',
     writingTitle: 'Writing Practice',
     writingDesc: 'Practice writing on the smart canvas with AI real-time feedback and guidance.',

@@ -8,6 +8,9 @@ export const de = {
     exploreLibrary: 'Bibliothek Erkunden',
     dailyPractice: 'Tägliche Übung',
     masterCharacters: 'Meistere die 12 häufigsten Zeichen.',
+    pronunciationNotSupported: 'Ihr Browser unterstützt die Aussprachefunktion nicht.',
+    skipToContent: 'Zum Inhalt springen',
+    openMenu: 'Menü öffnen',
     dayStreak: 'Tage Streak',
     practiceWriting: 'Schreiben Üben',
     hearPronunciation: 'Aussprache Hören',
@@ -42,6 +45,7 @@ export const de = {
   },
   practice: {
     center: 'Zentrum',
+    question: 'Frage',
     subtitle: 'Mehrere Übungsmodi, um chinesische Zeichen aus allen Blickwinkeln zu meistern.',
     writingTitle: 'Schreibübung',
     writingDesc: 'Üben Sie das Schreiben auf der intelligenten Leinwand mit Echtzeit-Feedback und KI-Anleitung.',

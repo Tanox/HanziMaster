@@ -65,7 +65,7 @@ export default function LearnPage() {
   const handlePronunciation = useCallback(() => {
     if (!selectedCharacter) return;
     if (!('speechSynthesis' in window)) {
-      alert(t('common.masterCharacters'));
+      alert(t('common.pronunciationNotSupported'));
       return;
     }
 

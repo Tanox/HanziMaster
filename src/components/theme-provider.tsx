@@ -19,12 +19,7 @@ type ThemeProviderState = {
   setTheme: (theme: Theme) => void;
 };
 
-const initialState: ThemeProviderState = {
-  theme: 'system',
-  setTheme: () => null,
-};
-
-const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
+const ThemeProviderContext = createContext<ThemeProviderState | undefined>(undefined);
 
 export function ThemeProvider({
   children,
@@ -56,6 +51,22 @@ export function ThemeProvider({
     }
 
     root.classList.add(theme);
+  }, [theme]);
+
+  // Listen for system theme changes
+  useEffect(() => {
+    if (theme !== 'system') return;
+
+    const mql = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = () => {
+      const root = document.documentElement;
+      const isDark = mql.matches;
+      root.classList.remove('light', 'dark');
+      root.classList.add(isDark ? 'dark' : 'light');
+    };
+
+    mql.addEventListener('change', handleChange);
+    return () => mql.removeEventListener('change', handleChange);
   }, [theme]);
 
   const value = {
