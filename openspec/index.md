@@ -13,8 +13,11 @@
 | API 参考 | [04-api-reference.md](04-api-reference.md) | 详细的 API 文档和代码示例 |
 | 部署指南 | [05-deployment.md](05-deployment.md) | 部署流程、环境配置和运维指南 |
 | 测试规范 | [06-testing.md](06-testing.md) | 测试策略、框架和最佳实践 |
+| 设计原型 | [07-design-prototype.md](07-design-prototype.md) | 原型图设计文档和交互说明 |
 | 编码规范 | [coding-standards.md](coding-standards.md) | 项目编码标准、最佳实践和代码风格指南 |
 | 提交模板 | [commit-template.md](commit-template.md) | Git 提交消息规范和模板 |
+| 项目上下文 | [project.md](project.md) | 项目背景、技术栈和约定 |
+| OpenSpec 指令 | [AGENTS.md](AGENTS.md) | OpenSpec 框架工作流指令 |
 | **UI 原型图** | **[prototype.html](prototype.html)** | **页面 UI 设计原型和交互说明 (Apple 风格深化版)** |
 | **UI/UX 审查报告** | **[ui-ux-review-report.md](ui-ux-review-report.md)** | **从设计师视角的优化改进建议** |
 | 对齐检查清单 | [alignment-checklist.md](alignment-checklist.md) | 规范文档、原型图与代码实现对齐检查 |

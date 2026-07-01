@@ -11,7 +11,7 @@
 示例：
 
 ```typescript
-// src/lib/i18n/index.ts v2.2.0
+// src/lib/i18n/index.ts v3.0.0
 ```
 
 ## 2. 版本管理 (SemVer 2.0.0)

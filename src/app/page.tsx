@@ -39,7 +39,7 @@ export default function HomePage() {
               </Link>
             </Button>
             <Button asChild variant="ghost" size="lg" className="rounded-full text-[#007aff]">
-              <Link href="/practice">
+              <Link href="/learn">
                 {t('common.exploreLibrary')}
               </Link>
             </Button>
