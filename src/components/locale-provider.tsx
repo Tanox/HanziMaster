@@ -1,7 +1,7 @@
 // src/components/locale-provider.tsx v3.0.0
 'use client';
 
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { Locale, translations, locales, Translations } from '@/lib/i18n';
 import { safeGetItem, safeSetItem } from '@/lib/storage';
 
@@ -19,6 +19,9 @@ type LocaleProviderState = {
 };
 
 const STORAGE_KEY = 'hanzi-master-locale';
+
+// 转义正则特殊字符，防止插值键名注入
+const escapeRegExp = (str: string): string => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 const getNestedValue = (obj: Translations, path: string): string => {
   const keys = path.split('.');
@@ -72,12 +75,14 @@ export function LocaleProvider({
       if (stored && locales.includes(stored)) {
         setLocaleState(stored);
         document.documentElement.lang = stored;
+        document.documentElement.dir = stored === 'ar' ? 'rtl' : 'ltr';
         return;
       }
 
       const browserLocale = getBrowserLocale();
       setLocaleState(browserLocale);
       document.documentElement.lang = browserLocale;
+      document.documentElement.dir = browserLocale === 'ar' ? 'rtl' : 'ltr';
     };
 
     initLocale();
@@ -88,6 +93,7 @@ export function LocaleProvider({
     safeSetItem(storageKey, newLocale);
     setLocaleState(newLocale);
     document.documentElement.lang = newLocale;
+    document.documentElement.dir = newLocale === 'ar' ? 'rtl' : 'ltr';
   }, [storageKey]);
 
   // Use direct translation lookup with interpolation support
@@ -95,18 +101,18 @@ export function LocaleProvider({
     let result = translate(locale, key);
     if (params) {
       Object.entries(params).forEach(([k, v]) => {
-        result = result.replace(new RegExp(`{{${k}}}`, 'g'), String(v));
+        result = result.replace(new RegExp(`{{${escapeRegExp(k)}}}`, 'g'), String(v));
       });
     }
     return result;
   }, [locale]);
 
-  const value = {
+  const value = useMemo(() => ({
     locale,
     t,
     setLocale,
     availableLocales: locales,
-  };
+  }), [locale, t, setLocale]);
 
   return (
     <LocaleProviderContext.Provider {...props} value={value}>

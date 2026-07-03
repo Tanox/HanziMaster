@@ -4,6 +4,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocale } from './locale-provider';
 import type { Locale } from '@/lib/i18n';
+import { cn } from '@/lib/utils';
 
 const localeNames: Record<string, string> = {
   'en': 'English',
@@ -74,18 +75,26 @@ export function LocaleToggleClient() {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, close]);
 
+  /* 菜单打开时聚焦到第一个选项 */
+  useEffect(() => {
+    if (isOpen) {
+      const firstOption = listRef.current?.querySelector<HTMLButtonElement>('[role="option"]');
+      firstOption?.focus();
+    }
+  }, [isOpen]);
+
   return (
     <div className="relative" ref={menuRef}>
       <button
         ref={buttonRef}
         onClick={() => setIsOpen((v) => !v)}
-        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+        className="p-2 rounded-lg hover:bg-accent transition-colors"
         aria-label={`Change language (current: ${localeNames[locale] || locale})`}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         style={{ minWidth: 44, minHeight: 44 }}
       >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <svg className="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       </button>
@@ -94,7 +103,7 @@ export function LocaleToggleClient() {
           ref={listRef}
           role="listbox"
           aria-label="Select language"
-          className="absolute right-0 mt-2 w-48 max-h-[70vh] overflow-y-auto bg-white dark:bg-gray-900 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50"
+          className="absolute end-0 mt-2 w-48 max-h-[70vh] overflow-y-auto bg-background rounded-lg shadow-lg border border-border z-50"
         >
           {availableLocales.map((loc) => (
             <button
@@ -103,11 +112,12 @@ export function LocaleToggleClient() {
               aria-selected={locale === loc}
               onClick={() => selectLocale(loc)}
               tabIndex={0}
-              className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors first:rounded-t-lg last:rounded-b-lg ${
+              className={cn(
+                'w-full text-left px-4 py-2.5 text-sm hover:bg-accent transition-colors first:rounded-t-lg last:rounded-b-lg',
                 locale === loc
-                  ? 'bg-[#007aff]/10 dark:bg-[#5856d6]/20 text-[#007aff] dark:text-[#2997ff] font-semibold'
-                  : 'text-gray-700 dark:text-gray-200'
-              }`}
+                  ? 'bg-primary/10 text-primary font-semibold'
+                  : 'text-muted-foreground'
+              )}
               style={{ minHeight: 40 }}
             >
               {localeNames[loc]}

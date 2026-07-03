@@ -16,11 +16,21 @@
 - **Apple 设计系统** - 统一使用 Apple 品牌色彩系统（Blue/Purple）
 - **移动端适配** - 完美支持手机和平板
 
+## Features
+
+- **AI 智能书写反馈** - 实时分析书写笔画与结构
+- **11 种语言国际化** - 完整 i18n 支持
+- **RTL 支持** - 阿拉伯语等从右至左文字支持
+- **深色/浅色/系统主题** - 三种主题模式自由切换
+- **WCAG 2.1 AA 无障碍** - 完整无障碍支持
+- **Nonce-based CSP** - 基于 nonce 的内容安全策略
+- **PWA-ready** - 渐进式 Web 应用支持
+
 ## 快速开始
 
 ### 环境要求
 
-- Node.js 20.11.0 或更高版本
+- Node.js 24.5.0 或更高版本
 - npm / yarn / pnpm
 
 ### 安装
@@ -62,12 +72,40 @@ cp .env.example .env
 
 ## 技术栈
 
-- **框架**: Next.js 15 (App Router)
-- **UI 库**: React 19
-- **样式**: Tailwind CSS 4.0 + Apple 设计系统
+- **框架**: Next.js 16 (App Router)
+- **UI 库**: React 19 + shadcn/ui (radix-nova preset)
+- **样式**: Tailwind CSS v4 + Apple 设计系统
 - **AI**: Google Gemini AI
 - **字体**: Inter, JetBrains Mono, Noto Sans SC
 - **国际化**: 自定义 i18n 上下文（11 种语言）
+
+## 项目结构
+
+```
+src/
+├── app/                  # Next.js App Router
+│   ├── globals.css       # 全局样式
+│   ├── layout.tsx        # 根布局（导航、主题、i18n）
+│   ├── page.tsx          # 首页
+│   ├── learn/            # 学习页面
+│   │   └── page.tsx
+│   └── practice/         # 练习页面
+│       └── page.tsx
+├── components/
+│   ├── ui/               # shadcn/ui 组件库
+│   ├── theme-provider.tsx   # 主题上下文
+│   ├── theme-toggle.tsx     # 主题切换
+│   ├── locale-provider.tsx  # i18n 上下文
+│   └── locale-toggle.tsx    # 语言切换
+├── hooks/                # 自定义 React hooks（use-canvas, use-quiz）
+├── lib/
+│   ├── utils.ts          # cn() className 合并工具
+│   ├── storage.ts        # 安全的 localStorage 工具
+│   └── i18n/             # 国际化
+│       ├── index.ts
+│       └── translations/ # 翻译文件
+└── proxy.ts              # Next.js proxy（安全头、CSP）
+```
 
 ## 支持的语言
 
@@ -82,4 +120,4 @@ cp .env.example .env
 
 ## 许可证
 
-© 2026 HanziMaster 汉字大师 v3.0.0
+© 2026 HanziMaster 汉字大师 v3.0.0. All rights reserved.

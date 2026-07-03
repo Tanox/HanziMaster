@@ -1,7 +1,7 @@
 // src/components/theme-provider.tsx v3.0.0
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useCallback, useEffect, useMemo, useState } from 'react';
 import { safeGetItem, safeSetItem } from '@/lib/storage';
 
 type Theme = 'dark' | 'light' | 'system';
@@ -69,14 +69,16 @@ export function ThemeProvider({
     return () => mql.removeEventListener('change', handleChange);
   }, [theme]);
 
-  const value = {
+  const handleSetTheme = useCallback((newTheme: Theme) => {
+    if (!VALID_THEMES.includes(newTheme)) return;
+    safeSetItem(storageKey, newTheme);
+    setTheme(newTheme);
+  }, [storageKey]);
+
+  const value = useMemo(() => ({
     theme,
-    setTheme: (newTheme: Theme) => {
-      if (!VALID_THEMES.includes(newTheme)) return;
-      safeSetItem(storageKey, newTheme);
-      setTheme(newTheme);
-    },
-  };
+    setTheme: handleSetTheme,
+  }), [theme, handleSetTheme]);
 
   return (
     <ThemeProviderContext.Provider {...props} value={value}>

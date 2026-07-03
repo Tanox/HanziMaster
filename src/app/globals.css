@@ -1,3 +1,4 @@
+/* src/app/globals.css v3.0.0 */
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -23,7 +24,7 @@
 }
 
 *:focus-visible {
-  outline: 2px solid #007aff;
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -39,7 +40,7 @@ html {
   left: 16px;
   z-index: 100;
   padding: 12px 20px;
-  background: #007aff;
+  background: var(--color-primary);
   color: white;
   font-weight: 600;
   border-radius: 8px;
@@ -66,6 +67,17 @@ html {
   from {
     opacity: 0;
     transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
   }
   to {
     opacity: 1;
@@ -123,6 +135,10 @@ body {
 
   .animate-slide-in-right {
     animation: slide-in-right 0.3s ease-out both;
+  }
+
+  [dir="rtl"] .animate-slide-in-right {
+    animation: slide-in-left 0.3s ease-out both;
   }
 
   .animate-fade-in {
@@ -194,7 +210,7 @@ body {
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
-  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-sm: 8px;
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) * 1.4);
@@ -210,8 +226,9 @@ body {
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
+  --primary: #007aff;
+  --primary-foreground: #ffffff;
+  --color-primary-dark: #5856d6;
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -245,8 +262,8 @@ body {
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
+  --primary: #0a84ff;
+  --primary-foreground: #ffffff;
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);

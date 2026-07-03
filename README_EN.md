@@ -6,20 +6,19 @@ HanziMaster is a modern, AI-powered platform for learning Chinese characters. It
 
 ## Features
 
-- **AI-Powered Insights**: Real-time feedback on your handwriting.
-- **Adaptive Learning**: Personalized learning paths that adapt to your progress.
-- **Etymology & Culture**: Discover the stories behind the characters.
-- **Responsive Design**: Flawless support for desktop and mobile devices.
-- **Dark/Light Mode**: Persistent theme preference with system detection.
-- **Chinese Font Support**: Noto Sans SC for elegant character display.
-- **Internationalization (i18n)**: Support for 11 languages including English, Chinese (Simplified/Traditional), Spanish, Arabic, French, Portuguese, German, Japanese, Korean, and Russian.
-- **Language Switcher**: Easy language switching with persistence.
+- **AI-Powered Writing Feedback**: Real-time feedback on your handwriting.
+- **11-Language i18n Support**: Full internationalization with 11 languages.
+- **RTL Support**: Right-to-left support for Arabic language.
+- **Dark/Light/System Themes**: Three theme modes with system detection.
+- **WCAG 2.1 AA Accessibility**: Full accessibility compliance.
+- **Nonce-based CSP**: Content Security Policy with nonce-based protection.
+- **PWA-ready**: Progressive Web App support.
 
 ## Tech Stack
 
-- **Framework**: Next.js 15
-- **UI Library**: React 19
-- **Styling**: Tailwind CSS 4.0
+- **Framework**: Next.js 16
+- **UI Library**: React 19 + shadcn/ui (radix-nova preset)
+- **Styling**: Tailwind CSS v4
 - **AI**: Google Gemini AI
 - **Fonts**: Inter, JetBrains Mono, Noto Sans SC
 - **Internationalization**: Custom i18n context with 11 languages
@@ -28,7 +27,7 @@ HanziMaster is a modern, AI-powered platform for learning Chinese characters. It
 
 ### Prerequisites
 
-- Node.js >= 20.11.0
+- Node.js >= 24.5.0
 - npm or yarn
 
 ### Installation
@@ -76,15 +75,20 @@ src/
 │   │   └── page.tsx
 │   └── practice/      # Practice page
 │       └── page.tsx
-├── components/        # React components
+├── components/
+│   ├── ui/            # shadcn/ui component library
 │   ├── theme-provider.tsx # Theme context
 │   ├── theme-toggle.tsx   # Theme toggle
 │   ├── locale-provider.tsx # i18n context
 │   └── locale-toggle.tsx  # Language switcher
-└── lib/              # Utilities
-    └── i18n/         # Internationalization
-        ├── index.ts
-        └── translations/ # Translation files
+├── hooks/             # Custom React hooks (use-canvas, use-quiz)
+├── lib/              # Utilities
+│   ├── utils.ts       # cn() utility for className merging
+│   ├── storage.ts     # Secure localStorage utilities
+│   └── i18n/         # Internationalization
+│       ├── index.ts
+│       └── translations/ # Translation files
+└── proxy.ts           # Next.js proxy (security headers, CSP)
 ```
 
 ## Core Pages
@@ -167,4 +171,4 @@ Types: `feat` | `fix` | `docs` | `style` | `refactor` | `perf` | `test` | `build
 
 ## License
 
-© 2026 HanziMaster 汉字大师. All rights reserved.
+© 2026 HanziMaster 汉字大师 v3.0.0. All rights reserved.

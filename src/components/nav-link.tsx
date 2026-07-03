@@ -3,6 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 interface NavLinkProps {
   href: string;
@@ -16,16 +17,18 @@ export function NavLink({ href, children }: NavLinkProps) {
   return (
     <Link
       href={href}
-      className={`px-4 py-2.5 rounded-xl font-medium transition-all duration-200 relative group ${
+      aria-current={isActive ? 'page' : undefined}
+      className={cn(
+        'px-4 py-2.5 rounded-xl font-medium transition-all duration-200 relative group',
         isActive
-          ? 'bg-[#007aff]/10 dark:bg-[#5856d6]/20 text-[#007aff] dark:text-[#2997ff]'
-          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
-      }`}
+          ? 'bg-primary/10 text-primary'
+          : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+      )}
     >
       {children}
       {/* Active indicator dot */}
       {isActive && (
-        <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#007aff] dark:bg-[#5856d6] rounded-full" />
+        <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 size-1 bg-primary rounded-full" />
       )}
     </Link>
   );

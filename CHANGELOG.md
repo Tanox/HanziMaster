@@ -1,5 +1,53 @@
 # Changelog
 
+## [3.0.0] - 2026-07-01
+### Added
+- RTL (right-to-left) support for Arabic language
+- Shared `useWritingCanvas` hook for canvas drawing logic
+- Shared `useQuiz` hook for quiz state management
+- Centralized character data in `src/lib/characters.ts`
+- Custom hooks directory (`src/hooks/`)
+- New translation keys for accessibility labels
+- Focus trap in mobile navigation dialog
+- `aria-current="page"` on active nav links
+- `role="status"` and `aria-live="polite"` on quiz results
+- RTL-aware CSS animations in globals.css
+- Fisher-Yates shuffle algorithm for quiz options
+
+### Changed
+- Split `practice/page.tsx` (663→<200 lines) into modular components
+- Split `learn/page.tsx` (437→<200 lines) using shared hooks
+- All component className merging now uses `cn()` utility
+- Replaced `w-*/h-*` with `size-*` Tailwind classes throughout
+- Replaced `space-y-*` with `gap-*` for spacing
+- Replaced hardcoded colors with semantic CSS variables
+- Context providers now use `useMemo` for value objects
+- `locale-provider` sets `document.documentElement.dir` for RTL
+- CSS `--primary` variable now uses Apple Blue (#007aff)
+- Removed manual font preconnect (handled by next/font)
+- Unified `--radius-sm` to 8px per design spec
+
+### Fixed
+- Homepage CTA button routing ("Explore Library" now links to /practice)
+- Japanese translations with Chinese remnants
+- Korean translation with Chinese remnant
+- Dead translation keys removed
+- Canvas `getPoint` function type safety (PointerEvent only)
+- Missing file header comments added
+- `storage.ts` runtime data validation
+- `utils.ts` import quote style consistency
+- Quiz shuffle bias (sort+random → Fisher-Yates)
+- Missing `aria-hidden` on decorative SVGs
+- Mobile nav close button SVG missing `aria-hidden`
+- Theme toggle aria-label now uses i18n
+- Homepage hero title translation key concatenation
+
+### Removed
+- Dead translation keys: `common.foreverQuote`, `common.learners`, `common.strokeMastery`, `common.dayStreak`
+- Unused `meaning` field from Character interfaces
+- Duplicated canvas drawing code (~250 lines removed)
+- Dead `TouchEvent`/`MouseEvent` branches in `getPoint`
+
 ## [2.2.1] - UI/UX Professional Review & Optimization (Complete)
 ### Theme System
 - Added 3-state theme toggle: light → dark → system (previously lost system mode after manual toggle)

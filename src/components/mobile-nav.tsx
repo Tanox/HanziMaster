@@ -4,6 +4,9 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
+
+const APP_VERSION = '3.0.0';
 
 interface MobileNavProps {
   isOpen: boolean;
@@ -28,11 +31,33 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
     onClose();
   }, [pathname, onClose]);
 
-  /* Close on Escape key */
+  /* Close on Escape key + focus trap (Tab/Shift+Tab 循环在对话框内) */
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
+        return;
+      }
+      if (e.key === 'Tab') {
+        const drawer = drawerRef.current;
+        if (!drawer) return;
+        const focusable = drawer.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
       }
     };
     if (isOpen) {
@@ -62,24 +87,24 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"
-        className="fixed right-0 top-0 h-full w-72 max-w-[85vw] bg-white dark:bg-gray-900 shadow-2xl z-50 animate-slide-in-right flex flex-col"
+        className="fixed end-0 top-0 h-full w-72 max-w-[85vw] bg-background shadow-2xl z-50 animate-slide-in-right flex flex-col"
       >
         {/* Drawer Header */}
-        <div className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-800">
+        <div className="flex justify-between items-center p-4 border-b border-border">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-gradient-to-br from-[#007aff] to-[#5856d6] rounded-xl flex items-center justify-center shadow-md">
+            <div className="size-9 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center shadow-md">
               <span className="text-white text-base font-bold hanzi-font">汉</span>
             </div>
-            <span className="text-base font-bold text-gray-900 dark:text-white">HanziMaster</span>
+            <span className="text-base font-bold text-foreground">HanziMaster</span>
           </div>
           <button
             ref={closeButtonRef}
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            className="p-2 rounded-lg hover:bg-accent transition-colors"
             aria-label="Close menu"
             style={{ minWidth: 44, minHeight: 44 }}
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -87,37 +112,40 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
 
         {/* Navigation Links */}
         <nav className="flex-1 overflow-y-auto p-4">
-          <div className="space-y-1">
+          <div className="flex flex-col gap-1">
             <Link
               href="/"
               onClick={onClose}
-              className={`block px-4 py-3 rounded-xl font-medium transition-colors ${
+              className={cn(
+                'block px-4 py-3 rounded-xl font-medium transition-colors',
                 pathname === '/'
-                  ? 'bg-[#007aff]/10 dark:bg-[#5856d6]/20 text-[#007aff] dark:text-[#2997ff]'
-                  : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
-              }`}
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-muted-foreground hover:bg-accent'
+              )}
             >
               {t('common.home')}
             </Link>
             <Link
               href="/learn"
               onClick={onClose}
-              className={`block px-4 py-3 rounded-xl font-medium transition-colors ${
+              className={cn(
+                'block px-4 py-3 rounded-xl font-medium transition-colors',
                 pathname === '/learn'
-                  ? 'bg-[#007aff]/10 dark:bg-[#5856d6]/20 text-[#007aff] dark:text-[#2997ff]'
-                  : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
-              }`}
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-muted-foreground hover:bg-accent'
+              )}
             >
               {t('common.learn')}
             </Link>
             <Link
               href="/practice"
               onClick={onClose}
-              className={`block px-4 py-3 rounded-xl font-medium transition-colors ${
+              className={cn(
+                'block px-4 py-3 rounded-xl font-medium transition-colors',
                 pathname === '/practice'
-                  ? 'bg-[#007aff]/10 dark:bg-[#5856d6]/20 text-[#007aff] dark:text-[#2997ff]'
-                  : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
-              }`}
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-muted-foreground hover:bg-accent'
+              )}
             >
               {t('common.practice')}
             </Link>
@@ -125,9 +153,9 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
         </nav>
 
         {/* Drawer Footer */}
-        <div className="p-4 border-t border-gray-200 dark:border-gray-800 text-center">
-          <p className="text-xs text-gray-500 dark:text-gray-500">
-            HanziMaster v3.0.0
+        <div className="p-4 border-t border-border text-center">
+          <p className="text-xs text-muted-foreground">
+            HanziMaster v{APP_VERSION}
           </p>
         </div>
       </div>

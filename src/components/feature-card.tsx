@@ -1,7 +1,9 @@
+// src/components/feature-card.tsx v3.0.0
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
 import { Card, CardContent } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 interface FeatureCardProps {
   titleKey: string;
@@ -19,7 +21,7 @@ export function FeatureCard({
   return (
     <Card className="text-center hover:-translate-y-1 transition-all duration-300 group">
       <CardContent className="pt-8 pb-8">
-        <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-[#007aff]/10 to-[#af52de]/10 dark:from-[#007aff]/20 dark:to-[#af52de]/20 rounded-[20px] flex items-center justify-center text-[#007aff] group-hover:scale-105 transition-transform duration-300">
+        <div className={cn('size-20 mx-auto mb-6 bg-gradient-to-br from-primary/10 to-primary-dark/10 dark:from-primary/20 dark:to-primary-dark/20 rounded-[20px] flex items-center justify-center text-primary group-hover:scale-105 transition-transform duration-300')}>
           <span aria-hidden="true">{icon}</span>
         </div>
         <h3 className="text-xl font-semibold text-foreground mb-3">
