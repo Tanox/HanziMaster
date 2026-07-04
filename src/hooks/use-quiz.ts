@@ -77,20 +77,18 @@ export function useQuiz(charactersList: readonly Character[]) {
   }, [charactersList]);
 
   const handleNextQuizQuestion = useCallback(() => {
-    setQuizState(prev => {
-      if (prev.currentIndex >= charactersList.length - 1) {
-        setQuizShowResult(true);
-        return prev;
-      }
-      return {
-        ...prev,
-        currentIndex: prev.currentIndex + 1,
-        answered: false,
-        selectedAnswer: null,
-        showPronunciation: false,
-      };
-    });
-  }, [charactersList]);
+    if (quizState.currentIndex >= charactersList.length - 1) {
+      setQuizShowResult(true);
+      return;
+    }
+    setQuizState(prev => ({
+      ...prev,
+      currentIndex: prev.currentIndex + 1,
+      answered: false,
+      selectedAnswer: null,
+      showPronunciation: false,
+    }));
+  }, [quizState.currentIndex, charactersList]);
 
   const resetQuiz = useCallback(() => {
     setQuizState({

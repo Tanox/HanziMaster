@@ -1,7 +1,7 @@
 // src/app/learn/page.tsx v3.0.0
 'use client';
 
-import { useState, useCallback, useRef, memo, useEffect } from 'react';
+import { useState, useCallback, useRef, memo } from 'react';
 import { useTranslation } from '@/components/locale-provider';
 import { useTheme } from '@/components/theme-provider';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,8 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { cn } from '@/lib/utils';
 import { characters, type Character } from '@/lib/characters';
 import { useWritingCanvas } from '@/hooks/use-canvas';
+import { useIsDark } from '@/hooks/use-is-dark';
+import { usePronunciation } from '@/hooks/use-pronunciation';
 
 // 汉字选择按钮（记忆化避免重渲染）
 interface CharacterButtonProps {
@@ -33,7 +35,7 @@ const CharacterButton = memo(function CharacterButton({ character, isSelected, o
       aria-selected={isSelected}
       tabIndex={0}
       className={cn(
-        'group bg-muted dark:bg-card aspect-square rounded-3xl border-2 border-transparent hover:border-[#007aff] dark:hover:border-[#2997ff] hover:bg-[#007aff]/5 dark:hover:bg-[#007aff]/10 transition-colors duration-300 text-center relative overflow-hidden outline-none',
+        'group bg-muted dark:bg-card aspect-square rounded-3xl border-2 border-transparent hover:border-[#007aff] dark:hover:border-[#2997ff] hover:bg-[#007aff]/5 dark:hover:bg-[#007aff]/10 transition-colors duration-300 text-center relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-visible:ring-offset-2 focus-visible:ring-offset-background',
         isSelected && 'bg-primary border-primary',
       )}
     >
@@ -52,28 +54,11 @@ export default function LearnPage() {
   const { theme } = useTheme();
   const [selectedCharacterId, setSelectedCharacterId] = useState<number | null>(characters[0]?.id ?? null);
   const [showWritingDialog, setShowWritingDialog] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [pronounceError, setPronounceError] = useState(false);
-  const [isDark, setIsDark] = useState(false);
+  const isDark = useIsDark(theme);
+  const { isSpeaking, pronounceError, speak } = usePronunciation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const selectedCharacter = characters.find(char => char.id === selectedCharacterId) ?? null;
-
-  useEffect(() => {
-    const checkDark = () => {
-      if (theme === 'dark') {
-        setIsDark(true);
-      } else if (theme === 'system') {
-        setIsDark(window.matchMedia('(prefers-color-scheme: dark)').matches);
-      } else {
-        setIsDark(false);
-      }
-    };
-    checkDark();
-    const mql = window.matchMedia('(prefers-color-scheme: dark)');
-    mql.addEventListener('change', checkDark);
-    return () => mql.removeEventListener('change', checkDark);
-  }, [theme]);
 
   const selectCharacter = useCallback((char: Character) => {
     setSelectedCharacterId(char.id);
@@ -86,29 +71,14 @@ export default function LearnPage() {
     isDark,
   });
 
-  // 发音播放（Web Speech API），不支持时显示内联错误信息
   const handlePronunciation = useCallback(() => {
-    if (!selectedCharacter) return;
-    if (!('speechSynthesis' in window)) {
-      setPronounceError(true);
-      return;
-    }
-    setPronounceError(false);
-    const utterance = new SpeechSynthesisUtterance(selectedCharacter.hanzi);
-    utterance.lang = 'zh-CN';
-    utterance.rate = 0.8;
-    utterance.pitch = 1;
-    utterance.onstart = () => setIsSpeaking(true);
-    utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => setIsSpeaking(false);
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utterance);
-  }, [selectedCharacter]);
+    if (selectedCharacter) speak(selectedCharacter.hanzi);
+  }, [selectedCharacter, speak]);
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-16 safe-bottom">
       <div className="text-center mb-12">
-        <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-3 text-foreground">{t('common.dailyPractice')}</h2>
+        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-3 text-foreground">{t('common.dailyPractice')}</h1>
         <p className="text-xl text-muted-foreground">{t('common.masterCharacters')}</p>
       </div>
 
@@ -160,7 +130,7 @@ export default function LearnPage() {
                   </svg>
                   {t('common.practiceWriting')}
                 </Button>
-                <Button variant="ghost" size="lg" className="rounded-full text-[#007aff]" onClick={handlePronunciation} disabled={isSpeaking}>
+                <Button variant="ghost" size="lg" className="rounded-full text-[#007aff]" onClick={handlePronunciation} disabled={isSpeaking} aria-busy={isSpeaking}>
                   <svg className="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                   </svg>

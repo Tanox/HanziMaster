@@ -12,6 +12,8 @@ import { cn } from '@/lib/utils';
 import { characters, type Character } from '@/lib/characters';
 import { useWritingCanvas } from '@/hooks/use-canvas';
 import { useQuiz, type QuizState } from '@/hooks/use-quiz';
+import { useIsDark } from '@/hooks/use-is-dark';
+import { usePronunciation } from '@/hooks/use-pronunciation';
 
 const icons = {
   pencil: (<svg className="size-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>),
@@ -133,34 +135,19 @@ export default function PracticePage() {
   const { theme } = useTheme();
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [showWritingDialog, setShowWritingDialog] = useState(false);
-  const [currentWriteChar, setCurrentWriteChar] = useState<Character>(characters[0]);
+  const [currentWriteChar, setCurrentWriteChar] = useState<Character | undefined>(characters[0]);
   const [showQuizDialog, setShowQuizDialog] = useState(false);
   const [showProgressDialog, setShowProgressDialog] = useState(false);
-  const [isDark, setIsDark] = useState(false);
+  const [todayIndex, setTodayIndex] = useState<number>(-1);
+  const isDark = useIsDark(theme);
+  const { speak } = usePronunciation();
   const { quizState, quizOptions, handleQuizAnswer, handleNextQuizQuestion, resetQuiz, quizShowResult, currentQuizChar } = useQuiz(characters);
 
+  // 客户端挂载后计算"今天"对应的星期索引（SSR 安全，避免 hydration mismatch）
   useEffect(() => {
-    const checkDark = () => {
-      if (theme === 'dark') {
-        setIsDark(true);
-      } else if (theme === 'system') {
-        setIsDark(window.matchMedia('(prefers-color-scheme: dark)').matches);
-      } else {
-        setIsDark(false);
-      }
-    };
-    checkDark();
-    const mql = window.matchMedia('(prefers-color-scheme: dark)');
-    mql.addEventListener('change', checkDark);
-    return () => mql.removeEventListener('change', checkDark);
-  }, [theme]);
-
-  const handlePronounce = useCallback((hanzi: string) => {
-    if (!('speechSynthesis' in window)) return;
-    const u = new SpeechSynthesisUtterance(hanzi);
-    u.lang = 'zh-CN'; u.rate = 0.8;
-    window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
+    setTodayIndex((new Date().getDay() + 6) % 7);
   }, []);
+
   const handlePracticeOption = useCallback((optionId: string) => {
     setSelectedOption(optionId);
     if (optionId === 'writing') setShowWritingDialog(true);
@@ -168,14 +155,16 @@ export default function PracticePage() {
     else if (optionId === 'progress') setShowProgressDialog(true);
   }, [resetQuiz]);
   const handleNextWriteChar = useCallback(() => {
+    if (!currentWriteChar) return;
     const idx = characters.findIndex(c => c.id === currentWriteChar.id);
+    if (idx === -1) return;
     setCurrentWriteChar(characters[(idx + 1) % characters.length]);
   }, [currentWriteChar]);
-  const writeIndex = characters.findIndex(c => c.id === currentWriteChar.id);
+  const writeIndex = currentWriteChar ? characters.findIndex(c => c.id === currentWriteChar.id) : -1;
   return (
     <div className="max-w-6xl mx-auto px-6 py-16 safe-bottom">
       <div className="text-center mb-16">
-        <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 text-foreground">{t('common.practice')} {t('practice.center')}</h2>
+        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 text-foreground">{t('common.practice')} {t('practice.center')}</h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">{t('practice.subtitle')}</p>
       </div>
       <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 mb-16">
@@ -183,7 +172,7 @@ export default function PracticePage() {
           const isSelected = selectedOption === option.id;
           return <button key={option.id} onClick={() => handlePracticeOption(option.id)} className={cn('group bg-muted dark:bg-card p-10 rounded-3xl border-2 border-transparent hover:border-[#007aff] dark:hover:border-[#2997ff] hover:-translate-y-1 transition-all duration-300 text-left', isSelected && 'border-[#007aff] bg-background dark:bg-foreground/5')}>
             <div className={cn('size-20 bg-gradient-to-br from-[#007aff]/10 to-[#af52de]/10 dark:from-[#007aff]/20 dark:to-[#af52de]/20 rounded-[20px] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 text-[#007aff]', isSelected && 'bg-[#007aff] text-white')}>{icons[option.icon]}</div>
-            <h3 className="text-xl font-semibold mb-3 text-foreground">{t(option.titleKey)}</h3>
+            <div className="text-xl font-semibold mb-3 text-foreground">{t(option.titleKey)}</div>
             <p className="text-base text-muted-foreground leading-relaxed mb-6">{t(option.descKey)}</p>
             <div className={cn('flex items-center gap-2 font-semibold group', isSelected ? 'text-foreground' : 'text-[#007aff]')}>
               <span>{t('practice.startNow')}</span>
@@ -196,10 +185,10 @@ export default function PracticePage() {
         <h3 className="text-2xl font-semibold mb-10 text-foreground">{t('practice.weeklyProgress')}</h3>
         <div className="grid grid-cols-7 gap-4 mb-10">
           {weekDays.map((day, index) => (
-            <div key={day} className={cn('flex flex-col items-center p-5 rounded-[20px]', index < 5 ? 'bg-gradient-to-br from-primary to-primary/80 text-primary-foreground' : 'bg-background dark:bg-foreground/5 text-muted-foreground border border-border', index === 4 && 'ring-2 ring-[#007aff]')}>
+            <div key={day} className={cn('flex flex-col items-center p-5 rounded-[20px]', index < 5 ? 'bg-gradient-to-br from-primary to-primary/80 text-primary-foreground' : 'bg-background dark:bg-foreground/5 text-muted-foreground border border-border', index === todayIndex && 'ring-2 ring-[#007aff]')}>
               <p className="text-xs mb-3 font-medium">{t(`practice.${day}`)}</p>
               <div className={cn('size-10 sm:size-14 rounded-xl flex items-center justify-center', index < 5 ? 'bg-white/20 dark:bg-black/10' : 'bg-muted dark:bg-foreground/10')}>
-                {index < 5 ? <svg className="size-5 sm:size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg> : <span className="text-xs font-medium">{index === 4 ? t('practice.today') : t('practice.pending')}</span>}
+                {index < 5 ? <svg className="size-5 sm:size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg> : <span className="text-xs font-medium">{index === todayIndex ? t('practice.today') : t('practice.pending')}</span>}
               </div>
             </div>
           ))}
@@ -210,8 +199,10 @@ export default function PracticePage() {
           <StatsCard label="practice.accuracy" value="87%" icon={icons.chart} />
         </div>
       </div>
-      <WritingDialog open={showWritingDialog} onOpenChange={setShowWritingDialog} char={currentWriteChar} onPronounce={() => handlePronounce(currentWriteChar.hanzi)} onNext={handleNextWriteChar} index={writeIndex} total={characters.length} isDark={isDark} />
-      <QuizDialog open={showQuizDialog} onOpenChange={setShowQuizDialog} quizState={quizState} quizOptions={quizOptions} currentQuizChar={currentQuizChar} onAnswer={handleQuizAnswer} onNext={handleNextQuizQuestion} onPronounce={() => currentQuizChar && handlePronounce(currentQuizChar.hanzi)} total={characters.length} quizShowResult={quizShowResult} onReset={resetQuiz} />
+      {currentWriteChar && (
+        <WritingDialog open={showWritingDialog} onOpenChange={setShowWritingDialog} char={currentWriteChar} onPronounce={() => speak(currentWriteChar.hanzi)} onNext={handleNextWriteChar} index={writeIndex} total={characters.length} isDark={isDark} />
+      )}
+      <QuizDialog open={showQuizDialog} onOpenChange={setShowQuizDialog} quizState={quizState} quizOptions={quizOptions} currentQuizChar={currentQuizChar} onAnswer={handleQuizAnswer} onNext={handleNextQuizQuestion} onPronounce={() => currentQuizChar && speak(currentQuizChar.hanzi)} total={characters.length} quizShowResult={quizShowResult} onReset={resetQuiz} />
       <ProgressDialog open={showProgressDialog} onOpenChange={setShowProgressDialog} items={characters} />
     </div>
   );
