@@ -1,10 +1,12 @@
 // src/app/layout.tsx v3.0.0
 import type { Metadata, Viewport } from 'next';
+import { cookies } from 'next/headers';
 import { Inter, JetBrains_Mono, Noto_Sans_SC } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import { LocaleProvider } from '@/components/locale-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { LayoutClient } from '@/components/layout-client';
+import { translations, type Locale, locales } from '@/lib/i18n';
 import './globals.css';
 
 // Optimize fonts with next/font
@@ -27,17 +29,30 @@ const notoSansSC = Noto_Sans_SC({
   display: 'swap',
 });
 
-export const metadata: Metadata = {
-  title: 'HanziMaster - AI-Powered Chinese Character Learning',
-  description: 'Master Chinese characters with AI-powered insights, etymology exploration, and adaptive learning.',
-  keywords: ['Chinese', 'Hanzi', 'Learning', 'Education', 'AI', 'Language'],
-  authors: [{ name: 'HanziMaster Team' }],
-  openGraph: {
-    title: 'HanziMaster - AI-Powered Chinese Character Learning',
-    description: 'Master Chinese characters with AI-powered insights.',
-    type: 'website',
-  },
+const getLocaleFromCookie = async (): Promise<Locale> => {
+  const cookieStore = await cookies();
+  const stored = cookieStore.get('hanzi-master-locale')?.value;
+  if (stored && (locales as string[]).includes(stored)) {
+    return stored as Locale;
+  }
+  return 'en';
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocaleFromCookie();
+  const t = translations[locale];
+  return {
+    title: t.meta.title,
+    description: t.meta.description,
+    keywords: ['Chinese', 'Hanzi', 'Learning', 'Education', 'AI', 'Language'],
+    authors: [{ name: 'HanziMaster Team' }],
+    openGraph: {
+      title: t.meta.title,
+      description: t.meta.description,
+      type: 'website',
+    },
+  };
+}
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -49,13 +64,15 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocaleFromCookie();
+  const dir = locale === 'ar' ? 'rtl' : 'ltr';
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable} ${notoSansSC.variable}`}>
+    <html lang={locale} dir={dir} suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable} ${notoSansSC.variable}`}>
       <body className="antialiased font-sans">
         <ThemeProvider>
           <LocaleProvider>

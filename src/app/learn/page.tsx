@@ -16,24 +16,22 @@ import { usePronunciation } from '@/hooks/use-pronunciation';
 // 汉字选择按钮（记忆化避免重渲染）
 interface CharacterButtonProps {
   character: Character;
+  index: number;
   isSelected: boolean;
   onSelect: (char: Character) => void;
+  tabIndex: number;
+  onFocus?: () => void;
 }
 
-const CharacterButton = memo(function CharacterButton({ character, isSelected, onSelect }: CharacterButtonProps) {
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      onSelect(character);
-    }
-  };
+const CharacterButton = memo(function CharacterButton({ character, index, isSelected, onSelect, tabIndex, onFocus }: CharacterButtonProps) {
   return (
     <button
+      data-char-index={index}
       onClick={() => onSelect(character)}
-      onKeyDown={handleKeyDown}
+      onFocus={onFocus}
       role="option"
       aria-selected={isSelected}
-      tabIndex={0}
+      tabIndex={tabIndex}
       className={cn(
         'group bg-muted dark:bg-card aspect-square rounded-3xl border-2 border-transparent hover:border-[#007aff] dark:hover:border-[#2997ff] hover:bg-[#007aff]/5 dark:hover:bg-[#007aff]/10 transition-colors duration-300 text-center relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-visible:ring-offset-2 focus-visible:ring-offset-background',
         isSelected && 'bg-primary border-primary',
@@ -54,6 +52,7 @@ export default function LearnPage() {
   const { theme } = useTheme();
   const [selectedCharacterId, setSelectedCharacterId] = useState<number | null>(characters[0]?.id ?? null);
   const [showWritingDialog, setShowWritingDialog] = useState(false);
+  const [focusedIndex, setFocusedIndex] = useState(0);
   const isDark = useIsDark(theme);
   const { isSpeaking, pronounceError, speak } = usePronunciation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -63,6 +62,42 @@ export default function LearnPage() {
   const selectCharacter = useCallback((char: Character) => {
     setSelectedCharacterId(char.id);
   }, []);
+
+  const handleListKeyDown = useCallback((e: React.KeyboardEvent) => {
+    const total = characters.length;
+    if (total === 0) return;
+    let nextIndex = focusedIndex;
+    switch (e.key) {
+      case 'ArrowRight':
+      case 'ArrowDown':
+        e.preventDefault();
+        nextIndex = (focusedIndex + 1) % total;
+        break;
+      case 'ArrowLeft':
+      case 'ArrowUp':
+        e.preventDefault();
+        nextIndex = (focusedIndex - 1 + total) % total;
+        break;
+      case 'Home':
+        e.preventDefault();
+        nextIndex = 0;
+        break;
+      case 'End':
+        e.preventDefault();
+        nextIndex = total - 1;
+        break;
+      case 'Enter':
+      case ' ':
+        e.preventDefault();
+        selectCharacter(characters[focusedIndex]);
+        return;
+      default:
+        return;
+    }
+    setFocusedIndex(nextIndex);
+    const button = document.querySelector<HTMLButtonElement>(`[data-char-index="${nextIndex}"]`);
+    button?.focus();
+  }, [focusedIndex, selectCharacter]);
 
   const { clearCanvas } = useWritingCanvas({
     canvasRef,
@@ -82,9 +117,17 @@ export default function LearnPage() {
         <p className="text-xl text-muted-foreground">{t('common.masterCharacters')}</p>
       </div>
 
-      <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-5 mb-12" role="listbox" aria-label={t('common.masterCharacters')}>
-        {characters.map((char) => (
-          <CharacterButton key={char.id} character={char} isSelected={selectedCharacterId === char.id} onSelect={selectCharacter} />
+      <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-5 mb-12" role="listbox" aria-label={t('common.masterCharacters')} onKeyDown={handleListKeyDown}>
+        {characters.map((char, index) => (
+          <CharacterButton
+            key={char.id}
+            character={char}
+            index={index}
+            isSelected={selectedCharacterId === char.id}
+            onSelect={selectCharacter}
+            tabIndex={index === focusedIndex ? 0 : -1}
+            onFocus={() => setFocusedIndex(index)}
+          />
         ))}
       </div>
 

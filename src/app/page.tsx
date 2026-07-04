@@ -58,9 +58,9 @@ export default function HomePage() {
               
               {/* Info Side */}
               <div className="text-left">
-                <h3 className="text-3xl font-semibold text-foreground mb-4">
+                <h2 className="text-3xl font-semibold text-foreground mb-4">
                   {t('home.yongCharacterTitle')}
-                </h3>
+                </h2>
                 <p className="text-muted-foreground text-lg mb-8">
                   {t('home.yongCharacterDesc')}
                 </p>

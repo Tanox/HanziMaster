@@ -91,6 +91,7 @@ export function LocaleProvider({
   const setLocale = useCallback((newLocale: Locale) => {
     if (!locales.includes(newLocale)) return;
     safeSetItem(storageKey, newLocale);
+    document.cookie = `${storageKey}=${newLocale}; path=/; max-age=31536000; SameSite=Lax`;
     setLocaleState(newLocale);
     document.documentElement.lang = newLocale;
     document.documentElement.dir = newLocale === 'ar' ? 'rtl' : 'ltr';
