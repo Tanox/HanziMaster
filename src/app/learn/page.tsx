@@ -1,8 +1,9 @@
 // src/app/learn/page.tsx v3.0.0
 'use client';
 
-import { useState, useCallback, useRef, memo } from 'react';
+import { useState, useCallback, useRef, memo, useEffect } from 'react';
 import { useTranslation } from '@/components/locale-provider';
+import { useTheme } from '@/components/theme-provider';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -48,13 +49,31 @@ const CharacterButton = memo(function CharacterButton({ character, isSelected, o
 
 export default function LearnPage() {
   const { t } = useTranslation();
+  const { theme } = useTheme();
   const [selectedCharacterId, setSelectedCharacterId] = useState<number | null>(characters[0]?.id ?? null);
   const [showWritingDialog, setShowWritingDialog] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [pronounceError, setPronounceError] = useState(false);
+  const [isDark, setIsDark] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const selectedCharacter = characters.find(char => char.id === selectedCharacterId) ?? null;
+
+  useEffect(() => {
+    const checkDark = () => {
+      if (theme === 'dark') {
+        setIsDark(true);
+      } else if (theme === 'system') {
+        setIsDark(window.matchMedia('(prefers-color-scheme: dark)').matches);
+      } else {
+        setIsDark(false);
+      }
+    };
+    checkDark();
+    const mql = window.matchMedia('(prefers-color-scheme: dark)');
+    mql.addEventListener('change', checkDark);
+    return () => mql.removeEventListener('change', checkDark);
+  }, [theme]);
 
   const selectCharacter = useCallback((char: Character) => {
     setSelectedCharacterId(char.id);
@@ -64,6 +83,7 @@ export default function LearnPage() {
     canvasRef,
     showDialog: showWritingDialog,
     character: selectedCharacter?.hanzi ?? '',
+    isDark,
   });
 
   // 发音播放（Web Speech API），不支持时显示内联错误信息

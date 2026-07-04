@@ -9,7 +9,7 @@ HanziMaster is a modern, AI-powered platform for learning Chinese characters. It
 - **AI-Powered Writing Feedback**: Real-time feedback on your handwriting.
 - **11-Language i18n Support**: Full internationalization with 11 languages.
 - **RTL Support**: Right-to-left support for Arabic language.
-- **Dark/Light/System Themes**: Three theme modes with system detection.
+- **Dark/Light/System Themes**: Three theme modes with system detection, canvas writing area auto-adapts.
 - **WCAG 2.1 AA Accessibility**: Full accessibility compliance.
 - **Nonce-based CSP**: Content Security Policy with nonce-based protection.
 - **PWA-ready**: Progressive Web App support.

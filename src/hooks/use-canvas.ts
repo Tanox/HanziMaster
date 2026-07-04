@@ -7,23 +7,44 @@ interface UseWritingCanvasOptions {
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
   showDialog: boolean;
   character: string;
+  isDark?: boolean;
 }
 
-// 绘制渐变背景、田字格、对角虚线、中心十字线与汉字提示
+const canvasColors = {
+  light: {
+    bgStart: '#ffffff',
+    bgEnd: '#f5f5f7',
+    grid: '#d1d5db',
+    diagonal: '#e5e7eb',
+    crosshair: '#e5e7eb',
+    hint: 'rgba(0, 0, 0, 0.08)',
+    pen: '#000000',
+  },
+  dark: {
+    bgStart: '#0d0d0d',
+    bgEnd: '#1a1a1a',
+    grid: '#3a3a3a',
+    diagonal: '#2a2a2a',
+    crosshair: '#2a2a2a',
+    hint: 'rgba(255, 255, 255, 0.08)',
+    pen: '#ffffff',
+  },
+};
+
 const drawCanvasBackground = (
   ctx: CanvasRenderingContext2D,
   rect: { width: number; height: number },
   character: string,
+  isDark: boolean,
 ) => {
-  // 渐变背景
+  const colors = canvasColors[isDark ? 'dark' : 'light'];
   const gradient = ctx.createLinearGradient(0, 0, rect.width, rect.height);
-  gradient.addColorStop(0, '#ffffff');
-  gradient.addColorStop(1, '#f5f5f7');
+  gradient.addColorStop(0, colors.bgStart);
+  gradient.addColorStop(1, colors.bgEnd);
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, rect.width, rect.height);
 
-  // 田字格
-  ctx.strokeStyle = '#d1d5db';
+  ctx.strokeStyle = colors.grid;
   ctx.lineWidth = 1;
   const gridSize = rect.width / 4;
   for (let i = 1; i < 4; i++) {
@@ -37,9 +58,8 @@ const drawCanvasBackground = (
     ctx.stroke();
   }
 
-  // 对角虚线
   ctx.setLineDash([5, 5]);
-  ctx.strokeStyle = '#e5e7eb';
+  ctx.strokeStyle = colors.diagonal;
   ctx.beginPath();
   ctx.moveTo(0, 0);
   ctx.lineTo(rect.width, rect.height);
@@ -50,8 +70,7 @@ const drawCanvasBackground = (
   ctx.stroke();
   ctx.setLineDash([]);
 
-  // 中心十字线
-  ctx.strokeStyle = '#e5e7eb';
+  ctx.strokeStyle = colors.crosshair;
   ctx.beginPath();
   ctx.moveTo(rect.width / 2, 0);
   ctx.lineTo(rect.width / 2, rect.height);
@@ -61,16 +80,14 @@ const drawCanvasBackground = (
   ctx.lineTo(rect.width, rect.height / 2);
   ctx.stroke();
 
-  // 汉字提示（0.4x 尺寸）
   ctx.font = `${Math.min(rect.width, rect.height) * 0.4}px serif`;
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+  ctx.fillStyle = colors.hint;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(character, rect.width / 2, rect.height / 2);
 };
 
-// 书写练习画布 Hook：封装 DPI 设置、背景绘制与指针事件
-export function useWritingCanvas({ canvasRef, showDialog, character }: UseWritingCanvasOptions) {
+export function useWritingCanvas({ canvasRef, showDialog, character, isDark = false }: UseWritingCanvasOptions) {
   const isDrawingRef = useRef(false);
   const lastPointRef = useRef<{ x: number; y: number } | null>(null);
 
@@ -81,19 +98,20 @@ export function useWritingCanvas({ canvasRef, showDialog, character }: UseWritin
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // 设置画布大小（高 DPI 屏）
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
     ctx.scale(dpr, dpr);
 
-    drawCanvasBackground(ctx, rect, character);
+    drawCanvasBackground(ctx, rect, character, isDark);
 
     const getPoint = (e: PointerEvent): { x: number; y: number } => {
       const r = canvas.getBoundingClientRect();
       return { x: e.clientX - r.left, y: e.clientY - r.top };
     };
+
+    const colors = canvasColors[isDark ? 'dark' : 'light'];
 
     const startDrawing = (e: PointerEvent) => {
       isDrawingRef.current = true;
@@ -104,7 +122,7 @@ export function useWritingCanvas({ canvasRef, showDialog, character }: UseWritin
     const draw = (e: PointerEvent) => {
       if (!isDrawingRef.current || !lastPointRef.current) return;
       const point = getPoint(e);
-      ctx.strokeStyle = '#000000';
+      ctx.strokeStyle = colors.pen;
       ctx.lineWidth = 3;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
@@ -134,9 +152,8 @@ export function useWritingCanvas({ canvasRef, showDialog, character }: UseWritin
       canvas.removeEventListener('pointerleave', stopDrawing);
       canvas.removeEventListener('pointercancel', stopDrawing);
     };
-  }, [showDialog, character, canvasRef]);
+  }, [showDialog, character, canvasRef, isDark]);
 
-  // 清空画布并重绘背景
   const clearCanvas = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -146,8 +163,8 @@ export function useWritingCanvas({ canvasRef, showDialog, character }: UseWritin
     const dpr = window.devicePixelRatio || 1;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(dpr, dpr);
-    drawCanvasBackground(ctx, rect, character);
-  }, [character, canvasRef]);
+    drawCanvasBackground(ctx, rect, character, isDark);
+  }, [character, canvasRef, isDark]);
 
   return { clearCanvas };
 }

@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.0.0] - 2026-07-01
+## [3.0.0] - 2026-07-04
 ### Added
 - RTL (right-to-left) support for Arabic language
 - Shared `useWritingCanvas` hook for canvas drawing logic
@@ -13,6 +13,8 @@
 - `role="status"` and `aria-live="polite"` on quiz results
 - RTL-aware CSS animations in globals.css
 - Fisher-Yates shuffle algorithm for quiz options
+- Canvas dark mode support with theme-aware colors
+- System theme change listener for canvas color adaptation
 
 ### Changed
 - Split `practice/page.tsx` (663→<200 lines) into modular components
@@ -26,6 +28,7 @@
 - CSS `--primary` variable now uses Apple Blue (#007aff)
 - Removed manual font preconnect (handled by next/font)
 - Unified `--radius-sm` to 8px per design spec
+- Canvas drawing now uses theme-appropriate colors (dark/light)
 
 ### Fixed
 - Homepage CTA button routing ("Explore Library" now links to /practice)
@@ -41,6 +44,8 @@
 - Mobile nav close button SVG missing `aria-hidden`
 - Theme toggle aria-label now uses i18n
 - Homepage hero title translation key concatenation
+- SSR build error: `window is not defined` in learn/practice pages
+- Canvas dark mode background rendering
 
 ### Removed
 - Dead translation keys: `common.foreverQuote`, `common.learners`, `common.strokeMastery`, `common.dayStreak`

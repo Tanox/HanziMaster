@@ -1,8 +1,9 @@
 // src/app/practice/page.tsx v3.0.0
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useTranslation } from '@/components/locale-provider';
+import { useTheme } from '@/components/theme-provider';
 import { StatsCard } from '@/components/stats-card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -23,10 +24,10 @@ const practiceOptions = [
   { id: 'quiz', titleKey: 'practice.quizTitle', descKey: 'practice.quizDesc', icon: 'question' },
   { id: 'progress', titleKey: 'practice.progressTitle', descKey: 'practice.progressDesc', icon: 'chart' },
 ] as const;
-function WritingDialog({ open, onOpenChange, char, onPronounce, onNext, index, total }: { open: boolean; onOpenChange: (v: boolean) => void; char: Character; onPronounce: () => void; onNext: () => void; index: number; total: number; }) {
+function WritingDialog({ open, onOpenChange, char, onPronounce, onNext, index, total, isDark }: { open: boolean; onOpenChange: (v: boolean) => void; char: Character; onPronounce: () => void; onNext: () => void; index: number; total: number; isDark: boolean; }) {
   const { t } = useTranslation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { clearCanvas } = useWritingCanvas({ canvasRef, showDialog: open, character: char.hanzi });
+  const { clearCanvas } = useWritingCanvas({ canvasRef, showDialog: open, character: char.hanzi, isDark });
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[520px]">
@@ -129,12 +130,31 @@ function ProgressDialog({ open, onOpenChange, items }: { open: boolean; onOpenCh
 }
 export default function PracticePage() {
   const { t } = useTranslation();
+  const { theme } = useTheme();
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [showWritingDialog, setShowWritingDialog] = useState(false);
   const [currentWriteChar, setCurrentWriteChar] = useState<Character>(characters[0]);
   const [showQuizDialog, setShowQuizDialog] = useState(false);
   const [showProgressDialog, setShowProgressDialog] = useState(false);
+  const [isDark, setIsDark] = useState(false);
   const { quizState, quizOptions, handleQuizAnswer, handleNextQuizQuestion, resetQuiz, quizShowResult, currentQuizChar } = useQuiz(characters);
+
+  useEffect(() => {
+    const checkDark = () => {
+      if (theme === 'dark') {
+        setIsDark(true);
+      } else if (theme === 'system') {
+        setIsDark(window.matchMedia('(prefers-color-scheme: dark)').matches);
+      } else {
+        setIsDark(false);
+      }
+    };
+    checkDark();
+    const mql = window.matchMedia('(prefers-color-scheme: dark)');
+    mql.addEventListener('change', checkDark);
+    return () => mql.removeEventListener('change', checkDark);
+  }, [theme]);
+
   const handlePronounce = useCallback((hanzi: string) => {
     if (!('speechSynthesis' in window)) return;
     const u = new SpeechSynthesisUtterance(hanzi);
@@ -190,7 +210,7 @@ export default function PracticePage() {
           <StatsCard label="practice.accuracy" value="87%" icon={icons.chart} />
         </div>
       </div>
-      <WritingDialog open={showWritingDialog} onOpenChange={setShowWritingDialog} char={currentWriteChar} onPronounce={() => handlePronounce(currentWriteChar.hanzi)} onNext={handleNextWriteChar} index={writeIndex} total={characters.length} />
+      <WritingDialog open={showWritingDialog} onOpenChange={setShowWritingDialog} char={currentWriteChar} onPronounce={() => handlePronounce(currentWriteChar.hanzi)} onNext={handleNextWriteChar} index={writeIndex} total={characters.length} isDark={isDark} />
       <QuizDialog open={showQuizDialog} onOpenChange={setShowQuizDialog} quizState={quizState} quizOptions={quizOptions} currentQuizChar={currentQuizChar} onAnswer={handleQuizAnswer} onNext={handleNextQuizQuestion} onPronounce={() => currentQuizChar && handlePronounce(currentQuizChar.hanzi)} total={characters.length} quizShowResult={quizShowResult} onReset={resetQuiz} />
       <ProgressDialog open={showProgressDialog} onOpenChange={setShowProgressDialog} items={characters} />
     </div>
