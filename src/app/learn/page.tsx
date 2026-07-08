@@ -13,7 +13,6 @@ import { useWritingCanvas } from '@/hooks/use-canvas';
 import { useIsDark } from '@/hooks/use-is-dark';
 import { usePronunciation } from '@/hooks/use-pronunciation';
 
-// 汉字选择按钮（记忆化避免重渲染）
 interface CharacterButtonProps {
   character: Character;
   index: number;
@@ -21,9 +20,10 @@ interface CharacterButtonProps {
   onSelect: (char: Character) => void;
   tabIndex: number;
   onFocus?: () => void;
+  isLearned?: boolean;
 }
 
-const CharacterButton = memo(function CharacterButton({ character, index, isSelected, onSelect, tabIndex, onFocus }: CharacterButtonProps) {
+const CharacterButton = memo(function CharacterButton({ character, index, isSelected, onSelect, tabIndex, onFocus, isLearned }: CharacterButtonProps) {
   return (
     <button
       data-char-index={index}
@@ -33,7 +33,7 @@ const CharacterButton = memo(function CharacterButton({ character, index, isSele
       aria-selected={isSelected}
       tabIndex={tabIndex}
       className={cn(
-        'group bg-muted dark:bg-card aspect-square rounded-3xl border-2 border-transparent hover:border-[#007aff] dark:hover:border-[#2997ff] hover:bg-[#007aff]/5 dark:hover:bg-[#007aff]/10 transition-colors duration-300 text-center relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+        'group bg-muted dark:bg-card aspect-square rounded-3xl border-2 border-transparent hover:border-[#007aff] dark:hover:border-[#2997ff] hover:bg-[#007aff]/5 dark:hover:bg-[#007aff]/10 transition-all duration-300 text-center relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-visible:ring-offset-2 focus-visible:ring-offset-background',
         isSelected && 'bg-primary border-primary',
       )}
     >
@@ -43,6 +43,13 @@ const CharacterButton = memo(function CharacterButton({ character, index, isSele
       <span className={cn('text-xs text-muted-foreground uppercase tracking-wider font-medium', isSelected && 'text-primary-foreground/70')}>
         {character.pinyin}
       </span>
+      {isLearned && (
+        <div className="absolute top-2 right-2 size-5 bg-[#34c759] rounded-full flex items-center justify-center">
+          <svg className="size-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+      )}
     </button>
   );
 });
@@ -53,6 +60,7 @@ export default function LearnPage() {
   const [selectedCharacterId, setSelectedCharacterId] = useState<number | null>(characters[0]?.id ?? null);
   const [showWritingDialog, setShowWritingDialog] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState(0);
+  const [showStrokeOrder, setShowStrokeOrder] = useState(false);
   const isDark = useIsDark(theme);
   const { isSpeaking, pronounceError, speak } = usePronunciation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -61,6 +69,7 @@ export default function LearnPage() {
 
   const selectCharacter = useCallback((char: Character) => {
     setSelectedCharacterId(char.id);
+    setShowStrokeOrder(false);
   }, []);
 
   const handleListKeyDown = useCallback((e: React.KeyboardEvent) => {
@@ -104,6 +113,7 @@ export default function LearnPage() {
     showDialog: showWritingDialog,
     character: selectedCharacter?.hanzi ?? '',
     isDark,
+    showHint: true,
   });
 
   const handlePronunciation = useCallback(() => {
@@ -162,6 +172,61 @@ export default function LearnPage() {
                 </div>
               </div>
 
+              {selectedCharacter.words && selectedCharacter.words.length > 0 && (
+                <div className="mb-8">
+                  <h4 className="text-sm text-muted-foreground uppercase tracking-wider font-medium mb-4">{t('learn.wordsTitle')}</h4>
+                  <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+                    {selectedCharacter.words.map((word, idx) => (
+                      <button
+                        key={word.text}
+                        onClick={() => speak(word.text)}
+                        className="animate-stagger-fade-in bg-background dark:bg-foreground/5 rounded-2xl px-5 py-3 border border-border hover:border-[#007aff] dark:hover:border-[#2997ff] transition-colors duration-200 text-left"
+                        style={{ animationDelay: `${idx * 100}ms` }}
+                        aria-label={`${word.text} - ${word.pinyin}`}
+                      >
+                        <span className="text-lg font-medium text-foreground hanzi-font block">{word.text}</span>
+                        <span className="text-xs text-muted-foreground block mt-1">{word.pinyin} · {t(word.translationKey)}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {selectedCharacter.example && (
+                <div className="mb-8 bg-background dark:bg-foreground/5 rounded-[20px] p-6">
+                  <h4 className="text-sm text-muted-foreground uppercase tracking-wider font-medium mb-3">{t('learn.exampleTitle')}</h4>
+                  <div className="flex items-start gap-3">
+                    <button
+                      onClick={() => speak(selectedCharacter.example.sentence)}
+                      className="shrink-0 size-10 rounded-full bg-[#007aff]/10 flex items-center justify-center hover:bg-[#007aff]/20 transition-colors"
+                      aria-label={t('common.hearPronunciation')}
+                    >
+                      <svg className="size-5 text-[#007aff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                      </svg>
+                    </button>
+                    <div>
+                      <p className="text-lg text-foreground hanzi-font mb-1">{selectedCharacter.example.sentence}</p>
+                      <p className="text-sm text-muted-foreground">{selectedCharacter.example.pinyin}</p>
+                      <p className="text-sm text-muted-foreground mt-1">{t(selectedCharacter.example.translationKey)}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {selectedCharacter.strokeOrder && (
+                <div className="mb-8">
+                  <Button variant="ghost" size="sm" onClick={() => setShowStrokeOrder(!showStrokeOrder)} className="text-[#007aff]">
+                    {showStrokeOrder ? t('learn.hideStrokeOrder') : t('learn.showStrokeOrder')}
+                  </Button>
+                  {showStrokeOrder && (
+                    <div className="mt-4 bg-background dark:bg-foreground/5 rounded-[20px] p-5">
+                      <p className="text-lg text-foreground font-medium">{selectedCharacter.strokeOrder}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {pronounceError && (
                 <div role="alert" className="text-sm text-[#ff3b30] mb-4">{t('common.pronunciationNotSupported')}</div>
               )}
@@ -185,7 +250,6 @@ export default function LearnPage() {
         </div>
       )}
 
-      {/* 书写练习对话框 */}
       <Dialog open={showWritingDialog} onOpenChange={setShowWritingDialog}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>

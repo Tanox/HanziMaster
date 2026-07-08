@@ -14,6 +14,7 @@ import { useWritingCanvas } from '@/hooks/use-canvas';
 import { useQuiz, type QuizState } from '@/hooks/use-quiz';
 import { useIsDark } from '@/hooks/use-is-dark';
 import { usePronunciation } from '@/hooks/use-pronunciation';
+import { useProgress } from '@/hooks/use-progress';
 
 const icons = {
   pencil: (<svg className="size-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>),
@@ -92,12 +93,13 @@ function QuizDialog({ open, onOpenChange, quizState, quizOptions, currentQuizCha
     </Dialog>
   );
 }
-function ProgressDialog({ open, onOpenChange, items }: { open: boolean; onOpenChange: (v: boolean) => void; items: Character[]; }) {
+function ProgressDialog({ open, onOpenChange, items, learnedIds }: { open: boolean; onOpenChange: (v: boolean) => void; items: Character[]; learnedIds: number[]; }) {
   const { t } = useTranslation();
+  const learnedItems = items.filter(item => learnedIds.includes(item.id));
   const stats = [
-    { v: '12', k: 'practice.charactersLearned', c: 'text-[#007aff]' },
-    { v: '5', k: 'practice.dayStreak', c: 'text-[#af52de]' },
-    { v: '87%', k: 'practice.accuracy', c: 'text-[#34c759]' },
+    { v: learnedItems.length.toString(), k: 'practice.charactersLearned', c: 'text-[#007aff]' },
+    { v: learnedItems.length === items.length ? '100%' : Math.round((learnedItems.length / items.length) * 100) + '%', k: 'practice.completionRate', c: 'text-[#af52de]' },
+    { v: learnedItems.length === items.length ? t('practice.allCompleted') : t('practice.inProgress'), k: 'practice.status', c: 'text-[#34c759]' },
   ];
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -118,8 +120,8 @@ function ProgressDialog({ open, onOpenChange, items }: { open: boolean; onOpenCh
           <h4 className="text-lg font-semibold mb-4 text-foreground">{t('practice.charactersLearned')}</h4>
           <div className="grid grid-cols-4 sm:grid-cols-6 gap-3">
             {items.map((char) => (
-              <div key={char.id} className="aspect-square flex flex-col items-center justify-center bg-background dark:bg-foreground/5 rounded-2xl p-3 border border-border">
-                <span className="text-2xl font-light hanzi-font text-foreground">{char.hanzi}</span>
+              <div key={char.id} className={cn('aspect-square flex flex-col items-center justify-center rounded-2xl p-3 border', learnedIds.includes(char.id) ? 'bg-[#34c759]/10 border-[#34c759]/30' : 'bg-background dark:bg-foreground/5 border-border')}>
+                <span className={cn('text-2xl font-light hanzi-font', learnedIds.includes(char.id) ? 'text-[#34c759]' : 'text-foreground')}>{char.hanzi}</span>
                 <span className="text-xs text-muted-foreground mt-1">{char.pinyin}</span>
               </div>
             ))}
@@ -142,8 +144,8 @@ export default function PracticePage() {
   const isDark = useIsDark(theme);
   const { speak } = usePronunciation();
   const { quizState, quizOptions, handleQuizAnswer, handleNextQuizQuestion, resetQuiz, quizShowResult, currentQuizChar } = useQuiz(characters);
+  const { streak, accuracy, getLearnedCount, getLearnedCharacters, getWeeklyActivity, recordQuizResult } = useProgress();
 
-  // 客户端挂载后计算"今天"对应的星期索引（SSR 安全，避免 hydration mismatch）
   useEffect(() => {
     setTodayIndex((new Date().getDay() + 6) % 7);
   }, []);
@@ -154,19 +156,34 @@ export default function PracticePage() {
     else if (optionId === 'quiz') { resetQuiz(); setShowQuizDialog(true); }
     else if (optionId === 'progress') setShowProgressDialog(true);
   }, [resetQuiz]);
+
   const handleNextWriteChar = useCallback(() => {
     if (!currentWriteChar) return;
     const idx = characters.findIndex(c => c.id === currentWriteChar.id);
     if (idx === -1) return;
     setCurrentWriteChar(characters[(idx + 1) % characters.length]);
   }, [currentWriteChar]);
+
+  const handleQuizAnswerWithProgress = useCallback((pinyin: string) => {
+    handleQuizAnswer(pinyin);
+    if (currentQuizChar) {
+      const isCorrect = pinyin === currentQuizChar.pinyin;
+      recordQuizResult(currentQuizChar.id, isCorrect);
+    }
+  }, [handleQuizAnswer, currentQuizChar, recordQuizResult]);
+
   const writeIndex = currentWriteChar ? characters.findIndex(c => c.id === currentWriteChar.id) : -1;
+  const learnedCount = getLearnedCount();
+  const learnedCharacterIds = getLearnedCharacters();
+  const weeklyActivity = getWeeklyActivity();
+
   return (
     <div className="max-w-6xl mx-auto px-6 py-16 safe-bottom">
       <div className="text-center mb-16">
         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 text-foreground">{t('common.practice')} {t('practice.center')}</h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">{t('practice.subtitle')}</p>
       </div>
+
       <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 mb-16">
         {practiceOptions.map((option) => {
           const isSelected = selectedOption === option.id;
@@ -181,29 +198,40 @@ export default function PracticePage() {
           </button>;
         })}
       </div>
+
       <div className="bg-muted dark:bg-card rounded-[32px] p-10 border border-border">
+        <div className="py-4 mb-8">
+          <h3 className="text-2xl font-semibold mb-4 text-foreground">{t('practice.progress')}</h3>
+          <div className="h-3 bg-background dark:bg-foreground/10 rounded-full overflow-hidden">
+            <div className="h-full bg-gradient-to-r from-[#007aff] to-[#34c759] rounded-full animate-progress-fill" style={{ width: `${(learnedCount / characters.length) * 100}%` }} />
+          </div>
+          <p className="text-sm text-muted-foreground mt-2 text-right">{learnedCount} / {characters.length} {t('common.completed')}</p>
+        </div>
+
         <h3 className="text-2xl font-semibold mb-10 text-foreground">{t('practice.weeklyProgress')}</h3>
         <div className="grid grid-cols-7 gap-4 mb-10">
           {weekDays.map((day, index) => (
-            <div key={day} className={cn('flex flex-col items-center p-5 rounded-[20px]', index < 5 ? 'bg-gradient-to-br from-primary to-primary/80 text-primary-foreground' : 'bg-background dark:bg-foreground/5 text-muted-foreground border border-border', index === todayIndex && 'ring-2 ring-[#007aff]')}>
+            <div key={day} className={cn('flex flex-col items-center p-5 rounded-[20px]', weeklyActivity[index] ? 'bg-gradient-to-br from-primary to-primary/80 text-primary-foreground' : 'bg-background dark:bg-foreground/5 text-muted-foreground border border-border', index === todayIndex && 'ring-2 ring-[#007aff]')}>
               <p className="text-xs mb-3 font-medium">{t(`practice.${day}`)}</p>
-              <div className={cn('size-10 sm:size-14 rounded-xl flex items-center justify-center', index < 5 ? 'bg-white/20 dark:bg-black/10' : 'bg-muted dark:bg-foreground/10')}>
-                {index < 5 ? <svg className="size-5 sm:size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg> : <span className="text-xs font-medium">{index === todayIndex ? t('practice.today') : t('practice.pending')}</span>}
+              <div className={cn('size-10 sm:size-14 rounded-xl flex items-center justify-center', weeklyActivity[index] ? 'bg-white/20 dark:bg-black/10' : 'bg-muted dark:bg-foreground/10')}>
+                {weeklyActivity[index] ? <svg className="size-5 sm:size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg> : <span className="text-xs font-medium">{index === todayIndex ? t('practice.today') : t('practice.pending')}</span>}
               </div>
             </div>
           ))}
         </div>
+
         <div className="grid md:grid-cols-3 gap-6">
-          <StatsCard label="practice.charactersLearned" value="12" icon={icons.pencil} />
-          <StatsCard label="practice.dayStreak" value="5" icon={icons.question} />
-          <StatsCard label="practice.accuracy" value="87%" icon={icons.chart} />
+          <StatsCard label="practice.charactersLearned" value={learnedCount.toString()} icon={icons.pencil} />
+          <StatsCard label="practice.dayStreak" value={streak.toString()} icon={icons.question} />
+          <StatsCard label="practice.accuracy" value={accuracy + '%'} icon={icons.chart} />
         </div>
       </div>
+
       {currentWriteChar && (
         <WritingDialog open={showWritingDialog} onOpenChange={setShowWritingDialog} char={currentWriteChar} onPronounce={() => speak(currentWriteChar.hanzi)} onNext={handleNextWriteChar} index={writeIndex} total={characters.length} isDark={isDark} />
       )}
-      <QuizDialog open={showQuizDialog} onOpenChange={setShowQuizDialog} quizState={quizState} quizOptions={quizOptions} currentQuizChar={currentQuizChar} onAnswer={handleQuizAnswer} onNext={handleNextQuizQuestion} onPronounce={() => currentQuizChar && speak(currentQuizChar.hanzi)} total={characters.length} quizShowResult={quizShowResult} onReset={resetQuiz} />
-      <ProgressDialog open={showProgressDialog} onOpenChange={setShowProgressDialog} items={characters} />
+      <QuizDialog open={showQuizDialog} onOpenChange={setShowQuizDialog} quizState={quizState} quizOptions={quizOptions} currentQuizChar={currentQuizChar} onAnswer={handleQuizAnswerWithProgress} onNext={handleNextQuizQuestion} onPronounce={() => currentQuizChar && speak(currentQuizChar.hanzi)} total={characters.length} quizShowResult={quizShowResult} onReset={resetQuiz} />
+      <ProgressDialog open={showProgressDialog} onOpenChange={setShowProgressDialog} items={characters} learnedIds={learnedCharacterIds} />
     </div>
   );
 }

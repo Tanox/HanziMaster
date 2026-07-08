@@ -8,6 +8,7 @@ interface UseWritingCanvasOptions {
   showDialog: boolean;
   character: string;
   isDark?: boolean;
+  showHint?: boolean;
 }
 
 const canvasColors = {
