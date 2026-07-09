@@ -12,43 +12,19 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-
-interface Character {
-  id: number;
-  hanzi: string;
-  pinyin: string;
-  meaning: string;
-  translationKey: string;
-  strokes: number;
-  radical: string;
-  structure: string;
-}
-
-const baseCharacters: Character[] = [
-  { id: 1, hanzi: '一', pinyin: 'yī', meaning: '', translationKey: 'learn.one', strokes: 1, radical: '一', structure: '独体' },
-  { id: 2, hanzi: '二', pinyin: 'èr', meaning: '', translationKey: 'learn.two', strokes: 2, radical: '二', structure: '独体' },
-  { id: 3, hanzi: '三', pinyin: 'sān', meaning: '', translationKey: 'learn.three', strokes: 3, radical: '一', structure: '独体' },
-  { id: 4, hanzi: '人', pinyin: 'rén', meaning: '', translationKey: 'learn.person', strokes: 2, radical: '人', structure: '独体' },
-  { id: 5, hanzi: '大', pinyin: 'dà', meaning: '', translationKey: 'learn.big', strokes: 3, radical: '大', structure: '独体' },
-  { id: 6, hanzi: '小', pinyin: 'xiǎo', meaning: '', translationKey: 'learn.small', strokes: 3, radical: '小', structure: '独体' },
-  { id: 7, hanzi: '口', pinyin: 'kǒu', meaning: '', translationKey: 'learn.mouth', strokes: 3, radical: '口', structure: '独体' },
-  { id: 8, hanzi: '日', pinyin: 'rì', meaning: '', translationKey: 'learn.sunDay', strokes: 4, radical: '日', structure: '独体' },
-  { id: 9, hanzi: '月', pinyin: 'yuè', meaning: '', translationKey: 'learn.moonMonth', strokes: 4, radical: '月', structure: '独体' },
-  { id: 10, hanzi: '山', pinyin: 'shān', meaning: '', translationKey: 'learn.mountain', strokes: 3, radical: '山', structure: '独体' },
-  { id: 11, hanzi: '水', pinyin: 'shuǐ', meaning: '', translationKey: 'learn.water', strokes: 4, radical: '水', structure: '独体' },
-  { id: 12, hanzi: '火', pinyin: 'huǒ', meaning: '', translationKey: 'learn.fire', strokes: 4, radical: '火', structure: '独体' },
-];
+import { characters, type Character } from '@/lib/characters';
 
 export default function LearnPage() {
   const { t } = useTranslation();
-  const [selectedCharacterId, setSelectedCharacterId] = useState<number | null>(baseCharacters[0]?.id ?? null);
+  const [selectedCharacterId, setSelectedCharacterId] = useState<number | null>(characters[0]?.id ?? null);
   const [showWritingDialog, setShowWritingDialog] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [showStrokeOrder, setShowStrokeOrder] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const isDrawingRef = useRef(false);
   const lastPointRef = useRef<{ x: number; y: number } | null>(null);
 
-  const selectedCharacter = baseCharacters.find(char => char.id === selectedCharacterId) ?? null;
+  const selectedCharacter = characters.find(char => char.id === selectedCharacterId) ?? null;
 
   const selectCharacter = useCallback((char: Character) => {
     setSelectedCharacterId(char.id);
@@ -62,12 +38,18 @@ export default function LearnPage() {
   }, [selectCharacter]);
 
   // --- 发音播放功能 (Web Speech API) ---
+  const speak = useCallback((text: string) => {
+    if (!('speechSynthesis' in window)) return;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'zh-CN';
+    utterance.rate = 0.8;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  }, []);
+
   const handlePronunciation = useCallback(() => {
     if (!selectedCharacter) return;
-    if (!('speechSynthesis' in window)) {
-      alert(t('common.masterCharacters'));
-      return;
-    }
+    if (!('speechSynthesis' in window)) return;
 
     const utterance = new SpeechSynthesisUtterance(selectedCharacter.hanzi);
     utterance.lang = 'zh-CN';
@@ -78,10 +60,9 @@ export default function LearnPage() {
     utterance.onend = () => setIsSpeaking(false);
     utterance.onerror = () => setIsSpeaking(false);
 
-    // 停止之前的朗读
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utterance);
-  }, [selectedCharacter, t]);
+  }, [selectedCharacter]);
 
   // --- 书写练习功能 (Canvas) ---
   useEffect(() => {
@@ -288,7 +269,7 @@ export default function LearnPage() {
         role="listbox"
         aria-label={t('common.masterCharacters')}
       >
-        {baseCharacters.map((char) => {
+        {characters.map((char) => {
           const isSelected = selectedCharacterId === char.id;
           return (
             <button
@@ -325,7 +306,7 @@ export default function LearnPage() {
         <div className="bg-muted dark:bg-card rounded-[32px] p-10 border border-border animate-scale-in">
           <div className="flex flex-col md:flex-row gap-10 items-center md:items-start">
             <div className="w-48 h-48 sm:w-56 sm:h-56 bg-gradient-to-br from-background to-muted dark:from-card dark:to-background rounded-[24px] flex items-center justify-center border border-border shrink-0 relative group">
-              <span className="text-[120px] sm:text-[140px] font-light text-muted-foreground hanzi-font transition-all duration-500 group-hover:scale-110">
+              <span className="text-[120px] sm:text-[140px] font-light text-muted-foreground hanzi-font transition-transform duration-500 group-hover:scale-110">
                 {selectedCharacter.hanzi}
               </span>
             </div>
@@ -365,7 +346,7 @@ export default function LearnPage() {
                     {t('learn.structure')}
                   </div>
                   <div className="text-2xl font-semibold text-foreground">
-                    {selectedCharacter.structure}
+                    {t(selectedCharacter.structureKey)}
                   </div>
                 </div>
               </div>
@@ -391,9 +372,59 @@ export default function LearnPage() {
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                   </svg>
-                  {isSpeaking ? '...' : t('common.hearPronunciation')}
+                  {isSpeaking ? '…' : t('common.hearPronunciation')}
                 </Button>
               </div>
+
+              {/* 词组展示 */}
+              <div className="mb-8">
+                <h4 className="text-sm text-muted-foreground uppercase tracking-wider font-medium mb-4">{t('learn.wordsTitle')}</h4>
+                <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+                  {selectedCharacter.words.map((word, idx) => (
+                    <button
+                      key={word.text}
+                      onClick={() => speak(word.text)}
+                      className="bg-background dark:bg-foreground/5 rounded-2xl px-5 py-3 border border-border hover:border-[#007aff] dark:hover:border-[#2997ff] transition-colors duration-200 text-left"
+                      style={{ animationDelay: `${idx * 100}ms` }}
+                      aria-label={`${word.text} - ${word.pinyin}`}
+                    >
+                      <span className="text-lg font-medium text-foreground hanzi-font block">{word.text}</span>
+                      <span className="text-xs text-muted-foreground block mt-1">{word.pinyin} · {t(word.translationKey)}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 例句展示 */}
+              <div className="mb-8">
+                <h4 className="text-sm text-muted-foreground uppercase tracking-wider font-medium mb-4">{t('learn.exampleTitle')}</h4>
+                <button
+                  onClick={() => speak(selectedCharacter.example.sentence)}
+                  className="block w-full text-left bg-background dark:bg-foreground/5 rounded-2xl p-6 border border-border hover:border-[#007aff] dark:hover:border-[#2997ff] transition-colors duration-200"
+                  aria-label={selectedCharacter.example.pinyin}
+                >
+                  <p className="text-xl text-foreground hanzi-font mb-2">{selectedCharacter.example.sentence}</p>
+                  <p className="text-sm text-muted-foreground">{selectedCharacter.example.pinyin}</p>
+                  <p className="text-sm text-muted-foreground mt-1">{t(selectedCharacter.example.translationKey)}</p>
+                </button>
+              </div>
+
+              {/* 笔顺展示 */}
+              {selectedCharacter.strokeOrder && (
+                <div>
+                  <button
+                    onClick={() => setShowStrokeOrder(!showStrokeOrder)}
+                    className="text-sm text-[#007aff] dark:text-[#2997ff] font-medium hover:underline"
+                  >
+                    {showStrokeOrder ? t('learn.hideStrokeOrder') : t('learn.showStrokeOrder')}
+                  </button>
+                  {showStrokeOrder && (
+                    <p className="text-base text-foreground mt-3 p-4 bg-background dark:bg-foreground/5 rounded-2xl border border-border">
+                      {selectedCharacter.strokeOrder}
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>

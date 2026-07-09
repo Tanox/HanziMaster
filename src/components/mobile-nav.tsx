@@ -62,7 +62,7 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"
-        className="fixed right-0 top-0 h-full w-72 max-w-[85vw] bg-white dark:bg-gray-900 shadow-2xl z-50 animate-slide-in-right flex flex-col"
+        className="fixed right-0 top-0 h-full w-72 max-w-[85vw] bg-white dark:bg-gray-900 shadow-2xl z-50 animate-slide-in-right flex flex-col overscroll-contain"
       >
         {/* Drawer Header */}
         <div className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-800">

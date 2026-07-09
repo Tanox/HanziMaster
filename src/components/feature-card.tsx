@@ -17,7 +17,7 @@ export function FeatureCard({
   const { t } = useTranslation();
 
   return (
-    <Card className="text-center hover:-translate-y-1 transition-all duration-300 group">
+    <Card className="text-center hover:-translate-y-1 transition-[transform] duration-300 group">
       <CardContent className="pt-8 pb-8">
         <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-[#007aff]/10 to-[#af52de]/10 dark:from-[#007aff]/20 dark:to-[#af52de]/20 rounded-[20px] flex items-center justify-center text-[#007aff] group-hover:scale-105 transition-transform duration-300">
           <span aria-hidden="true">{icon}</span>
