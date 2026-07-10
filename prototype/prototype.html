@@ -1467,7 +1467,10 @@
       <a class="prototype-nav-link active" data-page="design-system">设计系统</a>
       <a class="prototype-nav-link" data-page="components">组件库</a>
       <a class="prototype-nav-link" data-page="interactions">交互标准</a>
+      <a class="prototype-nav-link" data-page="feedback">反馈组件</a>
+      <a class="prototype-nav-link" data-page="motion">动效系统</a>
       <a class="prototype-nav-link" data-page="pages">页面原型</a>
+      <a class="prototype-nav-link" data-page="spec">设计规范</a>
     </div>
     <div class="prototype-nav-actions">
       <div class="theme-toggle" onclick="toggleTheme()"></div>
@@ -2289,7 +2292,127 @@
         </div>
       </div>
     </section>
-    
+
+    <!-- ==================== 反馈组件 ==================== -->
+    <section class="page-section" id="feedback">
+      <div class="page-card">
+        <div class="page-card-header">
+          <h2>反馈组件</h2>
+          <span class="route">Toast / Notification</span>
+        </div>
+        <div class="page-card-content">
+          <div class="component-section">
+            <h3 class="component-title">Toast 通知</h3>
+            <div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start;">
+              <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; min-width: 300px;">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span style="font-size: 14px; font-weight: 500; flex: 1;">练习完成！今日已学习 15 个汉字</span>
+                <button style="background: none; border: none; cursor: pointer; padding: 4px; border-radius: 6px; color: inherit;">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; min-width: 300px;">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                <span style="font-size: 14px; font-weight: 500; flex: 1;">提交失败，请检查网络连接</span>
+                <button style="background: none; border: none; cursor: pointer; padding: 4px; border-radius: 6px; color: inherit;">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; background: #fffbeb; border: 1px solid #fde68a; color: #92400e; min-width: 300px;">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                <span style="font-size: 14px; font-weight: 500; flex: 1;">注意：连续 2 天未练习</span>
+                <button style="background: none; border: none; cursor: pointer; padding: 4px; border-radius: 6px; color: inherit;">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 动效展示 ==================== -->
+    <section class="page-section" id="motion">
+      <div class="page-card">
+        <div class="page-card-header">
+          <h2>动效系统</h2>
+          <span class="route">Animation</span>
+        </div>
+        <div class="page-card-content">
+          <div class="component-section">
+            <h3 class="component-title">预设动画</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+              <div style="text-align: center; padding: 24px; background: var(--bg-secondary); border-radius: 16px;">
+                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #007aff, #af52de); border-radius: 16px; margin: 0 auto 12px; animation: fadeInUp 0.6s ease-out infinite alternate;"></div>
+                <p style="font-size: 13px; color: var(--text-secondary);">fade-in-up</p>
+              </div>
+              <div style="text-align: center; padding: 24px; background: var(--bg-secondary); border-radius: 16px;">
+                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #007aff, #af52de); border-radius: 16px; margin: 0 auto 12px; animation: scaleIn 0.4s ease-out infinite alternate;"></div>
+                <p style="font-size: 13px; color: var(--text-secondary);">scale-in</p>
+              </div>
+              <div style="text-align: center; padding: 24px; background: var(--bg-secondary); border-radius: 16px;">
+                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #007aff, #af52de); border-radius: 16px; margin: 0 auto 12px; animation: slideUp 0.5s ease-out infinite alternate;"></div>
+                <p style="font-size: 13px; color: var(--text-secondary);">slide-up</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="component-section">
+            <h3 class="component-title">Hero 渐入序列</h3>
+            <div style="text-align: center; padding: 40px; background: var(--bg-secondary); border-radius: 24px;">
+              <div style="font-size: 15px; font-weight: 500; color: #007aff; margin-bottom: 12px; animation: fadeInUp 0.6s ease-out 0.1s both;">AI-Powered</div>
+              <div style="font-size: 36px; font-weight: 700; margin-bottom: 12px; animation: fadeInUp 0.6s ease-out 0.2s both;">掌握汉字之美</div>
+              <div style="font-size: 18px; color: var(--text-secondary); margin-bottom: 20px; animation: fadeInUp 0.6s ease-out 0.3s both;">系统化学习汉字，掌握中文之美</div>
+              <div style="animation: fadeInUp 0.6s ease-out 0.4s both;">
+                <button class="apple-btn apple-btn-primary" style="padding: 10px 28px;">开始学习</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 设计规范摘要 ==================== -->
+    <section class="page-section" id="spec">
+      <div class="page-card">
+        <div class="page-card-header">
+          <h2>设计规范摘要</h2>
+          <span class="route">Design Spec</span>
+        </div>
+        <div class="page-card-content">
+          <div class="component-section">
+            <h3 class="component-title">核心原则</h3>
+            <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px;">
+              <li style="padding: 16px; background: var(--bg-secondary); border-radius: 12px; font-size: 15px;">
+                <strong style="color: #007aff;">内容优先</strong> — 汉字是界面的主角，UI 元素不应抢夺注意力
+              </li>
+              <li style="padding: 16px; background: var(--bg-secondary); border-radius: 12px; font-size: 15px;">
+                <strong style="color: #007aff;">克制用色</strong> — 以黑白灰为主，Apple Blue 作为唯一强调色
+              </li>
+              <li style="padding: 16px; background: var(--bg-secondary); border-radius: 12px; font-size: 15px;">
+                <strong style="color: #007aff;">呼吸感</strong> — 大量留白，元素间距遵循 8px 网格系统
+              </li>
+              <li style="padding: 16px; background: var(--bg-secondary); border-radius: 12px; font-size: 15px;">
+                <strong style="color: #007aff;">一致性</strong> — 所有组件遵循统一的设计语言
+              </li>
+            </ul>
+          </div>
+
+          <div class="component-section">
+            <h3 class="component-title">无障碍设计</h3>
+            <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: var(--text-secondary);">
+              <li>支持深色/浅色/系统主题</li>
+              <li>支持 11 种语言</li>
+              <li>键盘导航支持（Tab 顺序、Focus 可见）</li>
+              <li>屏幕阅读器支持（ARIA 标签、角色、状态）</li>
+              <li>减少动画偏好支持（prefers-reduced-motion）</li>
+              <li>触控目标最小 44px</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </div>
 
   <script>

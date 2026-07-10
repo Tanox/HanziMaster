@@ -14,8 +14,28 @@ import {
 } from '@/components/ui/dialog';
 import { characters, type Character } from '@/lib/characters';
 
+/* Scroll reveal hook */
+function useScrollReveal() {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+}
+
 export default function LearnPage() {
   const { t } = useTranslation();
+  useScrollReveal();
   const [selectedCharacterId, setSelectedCharacterId] = useState<number | null>(characters[0]?.id ?? null);
   const [showWritingDialog, setShowWritingDialog] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -255,7 +275,7 @@ export default function LearnPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-16 safe-bottom">
-      <div className="text-center mb-12">
+      <div className="text-center mb-12 reveal">
         <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-3 text-foreground">
           {t('common.dailyPractice')}
         </h2>
@@ -265,7 +285,7 @@ export default function LearnPage() {
       </div>
 
       <div
-        className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-5 mb-12"
+        className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-5 mb-12 stagger-children"
         role="listbox"
         aria-label={t('common.masterCharacters')}
       >
@@ -303,7 +323,7 @@ export default function LearnPage() {
       </div>
 
       {selectedCharacter && (
-        <div className="bg-muted dark:bg-card rounded-[32px] p-10 border border-border animate-scale-in">
+        <div className="bg-muted dark:bg-card rounded-[32px] p-10 border border-border reveal revealed">
           <div className="flex flex-col md:flex-row gap-10 items-center md:items-start">
             <div className="w-48 h-48 sm:w-56 sm:h-56 bg-gradient-to-br from-background to-muted dark:from-card dark:to-background rounded-[24px] flex items-center justify-center border border-border shrink-0 relative group">
               <span className="text-[120px] sm:text-[140px] font-light text-muted-foreground hanzi-font transition-transform duration-500 group-hover:scale-110">

@@ -9,6 +9,7 @@ import { ThemeToggleClient } from '@/components/theme-toggle';
 import { LocaleToggleClient } from '@/components/locale-toggle';
 import { MobileNav } from '@/components/mobile-nav';
 import { NavLink } from '@/components/nav-link';
+import { ToastContainer } from '@/components/toast';
 
 
 interface LayoutClientProps {
@@ -74,6 +75,9 @@ export function LayoutClient({ children }: LayoutClientProps) {
 
       {/* Mobile Drawer */}
       <MobileNav isOpen={mobileNavOpen} onClose={closeMobileNav} t={t} />
+
+      {/* Toast Notifications */}
+      <ToastContainer />
 
       {/* Main Content */}
       <main id="main-content" className="flex-1 page-transition" key={pathname}>
