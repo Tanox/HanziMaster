@@ -279,7 +279,7 @@ export default function LearnPage() {
               role="option"
               aria-selected={isSelected}
               tabIndex={0}
-              className={`group bg-muted dark:bg-card aspect-square rounded-3xl border-2 border-transparent hover:border-[#007aff] dark:hover:border-[#2997ff] hover:bg-[#007aff]/5 dark:hover:bg-[#007aff]/10 transition-colors duration-300 text-center relative overflow-hidden outline-none ${
+              className={`group bg-muted dark:bg-card aspect-square rounded-3xl border-2 border-transparent hover:border-[#007aff] dark:hover:border-[#2997ff] hover:bg-[#007aff]/5 dark:hover:bg-[#007aff]/10 transition-[border-color,background-color,colors] duration-300 text-center relative overflow-hidden outline-none ${
                 isSelected
                   ? 'bg-primary border-primary'
                   : ''
