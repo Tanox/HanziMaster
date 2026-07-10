@@ -4,97 +4,104 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ==================== 设计系统 Token ==================== */
 @theme {
+  /* 字体 */
   --font-serif: 'Noto Serif SC', Georgia, serif;
   --font-display: 'Playfair Display', Georgia, serif;
   --font-sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-heading: 'Playfair Display', Georgia, serif;
 
+  /* 品牌色 - 朱砂红 */
   --color-primary: #c53d43;
   --color-primary-dark: #9b2c2c;
   --color-primary-foreground: #ffffff;
 
+  /* 中性色 - 水墨灰 */
   --color-background: #faf9f6;
   --color-foreground: #1a1a1a;
   --color-muted: #f3f1eb;
   --color-muted-foreground: #6b6356;
   --color-border: #e5e1d8;
 
+  /* 卡片 */
   --color-card: #ffffff;
   --color-card-foreground: #1a1a1a;
 
+  /* 弹出层 - 补全缺失 token */
+  --color-popover: #ffffff;
+  --color-popover-foreground: #1a1a1a;
+
+  /* 次要 - 补全缺失 token */
+  --color-secondary: #f3f1eb;
+  --color-secondary-foreground: #1a1a1a;
+
+  /* 辅助色 - 靛蓝 */
   --color-accent: #4f46e5;
   --color-accent-foreground: #ffffff;
 
-  --color-destructive: #c53d43;
+  /* 危险色 */
+  --color-destructive: #ef4444;
   --color-destructive-foreground: #ffffff;
 
+  /* 输入框 - 补全缺失 token */
+  --color-input: #e5e1d8;
+
+  /* 焦点环 */
   --color-ring: #c53d43;
 
+  /* 状态色 */
+  --color-success: #34c759;
+  --color-success-foreground: #ffffff;
+  --color-warning: #f59e0b;
+  --color-warning-foreground: #ffffff;
+  --color-info: #3b82f6;
+  --color-info-foreground: #ffffff;
+
+  /* 圆角系统 - 统一为完整 8 阶 */
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
   --radius-xl: 1.25rem;
   --radius-2xl: 1.5rem;
-  --radius-3xl: 2rem;
+  --radius-3xl: 1.75rem;
+  --radius-4xl: 2rem;
 
+  /* 动效时长 */
+  --duration-fast: 0.15s;
+  --duration-normal: 0.25s;
+  --duration-slow: 0.4s;
+  --duration-lg: 0.6s;
+
+  /* 缓动函数 */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* 触控目标 */
   --touch-target-min: 44px;
 }
 
-@font-face {
-  font-family: 'Noto Serif SC';
-  src: url('https://fonts.gstatic.com/s/notoserifsc/v22/H4chBXePl9DZ0Xe7gG9cyOj7oqPcPQ.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Noto Serif SC';
-  src: url('https://fonts.gstatic.com/s/notoserifsc/v22/H4chBXePl9DZ0Xe7gG9cyOj7oqPcPQ.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Playfair Display';
-  src: url('https://fonts.gstatic.com/s/playfairdisplay/v36/nuFvD-vYSZviVYUb_rj3ij__anPXJzDwcbmjWBN2PKdFvXDXbtM.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Playfair Display';
-  src: url('https://fonts.gstatic.com/s/playfairdisplay/v36/nuFvD-vYSZviVYUb_rj3ij__anPXJzDwcbmjWBN2PKeiunDXbtM.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Space Grotesk';
-  src: url('https://fonts.gstatic.com/s/spacegrotesk/v16/V8mDoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj7oUXskPMBBSSJLm2E.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Space Grotesk';
-  src: url('https://fonts.gstatic.com/s/spacegrotesk/v16/V8mDoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj7oUXskPMBBSSJLm2E.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Space Grotesk';
-  src: url('https://fonts.gstatic.com/s/spacegrotesk/v16/V8mDoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj7oUXskPMBBSSJLm2E.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
+/* ==================== 深色模式 Token 覆盖 ==================== */
+.dark {
+  --color-background: #0d0d0d;
+  --color-foreground: #f3f1eb;
+  --color-muted: #1a1a1a;
+  --color-muted-foreground: #a69c89;
+  --color-border: #2d2d2d;
+  --color-card: #1a1a1a;
+  --color-card-foreground: #f3f1eb;
+  --color-popover: #1a1a1a;
+  --color-popover-foreground: #f3f1eb;
+  --color-secondary: #2d2d2d;
+  --color-secondary-foreground: #f3f1eb;
+  --color-input: #2d2d2d;
+  --color-accent: #6366f1;
+  --color-accent-foreground: #ffffff;
+  --color-destructive: #f87171;
+  --color-destructive-foreground: #ffffff;
+  --color-ring: #c53d43;
 }
 
 @utility container-page {
@@ -110,17 +117,12 @@ body {
   font-family: var(--font-sans);
   background-color: var(--color-background);
   color: var(--color-foreground);
-  background-image: var(--background-image-paper-texture);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23e5e1d8' fill-opacity='0.3' fill-rule='evenodd'/%3E%3C/svg%3E");
   background-blend-mode: soft-light;
 }
 
-.dark body {
-  background-color: #0d0d0d;
-  color: #f3f1eb;
-}
-
 *:focus-visible {
-  outline: 2px solid #c53d43;
+  outline: 2px solid var(--color-ring);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -131,7 +133,7 @@ body {
   left: 16px;
   z-index: 100;
   padding: 12px 20px;
-  background-color: #c53d43;
+  background-color: var(--color-primary);
   color: white;
   border-radius: 8px;
   text-decoration: none;
@@ -154,6 +156,7 @@ body {
   }
 }
 
+/* ==================== 工具类 ==================== */
 @layer utilities {
   .serif-font {
     font-family: var(--font-serif);
@@ -164,7 +167,7 @@ body {
   }
 
   .animate-brush-stroke {
-    animation: brushStroke 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation: brushStroke 0.8s var(--ease-out) forwards;
   }
 
   .animate-ink-spread {
@@ -172,7 +175,7 @@ body {
   }
 
   .animate-paper-flip {
-    animation: paperFlip 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: paperFlip 0.6s var(--ease-smooth);
   }
 
   .animate-fade-in-elegant {
@@ -181,6 +184,10 @@ body {
 
   .animate-float-gentle {
     animation: floatGentle 6s ease-in-out infinite;
+  }
+
+  .animate-slide-in-right {
+    animation: slideInRight 0.3s var(--ease-out);
   }
 
   .page-transition {
@@ -194,7 +201,7 @@ body {
   .reveal {
     opacity: 0;
     transform: translateY(24px);
-    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
   }
 
   .reveal.revealed {
@@ -231,6 +238,7 @@ body {
   }
 }
 
+/* ==================== 关键帧动画 ==================== */
 @keyframes brushStroke {
   0% {
     clip-path: inset(0 100% 0 0);
@@ -290,4 +298,25 @@ body {
   50% {
     transform: translateY(-8px);
   }
+}
+
+@keyframes slideInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes accordionDown {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+
+@keyframes accordionUp {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
 }

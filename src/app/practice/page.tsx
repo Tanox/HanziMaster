@@ -355,19 +355,19 @@ export default function PracticePage() {
               label="practice.charactersLearned"
               value="12"
               icon={icons.pencil}
-              accentColor="#c53d43"
+              accentVariant="vermilion"
             />
             <StatsCard
               label="practice.dayStreak"
               value="5"
               icon={icons.question}
-              accentColor="#4f46e5"
+              accentVariant="indigo"
             />
             <StatsCard
               label="practice.accuracy"
               value="87%"
               icon={icons.chart}
-              accentColor="#34c759"
+              accentVariant="success"
             />
           </div>
         </div>

@@ -17,10 +17,10 @@ interface ToastItemProps extends Toast {
 }
 
 const typeStyles: Record<ToastType, string> = {
-  success: 'bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800 text-green-800 dark:text-green-300',
-  error: 'bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800 text-red-800 dark:text-red-300',
-  warning: 'bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300',
-  info: 'bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-300',
+  success: 'bg-success-50 dark:bg-success-500/10 border-success-100 dark:border-success-500/30 text-success-600 dark:text-success-500',
+  error: 'bg-vermilion-50 dark:bg-vermilion-900/30 border-vermilion-200 dark:border-vermilion-800 text-vermilion-700 dark:text-vermilion-300',
+  warning: 'bg-warning-50 dark:bg-warning-500/10 border-warning-100 dark:border-warning-500/30 text-warning-600 dark:text-warning-500',
+  info: 'bg-indigo-50 dark:bg-indigo-900/30 border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300',
 };
 
 const iconMap: Record<ToastType, React.ReactNode> = {
@@ -120,7 +120,7 @@ export function ToastContainer() {
   if (activeToasts.length === 0) return null;
 
   return (
-    <div className="fixed top-4 right-4 z-[100] flex flex-col gap-2" role="region" aria-label="Notifications">
+    <div className="fixed top-20 right-4 z-[100] flex flex-col gap-2" role="region" aria-label="Notifications">
       {activeToasts.map((t) => (
         <ToastItem key={t.id} {...t} onRemove={removeToast} />
       ))}
