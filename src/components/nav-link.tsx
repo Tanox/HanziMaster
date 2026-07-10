@@ -16,7 +16,7 @@ export function NavLink({ href, children }: NavLinkProps) {
   return (
     <Link
       href={href}
-      className={`px-4 py-2.5 rounded-xl font-medium transition-all duration-200 relative group ${
+      className={`px-4 py-2.5 rounded-xl font-medium transition-[colors,transform,opacity] duration-200 relative group ${
         isActive
           ? 'bg-[#007aff]/10 dark:bg-[#5856d6]/20 text-[#007aff] dark:text-[#2997ff]'
           : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'

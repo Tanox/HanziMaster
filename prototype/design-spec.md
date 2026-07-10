@@ -996,6 +996,10 @@ toast.error('操作失败', {
 
 ---
 
-**版本**: 4.0  
-**更新日期**: 2025-06-11  
+**版本**: 4.1  
+**更新日期**: 2026-07-10  
 **基于**: shadcn/ui radix-nova preset + Apple Human Interface Guidelines
+
+**变更记录**:
+- v4.1 (2026-07-10): 修复 transition-all 性能问题，统一使用明确的过渡属性；替换 emoji 为 Lucide 图标；同步代码实现
+- v4.0 (2025-06-11): 初始设计系统规范

@@ -14,6 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { Volume2, Check, X } from 'lucide-react';
 
 interface PracticeOption {
   id: string;
@@ -501,7 +502,7 @@ export default function PracticePage() {
                 {currentWriteChar.pinyin}
               </Badge>
               <Button variant="ghost" size="sm" onClick={handlePronounceWrite} aria-label={t('common.hearPronunciation')}>
-                <span aria-hidden="true">🔊</span>
+                <Volume2 className="size-4" aria-hidden="true" />
               </Button>
             </div>
             <canvas
@@ -558,8 +559,8 @@ export default function PracticePage() {
                   {t('practice.question')} {quizState.currentIndex + 1} / {quizCharacters.length}
                 </div>
                 <div className="flex gap-4 text-sm">
-                  <span className="text-green-600">✓ {quizState.correctCount}</span>
-                  <span className="text-red-600">✗ {quizState.wrongCount}</span>
+                  <span className="text-green-600 flex items-center gap-1"><Check className="size-3.5" aria-hidden="true" /> {quizState.correctCount}</span>
+                  <span className="text-red-600 flex items-center gap-1"><X className="size-3.5" aria-hidden="true" /> {quizState.wrongCount}</span>
                 </div>
               </div>
 
@@ -568,7 +569,7 @@ export default function PracticePage() {
                   {currentQuizChar?.hanzi}
                 </div>
                 <Button variant="ghost" size="sm" onClick={handlePronounceQuiz}>
-                  <span aria-hidden="true">🔊</span> {t('practice.listenPronunciation')}
+                  <Volume2 className="size-4 mr-1" aria-hidden="true" /> {t('practice.listenPronunciation')}
                 </Button>
               </div>
 

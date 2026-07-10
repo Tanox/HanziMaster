@@ -2,8 +2,8 @@
 
 本文档记录项目规范文档、原型图与代码实现的对齐情况。
 
-**版本**: v3.0.0  
-**检查日期**: 2026-06-08
+**版本**: v3.1.0  
+**检查日期**: 2026-07-10
 
 ---
 
@@ -105,6 +105,18 @@
 | animate-slide-in-right | - | ✅ | ✅ MobileNav | ✅ 对齐 |
 | page-transition | ✅ prototype.html | ✅ | ✅ Layout | ✅ 对齐 |
 | skeleton | - | ✅ | ✅ 加载状态 | ✅ 对齐 |
+
+### 4.4 动效规范修复 (v3.1.0)
+
+| 文件 | 问题 | 修复 |
+|------|------|------|
+| `src/components/ui/button.tsx` | `transition-all` 性能问题 | ✅ 改为 `transition-[colors,transform,opacity]` |
+| `src/components/ui/switch.tsx` | `transition-all` 性能问题 | ✅ 改为 `transition-[colors,transform]` |
+| `src/components/ui/badge.tsx` | `transition-all` 性能问题 | ✅ 改为 `transition-[colors,transform,opacity]` |
+| `src/components/ui/accordion.tsx` | `transition-all` 性能问题 | ✅ 改为 `transition-[colors,transform]` |
+| `src/components/ui/tabs.tsx` | `transition-all` 性能问题 | ✅ 改为 `transition-[colors,transform,opacity]` |
+| `src/components/nav-link.tsx` | `transition-all` 性能问题 | ✅ 改为 `transition-[colors,transform,opacity]` |
+| `src/app/practice/page.tsx` | Emoji `🔊` `✓` `✗` | ✅ 替换为 Lucide 图标 (Volume2, Check, X) |
 
 ---
 
@@ -295,7 +307,7 @@
 | 测试文档 | /workspace/openspec/06-testing.md | v3.0.0 |
 | 编码规范 | /workspace/openspec/coding-standards.md | v3.0.0 |
 | 提交模板 | /workspace/openspec/commit-template.md | v3.0.0 |
-| **原型图** | /workspace/openspec/prototype.html | **2026-06-08 Apple风格** |
+| **原型图** | /workspace/prototype/prototype.html | **2026-07-10 shadcn/ui Apple风格 v4.0** |
 | 对齐清单 | /workspace/openspec/alignment-checklist.md | 2026-06-08 |
 | UI/UX审查报告 | /workspace/openspec/ui-ux-review-report.md | 2026-06-07 |
 
@@ -304,20 +316,25 @@
 ✅ **项目所有文档、原型图与代码已完全对齐，Apple风格设计已全面应用**
 
 **完成的工作**：
-1. 按照Apple设计风格全面升级了原型图
+1. 按照Apple设计风格全面升级了原型图 (v4.0 shadcn/ui)
 2. 优化了首页代码，采用极简设计和超大字号
 3. 更新了布局组件，采用Glassmorphism导航栏
-4. 优化了学习页和练习页，采用Apple风格UI
+4. 优化了学习页和练习页，采用Apple风格UI，集成真实汉字数据
 5. 更新了所有可复用组件（FeatureCard、StatsCard）
-6. 统一了全局样式系统，采用Apple色彩规范
-7. 更新了对齐检查清单，反映v3.0.0版本状态
-8. 精简了项目目录，删除了冗余文件
+6. 统一了全局样式系统，采用Apple色彩规范 + OKLCH 语义化颜色
+7. 更新了对齐检查清单，反映v3.1.0版本状态
+8. 精简了项目目录，删除了冗余原型文件 (components.html, design-system.html, index.html)
 9. 更新了Node.js版本要求到24.5.0
+10. **修复了 transition-all 性能问题**：所有 shadcn/ui 组件和自定义组件已改为明确的过渡属性
+11. **修复了 emoji 使用问题**：练习页中的 `🔊` `✓` `✗` 已替换为 Lucide React 图标
+12. **完善设计规范**：建立了完整的设计系统规范 (design-spec.md)
 
 **项目质量状态**：
 - ✅ Apple风格设计：极简主义、大图展示、充足留白
 - ✅ 响应式设计：完善的移动端和桌面端适配
 - ✅ 主题系统：深色/浅色模式切换
-- ✅ 无障碍支持：语义化HTML和键盘导航
-- ✅ 动画效果：简洁的交互动画
-- ✅ 国际化：11种语言完整支持
+- ✅ 无障碍支持：语义化HTML、ARIA标签、键盘导航、焦点管理
+- ✅ 动画效果：明确的过渡属性，支持 prefers-reduced-motion
+- ✅ 国际化：11种语言完整支持，包含词组和例句翻译
+- ✅ 组件库规范：shadcn/ui radix-nova preset，基础/复合/业务组件完整
+- ✅ 交互标准：Hover/Focus/Active/Loading/Success/Error/空状态规范齐全
