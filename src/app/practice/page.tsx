@@ -1,4 +1,3 @@
-// src/app/practice/page.tsx v3.0.0
 'use client';
 
 import { useState, useCallback, useEffect, useRef } from 'react';
@@ -14,7 +13,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Volume2, Check, X } from 'lucide-react';
 
 interface PracticeOption {
   id: string;
@@ -46,21 +44,20 @@ const quizCharacters: CharacterQuiz[] = [
   { id: 12, hanzi: '火', pinyin: 'huǒ', translationKey: 'learn.fire', meaning: 'Fire' },
 ];
 
-// Icons
 const icons = {
   pencil: (
     <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
     </svg>
   ),
   question: (
     <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 01-18 0 9 9 0 0118 0z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 01-18 0 9 9 0 0118 0z" />
     </svg>
   ),
   chart: (
     <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h2a2 2 0 01-2-2z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h2a2 2 0 01-2-2z" />
     </svg>
   ),
 } as const;
@@ -78,310 +75,160 @@ type QuizState = {
   correctCount: number;
   wrongCount: number;
   answered: boolean;
-  selectedAnswer: string | null;
-  showPronunciation: boolean;
 };
 
 export default function PracticePage() {
   const { t } = useTranslation();
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
-  // Writing practice
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  const [selectedOption, setSelectedOption] = useState<string>('');
   const [showWritingDialog, setShowWritingDialog] = useState(false);
-  const [currentWriteChar, setCurrentWriteChar] = useState<CharacterQuiz>(quizCharacters[0]);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  // Quiz practice
   const [showQuizDialog, setShowQuizDialog] = useState(false);
+  const [currentWriteChar, setCurrentWriteChar] = useState<CharacterQuiz>(quizCharacters[0]);
   const [quizState, setQuizState] = useState<QuizState>({
     currentIndex: 0,
     correctCount: 0,
     wrongCount: 0,
     answered: false,
-    selectedAnswer: null,
-    showPronunciation: false,
   });
-  const [quizOptions, setQuizOptions] = useState<string[]>([]);
-  const [quizShowResult, setQuizShowResult] = useState(false);
+  const [selectedAnswer, setSelectedAnswer] = useState<string>('');
 
-  // Progress / stats
-  const [showProgressDialog, setShowProgressDialog] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const isDrawing = useRef(false);
 
-  const currentQuizChar = quizCharacters[quizState.currentIndex];
+  const handlePracticeOption = (optionId: string) => {
+    setSelectedOption(optionId);
+    if (optionId === 'writing') {
+      setShowWritingDialog(true);
+    } else if (optionId === 'quiz') {
+      setShowQuizDialog(true);
+    }
+  };
 
-  // --- Writing practice (Canvas) ---
-  useEffect(() => {
-    if (!showWritingDialog || !canvasRef.current) return;
+  const handleCanvasMouseDown = () => {
+    isDrawing.current = true;
+  };
 
+  const handleCanvasMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isDrawing.current || !canvasRef.current) return;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  };
+
+  const handleCanvasMouseUp = () => {
+    isDrawing.current = false;
+  };
+
+  const handleCanvasTouchStart = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    isDrawing.current = true;
+    const touch = e.touches[0];
+    if (!canvasRef.current) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+  };
+
+  const handleCanvasTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    if (!isDrawing.current || !canvasRef.current) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  };
+
+  const handleCanvasTouchEnd = () => {
+    isDrawing.current = false;
+  };
+
+  const clearCanvas = useCallback(() => {
+    if (!canvasRef.current) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
     ctx.scale(dpr, dpr);
 
-    const clearCanvas = () => {
-      const gradient = ctx.createLinearGradient(0, 0, rect.width, rect.height);
-      gradient.addColorStop(0, '#ffffff');
-      gradient.addColorStop(1, '#f5f5f7');
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, rect.width, rect.height);
+    ctx.lineWidth = 4;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = '#1a1a1a';
 
-      // Grid lines
-      ctx.strokeStyle = '#d1d5db';
-      ctx.lineWidth = 1;
-      const gridSize = rect.width / 4;
-      for (let i = 1; i < 4; i++) {
-        ctx.beginPath();
-        ctx.moveTo(i * gridSize, 0);
-        ctx.lineTo(i * gridSize, rect.height);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(0, i * gridSize);
-        ctx.lineTo(rect.width, i * gridSize);
-        ctx.stroke();
-      }
-
-      // Diagonal
-      ctx.setLineDash([5, 5]);
-      ctx.strokeStyle = '#e5e7eb';
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.lineTo(rect.width, rect.height);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(rect.width, 0);
-      ctx.lineTo(0, rect.height);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      // Center cross
-      ctx.strokeStyle = '#e5e7eb';
-      ctx.beginPath();
-      ctx.moveTo(rect.width / 2, 0);
-      ctx.lineTo(rect.width / 2, rect.height);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(0, rect.height / 2);
-      ctx.lineTo(rect.width, rect.height / 2);
-      ctx.stroke();
-
-      // Character hint
-      ctx.font = `${Math.min(rect.width, rect.height) * 0.4}px serif`;
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(currentWriteChar.hanzi, rect.width / 2, rect.height / 2);
-    };
-
-    clearCanvas();
-
-    const getPoint = (e: PointerEvent): { x: number; y: number } => {
-      const r = canvas.getBoundingClientRect();
-      return { x: e.clientX - r.left, y: e.clientY - r.top };
-    };
-
-    let isDrawing = false;
-    let lastPoint: { x: number; y: number } | null = null;
-
-    const startDrawing = (e: PointerEvent) => {
-      isDrawing = true;
-      lastPoint = getPoint(e);
-      e.preventDefault();
-    };
-
-    const draw = (e: PointerEvent) => {
-      if (!isDrawing || !lastPoint) return;
-      const point = getPoint(e);
-      ctx.strokeStyle = '#000000';
-      ctx.lineWidth = 3;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-      ctx.beginPath();
-      ctx.moveTo(lastPoint.x, lastPoint.y);
-      ctx.lineTo(point.x, point.y);
-      ctx.stroke();
-      lastPoint = point;
-      e.preventDefault();
-    };
-
-    const stopDrawing = () => {
-      isDrawing = false;
-      lastPoint = null;
-    };
-
-    canvas.addEventListener('pointerdown', startDrawing);
-    canvas.addEventListener('pointermove', draw);
-    canvas.addEventListener('pointerup', stopDrawing);
-    canvas.addEventListener('pointerleave', stopDrawing);
-    canvas.addEventListener('pointercancel', stopDrawing);
-
-    return () => {
-      canvas.removeEventListener('pointerdown', startDrawing);
-      canvas.removeEventListener('pointermove', draw);
-      canvas.removeEventListener('pointerup', stopDrawing);
-      canvas.removeEventListener('pointerleave', stopDrawing);
-      canvas.removeEventListener('pointercancel', stopDrawing);
-    };
-  }, [showWritingDialog, currentWriteChar]);
-
-  // --- Quiz ---
-  const generateQuizOptions = useCallback((correctChar: CharacterQuiz) => {
-    const options = new Set<string>();
-    options.add(correctChar.pinyin);
-
-    while (options.size < 4) {
-      const randomChar = quizCharacters[Math.floor(Math.random() * quizCharacters.length)];
-      if (randomChar.id !== correctChar.id) {
-        options.add(randomChar.pinyin);
-      }
-    }
-
-    return Array.from(options).sort(() => Math.random() - 0.5);
-  }, []);
-
-  useEffect(() => {
-    if (showQuizDialog && currentQuizChar) {
-      setQuizOptions(generateQuizOptions(currentQuizChar));
-    }
-  }, [showQuizDialog, currentQuizChar, generateQuizOptions]);
-
-  const handleQuizAnswer = useCallback((selectedPinyin: string) => {
-    if (quizState.answered) return;
-    const isCorrect = selectedPinyin === currentQuizChar.pinyin;
-    setQuizState(prev => ({
-      ...prev,
-      answered: true,
-      selectedAnswer: selectedPinyin,
-      correctCount: prev.correctCount + (isCorrect ? 1 : 0),
-      wrongCount: prev.wrongCount + (isCorrect ? 0 : 1),
-    }));
-  }, [quizState.answered, currentQuizChar]);
-
-  const handleNextQuizQuestion = useCallback(() => {
-    if (quizState.currentIndex >= quizCharacters.length - 1) {
-      setQuizShowResult(true);
-      return;
-    }
-    setQuizState(prev => ({
-      ...prev,
-      currentIndex: prev.currentIndex + 1,
-      answered: false,
-      selectedAnswer: null,
-      showPronunciation: false,
-    }));
-  }, [quizState.currentIndex]);
-
-  const resetQuiz = useCallback(() => {
-    setQuizState({
-      currentIndex: 0,
-      correctCount: 0,
-      wrongCount: 0,
-      answered: false,
-      selectedAnswer: null,
-      showPronunciation: false,
-    });
-    setQuizShowResult(false);
-  }, []);
-
-  const startWriting = useCallback(() => {
-    setShowWritingDialog(true);
-  }, []);
-
-  const startQuiz = useCallback(() => {
-    resetQuiz();
-    setShowQuizDialog(true);
-  }, [resetQuiz]);
-
-  const showProgress = useCallback(() => {
-    setShowProgressDialog(true);
-  }, []);
-
-  const handlePracticeOption = useCallback((optionId: string) => {
-    setSelectedOption(optionId);
-    if (optionId === 'writing') {
-      startWriting();
-    } else if (optionId === 'quiz') {
-      startQuiz();
-    } else if (optionId === 'progress') {
-      showProgress();
-    }
-  }, [startWriting, startQuiz, showProgress]);
-
-  const handlePronounceQuiz = useCallback(() => {
-    if (!currentQuizChar) return;
-    if (!('speechSynthesis' in window)) return;
-    const utterance = new SpeechSynthesisUtterance(currentQuizChar.hanzi);
-    utterance.lang = 'zh-CN';
-    utterance.rate = 0.8;
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utterance);
-  }, [currentQuizChar]);
-
-  const handlePronounceWrite = useCallback(() => {
-    if (!('speechSynthesis' in window)) return;
-    const utterance = new SpeechSynthesisUtterance(currentWriteChar.hanzi);
-    utterance.lang = 'zh-CN';
-    utterance.rate = 0.8;
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utterance);
-  }, [currentWriteChar]);
-
-  const handleClearCanvas = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    const rect = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(dpr, dpr);
-    const gradient = ctx.createLinearGradient(0, 0, rect.width, rect.height);
-    gradient.addColorStop(0, '#ffffff');
-    gradient.addColorStop(1, '#f5f5f7');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, rect.width, rect.height);
-    ctx.strokeStyle = '#d1d5db';
-    ctx.lineWidth = 1;
-    const gridSize = rect.width / 4;
-    for (let i = 1; i < 4; i++) {
-      ctx.beginPath();
-      ctx.moveTo(i * gridSize, 0);
-      ctx.lineTo(i * gridSize, rect.height);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(0, i * gridSize);
-      ctx.lineTo(rect.width, i * gridSize);
-      ctx.stroke();
-    }
-    ctx.setLineDash([5, 5]);
-    ctx.strokeStyle = '#e5e7eb';
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(rect.width, rect.height);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(rect.width, 0);
-    ctx.lineTo(0, rect.height);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.strokeStyle = '#e5e7eb';
-    ctx.beginPath();
-    ctx.moveTo(rect.width / 2, 0);
-    ctx.lineTo(rect.width / 2, rect.height);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(0, rect.height / 2);
-    ctx.lineTo(rect.width, rect.height / 2);
-    ctx.stroke();
     ctx.font = `${Math.min(rect.width, rect.height) * 0.4}px serif`;
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+    ctx.fillStyle = 'rgba(26, 26, 26, 0.08)';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(currentWriteChar.hanzi, rect.width / 2, rect.height / 2);
+  }, [currentWriteChar]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    ctx.scale(dpr, dpr);
+    ctx.lineWidth = 4;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = '#1a1a1a';
+
+    ctx.font = `${Math.min(rect.width, rect.height) * 0.4}px serif`;
+    ctx.fillStyle = 'rgba(26, 26, 26, 0.08)';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(currentWriteChar.hanzi, rect.width / 2, rect.height / 2);
+
+    return () => { };
   }, [currentWriteChar]);
 
   const handleNextWriteChar = useCallback(() => {
@@ -390,275 +237,252 @@ export default function PracticePage() {
     setCurrentWriteChar(quizCharacters[nextIndex]);
   }, [currentWriteChar]);
 
+  const handleQuizAnswer = (answer: string) => {
+    if (quizState.answered) return;
+    setSelectedAnswer(answer);
+    const currentQuizChar = quizCharacters[quizState.currentIndex];
+    const isCorrect = answer === currentQuizChar.hanzi;
+
+    setQuizState(prev => ({
+      ...prev,
+      correctCount: isCorrect ? prev.correctCount + 1 : prev.correctCount,
+      wrongCount: isCorrect ? prev.wrongCount : prev.wrongCount + 1,
+      answered: true,
+    }));
+  };
+
+  const handleNextQuiz = () => {
+    const nextIndex = quizState.currentIndex + 1;
+    if (nextIndex >= quizCharacters.length) {
+      setShowQuizDialog(false);
+      setQuizState({
+        currentIndex: 0,
+        correctCount: 0,
+        wrongCount: 0,
+        answered: false,
+      });
+      setSelectedAnswer('');
+    } else {
+      setQuizState(prev => ({
+        ...prev,
+        currentIndex: nextIndex,
+        answered: false,
+      }));
+      setSelectedAnswer('');
+    }
+  };
+
+  const currentQuizChar = quizCharacters[quizState.currentIndex];
+
   return (
-    <div className="max-w-6xl mx-auto px-6 py-16 safe-bottom">
-      <div className="text-center mb-16">
-        <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 text-foreground">
-          {t('common.practice')} {t('practice.center')}
-        </h2>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          {t('practice.subtitle')}
-        </p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-ink-50/50 to-background dark:from-ink-950/50 dark:to-background">
+      <div className="max-w-6xl mx-auto px-6 py-16 safe-bottom">
+        <div className="text-center mb-16 reveal">
+          <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 text-ink-900 dark:text-ink-50 display-font">
+            {t('common.practice')} {t('practice.center')}
+          </h2>
+          <p className="text-xl text-ink-600 dark:text-ink-300 max-w-2xl mx-auto">
+            {t('practice.subtitle')}
+          </p>
+        </div>
 
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 mb-16">
-        {practiceOptions.map((option) => {
-          const isSelected = selectedOption === option.id;
-          return (
-            <button
-              key={option.id}
-              onClick={() => handlePracticeOption(option.id)}
-              className={`group bg-muted dark:bg-card p-10 rounded-3xl border-2 border-transparent hover:border-[#007aff] dark:hover:border-[#2997ff] hover:-translate-y-1 transition-[transform,border-color] duration-300 text-left ${
-                isSelected ? 'border-[#007aff] bg-background dark:bg-foreground/5' : ''
-              }`}
-            >
-              <div className={`w-20 h-20 bg-gradient-to-br from-[#007aff]/10 to-[#af52de]/10 dark:from-[#007aff]/20 dark:to-[#af52de]/20 rounded-[20px] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 text-[#007aff] ${
-                isSelected ? 'bg-[#007aff] text-white' : ''
-              }`}>
-                {icons[option.icon]}
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-foreground">
-                {t(option.titleKey)}
-              </h3>
-              <p className="text-base text-muted-foreground leading-relaxed mb-6">
-                {t(option.descKey)}
-              </p>
-              <div className={`flex items-center gap-2 font-semibold ${isSelected ? 'text-foreground' : 'text-[#007aff]'} group`}>
-                <span>{t('practice.startNow')}</span>
-                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l-4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </div>
-            </button>
-          );
-        })}
-      </div>
-
-      <div className="bg-muted dark:bg-card rounded-[32px] p-10 border border-border">
-        <h3 className="text-2xl font-semibold mb-10 text-foreground">
-          {t('practice.weeklyProgress')}
-        </h3>
-
-        <div className="grid grid-cols-7 gap-4 mb-10">
-          {weekDays.map((day, index) => (
-            <div
-              key={day}
-              className={`flex flex-col items-center p-5 rounded-[20px] ${
-                index < 5
-                  ? 'bg-gradient-to-br from-primary to-primary/80 text-primary-foreground'
-                  : 'bg-background dark:bg-foreground/5 text-muted-foreground border border-border'
-              } ${index === 4 ? 'ring-2 ring-[#007aff]' : ''}`}
-            >
-              <p className="text-xs mb-3 font-medium">{t(`practice.${day}`)}</p>
-              <div className={`w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center ${
-                index < 5 ? 'bg-white/20 dark:bg-black/10' : 'bg-muted dark:bg-foreground/10'
-              }`}>
-                {index < 5 ? (
-                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 mb-16 stagger-children">
+          {practiceOptions.map((option) => {
+            const isSelected = selectedOption === option.id;
+            return (
+              <button
+                key={option.id}
+                onClick={() => handlePracticeOption(option.id)}
+                className={`group bg-white/80 dark:bg-ink-900/80 backdrop-blur-sm p-10 rounded-[28px] border-2 border-ink-100 dark:border-ink-800 hover:border-vermilion-300 dark:hover:border-vermilion-500 hover:-translate-y-2 hover:shadow-ink-lg transition-all duration-300 text-left ${
+                  isSelected ? 'border-vermilion-500 shadow-vermilion-glow' : ''
+                }`}
+              >
+                <div className={`relative w-20 h-20 rounded-[20px] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ${
+                  isSelected ? 'bg-vermilion-500 text-white' : 'bg-gradient-to-br from-vermilion-500/10 to-indigo/10 dark:from-vermilion-500/20 dark:to-indigo/20 text-vermilion-500'
+                }`}>
+                  {icons[option.icon]}
+                </div>
+                <h3 className="text-xl font-semibold mb-3 text-ink-900 dark:text-ink-50 display-font">
+                  {t(option.titleKey)}
+                </h3>
+                <p className="text-base text-ink-600 dark:text-ink-300 leading-relaxed mb-6">
+                  {t(option.descKey)}
+                </p>
+                <div className={`flex items-center gap-2 font-semibold ${isSelected ? 'text-white' : 'text-vermilion-500'} group`}>
+                  <span>{t('practice.startNow')}</span>
+                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l-4 4m0 0l-4 4m4-4H3" />
                   </svg>
-                ) : (
-                  <span className="text-xs font-medium">{index === 4 ? t('practice.today') : t('practice.pending')}</span>
-                )}
-              </div>
-            </div>
-          ))}
+                </div>
+              </button>
+            );
+          })}
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          <StatsCard
-            label="practice.charactersLearned"
-            value="12"
-            icon={icons.pencil}
-            accentColor="#007aff"
-          />
-          <StatsCard
-            label="practice.dayStreak"
-            value="5"
-            icon={icons.question}
-            accentColor="#af52de"
-          />
-          <StatsCard
-            label="practice.accuracy"
-            value="87%"
-            icon={icons.chart}
-            accentColor="#34c759"
-          />
+        <div className="bg-white/80 dark:bg-ink-900/80 backdrop-blur-xl rounded-[32px] p-10 border border-ink-100 dark:border-ink-800 reveal shadow-ink-lg">
+          <h3 className="text-2xl font-semibold mb-10 text-ink-900 dark:text-ink-50 display-font">
+            {t('practice.weeklyProgress')}
+          </h3>
+
+          <div className="grid grid-cols-7 gap-4 mb-10">
+            {weekDays.map((day, index) => (
+              <div
+                key={day}
+                className={`flex flex-col items-center p-5 rounded-[20px] ${
+                  index < 5
+                    ? 'bg-gradient-to-br from-vermilion-500 to-vermilion-600 text-white'
+                    : 'bg-ink-50/50 dark:bg-ink-800/30 text-ink-600 dark:text-ink-400 border border-ink-100 dark:border-ink-800'
+                } ${index === 4 ? 'ring-2 ring-vermilion-400' : ''}`}
+              >
+                <p className="text-xs mb-3 font-medium">{t(`practice.${day}`)}</p>
+                <div className={`w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center ${
+                  index < 5 ? 'bg-white/20' : 'bg-white/50 dark:bg-ink-900/50'
+                }`}>
+                  {index < 5 ? (
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  ) : (
+                    <span className="text-xs font-medium">{index === 4 ? t('practice.today') : t('practice.pending')}</span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            <StatsCard
+              label="practice.charactersLearned"
+              value="12"
+              icon={icons.pencil}
+              accentColor="#c53d43"
+            />
+            <StatsCard
+              label="practice.dayStreak"
+              value="5"
+              icon={icons.question}
+              accentColor="#4f46e5"
+            />
+            <StatsCard
+              label="practice.accuracy"
+              value="87%"
+              icon={icons.chart}
+              accentColor="#34c759"
+            />
+          </div>
         </div>
       </div>
 
-      {/* Writing Practice Dialog */}
       <Dialog open={showWritingDialog} onOpenChange={setShowWritingDialog}>
-        <DialogContent className="sm:max-w-[520px]">
+        <DialogContent className="sm:max-w-[520px] bg-white/95 dark:bg-ink-900/95 backdrop-blur-xl rounded-[24px] border-ink-100 dark:border-ink-800 shadow-ink-xl">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-semibold">
+            <DialogTitle className="text-2xl font-semibold text-ink-900 dark:text-ink-50 display-font">
               {t('practice.writingTitle')}
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-ink-600 dark:text-ink-300">
               {t('practice.writingDialogDesc')}
             </DialogDescription>
           </DialogHeader>
-          <div className="flex flex-col items-center gap-4">
-            <div className="flex items-center gap-3">
-              <span className="text-5xl font-light hanzi-font text-foreground">{currentWriteChar.hanzi}</span>
-              <Badge variant="secondary" className="text-base">
-                {currentWriteChar.pinyin}
+
+          <div className="py-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-4">
+                <span className="text-4xl font-light serif-font text-ink-900 dark:text-ink-50">
+                  {currentWriteChar.hanzi}
+                </span>
+                <div>
+                  <p className="text-lg font-medium text-ink-900 dark:text-ink-50">{currentWriteChar.pinyin}</p>
+                  <p className="text-sm text-ink-500 dark:text-ink-400">{currentWriteChar.meaning}</p>
+                </div>
+              </div>
+              <Badge variant="outline" className="rounded-full border-ink-200 text-ink-600 dark:border-ink-700 dark:text-ink-300">
+                {t('practice.strokeCount', { count: currentWriteChar.hanzi.length * 3 })}
               </Badge>
-              <Button variant="ghost" size="sm" onClick={handlePronounceWrite} aria-label={t('common.hearPronunciation')}>
-                <Volume2 className="size-4" aria-hidden="true" />
-              </Button>
             </div>
-            <canvas
-              ref={canvasRef}
-              className="w-[320px] h-[320px] sm:w-[400px] sm:h-[400px] rounded-[24px] border-2 border-border cursor-crosshair touch-none shadow-md"
-              aria-label={`Write character ${currentWriteChar.hanzi}`}
-            />
-          </div>
-          <DialogFooter className="flex flex-row sm:justify-between gap-2">
-            <div className="text-sm text-muted-foreground">
-              {t('practice.characterProgress', { current: quizCharacters.findIndex(c => c.id === currentWriteChar.id) + 1, total: quizCharacters.length })}
-            </div>
-            <div className="flex gap-2">
-              <Button variant="ghost" onClick={handleClearCanvas}>{t('practice.clear')}</Button>
-              <Button variant="ghost" onClick={handleNextWriteChar}>{t('practice.next')}</Button>
-              <Button onClick={() => setShowWritingDialog(false)}>{t('practice.done')}</Button>
-            </div>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
 
-      {/* Quiz Dialog */}
-      <Dialog open={showQuizDialog} onOpenChange={setShowQuizDialog}>
-        <DialogContent className="sm:max-w-[520px]">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-semibold">
-              {t('practice.quizTitle')}
-            </DialogTitle>
-            <DialogDescription>
-              {t('practice.quizDialogDesc')}
-            </DialogDescription>
-          </DialogHeader>
-
-          {quizShowResult ? (
-            <div className="flex flex-col items-center gap-6 py-8">
-              <div className="text-6xl font-bold text-[#007aff]">
-                {Math.round((quizState.correctCount / quizCharacters.length) * 100)}%
-              </div>
-              <div className="text-center">
-                <div className="text-xl text-foreground mb-2">{t('practice.quizComplete')}</div>
-                <div className="text-muted-foreground">
-                  {t('practice.correct')} {quizState.correctCount} · {t('practice.wrong')} {quizState.wrongCount}
-                </div>
-              </div>
-              <div className="flex gap-2">
-                <Button variant="ghost" onClick={() => setShowQuizDialog(false)}>{t('practice.close')}</Button>
-                <Button onClick={resetQuiz}>{t('practice.retake')}</Button>
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-muted-foreground">
-                  {t('practice.question')} {quizState.currentIndex + 1} / {quizCharacters.length}
-                </div>
-                <div className="flex gap-4 text-sm">
-                  <span className="text-green-600 flex items-center gap-1"><Check className="size-3.5" aria-hidden="true" /> {quizState.correctCount}</span>
-                  <span className="text-red-600 flex items-center gap-1"><X className="size-3.5" aria-hidden="true" /> {quizState.wrongCount}</span>
-                </div>
-              </div>
-
-              <div className="flex flex-col items-center gap-4 py-4">
-                <div className="text-[100px] font-light hanzi-font text-foreground">
-                  {currentQuizChar?.hanzi}
-                </div>
-                <Button variant="ghost" size="sm" onClick={handlePronounceQuiz}>
-                  <Volume2 className="size-4 mr-1" aria-hidden="true" /> {t('practice.listenPronunciation')}
-                </Button>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                {quizOptions.map((option) => {
-                  const isSelected = quizState.selectedAnswer === option;
-                  const isCorrect = option === currentQuizChar?.pinyin;
-                  let buttonClass = '';
-                  if (quizState.answered) {
-                    if (isCorrect) {
-                      buttonClass = 'bg-green-500 text-white hover:bg-green-500';
-                    } else if (isSelected && !isCorrect) {
-                      buttonClass = 'bg-red-500 text-white hover:bg-red-500';
-                    }
-                  }
-                  return (
-                    <Button
-                      key={option}
-                      variant={quizState.answered ? 'outline' : 'secondary'}
-                      size="lg"
-                      className={`text-lg py-6 font-medium ${buttonClass}`}
-                      disabled={quizState.answered}
-                      onClick={() => handleQuizAnswer(option)}
-                    >
-                      {option}
-                    </Button>
-                  );
-                })}
-              </div>
-
-              {quizState.answered && (
-                <div className="flex justify-end mt-2">
-                  <Button onClick={handleNextQuizQuestion}>
-                    {quizState.currentIndex >= quizCharacters.length - 1 ? t('practice.viewResults') : t('practice.nextQuestion')}
-                  </Button>
-                </div>
-              )}
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
-
-      {/* Progress Dialog */}
-      <Dialog open={showProgressDialog} onOpenChange={setShowProgressDialog}>
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-semibold">
-              {t('practice.progressTitle')}
-            </DialogTitle>
-            <DialogDescription>
-              {t('practice.progressDialogDesc')}
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="grid grid-cols-3 gap-4 py-4">
-            <div className="bg-muted rounded-[20px] p-6 text-center">
-              <div className="text-4xl font-bold text-[#007aff] mb-2">12</div>
-              <div className="text-sm text-muted-foreground">{t('practice.learnedCharacters')}</div>
-            </div>
-            <div className="bg-muted rounded-[20px] p-6 text-center">
-              <div className="text-4xl font-bold text-[#af52de] mb-2">5</div>
-              <div className="text-sm text-muted-foreground">{t('practice.dayStreakLabel')}</div>
-            </div>
-            <div className="bg-muted rounded-[20px] p-6 text-center">
-              <div className="text-4xl font-bold text-green-600 mb-2">87%</div>
-              <div className="text-sm text-muted-foreground">{t('practice.accuracyLabel')}</div>
-            </div>
-          </div>
-
-          <div className="py-4">
-            <h4 className="text-lg font-semibold mb-4 text-foreground">{t('practice.studyCharacters')}</h4>
-            <div className="grid grid-cols-4 sm:grid-cols-6 gap-3">
-              {quizCharacters.map((char) => (
-                <div
-                  key={char.id}
-                  className="aspect-square flex flex-col items-center justify-center bg-background dark:bg-foreground/5 rounded-2xl p-3 border border-border"
-                >
-                  <span className="text-2xl font-light hanzi-font text-foreground">{char.hanzi}</span>
-                  <span className="text-xs text-muted-foreground mt-1">{char.pinyin}</span>
-                </div>
-              ))}
+            <div className="relative aspect-square bg-white dark:bg-ink-900 rounded-[20px] border-2 border-dashed border-ink-200 dark:border-ink-700 overflow-hidden">
+              <canvas
+                ref={canvasRef}
+                className="w-full h-full cursor-crosshair"
+                onMouseDown={handleCanvasMouseDown}
+                onMouseMove={handleCanvasMouseMove}
+                onMouseUp={handleCanvasMouseUp}
+                onMouseLeave={handleCanvasMouseUp}
+                onTouchStart={handleCanvasTouchStart}
+                onTouchMove={handleCanvasTouchMove}
+                onTouchEnd={handleCanvasTouchEnd}
+              />
             </div>
           </div>
 
           <DialogFooter>
-            <Button onClick={() => setShowProgressDialog(false)}>{t('practice.close')}</Button>
+            <Button variant="outline" onClick={clearCanvas} className="rounded-full border-ink-200 text-ink-700 dark:border-ink-700 dark:text-ink-200">
+              {t('practice.clear')}
+            </Button>
+            <Button onClick={handleNextWriteChar} className="bg-vermilion-500 hover:bg-vermilion-600 text-white rounded-full">
+              {t('practice.next')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showQuizDialog} onOpenChange={setShowQuizDialog}>
+        <DialogContent className="sm:max-w-[480px] bg-white/95 dark:bg-ink-900/95 backdrop-blur-xl rounded-[24px] border-ink-100 dark:border-ink-800 shadow-ink-xl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-semibold text-ink-900 dark:text-ink-50 display-font">
+              {t('practice.quizTitle')}
+            </DialogTitle>
+            <DialogDescription className="text-ink-600 dark:text-ink-300">
+              {t('practice.quizDialogDesc')}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="py-8">
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <span className="text-6xl font-light serif-font text-ink-900 dark:text-ink-50">
+                {currentQuizChar.hanzi}
+              </span>
+              <div className="text-right">
+                <p className="text-2xl font-medium text-ink-900 dark:text-ink-50">{currentQuizChar.pinyin}</p>
+                <p className="text-sm text-ink-500 dark:text-ink-400">{currentQuizChar.meaning}</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              {['一', '二', '三', '人', '大', '小', '口', '日'].map((char) => (
+                <button
+                  key={char}
+                  onClick={() => handleQuizAnswer(char)}
+                  disabled={quizState.answered}
+                  className={`py-6 text-3xl font-light serif-font rounded-[16px] transition-all duration-300 ${
+                    selectedAnswer === char
+                      ? char === currentQuizChar.hanzi
+                        ? 'bg-vermilion-500 text-white shadow-vermilion-glow'
+                        : 'bg-red-500 text-white'
+                      : 'bg-ink-50/50 dark:bg-ink-800/30 text-ink-900 dark:text-ink-50 border border-ink-200 dark:border-ink-700 hover:border-vermilion-300 dark:hover:border-vermilion-500'
+                  }`}
+                >
+                  {char}
+                </button>
+              ))}
+            </div>
+
+            {quizState.answered && (
+              <div className={`mt-6 text-center font-semibold ${
+                selectedAnswer === currentQuizChar.hanzi ? 'text-vermilion-600 dark:text-vermilion-400' : 'text-red-500'
+              }`}>
+                {selectedAnswer === currentQuizChar.hanzi ? t('practice.quizCorrect') : t('practice.quizIncorrect')}
+              </div>
+            )}
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => { setShowQuizDialog(false); setQuizState({ currentIndex: 0, correctCount: 0, wrongCount: 0, answered: false }); setSelectedAnswer(''); }} className="rounded-full border-ink-200 text-ink-700 dark:border-ink-700 dark:text-ink-200">
+              {t('common.cancel')}
+            </Button>
+            <Button onClick={handleNextQuiz} className="bg-vermilion-500 hover:bg-vermilion-600 text-white rounded-full">
+              {t('practice.nextQuestion')}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

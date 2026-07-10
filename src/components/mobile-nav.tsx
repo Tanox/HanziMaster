@@ -1,4 +1,4 @@
-// src/components/mobile-nav.tsx v3.0.0
+// src/components/mobile-nav.tsx v4.0.0
 'use client';
 
 import { useEffect, useRef } from 'react';
@@ -16,19 +16,16 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
   const drawerRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  /* Focus management */
   useEffect(() => {
     if (isOpen) {
       closeButtonRef.current?.focus();
     }
   }, [isOpen]);
 
-  /* Close on route change */
   useEffect(() => {
     onClose();
   }, [pathname, onClose]);
 
-  /* Close on Escape key */
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -51,7 +48,7 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/40 dark:bg-black/60 z-50 backdrop-blur-sm animate-fade-in-up"
+        className="fixed inset-0 bg-ink-900/30 dark:bg-ink-950/50 z-50 backdrop-blur-sm animate-fade-in-elegant"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -61,23 +58,22 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
         ref={drawerRef}
         role="dialog"
         aria-modal="true"
-        aria-label="Navigation menu"
-        className="fixed right-0 top-0 h-full w-72 max-w-[85vw] bg-white dark:bg-gray-900 shadow-2xl z-50 animate-slide-in-right flex flex-col overscroll-contain"
+        aria-label={t('common.navigationMenu')}
+        className="fixed right-0 top-0 h-full w-72 max-w-[85vw] bg-white/95 dark:bg-ink-900/95 backdrop-blur-xl shadow-ink-xl z-50 animate-slide-in-right flex flex-col overscroll-contain"
       >
         {/* Drawer Header */}
-        <div className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-800">
+        <div className="flex justify-between items-center p-5 border-b border-ink-100 dark:border-ink-800">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-gradient-to-br from-[#007aff] to-[#5856d6] rounded-xl flex items-center justify-center shadow-md">
-              <span className="text-white text-base font-bold hanzi-font">汉</span>
+            <div className="w-10 h-10 bg-gradient-to-br from-vermilion-500 to-vermilion-600 rounded-xl flex items-center justify-center shadow-sm">
+              <span className="text-white text-base font-bold serif-font">汉</span>
             </div>
-            <span className="text-base font-bold text-gray-900 dark:text-white">HanziMaster</span>
+            <span className="text-base font-bold text-ink-900 dark:text-ink-50 display-font">HanziMaster</span>
           </div>
           <button
             ref={closeButtonRef}
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-[background-color] duration-200"
-            aria-label="Close menu"
-            style={{ minWidth: 44, minHeight: 44 }}
+            className="p-2 rounded-xl hover:bg-ink-100 dark:hover:bg-ink-800 transition-colors duration-200 touch-target"
+            aria-label={t('common.closeMenu')}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -87,14 +83,14 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
 
         {/* Navigation Links */}
         <nav className="flex-1 overflow-y-auto p-4">
-          <div className="space-y-1">
+          <div className="space-y-2">
             <Link
               href="/"
               onClick={onClose}
-              className={`block px-4 py-3 rounded-xl font-medium transition-colors ${
+              className={`block px-4 py-3 rounded-xl font-medium transition-colors duration-200 ${
                 pathname === '/'
-                  ? 'bg-[#007aff]/10 dark:bg-[#5856d6]/20 text-[#007aff] dark:text-[#2997ff]'
-                  : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
+                  ? 'bg-vermilion-500/10 dark:bg-vermilion-500/20 text-vermilion-500 dark:text-vermilion-400'
+                  : 'text-ink-600 dark:text-ink-300 hover:bg-ink-100 dark:hover:bg-ink-800'
               }`}
             >
               {t('common.home')}
@@ -102,10 +98,10 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
             <Link
               href="/learn"
               onClick={onClose}
-              className={`block px-4 py-3 rounded-xl font-medium transition-colors ${
+              className={`block px-4 py-3 rounded-xl font-medium transition-colors duration-200 ${
                 pathname === '/learn'
-                  ? 'bg-[#007aff]/10 dark:bg-[#5856d6]/20 text-[#007aff] dark:text-[#2997ff]'
-                  : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
+                  ? 'bg-vermilion-500/10 dark:bg-vermilion-500/20 text-vermilion-500 dark:text-vermilion-400'
+                  : 'text-ink-600 dark:text-ink-300 hover:bg-ink-100 dark:hover:bg-ink-800'
               }`}
             >
               {t('common.learn')}
@@ -113,10 +109,10 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
             <Link
               href="/practice"
               onClick={onClose}
-              className={`block px-4 py-3 rounded-xl font-medium transition-colors ${
+              className={`block px-4 py-3 rounded-xl font-medium transition-colors duration-200 ${
                 pathname === '/practice'
-                  ? 'bg-[#007aff]/10 dark:bg-[#5856d6]/20 text-[#007aff] dark:text-[#2997ff]'
-                  : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
+                  ? 'bg-vermilion-500/10 dark:bg-vermilion-500/20 text-vermilion-500 dark:text-vermilion-400'
+                  : 'text-ink-600 dark:text-ink-300 hover:bg-ink-100 dark:hover:bg-ink-800'
               }`}
             >
               {t('common.practice')}
@@ -125,9 +121,9 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
         </nav>
 
         {/* Drawer Footer */}
-        <div className="p-4 border-t border-gray-200 dark:border-gray-800 text-center">
-          <p className="text-xs text-gray-500 dark:text-gray-500">
-            HanziMaster v3.0.0
+        <div className="p-5 border-t border-ink-100 dark:border-ink-800 text-center">
+          <p className="text-xs text-ink-400 dark:text-ink-500">
+            HanziMaster v4.0.0
           </p>
         </div>
       </div>
