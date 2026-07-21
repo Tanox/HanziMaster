@@ -13,6 +13,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { characters } from '@/lib/characters';
+
+const strokeMap = new Map(characters.map((c) => [c.hanzi, c.strokes]));
 
 interface PracticeOption {
   id: string;
@@ -120,8 +123,15 @@ export default function PracticePage() {
     }
   };
 
-  const handleCanvasMouseDown = () => {
+  const handleCanvasMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     isDrawing.current = true;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const rect = canvas.getBoundingClientRect();
+    ctx.beginPath();
+    ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
   };
 
   const handleCanvasMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -293,11 +303,11 @@ export default function PracticePage() {
               <button
                 key={option.id}
                 onClick={() => handlePracticeOption(option.id)}
-                className={`group bg-white/80 dark:bg-ink-900/80 backdrop-blur-sm p-10 rounded-[28px] border-2 border-ink-100 dark:border-ink-800 hover:border-vermilion-300 dark:hover:border-vermilion-500 hover:-translate-y-2 hover:shadow-ink-lg transition-all duration-300 text-left ${
+                className={`group bg-white/80 dark:bg-ink-900/80 backdrop-blur-sm p-10 rounded-3xl border-2 border-ink-100 dark:border-ink-800 hover:border-vermilion-300 dark:hover:border-vermilion-500 hover:-translate-y-2 hover:shadow-ink-lg transition-[colors,transform] duration-300 text-left ${
                   isSelected ? 'border-vermilion-500 shadow-vermilion-glow' : ''
                 }`}
               >
-                <div className={`relative w-20 h-20 rounded-[20px] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ${
+                <div className={`relative w-20 h-20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ${
                   isSelected ? 'bg-vermilion-500 text-white' : 'bg-gradient-to-br from-vermilion-500/10 to-indigo/10 dark:from-vermilion-500/20 dark:to-indigo/20 text-vermilion-500'
                 }`}>
                   {icons[option.icon]}
@@ -319,7 +329,7 @@ export default function PracticePage() {
           })}
         </div>
 
-        <div className="bg-white/80 dark:bg-ink-900/80 backdrop-blur-xl rounded-[32px] p-10 border border-ink-100 dark:border-ink-800 reveal shadow-ink-lg">
+        <div className="bg-white/80 dark:bg-ink-900/80 backdrop-blur-xl rounded-4xl p-10 border border-ink-100 dark:border-ink-800 reveal shadow-ink-lg">
           <h3 className="text-2xl font-semibold mb-10 text-ink-900 dark:text-ink-50 display-font">
             {t('practice.weeklyProgress')}
           </h3>
@@ -328,7 +338,7 @@ export default function PracticePage() {
             {weekDays.map((day, index) => (
               <div
                 key={day}
-                className={`flex flex-col items-center p-5 rounded-[20px] ${
+                className={`flex flex-col items-center p-5 rounded-xl ${
                   index < 5
                     ? 'bg-gradient-to-br from-vermilion-500 to-vermilion-600 text-white'
                     : 'bg-ink-50/50 dark:bg-ink-800/30 text-ink-600 dark:text-ink-400 border border-ink-100 dark:border-ink-800'
@@ -374,7 +384,7 @@ export default function PracticePage() {
       </div>
 
       <Dialog open={showWritingDialog} onOpenChange={setShowWritingDialog}>
-        <DialogContent className="sm:max-w-[520px] bg-white/95 dark:bg-ink-900/95 backdrop-blur-xl rounded-[24px] border-ink-100 dark:border-ink-800 shadow-ink-xl">
+        <DialogContent className="sm:max-w-[520px] bg-white/95 dark:bg-ink-900/95 backdrop-blur-xl rounded-3xl border-ink-100 dark:border-ink-800 shadow-ink-xl">
           <DialogHeader>
             <DialogTitle className="text-2xl font-semibold text-ink-900 dark:text-ink-50 display-font">
               {t('practice.writingTitle')}
@@ -396,11 +406,11 @@ export default function PracticePage() {
                 </div>
               </div>
               <Badge variant="outline" className="rounded-full border-ink-200 text-ink-600 dark:border-ink-700 dark:text-ink-300">
-                {t('practice.strokeCount', { count: currentWriteChar.hanzi.length * 3 })}
+                {t('practice.strokeCount', { count: strokeMap.get(currentWriteChar.hanzi) ?? currentWriteChar.hanzi.length })}
               </Badge>
             </div>
 
-            <div className="relative aspect-square bg-white dark:bg-ink-900 rounded-[20px] border-2 border-dashed border-ink-200 dark:border-ink-700 overflow-hidden">
+            <div className="relative aspect-square bg-white dark:bg-ink-900 rounded-xl border-2 border-dashed border-ink-200 dark:border-ink-700 overflow-hidden">
               <canvas
                 ref={canvasRef}
                 className="w-full h-full cursor-crosshair"
@@ -427,7 +437,7 @@ export default function PracticePage() {
       </Dialog>
 
       <Dialog open={showQuizDialog} onOpenChange={setShowQuizDialog}>
-        <DialogContent className="sm:max-w-[480px] bg-white/95 dark:bg-ink-900/95 backdrop-blur-xl rounded-[24px] border-ink-100 dark:border-ink-800 shadow-ink-xl">
+        <DialogContent className="sm:max-w-[480px] bg-white/95 dark:bg-ink-900/95 backdrop-blur-xl rounded-3xl border-ink-100 dark:border-ink-800 shadow-ink-xl">
           <DialogHeader>
             <DialogTitle className="text-2xl font-semibold text-ink-900 dark:text-ink-50 display-font">
               {t('practice.quizTitle')}
@@ -454,7 +464,7 @@ export default function PracticePage() {
                   key={char}
                   onClick={() => handleQuizAnswer(char)}
                   disabled={quizState.answered}
-                  className={`py-6 text-3xl font-light serif-font rounded-[16px] transition-all duration-300 ${
+                  className={`py-6 text-3xl font-light serif-font rounded-lg transition-[colors,transform] duration-300 ${
                     selectedAnswer === char
                       ? char === currentQuizChar.hanzi
                         ? 'bg-vermilion-500 text-white shadow-vermilion-glow'

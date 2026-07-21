@@ -45,7 +45,7 @@ export function ThemeToggleClient() {
   return (
     <button
       onClick={cycleTheme}
-      className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors relative group"
+      className="p-2 rounded-lg hover:bg-muted transition-colors relative group"
       aria-label={ariaLabels[theme]}
       title={t(`common.theme.${theme}`)}
       style={{ minWidth: 44, minHeight: 44 }}
@@ -53,7 +53,7 @@ export function ThemeToggleClient() {
       {themeIcons[theme] || themeIcons.system}
 
       {/* Tooltip on hover */}
-      <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 dark:bg-gray-200 text-white dark:text-gray-800 text-[10px] font-medium px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap hidden sm:block">
+      <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-ink-800 dark:bg-ink-100 text-white dark:text-ink-900 text-[10px] font-medium px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap hidden sm:block">
         {t(`common.theme.${theme}`)}
       </span>
     </button>

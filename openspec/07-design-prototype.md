@@ -90,8 +90,8 @@
 | `--radius-md` | 0.75rem (12px) | 按钮 |
 | `--radius-lg` | 1rem (16px) | 卡片 |
 | `--radius-xl` | 1.25rem (20px) | 大卡片 |
-| `--radius-2xl` | 1.5rem (24px) | 弹窗 |
-| `--radius-3xl` | 1.75rem (28px) | 展示卡片 |
+| `--radius-2xl` | 1.5rem (24px) | 下拉/选择菜单（Select、DropdownMenu 内容） |
+| `--radius-3xl` | 1.75rem (28px) | 弹窗（Dialog、Sheet） |
 | `--radius-4xl` | 2rem (32px) | Hero 卡片 |
 
 ### 2.5 阴影系统

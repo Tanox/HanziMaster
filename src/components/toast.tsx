@@ -62,7 +62,7 @@ function ToastItem({ id, message, type, duration = 5000, onRemove }: ToastItemPr
       role="alert"
       className={cn(
         'flex items-center gap-3 px-4 py-3 rounded-xl border shadow-lg min-w-[280px] max-w-[400px]',
-        'transition-all duration-300',
+        'transition-[opacity,transform] duration-300',
         isExiting ? 'opacity-0 translate-x-full' : 'opacity-100 translate-x-0 animate-slide-in-right',
         typeStyles[type]
       )}

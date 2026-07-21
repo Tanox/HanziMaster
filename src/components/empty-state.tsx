@@ -23,7 +23,7 @@ export function EmptyState({
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col items-center justify-center py-16 px-6 gap-5 bg-muted/50 dark:bg-foreground/5 rounded-[24px] border border-border">
+    <div className="flex flex-col items-center justify-center py-16 px-6 gap-5 bg-muted/50 dark:bg-foreground/5 rounded-2xl border border-border">
       <div className="w-16 h-16 bg-muted dark:bg-foreground/10 rounded-full flex items-center justify-center text-muted-foreground">
         <span aria-hidden="true">{icon}</span>
       </div>

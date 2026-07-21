@@ -50,7 +50,7 @@ export default function HomePage() {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4 mb-16 animate-fade-in-elegant hero-cta opacity-0">
-            <Button asChild size="lg" className="rounded-full bg-vermilion-500 hover:bg-vermilion-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
+            <Button asChild size="lg" className="rounded-full bg-vermilion-500 hover:bg-vermilion-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-[colors,transform,opacity] duration-300">
               <Link href="/learn">
                 {t('common.startLearning')}
               </Link>
@@ -62,7 +62,7 @@ export default function HomePage() {
             </Button>
           </div>
 
-          <div className="bg-white/80 dark:bg-ink-900/80 backdrop-blur-xl rounded-[32px] p-10 sm:p-12 border border-ink-100 dark:border-ink-800 max-w-4xl mx-auto animate-fade-in-elegant hero-visual opacity-0 shadow-ink-lg">
+          <div className="bg-white/80 dark:bg-ink-900/80 backdrop-blur-xl rounded-4xl p-10 sm:p-12 border border-ink-100 dark:border-ink-800 max-w-4xl mx-auto animate-fade-in-elegant hero-visual opacity-0 shadow-ink-lg">
             <div className="grid lg:grid-cols-2 gap-10 items-center">
               <div className="text-center">
                 <div className="relative inline-block">
