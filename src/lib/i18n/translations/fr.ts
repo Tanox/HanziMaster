@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/fr.ts v3.0.0
+// src/lib/i18n/translations/fr.ts v5.0.0
 export const fr = {
   common: {
     home: 'Accueil',
@@ -21,6 +21,12 @@ export const fr = {
       dark: 'Sombre',
       system: 'Système',
     },
+    cancel: 'Annuler',
+    submit: 'Envoyer',
+    skipToContent: 'Aller au contenu',
+    openMenu: 'Ouvrir le menu',
+    closeMenu: 'Fermer le menu',
+    navigationMenu: 'Menu de navigation',
   },
   home: {
     heroTitle: 'Maîtrisez le Chinois',
@@ -84,6 +90,7 @@ export const fr = {
     dayStreakLabel: 'Jours Consécutifs',
     accuracyLabel: 'Précision',
     studyCharacters: 'Étudier les Caractères',
+    strokeCount: 'Nombre de traits : {{count}}',
   },
   learn: {
     one: 'Un',
@@ -156,9 +163,22 @@ export const fr = {
       glassOfWater: 'Veuillez me donner un verre d\'eau.',
       carefulFire: 'Attention au feu !',
     },
+    pinyin: 'Pinyin',
+    meaning: 'Signification',
+    wordExamples: 'Mots et expressions',
+    strokeOrder: 'Ordre des traits',
+    strokeCount: 'Nombre de traits : {{count}}',
+    playAudio: 'Lire l’audio',
+    startQuiz: 'Commencer le quiz',
+    nextCharacter: 'Caractère suivant',
+    quizTitle: 'Quiz de caractères',
+    quizDesc: 'Testez vos connaissances du pinyin et du sens du caractère.',
+    quizPlaceholder: 'Saisissez le pinyin...',
+    quizCorrect: 'Correct !',
+    quizIncorrect: 'Incorrect',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. Tous droits réservés.',
+    copyright: '© 2026 HanziMaster 汉字大师 v5.0.0. Tous droits réservés.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

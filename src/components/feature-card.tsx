@@ -1,3 +1,4 @@
+// src/components/feature-card.tsx v5.0.0
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';

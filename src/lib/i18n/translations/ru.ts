@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ru.ts v3.0.0
+// src/lib/i18n/translations/ru.ts v5.0.0
 export const ru = {
   common: {
     home: 'Главная',
@@ -21,6 +21,12 @@ export const ru = {
       dark: 'Тёмная',
       system: 'Системная',
     },
+    cancel: 'Отмена',
+    submit: 'Отправить',
+    skipToContent: 'Перейти к содержанию',
+    openMenu: 'Открыть меню',
+    closeMenu: 'Закрыть меню',
+    navigationMenu: 'Навигационное меню',
   },
   home: {
     heroTitle: 'Освойте Китайский',
@@ -84,6 +90,7 @@ export const ru = {
     dayStreakLabel: 'Дней Подряд',
     accuracyLabel: 'Точность',
     studyCharacters: 'Изучать Иероглифы',
+    strokeCount: 'Количество черт: {{count}}',
   },
   learn: {
     one: 'Один',
@@ -156,9 +163,22 @@ export const ru = {
       glassOfWater: 'Пожалуйста, дайте мне стакан воды.',
       carefulFire: 'Осторожно с огнём!',
     },
+    pinyin: 'Пиньинь',
+    meaning: 'Значение',
+    wordExamples: 'Слова и фразы',
+    strokeOrder: 'Порядок черт',
+    strokeCount: 'Количество черт: {{count}}',
+    playAudio: 'Воспроизвести аудио',
+    startQuiz: 'Начать тест',
+    nextCharacter: 'Следующий символ',
+    quizTitle: 'Тест по иероглифам',
+    quizDesc: 'Проверьте знание пиньиня и значения иероглифа.',
+    quizPlaceholder: 'Введите пиньинь...',
+    quizCorrect: 'Верно!',
+    quizIncorrect: 'Неверно',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. Все права защищены.',
+    copyright: '© 2026 HanziMaster 汉字大师 v5.0.0. Все права защищены.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

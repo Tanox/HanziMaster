@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/de.ts v3.0.0
+// src/lib/i18n/translations/de.ts v5.0.0
 export const de = {
   common: {
     home: 'Startseite',
@@ -21,6 +21,12 @@ export const de = {
       dark: 'Dunkel',
       system: 'System',
     },
+    cancel: 'Abbrechen',
+    submit: 'Senden',
+    skipToContent: 'Zum Inhalt springen',
+    openMenu: 'Menü öffnen',
+    closeMenu: 'Menü schließen',
+    navigationMenu: 'Navigationsmenü',
   },
   home: {
     heroTitle: 'Chinesisch Meistern',
@@ -84,6 +90,7 @@ export const de = {
     dayStreakLabel: 'Tage Streak',
     accuracyLabel: 'Genauigkeit',
     studyCharacters: 'Zeichen Lernen',
+    strokeCount: 'Strichanzahl: {{count}}',
   },
   learn: {
     one: 'Eins',
@@ -156,9 +163,22 @@ export const de = {
       glassOfWater: 'Bitte geben Sie mir ein Glas Wasser.',
       carefulFire: 'Vorsicht vor Feuer!',
     },
+    pinyin: 'Pinyin',
+    meaning: 'Bedeutung',
+    wordExamples: 'Wörter & Phrasen',
+    strokeOrder: 'Strichfolge',
+    strokeCount: 'Strichanzahl: {{count}}',
+    playAudio: 'Audio abspielen',
+    startQuiz: 'Quiz starten',
+    nextCharacter: 'Nächstes Zeichen',
+    quizTitle: 'Zeichen-Quiz',
+    quizDesc: 'Testen Sie Ihr Wissen über Pinyin und Bedeutung des Zeichens.',
+    quizPlaceholder: 'Pinyin eingeben...',
+    quizCorrect: 'Richtig!',
+    quizIncorrect: 'Falsch',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. Alle Rechte vorbehalten.',
+    copyright: '© 2026 HanziMaster 汉字大师 v5.0.0. Alle Rechte vorbehalten.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

@@ -1,4 +1,4 @@
-# HanziMaster 汉字大师 v3.0.0
+# HanziMaster 汉字大师 v5.0.0
 
 [English](README_EN.md) | [简体中文](README.md)
 
@@ -11,24 +11,25 @@ HanziMaster is a modern, AI-powered platform for learning Chinese characters. It
 - **Etymology & Culture**: Discover the stories behind the characters.
 - **Responsive Design**: Flawless support for desktop and mobile devices.
 - **Dark/Light Mode**: Persistent theme preference with system detection.
-- **Chinese Font Support**: Noto Sans SC for elegant character display.
+- **Ink-and-Vermilion Design System**: Unified ink/vermilion/indigo color scales with a single token source.
+- **Chinese Font Support**: Noto Serif SC for elegant character display.
 - **Internationalization (i18n)**: Support for 11 languages including English, Chinese (Simplified/Traditional), Spanish, Arabic, French, Portuguese, German, Japanese, Korean, and Russian.
 - **Language Switcher**: Easy language switching with persistence.
 
 ## Tech Stack
 
-- **Framework**: Next.js 15
+- **Framework**: Next.js 16
 - **UI Library**: React 19
-- **Styling**: Tailwind CSS 4.0
+- **Styling**: Tailwind CSS 4.0 + Ink-and-Vermilion Design System
 - **AI**: Google Gemini AI
-- **Fonts**: Inter, JetBrains Mono, Noto Sans SC
+- **Fonts**: Space Grotesk, Playfair Display, Noto Serif SC, JetBrains Mono
 - **Internationalization**: Custom i18n context with 11 languages
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js >= 20.11.0
+- Node.js >= 24.5.0
 - npm or yarn
 
 ### Installation

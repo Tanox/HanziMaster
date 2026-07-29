@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/es.ts v3.0.0
+// src/lib/i18n/translations/es.ts v5.0.0
 export const es = {
   common: {
     home: 'Inicio',
@@ -21,6 +21,12 @@ export const es = {
       dark: 'Oscuro',
       system: 'Sistema',
     },
+    cancel: 'Cancelar',
+    submit: 'Enviar',
+    skipToContent: 'Saltar al contenido',
+    openMenu: 'Abrir menú',
+    closeMenu: 'Cerrar menú',
+    navigationMenu: 'Menú de navegación',
   },
   home: {
     heroTitle: 'Domina el Chino',
@@ -84,6 +90,7 @@ export const es = {
     dayStreakLabel: 'Días Seguidos',
     accuracyLabel: 'Precisión',
     studyCharacters: 'Estudiar Caracteres',
+    strokeCount: 'Número de trazos: {{count}}',
   },
   learn: {
     one: 'Uno',
@@ -156,9 +163,22 @@ export const es = {
       glassOfWater: 'Por favor dame un vaso de agua.',
       carefulFire: '¡Cuidado con el fuego!',
     },
+    pinyin: 'Pinyin',
+    meaning: 'Significado',
+    wordExamples: 'Palabras y frases',
+    strokeOrder: 'Orden de trazos',
+    strokeCount: 'Número de trazos: {{count}}',
+    playAudio: 'Reproducir audio',
+    startQuiz: 'Comenzar cuestionario',
+    nextCharacter: 'Siguiente carácter',
+    quizTitle: 'Cuestionario de caracteres',
+    quizDesc: 'Pon a prueba tu conocimiento del pinyin y significado del carácter.',
+    quizPlaceholder: 'Ingrese pinyin...',
+    quizCorrect: '¡Correcto!',
+    quizIncorrect: 'Incorrecto',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. Todos los derechos reservados.',
+    copyright: '© 2026 HanziMaster 汉字大师 v5.0.0. Todos los derechos reservados.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

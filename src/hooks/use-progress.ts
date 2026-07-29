@@ -1,4 +1,4 @@
-// src/hooks/use-progress.ts v3.0.0
+// src/hooks/use-progress.ts v5.0.0
 // Progress tracking with localStorage persistence
 
 import { useState, useEffect, useCallback } from 'react';

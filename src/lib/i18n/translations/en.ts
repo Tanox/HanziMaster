@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/en.ts v3.0.0
+// src/lib/i18n/translations/en.ts v5.0.0
 export const en = {
   common: {
     home: 'Home',
@@ -21,6 +21,12 @@ export const en = {
       dark: 'Dark',
       system: 'System',
     },
+    cancel: 'Cancel',
+    submit: 'Submit',
+    skipToContent: 'Skip to content',
+    openMenu: 'Open menu',
+    closeMenu: 'Close menu',
+    navigationMenu: 'Navigation menu',
   },
   home: {
     heroTitle: 'Master Chinese',
@@ -63,7 +69,6 @@ export const en = {
     charactersLearned: 'Characters Learned',
     dayStreak: 'Day Streak',
     accuracy: 'Accuracy',
-    // Hardcoded strings in practice page
     writingDialogDesc: 'Practice writing Chinese characters in the grid',
     characterProgress: 'Character {{current}} / {{total}}',
     clear: 'Clear',
@@ -85,6 +90,7 @@ export const en = {
     dayStreakLabel: 'Day Streak',
     accuracyLabel: 'Accuracy',
     studyCharacters: 'Study Characters',
+    strokeCount: 'Stroke Count: {{count}}',
   },
   learn: {
     one: 'One',
@@ -157,9 +163,22 @@ export const en = {
       glassOfWater: 'Please give me a glass of water.',
       carefulFire: 'Be careful of fire!',
     },
+    pinyin: 'Pinyin',
+    meaning: 'Meaning',
+    wordExamples: 'Words & Phrases',
+    strokeOrder: 'Stroke Order',
+    strokeCount: 'Stroke Count: {{count}}',
+    playAudio: 'Play Audio',
+    startQuiz: 'Start Quiz',
+    nextCharacter: 'Next Character',
+    quizTitle: 'Character Quiz',
+    quizDesc: 'Test your knowledge of the character’s pinyin and meaning.',
+    quizPlaceholder: 'Enter pinyin...',
+    quizCorrect: 'Correct!',
+    quizIncorrect: 'Incorrect',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. All rights reserved.',
+    copyright: '© 2026 HanziMaster 汉字大师 v5.0.0. All rights reserved.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v3.0.0",
-  "version": "3.0.0",
-  "description": "v3.0.0: Design System overhaul (Apple-HIG inspired), complete components library, high-fidelity interactive prototype, professional interaction standards, refined project structure, full OpenSpec/prototype/CHANGELOG consistency.",
+  "name": "HanziMaster 汉字大师 v5.0.0",
+  "version": "5.0.0",
+  "description": "v5.0.0: 东方水墨·朱砂红 design system (Space Grotesk/Playfair Display/Noto Serif SC/JetBrains Mono), 11-language i18n, full OpenSpec/prototype/CHANGELOG consistency, modular architecture.",
   "keywords": [
     "Chinese characters",
     "Hanzi",

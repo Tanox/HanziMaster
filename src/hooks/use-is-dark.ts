@@ -1,4 +1,4 @@
-// src/hooks/use-is-dark.ts v3.0.0
+// src/hooks/use-is-dark.ts v5.0.0
 'use client';
 
 import { useEffect, useState } from 'react';

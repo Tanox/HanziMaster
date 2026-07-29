@@ -13,14 +13,14 @@
 - **个性化进度** - 根据你的学习情况智能推荐，连续学习天数统计
 - **11 种语言** - 简体中文、繁体中文、英语、日语、韩语等
 - **深色模式** - 支持跟随系统或手动切换
-- **Apple 设计系统** - 统一使用 Apple 品牌色彩系统（Blue/Purple）
+- **东方水墨·朱砂红设计系统** - 统一使用 ink/vermilion/indigo 色阶，单一 token 来源
 - **移动端适配** - 完美支持手机和平板
 
 ## 快速开始
 
 ### 环境要求
 
-- Node.js 20.11.0 或更高版本
+- Node.js 24.5.0 或更高版本
 - npm / yarn / pnpm
 
 ### 安装
@@ -62,11 +62,11 @@ cp .env.example .env
 
 ## 技术栈
 
-- **框架**: Next.js 15 (App Router)
+- **框架**: Next.js 16 (App Router)
 - **UI 库**: React 19
-- **样式**: Tailwind CSS 4.0 + Apple 设计系统
+- **样式**: Tailwind CSS 4.0 + 东方水墨·朱砂红设计系统
 - **AI**: Google Gemini AI
-- **字体**: Inter, JetBrains Mono, Noto Sans SC
+- **字体**: Space Grotesk, Playfair Display, Noto Serif SC, JetBrains Mono
 - **国际化**: 自定义 i18n 上下文（11 种语言）
 
 ## 支持的语言
@@ -82,4 +82,4 @@ cp .env.example .env
 
 ## 许可证
 
-© 2026 HanziMaster 汉字大师 v3.0.0
+© 2026 HanziMaster 汉字大师 v5.0.0

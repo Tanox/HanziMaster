@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ja.ts v3.0.0
+// src/lib/i18n/translations/ja.ts v5.0.0
 export const ja = {
   common: {
     home: 'ホーム',
@@ -21,6 +21,12 @@ export const ja = {
       dark: 'ダーク',
       system: 'システム',
     },
+    cancel: 'キャンセル',
+    submit: '送信',
+    skipToContent: 'コンテンツへスキップ',
+    openMenu: 'メニューを開く',
+    closeMenu: 'メニューを閉じる',
+    navigationMenu: 'ナビゲーションメニュー',
   },
   home: {
     heroTitle: '中国語をマスター',
@@ -84,6 +90,7 @@ export const ja = {
     dayStreakLabel: '連続日数',
     accuracyLabel: '正確率',
     studyCharacters: '学習文字',
+    strokeCount: '画数: {{count}}',
   },
   learn: {
     one: '一',
@@ -156,9 +163,22 @@ export const ja = {
       glassOfWater: '水を一杯ください。',
       carefulFire: '火に注意してください！',
     },
+    pinyin: 'ピンイン',
+    meaning: '意味',
+    wordExamples: '単語とフレーズ',
+    strokeOrder: '筆順',
+    strokeCount: '画数: {{count}}',
+    playAudio: '音声を再生',
+    startQuiz: 'クイズを始める',
+    nextCharacter: '次の文字',
+    quizTitle: '漢字クイズ',
+    quizDesc: '文字のピンインと意味の理解を試してください。',
+    quizPlaceholder: 'ピンインを入力…',
+    quizCorrect: '正解！',
+    quizIncorrect: '不正解',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. All rights reserved.',
+    copyright: '© 2026 HanziMaster 汉字大师 v5.0.0. All rights reserved.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

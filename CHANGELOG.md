@@ -1,5 +1,30 @@
 # Changelog
 
+## [5.0.0] - 东方水墨·朱砂红 Design System & Architecture Alignment
+### Design System
+- Replaced Apple-HIG-inspired theme with 东方水墨·朱砂红 design system (ink/vermilion/indigo color scales).
+- Adopted fonts: Space Grotesk (sans), Playfair Display (display), Noto Serif SC (serif), JetBrains Mono (mono).
+- Removed all hardcoded color values; single source of truth via Tailwind CSS `@theme` tokens.
+- Eliminated arbitrary radius (`rounded-[Npx]`) and `transition-all` usages across UI components.
+
+### Internationalization
+- Audited all 11 language translation files; keys are mutually consistent.
+- Added missing translation keys (common/location/learn/practice) used by the code.
+- Fixed quiz result labels to use existing `practice.correct` / `practice.wrong` keys.
+
+### Architecture & Modularization
+- Split all source files exceeding 200 lines into focused modules:
+  - `lib/characters.ts` → `character-types.ts` + `characters-part1.ts` + `characters-part2.ts`.
+  - `app/learn/page.tsx` → `learn/character-grid.tsx` + `character-detail.tsx` + `quiz-dialog.tsx`.
+  - `app/practice/page.tsx` → `practice/*` (options / weekly-progress / writing-dialog / quiz-dialog / assets).
+  - `components/ui/dropdown-menu.tsx` → `dropdown-menu-core/items/sub` + barrel.
+- Extracted scroll-reveal logic into `hooks/use-scroll-reveal.ts`.
+
+### Quality & Consistency
+- Synced all file header versions to v5.0.0.
+- Synced package.json, metadata.json versions to 5.0.0.
+- Updated README/README_EN to reflect current design system, fonts, and Next.js 16 stack.
+
 ## [2.2.1] - UI/UX Professional Review & Optimization (Complete)
 ### Theme System
 - Added 3-state theme toggle: light → dark → system (previously lost system mode after manual toggle)

@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/zh-CN.ts v3.0.0
+// src/lib/i18n/translations/zh-CN.ts v5.0.0
 export const zhCN = {
   common: {
     home: '首页',
@@ -21,6 +21,12 @@ export const zhCN = {
       dark: '深色',
       system: '跟随系统',
     },
+    cancel: '取消',
+    submit: '提交',
+    skipToContent: '跳到主要内容',
+    openMenu: '打开菜单',
+    closeMenu: '关闭菜单',
+    navigationMenu: '导航菜单',
   },
   home: {
     heroTitle: '精通中文',
@@ -63,7 +69,6 @@ export const zhCN = {
     charactersLearned: '已学汉字',
     dayStreak: '连续学习天数',
     accuracy: '正确率',
-    // Hardcoded strings in practice page
     writingDialogDesc: '在田字格中练习书写汉字',
     characterProgress: '字符 {{current}} / {{total}}',
     clear: '清除',
@@ -85,6 +90,7 @@ export const zhCN = {
     dayStreakLabel: '连续天数',
     accuracyLabel: '准确率',
     studyCharacters: '学习汉字',
+    strokeCount: '笔画数：{{count}}',
   },
   learn: {
     one: '一',
@@ -157,9 +163,22 @@ export const zhCN = {
       glassOfWater: '请给我一杯水。',
       carefulFire: '小心火！',
     },
+    pinyin: '拼音',
+    meaning: '含义',
+    wordExamples: '词语与短语',
+    strokeOrder: '笔顺',
+    strokeCount: '笔画数：{{count}}',
+    playAudio: '播放发音',
+    startQuiz: '开始测验',
+    nextCharacter: '下一个字',
+    quizTitle: '汉字测验',
+    quizDesc: '测试你对汉字拼音和含义的掌握。',
+    quizPlaceholder: '输入拼音…',
+    quizCorrect: '正确！',
+    quizIncorrect: '错误',
   },
   footer: {
-    copyright: '© 2026 汉字大师 HanziMaster v3.0.0. 保留所有权利。',
+    copyright: '© 2026 汉字大师 HanziMaster v5.0.0. 保留所有权利。',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

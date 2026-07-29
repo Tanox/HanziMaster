@@ -1,29 +1,35 @@
-// src/app/layout.tsx v3.0.0
+// src/app/layout.tsx v5.0.0
 import type { Metadata, Viewport } from 'next';
-import { Inter, JetBrains_Mono, Noto_Sans_SC } from 'next/font/google';
+import { Space_Grotesk, Playfair_Display, Noto_Serif_SC, JetBrains_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import { LocaleProvider } from '@/components/locale-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { LayoutClient } from '@/components/layout-client';
 import './globals.css';
 
-// Optimize fonts with next/font
-const inter = Inter({
+// 字体对齐设计规范 07-design-prototype.md §2.2：Space Grotesk / Playfair Display / Noto Serif SC / JetBrains Mono
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-sans',
+  display: 'swap',
+});
+
+const playfairDisplay = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
+});
+
+const notoSerifSC = Noto_Serif_SC({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-serif',
   display: 'swap',
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-mono',
-  display: 'swap',
-});
-
-const notoSansSC = Noto_Sans_SC({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '700', '800'],
-  variable: '--font-hanzi',
   display: 'swap',
 });
 
@@ -55,7 +61,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable} ${notoSansSC.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${spaceGrotesk.variable} ${playfairDisplay.variable} ${notoSerifSC.variable} ${jetbrainsMono.variable}`}>
       <head>
         {/* Preconnect to external resources */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />

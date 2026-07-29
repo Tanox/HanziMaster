@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/zh-TW.ts v3.0.0
+// src/lib/i18n/translations/zh-TW.ts v5.0.0
 export const zhTW = {
   common: {
     home: '首頁',
@@ -21,6 +21,12 @@ export const zhTW = {
       dark: '深色',
       system: '跟隨系統',
     },
+    cancel: '取消',
+    submit: '提交',
+    skipToContent: '跳到主要內容',
+    openMenu: '打開選單',
+    closeMenu: '關閉選單',
+    navigationMenu: '導覽選單',
   },
   home: {
     heroTitle: '精通中文',
@@ -84,6 +90,7 @@ export const zhTW = {
     dayStreakLabel: '連續天數',
     accuracyLabel: '準確率',
     studyCharacters: '學習漢字',
+    strokeCount: '筆畫數：{{count}}',
   },
   learn: {
     one: '一',
@@ -156,9 +163,22 @@ export const zhTW = {
       glassOfWater: '請給我一杯水。',
       carefulFire: '小心火！',
     },
+    pinyin: '拼音',
+    meaning: '含義',
+    wordExamples: '詞語與短語',
+    strokeOrder: '筆順',
+    strokeCount: '筆畫數：{{count}}',
+    playAudio: '播放發音',
+    startQuiz: '開始測驗',
+    nextCharacter: '下一個字',
+    quizTitle: '漢字測驗',
+    quizDesc: '測試你對漢字拼音和含義的掌握。',
+    quizPlaceholder: '輸入拼音…',
+    quizCorrect: '正確！',
+    quizIncorrect: '錯誤',
   },
   footer: {
-    copyright: '© 2026 漢字大師 HanziMaster v3.0.0. 保留所有權利。',
+    copyright: '© 2026 漢字大師 HanziMaster v5.0.0. 保留所有權利。',
   },
   meta: {
     title: 'HanziMaster 漢字大師',

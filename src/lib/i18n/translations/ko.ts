@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ko.ts v3.0.0
+// src/lib/i18n/translations/ko.ts v5.0.0
 export const ko = {
   common: {
     home: '홈',
@@ -21,6 +21,12 @@ export const ko = {
       dark: '다크',
       system: '시스템',
     },
+    cancel: '취소',
+    submit: '제출',
+    skipToContent: '콘텐츠로 건너뛰기',
+    openMenu: '메뉴 열기',
+    closeMenu: '메뉴 닫기',
+    navigationMenu: '탐색 메뉴',
   },
   home: {
     heroTitle: '중국어 마스터',
@@ -84,6 +90,7 @@ export const ko = {
     dayStreakLabel: '연속 일수',
     accuracyLabel: '정확도',
     studyCharacters: '학습 한자',
+    strokeCount: '획수: {{count}}',
   },
   learn: {
     one: '하나',
@@ -156,9 +163,22 @@ export const ko = {
       glassOfWater: '물 한 잔 주세요.',
       carefulFire: '불을 조심하세요!',
     },
+    pinyin: '병음',
+    meaning: '의미',
+    wordExamples: '단어와 구문',
+    strokeOrder: '획순',
+    strokeCount: '획수: {{count}}',
+    playAudio: '오디오 재생',
+    startQuiz: '퀴즈 시작',
+    nextCharacter: '다음 글자',
+    quizTitle: '한자 퀴즈',
+    quizDesc: '글자의 병음과 의미에 대한 이해를 테스트하세요.',
+    quizPlaceholder: '병음 입력…',
+    quizCorrect: '정답!',
+    quizIncorrect: '오답',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. All rights reserved.',
+    copyright: '© 2026 HanziMaster 汉字大师 v5.0.0. All rights reserved.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

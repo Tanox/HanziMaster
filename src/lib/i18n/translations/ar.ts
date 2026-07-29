@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ar.ts v3.0.0
+// src/lib/i18n/translations/ar.ts v5.0.0
 export const ar = {
   common: {
     home: 'الرئيسية',
@@ -21,6 +21,12 @@ export const ar = {
       dark: 'داكن',
       system: 'النظام',
     },
+    cancel: 'إلغاء',
+    submit: 'إرسال',
+    skipToContent: 'تخطَّ إلى المحتوى',
+    openMenu: 'فتح القائمة',
+    closeMenu: 'إغلاق القائمة',
+    navigationMenu: 'قائمة التنقل',
   },
   home: {
     heroTitle: 'أتقن الصينية',
@@ -84,6 +90,7 @@ export const ar = {
     dayStreakLabel: 'أيام متتالية',
     accuracyLabel: 'الدقة',
     studyCharacters: 'دراسة الحروف',
+    strokeCount: 'عدد الضربات: {{count}}',
   },
   learn: {
     one: 'واحد',
@@ -156,9 +163,22 @@ export const ar = {
       glassOfWater: 'يرجى إعطائي كوب من الماء.',
       carefulFire: 'احذر من النار!',
     },
+    pinyin: 'بينيين',
+    meaning: 'المعنى',
+    wordExamples: 'الكلمات والعبارات',
+    strokeOrder: 'ترتيب الضربات',
+    strokeCount: 'عدد الضربات: {{count}}',
+    playAudio: 'تشغيل الصوت',
+    startQuiz: 'بدء الاختبار',
+    nextCharacter: 'الحرف التالي',
+    quizTitle: 'اختبار الأحرف',
+    quizDesc: 'اختبر معرفتك بينيين ومعنى الحرف.',
+    quizPlaceholder: 'أدخل بينيين...',
+    quizCorrect: 'صحيح!',
+    quizIncorrect: 'خطأ',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v3.0.0. جميع الحقوق محفوظة.',
+    copyright: '© 2026 HanziMaster 汉字大师 v5.0.0. جميع الحقوق محفوظة.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

@@ -1,4 +1,4 @@
-// src/hooks/use-canvas.ts v3.0.0
+// src/hooks/use-canvas.ts v5.0.0
 'use client';
 
 import { useEffect, useCallback, useRef } from 'react';
