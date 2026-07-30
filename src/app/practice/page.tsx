@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslation } from '@/components/locale-provider';
+import { useProgress } from '@/hooks/use-progress';
 import { characters } from '@/lib/characters';
 import type { CharacterQuiz } from '@/components/practice/practice-assets';
 import { PracticeOptionsGrid } from '@/components/practice/practice-options';
@@ -45,6 +46,7 @@ const INITIAL_QUIZ_STATE: QuizState = {
 
 export default function PracticePage() {
   const { t } = useTranslation();
+  const progress = useProgress();
 
   // 滚动揭示动画（reveal 元素进入视口时添加 revealed 类）
   useEffect(() => {
@@ -80,6 +82,8 @@ export default function PracticePage() {
   };
 
   const handleNextWriteChar = () => {
+    // 书写练习即视为已学习该字，持久化到进度系统
+    progress.markLearned(currentWriteChar.id);
     const currentIndex = quizCharacters.findIndex((c) => c.id === currentWriteChar.id);
     const nextIndex = (currentIndex + 1) % quizCharacters.length;
     setCurrentWriteChar(quizCharacters[nextIndex]);
@@ -90,6 +94,8 @@ export default function PracticePage() {
     setSelectedAnswer(answer);
     const currentQuizChar = quizCharacters[quizState.currentIndex];
     const isCorrect = answer === currentQuizChar.hanzi;
+    // 记录测验结果，驱动进度统计（连胜/准确率/周活动）
+    progress.recordQuizResult(currentQuizChar.id, isCorrect);
     setQuizState((prev) => ({
       ...prev,
       correctCount: isCorrect ? prev.correctCount + 1 : prev.correctCount,
@@ -135,7 +141,12 @@ export default function PracticePage() {
 
         <PracticeOptionsGrid selectedOption={selectedOption} onSelect={handlePracticeOption} />
 
-        <WeeklyProgress />
+        <WeeklyProgress
+          charactersLearned={progress.getLearnedCount()}
+          dayStreak={progress.streak}
+          accuracy={progress.accuracy}
+          weeklyActivity={progress.getWeeklyActivity()}
+        />
       </div>
 
       <WritingDialog
