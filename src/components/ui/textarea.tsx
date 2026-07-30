@@ -1,4 +1,4 @@
-// src/components/ui/textarea.tsx v5.0.0
+// src/components/ui/textarea.tsx v5.1.0
 import * as React from "react"
 
 import { cn } from "@/lib/utils"

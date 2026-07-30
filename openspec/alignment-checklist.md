@@ -2,7 +2,7 @@
 
 本文档记录项目规范文档、原型图与代码实现的对齐情况。
 
-**版本**: v5.0.0
+**版本**: v5.1.0
 **检查日期**: 2026-07-21
 **权威来源**: `openspec/07-design-prototype.md`（设计系统）+ `prototype/prototype.html`（唯一权威高保真原型）
 
@@ -184,7 +184,7 @@
 
 | 配置文件 | 规范文档 | 存在 | 版本一致性 | 状态 |
 |----------|---------|------|-----------|------|
-| package.json | ✅ 01-overview.md | ✅ | v5.0.0 | ✅ 对齐 |
+| package.json | ✅ 01-overview.md | ✅ | v5.1.0 | ✅ 对齐 |
 | tsconfig.json | ✅ 03-development.md | ✅ | strict:true | ✅ 对齐 |
 | next.config.mjs | ✅ 01-overview.md | ✅ | - | ✅ 对齐 |
 | tailwind.config.ts | ✅ 03-development.md | ✅ | - | ✅ 对齐 |
@@ -251,7 +251,7 @@
 | i18n 翻译文件 | 11 | 11 | ✅ 对齐 |
 | 全局样式 (globals.css) | 1 | 1 | ✅ 对齐 |
 | 设计规范 (07-design-prototype.md) | 1 | v5.0 | ✅ 对齐 |
-| 对齐清单 (本文档) | 1 | v5.0.0 | ✅ 对齐 |
+| 对齐清单 (本文档) | 1 | v5.1.0 | ✅ 对齐 |
 
 ---
 
@@ -294,11 +294,11 @@
 | 文件 | 路径 | 最新更新 |
 |------|------|---------|
 | README | /workspace/README.md | 2026-06-08 |
-| 项目索引 | /workspace/openspec/index.md | v5.0.0 |
-| 项目概述 | /workspace/openspec/01-overview.md | v5.0.0 |
-| 架构文档 | /workspace/openspec/02-architecture.md | v5.0.0 |
+| 项目索引 | /workspace/openspec/index.md | v5.1.0 |
+| 项目概述 | /workspace/openspec/01-overview.md | v5.1.0 |
+| 架构文档 | /workspace/openspec/02-architecture.md | v5.1.0 |
 | 开发指南 | /workspace/openspec/03-development.md | v3.0.0 |
-| API 参考 | /workspace/openspec/04-api-reference.md | v5.0.0 |
+| API 参考 | /workspace/openspec/04-api-reference.md | v5.1.0 |
 | 部署文档 | /workspace/openspec/05-deployment.md | v3.0.0 |
 | 测试文档 | /workspace/openspec/06-testing.md | v3.0.0 |
 | 设计规范 | /workspace/openspec/07-design-prototype.md | v5.0 |
@@ -346,6 +346,13 @@
 6. 删除冗余组件 `skeleton.tsx`、`loading.tsx`（与 shadcn 原语重复且无引用）
 7. 修复功能缺陷：学习页「播放发音」接语音合成、「下一个字」接状态切换、测验输入框补 aria-label；练习页笔划数取自真实数据、Canvas 鼠标起点补 beginPath
 8. 更新 `openspec/01-overview.md` 原型树引用
+
+**v5.1.0 维护加固（本次审查）**：
+1. 删除未被引用且与原型规范偏离（米字格网格）的死代码 `hooks/use-canvas.ts`。
+2. 将 `components/practice/writing-dialog.tsx`（201 行）拆分为 `writing-canvas.tsx` 子模块，消除超 200 行文件。
+3. `writing-canvas.tsx` 改用指针事件（Pointer Events）+ `touch-none`，统一鼠标/触控/触控笔输入，避免绘制时页面滚动，继续保持原型「无网格虚线框 + 淡字符底图」。
+4. `hooks/use-progress.ts` 连胜/周活动/今日标记改用本地时区日期，修复 UTC 偏移导致的跨零点判定错误。
+5. 同步全部文件头、package.json、metadata.json、README 与 openspec 版本戳至 v5.1.0；更新 README_EN 项目结构说明。
 
 **项目质量状态**：
 - ✅ 东方水墨·朱砂红设计系统：极简主义、大字号、充足留白

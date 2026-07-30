@@ -82,4 +82,4 @@ cp .env.example .env
 
 ## 许可证
 
-© 2026 HanziMaster 汉字大师 v5.0.0
+© 2026 HanziMaster 汉字大师 v5.1.0

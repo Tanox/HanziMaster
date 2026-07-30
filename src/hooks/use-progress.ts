@@ -1,4 +1,4 @@
-// src/hooks/use-progress.ts v5.0.0
+// src/hooks/use-progress.ts v5.1.0
 // Progress tracking with localStorage persistence
 
 import { useState, useEffect, useCallback } from 'react';
@@ -11,6 +11,14 @@ interface ProgressData {
 }
 
 const STORAGE_KEY = 'hanzi-master-progress';
+
+// 用本地时区日期（避免 toISOString 的 UTC 偏移导致跨零点连胜/今日判定错误）
+const toLocalDateStr = (date: Date): string => {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+};
 
 const getDefaultProgress = (): ProgressData => ({
   learnedCharIds: [],
@@ -73,10 +81,10 @@ export function useProgress() {
     if (dates.length === 0) return 0;
 
     let streak = 1;
-    const today = new Date().toISOString().split('T')[0];
+    const today = toLocalDateStr(new Date());
 
     if (dates[0] !== today) {
-      const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+      const yesterday = toLocalDateStr(new Date(Date.now() - 86400000));
       if (dates[0] !== yesterday) return 0;
     }
 
@@ -102,7 +110,7 @@ export function useProgress() {
     for (let i = 0; i < 7; i++) {
       const date = new Date(today);
       date.setDate(date.getDate() - i);
-      const dateStr = date.toISOString().split('T')[0];
+      const dateStr = toLocalDateStr(date);
       result[6 - i] = progress.dailyActivity[dateStr] || false;
     }
     
@@ -110,7 +118,7 @@ export function useProgress() {
   }, [progress.dailyActivity]);
 
   const markTodayActive = useCallback(() => {
-    const today = new Date().toISOString().split('T')[0];
+    const today = toLocalDateStr(new Date());
     setProgress(prev => ({
       ...prev,
       dailyActivity: { ...prev.dailyActivity, [today]: true },

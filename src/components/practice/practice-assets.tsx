@@ -1,4 +1,4 @@
-// src/components/practice/practice-assets.tsx v5.0.0
+// src/components/practice/practice-assets.tsx v5.1.0
 import type { ReactNode } from 'react';
 
 export interface PracticeOption {

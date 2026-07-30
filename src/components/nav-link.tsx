@@ -1,4 +1,4 @@
-// src/components/nav-link.tsx v5.0.0
+// src/components/nav-link.tsx v5.1.0
 'use client';
 
 import Link from 'next/link';

@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ru.ts v5.0.0
+// src/lib/i18n/translations/ru.ts v5.1.0
 export const ru = {
   common: {
     home: 'Главная',
@@ -178,7 +178,7 @@ export const ru = {
     quizIncorrect: 'Неверно',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v5.0.0. Все права защищены.',
+    copyright: '© 2026 HanziMaster 汉字大师 v5.1.0. Все права защищены.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

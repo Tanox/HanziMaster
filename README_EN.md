@@ -1,4 +1,4 @@
-# HanziMaster 汉字大师 v5.0.0
+# HanziMaster 汉字大师 v5.1.0
 
 [English](README_EN.md) | [简体中文](README.md)
 
@@ -69,23 +69,23 @@ npm run start
 
 ```
 src/
-├── app/               # Next.js App Router
-│   ├── globals.css    # Global styles
-│   ├── layout.tsx     # Root layout (nav, theme, i18n)
-│   ├── page.tsx       # Home page
-│   ├── learn/         # Learn page
-│   │   └── page.tsx
-│   └── practice/      # Practice page
-│       └── page.tsx
-├── components/        # React components
-│   ├── theme-provider.tsx # Theme context
-│   ├── theme-toggle.tsx   # Theme toggle
-│   ├── locale-provider.tsx # i18n context
-│   └── locale-toggle.tsx  # Language switcher
-└── lib/              # Utilities
-    └── i18n/         # Internationalization
-        ├── index.ts
-        └── translations/ # Translation files
+├── app/                  # Next.js App Router
+│   ├── globals.css       # Global styles + 东方水墨·朱砂红 design tokens
+│   ├── layout.tsx        # Root layout (nav, theme, i18n)
+│   ├── page.tsx          # Home page
+│   ├── learn/page.tsx    # Learn page
+│   └── practice/page.tsx # Practice page
+├── components/           # React components
+│   ├── theme-provider.tsx / theme-toggle.tsx
+│   ├── locale-provider.tsx / locale-toggle.tsx   # i18n context + switcher
+│   ├── layout-client.tsx / nav-link.tsx / mobile-nav.tsx
+│   ├── learn/            # character-grid / character-detail / quiz-dialog
+│   ├── practice/         # writing-dialog / writing-canvas / quiz-dialog / weekly-progress / practice-options / practice-assets
+│   ├── ui/               # shadcn-style primitives (button, card, badge, dialog, dropdown-menu, ...)
+│   └── feature-card.tsx / stats-card.tsx / empty-state.tsx / toast.tsx
+├── hooks/                # use-quiz / use-progress / use-pronunciation / use-is-dark / use-scroll-reveal
+├── lib/                  # characters / character-types / storage / utils / i18n (index + translations/)
+└── proxy.ts              # Gemini AI proxy
 ```
 
 ## Core Pages

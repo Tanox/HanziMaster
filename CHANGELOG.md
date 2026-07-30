@@ -1,5 +1,18 @@
 # Changelog
 
+## [5.1.0] - Code Review & Robustness Hardening
+### Code Review & Cleanup
+- 删除未被引用且与原型规范偏离（米字格网格）的死代码 `hooks/use-canvas.ts`。
+- 将 `components/practice/writing-dialog.tsx`（201 行）拆分为 `writing-canvas.tsx` 子模块，消除超 200 行文件。
+- `writing-canvas.tsx` 改用指针事件（Pointer Events）+ `touch-none`，统一鼠标/触控/触控笔输入，避免绘制时页面滚动。
+
+### Robustness
+- `hooks/use-progress.ts` 的连胜、周活动与今日标记改用本地时区日期，修复 UTC 偏移导致的跨零点判定错误。
+
+### Consistency
+- 同步全部文件头、package.json、metadata.json、README 与 openspec 版本戳至 v5.1.0。
+- 更新 README/README_EN 项目结构说明，对齐实际模块化架构。
+
 ## [5.0.0] - 东方水墨·朱砂红 Design System & Architecture Alignment
 ### Design System
 - Replaced Apple-HIG-inspired theme with 东方水墨·朱砂红 design system (ink/vermilion/indigo color scales).

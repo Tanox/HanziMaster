@@ -1,4 +1,4 @@
-// src/hooks/use-scroll-reveal.ts v5.0.0
+// src/hooks/use-scroll-reveal.ts v5.1.0
 import { useEffect } from 'react';
 
 // 滚动揭示动画：观察 .reveal 元素，进入视口时添加 .revealed 并停止观察。
