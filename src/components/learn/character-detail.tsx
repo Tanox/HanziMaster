@@ -22,7 +22,7 @@ export function CharacterDetail({
   const { t } = useTranslation();
 
   return (
-    <div className="bg-white/80 dark:bg-ink-900/80 backdrop-blur-xl rounded-4xl p-10 border border-ink-100 dark:border-ink-800 reveal revealed shadow-ink-lg">
+    <div className="bg-card/80 dark:bg-ink-900/80 backdrop-blur-xl rounded-4xl p-10 border border-ink-100 dark:border-ink-800 reveal revealed shadow-ink-lg">
       <div className="grid lg:grid-cols-2 gap-12 items-start">
         <div className="text-center lg:text-left">
           <div className="inline-flex items-center gap-2 mb-6">
@@ -56,7 +56,7 @@ export function CharacterDetail({
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button onClick={onStartQuiz} className="bg-vermilion-500 hover:bg-vermilion-600 text-white rounded-full">
+            <Button onClick={onStartQuiz} className="bg-vermilion-500 hover:bg-vermilion-600 text-primary-foreground rounded-full">
               {t('learn.startQuiz')}
             </Button>
             <Button variant="outline" onClick={onNextCharacter} className="rounded-full border-ink-200 text-ink-700 dark:border-ink-700 dark:text-ink-200">
@@ -72,7 +72,7 @@ export function CharacterDetail({
             </h4>
             <div className="space-y-3">
               {character.words.map((word, index) => (
-                <div key={index} className="flex items-center justify-between p-4 bg-white dark:bg-ink-900/50 rounded-md">
+                <div key={index} className="flex items-center justify-between p-4 bg-card dark:bg-ink-900/50 rounded-md">
                   <div>
                     <p className="text-lg font-medium text-ink-900 dark:text-ink-50">{word.text}</p>
                     <p className="text-sm text-ink-500 dark:text-ink-400">{word.pinyin}</p>
@@ -87,7 +87,7 @@ export function CharacterDetail({
             <h4 className="text-lg font-semibold text-ink-900 dark:text-ink-50 mb-4 display-font">
               {t('learn.strokeOrder')}
             </h4>
-            <div className="aspect-square bg-white dark:bg-ink-900/50 rounded-lg flex items-center justify-center border border-ink-100 dark:border-ink-800">
+            <div className="aspect-square bg-card dark:bg-ink-900/50 rounded-lg flex items-center justify-center border border-ink-100 dark:border-ink-800">
               <span className="text-[80px] font-light serif-font text-ink-200 dark:text-ink-700">
                 {character.hanzi}
               </span>

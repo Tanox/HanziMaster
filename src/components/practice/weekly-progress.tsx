@@ -9,7 +9,7 @@ export function WeeklyProgress() {
   const { t } = useTranslation();
 
   return (
-    <div className="bg-white/80 dark:bg-ink-900/80 backdrop-blur-xl rounded-4xl p-10 border border-ink-100 dark:border-ink-800 reveal shadow-ink-lg">
+    <div className="bg-card/80 dark:bg-ink-900/80 backdrop-blur-xl rounded-4xl p-10 border border-ink-100 dark:border-ink-800 reveal shadow-ink-lg">
       <h3 className="text-2xl font-semibold mb-10 text-ink-900 dark:text-ink-50 display-font">
         {t('practice.weeklyProgress')}
       </h3>
@@ -20,13 +20,13 @@ export function WeeklyProgress() {
             key={day}
             className={`flex flex-col items-center p-5 rounded-xl ${
               index < 5
-                ? 'bg-gradient-to-br from-vermilion-500 to-vermilion-600 text-white'
+                ? 'bg-gradient-to-br from-vermilion-500 to-vermilion-600 text-primary-foreground'
                 : 'bg-ink-50/50 dark:bg-ink-800/30 text-ink-600 dark:text-ink-400 border border-ink-100 dark:border-ink-800'
             } ${index === 4 ? 'ring-2 ring-vermilion-400' : ''}`}
           >
             <p className="text-xs mb-3 font-medium">{t(`practice.${day}`)}</p>
             <div className={`w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center ${
-              index < 5 ? 'bg-white/20' : 'bg-white/50 dark:bg-ink-900/50'
+              index < 5 ? 'bg-primary-foreground/20' : 'bg-primary-foreground/50 dark:bg-ink-900/50'
             }`}>
               {index < 5 ? (
                 <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

@@ -53,7 +53,7 @@ export function ThemeToggleClient() {
       {themeIcons[theme] || themeIcons.system}
 
       {/* Tooltip on hover */}
-      <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-ink-800 dark:bg-ink-100 text-white dark:text-ink-900 text-[10px] font-medium px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap hidden sm:block">
+      <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-ink-800 dark:bg-ink-100 text-ink-50 dark:text-ink-900 text-[10px] font-medium px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap hidden sm:block">
         {t(`common.theme.${theme}`)}
       </span>
     </button>

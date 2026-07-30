@@ -28,7 +28,11 @@ export function WritingDialog({ open, onOpenChange, character, strokeCount, onNe
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const isDrawing = useRef(false);
 
-  // 在画布上绘制半透明汉字提示（田字格描红底字）
+  const resolveFg = () =>
+    getComputedStyle(document.documentElement).getPropertyValue('--color-foreground').trim() || '#1a1a1a';
+  const resolveSerif = () =>
+    getComputedStyle(document.documentElement).getPropertyValue('--font-serif').trim() || 'serif';
+
   const drawHint = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -40,15 +44,18 @@ export function WritingDialog({ open, onOpenChange, character, strokeCount, onNe
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
     ctx.scale(dpr, dpr);
+    const fg = resolveFg();
     ctx.lineWidth = 4;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    ctx.strokeStyle = '#1a1a1a';
-    ctx.font = `${Math.min(rect.width, rect.height) * 0.4}px serif`;
-    ctx.fillStyle = 'rgba(26, 26, 26, 0.08)';
+    ctx.strokeStyle = fg;
+    ctx.font = `${Math.min(rect.width, rect.height) * 0.4}px ${resolveSerif()}`;
+    ctx.fillStyle = fg;
+    ctx.globalAlpha = 0.08;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(character.hanzi, rect.width / 2, rect.height / 2);
+    ctx.globalAlpha = 1;
   }, [character]);
 
   useEffect(() => {
@@ -61,15 +68,18 @@ export function WritingDialog({ open, onOpenChange, character, strokeCount, onNe
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     ctx.scale(dpr, dpr);
+    const fg = resolveFg();
     ctx.lineWidth = 4;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    ctx.strokeStyle = '#1a1a1a';
-    ctx.font = `${Math.min(rect.width, rect.height) * 0.4}px serif`;
-    ctx.fillStyle = 'rgba(26, 26, 26, 0.08)';
+    ctx.strokeStyle = fg;
+    ctx.font = `${Math.min(rect.width, rect.height) * 0.4}px ${resolveSerif()}`;
+    ctx.fillStyle = fg;
+    ctx.globalAlpha = 0.08;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(character.hanzi, rect.width / 2, rect.height / 2);
+    ctx.globalAlpha = 1;
     return () => {};
   }, [character, drawHint]);
 
@@ -135,7 +145,7 @@ export function WritingDialog({ open, onOpenChange, character, strokeCount, onNe
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[520px] bg-white/95 dark:bg-ink-900/95 backdrop-blur-xl rounded-3xl border-ink-100 dark:border-ink-800 shadow-ink-xl">
+      <DialogContent className="sm:max-w-[520px] bg-card/95 dark:bg-ink-900/95 backdrop-blur-xl rounded-3xl border-ink-100 dark:border-ink-800 shadow-ink-xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold text-ink-900 dark:text-ink-50 display-font">
             {t('practice.writingTitle')}
@@ -161,7 +171,7 @@ export function WritingDialog({ open, onOpenChange, character, strokeCount, onNe
             </Badge>
           </div>
 
-          <div className="relative aspect-square bg-white dark:bg-ink-900 rounded-xl border-2 border-dashed border-ink-200 dark:border-ink-700 overflow-hidden">
+          <div className="relative aspect-square bg-card dark:bg-ink-900 rounded-xl border-2 border-dashed border-ink-200 dark:border-ink-700 overflow-hidden">
             <canvas
               ref={canvasRef}
               className="w-full h-full cursor-crosshair"
@@ -180,7 +190,7 @@ export function WritingDialog({ open, onOpenChange, character, strokeCount, onNe
           <Button variant="outline" onClick={clearCanvas} className="rounded-full border-ink-200 text-ink-700 dark:border-ink-700 dark:text-ink-200">
             {t('practice.clear')}
           </Button>
-          <Button onClick={onNext} className="bg-vermilion-500 hover:bg-vermilion-600 text-white rounded-full">
+          <Button onClick={onNext} className="bg-vermilion-500 hover:bg-vermilion-600 text-primary-foreground rounded-full">
             {t('practice.next')}
           </Button>
         </DialogFooter>

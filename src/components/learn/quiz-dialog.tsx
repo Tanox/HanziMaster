@@ -36,7 +36,7 @@ export function QuizDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-white/95 dark:bg-ink-900/95 backdrop-blur-xl rounded-3xl border-ink-100 dark:border-ink-800 shadow-ink-xl">
+      <DialogContent className="bg-card/95 dark:bg-ink-900/95 backdrop-blur-xl rounded-3xl border-ink-100 dark:border-ink-800 shadow-ink-xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold text-ink-900 dark:text-ink-50 display-font">
             {t('learn.quizTitle')}
@@ -64,14 +64,14 @@ export function QuizDialog({
               correct === true
                 ? 'border-vermilion-500 bg-vermilion-50 dark:bg-vermilion-900/20 text-vermilion-600 dark:text-vermilion-400'
                 : correct === false
-                ? 'border-red-400 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400'
-                : 'border-ink-200 dark:border-ink-700 bg-white dark:bg-ink-900 text-ink-900 dark:text-ink-50 focus:border-vermilion-500 focus:outline-none'
+                ? 'border-destructive/40 bg-destructive/10 dark:bg-destructive/20 text-destructive'
+                : 'border-ink-200 dark:border-ink-700 bg-card dark:bg-ink-900 text-ink-900 dark:text-ink-50 focus:border-vermilion-500 focus:outline-none'
             }`}
           />
 
           {correct !== null && (
             <div className={`mt-4 text-center font-medium ${
-              correct ? 'text-vermilion-600 dark:text-vermilion-400' : 'text-red-500'
+              correct ? 'text-vermilion-600 dark:text-vermilion-400' : 'text-destructive'
             }`}>
               {correct ? t('learn.quizCorrect') : t('learn.quizIncorrect')}
             </div>
@@ -82,7 +82,7 @@ export function QuizDialog({
           <Button onClick={() => onOpenChange(false)} variant="outline" className="rounded-full border-ink-200 text-ink-700 dark:border-ink-700 dark:text-ink-200">
             {t('common.cancel')}
           </Button>
-          <Button onClick={onSubmit} className="bg-vermilion-500 hover:bg-vermilion-600 text-white rounded-full">
+          <Button onClick={onSubmit} className="bg-vermilion-500 hover:bg-vermilion-600 text-primary-foreground rounded-full">
             {t('common.submit')}
           </Button>
         </DialogFooter>

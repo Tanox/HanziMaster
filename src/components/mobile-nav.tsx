@@ -59,13 +59,13 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
         role="dialog"
         aria-modal="true"
         aria-label={t('common.navigationMenu')}
-        className="fixed right-0 top-0 h-full w-72 max-w-[85vw] bg-white/95 dark:bg-ink-900/95 backdrop-blur-xl shadow-ink-xl z-50 animate-slide-in-right flex flex-col overscroll-contain"
+        className="fixed right-0 top-0 h-full w-72 max-w-[85vw] bg-card/95 dark:bg-ink-900/95 backdrop-blur-xl shadow-ink-xl z-50 animate-slide-in-right flex flex-col overscroll-contain"
       >
         {/* Drawer Header */}
         <div className="flex justify-between items-center p-5 border-b border-ink-100 dark:border-ink-800">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-to-br from-vermilion-500 to-vermilion-600 rounded-xl flex items-center justify-center shadow-sm">
-              <span className="text-white text-base font-bold serif-font">汉</span>
+              <span className="text-primary-foreground text-base font-bold serif-font">汉</span>
             </div>
             <span className="text-base font-bold text-ink-900 dark:text-ink-50 display-font">HanziMaster</span>
           </div>

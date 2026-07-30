@@ -11,26 +11,30 @@ interface UseWritingCanvasOptions {
   showHint?: boolean;
 }
 
-const canvasColors = {
-  light: {
-    bgStart: '#ffffff',
-    bgEnd: '#f5f5f7',
-    grid: '#d1d5db',
-    diagonal: '#e5e7eb',
-    crosshair: '#e5e7eb',
-    hint: 'rgba(0, 0, 0, 0.08)',
-    pen: '#000000',
-  },
-  dark: {
-    bgStart: '#0d0d0d',
-    bgEnd: '#1a1a1a',
-    grid: '#3a3a3a',
-    diagonal: '#2a2a2a',
-    crosshair: '#2a2a2a',
-    hint: 'rgba(255, 255, 255, 0.08)',
-    pen: '#ffffff',
-  },
+const readCssVar = (name: string, fallback: string): string => {
+  if (typeof window === 'undefined') return fallback;
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
 };
+
+// 读取设计 token，避免 Canvas 写死色值（单一来源，深浅主题自动跟随）
+const readCanvasColors = (isDark: boolean) => {
+  const fg = readCssVar('--color-foreground', isDark ? '#f3f1eb' : '#1a1a1a');
+  const bg = readCssVar('--color-background', isDark ? '#0d0d0d' : '#faf9f6');
+  const muted = readCssVar('--color-muted', isDark ? '#1a1a1a' : '#f3f1eb');
+  const border = readCssVar('--color-border', isDark ? '#2d2d2d' : '#e5e1d8');
+  const mix = (a: string, b: string, p: number) => `color-mix(in srgb, ${a} ${p}%, ${b})`;
+  return {
+    bgStart: bg,
+    bgEnd: muted,
+    grid: border,
+    diagonal: mix(border, bg, 60),
+    crosshair: mix(border, bg, 60),
+    hint: mix(fg, 'transparent', 92),
+    pen: fg,
+  };
+};
+
+const readSerifFont = () => readCssVar('--font-serif', 'serif');
 
 const drawCanvasBackground = (
   ctx: CanvasRenderingContext2D,
@@ -38,7 +42,7 @@ const drawCanvasBackground = (
   character: string,
   isDark: boolean,
 ) => {
-  const colors = canvasColors[isDark ? 'dark' : 'light'];
+  const colors = readCanvasColors(isDark);
   const gradient = ctx.createLinearGradient(0, 0, rect.width, rect.height);
   gradient.addColorStop(0, colors.bgStart);
   gradient.addColorStop(1, colors.bgEnd);
@@ -81,7 +85,7 @@ const drawCanvasBackground = (
   ctx.lineTo(rect.width, rect.height / 2);
   ctx.stroke();
 
-  ctx.font = `${Math.min(rect.width, rect.height) * 0.4}px serif`;
+  ctx.font = `${Math.min(rect.width, rect.height) * 0.4}px ${readSerifFont()}`;
   ctx.fillStyle = colors.hint;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
@@ -112,7 +116,7 @@ export function useWritingCanvas({ canvasRef, showDialog, character, isDark = fa
       return { x: e.clientX - r.left, y: e.clientY - r.top };
     };
 
-    const colors = canvasColors[isDark ? 'dark' : 'light'];
+    const colors = readCanvasColors(isDark);
 
     const startDrawing = (e: PointerEvent) => {
       isDrawingRef.current = true;

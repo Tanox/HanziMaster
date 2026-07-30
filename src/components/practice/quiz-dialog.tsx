@@ -38,7 +38,7 @@ export function QuizDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[480px] bg-white/95 dark:bg-ink-900/95 backdrop-blur-xl rounded-3xl border-ink-100 dark:border-ink-800 shadow-ink-xl">
+      <DialogContent className="sm:max-w-[480px] bg-card/95 dark:bg-ink-900/95 backdrop-blur-xl rounded-3xl border-ink-100 dark:border-ink-800 shadow-ink-xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold text-ink-900 dark:text-ink-50 display-font">
             {t('practice.quizTitle')}
@@ -68,8 +68,8 @@ export function QuizDialog({
                 className={`py-6 text-3xl font-light serif-font rounded-lg transition-[colors,transform] duration-300 ${
                   selectedAnswer === char
                     ? char === character.hanzi
-                      ? 'bg-vermilion-500 text-white shadow-vermilion-glow'
-                      : 'bg-red-500 text-white'
+                      ? 'bg-vermilion-500 text-primary-foreground shadow-vermilion-glow'
+                      : 'bg-destructive text-destructive-foreground'
                     : 'bg-ink-50/50 dark:bg-ink-800/30 text-ink-900 dark:text-ink-50 border border-ink-200 dark:border-ink-700 hover:border-vermilion-300 dark:hover:border-vermilion-500'
                 }`}
               >
@@ -80,7 +80,7 @@ export function QuizDialog({
 
           {answered && (
             <div className={`mt-6 text-center font-semibold ${
-              selectedAnswer === character.hanzi ? 'text-vermilion-600 dark:text-vermilion-400' : 'text-red-500'
+              selectedAnswer === character.hanzi ? 'text-vermilion-600 dark:text-vermilion-400' : 'text-destructive'
             }`}>
               {selectedAnswer === character.hanzi ? t('practice.correct') : t('practice.wrong')}
             </div>
@@ -91,7 +91,7 @@ export function QuizDialog({
           <Button variant="outline" onClick={() => onOpenChange(false)} className="rounded-full border-ink-200 text-ink-700 dark:border-ink-700 dark:text-ink-200">
             {t('common.cancel')}
           </Button>
-          <Button onClick={onNext} className="bg-vermilion-500 hover:bg-vermilion-600 text-white rounded-full">
+          <Button onClick={onNext} className="bg-vermilion-500 hover:bg-vermilion-600 text-primary-foreground rounded-full">
             {t('practice.nextQuestion')}
           </Button>
         </DialogFooter>

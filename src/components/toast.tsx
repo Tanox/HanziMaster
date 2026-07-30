@@ -75,7 +75,7 @@ function ToastItem({ id, message, type, duration = 5000, onRemove }: ToastItemPr
           setIsExiting(true);
           setTimeout(() => onRemove(id), 300);
         }}
-        className="p-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+        className="p-1 rounded-lg hover:bg-ink-900/5 dark:hover:bg-ink-100/10 transition-colors"
         aria-label="Close notification"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

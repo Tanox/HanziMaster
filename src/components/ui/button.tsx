@@ -10,7 +10,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-vermilion-500 text-white hover:bg-vermilion-600 hover:shadow-lg hover:-translate-y-0.5",
+        default: "bg-vermilion-500 text-primary-foreground hover:bg-vermilion-600 hover:shadow-lg hover:-translate-y-0.5",
         outline:
           "border-ink-200 dark:border-ink-700 bg-transparent hover:bg-ink-50 dark:hover:bg-ink-900 text-ink-700 dark:text-ink-200 hover:text-ink-900 dark:hover:text-ink-50",
         secondary:
@@ -18,7 +18,7 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-ink-50 dark:hover:bg-ink-900/50 text-ink-600 dark:text-ink-300 hover:text-ink-900 dark:hover:text-ink-50",
         destructive:
-          "bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-950/30",
+          "bg-destructive/10 dark:bg-destructive/20 text-destructive hover:bg-destructive/20 dark:hover:bg-destructive/30",
         link: "text-vermilion-500 underline-offset-4 hover:underline hover:text-vermilion-600",
       },
       size: {

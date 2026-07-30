@@ -36,6 +36,14 @@
 - `openspec/index.md`: UI prototype description Apple 风格 v4.0 → 东方水墨·朱砂红 v5.0; doc version v3.0.0 → v5.0.0.
 - `openspec/alignment-checklist.md`: fixed stale v3.0.0 version stamps (package.json, 01/02/04/index) → v5.0.0.
 
+### Source Code Token & Best-Practice Audit
+- `src/app/globals.css`: `.skip-to-content` hardcoded `white`/`8px` → `var(--color-primary-foreground)` / `var(--radius-md)`; `.glass` hardcoded `rgba(255,255,255,0.85)` / `rgba(13,13,13,0.85)` → `color-mix(in srgb, var(--color-card|--color-background) …)` (single source).
+- `src/components/practice/writing-dialog.tsx`: Canvas hint now reads `--color-foreground` / `--font-serif` tokens instead of hardcoded `#1a1a1a` / `rgba(26,26,26,0.08)` / `serif`.
+- `src/hooks/use-canvas.ts`: replaced the entire hardcoded `canvasColors` palette with `readCanvasColors()` that resolves from design tokens at runtime (bg/foreground/border via `color-mix`), theme-aware, no hardcoded hex/rgba.
+- Tokenized all hardcoded surface colors: `bg-white`/`bg-white/N` → `bg-card`/`bg-card/N` across page, cards, dialogs, sheet, select, dropdown, input, and practice/learn components.
+- Tokenized all hardcoded text-on-brand colors: `text-white` → `text-primary-foreground` on vermilion buttons/badges/seals; `bg-red-500` + `text-white` → `bg-destructive` + `text-destructive-foreground` (quiz/button/badge/input invalid state); `bg-black/10` scrims → `bg-ink-900/10`; toast hover `bg-black/5`/`bg-white/10` → `bg-ink-900/5`/`bg-ink-100/10`; tooltip `text-white` → `text-ink-50`.
+- `src/components/ui/slider.tsx` thumb `bg-white` intentionally retained (always-light control thumb; documented exception).
+
 ## [2.2.1] - UI/UX Professional Review & Optimization (Complete)
 ### Theme System
 - Added 3-state theme toggle: light → dark → system (previously lost system mode after manual toggle)

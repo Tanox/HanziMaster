@@ -34,11 +34,11 @@ export function LayoutClient({ children }: LayoutClientProps) {
       </a>
 
       {/* Header - Oriental Ink Style with Glassmorphism */}
-      <header className="bg-white/70 dark:bg-ink-900/70 backdrop-blur-xl border-b border-ink-200/50 dark:border-ink-800/50 py-4 px-6 flex justify-between items-center sticky top-0 z-50">
+      <header className="bg-card/70 dark:bg-ink-900/70 backdrop-blur-xl border-b border-ink-200/50 dark:border-ink-800/50 py-4 px-6 flex justify-between items-center sticky top-0 z-50">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group shrink-0">
           <div className="w-10 h-10 bg-gradient-to-br from-vermilion-500 to-vermilion-600 rounded-xl flex items-center justify-center shadow-sm group-hover:scale-105 group-hover:shadow-md transition-[colors,transform,box-shadow] duration-300">
-            <span className="text-white text-lg font-bold serif-font">汉</span>
+            <span className="text-primary-foreground text-lg font-bold serif-font">汉</span>
           </div>
           <span className="text-xl font-semibold tracking-tight hidden sm:block display-font">
             HanziMaster
@@ -87,7 +87,7 @@ export function LayoutClient({ children }: LayoutClientProps) {
         <div className="max-w-6xl mx-auto flex flex-col items-center gap-6">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 bg-gradient-to-br from-vermilion-500 to-vermilion-600 rounded-xl flex items-center justify-center">
-              <span className="text-white text-sm font-bold serif-font">汉</span>
+              <span className="text-primary-foreground text-sm font-bold serif-font">汉</span>
             </div>
             <span className="text-lg font-semibold display-font">HanziMaster</span>
           </div>

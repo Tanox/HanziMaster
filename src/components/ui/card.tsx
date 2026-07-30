@@ -13,7 +13,7 @@ function Card({
       data-slot="card"
       data-size={size}
       className={cn(
-        "group/card flex flex-col overflow-hidden rounded-2xl bg-white/80 dark:bg-ink-900/80 backdrop-blur-xl border border-ink-100 dark:border-ink-800 text-ink-900 dark:text-ink-50 transition-[transform,box-shadow,border-color] duration-300 hover:shadow-ink-lg hover:-translate-y-1",
+        "group/card flex flex-col overflow-hidden rounded-2xl bg-card/80 dark:bg-ink-900/80 backdrop-blur-xl border border-ink-100 dark:border-ink-800 text-ink-900 dark:text-ink-50 transition-[transform,box-shadow,border-color] duration-300 hover:shadow-ink-lg hover:-translate-y-1",
         size === "sm" && "p-5",
         size === "default" && "p-8",
         className

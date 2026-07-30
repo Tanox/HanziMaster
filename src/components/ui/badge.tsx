@@ -10,11 +10,11 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-vermilion-500 text-white",
+        default: "bg-vermilion-500 text-primary-foreground",
         secondary:
           "bg-ink-100 dark:bg-ink-800 text-ink-600 dark:text-ink-300",
         destructive:
-          "bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400 border-red-200 dark:border-red-900/50",
+          "bg-destructive/10 dark:bg-destructive/20 text-destructive border-destructive/20 dark:border-destructive/30",
         outline:
           "border-ink-200 dark:border-ink-700 text-ink-700 dark:text-ink-200 hover:bg-ink-50 dark:hover:bg-ink-900",
         ghost:
