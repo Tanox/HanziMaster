@@ -184,7 +184,7 @@
 
 | 配置文件 | 规范文档 | 存在 | 版本一致性 | 状态 |
 |----------|---------|------|-----------|------|
-| package.json | ✅ 01-overview.md | ✅ | v3.0.0 | ✅ 对齐 |
+| package.json | ✅ 01-overview.md | ✅ | v5.0.0 | ✅ 对齐 |
 | tsconfig.json | ✅ 03-development.md | ✅ | strict:true | ✅ 对齐 |
 | next.config.mjs | ✅ 01-overview.md | ✅ | - | ✅ 对齐 |
 | tailwind.config.ts | ✅ 03-development.md | ✅ | - | ✅ 对齐 |
@@ -294,11 +294,11 @@
 | 文件 | 路径 | 最新更新 |
 |------|------|---------|
 | README | /workspace/README.md | 2026-06-08 |
-| 项目索引 | /workspace/openspec/index.md | v3.0.0 |
-| 项目概述 | /workspace/openspec/01-overview.md | v3.0.0 |
-| 架构文档 | /workspace/openspec/02-architecture.md | v3.0.0 |
+| 项目索引 | /workspace/openspec/index.md | v5.0.0 |
+| 项目概述 | /workspace/openspec/01-overview.md | v5.0.0 |
+| 架构文档 | /workspace/openspec/02-architecture.md | v5.0.0 |
 | 开发指南 | /workspace/openspec/03-development.md | v3.0.0 |
-| API 参考 | /workspace/openspec/04-api-reference.md | v3.0.0 |
+| API 参考 | /workspace/openspec/04-api-reference.md | v5.0.0 |
 | 部署文档 | /workspace/openspec/05-deployment.md | v3.0.0 |
 | 测试文档 | /workspace/openspec/06-testing.md | v3.0.0 |
 | 设计规范 | /workspace/openspec/07-design-prototype.md | v5.0 |

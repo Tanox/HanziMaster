@@ -391,9 +391,9 @@ function Header() {
 
 | 字体变量 | 字体名称 | 用途 |
 |----------|----------|------|
-| `--font-sans` | Inter | 主要界面字体 |
+| `--font-sans` | Space Grotesk | 主要界面字体 |
 | `--font-mono` | JetBrains Mono | 代码字体 |
-| `--font-hanzi` | Noto Sans SC | 汉字字体 |
+| `--font-serif` | Noto Serif SC | 汉字展示字体 |
 
 ### 7.2 hanzi-font 类
 
@@ -401,7 +401,7 @@ function Header() {
 
 ```css
 .hanzi-font {
-  font-family: var(--font-hanzi);
+  font-family: var(--font-serif);
 }
 ```
 

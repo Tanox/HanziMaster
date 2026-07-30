@@ -3,7 +3,7 @@
 
 ## 1. 架构概述
 
-HanziMaster 采用 Next.js 15 的 App Router 架构，结合 React Server Components 和 Client Components，实现高性能的服务端渲染和客户端交互。
+HanziMaster 采用 Next.js 16 的 App Router 架构，结合 React Server Components 和 Client Components，实现高性能的服务端渲染和客户端交互。
 
 ## 2. 系统架构图
 
@@ -32,7 +32,7 @@ HanziMaster 采用 Next.js 15 的 App Router 架构，结合 React Server Compon
 ┌─────────────────────────────────────────────────────────────┐
 │                        基础设施层                             │
 │  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────┐  │
-│  │  Next.js 15    │  │  React Context  │  │  LocalStorage│  │
+│  │  Next.js 16    │  │  React Context  │  │  LocalStorage│  │
 │  │  App Router    │  │  API            │  │              │  │
 │  └─────────────────┘  └─────────────────┘  └──────────────┘  │
 └─────────────────────────────────────────────────────────────┘
@@ -92,7 +92,7 @@ src/
 
 ## 4. 技术选型说明
 
-### 4.1 前端框架：Next.js 15
+### 4.1 前端框架：Next.js 16
 
 **选择理由：**
 - 全栈框架，支持服务端渲染和客户端交互

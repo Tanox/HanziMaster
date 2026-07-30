@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- prototype.html · 东方水墨·朱砂红高保真交互原型 · v5.0.0 -->
 <html lang="en" class="">
 <head>
 <meta charset="UTF-8" />
@@ -23,7 +24,7 @@
     --card: #ffffff;
     --card-foreground: #1a1a1a;
     --primary: #c53d43;        /* 朱砂红 vermilion-500 */
-    --primary-dark: #9b2c2c;
+    --primary-dark: color-mix(in srgb, var(--primary) 78%, #000);  /* vermilion-600，由主色单一来源派生 */
     --primary-foreground: #ffffff;
     --accent: #4f46e5;         /* 靛蓝 indigo-500 */
     --accent-foreground: #ffffff;
@@ -58,6 +59,8 @@
     --font-serif: 'Noto Serif SC', Georgia, serif;
     --font-sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --font-heading: 'Playfair Display', Georgia, serif;  /* 与 globals.css / 07-design-prototype.md §2.2 对齐 */
+    --scrim: rgba(13, 13, 13, 0.5);  /* 遮罩层（浅/深同值，仅用于 overlay） */
 
     --header-h: 72px;
   }
@@ -100,7 +103,7 @@
   }
   .skip-link {
     position: absolute; top: -100%; left: 16px; z-index: 200;
-    padding: 12px 20px; background: var(--primary); color: #fff;
+    padding: 12px 20px; background: var(--primary); color: var(--primary-foreground);
     border-radius: var(--radius-sm); text-decoration: none; font-weight: 600;
     transition: top var(--dur-normal) var(--ease-smooth);
   }
@@ -132,7 +135,7 @@
   .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--foreground); font-weight: 700; }
   .brand .seal {
     width: 38px; height: 38px; border-radius: var(--radius-md);
-    background: var(--primary); color: #fff; display: grid; place-items: center;
+    background: var(--primary); color: var(--primary-foreground); display: grid; place-items: center;
     font-family: var(--font-serif); font-size: 22px; font-weight: 600;
     box-shadow: var(--shadow-glow);
   }
@@ -181,7 +184,7 @@
 
   /* ---------- 移动抽屉 ---------- */
   .scrim {
-    position: fixed; inset: 0; background: rgba(13,13,13,0.45); z-index: 150;
+    position: fixed; inset: 0; background: var(--scrim); z-index: 150;
     opacity: 0; pointer-events: none; transition: opacity var(--dur-normal) var(--ease-smooth);
     backdrop-filter: blur(2px);
   }
@@ -233,10 +236,10 @@
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     font: inherit; font-weight: 600; font-size: 15px; cursor: pointer; border: none;
-    padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    padding: 13px 26px; border-radius: var(--radius-md); text-decoration: none;
     transition: background-color var(--dur-fast) var(--ease-smooth), transform var(--dur-fast) var(--ease-spring), box-shadow var(--dur-fast) var(--ease-smooth), color var(--dur-fast);
   }
-  .btn-primary { background: var(--primary); color: #fff; box-shadow: var(--shadow-ink); }
+  .btn-primary { background: var(--primary); color: var(--primary-foreground); box-shadow: var(--shadow-ink); }
   .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: var(--shadow-ink-lg); }
   .btn-primary:active { transform: translateY(0); }
   .btn-outline { background: transparent; color: var(--foreground); border: 1.5px solid var(--border); }
@@ -279,7 +282,7 @@
   .meter-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px; }
   .meter-row .val { color: var(--primary); font-weight: 700; }
   .meter { height: 8px; border-radius: 999px; background: var(--muted); overflow: hidden; }
-  .meter > span { display: block; height: 100%; width: 72%; background: linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--primary) 60%, #fff)); border-radius: 999px; }
+  .meter > span { display: block; height: 100%; width: 72%; background: linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--primary) 60%, var(--primary-foreground))); border-radius: 999px; }
 
   /* ---------- 区块标题 ---------- */
   .section { padding: 96px 0; }
@@ -315,8 +318,8 @@
   .char-cell .glyph { font-family: var(--font-serif); font-weight: 300; font-size: clamp(30px, 5vw, 44px); line-height: 1; transition: transform var(--dur-fast) var(--ease-spring); }
   .char-cell:hover .glyph { transform: scale(1.06); }
   .char-cell .py { font-size: 12px; color: var(--muted-foreground); font-family: var(--font-mono); }
-  .char-cell.selected { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: var(--shadow-glow); }
-  .char-cell.selected .py { color: rgba(255,255,255,0.82); }
+  .char-cell.selected { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); box-shadow: var(--shadow-glow); }
+  .char-cell.selected .py { color: color-mix(in srgb, var(--primary-foreground) 82%, transparent); }
   .char-cell.selected .glyph { animation: inkSpread 0.5s var(--ease-out); }
 
   /* 详情面板 */
@@ -367,10 +370,10 @@
   .week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-bottom: 32px; }
   @media (max-width: 560px) { .week { gap: 7px; } }
   .day { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 16px 8px; border-radius: var(--radius-xl); background: var(--muted); border: 1px solid var(--border); }
-  .day.done { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; border-color: transparent; }
+  .day.done { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: var(--primary-foreground); border-color: transparent; }
   .day.today { box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 55%, transparent); }
   .day .dlabel { font-size: 12px; font-weight: 600; }
-  .day .dcheck { width: 40px; height: 40px; border-radius: var(--radius-lg); display: grid; place-items: center; background: color-mix(in srgb, #fff 22%, transparent); }
+  .day .dcheck { width: 40px; height: 40px; border-radius: var(--radius-lg); display: grid; place-items: center; background: color-mix(in srgb, var(--primary-foreground) 22%, transparent); }
   .day:not(.done) .dcheck { background: color-mix(in srgb, var(--card) 70%, transparent); color: var(--muted-foreground); font-size: 12px; font-weight: 600; }
   .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
   @media (max-width: 640px) { .stats { grid-template-columns: 1fr; } }
@@ -390,7 +393,7 @@
   .stat .slabel { font-size: 13px; color: var(--muted-foreground); margin-top: 2px; }
 
   /* ---------- 弹窗 (Dialog / Sheet) ---------- */
-  .modal-scrim { position: fixed; inset: 0; z-index: 200; background: rgba(13,13,13,0.5); backdrop-filter: blur(6px); display: grid; place-items: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity var(--dur-normal) var(--ease-smooth); }
+  .modal-scrim { position: fixed; inset: 0; z-index: 200; background: var(--scrim); backdrop-filter: blur(6px); display: grid; place-items: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity var(--dur-normal) var(--ease-smooth); }
   .modal-scrim.open { opacity: 1; pointer-events: auto; }
   .modal { width: 100%; max-width: 520px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-3xl); box-shadow: var(--shadow-ink-xl); padding: 32px; transform: scale(0.96) translateY(8px); transition: transform var(--dur-normal) var(--ease-spring); }
   .modal-scrim.open .modal { transform: scale(1) translateY(0); }
@@ -450,7 +453,7 @@
 </style>
 </head>
 <body>
-<a href="#main" class="skip-link">Skip to content</a>
+<a href="#main" class="skip-link" data-i18n="common.skipToContent">Skip to content</a>
 
 <!-- ============ 头部 / 导航 ============ -->
 <header class="site">
@@ -748,7 +751,7 @@ const I18N = {
       start:'Start now', weekTitle:"This Week's Progress", clear:'Clear', next:'Next',
       mon:'Mon',tue:'Tue',wed:'Wed',thu:'Thu',fri:'Fri',sat:'Sat',sun:'Sun', today:'Today', pending:'—'},
     stat:{learned:'Characters learned', streak:'Day streak', accuracy:'Accuracy'},
-    common:{close:'Close'}, quiz:{desc:'Choose the correct pinyin for this character.', next:'Next',
+    common:{close:'Close', skipToContent:'Skip to content'}, quiz:{desc:'Choose the correct pinyin for this character.', next:'Next',
       correct:'Correct!', incorrect:'Incorrect.'},
     toast:{welcome:'Welcome to HanziMaster', selected:'Selected', copied:'Audio playing (demo)', saved:'Progress saved'}
   },
@@ -772,7 +775,7 @@ const I18N = {
       start:'立即开始', weekTitle:'本周学习进度', clear:'清除', next:'下一个',
       mon:'一',tue:'二',wed:'三',thu:'四',fri:'五',sat:'六',sun:'日', today:'今天', pending:'—'},
     stat:{learned:'已学汉字', streak:'连续天数', accuracy:'正确率'},
-    common:{close:'关闭'}, quiz:{desc:'为该字选择正确的拼音。', next:'下一题',
+    common:{close:'关闭', skipToContent:'跳到主内容'}, quiz:{desc:'为该字选择正确的拼音。', next:'下一题',
       correct:'正确！', incorrect:'答错了。'},
     toast:{welcome:'欢迎使用汉字大师', selected:'已选择', copied:'正在播放发音（演示）', saved:'进度已保存'}
   },
@@ -796,7 +799,7 @@ const I18N = {
       start:'今すぐ開始', weekTitle:'今週の進捗', clear:'クリア', next:'次へ',
       mon:'月',tue:'火',wed:'水',thu:'木',fri:'金',sat:'土',sun:'日', today:'今日', pending:'—'},
     stat:{learned:'習得文字', streak:'連続日数', accuracy:'正答率'},
-    common:{close:'閉じる'}, quiz:{desc:'この文字の正しいピンインを選択。', next:'次へ', correct:'正解！', incorrect:'不正解。'},
+    common:{close:'閉じる', skipToContent:'メインコンテンツへ'}, quiz:{desc:'この文字の正しいピンインを選択。', next:'次へ', correct:'正解！', incorrect:'不正解。'},
     toast:{welcome:'漢字マスターへようこそ', selected:'選択済み', copied:'発音再生中（デモ）', saved:'進捗を保存'}
   },
   es: {
@@ -819,7 +822,7 @@ const I18N = {
       start:'Empezar', weekTitle:'Progreso semanal', clear:'Limpiar', next:'Siguiente',
       mon:'Lun',tue:'Mar',wed:'Mié',thu:'Jue',fri:'Vie',sat:'Sáb',sun:'Dom', today:'Hoy', pending:'—'},
     stat:{learned:'Caracteres', streak:'Racha', accuracy:'Precisión'},
-    common:{close:'Cerrar'}, quiz:{desc:'Elige el pinyin correcto para este carácter.', next:'Siguiente', correct:'¡Correcto!', incorrect:'Incorrecto.'},
+    common:{close:'Cerrar', skipToContent:'Saltar al contenido'}, quiz:{desc:'Elige el pinyin correcto para este carácter.', next:'Siguiente', correct:'¡Correcto!', incorrect:'Incorrecto.'},
     toast:{welcome:'Bienvenido a HanziMaster', selected:'Seleccionado', copied:'Reproduciendo audio (demo)', saved:'Progreso guardado'}
   }
 };
@@ -887,7 +890,6 @@ document.addEventListener('click', (e)=>{ if(!localeWrap.contains(e.target)){ lo
 function goView(name){
   $$('.view').forEach(v=>v.classList.toggle('active', v.id === 'view-'+name));
   $$('[data-nav]').forEach(a=>a.classList.toggle('active', a.dataset.nav===name));
-  $$('[data-open]').forEach(()=>{});
   window.scrollTo({top:0, behavior:'smooth'});
   closeDrawer();
 }
@@ -1042,11 +1044,13 @@ function setupCanvas(){
   const ctx = canvas.getContext('2d'); ctx.scale(dpr,dpr);
   ctx.clearRect(0,0,rect.width,rect.height);
   ctx.lineWidth = 4; ctx.lineCap='round'; ctx.lineJoin='round';
-  ctx.strokeStyle = isDark ? '#f3f1eb' : '#1a1a1a';
+  const fg = getComputedStyle(document.documentElement).getPropertyValue('--foreground').trim() || '#1a1a1a';
+  ctx.strokeStyle = fg;
   ctx.font = `${Math.min(rect.width,rect.height)*0.42}px "Noto Serif SC", serif`;
-  ctx.fillStyle = isDark ? 'rgba(243,241,235,0.10)' : 'rgba(26,26,26,0.07)';
+  ctx.fillStyle = fg; ctx.globalAlpha = isDark ? 0.10 : 0.07;
   ctx.textAlign='center'; ctx.textBaseline='middle';
   ctx.fillText(CHARACTERS[writeIdx].hanzi, rect.width/2, rect.height/2);
+  ctx.globalAlpha = 1;
   canvas._ctx = ctx; canvas._drawing=false; canvas._last=null;
 }
 function canvasPos(canvas, e){

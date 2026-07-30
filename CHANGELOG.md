@@ -25,6 +25,17 @@
 - Synced package.json, metadata.json versions to 5.0.0.
 - Updated README/README_EN to reflect current design system, fonts, and Next.js 16 stack.
 
+### Prototype & Spec Best-Practice Alignment
+- `prototype/prototype.html`: removed all hardcoded component colors (`#fff` / scrim `rgba`) → design tokens (`--primary-foreground` / `--scrim`); derived `--primary-dark` from `--primary` via `color-mix` (single source).
+- `prototype/prototype.html`: button radius aligned to spec token `--radius-md` (was pill `999px`).
+- `prototype/prototype.html`: Canvas writing now reads `--foreground` token instead of hardcoded hex; removed dead code in `goView`.
+- `prototype/prototype.html`: added `--font-heading` / `--scrim` tokens; skip-link now translated via `common.skipToContent` (en/zh-CN/ja/es).
+- `openspec/01-overview.md`: bumped to v5.0.0; corrected Apple-HIG → 东方水墨·朱砂红, Next.js 15 → 16, fonts Inter/Noto Sans SC → Space Grotesk/Playfair Display/Noto Serif SC/JetBrains Mono.
+- `openspec/02-architecture.md`: Next.js 15 → 16.
+- `openspec/04-api-reference.md`: font table `--font-sans` Inter → Space Grotesk; `--font-hanzi` Noto Sans SC → `--font-serif` Noto Serif SC.
+- `openspec/index.md`: UI prototype description Apple 风格 v4.0 → 东方水墨·朱砂红 v5.0; doc version v3.0.0 → v5.0.0.
+- `openspec/alignment-checklist.md`: fixed stale v3.0.0 version stamps (package.json, 01/02/04/index) → v5.0.0.
+
 ## [2.2.1] - UI/UX Professional Review & Optimization (Complete)
 ### Theme System
 - Added 3-state theme toggle: light → dark → system (previously lost system mode after manual toggle)
