@@ -9,6 +9,33 @@
 
 ---
 
+## 0. 深入复检与改进（2026-08-02）
+
+在任务2/任务7 基础上，对全量用户交互路径（练习/学习/测验/书写/主题/布局）做第二轮深入排查，
+逐文件精读 + `tsc --noEmit` 验证（exit 0）。结论：**代码整体质量高，无安全漏洞、无 XSS、
+client 边界 100% 正确、核心进度流程已接通**。发现并修复的问题如下。
+
+### 已修复
+| # | 文件 | 问题 | 类型 | 修复 |
+|---|------|------|------|------|
+| 1 | `src/app/learn/page.tsx` | 答对后 `setTimeout(1500)` 自动关闭弹窗**未清理**：用户提前关闭/路由切换后定时器仍触发，导致操作已卸载组件或关闭错误的弹窗 | 健壮性 bug | 用 `useRef` 持有句柄，关闭与组件卸载时 `clearTimeout` |
+| 2 | `src/hooks/use-progress.ts` | 导出 `isLearned`/`getLearnedCharacters`/`learnedCharacterIds` **零引用**（死代码） | 可维护性 | 从返回对象与回调中删除，精简公共 API |
+
+### 复核后判定为非问题 / 暂不处理（附理由）
+| # | 文件 | 现象 | 判定 |
+|---|------|------|------|
+| 3 | `src/components/toast.tsx` | 模块级全局 `toasts`/`listeners`：多实例并存时全局状态泄漏；SSR 期 `toast()` 静默丢失 | **设计点，非 bug**：当前全应用无任何 `toast()` 调用方（仅 `ToastContainer` 挂载），属未启用的基础设施；重构为 Context 属过早优化，且需配套调用方才有价值，故暂留 |
+| 4 | `src/components/practice/quiz-dialog.tsx` | 答对无 toast 反馈 | 经核实 learn 页从不调用 toast，且弹窗已有内联正误反馈，加 toast 为重复/新增行为，不做 |
+| 5 | `package.json` | `tailwindcss@^4` 与 `tailwindcss-animate@^1.0.7`（仅支持 v3）版本错配 | 低危：构建由 `tailwindcss-animate` 的 PostCSS 插件生效，未启用 Tailwind v4 原生引擎，实际无运行时错误；建议后续统一升级 `tailwindcss-animate` 至 v4 兼容版（@tailwindcss/animate） |
+
+### 复检确认的正确项
+- **SSR 安全**：`useProgress`、`useScrollReveal` 均有 `typeof window` 守卫，`localStorage` 仅经 `storage.ts` 的 `safeGetItem/safeSetItem` 访问，无 SSR 崩溃风险。
+- **定时器**：仅 `learn/page.tsx` 一处 `setTimeout`，已修复；全仓无 `setInterval`/`requestAnimationFrame` 泄漏。
+- **空数组/空值健壮性**：`CharacterGrid` 遍历 `characters`（静态非空）；`getWeeklyActivity` 恒返回 `boolean[7]`；`strokeMap.get(...)` 有 `??` 兜底；`selectedCharacter` 具 `|| null` 守卫——边界均安全。
+- **i18n**：动态键 `practice.${day}` 对应的 `practice.mon..sun` 均存在于 `en.ts`；`t()` 缺失键回退显示键名，无白屏风险。
+
+---
+
 ## 1. 项目度量
 
 | 指标 | 数值 |

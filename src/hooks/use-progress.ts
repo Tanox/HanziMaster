@@ -38,6 +38,14 @@ export function useProgress() {
     safeSetItem(STORAGE_KEY, progress);
   }, [progress]);
 
+  const markTodayActive = useCallback(() => {
+    const today = toLocalDateStr(new Date());
+    setProgress(prev => ({
+      ...prev,
+      dailyActivity: { ...prev.dailyActivity, [today]: true },
+    }));
+  }, []);
+
   const markLearned = useCallback((charId: number) => {
     setProgress(prev => ({
       ...prev,
@@ -46,11 +54,7 @@ export function useProgress() {
         : [...prev.learnedCharIds, charId],
     }));
     markTodayActive();
-  }, []);
-
-  const isLearned = useCallback((charId: number) => {
-    return progress.learnedCharIds.includes(charId);
-  }, [progress.learnedCharIds]);
+  }, [markTodayActive]);
 
   const recordQuizResult = useCallback((charId: number, correct: boolean) => {
     setProgress(prev => ({
@@ -117,29 +121,14 @@ export function useProgress() {
     return result;
   }, [progress.dailyActivity]);
 
-  const markTodayActive = useCallback(() => {
-    const today = toLocalDateStr(new Date());
-    setProgress(prev => ({
-      ...prev,
-      dailyActivity: { ...prev.dailyActivity, [today]: true },
-    }));
-  }, []);
-
-  const getLearnedCharacters = useCallback(() => {
-    return progress.learnedCharIds;
-  }, [progress.learnedCharIds]);
-
   return {
     markLearned,
-    isLearned,
     recordQuizResult,
     getAccuracy,
     getLearnedCount,
     getDailyStreak,
     getWeeklyActivity,
     markTodayActive,
-    getLearnedCharacters,
-    learnedCharacterIds: progress.learnedCharIds,
     streak: getDailyStreak(),
     accuracy: getAccuracy(),
   };
