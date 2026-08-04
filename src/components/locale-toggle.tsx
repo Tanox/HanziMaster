@@ -1,4 +1,4 @@
-// src/components/locale-toggle.tsx v5.1.0
+// src/components/locale-toggle.tsx v5.2.0
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';

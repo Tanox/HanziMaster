@@ -1,4 +1,4 @@
-// src/components/ui/button.tsx v5.1.0
+// src/components/ui/button.tsx v5.2.0
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { Slot } from "radix-ui"

@@ -1,4 +1,4 @@
-// src/app/layout.tsx v5.1.0
+// src/app/layout.tsx v5.2.0
 import type { Metadata, Viewport } from 'next';
 import { Space_Grotesk, Playfair_Display, Noto_Serif_SC, JetBrains_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';

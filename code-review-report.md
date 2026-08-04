@@ -3,7 +3,7 @@
 - **审查对象**：`src/`（72 个 `.ts`/`.tsx` 文件，共 7035 行）
 - **审查范围**：规范性 / Bug / 安全 / 性能 / i18n
 - **审查日期**：2026-07-30
-- **代码版本**：v5.1.0
+- **代码版本**：v5.2.0
 - **审查方法**：分类系统扫描（Node 脚本逐文件提取事实）+ 关键文件精读 + 逻辑推演 + 脚本核验（`tsc --noEmit`、i18n 键覆盖、设计 token 扫描）
 - **环境说明**：本机 `py` 启动器指向的 Python 3.14 无法创建进程，code-reviewer 技能（Python，偏华为 Java 规范）无法运行；且该技能对 TypeScript/Next.js 项目评分不适用，故本次以人工深度审查 + 脚本化逐文件扫描替代，覆盖同等维度。
 
@@ -27,6 +27,7 @@ client 边界 100% 正确、核心进度流程已接通**。发现并修复的�
 | 3 | `src/components/toast.tsx` | 模块级全局 `toasts`/`listeners`：多实例并存时全局状态泄漏；SSR 期 `toast()` 静默丢失 | **设计点，非 bug**：当前全应用无任何 `toast()` 调用方（仅 `ToastContainer` 挂载），属未启用的基础设施；重构为 Context 属过早优化，且需配套调用方才有价值，故暂留 |
 | 4 | `src/components/practice/quiz-dialog.tsx` | 答对无 toast 反馈 | 经核实 learn 页从不调用 toast，且弹窗已有内联正误反馈，加 toast 为重复/新增行为，不做 |
 | 5 | `package.json` | `tailwindcss@^4` 与 `tailwindcss-animate@^1.0.7`（仅支持 v3）版本错配 | 低危：构建由 `tailwindcss-animate` 的 PostCSS 插件生效，未启用 Tailwind v4 原生引擎，实际无运行时错误；建议后续统一升级 `tailwindcss-animate` 至 v4 兼容版（@tailwindcss/animate） |
+| 6 | `rounded-4xl`（3 处） | 此前曾误判为无效 Tailwind 类并改为 `rounded-3xl` | **还原确认合法**：设计原型 `07-design-prototype.md` §2.4/§8.4 明确 `rounded-4xl`（32px）为 Hero/详情大卡片圆角 token，故还原回 `rounded-4xl` 以对齐原型 |
 
 ### 复检确认的正确项
 - **SSR 安全**：`useProgress`、`useScrollReveal` 均有 `typeof window` 守卫，`localStorage` 仅经 `storage.ts` 的 `safeGetItem/safeSetItem` 访问，无 SSR 崩溃风险。

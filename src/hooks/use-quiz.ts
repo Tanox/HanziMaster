@@ -1,4 +1,4 @@
-// src/hooks/use-quiz.ts v5.1.0
+// src/hooks/use-quiz.ts v5.2.0
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';

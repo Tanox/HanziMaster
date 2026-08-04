@@ -1,4 +1,4 @@
-// src/components/practice/writing-dialog.tsx v5.1.0
+// src/components/practice/writing-dialog.tsx v5.2.0
 'use client';
 
 import { useRef } from 'react';

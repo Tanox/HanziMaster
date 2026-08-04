@@ -1,4 +1,4 @@
-// src/app/page.tsx v5.1.0
+// src/app/page.tsx v5.2.0
 'use client';
 
 import { useEffect } from 'react';
@@ -63,7 +63,7 @@ export default function HomePage() {
             </Button>
           </div>
 
-          <div className="bg-card/80 dark:bg-ink-900/80 backdrop-blur-xl rounded-3xl p-10 sm:p-12 border border-ink-100 dark:border-ink-800 max-w-4xl mx-auto animate-fade-in-elegant hero-visual opacity-0 shadow-ink-lg">
+          <div className="bg-card/80 dark:bg-ink-900/80 backdrop-blur-xl rounded-4xl p-10 sm:p-12 border border-ink-100 dark:border-ink-800 max-w-4xl mx-auto animate-fade-in-elegant hero-visual opacity-0 shadow-ink-lg">
             <div className="grid lg:grid-cols-2 gap-10 items-center">
               <div className="text-center">
                 <div className="relative inline-block">

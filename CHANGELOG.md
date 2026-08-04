@@ -1,5 +1,24 @@
 # Changelog
 
+## [5.2.0] - Functional Completeness & Robustness
+### Bug Fixes
+- 修复 `learn/page.tsx` 答对后自动关闭弹窗的 `setTimeout` 未清理问题：用户提前关闭或路由切换后定时器仍触发，导致操作已卸载组件/关闭错误弹窗。改用 `useRef` 持有句柄并在关闭与卸载时清理。
+
+### Functional Completeness
+- 接通 `useProgress` 进度系统：书写练习调用 `markLearned`、拼音测验调用 `recordQuizResult`，结果持久化至 localStorage。
+- `weekly-progress.tsx` 改为接收真实进度数据（已学字数/连胜/准确率/周活动），移除硬编码假数据，周网格按真实活动显示勾选并对今日高亮。
+
+### Consistency
+- 还原 3 处 `rounded-4xl`（按设计原型 §2.4/§8.4 合法，32px 大卡片圆角）以对齐原型规范（此前误改为 rounded-3xl）。
+- 精简 `use-progress.ts` 未使用导出（`isLearned`/`getLearnedCharacters`/`learnedCharacterIds`）。
+
+### Internationalization
+- 校验 11 种语言翻译键与 `en.ts` 完全对齐（166 个键，无缺失/多余）。
+
+### Docs & Versioning
+- 同步全部文件头、package.json、metadata.json、README、README_EN 至 v5.2.0。
+- 更新 README 说明进度系统已接通。
+
 ## [5.1.0] - Code Review & Robustness Hardening
 ### Code Review & Cleanup
 - 删除未被引用且与原型规范偏离（米字格网格）的死代码 `hooks/use-canvas.ts`。

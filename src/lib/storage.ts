@@ -1,4 +1,4 @@
-// src/lib/storage.ts v5.1.0
+// src/lib/storage.ts v5.2.0
 // src/lib/storage.ts
 // Secure localStorage utilities with version control
 

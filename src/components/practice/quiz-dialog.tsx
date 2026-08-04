@@ -1,4 +1,4 @@
-// src/components/practice/quiz-dialog.tsx v5.1.0
+// src/components/practice/quiz-dialog.tsx v5.2.0
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';

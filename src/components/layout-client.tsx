@@ -1,4 +1,4 @@
-// src/components/layout-client.tsx v5.1.0
+// src/components/layout-client.tsx v5.2.0
 'use client';
 
 import { usePathname } from 'next/navigation';
