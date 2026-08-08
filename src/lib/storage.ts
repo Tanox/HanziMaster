@@ -1,4 +1,4 @@
-// src/lib/storage.ts v5.2.0
+﻿// src/lib/storage.ts v5.2.1
 // src/lib/storage.ts
 // Secure localStorage utilities with version control
 
@@ -54,17 +54,4 @@ export function safeSetItem<T>(key: string, value: T): void {
   }
 }
 
-/**
- * Remove item from localStorage
- */
-export function safeRemoveItem(key: string): void {
-  if (typeof window === 'undefined') {
-    return;
-  }
-  
-  try {
-    localStorage.removeItem(key);
-  } catch (e) {
-    console.warn('Failed to remove from localStorage:', e);
-  }
-}
+

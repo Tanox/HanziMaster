@@ -1,11 +1,12 @@
-// src/components/feature-card.tsx v5.2.0
+﻿// src/components/feature-card.tsx v5.2.1
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
+import type { TranslationKey } from '@/lib/i18n';
 
 interface FeatureCardProps {
-  titleKey: string;
-  descKey: string;
+  titleKey: TranslationKey;
+  descKey: TranslationKey;
   icon: React.ReactNode;
 }
 

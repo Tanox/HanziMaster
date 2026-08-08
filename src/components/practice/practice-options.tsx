@@ -1,4 +1,4 @@
-// src/components/practice/practice-options.tsx v5.2.0
+﻿// src/components/practice/practice-options.tsx v5.2.1
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';

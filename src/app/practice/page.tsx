@@ -1,4 +1,4 @@
-// src/app/practice/page.tsx v5.2.0
+﻿// src/app/practice/page.tsx v5.2.1
 'use client';
 
 import { useState, useEffect } from 'react';

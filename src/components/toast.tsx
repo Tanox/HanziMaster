@@ -1,4 +1,4 @@
-// src/components/toast.tsx v5.2.0
+﻿// src/components/toast.tsx v5.2.1
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';

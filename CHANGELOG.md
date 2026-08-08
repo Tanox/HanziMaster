@@ -1,4 +1,18 @@
-# Changelog
+﻿# Changelog
+
+## [5.2.1] - i18n 类型安全与死代码清理
+### Bug Fixes
+- 修复 `practice/writing-dialog.tsx` 使用不存在的 i18n 键 `practice.writeTitle` / `practice.writeDesc`（应为 `practice.writingTitle` / `practice.writingDesc`），此前会渲染原始键名而非译文。
+
+### Internationalization
+- 为 `t()` 引入 `TranslationKey` 点分键联合类型（递归生成 `en.ts` 全部叶子键路径），约束 `locale-provider` 及所有键转发组件（feature-card/empty-state/stats-card/practice-assets/character-types/mobile-nav），在编译期拦截错误键名，防止回归。
+
+### Code Quality
+- 删除未引用的死代码 `hooks/use-quiz.ts`（其逻辑已在 learn/practice 页面内联实现）。
+- 移除 `lib/storage.ts` 中未被使用的 `safeRemoveItem`。
+
+### Docs & Versioning
+- 同步全部文件头、package.json、metadata.json、README、README_EN、openspec 至 v5.2.1。
 
 ## [5.2.0] - Functional Completeness & Robustness
 ### Bug Fixes
@@ -16,7 +30,7 @@
 - 校验 11 种语言翻译键与 `en.ts` 完全对齐（166 个键，无缺失/多余）。
 
 ### Docs & Versioning
-- 同步全部文件头、package.json、metadata.json、README、README_EN 至 v5.2.0。
+- 同步全部文件头、package.json、metadata.json、README、README_EN 至 v5.2.1。
 - 更新 README 说明进度系统已接通。
 
 ## [5.1.0] - Code Review & Robustness Hardening

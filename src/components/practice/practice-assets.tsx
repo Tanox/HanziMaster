@@ -1,10 +1,10 @@
-// src/components/practice/practice-assets.tsx v5.2.0
-import type { ReactNode } from 'react';
+﻿// src/components/practice/practice-assets.tsx v5.2.1
+import type { TranslationKey } from '@/lib/i18n';
 
 export interface PracticeOption {
   id: string;
-  titleKey: string;
-  descKey: string;
+  titleKey: TranslationKey;
+  descKey: TranslationKey;
   icon: 'pencil' | 'question' | 'chart';
 }
 
@@ -12,7 +12,7 @@ export interface CharacterQuiz {
   id: number;
   hanzi: string;
   pinyin: string;
-  translationKey: string;
+  translationKey: TranslationKey;
   meaning: string;
 }
 

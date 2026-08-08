@@ -1,4 +1,4 @@
-# HanziMaster 汉字大师
+﻿# HanziMaster 汉字大师
 
 一款 AI 驱动的汉字学习应用，通过智能分析帮助你掌握汉字书写。
 
@@ -82,4 +82,4 @@ cp .env.example .env
 
 ## 许可证
 
-© 2026 HanziMaster 汉字大师 v5.2.0
+© 2026 HanziMaster 汉字大师 v5.2.1

@@ -1,14 +1,15 @@
-// src/components/empty-state.tsx v5.2.0
+﻿// src/components/empty-state.tsx v5.2.1
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
 import { Button } from '@/components/ui/button';
+import type { TranslationKey } from '@/lib/i18n';
 
 interface EmptyStateProps {
   icon: React.ReactNode;
-  titleKey: string;
-  descKey: string;
-  actionKey?: string;
+  titleKey: TranslationKey;
+  descKey: TranslationKey;
+  actionKey?: TranslationKey;
   onAction?: () => void;
   actionVariant?: 'default' | 'ghost' | 'outline';
 }

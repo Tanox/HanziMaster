@@ -1,4 +1,4 @@
-// src/components/theme-toggle.tsx v5.2.0
+﻿// src/components/theme-toggle.tsx v5.2.1
 'use client';
 
 import { useTheme } from './theme-provider';

@@ -1,8 +1,8 @@
-// src/components/locale-provider.tsx v5.2.0
+﻿// src/components/locale-provider.tsx v5.2.1
 'use client';
 
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { Locale, translations, locales, Translations } from '@/lib/i18n';
+import { Locale, translations, locales, Translations, type TranslationKey } from '@/lib/i18n';
 import { safeGetItem, safeSetItem } from '@/lib/storage';
 
 type LocaleProviderProps = {
@@ -13,7 +13,7 @@ type LocaleProviderProps = {
 
 type LocaleProviderState = {
   locale: Locale;
-  t: (key: string, params?: Record<string, string | number>) => string;
+  t: (key: TranslationKey, params?: Record<string, string | number>) => string;
   setLocale: (locale: Locale) => void;
   availableLocales: Locale[];
 };
@@ -35,7 +35,7 @@ const getNestedValue = (obj: Translations, path: string): string => {
 
 const initialState: LocaleProviderState = {
   locale: 'en',
-  t: (key: string) => key,
+  t: (key: TranslationKey) => key,
   setLocale: () => null,
   availableLocales: locales,
 };
@@ -97,7 +97,7 @@ export function LocaleProvider({
   }, [storageKey]);
 
   // Use direct translation lookup with interpolation support
-  const t = useCallback((key: string, params?: Record<string, string | number>): string => {
+  const t = useCallback((key: TranslationKey, params?: Record<string, string | number>): string => {
     let result = translate(locale, key);
     if (params) {
       Object.entries(params).forEach(([k, v]) => {

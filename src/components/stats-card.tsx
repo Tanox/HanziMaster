@@ -1,12 +1,13 @@
-// src/components/stats-card.tsx v5.2.0
+﻿// src/components/stats-card.tsx v5.2.1
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
+import type { TranslationKey } from '@/lib/i18n';
 
 type AccentVariant = 'vermilion' | 'indigo' | 'success';
 
 interface StatsCardProps {
-  label: string;
+  label: TranslationKey;
   value: string;
   icon: React.ReactNode;
   accentVariant?: AccentVariant;

@@ -1,14 +1,15 @@
-// src/components/mobile-nav.tsx v5.2.0
+﻿// src/components/mobile-nav.tsx v5.2.1
 'use client';
 
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import type { TranslationKey } from '@/lib/i18n';
 
 interface MobileNavProps {
   isOpen: boolean;
   onClose: () => void;
-  t: (key: string) => string;
+  t: (key: TranslationKey, params?: Record<string, string | number>) => string;
 }
 
 export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
@@ -123,7 +124,7 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
         {/* Drawer Footer */}
         <div className="p-5 border-t border-ink-100 dark:border-ink-800 text-center">
           <p className="text-xs text-ink-400 dark:text-ink-500">
-            HanziMaster v5.2.0
+            HanziMaster v5.2.1
           </p>
         </div>
       </div>

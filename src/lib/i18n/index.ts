@@ -1,4 +1,4 @@
-// src/lib/i18n/index.ts v5.2.0
+﻿// src/lib/i18n/index.ts v5.2.1
 import { en } from './translations/en';
 import { zhCN } from './translations/zh-CN';
 import { zhTW } from './translations/zh-TW';
@@ -14,6 +14,25 @@ import { ru } from './translations/ru';
 export type Locale = 'en' | 'zh-CN' | 'zh-TW' | 'es' | 'ar' | 'fr' | 'pt-BR' | 'de' | 'ja' | 'ko' | 'ru';
 
 export type Translations = typeof en;
+
+// 递归生成所有叶子键的点分路径联合类型，用于约束 t() 入参，防止使用不存在的 i18n 键
+type LeafKeys<T> = T extends string
+  ? ''
+  : {
+      [K in keyof T & string]: T[K] extends object
+        ? `${K}.${LeafKeys<T[K]>}` extends infer S
+          ? S extends string
+            ? S
+            : never
+          : never
+        : K;
+    }[keyof T & string];
+
+export type TranslationKey = LeafKeys<Translations> extends infer S
+  ? S extends string
+    ? S
+    : never
+  : never;
 
 export const translations: Record<Locale, Translations> = {
   'en': en,

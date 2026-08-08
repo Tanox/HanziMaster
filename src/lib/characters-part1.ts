@@ -1,4 +1,4 @@
-// src/lib/characters-part1.ts v5.2.0
+﻿// src/lib/characters-part1.ts v5.2.1
 import type { Character } from './character-types';
 
 export const charactersPart1: Character[] = [

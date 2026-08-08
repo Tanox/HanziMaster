@@ -1,4 +1,4 @@
-// src/components/ui/skeleton.tsx v5.2.0
+﻿// src/components/ui/skeleton.tsx v5.2.1
 import { cn } from "@/lib/utils"
 
 function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
