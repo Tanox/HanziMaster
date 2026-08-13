@@ -1,9 +1,10 @@
-﻿// src/app/learn/page.tsx v5.2.1
+﻿// src/app/learn/page.tsx v5.2.3
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from '@/components/locale-provider';
 import { useScrollReveal } from '@/hooks/use-scroll-reveal';
+import { usePronunciation } from '@/hooks/use-pronunciation';
 import { characters } from '@/lib/characters';
 import { CharacterGrid } from '@/components/learn/character-grid';
 import { CharacterDetail } from '@/components/learn/character-detail';
@@ -12,6 +13,7 @@ import { QuizDialog } from '@/components/learn/quiz-dialog';
 export default function LearnPage() {
   const { t } = useTranslation();
   useScrollReveal();
+  const { speak } = usePronunciation();
   const [selectedCharacterId, setSelectedCharacterId] = useState<number | null>(characters[0]?.id ?? null);
   const [showQuizDialog, setShowQuizDialog] = useState(false);
   const [quizAnswer, setQuizAnswer] = useState('');
@@ -44,19 +46,6 @@ export default function LearnPage() {
 
   // 组件卸载时清理定时器
   useEffect(() => clearAutoCloseTimer, []);
-
-  // 使用 Web Speech API 朗读汉字发音
-  const speak = (text: string) => {
-    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-    try {
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = 'zh-CN';
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(u);
-    } catch {
-      // 语音合成不可用时静默忽略
-    }
-  };
 
   const handleNextCharacter = () => {
     const idx = characters.findIndex((c) => c.id === (selectedCharacterId ?? -1));

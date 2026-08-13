@@ -1,4 +1,4 @@
-﻿// src/components/practice/writing-canvas.tsx v5.2.1
+﻿// src/components/practice/writing-canvas.tsx v5.2.3
 // 书写画布：淡字符底图 + 指针轨迹绘制，直接从设计 token 读取前景色与衬线字体，
 // 与原型 prototype.html 的「无网格虚线框」规范保持一致，并用指针事件统一鼠标/触控。
 'use client';
@@ -90,6 +90,8 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
   return (
     <canvas
       ref={canvasRef}
+      role="img"
+      aria-label={`${character} ${character} 书写练习画布`}
       className="h-full w-full cursor-crosshair touch-none"
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}

@@ -1,27 +1,26 @@
-﻿# HanziMaster 汉字大师 v5.2.1
+﻿# HanziMaster 汉字大师 v5.2.2
 
 [English](README_EN.md) | [简体中文](README.md)
 
-HanziMaster is a modern, AI-powered platform for learning Chinese characters. It uses Gemini AI to provide personalized feedback on stroke order, balance, and aesthetics.
+HanziMaster is a Chinese character learning app that helps you master handwriting through guided practice, stroke-order demonstrations, and immersive review.
 
 ## Features
 
-- **AI-Powered Insights**: Real-time feedback on your handwriting.
-- **Adaptive Learning**: Personalized learning paths that adapt to your progress.
-- **Etymology & Culture**: Discover the stories behind the characters.
-- **Responsive Design**: Flawless support for desktop and mobile devices.
-- **Dark/Light Mode**: Persistent theme preference with system detection.
+- **Stroke & Structure Feedback**: Clear stroke-order guidance and structure hints to help you write standard, beautiful characters.
+- **Multiple Learning Modes**: Basic learning, handwriting practice, pinyin quizzes, and progress tracking.
+- **Tian-zi-ge Writing Practice**: Canvas handwriting with touchscreen and mouse support, plus real-time pronunciation playback.
+- **Pinyin Quiz**: 4-choice pinyin test with live correct/incorrect stats and accuracy analysis.
+- **Personalized Progress**: Writing/quiz results are persisted automatically; visualize streak days, accuracy, and weekly activity.
+- **11 Languages**: Simplified Chinese, Traditional Chinese, English, Japanese, Korean, and more.
+- **Dark Mode**: Follow system or toggle manually.
 - **Ink-and-Vermilion Design System**: Unified ink/vermilion/indigo color scales with a single token source.
-- **Chinese Font Support**: Noto Serif SC for elegant character display.
-- **Internationalization (i18n)**: Support for 11 languages including English, Chinese (Simplified/Traditional), Spanish, Arabic, French, Portuguese, German, Japanese, Korean, and Russian.
-- **Language Switcher**: Easy language switching with persistence.
+- **Mobile Friendly**: Fully optimized for phones and tablets.
 
 ## Tech Stack
 
 - **Framework**: Next.js 16
 - **UI Library**: React 19
 - **Styling**: Tailwind CSS 4.0 + Ink-and-Vermilion Design System
-- **AI**: Google Gemini AI
 - **Fonts**: Space Grotesk, Playfair Display, Noto Serif SC, JetBrains Mono
 - **Internationalization**: Custom i18n context with 11 languages
 
@@ -45,13 +44,7 @@ HanziMaster is a modern, AI-powered platform for learning Chinese characters. It
    npm install
    ```
 
-3. Configure environment variables (optional)
-   ```bash
-   cp .env.example .env
-   # Edit .env file and fill in GEMINI_API_KEY
-   ```
-
-4. Start the development server
+3. Start the development server
    ```bash
    npm run dev
    ```
@@ -85,26 +78,25 @@ src/
 │   └── feature-card.tsx / stats-card.tsx / empty-state.tsx / toast.tsx
 ├── hooks/                # use-quiz / use-progress / use-pronunciation / use-is-dark / use-scroll-reveal
 ├── lib/                  # characters / character-types / storage / utils / i18n (index + translations/)
-└── proxy.ts              # Gemini AI proxy
+└── proxy.ts              # OpenNext dev proxy (CSP injection)
 ```
 
 ## Core Pages
 
 ### Home (/)
 - Hero section showcasing app features
-- Feature introduction (AI Insights, Etymology & Culture, Adaptive Learning)
+- Feature introduction (Stroke Feedback, Etymology & Culture, Adaptive Learning)
 - Responsive design with dark/light mode support
 
 ### Learn (/learn)
 - 12 basic Chinese characters for learning
 - Character selection and detail display
-- Writing practice and pronunciation features
+- Writing practice and pronunciation playback
 
 ### Practice (/practice)
-- Writing practice mode
-- Memory quiz mode
-- Learning progress tracking
-- Weekly learning statistics
+- Handwriting practice mode (Tian-zi-ge canvas)
+- Pinyin quiz mode (4-choice)
+- Learning progress tracking with real stats (streak / accuracy / weekly activity)
 
 ## Supported Languages
 
@@ -124,9 +116,7 @@ HanziMaster supports the following 11 languages:
 
 ## Environment Variables
 
-| Variable | Description | Required | Example |
-|----------|------------|----------|---------|
-| `GEMINI_API_KEY` | Google Gemini AI API key | No | `your-api-key-here` |
+No environment variables are required to run HanziMaster. The app works fully offline with localStorage-based progress tracking.
 
 ## Development Guide
 
@@ -168,4 +158,4 @@ Types: `feat` | `fix` | `docs` | `style` | `refactor` | `perf` | `test` | `build
 
 ## License
 
-© 2026 HanziMaster 汉字大师. All rights reserved.
+© 2026 HanziMaster 汉字大师 v5.2.2. All rights reserved.

@@ -2,8 +2,8 @@
 
 - **审查对象**：`src/`（72 个 `.ts`/`.tsx` 文件，共 7035 行）
 - **审查范围**：规范性 / Bug / 安全 / 性能 / i18n
-- **审查日期**：2026-07-30
-- **代码版本**：v5.2.1
+- **审查日期**：2026-07-30（第三轮更新：2026-08-13）
+- **代码版本**：v5.2.2
 - **审查方法**：分类系统扫描（Node 脚本逐文件提取事实）+ 关键文件精读 + 逻辑推演 + 脚本核验（`tsc --noEmit`、i18n 键覆盖、设计 token 扫描）
 - **环境说明**：本机 `py` 启动器指向的 Python 3.14 无法创建进程，code-reviewer 技能（Python，偏华为 Java 规范）无法运行；且该技能对 TypeScript/Next.js 项目评分不适用，故本次以人工深度审查 + 脚本化逐文件扫描替代，覆盖同等维度。
 
@@ -91,7 +91,7 @@ client 边界 100% 正确、核心进度流程已接通**。发现并修复的�
 | 检查项 | 结果 | 说明 |
 |--------|------|------|
 | XSS 注入 | ✅ | 无 `dangerouslySetInnerHTML`、`eval`、`innerHTML`；`t()` 插值为受控参数 |
-| 密钥暴露 | ✅ | 无 `apiKey`/`GEMINI` 客户端硬编码；Gemini 域名仅出现在 CSP 白名单；发音走浏览器 Web Speech API |
+| 密钥暴露 | ✅ | 无 `apiKey`/`GEMINI` 客户端硬编码；无外部 AI 域名（CSP 已移除 `generativelanguage`）；发音走浏览器 Web Speech API |
 | 异步/网络 | ✅ | 全局无 `fetch`/`async`/`await`（静态数据 + 回调式 API），无未处理 Promise 拒绝风险 |
 | CSP | ✅ | `proxy.ts` 生产环境使用 nonce-based CSP，含 `object-src 'none'`、`base-uri/form-action 'self'`、`frame-ancestors 'none'` |
 | 安全存储 | ✅ | `storage.ts` 带版本校验、`try/catch`、**SSR 守卫**（`typeof window === 'undefined'`）；`localStorage` 仅在已守卫封装内访问 |
@@ -164,7 +164,7 @@ client 边界 100% 正确、核心进度流程已接通**。发现并修复的�
 
 ## 9. 结论与后续建议
 
-1. **核心结论**：`src` 代码规范、安全、性能均达生产级；本次审查确认无 `any`、无 `dangerouslySetInnerHTML`/`eval`、无客户端密钥暴露、无未处理异步、client 边界 100% 正确。已修复 1 个真实 Bug（UTC 时区）、1 处死代码（`use-canvas.ts`）、1 个超 200 行文件（`writing-dialog.tsx`），并统一版本至 v5.1.0。
+1. **核心结论**：`src` 代码规范、安全、性能均达生产级；本次审查确认无 `any`、无 `dangerouslySetInnerHTML`/`eval`、无客户端密钥暴露、无未处理异步、client 边界 100% 正确。已修复 1 个真实 Bug（UTC 时区）、1 处死代码（`use-canvas.ts`）、1 个超 200 行文件（`writing-dialog.tsx`），并统一版本至 v5.2.2。
 2. **后续建议**：
    - 在 CI 中加入 `tsc --noEmit` 与 ESLint 作为质量门禁（本环境 ESLint 进程会被终止，需 CI 侧保障）。
    - 将 `toast.tsx` 模块级全局状态迁移到 Context/zustand，规避 HMR/重复挂载共享风险。
@@ -176,3 +176,30 @@ client 边界 100% 正确、核心进度流程已接通**。发现并修复的�
 ---
 
 *本报告由人工深度审查 + Node 脚本逐文件扫描生成，替代本机不可用的 code-reviewer 技能（Python 环境损坏 + 该技能偏 Java 规范）。验证手段为 `node ./node_modules/typescript/bin/tsc --noEmit`（exit 0）。*
+
+---
+
+## 10. 第三轮审查（2026-08-13，v5.2.2）
+
+本轮聚焦「AI 功能宣称与实际实现脱节」及若干可维护性/健壮性小项。
+
+### 10.1 重大发现
+- **AI 功能被全面宣称但完全未实现**：`README.md`/`README_EN.md`、`metadata.json`（keywords 含 `Gemini AI`）、首页文案、`i18n` 11 语言文案（heroDescription/aiInsights/writingDesc/featuresSubtitle/meta.description 等）、`proxy.ts` 生产 CSP 的 `connect-src https://generativelanguage.googleapis.com` 均声称「AI 驱动、Gemini 实时反馈」，但 `src/` 中**零处**调用 `@google/generative-ai` 或 `generativelanguage` 接口（依赖已装但无消费代码）。属事实性虚假声明，会误导用户与维护者。
+
+### 10.2 已修复
+| # | 文件 | 问题 | 类型 | 修复 |
+|---|------|------|------|------|
+| 1 | `README.md`/`README_EN.md` | 全文多处宣称 AI/Gemini、含「配置 AI」环境步骤与 `GEMINI_API_KEY` | 虚假声明 | 下架全部 AI 表述，删除配置段落与 env 表，proxy 注释改为「OpenNext CSP 中间件」 |
+| 2 | `metadata.json` | keywords 含 `Gemini AI` | 虚假声明 | 移除该 keyword |
+| 3 | `.env.example` | 含 `GEMINI_API_KEY` 模板 | 误导 | 改为「无需环境变量」说明 |
+| 4 | `src/proxy.ts` | 生产 CSP `connect-src` 放开 Gemini 域名（无效攻击面） | 安全面收敛 | 移除 `generativelanguage.googleapis.com` |
+| 5 | `src/lib/i18n/translations/*.ts`（11） | heroDescription/aiInsightsTitle/aiInsightsDesc/featuresSubtitle/writingDesc/meta.description 含 AI/未来/前沿等虚假文案 | 虚假声明 | 全部改为真实功能描述（笔顺指引、结构提示、引导式练习） |
+| 6 | `src/app/learn/page.tsx` | 内联 `speak` 与 `use-pronunciation` hook 重复 | 重复逻辑 | 移除内联实现，改用 `usePronunciation()` hook 的 `speak` |
+| 7 | `src/hooks/use-progress.ts` | 读取 localStorage 后无 schema 校验，被篡改格式会导致 `NaN`/崩溃 | 健壮性 | 新增 `validateProgress` 运行时校验，过滤非法字段 |
+| 8 | `src/components/practice/writing-canvas.tsx` | `<canvas>` 无 `role`/`aria-label`，屏幕阅读器不可感知 | 无障碍 | 添加 `role="img"` 与动态 `aria-label`（含当前字符） |
+
+### 10.3 说明
+- 本轮选择「下架 AI 声明」而非「实现 AI」：因无任何服务端 API Route、密钥管理、速率限制与错误处理设计，落地 AI 超出修复范围；下架声明使对外宣传与代码行为一致。
+- 保留 `home.aiInsightsTitle/aiInsightsDesc` 等 **key 名**（避免破坏 `Translations` 类型约束与 11 语言键集合），仅修订其文案为真实功能描述。
+- 已删除 3 份基于旧架构（Next.js 15/`next.config.js`/`responsecsp` 等）的失实安全报告：`security_review_report.md`、`security_performance_review.md`、`security_best_practices_report.md`。
+

@@ -1,4 +1,4 @@
-﻿// src/lib/i18n/translations/fr.ts v5.2.1
+﻿// src/lib/i18n/translations/fr.ts v5.2.3
 export const fr = {
   common: {
     home: 'Accueil',
@@ -32,16 +32,16 @@ export const fr = {
     heroTitle: 'Maîtrisez le Chinois',
     heroSubtitle: 'Un Trait',
     heroSuffix: ' à la Fois',
-    heroDescription: 'HanziMaster utilise l\'IA avancée pour vous guider à travers l\'art complexe des caractères chinois. Parcours d\'apprentissage personnalisés, commentaires en temps réel et pratique immersive.',
-    aiInsightsTitle: 'Perspectives par IA',
-    aiInsightsDesc: 'Notre IA analyse votre écriture et fournit des commentaires instantanés sur l\'ordre des traits, l\'équilibre et l\'esthétique.',
+    heroDescription: 'HanziMaster vous aide à maîtriser les caractères chinois grâce à une pratique guidée, une démonstration de l\'ordre des traits et un entraînement immersif.',
+    aiInsightsTitle: 'Retour sur les Traits',
+    aiInsightsDesc: 'Étudiez chaque caractère avec des guides clairs de l\'ordre des traits et des repères de structure pour une écriture confiante et élégante.',
     etymologyTitle: 'Étymologie et Culture',
     etymologyDesc: 'Découvrez les histoires derrière les caractères. Comprenez comment ils ont évolué des pictogrammes anciens aux formes modernes.',
     adaptiveTitle: 'Apprentissage Adaptatif',
     adaptiveDesc: 'Notre algorithme s\'adapte à votre rythme, en se concentrant sur les caractères que vous trouvez difficiles tout en renforçant ce que vous savez.',
     featuresTitle: 'Pourquoi Choisir HanziMaster',
-    featuresSubtitle: 'Découvrez l\'avenir de l\'apprentissage des caractères chinois avec nos fonctionnalités de pointe conçues pour accélérer vos progrès.',
-    aiBadge: 'Apprentissage par IA',
+    featuresSubtitle: 'Apprenez les caractères chinois par la pratique guidée et le reprise immersive, avec des fonctionnalités conçues pour accélérer vos progrès.',
+    aiBadge: 'Apprentissage Interactif',
     yongCharacterTitle: 'Les Huit Traits de 永',
     yongCharacterDesc: 'Maîtrisez les huit traits de base à travers le caractère 永, débloquant l\'essence de la calligraphie chinoise',
     yongCharacterStrokes: 'Maîtrise des Traits',
@@ -50,7 +50,7 @@ export const fr = {
     center: 'Centre',
     subtitle: 'Plusieurs modes de pratique pour maîtriser les caractères chinois sous tous les angles.',
     writingTitle: 'Pratique de l\'Écriture',
-    writingDesc: 'Pratiquez l\'écriture sur le canevas intelligent avec des commentaires et des conseils IA en temps réel.',
+    writingDesc: 'Pratiquez l'écriture sur le canevas avec des guides clairs de l'ordre des traits et de leur structure.'
     quizTitle: 'Quiz de Mémoire',
     quizDesc: 'Des quiz amusants pour renforcer les significations et les prononciations des caractères.',
     progressTitle: 'Progrès d\'Apprentissage',
@@ -178,10 +178,10 @@ export const fr = {
     quizIncorrect: 'Incorrect',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v5.2.1. Tous droits réservés.',
+    copyright: '© 2026 HanziMaster 汉字大师 v5.2.3. Tous droits réservés.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',
-    description: 'Plateforme d\'apprentissage des caractères chinois alimentée par l\'IA',
+    description: 'Plateforme interactive d\'apprentissage des caractères chinois',
   },
 };

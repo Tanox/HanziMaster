@@ -1,4 +1,4 @@
-﻿// src/lib/i18n/translations/pt-BR.ts v5.2.1
+﻿// src/lib/i18n/translations/pt-BR.ts v5.2.3
 export const ptBR = {
   common: {
     home: 'Início',
@@ -32,16 +32,16 @@ export const ptBR = {
     heroTitle: 'Domine o Chinês',
     heroSubtitle: 'Um Traço',
     heroSuffix: ' de Cada Vez',
-    heroDescription: 'HanziMaster usa IA avançada para guiá-lo através da arte intrincada dos caracteres chineses. Caminhos de aprendizado personalizados, feedback em tempo real e prática imersiva.',
-    aiInsightsTitle: 'Insights com IA',
-    aiInsightsDesc: 'Nossa IA analisa sua escrita e fornece feedback instantâneo sobre ordem, equilíbrio e estética dos traços.',
+    heroDescription: 'HanziMaster ajuda você a dominar caracteres chineses por meio de prática guiada, demonstração da ordem dos traços e revisão imersiva.',
+    aiInsightsTitle: 'Feedback de Traços',
+    aiInsightsDesc: 'Estude cada caractere com guias claros da ordem dos traços e dicas de estrutura para uma escrita confiante e bonita.',
     etymologyTitle: 'Etimologia e Cultura',
     etymologyDesc: 'Descubra as histórias por trás dos caracteres. Entenda como eles evoluíram de pictogramas antigos para formas modernas.',
     adaptiveTitle: 'Aprendizado Adaptativo',
     adaptiveDesc: 'Nosso algoritmo se adapta ao seu ritmo, focando nos caracteres que você acha desafiadores enquanto reforça o que você já sabe.',
     featuresTitle: 'Por Que Escolher HanziMaster',
-    featuresSubtitle: 'Experimente o futuro do aprendizado de caracteres chineses com nossos recursos de ponta projetados para acelerar seu progresso.',
-    aiBadge: 'Aprendizado com IA',
+    featuresSubtitle: 'Aprenda caracteres chineses por prática guiada e revisão imersiva, com recursos projetados para acelerar seu progresso.',
+    aiBadge: 'Aprendizado Interativo',
     yongCharacterTitle: 'Os Oito Traços de 永',
     yongCharacterDesc: 'Domine os oito traços básicos através do caractere 永, desbloqueando a essência da caligrafia chinesa',
     yongCharacterStrokes: 'Domínio de Traços',
@@ -50,7 +50,7 @@ export const ptBR = {
     center: 'Centro',
     subtitle: 'Múltiplos modos de prática para dominar caracteres chineses de todos os ângulos.',
     writingTitle: 'Prática de Escrita',
-    writingDesc: 'Pratique escrever na tela inteligente com feedback e orientação de IA em tempo real.',
+    writingDesc: 'Pratique a escrita na tela com guias claros da ordem dos traços e sua estrutura.',
     quizTitle: 'Quiz de Memória',
     quizDesc: 'Quizzes divertidos para reforçar significados e pronúncias dos caracteres.',
     progressTitle: 'Progresso de Aprendizado',
@@ -178,10 +178,10 @@ export const ptBR = {
     quizIncorrect: 'Incorreto',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v5.2.1. Todos os direitos reservados.',
+    copyright: '© 2026 HanziMaster 汉字大师 v5.2.3. Todos os direitos reservados.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',
-    description: 'Plataforma de aprendizado de caracteres chineses alimentada por IA',
+    description: 'Plataforma interativa de aprendizado de caracteres chineses',
   },
 };

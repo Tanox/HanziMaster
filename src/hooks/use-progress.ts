@@ -1,4 +1,4 @@
-﻿// src/hooks/use-progress.ts v5.2.1
+﻿// src/hooks/use-progress.ts v5.2.3
 // Progress tracking with localStorage persistence
 
 import { useState, useEffect, useCallback } from 'react';
@@ -26,12 +26,48 @@ const getDefaultProgress = (): ProgressData => ({
   dailyActivity: {},
 });
 
+// 对从 localStorage 读取的数据做运行时 schema 校验，
+// 过滤被篡改或旧版本遗留的非法字段，避免后续计算出 NaN 或崩溃。
+const validateProgress = (data: unknown): ProgressData => {
+  const result = getDefaultProgress();
+  if (!data || typeof data !== 'object') return result;
+  const d = data as Partial<ProgressData>;
+
+  if (Array.isArray(d.learnedCharIds)) {
+    result.learnedCharIds = d.learnedCharIds.filter((id): id is number => typeof id === 'number' && Number.isFinite(id));
+  }
+  if (Array.isArray(d.quizResults)) {
+    result.quizResults = d.quizResults
+      .filter(
+        (r): r is ProgressData['quizResults'][number] =>
+          !!r &&
+          typeof r === 'object' &&
+          typeof (r as { charId?: unknown }).charId === 'number' &&
+          typeof (r as { correct?: unknown }).correct === 'boolean' &&
+          typeof (r as { timestamp?: unknown }).timestamp === 'number'
+      )
+      .map((r) => ({
+        charId: (r as { charId: number }).charId,
+        correct: (r as { correct: boolean }).correct,
+        timestamp: (r as { timestamp: number }).timestamp,
+      }));
+  }
+  if (d.dailyActivity && typeof d.dailyActivity === 'object') {
+    for (const [k, v] of Object.entries(d.dailyActivity)) {
+      if (typeof k === 'string' && typeof v === 'boolean') {
+        result.dailyActivity[k] = v;
+      }
+    }
+  }
+  return result;
+};
+
 export function useProgress() {
   const [progress, setProgress] = useState<ProgressData>(() => {
     if (typeof window === 'undefined') {
       return getDefaultProgress();
     }
-    return safeGetItem<ProgressData>(STORAGE_KEY, getDefaultProgress());
+    return validateProgress(safeGetItem<ProgressData>(STORAGE_KEY, getDefaultProgress()));
   });
 
   useEffect(() => {

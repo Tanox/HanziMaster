@@ -1,4 +1,4 @@
-﻿// src/lib/i18n/translations/zh-TW.ts v5.2.1
+﻿// src/lib/i18n/translations/zh-TW.ts v5.2.3
 export const zhTW = {
   common: {
     home: '首頁',
@@ -32,16 +32,16 @@ export const zhTW = {
     heroTitle: '精通中文',
     heroSubtitle: '一筆一劃',
     heroSuffix: '',
-    heroDescription: '漢字大師使用先進的 AI 技術，引導您領略漢字的精妙藝術。提供個人化學習路徑、即時回饋和沉浸式練習。',
-    aiInsightsTitle: 'AI 驅動洞察',
-    aiInsightsDesc: '我們的 AI 分析您的書寫，提供關於筆畫順序、平衡和美感的即時回饋。',
+    heroDescription: '漢字大師透過引導式練習、筆順演示與沉浸式複習，助你掌握漢字書寫。',
+    aiInsightsTitle: '筆畫回饋',
+    aiInsightsDesc: '借助清晰的筆順指引與結構提示研習每個漢字，寫出自信、美觀的字跡。',
     etymologyTitle: '詞源與文化',
     etymologyDesc: '發現漢字背後的故事。了解它們如何從古代象形文字演變為現代形態。',
     adaptiveTitle: '自適應學習',
     adaptiveDesc: '我們的演算法適應您的節奏，專注於您覺得有挑戰性的漢字，同時鞏固您已掌握的知識。',
     featuresTitle: '為什麼選擇漢字大師',
-    featuresSubtitle: '體驗未來漢字學習，我們前沿的功能專為加速您的學習進度而設計。',
-    aiBadge: 'AI 驅動學習',
+    featuresSubtitle: '透過引導式練習與沉浸式複習學習漢字，功能專為加速您的學習進度而設計。',
+    aiBadge: '互動學習',
     yongCharacterTitle: '永字八法',
     yongCharacterDesc: '掌握永字的八個基本筆畫，打開漢字書寫的精髓',
     yongCharacterStrokes: '筆畫掌握',
@@ -50,7 +50,7 @@ export const zhTW = {
     center: '中心',
     subtitle: '多種練習方式，全方位提升您的漢字掌握程度。',
     writingTitle: '書寫練習',
-    writingDesc: '在智慧畫布上練習書寫，獲得 AI 即時回饋與指導。',
+    writingDesc: '在畫布上練習書寫，獲得清晰的筆順指引與結構提示。'
     quizTitle: '記憶測驗',
     quizDesc: '趣味測驗鞏固漢字含義與讀音，強化記憶效果。',
     progressTitle: '學習進度',
@@ -178,10 +178,10 @@ export const zhTW = {
     quizIncorrect: '錯誤',
   },
   footer: {
-    copyright: '© 2026 漢字大師 HanziMaster v5.2.1. 保留所有權利。',
+    copyright: '© 2026 漢字大師 HanziMaster v5.2.3. 保留所有權利。',
   },
   meta: {
     title: 'HanziMaster 漢字大師',
-    description: 'AI 驅動的漢字學習平台',
+    description: '互動式漢字學習平台',
   },
 };

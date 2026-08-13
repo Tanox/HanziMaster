@@ -1,4 +1,4 @@
-﻿// src/lib/i18n/translations/en.ts v5.2.1
+﻿// src/lib/i18n/translations/en.ts v5.2.3
 export const en = {
   common: {
     home: 'Home',
@@ -32,16 +32,16 @@ export const en = {
     heroTitle: 'Master Chinese',
     heroSubtitle: 'One Stroke',
     heroSuffix: ' at a Time',
-    heroDescription: 'HanziMaster uses advanced AI to guide you through the intricate art of Chinese characters. Personalized learning paths, real-time feedback, and immersive practice.',
-    aiInsightsTitle: 'AI-Powered Insights',
-    aiInsightsDesc: 'Our AI analyzes your handwriting and provides instant feedback on stroke order, balance, and aesthetics.',
+    heroDescription: 'HanziMaster helps you master Chinese characters through guided practice, stroke-order demonstrations, and immersive review.',
+    aiInsightsTitle: 'Stroke Feedback',
+    aiInsightsDesc: 'Study each character with clear stroke-order guidance and structure hints to build confident, beautiful handwriting.',
     etymologyTitle: 'Etymology & Culture',
     etymologyDesc: 'Discover the stories behind the characters. Understand how they evolved from ancient pictographs to modern forms.',
     adaptiveTitle: 'Adaptive Learning',
     adaptiveDesc: 'Our algorithm adapts to your pace, focusing on the characters you find challenging while reinforcing what you know.',
     featuresTitle: 'Why Choose HanziMaster',
-    featuresSubtitle: 'Experience the future of Chinese character learning with our cutting-edge features designed to accelerate your progress.',
-    aiBadge: 'AI-Powered Learning',
+    featuresSubtitle: 'Learn Chinese characters through guided practice and immersive review, with features designed to accelerate your progress.',
+    aiBadge: 'Interactive Learning',
     yongCharacterTitle: 'Eight Strokes of 永',
     yongCharacterDesc: 'Master the eight basic strokes through the character 永, unlocking the essence of Chinese calligraphy',
     yongCharacterStrokes: 'Stroke Mastery',
@@ -50,7 +50,7 @@ export const en = {
     center: 'Center',
     subtitle: 'Multiple practice modes to master Chinese characters from all angles.',
     writingTitle: 'Writing Practice',
-    writingDesc: 'Practice writing on the smart canvas with AI real-time feedback and guidance.',
+    writingDesc: 'Practice writing on the canvas with clear stroke-order guidance and structure hints.'
     quizTitle: 'Memory Quiz',
     quizDesc: 'Fun quizzes to reinforce character meanings and pronunciations.',
     progressTitle: 'Learning Progress',
@@ -178,10 +178,10 @@ export const en = {
     quizIncorrect: 'Incorrect',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v5.2.1. All rights reserved.',
+    copyright: '© 2026 HanziMaster 汉字大师 v5.2.3. All rights reserved.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',
-    description: 'AI-powered Chinese character learning platform',
+    description: 'Interactive Chinese character learning platform',
   },
 };

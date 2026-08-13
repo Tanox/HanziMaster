@@ -7,7 +7,7 @@
 
 | 工具 | 版本要求 | 说明 |
 |------|---------|------|
-| Node.js | >= 20.11.0 | 运行时环境 |
+| Node.js | >= 24.5.0 | 运行时环境 |
 | npm | 随 Node.js 安装 | 包管理工具 |
 | 现代浏览器 | Chrome、Firefox、Safari、Edge 最新版 | 开发和测试 |
 
@@ -21,11 +21,7 @@ cd <project-directory>
 # 2. 安装依赖
 npm install
 
-# 3. 配置环境变量（可选）
-cp .env.example .env
-# 编辑 .env 文件，填写 GEMINI_API_KEY
-
-# 4. 启动开发服务器
+# 3. 启动开发服务器
 npm run dev
 ```
 

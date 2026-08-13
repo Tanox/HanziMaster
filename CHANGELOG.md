@@ -1,5 +1,26 @@
 ﻿# Changelog
 
+## [5.2.3] - 下架 AI 虚假声明与健壮性修正
+### Bug Fixes
+- 下架全站「AI 驱动 / Gemini 实时反馈」虚假声明：README/README_EN、metadata.json keywords、11 语言 i18n 文案、proxy.ts 生产 CSP 的 Gemini 域名白名单，均改为与代码行为一致的真实功能描述（笔顺指引、结构提示、引导式练习）。
+- 移除 `.env.example` 的 `GEMINI_API_KEY` 模板与 README「配置 AI」段落。
+
+### Code Quality
+- `src/app/learn/page.tsx` 移除内联 `speak` 实现，统一使用 `usePronunciation` hook。
+- `src/hooks/use-progress.ts` 新增 `validateProgress` 运行时 schema 校验，过滤被篡改/旧版 localStorage 数据导致的非法字段。
+- `src/components/practice/writing-canvas.tsx` 画布补充 `role="img"` 与动态 `aria-label`，改善无障碍。
+- 删除 3 份基于旧架构（Next.js 15 / `next.config.js` / `responsecsp` 等）的失实安全审查报告；`code-review-report.md` 追加第三轮审查结论。
+
+## [5.2.2] - 文档完善与一致性修正
+### Documentation
+- 中英文 README 结构对齐：中文补全「环境要求表格」「环境变量表格」「生产构建」「项目结构」「开发指南」章节；英文 Features/Core Pages 与实际功能对齐（移除偏离的 Adaptive Learning / Etymology & Culture 描述）。
+- 新增 `CONTRIBUTING.md` 与 `CONTRIBUTING_EN.md` 贡献指南（开发环境、工作流、提交规范、版本管理、代码规范摘要）。
+- 更新 `docs/PROJECT_STRUCTURE.md` 目录树：修正路径前缀、补全 `src/hooks`、`src/proxy.ts`、`components/learn|practice|ui` 子目录，原型位置改为 `prototype/`，同步文件统计与日期。
+- 修正 `openspec/03-development.md` Node.js 版本要求 `>= 20.11.0` → `>= 24.5.0`，与 package.json / .nvmrc 一致。
+
+### Docs & Versioning
+- 同步 package.json、metadata.json 至 v5.2.2；README/README_EN 版本戳更新至 v5.2.2。
+
 ## [5.2.1] - i18n 类型安全与死代码清理
 ### Bug Fixes
 - 修复 `practice/writing-dialog.tsx` 使用不存在的 i18n 键 `practice.writeTitle` / `practice.writeDesc`（应为 `practice.writingTitle` / `practice.writingDesc`），此前会渲染原始键名而非译文。

@@ -1,4 +1,4 @@
-﻿// src/lib/i18n/translations/ja.ts v5.2.1
+﻿// src/lib/i18n/translations/ja.ts v5.2.3
 export const ja = {
   common: {
     home: 'ホーム',
@@ -32,16 +32,16 @@ export const ja = {
     heroTitle: '中国語をマスター',
     heroSubtitle: '一笔',
     heroSuffix: ' ずつ',
-    heroDescription: 'HanziMasterは先進的なAIを使用して、中国語の複雑な文字の芸術をガイドします。パーソナライズされた学習パス、リアルタイムフィードバック、没入型練習。',
-    aiInsightsTitle: 'AI驅動洞察',
-    aiInsightsDesc: '私たちのAIがあなたの書道を分析し、笔画順序、バランス、美しさに関する瞬時のフィードバックを提供します。',
+    heroDescription: 'HanziMasterは、ガイド付き練習、筆順デモ、没入型の復習を通して、中国語の文字をマスターするお手伝いをします。',
+    aiInsightsTitle: '筆画フィードバック',
+    aiInsightsDesc: '明確な筆順ガイドと構造ヒントで各文字を学び、自信に満ちた美しい書き味を身につけます。',
     etymologyTitle: '語源と文化',
     etymologyDesc: '文字の背後にある物語を発見してください。古代の象形文字から現代の形への進化を理解しましょう。',
     adaptiveTitle: 'アダプティブラーニング',
     adaptiveDesc: '私たちのアルゴリズムはあなたのペースに適応し、難しい文字に焦点を当てながら、すでに知っていることを強化します。',
     featuresTitle: 'なぜHanziMasterなのか',
-    featuresSubtitle: '学習の進捗を加速するために設計された最先端の機能で、中国語文字学習の未来を体験してください。',
-    aiBadge: 'AI搭載学習',
+    featuresSubtitle: 'ガイド付き練習と没入型の復習で中国語の文字を学び、学習進捗を加速する機能を備えています。',
+    aiBadge: 'インタラクティブ学習',
     yongCharacterTitle: '永の八法',
     yongCharacterDesc: '永という文字を通じて8つの基本笔画をマスターし、中国書道の真髄を解锁する',
     yongCharacterStrokes: '笔画掌握度',
@@ -50,7 +50,7 @@ export const ja = {
     center: 'センター',
     subtitle: '複数の練習モードで、中国語文字をあらゆる角度からマスターしましょう。',
     writingTitle: '書道練習',
-    writingDesc: 'AIリアルタイムフィードバックとガイダンスを備えたスマートキャンバスで書く練習をしましょう。',
+    writingDesc: 'キャンバスで書き練習をし、明確な筆順ガイドと構造ヒントを得られます。'
     quizTitle: '記憶クイズ',
     quizDesc: '文字の意味と発音を強化するための楽しいクイズ。',
     progressTitle: '学習進捗',
@@ -178,10 +178,10 @@ export const ja = {
     quizIncorrect: '不正解',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v5.2.1. All rights reserved.',
+    copyright: '© 2026 HanziMaster 汉字大师 v5.2.3. All rights reserved.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',
-    description: 'AI驅動的中国語文字学習プラットフォーム',
+    description: 'インタラクティブな漢字学習プラットフォーム',
   },
 };

@@ -28,7 +28,7 @@
 
 | 变量名 | 说明 | 必填 |
 |--------|------|------|
-| `GEMINI_API_KEY` | Google Gemini AI API 密钥 | 否 |
+| （无） | 无需环境变量 | 否 |
 
 ### 2.3 部署步骤
 
@@ -46,11 +46,7 @@
    - Build Command：`npm run build`（已在 vercel.json 配置）
    - Output Directory：`.next/`（已在 vercel.json 配置）
 
-4. **配置环境变量**
-   - 在 "Environment Variables" 部分
-   - 添加 `GEMINI_API_KEY`（如需要）
-
-5. **点击 "Deploy"**
+4. **点击 "Deploy"**
 
 ### 2.4 自定义域名
 
@@ -72,7 +68,7 @@
 
 | 变量名 | 说明 | 必填 |
 |--------|------|------|
-| `GEMINI_API_KEY` | Google Gemini AI API 密钥 | 否 |
+| （无） | 无需环境变量 | 否 |
 
 ### 3.3 部署步骤
 

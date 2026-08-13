@@ -1,13 +1,12 @@
 ﻿{
-  "name": "HanziMaster 汉字大师 v5.2.1",
-  "version": "5.2.1",
-  "description": "v5.2.1: 东方水墨·朱砂红 design system (Space Grotesk/Playfair Display/Noto Serif SC/JetBrains Mono), 11-language i18n, full OpenSpec/prototype/CHANGELOG consistency, modular architecture.",
+  "name": "HanziMaster 汉字大师 v5.2.2",
+  "version": "5.2.2",
+  "description": "v5.2.2: 东方水墨·朱砂红 design system (Space Grotesk/Playfair Display/Noto Serif SC/JetBrains Mono), 11-language i18n, full OpenSpec/prototype/CHANGELOG consistency, modular architecture.",
   "keywords": [
     "Chinese characters",
     "Hanzi",
     "OpenSpec",
     "PWA",
-    "Gemini AI",
     "i18n",
     "internationalization",
     "design-system",

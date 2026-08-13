@@ -1,12 +1,12 @@
-﻿# HanziMaster 汉字大师
+﻿# HanziMaster 汉字大师 v5.2.2
 
-一款 AI 驱动的汉字学习应用，通过智能分析帮助你掌握汉字书写。
+[English](README_EN.md) | [简体中文](README.md)
 
-[English](README_EN.md)
+一款汉字学习应用，通过引导式练习、笔顺展示与沉浸式复习帮助你掌握汉字书写。
 
 ## 主要功能
 
-- **AI 智能分析** - 实时反馈你的书写笔画顺序、结构和美观度
+- **笔顺与结构反馈** - 清晰的笔画顺序指引与结构提示，帮助你写出规范美观的汉字
 - **多种学习模式** - 基础学习、书写练习、拼音测验、学习进度追踪
 - **田字格书写练习** - Canvas 手写绘制，支持触摸屏和鼠标，带实时发音播放
 - **拼音测验** - 4 选 1 拼音测试，实时正确/错误统计，准确率分析
@@ -20,8 +20,11 @@
 
 ### 环境要求
 
-- Node.js 24.5.0 或更高版本
-- npm / yarn / pnpm
+| 工具 | 版本要求 | 说明 |
+|------|---------|------|
+| Node.js | >= 24.5.0 | 运行时环境 |
+| 包管理器 | npm / yarn / pnpm | 任选其一 |
+| 现代浏览器 | Chrome、Firefox、Safari、Edge 最新版 | 开发与测试 |
 
 ### 安装
 
@@ -39,18 +42,37 @@ npm run dev
 
 访问 `http://localhost:3000` 即可使用。
 
-### 配置 AI（可选）
-
-如果你想使用 AI 分析功能：
+### 生产构建
 
 ```bash
-# 复制环境变量模板
-cp .env.example .env
+npm run build
+npm run start
 ```
 
-编辑 `.env` 文件，填入你的 Google Gemini API Key。
+构建产物位于 `.next` 目录，默认端口 3000。
 
-> 没有 API Key 也能使用基础功能。
+## 项目结构
+
+```
+src/
+├── app/                  # Next.js App Router
+│   ├── globals.css       # 全局样式 + 东方水墨·朱砂红 design tokens
+│   ├── layout.tsx        # 根布局（导航、主题、i18n）
+│   ├── page.tsx          # 首页
+│   ├── learn/page.tsx    # 学习页
+│   └── practice/page.tsx # 练习页
+├── components/           # React 组件
+│   ├── theme-provider.tsx / theme-toggle.tsx
+│   ├── locale-provider.tsx / locale-toggle.tsx   # i18n 上下文 + 切换器
+│   ├── layout-client.tsx / nav-link.tsx / mobile-nav.tsx
+│   ├── learn/            # character-grid / character-detail / quiz-dialog
+│   ├── practice/         # writing-dialog / writing-canvas / quiz-dialog / weekly-progress / practice-options / practice-assets
+│   ├── ui/               # shadcn 风格基础组件（button、card、badge、dialog、dropdown-menu…）
+│   └── feature-card.tsx / stats-card.tsx / empty-state.tsx / toast.tsx
+├── hooks/                # use-quiz / use-progress / use-pronunciation / use-is-dark / use-scroll-reveal
+├── lib/                  # characters / character-types / storage / utils / i18n（index + translations/）
+└── proxy.ts              # 基于 Nonce 的 Content Security Policy 中间件
+```
 
 ## 页面介绍
 
@@ -65,9 +87,31 @@ cp .env.example .env
 - **框架**: Next.js 16 (App Router)
 - **UI 库**: React 19
 - **样式**: Tailwind CSS 4.0 + 东方水墨·朱砂红设计系统
-- **AI**: Google Gemini AI
 - **字体**: Space Grotesk, Playfair Display, Noto Serif SC, JetBrains Mono
 - **国际化**: 自定义 i18n 上下文（11 种语言）
+
+## 开发指南
+
+### 代码规范
+
+- 使用 TypeScript strict 模式
+- 客户端组件使用 `'use client'` 指令
+- 所有用户可见文本必须使用 i18n 翻译
+- 遵循 Tailwind CSS 4.0 最佳实践
+
+### 提交规范
+
+基于 Angular 提交规范：
+
+```
+<type>: <description>
+
+[可选正文]
+
+[可选页脚]
+```
+
+类型：`feat` | `fix` | `docs` | `style` | `refactor` | `perf` | `test` | `build` | `ci` | `chore`
 
 ## 支持的语言
 
@@ -75,11 +119,19 @@ cp .env.example .env
 
 ## 部署
 
-推荐部署平台：Vercel、腾讯云 EdgeOne Pages
+### Vercel
 
-构建命令：`npm run build`
-输出目录：`.next`
+1. 连接 GitHub 仓库
+2. 配置环境变量
+3. 自动部署
+
+### 腾讯云 EdgeOne Pages
+
+1. 登录 EdgeOne Pages 控制台
+2. 导入项目
+3. 构建命令：`npm run build`
+4. 输出目录：`.next`
 
 ## 许可证
 
-© 2026 HanziMaster 汉字大师 v5.2.1
+© 2026 HanziMaster 汉字大师 v5.2.2

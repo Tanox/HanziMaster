@@ -1,4 +1,4 @@
-﻿// src/lib/i18n/translations/zh-CN.ts v5.2.1
+﻿// src/lib/i18n/translations/zh-CN.ts v5.2.3
 export const zhCN = {
   common: {
     home: '首页',
@@ -32,16 +32,16 @@ export const zhCN = {
     heroTitle: '精通中文',
     heroSubtitle: '一笔一划',
     heroSuffix: '',
-    heroDescription: '汉字大师使用先进的 AI 技术，引导您领略汉字的精妙艺术。提供个性化学习路径、实时反馈和沉浸式练习。',
-    aiInsightsTitle: 'AI 驱动洞察',
-    aiInsightsDesc: '我们的 AI 分析您的书写，提供关于笔画顺序、平衡和美感的即时反馈。',
+    heroDescription: '汉字大师通过引导式练习、笔顺演示与沉浸式复习，助你掌握汉字书写。',
+    aiInsightsTitle: '笔画反馈',
+    aiInsightsDesc: '借助清晰的笔顺指引与结构提示研习每个汉字，写出自信、美观的字迹。',
     etymologyTitle: '词源与文化',
     etymologyDesc: '发现汉字背后的故事。了解它们如何从古代象形文字演变为现代形态。',
     adaptiveTitle: '自适应学习',
     adaptiveDesc: '我们的算法适应您的节奏，专注于您觉得有挑战性的汉字，同时巩固您已掌握的知识。',
     featuresTitle: '为什么选择汉字大师',
-    featuresSubtitle: '体验未来汉字学习，我们前沿的功能专为加速您的学习进度而设计。',
-    aiBadge: 'AI 驱动学习',
+    featuresSubtitle: '通过引导式练习与沉浸式复习学习汉字，功能专为加速您的学习进度而设计。',
+    aiBadge: '互动学习',
     yongCharacterTitle: '永字八法',
     yongCharacterDesc: '掌握永字的八个基本笔画，打开汉字书写的精髓',
     yongCharacterStrokes: '笔画掌握',
@@ -50,7 +50,7 @@ export const zhCN = {
     center: '中心',
     subtitle: '多种练习方式，全方位提升您的汉字掌握程度。',
     writingTitle: '书写练习',
-    writingDesc: '在智能画布上练习书写，获得 AI 实时反馈与指导。',
+    writingDesc: '在画布上练习书写，获得清晰的笔顺指引与结构提示。'
     quizTitle: '记忆测验',
     quizDesc: '趣味测验巩固汉字含义与读音，强化记忆效果。',
     progressTitle: '学习进度',
@@ -178,10 +178,10 @@ export const zhCN = {
     quizIncorrect: '错误',
   },
   footer: {
-    copyright: '© 2026 汉字大师 HanziMaster v5.2.1. 保留所有权利。',
+    copyright: '© 2026 汉字大师 HanziMaster v5.2.3. 保留所有权利。',
   },
   meta: {
     title: 'HanziMaster 汉字大师',
-    description: 'AI 驱动的汉字学习平台',
+    description: '互动式汉字学习平台',
   },
 };

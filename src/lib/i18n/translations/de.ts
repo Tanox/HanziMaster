@@ -1,4 +1,4 @@
-﻿// src/lib/i18n/translations/de.ts v5.2.1
+﻿// src/lib/i18n/translations/de.ts v5.2.3
 export const de = {
   common: {
     home: 'Startseite',
@@ -32,16 +32,16 @@ export const de = {
     heroTitle: 'Chinesisch Meistern',
     heroSubtitle: 'Ein Strich',
     heroSuffix: ' auf Einmal',
-    heroDescription: 'HanziMaster nutzt fortschrittliche KI, um Sie durch die komplexe Kunst der chinesischen Zeichen zu führen. Personalisierte Lernpfade, Echtzeit-Feedback und immersives Üben.',
-    aiInsightsTitle: 'KI-gestützte Einblicke',
-    aiInsightsDesc: 'Unsere KI analysiert Ihre Handschrift und liefert sofortiges Feedback zu Strichreihenfolge, Balance und Ästhetik.',
+    heroDescription: 'HanziMaster hilft Ihnen, chinesische Zeichen durch geführte Übungen, Strichfolgen-Demos und immersives Wiederholen zu meistern.',
+    aiInsightsTitle: 'Strich-Feedback',
+    aiInsightsDesc: 'Lernen Sie jedes Zeichen mit klaren Strichfolgen-Hinweisen und Strukturhilfen für ein sicheres, schönes Schriftbild.',
     etymologyTitle: 'Etymologie & Kultur',
     etymologyDesc: 'Entdecken Sie die Geschichten hinter den Zeichen. Verstehen Sie, wie sie sich von alten Piktogrammen zu modernen Formen entwickelt haben.',
     adaptiveTitle: 'Adaptives Lernen',
     adaptiveDesc: 'Unser Algorithmus passt sich Ihrem Tempo an und konzentriert sich auf die Zeichen, die Sie herausfordernd finden, während er das stärkt, was Sie wissen.',
     featuresTitle: 'Warum HanziMaster Wählen',
-    featuresSubtitle: 'Erleben Sie die Zukunft des chinesischen Zeichnenlernens mit unseren hochmodernen Funktionen, die entwickelt wurden, um Ihren Fortschritt zu beschleunigen.',
-    aiBadge: 'KI-gestütztes Lernen',
+    featuresSubtitle: 'Lerne chinesische Zeichen durch geführte Übung und immersives Wiederholen, mit Funktionen zum Beschleunigen deines Fortschritts.',
+    aiBadge: 'Interaktives Lernen',
     yongCharacterTitle: 'Die Acht Striche von 永',
     yongCharacterDesc: 'Meistern Sie die acht Grundstriche durch das Zeichen 永 und erschließen Sie das Wesen der chinesischen Kalligrafie',
     yongCharacterStrokes: 'Strichbeherrschung',
@@ -50,7 +50,7 @@ export const de = {
     center: 'Zentrum',
     subtitle: 'Mehrere Übungsmodi, um chinesische Zeichen aus allen Blickwinkeln zu meistern.',
     writingTitle: 'Schreibübung',
-    writingDesc: 'Üben Sie das Schreiben auf der intelligenten Leinwand mit Echtzeit-Feedback und KI-Anleitung.',
+    writingDesc: 'Übe das Schreiben auf dem Leinwand mit klaren Strichfolgen-Hinweisen und Strukturhilfen.'
     quizTitle: 'Gedächtnisquiz',
     quizDesc: 'Lustige Quizze zur Festigung von Zeichenbedeutungen und Aussprachen.',
     progressTitle: 'Lernfortschritt',
@@ -178,10 +178,10 @@ export const de = {
     quizIncorrect: 'Falsch',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v5.2.1. Alle Rechte vorbehalten.',
+    copyright: '© 2026 HanziMaster 汉字大师 v5.2.3. Alle Rechte vorbehalten.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',
-    description: 'KI-gestützte Plattform zum Erlernen chinesischer Zeichen',
+    description: 'Interaktive Plattform zum Erlernen chinesischer Zeichen',
   },
 };

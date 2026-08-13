@@ -1,4 +1,4 @@
-﻿// src/proxy.ts v5.2.1
+﻿// src/proxy.ts v5.2.3
 // Nonce-based Content Security Policy proxy (Next.js 16+)
 import { NextResponse, type NextRequest } from 'next/server';
 
@@ -15,7 +15,7 @@ export function proxy(request: NextRequest) {
         "font-src 'self' https://fonts.gstatic.com",
         "img-src 'self' data: https: blob:",
         "object-src 'none'",
-        "connect-src 'self' https://generativelanguage.googleapis.com https://fonts.googleapis.com https://fonts.gstatic.com",
+        "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com",
         "frame-ancestors 'none'",
         "base-uri 'self'",
         "form-action 'self'",

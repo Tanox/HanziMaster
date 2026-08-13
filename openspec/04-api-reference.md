@@ -71,7 +71,6 @@ function MyComponent() {
     exploreLibrary: string;
   },
   home: {
-    poweredByGemini: string;
     heroTitle: string;
     heroSubtitle: string;
     heroDescription: string;
@@ -424,7 +423,7 @@ function Header() {
 
 | 变量名 | 说明 | 必填 | 示例值 |
 |--------|------|------|--------|
-| `GEMINI_API_KEY` | Google Gemini AI API 密钥 | 否 | `your-api-key-here` |
+| （无） | HanziMaster 无需环境变量即可运行 | 否 | — |
 
 ## 9. 浏览器要求
 

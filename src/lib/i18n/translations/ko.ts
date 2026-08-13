@@ -1,4 +1,4 @@
-﻿// src/lib/i18n/translations/ko.ts v5.2.1
+﻿// src/lib/i18n/translations/ko.ts v5.2.3
 export const ko = {
   common: {
     home: '홈',
@@ -32,16 +32,16 @@ export const ko = {
     heroTitle: '중국어 마스터',
     heroSubtitle: '한 획',
     heroSuffix: '씩',
-    heroDescription: 'HanziMaster는 고급 AI를 사용하여 중국 한자의 복잡한 예술을 안내합니다. 개인화된 학습 경로, 실시간 피드백, 몰입형 연습.',
-    aiInsightsTitle: 'AI 기반 인사이트',
-    aiInsightsDesc: '우리의 AI가 당신의 글씨를 분석하고 획 순서, 균형, 미학 에 대한 즉각적인 피드백을 제공합니다.',
+    heroDescription: 'HanziMaster는 안내형 연습, 획순 시연, 몰입형 복습을 통해 중국 한자 쓰기를 마스터하도록 돕습니다.',
+    aiInsightsTitle: '획 피드백',
+    aiInsightsDesc: '명확한 획순 가이드와 구조 힌트로 각 한자를 학습하여 자신감 있고 아름다운 글씨를 씁니다.',
     etymologyTitle: '어원 및 문화',
     etymologyDesc: '한자 뒤에 숨겨진 이야기를 발견하세요. 고대 상형문자에서 현대 형태로 어떻게 진화했는지 이해하세요.',
     adaptiveTitle: '적응형 학습',
     adaptiveDesc: '우리의 알고리즘이 당신의 속도에 적응하여 어려운 한자에 집중하면서 이미 알고 있는 것을 강화합니다.',
     featuresTitle: '왜 HanziMaster인가',
-    featuresSubtitle: '진보를 가속화하도록 설계된 최첨단 기능으로 중국 한자 학습의 미래를 경험하세요.',
-    aiBadge: 'AI 기반 학습',
+    featuresSubtitle: '안내형 연습과 몰입형 복습으로 중국 한자를 배우며, 학습 진도를 앞당기는 기능을 갖추었습니다.',
+    aiBadge: '대화형 학습',
     yongCharacterTitle: '永의 팔법',
     yongCharacterDesc: '永 한자를 통해 8가지 기본 획을 마스터하고 중국 서예의 본질을解锁하세요',
     yongCharacterStrokes: '획 마스터리',
@@ -50,7 +50,7 @@ export const ko = {
     center: '센터',
     subtitle: '다양한 연습 모드로 중국 한자를 모든 각도에서 마스터하세요.',
     writingTitle: '글씨 연습',
-    writingDesc: 'AI 실시간 피드백과 안내가 있는 스마트 캔버스에서 글씨 연습을 하세요.',
+    writingDesc: '캔버스에서 글씨 연습을 하고 명확한 획순 가이드와 구조 힌트를 얻으세요.'
     quizTitle: '기억 퀴즈',
     quizDesc: '한자 의미와 발음을 강화하는 재미있는 퀴즈.',
     progressTitle: '학습 진행',
@@ -178,10 +178,10 @@ export const ko = {
     quizIncorrect: '오답',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v5.2.1. All rights reserved.',
+    copyright: '© 2026 HanziMaster 汉字大师 v5.2.3. All rights reserved.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',
-    description: 'AI 기반 중국어 한자 학습 플랫폼',
+    description: '대화형 중국어 한자 학습 플랫폼',
   },
 };

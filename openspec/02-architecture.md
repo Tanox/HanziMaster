@@ -24,7 +24,7 @@ HanziMaster 采用 Next.js 16 的 App Router 架构，结合 React Server Compon
 ┌─────────────────────────────────────────────────────────────┐
 │                        状态管理层                             │
 │  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────┐  │
-│  │  LocaleContext  │  │  ThemeContext   │  │  AI 服务     │  │
+│  │  LocaleContext  │  │  ThemeContext   │  │             │  │
 │  │  (i18n)        │  │  (主题)         │  │              │  │
 │  └─────────────────┘  └─────────────────┘  └──────────────┘  │
 └─────────────────────────────────────────────────────────────┘
@@ -80,7 +80,7 @@ src/
 | ThemeToggle | 主题切换组件，支持深色/浅色模式 | [src/components/theme-toggle.tsx](../src/components/theme-toggle.tsx) |
 | MobileNav | 移动端导航抽屉组件，提供响应式导航菜单 | [src/components/mobile-nav.tsx](../src/components/mobile-nav.tsx) |
 | NavLink | 导航链接组件，带有活跃状态指示器 | [src/components/nav-link.tsx](../src/components/nav-link.tsx) |
-| FeatureCard | 功能特性卡片组件，展示 AI 洞察、词源文化等特性 | [src/components/feature-card.tsx](../src/components/feature-card.tsx) |
+| FeatureCard | 功能特性卡片组件，展示笔顺反馈、词源文化等特性 | [src/components/feature-card.tsx](../src/components/feature-card.tsx) |
 | StatsCard | 统计数据卡片组件，显示学习统计信息 | [src/components/stats-card.tsx](../src/components/stats-card.tsx) |
 
 ### 3.5 国际化模块
@@ -122,14 +122,6 @@ src/
 - 适合轻量级状态管理
 - 与 React 完美配合
 
-### 4.4 AI 服务：Google Gemini
-
-**选择理由：**
-- 强大的多模态能力
-- 优秀的中文理解
-- 官方 SDK 支持
-- 可靠的服务稳定性
-
 ## 5. 核心技术特性
 
 | 特性 | 说明 |
@@ -151,7 +143,7 @@ src/
      ↓
 LocalStorage（持久化）
      ↓
-AI 服务（按需调用）
+LocalStorage（读取进度）
 ```
 
 ### 6.1 主题切换流程
