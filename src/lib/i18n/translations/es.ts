@@ -1,4 +1,4 @@
-﻿// src/lib/i18n/translations/es.ts v5.2.3
+// src/lib/i18n/translations/es.ts v5.2.5
 export const es = {
   common: {
     home: 'Inicio',

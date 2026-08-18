@@ -1,4 +1,4 @@
-﻿// src/components/locale-toggle.tsx v5.2.1
+// src/components/locale-toggle.tsx v5.2.5
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
@@ -73,7 +73,7 @@ export function LocaleToggleClient() {
   }, [isOpen, close]);
 
   return (
-    <div className="relative" ref={menuRef}>
+    <div id="locale-toggle" className="relative" ref={menuRef}>
       <button
         ref={buttonRef}
         onClick={() => setIsOpen((v) => !v)}

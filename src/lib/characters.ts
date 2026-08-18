@@ -1,4 +1,4 @@
-﻿// src/lib/characters.ts v5.2.1
+// src/lib/characters.ts v5.2.5
 import type { Character } from './character-types';
 import { charactersPart1 } from './characters-part1';
 import { charactersPart2 } from './characters-part2';

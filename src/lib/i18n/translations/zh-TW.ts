@@ -1,4 +1,4 @@
-﻿// src/lib/i18n/translations/zh-TW.ts v5.2.3
+// src/lib/i18n/translations/zh-TW.ts v5.2.5
 export const zhTW = {
   common: {
     home: '首頁',
@@ -50,7 +50,7 @@ export const zhTW = {
     center: '中心',
     subtitle: '多種練習方式，全方位提升您的漢字掌握程度。',
     writingTitle: '書寫練習',
-    writingDesc: '在畫布上練習書寫，獲得清晰的筆順指引與結構提示。'
+    writingDesc: '在畫布上練習書寫，獲得清晰的筆順指引與結構提示。',
     quizTitle: '記憶測驗',
     quizDesc: '趣味測驗鞏固漢字含義與讀音，強化記憶效果。',
     progressTitle: '學習進度',

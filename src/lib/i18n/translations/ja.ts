@@ -1,4 +1,4 @@
-﻿// src/lib/i18n/translations/ja.ts v5.2.3
+// src/lib/i18n/translations/ja.ts v5.2.5
 export const ja = {
   common: {
     home: 'ホーム',
@@ -50,7 +50,7 @@ export const ja = {
     center: 'センター',
     subtitle: '複数の練習モードで、中国語文字をあらゆる角度からマスターしましょう。',
     writingTitle: '書道練習',
-    writingDesc: 'キャンバスで書き練習をし、明確な筆順ガイドと構造ヒントを得られます。'
+    writingDesc: 'キャンバスで書き練習をし、明確な筆順ガイドと構造ヒントを得られます。',
     quizTitle: '記憶クイズ',
     quizDesc: '文字の意味と発音を強化するための楽しいクイズ。',
     progressTitle: '学習進捗',

@@ -1,4 +1,4 @@
-﻿// src/app/learn/page.tsx v5.2.3
+// src/app/learn/page.tsx v5.2.5
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -54,8 +54,8 @@ export default function LearnPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-ink-50/50 to-background dark:from-ink-950/50 dark:to-background">
-      <div className="max-w-6xl mx-auto px-6 py-16 safe-bottom">
+    <div id="learn-page" className="min-h-screen bg-linear-to-b from-ink-50/50 to-background dark:from-ink-950/50 dark:to-background">
+      <div id="learn-content" className="max-w-6xl mx-auto px-6 py-16 safe-bottom">
         <div className="text-center mb-12 reveal">
           <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-3 text-ink-900 dark:text-ink-50 display-font">
             {t('common.dailyPractice')}

@@ -1,4 +1,4 @@
-﻿// src/lib/i18n/translations/zh-CN.ts v5.2.3
+// src/lib/i18n/translations/zh-CN.ts v5.2.5
 export const zhCN = {
   common: {
     home: '首页',
@@ -50,7 +50,7 @@ export const zhCN = {
     center: '中心',
     subtitle: '多种练习方式，全方位提升您的汉字掌握程度。',
     writingTitle: '书写练习',
-    writingDesc: '在画布上练习书写，获得清晰的笔顺指引与结构提示。'
+    writingDesc: '在画布上练习书写，获得清晰的笔顺指引与结构提示。',
     quizTitle: '记忆测验',
     quizDesc: '趣味测验巩固汉字含义与读音，强化记忆效果。',
     progressTitle: '学习进度',

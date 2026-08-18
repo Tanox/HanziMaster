@@ -1,4 +1,4 @@
-﻿// src/components/ui/dropdown-menu-sub.tsx v5.2.1
+// src/components/ui/dropdown-menu-sub.tsx v5.2.5
 "use client"
 
 import * as React from "react"

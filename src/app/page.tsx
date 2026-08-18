@@ -1,4 +1,4 @@
-﻿// src/app/page.tsx v5.2.1
+// src/app/page.tsx v5.2.5
 'use client';
 
 import { useEffect } from 'react';
@@ -27,8 +27,8 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="relative">
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+    <div id="home-page" className="relative">
+      <section id="hero-section" className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 opacity-30">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-vermilion-500/10 rounded-full blur-[120px] animate-float-gentle" />
           <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-indigo/10 rounded-full blur-[100px]" style={{ animation: 'floatGentle 8s ease-in-out infinite reverse' }} />
@@ -96,7 +96,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-24 px-6">
+      <section id="features-section" className="py-24 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 reveal">
             <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-ink-900 dark:text-ink-50 mb-4 display-font">

@@ -1,4 +1,4 @@
-﻿// src/lib/character-types.ts v5.2.1
+// src/lib/character-types.ts v5.2.5
 import type { TranslationKey } from '@/lib/i18n';
 
 export interface Word {

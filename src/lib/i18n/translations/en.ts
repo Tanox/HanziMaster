@@ -1,4 +1,4 @@
-﻿// src/lib/i18n/translations/en.ts v5.2.3
+// src/lib/i18n/translations/en.ts v5.2.5
 export const en = {
   common: {
     home: 'Home',
@@ -50,7 +50,7 @@ export const en = {
     center: 'Center',
     subtitle: 'Multiple practice modes to master Chinese characters from all angles.',
     writingTitle: 'Writing Practice',
-    writingDesc: 'Practice writing on the canvas with clear stroke-order guidance and structure hints.'
+    writingDesc: 'Practice writing on the canvas with clear stroke-order guidance and structure hints.',
     quizTitle: 'Memory Quiz',
     quizDesc: 'Fun quizzes to reinforce character meanings and pronunciations.',
     progressTitle: 'Learning Progress',

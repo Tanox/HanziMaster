@@ -1,4 +1,4 @@
-﻿// src/lib/storage.ts v5.2.1
+// src/lib/storage.ts v5.2.5
 // src/lib/storage.ts
 // Secure localStorage utilities with version control
 
@@ -48,9 +48,8 @@ export function safeSetItem<T>(key: string, value: T): void {
       _d: value,
     };
     localStorage.setItem(key, JSON.stringify(data));
-  } catch (e) {
+  } catch {
     // Silently fail for quota exceeded or other storage errors
-    console.warn('Failed to save to localStorage:', e);
   }
 }
 

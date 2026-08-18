@@ -1,4 +1,4 @@
-﻿// src/app/layout.tsx v5.2.1
+// src/app/layout.tsx v5.2.5
 import type { Metadata, Viewport } from 'next';
 import { Space_Grotesk, Playfair_Display, Noto_Serif_SC, JetBrains_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -34,13 +34,13 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'HanziMaster - AI-Powered Chinese Character Learning',
-  description: 'Master Chinese characters with AI-powered insights, etymology exploration, and adaptive learning.',
-  keywords: ['Chinese', 'Hanzi', 'Learning', 'Education', 'AI', 'Language'],
+  title: 'HanziMaster - Interactive Chinese Character Learning',
+  description: 'Master Chinese characters through interactive stroke-order practice, etymology exploration, and adaptive quizzes.',
+  keywords: ['Chinese', 'Hanzi', 'Learning', 'Education', 'Language', 'StrokeOrder'],
   authors: [{ name: 'HanziMaster Team' }],
   openGraph: {
-    title: 'HanziMaster - AI-Powered Chinese Character Learning',
-    description: 'Master Chinese characters with AI-powered insights.',
+    title: 'HanziMaster - Interactive Chinese Character Learning',
+    description: 'Master Chinese characters through interactive stroke-order practice and adaptive quizzes.',
     type: 'website',
   },
 };

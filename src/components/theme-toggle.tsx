@@ -1,4 +1,4 @@
-﻿// src/components/theme-toggle.tsx v5.2.1
+// src/components/theme-toggle.tsx v5.2.5
 'use client';
 
 import { useTheme } from './theme-provider';
@@ -46,6 +46,7 @@ export function ThemeToggleClient() {
     <button
       onClick={cycleTheme}
       className="p-2 rounded-lg hover:bg-muted transition-colors relative group"
+      id="theme-toggle"
       aria-label={ariaLabels[theme]}
       title={t(`common.theme.${theme}`)}
       style={{ minWidth: 44, minHeight: 44 }}

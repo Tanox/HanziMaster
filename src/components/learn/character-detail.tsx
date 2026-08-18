@@ -1,4 +1,4 @@
-﻿// src/components/learn/character-detail.tsx v5.2.1
+// src/components/learn/character-detail.tsx v5.2.5
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
@@ -22,7 +22,7 @@ export function CharacterDetail({
   const { t } = useTranslation();
 
   return (
-    <div className="bg-card/80 dark:bg-ink-900/80 backdrop-blur-xl rounded-4xl p-10 border border-ink-100 dark:border-ink-800 reveal revealed shadow-ink-lg">
+    <div id="character-detail" className="bg-card/80 dark:bg-ink-900/80 backdrop-blur-xl rounded-4xl p-10 border border-ink-100 dark:border-ink-800 reveal revealed shadow-ink-lg">
       <div className="grid lg:grid-cols-2 gap-12 items-start">
         <div className="text-center lg:text-left">
           <div className="inline-flex items-center gap-2 mb-6">

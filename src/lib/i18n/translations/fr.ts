@@ -1,4 +1,4 @@
-﻿// src/lib/i18n/translations/fr.ts v5.2.3
+// src/lib/i18n/translations/fr.ts v5.2.5
 export const fr = {
   common: {
     home: 'Accueil',
@@ -50,7 +50,7 @@ export const fr = {
     center: 'Centre',
     subtitle: 'Plusieurs modes de pratique pour maîtriser les caractères chinois sous tous les angles.',
     writingTitle: 'Pratique de l\'Écriture',
-    writingDesc: 'Pratiquez l'écriture sur le canevas avec des guides clairs de l'ordre des traits et de leur structure.'
+    writingDesc: 'Pratiquez l\'écriture sur le canevas avec des guides clairs de l\'ordre des traits et de leur structure.',
     quizTitle: 'Quiz de Mémoire',
     quizDesc: 'Des quiz amusants pour renforcer les significations et les prononciations des caractères.',
     progressTitle: 'Progrès d\'Apprentissage',

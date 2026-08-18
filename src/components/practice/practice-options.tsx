@@ -1,4 +1,4 @@
-﻿// src/components/practice/practice-options.tsx v5.2.1
+// src/components/practice/practice-options.tsx v5.2.5
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
@@ -13,7 +13,7 @@ export function PracticeOptionsGrid({ selectedOption, onSelect }: PracticeOption
   const { t } = useTranslation();
 
   return (
-    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 mb-16 stagger-children">
+    <div id="practice-options" className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 mb-16 stagger-children">
       {practiceOptions.map((option) => {
         const isSelected = selectedOption === option.id;
         return (

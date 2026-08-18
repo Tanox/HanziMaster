@@ -51,7 +51,7 @@ npm run dev
 示例：
 
 ```typescript
-// src/lib/i18n/index.ts v2.2.1
+// src/lib/i18n/index.ts v5.2.4
 ```
 
 ### 3.2 版本管理 (SemVer 2.0.0)
@@ -60,9 +60,13 @@ npm run dev
 
 | 序号 | 更新位置 | 说明 |
 |------|----------|------|
-| 1 | 当前文件头注释 | 更新版本号 |
-| 2 | `package.json` | 更新 `version` 字段 |
-| 3 | `CHANGELOG.md` | 新增条目（递增补丁版本，不记录日期） |
+| 1 | 当前改动的源文件头注释 | 仅更新本次实际新增/修改的文件（`// <路径> v<版本>`），未改动文件不批量刷写 |
+| 2 | `package.json` | 更新 `version` 字段（单一权威来源） |
+| 3 | `metadata.json` | 同步 `name` 中的版本与 `version` 字段 |
+| 4 | `CHANGELOG.md` | 新增对应版本小节（递增补丁版本，不记录日期） |
+| 5 | `README.md` / `README_EN.md` | 同步页脚版本号与版本徽章 |
+| 6 | `prototype/prototype.html` | 同步文件头注释版本号 |
+| 7 | 运行期展示位 | 如 `footer.copyright`（`common.appVersion`）等页面呈现版本 |
 
 ### 3.3 TypeScript 样式规范
 
@@ -103,9 +107,10 @@ npm run dev
 | 规范项 | 要求 |
 |--------|------|
 | 框架版本 | Tailwind CSS 4.0 |
-| 深色模式 | 使用 `dark:` 前缀 |
-| 汉字字体 | 使用 `.hanzi-font` 类 |
-| 全局样式 | 在 `globals.css` 中定义 |
+| 深色模式 | 通过根节点切换 `.dark` 类（由 ThemeProvider 注入，`globals.css` 中 `.dark` 选择器定义暗色变量） |
+| 汉字字体 | 使用 `.hanzi-font` 类（Noto Serif SC 展示字体） |
+| 全局样式 | 在 `globals.css` 中定义 CSS 变量与设计令牌 |
+| 设计令牌 | 朱砂红 `--primary`(`#c0392b`) / 靛蓝 `--accent`(`#3f51b5`)，字体 `--font-sans`/`--font-display`/`--font-serif`/`--font-mono` |
 | CSS 注释 | 使用 `/* */` 格式 |
 | TS/JS 注释 | 使用 `//` 格式 |
 
@@ -161,9 +166,10 @@ npm run dev
 ```typescript
 // src/lib/i18n/translations/en.ts
 export const en = {
-  common: { /* 通用翻译 */ },
-  home: { /* 首页翻译 */ },
-  learn: { /* 学习页翻译 */ },
+  common: { /* 通用翻译：导航、主题、操作等 */ },
+  home: { /* 首页翻译：hero、特性、永字八法演示 */ },
+  learn: { /* 学习页翻译：汉字词条与例句 */ },
+  practice: { /* 练习页翻译：书写/测验/进度 */ },
   footer: { /* 页脚翻译 */ },
   meta: { /* 元数据翻译 */ }
 };

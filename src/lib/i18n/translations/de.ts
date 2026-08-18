@@ -1,4 +1,4 @@
-﻿// src/lib/i18n/translations/de.ts v5.2.3
+// src/lib/i18n/translations/de.ts v5.2.5
 export const de = {
   common: {
     home: 'Startseite',
@@ -50,7 +50,7 @@ export const de = {
     center: 'Zentrum',
     subtitle: 'Mehrere Übungsmodi, um chinesische Zeichen aus allen Blickwinkeln zu meistern.',
     writingTitle: 'Schreibübung',
-    writingDesc: 'Übe das Schreiben auf dem Leinwand mit klaren Strichfolgen-Hinweisen und Strukturhilfen.'
+    writingDesc: 'Übe das Schreiben auf dem Leinwand mit klaren Strichfolgen-Hinweisen und Strukturhilfen.',
     quizTitle: 'Gedächtnisquiz',
     quizDesc: 'Lustige Quizze zur Festigung von Zeichenbedeutungen und Aussprachen.',
     progressTitle: 'Lernfortschritt',

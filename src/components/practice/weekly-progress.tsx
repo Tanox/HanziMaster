@@ -1,4 +1,4 @@
-﻿// src/components/practice/weekly-progress.tsx v5.2.1
+// src/components/practice/weekly-progress.tsx v5.2.5
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
@@ -24,7 +24,7 @@ export function WeeklyProgress({
   const todayIndex = (new Date().getDay() + 6) % 7;
 
   return (
-    <div className="bg-card/80 dark:bg-ink-900/80 backdrop-blur-xl rounded-4xl p-10 border border-ink-100 dark:border-ink-800 reveal shadow-ink-lg">
+    <div id="weekly-progress" className="bg-card/80 dark:bg-ink-900/80 backdrop-blur-xl rounded-4xl p-10 border border-ink-100 dark:border-ink-800 reveal shadow-ink-lg">
       <h3 className="text-2xl font-semibold mb-10 text-ink-900 dark:text-ink-50 display-font">
         {t('practice.weeklyProgress')}
       </h3>

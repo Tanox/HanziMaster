@@ -1,9 +1,11 @@
 # 测试规范
 ============
 
+> **状态说明（v5.2.4）**：本项目当前**尚未接入自动化测试框架**——`package.json` 无 `test` 脚本，亦无 Jest/Vitest 依赖，仓库内暂无 `*.test.*` 文件。下文为**目标规范与蓝图**，落地前需先按 §10 接入测试基础设施。请勿直接运行 `npm test`（尚未配置）。
+
 ## 1. 测试框架
 
-项目使用 Next.js 推荐的测试工具：
+项目计划使用 Next.js 推荐的测试工具（待接入）：
 
 | 工具 | 用途 |
 |------|------|
@@ -19,6 +21,8 @@
 | 端到端测试 | 测试完整的用户流程 | 低 |
 
 ## 3. 测试命令
+
+> 以下为**目标命令**，需先完成 §10 的测试基础设施接入后方可使用。当前直接运行会报 `missing script: "test"`。
 
 | 命令 | 说明 |
 |------|------|
@@ -233,3 +237,29 @@ it('should toggle theme', () => {
 
 - [项目概述](01-overview.md) - 项目基本信息和技术栈
 - [开发指南](03-development.md) - 开发环境配置和编码规范
+
+## 10. 测试基础设施接入步骤（待执行）
+
+为落地上述规范，需按以下步骤接入测试框架：
+
+1. **安装依赖**（开发依赖）：
+   ```bash
+   npm install -D jest @testing-library/react @testing-library/jest-dom @testing-library/user-event jest-environment-jsdom @types/jest ts-node
+   ```
+2. **添加 Jest 配置** `jest.config.mjs`：
+   - `testEnvironment: 'jsdom'`
+   - `setupFilesAfterEnv: ['<rootDir>/jest.setup.ts']`
+   - `moduleNameMapper`: 将 `@/` 别名映射到 `src/`，并将 `.css` 映射为空模块
+   - `transform`: 使用 `ts-jest`（或 `babel-jest`）处理 `.ts(x)`
+3. **添加 `jest.setup.ts`**：引入 `@testing-library/jest-dom`
+4. **在 `package.json` 增加脚本**：
+   ```json
+   "scripts": {
+     "test": "jest",
+     "test:watch": "jest --watch",
+     "test:coverage": "jest --coverage"
+   }
+   ```
+5. **补充测试文件**：按 §4 命名规范（`*.test.tsx` 同目录），优先覆盖 `theme-toggle`、`locale-toggle`、`useTranslation` 等纯逻辑/交互组件。
+
+> 完成接入后，移除本文档顶部的「尚未接入」状态说明。

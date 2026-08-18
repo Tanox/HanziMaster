@@ -1,4 +1,4 @@
-﻿// src/components/empty-state.tsx v5.2.1
+// src/components/empty-state.tsx v5.2.5
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';

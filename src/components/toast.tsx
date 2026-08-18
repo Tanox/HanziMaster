@@ -1,4 +1,4 @@
-﻿// src/components/toast.tsx v5.2.1
+// src/components/toast.tsx v5.2.5
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
@@ -121,7 +121,7 @@ export function ToastContainer() {
   if (activeToasts.length === 0) return null;
 
   return (
-    <div className="fixed top-20 right-4 z-[100] flex flex-col gap-2" role="region" aria-label="Notifications">
+    <div id="toast-container" className="fixed top-20 right-4 z-[100] flex flex-col gap-2" role="region" aria-label="Notifications">
       {activeToasts.map((t) => (
         <ToastItem key={t.id} {...t} onRemove={removeToast} />
       ))}

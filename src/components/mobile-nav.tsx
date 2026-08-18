@@ -1,4 +1,4 @@
-﻿// src/components/mobile-nav.tsx v5.2.1
+// src/components/mobile-nav.tsx v5.2.5
 'use client';
 
 import { useEffect, useRef } from 'react';
@@ -61,6 +61,7 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
         aria-modal="true"
         aria-label={t('common.navigationMenu')}
         className="fixed right-0 top-0 h-full w-72 max-w-[85vw] bg-card/95 dark:bg-ink-900/95 backdrop-blur-xl shadow-ink-xl z-50 animate-slide-in-right flex flex-col overscroll-contain"
+        id="mobile-nav"
       >
         {/* Drawer Header */}
         <div className="flex justify-between items-center p-5 border-b border-ink-100 dark:border-ink-800">

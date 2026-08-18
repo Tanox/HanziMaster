@@ -47,7 +47,7 @@ function MyComponent() {
   
   return (
     <div>
-      <h1>{t('home.title')}</h1>
+      <h1>{t('home.heroTitle')}</h1>
       <button onClick={() => setLocale('zh-CN')}>
         Switch to Chinese
       </button>
@@ -61,39 +61,57 @@ function MyComponent() {
 ```typescript
 {
   common: {
-    learn: string;
-    practice: string;
-    signIn: string;
-    strokeCount: string;
-    strokes: string;
-    foreverQuote: string;
-    startLearning: string;
-    exploreLibrary: string;
+    home: string; learn: string; practice: string;
+    startLearning: string; exploreLibrary: string;
+    dailyPractice: string; masterCharacters: string;
+    dayStreak: string; practiceWriting: string; hearPronunciation: string;
+    strokeCount: string; strokes: string; foreverQuote: string;
+    learners: string; strokeMastery: string;
+    theme: { light: string; dark: string; system: string };
+    cancel: string; submit: string; skipToContent: string;
+    openMenu: string; closeMenu: string; navigationMenu: string;
   },
   home: {
-    heroTitle: string;
-    heroSubtitle: string;
-    heroDescription: string;
-    aiInsightsTitle: string;
-    aiInsightsDesc: string;
-    etymologyTitle: string;
-    etymologyDesc: string;
-    adaptiveTitle: string;
-    adaptiveDesc: string;
+    heroTitle: string; heroSubtitle: string; heroSuffix: string; heroDescription: string;
+    aiInsightsTitle: string; aiInsightsDesc: string;
+    etymologyTitle: string; etymologyDesc: string;
+    adaptiveTitle: string; adaptiveDesc: string;
+    featuresTitle: string; featuresSubtitle: string;
+    aiBadge: string;
+    yongCharacterTitle: string; yongCharacterDesc: string; yongCharacterStrokes: string;
+  },
+  practice: {
+    center: string; subtitle: string;
+    writingTitle: string; writingDesc: string;
+    quizTitle: string; quizDesc: string;
+    progressTitle: string; progressDesc: string;
+    startNow: string; weeklyProgress: string;
+    mon: string; tue: string; wed: string; thu: string; fri: string; sat: string; sun: string;
+    today: string; pending: string;
+    charactersLearned: string; dayStreak: string; accuracy: string;
+    /* 弹窗 / 测验 / 进度等交互文案 */
+    writingDialogDesc: string; characterProgress: string; clear: string; next: string; done: string;
+    quizDialogDesc: string; quizComplete: string; correct: string; wrong: string;
+    close: string; retake: string; viewResults: string;
+    listenPronunciation: string; nextQuestion: string;
+    progressDialogDesc: string; writeOnCanvas: string; question: string;
+    learnedCharacters: string; dayStreakLabel: string; accuracyLabel: string;
+    studyCharacters: string; strokeCount: string;
   },
   learn: {
-    title: string;
-    subtitle: string;
-    practiceWriting: string;
-    hearPronunciation: string;
-    selectCharacter: string;
+    one: string; two: string; three: string; person: string; big: string; small: string;
+    mouth: string; sunDay: string; moonMonth: string; mountain: string; water: string; fire: string;
+    radical: string; structure: string; independent: string;
+    wordsTitle: string; exampleTitle: string;
+    showStrokeOrder: string; hideStrokeOrder: string;
+    words: { oneDay: string; oneItem: string; first: string; february: string; second: string; /* … */ };
+    /* … 其余汉字与例句键 */
   },
   footer: {
     copyright: string;
   },
   meta: {
-    title: string;
-    description: string;
+    title: string; description: string;
   }
 }
 ```
@@ -122,7 +140,7 @@ import { useTranslation } from '@/components/locale-provider';
 function MyComponent() {
   const { t } = useTranslation();
   
-  return <h1>{t('home.title')}</h1>;
+  return <h1>{t('home.heroTitle')}</h1>;
 }
 ```
 
@@ -237,7 +255,7 @@ common: {
 ### 4.1.2 功能特性
 
 - 根据当前路由自动判断活跃状态
-- 活跃状态高亮显示（绿色背景 + 下划线指示器）
+- 活跃状态高亮显示（朱砂红文字 + 朱砂红下划线指示器）
 - 悬停效果和过渡动画
 - 最小触控区域 40px
 
@@ -254,8 +272,8 @@ import { NavLink } from '@/components/nav-link';
 | 状态 | 样式 |
 |------|------|
 | 默认 | 灰色文字 + 透明背景 |
-| 悬停 | 绿色文字 + 浅色背景 |
-| 活跃 | 绿色文字 + 绿色背景 + 下划线 |
+| 悬停 | 朱砂红文字 + 浅色背景 |
+| 活跃 | 朱砂红文字 + 朱砂红下划线指示器 |
 
 ## 4.2 MobileNav 移动端导航组件
 
@@ -390,9 +408,11 @@ function Header() {
 
 | 字体变量 | 字体名称 | 用途 |
 |----------|----------|------|
-| `--font-sans` | Space Grotesk | 主要界面字体 |
-| `--font-mono` | JetBrains Mono | 代码字体 |
+| `--font-sans` | Space Grotesk | 主要界面字体（UI 文本） |
+| `--font-display` | Playfair Display | 标题与展示字体 |
+| `--font-heading` | Space Grotesk | 区块标题字体 |
 | `--font-serif` | Noto Serif SC | 汉字展示字体 |
+| `--font-mono` | JetBrains Mono | 代码 / 拼音等等宽字体 |
 
 ### 7.2 hanzi-font 类
 
@@ -414,8 +434,11 @@ function Header() {
 
 ```css
 :root {
-  --primary: #10b981; /* emerald-500 */
-  --primary-dark: #059669; /* emerald-600 */
+  --primary: #c0392b;        /* 朱砂红 vermilion（主色） */
+  --primary-dark: #962d22;   /* 朱砂红深 */
+  --primary-foreground: #fdf6f3;
+  --accent: #3f51b5;         /* 靛蓝 indigo（辅助色） */
+  --font-display: 'Playfair Display', Georgia, serif;
 }
 ```
 

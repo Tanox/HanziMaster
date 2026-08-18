@@ -16,8 +16,8 @@ const securityHeaders = [
       "font-src 'self' https://fonts.gstatic.com",
       // Images: local, data URIs, HTTPS, and blob URLs
       "img-src 'self' data: https: blob:",
-      // API connections: self + Google AI API + Google Fonts
-      "connect-src 'self' https://generativelanguage.googleapis.com https://fonts.googleapis.com https://fonts.gstatic.com",
+      // API connections: self + Google Fonts
+      "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com",
       // Prevent clickjacking
       "frame-ancestors 'none'",
       // Restrict base URI

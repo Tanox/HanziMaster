@@ -1,5 +1,28 @@
 ﻿# Changelog
 
+## [5.2.5] - 编译修复与规范对齐
+### Bug Fixes
+- 修复 11 个 i18n 翻译文件 `writingDesc` 行尾缺失逗号导致的 TS1005 编译失败（含 fr.ts 未转义单引号 `l'écriture`）；项目此前完全无法编译构建。
+- `src/app/layout.tsx` metadata 移除失实的 "AI-Powered" 标题与 'AI' keyword，改为真实功能描述（笔顺练习、自适应测验）。
+- `next.config.mjs` 生产 CSP `connect-src` 移除残留的 `generativelanguage.googleapis.com` 白名单。
+
+### Code Quality
+- `src/lib/storage.ts` 移除 `console.warn`，localStorage 写入异常改为静默失败以符合编码规范（无 console.*）。
+- 为关键 DOM 容器补充语义化 id（home-page/hero-section/features-section/learn-page/practice-page/character-grid/character-detail/writing-canvas/weekly-progress/practice-options/stats-card/quiz-dialog/theme-toggle/locale-toggle/mobile-nav/toast-container），便于调试定位与可访问性。
+- 全站版本号统一至 v5.2.5（package.json、metadata.json、README/README_EN、openspec 文档头注释、源文件头注释）。
+
+## [5.2.4] - 规范与代码一致性审查修复
+### Documentation
+- 同步全部版本呈现位至 v5.2.4：package.json、metadata.json、README/README_EN 标题与页脚、prototype.html 头注、openspec 文档版本戳（01-overview/index/03/04/06/alignment-checklist/coding-standards/ui-ux-review-report）。
+- `openspec/04-api-reference.md` 修复严重脱节：主题色由过时 emerald `#10b981` 更正为朱砂红 `--primary #c0392b` / 靛蓝 `--accent #3f51b5`；字体表补 `--font-display`(Playfair Display)/`--font-heading`；暗色模式由 `dark:` 前缀更正为 `.dark` 类；CSS 变量名 `--primary` 对齐 globals.css；翻译对象结构 §1.5 对齐代码实际键（home/practice 节点）；NavLink 活跃高亮色由绿色更正为朱砂红。
+- `openspec/06-testing.md` 修正误导：明确项目当前尚未接入自动化测试框架（无 jest 依赖、无 test 脚本），补充 §10 测试基础设施接入蓝图，避免开发者误跑 `npm test`。
+- `openspec/03-development.md` 暗色模式规范对齐 `.dark` 类方案并补充设计令牌；版本同步位置清单补全 metadata/README/prototype/展示位。
+- `openspec/alignment-checklist.md` 头版本同步，保留历史快照表。
+
+### Code Quality
+- `src/app/learn/page.tsx` Tailwind 4 规范：`:bg-gradient-to-b` → `bg-linear-to-b`。
+- `src/app/page.tsx` 头注释版本戳同步至 v5.2.4。
+
 ## [5.2.3] - 下架 AI 虚假声明与健壮性修正
 ### Bug Fixes
 - 下架全站「AI 驱动 / Gemini 实时反馈」虚假声明：README/README_EN、metadata.json keywords、11 语言 i18n 文案、proxy.ts 生产 CSP 的 Gemini 域名白名单，均改为与代码行为一致的真实功能描述（笔顺指引、结构提示、引导式练习）。

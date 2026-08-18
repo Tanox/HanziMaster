@@ -1,4 +1,4 @@
-﻿// src/components/stats-card.tsx v5.2.1
+// src/components/stats-card.tsx v5.2.5
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
@@ -24,7 +24,7 @@ export function StatsCard({ label, value, icon, accentVariant = 'vermilion' }: S
   const accent = accentClasses[accentVariant];
 
   return (
-    <div className="group text-center p-6 rounded-xl border border-ink-100 dark:border-ink-800 bg-card/50 dark:bg-ink-900/50 backdrop-blur-sm hover:-translate-y-1 hover:shadow-ink transition-[colors,transform] duration-300 relative overflow-hidden reveal">
+    <div id="stats-card" className="group text-center p-6 rounded-xl border border-ink-100 dark:border-ink-800 bg-card/50 dark:bg-ink-900/50 backdrop-blur-sm hover:-translate-y-1 hover:shadow-ink transition-[colors,transform] duration-300 relative overflow-hidden reveal">
       <div
         className={`absolute top-0 left-0 right-0 h-[3px] origin-left group-hover:scale-x-100 transition-transform duration-300 ${accent.bar}`}
       />

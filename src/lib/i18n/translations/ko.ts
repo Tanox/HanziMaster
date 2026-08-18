@@ -1,4 +1,4 @@
-﻿// src/lib/i18n/translations/ko.ts v5.2.3
+// src/lib/i18n/translations/ko.ts v5.2.5
 export const ko = {
   common: {
     home: '홈',
@@ -50,7 +50,7 @@ export const ko = {
     center: '센터',
     subtitle: '다양한 연습 모드로 중국 한자를 모든 각도에서 마스터하세요.',
     writingTitle: '글씨 연습',
-    writingDesc: '캔버스에서 글씨 연습을 하고 명확한 획순 가이드와 구조 힌트를 얻으세요.'
+    writingDesc: '캔버스에서 글씨 연습을 하고 명확한 획순 가이드와 구조 힌트를 얻으세요.',
     quizTitle: '기억 퀴즈',
     quizDesc: '한자 의미와 발음을 강화하는 재미있는 퀴즈.',
     progressTitle: '학습 진행',

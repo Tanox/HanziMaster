@@ -1,4 +1,4 @@
-﻿// src/lib/i18n/translations/ar.ts v5.2.3
+// src/lib/i18n/translations/ar.ts v5.2.5
 export const ar = {
   common: {
     home: 'الرئيسية',
@@ -50,7 +50,7 @@ export const ar = {
     center: 'المركز',
     subtitle: 'أوضاع تدريب متعددة لإتقان الحروف الصينية من جميع الزوايا.',
     writingTitle: 'تدريب الكتابة',
-    writingDesc: 'تدرّب على الكتابة على اللوحة مع إرشادات واضحة لترتيب الخطوط وبنيتها.'
+    writingDesc: 'تدرّب على الكتابة على اللوحة مع إرشادات واضحة لترتيب الخطوط وبنيتها.',
     quizTitle: 'اختبار الذاكرة',
     quizDesc: 'اختبارات ممتعة لتعزيز معاني الحروف والنطق.',
     progressTitle: 'تقدم التعلم',

@@ -1,4 +1,4 @@
-﻿// src/components/learn/character-grid.tsx v5.2.1
+// src/components/learn/character-grid.tsx v5.2.5
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
@@ -15,6 +15,7 @@ export function CharacterGrid({ selectedId, onSelect }: CharacterGridProps) {
   return (
     <div
       className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-5 mb-12 stagger-children"
+      id="character-grid"
       role="listbox"
       aria-label={t('common.masterCharacters')}
     >
