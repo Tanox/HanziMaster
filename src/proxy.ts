@@ -1,4 +1,4 @@
-// src/proxy.ts v5.2.5
+// src/proxy.ts v5.2.6
 // Nonce-based Content Security Policy proxy (Next.js 16+)
 import { NextResponse, type NextRequest } from 'next/server';
 

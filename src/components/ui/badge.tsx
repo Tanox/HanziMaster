@@ -1,4 +1,4 @@
-// src/components/ui/badge.tsx v5.2.5
+// src/components/ui/badge.tsx v5.2.6
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { Slot } from "radix-ui"

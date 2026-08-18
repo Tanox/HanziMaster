@@ -1,4 +1,4 @@
-// src/components/practice/practice-assets.tsx v5.2.5
+// src/components/practice/practice-assets.tsx v5.2.6
 import type { TranslationKey } from '@/lib/i18n';
 
 export interface PracticeOption {

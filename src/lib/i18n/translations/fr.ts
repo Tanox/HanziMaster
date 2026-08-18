@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/fr.ts v5.2.5
+// src/lib/i18n/translations/fr.ts v5.2.6
 export const fr = {
   common: {
     home: 'Accueil',

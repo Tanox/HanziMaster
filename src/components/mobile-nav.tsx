@@ -1,4 +1,4 @@
-// src/components/mobile-nav.tsx v5.2.5
+// src/components/mobile-nav.tsx v5.2.6
 'use client';
 
 import { useEffect, useRef } from 'react';

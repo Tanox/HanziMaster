@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/zh-CN.ts v5.2.5
+// src/lib/i18n/translations/zh-CN.ts v5.2.6
 export const zhCN = {
   common: {
     home: '首页',

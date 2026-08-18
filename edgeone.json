@@ -1,0 +1,17 @@
+{
+  "name": "hanzi-master",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
+  "nodeVersion": "24.11.0",
+  "headers": [
+    {
+      "source": "/_next/static/*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ]
+}

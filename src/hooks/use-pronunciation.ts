@@ -1,4 +1,4 @@
-// src/hooks/use-pronunciation.ts v5.2.5
+// src/hooks/use-pronunciation.ts v5.2.6
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';

@@ -1,5 +1,12 @@
 ﻿# Changelog
 
+## [5.2.6] - 适配腾讯云 EdgeOne Pages（Node 24.11.0）
+### Chore
+- 新增 `edgeone.json` 声明 EO Pages 部署配置（框架 nextjs、构建命令、Node 24.11.0 运行时、静态资源长缓存头），替代 Vercel 专用的 `vercel.json` 缓存策略。
+- `.nvmrc` 精确匹配 EO Pages 运行时：`24.5.0` → `24.11.0`，避免本地/CI 与部署运行时版本漂移。
+- `package.json` `engines.node` 收紧至 `>=24.11.0`，与 EO Pages 运行时对齐。
+- 全站版本号统一至 v5.2.6。
+
 ## [5.2.5] - 编译修复与规范对齐
 ### Bug Fixes
 - 修复 11 个 i18n 翻译文件 `writingDesc` 行尾缺失逗号导致的 TS1005 编译失败（含 fr.ts 未转义单引号 `l'écriture`）；项目此前完全无法编译构建。
