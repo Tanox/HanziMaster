@@ -1,4 +1,4 @@
-﻿# HanziMaster 汉字大师 v5.2.9
+﻿# HanziMaster 汉字大师 v5.2.10
 
 [English](README_EN.md) | [简体中文](README.md)
 
@@ -76,7 +76,7 @@ src/
 │   ├── practice/         # writing-dialog / writing-canvas / quiz-dialog / weekly-progress / practice-options / practice-assets
 │   ├── ui/               # shadcn-style primitives (button, card, badge, dialog, dropdown-menu, ...)
 │   └── feature-card.tsx / stats-card.tsx / empty-state.tsx / toast.tsx
-├── hooks/                # use-quiz / use-progress / use-pronunciation / use-is-dark / use-scroll-reveal
+├── hooks/                # use-progress / use-pronunciation / use-is-dark / use-scroll-reveal
 ├── lib/                  # characters / character-types / storage / utils / i18n (index + translations/)
 └── proxy.ts              # OpenNext dev proxy (CSP injection)
 ```
@@ -158,4 +158,4 @@ Types: `feat` | `fix` | `docs` | `style` | `refactor` | `perf` | `test` | `build
 
 ## License
 
-© 2026 HanziMaster 汉字大师 v5.2.9. All rights reserved.
+© 2026 HanziMaster 汉字大师 v5.2.10. All rights reserved.

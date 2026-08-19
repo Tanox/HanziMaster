@@ -1,7 +1,7 @@
 # HanziMaster UI/UX 优化改进报告
 
-**版本**: v5.2.4  
-**日期**: 2026-06-07  
+**版本**: v5.2.10  
+**日期**: 2026-08-19  
 **作者**: UI Designer
 
 ---
@@ -33,16 +33,18 @@
 
 #### 2.1.1 色彩系统优化
 
+> 注：本报告初版基于早期 emerald（绿色）设计。当前设计系统已演进为东方水墨·朱砂红（ink/vermilion/indigo），以下色彩建议已按现状更新。
+
 **当前优势**：
-- 主色调 emerald（绿色）与学习主题高度契合
+- 主色朱砂红 `#c53d43`（vermilion-500）与东方水墨主题高度契合
 - 色彩对比度满足 WCAG AA 标准
-- 深色模式配色和谐
+- 深色模式配色和谐（`.dark` 类覆盖语义色 token）
 
 **建议微调**：
 ```css
-/* 为了更好的视觉层次，建议添加一个稍亮的强调色用于悬停状态 */
---emerald-400: #34d399; /* 稍亮的绿色 */
---emerald-300: #6ee7b7; /* 更亮的绿色用于边框 */
+/* 为了更好的视觉层次，建议基于设计 token 派生悬停/边框强调色（单一来源） */
+--color-primary-hover: color-mix(in srgb, var(--color-primary), #000 10%);
+--color-ring-soft: color-mix(in srgb, var(--color-primary), transparent 60%);
 ```
 
 #### 2.1.2 排版系统优化

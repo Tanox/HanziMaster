@@ -1,5 +1,7 @@
 # HanziMaster 项目优化总结
 
+> **归档说明（v5.2.10）**：本文档为 2026-06-02 的历史优化执行记录。其中「剩余问题」「版本」等结论已随项目演进更新（见下方「现状更新」）。当前最新状态以 `README.md`、`openspec/` 与 `CHANGELOG.md` 为准。
+
 ## 执行日期
 2026-06-02
 
@@ -32,7 +34,6 @@
 - 添加"汉字大师"副标题
 - 改进导航链接 - 添加悬停下划线动画
 - 改进Footer设计 - 三栏布局，添加额外链接
-- 改进登录按钮 - 渐变背景 + 悬停动画
 
 #### 2.2 首页 (src/app/page.tsx)
 **改进点：**
@@ -62,66 +63,32 @@
 
 ### 3. 翻译文件更新
 
-#### 更新的文件
-- `src/lib/i18n/translations/en.ts`
-- `src/lib/i18n/translations/zh-CN.ts`
-
 #### 新增翻译键
-**common 命名空间：**
-- `learners` - 学员正在学习
-- `strokeMastery` - 笔画掌握度
-
-**home 命名空间：**
-- `featuresTitle` - 为什么选择汉字大师
-- `featuresSubtitle` - 体验未来汉字学习
-
-**practice 命名空间：**
-- `center` - 中心
-- `subtitle` - 副标题
-- `writingTitle` - 书写练习
-- `writingDesc` - 书写练习描述
-- `quizTitle` - 记忆测验
-- `quizDesc` - 记忆测验描述
-- `progressTitle` - 学习进度
-- `progressDesc` - 学习进度描述
-- `startNow` - 立即开始
-- `weeklyProgress` - 本周学习进度
-- `mon` ~ `sun` - 周一至周日
-- `today` - 今
-- `pending` - 待学
-- `charactersLearned` - 已学汉字
-- `dayStreak` - 连续学习天数
-- `accuracy` - 正确率
-
-**learn 命名空间：**
-- `radical` - 部首
-- `structure` - 结构
+- `common.learners` - 学员正在学习
+- `common.strokeMastery` - 笔画掌握度
+- `home.featuresTitle` - 为什么选择汉字大师
+- `home.featuresSubtitle` - 体验未来汉字学习
+- `practice.center/subtitle/writingTitle/writingDesc/quizTitle/quizDesc/progressTitle/progressDesc/startNow/weeklyProgress/mon~sun/today/pending/charactersLearned/dayStreak/accuracy`
+- `learn.radical/structure`
 
 ### 4. 文档更新
+- README：功能列表、项目结构（添加 practice 页面）、核心页面说明、环境要求。
 
-#### README.md
-**更新内容：**
-- 更新功能列表（添加"响应式设计"）
-- 更新项目结构（添加 practice 页面）
-- 更新核心页面说明
-- 添加练习页面说明
-- 更新环境要求（Node.js >= 20.11.0）
+---
 
-## 剩余问题
+## 现状更新（v5.2.10）
 
-### 1. Node.js环境问题
-**问题：** 用户的Node.js安装中npm损坏（无法找到 `@npmcli/config` 模块）
+原文档的「剩余问题」已在后续版本解决，现更新如下：
 
-### 2. 翻译文件不完整
-**问题：** 只更新了英文和简体中文翻译文件
-
-**需要更新：** 其他9种语言文件
-
-### 3. 练习模式功能未实现
-**问题：** 练习页面的三个模式目前只有UI，没有实际功能
+| 原问题（2026-06-02） | 当前状态（v5.2.10） |
+|------|------|
+| Node.js 环境 npm 损坏（`@npmcli/config`） | 已解决；`package.json` engines.node 现为 `>=24.11.0`（.nvmrc 精确匹配） |
+| 翻译文件只更新了 en/zh-CN | 已解决；11 种语言全部对齐，`t()` 受 `TranslationKey` 联合类型约束 |
+| 练习模式只有 UI，无实际功能 | 已解决；书写练习（Canvas）、拼音测验、学习进度均已接通真实逻辑并持久化 |
 
 ---
 
 **优化完成时间：** 2026-06-02
+**归档更新时间：** 2026-08-19（v5.2.10）
 **优化执行者：** AI Assistant (CodeBuddy)
-**项目名称：** HanziMaster 汉字大师 v2.2.0
+**项目名称：** HanziMaster 汉字大师 v5.2.10

@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<!--
+  prototypes/character-detail.html · HanziMaster 汉字学习卡变体原型 · v5.2.10
+  探索「汉字研习卡」的三种方向。仅用于设计探索，不导入生产代码。
+  设计 Token 与 globals.css @theme / 07-design-prototype.md 保持一致（东方水墨·朱砂红）。
+-->
+<html lang="en" class="">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)" />
+<title>汉字学习卡 — 变体原型</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     设计系统 Token —— 与 globals.css @theme 单一来源保持一致
+     ============================================================ */
+  :root {
+    --background: #faf9f6;
+    --foreground: #1a1a1a;
+    --muted: #f3f1eb;
+    --muted-foreground: #6b6356;
+    --border: #e5e1d8;
+    --card: #ffffff;
+    --card-foreground: #1a1a1a;
+    --primary: #c53d43;          /* 朱砂红 vermilion-500 */
+    --primary-600: #9b2c2c;
+    --primary-foreground: #ffffff;
+    --accent: #4f46e5;
+    --accent-foreground: #ffffff;
+    --success: #34c759;
+    --destructive: #ef4444;
+    --ring: #c53d43;
+
+    --ink-50: #faf9f6;
+    --ink-100: #f3f1eb;
+    --ink-200: #e5e1d8;
+    --ink-300: #c9c2b5;
+    --ink-400: #a69c89;
+    --ink-500: #867d6a;
+    --ink-600: #6b6356;
+    --ink-700: #564f45;
+    --ink-800: #48433b;
+    --ink-900: #1a1a1a;
+    --ink-950: #0d0d0d;
+
+    --vermilion-100: #fee2e2;
+    --vermilion-200: #fecaca;
+    --vermilion-300: #fca5a5;
+    --vermilion-500: #c53d43;
+    --vermilion-600: #9b2c2c;
+
+    --indigo-100: #e0e7ff;
+    --indigo-500: #4f46e5;
+
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-2xl: 24px;
+    --radius-3xl: 28px;
+    --radius-4xl: 32px;
+
+    --shadow-ink: 0 4px 20px rgba(26,26,26,0.08);
+    --shadow-ink-lg: 0 8px 40px rgba(26,26,26,0.12);
+    --shadow-ink-xl: 0 12px 60px rgba(26,26,26,0.16);
+    --shadow-glow: 0 0 30px rgba(197,61,67,0.20);
+
+    --dur-fast: 0.15s;
+    --dur-normal: 0.25s;
+    --dur-slow: 0.4s;
+    --dur-lg: 0.6s;
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-serif: 'Noto Serif SC', Georgia, serif;
+    --font-sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  .dark {
+    --background: #0d0d0d;
+    --foreground: #f3f1eb;
+    --muted: #1a1a1a;
+    --muted-foreground: #a69c89;
+    --border: #2d2d2d;
+    --card: #1a1a1a;
+    --card-foreground: #f3f1eb;
+    --accent: #6366f1;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--background);
+    color: var(--foreground);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23e5e1d8' fill-opacity='0.3' fill-rule='evenodd'/%3E%3C/svg%3E");
+    background-blend-mode: soft-light;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+    transition: background-color var(--dur-normal) var(--ease-smooth), color var(--dur-normal) var(--ease-smooth);
+  }
+
+  .display-font { font-family: var(--font-display); }
+  .serif-font { font-family: var(--font-serif); }
+
+  /* ---------- 无障碍 ---------- */
+  *:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; border-radius: 4px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* ---------- 阶段：一次只渲染一个变体，全尺寸，真实周边上下文 ---------- */
+  .stage-wrap {
+    max-width: 1080px; margin: 0 auto;
+    padding: 72px 24px 80px;
+    display: flex; flex-direction: column; align-items: center; gap: 24px;
+  }
+  /* 标题栏：模拟 learn 页面的字网格上下文 */
+  .page-context { width: 100%; text-align: center; margin-bottom: 8px; }
+  .page-context h1 { font-family: var(--font-display); font-size: 34px; letter-spacing: -0.01em; }
+  .page-context p { color: var(--muted-foreground); margin-top: 6px; font-size: 15px; }
+
+  /* 底部衬垫，确保卡片上方的 picker 不遮挡工作内容 */
+  .stage { width: 100%; }
+
+  /* ============================================================
+     变体 1 — 水墨卷轴（Scroll）· Editorial 轴
+     ============================================================ */
+  .scroll-card {
+    width: 100%; max-width: 900px; margin: 0 auto;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-4xl);
+    box-shadow: var(--shadow-ink-lg);
+    overflow: hidden;
+    position: relative;
+  }
+  .scroll-card::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(circle at 20% 10%, color-mix(in srgb, var(--vermilion-500) 6%, transparent), transparent 60%);
+  }
+  .scroll-top { display: flex; align-items: center; gap: 10px; padding: 20px 32px; border-bottom: 1px solid var(--border); }
+  .scroll-badge {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--vermilion-500);
+    border: 1px solid var(--vermilion-200);
+    border-radius: 999px; padding: 4px 12px;
+  }
+  .scroll-top .spacer { flex: 1; }
+  .icon-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px; border-radius: 999px;
+    border: 1px solid var(--border); background: transparent; color: var(--muted-foreground);
+    cursor: pointer; transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  }
+  .icon-btn:hover { color: var(--vermilion-500); border-color: var(--vermilion-200); transform: translateY(-1px); }
+  .icon-btn:active { transform: translateY(1px); }
+  .scroll-body { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 0; }
+  .scroll-hero {
+    padding: 48px 32px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+  .scroll-char {
+    position: relative; font-family: var(--font-serif); font-weight: 400;
+    font-size: 150px; line-height: 1; color: var(--ink-900);
+    animation: brushIn 0.9s var(--ease-out) both;
+  }
+  .dark .scroll-char { color: var(--ink-50); }
+  @keyframes brushIn {
+    0% { clip-path: inset(0 100% 0 0); opacity: 0; }
+    100% { clip-path: inset(0 0 0 0); opacity: 1; }
+  }
+  .scroll-char::after {
+    content: ""; position: absolute; inset: -18px -30px; z-index: -1;
+    background: color-mix(in srgb, var(--vermilion-500) 8%, transparent);
+    filter: blur(30px); border-radius: 50%;
+  }
+  .scroll-meta { margin-top: 26px; text-align: center; }
+  .scroll-pinyin { font-size: 24px; font-weight: 500; letter-spacing: 0.04em; }
+  .scroll-meaning { margin-top: 6px; color: var(--muted-foreground); font-size: 16px; }
+  .scroll-strokes { margin-top: 14px; display: flex; align-items: center; gap: 6px; justify-content: center; }
+  .scroll-strokes .dot { width: 8px; height: 8px; border-radius: 999px; background: var(--vermilion-500); opacity: 0.85; animation: inkDot 0.4s var(--ease-out) both; }
+  .scroll-strokes .dot.empty { background: var(--ink-200); opacity: 1; }
+  .dark .scroll-strokes .dot.empty { background: var(--ink-700); }
+  @keyframes inkDot { 0% { transform: scale(0); } 60% { transform: scale(1.4); } 100% { transform: scale(1); } }
+  .scroll-strokes .stroke-count-label { font-size: 12px; color: var(--muted-foreground); margin-right: 4px; }
+  .scroll-actions { display: flex; gap: 10px; margin-top: 28px; flex-wrap: wrap; justify-content: center; }
+  .scroll-actions .btn-primary, .scroll-actions .btn-outline {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 44px; padding: 0 20px; border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer;
+    transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .scroll-actions .btn-primary { background: var(--vermilion-500); color: var(--primary-foreground); border: none; box-shadow: var(--shadow-glow); }
+  .scroll-actions .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(197,61,67,0.28); }
+  .scroll-actions .btn-primary:active { transform: translateY(1px); }
+  .scroll-actions .btn-outline { border: 1px solid var(--ink-200); background: transparent; color: var(--ink-700); }
+  .dark .scroll-actions .btn-outline { border-color: var(--ink-700); color: var(--ink-200); }
+  .scroll-actions .btn-outline:hover { border-color: var(--vermilion-300); color: var(--vermilion-500); }
+  .scroll-panel { padding: 40px 32px; display: flex; flex-direction: column; gap: 26px; }
+  .scroll-block h4 { font-family: var(--font-display); font-size: 17px; font-weight: 600; margin-bottom: 14px; }
+  .scroll-block h4 .cn { font-family: var(--font-serif); font-weight: 500; }
+  .word-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 14px; border-radius: var(--radius-md);
+    background: var(--ink-50); border: 1px solid var(--border);
+  }
+  .dark .word-row { background: color-mix(in srgb, var(--ink-900) 40%, transparent); }
+  .word-row .hanzi { font-family: var(--font-serif); font-size: 18px; font-weight: 500; }
+  .word-row .py { font-size: 12px; color: var(--muted-foreground); }
+  .word-row .gloss { font-size: 13px; color: var(--ink-600); }
+  .dark .word-row .gloss { color: var(--ink-300); }
+  .word-row + .word-row { margin-top: 10px; }
+  .stroke-demo { display: flex; flex-direction: column; gap: 8px; }
+  .stroke-seq { display: flex; gap: 6px; flex-wrap: wrap; }
+  .stroke-chip {
+    width: 34px; height: 34px; border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-serif); font-size: 18px; font-weight: 500;
+    background: var(--ink-50); border: 1px solid var(--border); color: var(--ink-600);
+    position: relative;
+  }
+  .dark .stroke-chip { background: color-mix(in srgb, var(--ink-900) 40%, transparent); color: var(--ink-300); }
+  .stroke-chip.active { color: var(--vermilion-500); border-color: var(--vermilion-300); box-shadow: var(--shadow-glow); }
+  .stroke-chip::after {
+    content: attr(data-n); position: absolute; top: -6px; right: -6px;
+    width: 16px; height: 16px; border-radius: 999px;
+    background: var(--vermilion-500); color: #fff; font-size: 10px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* ============================================================
+     变体 2 — 教学卡（Flashcard）· Dense/Utility 轴
+     ============================================================ */
+  .flash-card {
+    width: 100%; max-width: 760px; margin: 0 auto;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-3xl);
+    box-shadow: var(--shadow-ink-lg);
+    overflow: hidden;
+    animation: cardIn 0.5s var(--ease-out) both;
+  }
+  @keyframes cardIn { 0% { opacity: 0; transform: translateY(16px); } 100% { opacity: 1; transform: translateY(0); } }
+  .flash-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 20px; border-bottom: 1px solid var(--border);
+    background: var(--ink-50);
+  }
+  .dark .flash-head { background: color-mix(in srgb, var(--ink-900) 30%, transparent); }
+  .flash-head .index { font-family: var(--font-mono); font-size: 12px; color: var(--muted-foreground); }
+  .flash-head .badge { margin-left: auto; font-size: 12px; font-weight: 600; color: var(--vermilion-500); }
+  .flash-main { padding: 30px 26px 26px; }
+  .flash-topline { display: flex; align-items: flex-start; gap: 24px; }
+  .flash-char {
+    flex-shrink: 0; width: 132px; height: 132px;
+    border-radius: var(--radius-2xl);
+    background: linear-gradient(150deg, color-mix(in srgb, var(--vermilion-500) 8%, var(--card)), var(--card));
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-serif); font-size: 96px; font-weight: 400; color: var(--ink-900);
+    animation: charPop 0.6s var(--ease-spring, var(--ease-out)) 0.05s both;
+  }
+  .dark .flash-char { color: var(--ink-50); }
+  @keyframes charPop { 0% { transform: scale(0.7); opacity: 0; } 60% { transform: scale(1.04); } 100% { transform: scale(1); opacity: 1; } }
+  .flash-info { flex: 1; min-width: 0; }
+  .flash-info .pinyin { font-size: 22px; font-weight: 600; letter-spacing: 0.03em; }
+  .flash-info .meaning { color: var(--muted-foreground); margin-top: 4px; font-size: 15px; }
+  .flash-actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+  .mini-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 34px; padding: 0 12px; border-radius: 999px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    border: 1px solid var(--border); background: transparent; color: var(--ink-600);
+    transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  }
+  .dark .mini-btn { color: var(--ink-300); }
+  .mini-btn:hover { color: var(--vermilion-500); border-color: var(--vermilion-300); }
+  .mini-btn.primary { background: var(--vermilion-500); color: #fff; border-color: transparent; }
+  .mini-btn.primary:hover { color: #fff; box-shadow: var(--shadow-glow); }
+  .flash-divider { margin: 22px 0 16px; border: none; border-top: 1px solid var(--border); }
+  .flash-section { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .flash-section h4 { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted-foreground); }
+  .flash-section .rule { flex: 1; height: 1px; background: var(--border); }
+  .chip-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .word-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 12px; border-radius: var(--radius-md);
+    background: var(--ink-50); border: 1px solid var(--border);
+    font-family: var(--font-serif); font-size: 16px; font-weight: 500;
+  }
+  .dark .word-chip { background: color-mix(in srgb, var(--ink-900) 40%, transparent); }
+  .word-chip .gloss { font-family: var(--font-sans); font-size: 12px; color: var(--muted-foreground); font-weight: 400; }
+  .tab-row { display: flex; gap: 4px; background: var(--ink-50); padding: 4px; border-radius: var(--radius-md); width: max-content; }
+  .dark .tab-row { background: color-mix(in srgb, var(--ink-900) 40%, transparent); }
+  .tab {
+    height: 32px; padding: 0 14px; border: none; border-radius: calc(var(--radius-md) - 2px);
+    background: transparent; color: var(--muted-foreground); font-size: 13px; font-weight: 600; cursor: pointer;
+  }
+  .tab.active { background: var(--card); color: var(--vermilion-500); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .dark .tab.active { color: var(--vermilion-500); }
+  .flash-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 14px; }
+  .flash-cell {
+    aspect-ratio: 1; border-radius: var(--radius-md);
+    background: var(--ink-50); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-serif); font-size: 20px; color: var(--ink-400);
+  }
+  .dark .flash-cell { background: color-mix(in srgb, var(--ink-900) 40%, transparent); color: var(--ink-500); }
+  .flash-cell.filled { color: var(--ink-900); border-color: var(--vermilion-200); }
+  .dark .flash-cell.filled { color: var(--ink-50); }
+  .flash-cell.active { color: var(--vermilion-500); border-color: var(--vermilion-500); box-shadow: var(--shadow-glow); }
+
+  /* ============================================================
+     变体 3 — 沉浸式工作台（Atelier）· Spatial/Interaction 轴
+     ============================================================ */
+  .atelier-card {
+    width: 100%; max-width: 960px; margin: 0 auto;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-3xl);
+    box-shadow: var(--shadow-ink-xl);
+    overflow: hidden;
+    animation: deskIn 0.6s var(--ease-out) both;
+  }
+  @keyframes deskIn { 0% { opacity: 0; transform: translateY(24px) scale(0.98); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+  .atelier-head {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 24px; border-bottom: 1px solid var(--border);
+  }
+  .atelier-title { font-family: var(--font-display); font-size: 17px; font-weight: 600; }
+  .atelier-progress { flex: 1; margin-left: 16px; max-width: 260px; }
+  .atelier-progress .bar { height: 6px; border-radius: 999px; background: var(--ink-100); overflow: hidden; }
+  .dark .atelier-progress .bar { background: var(--ink-800); }
+  .atelier-progress .fill { height: 100%; width: 42%; border-radius: 999px; background: linear-gradient(90deg, var(--vermilion-500), var(--vermilion-600)); }
+  .atelier-progress .meta { font-size: 12px; color: var(--muted-foreground); margin-top: 5px; display: flex; justify-content: space-between; }
+  .atelier-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0; }
+  .atelier-desk {
+    padding: 30px; border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 18px;
+  }
+  .atelier-desk-head { display: flex; align-items: baseline; gap: 10px; }
+  .atelier-char { font-family: var(--font-serif); font-size: 34px; font-weight: 500; color: var(--ink-900); }
+  .dark .atelier-char { color: var(--ink-50); }
+  .atelier-desk-head .pinyin { font-size: 15px; color: var(--muted-foreground); }
+  .canvas-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .canvas-cell {
+    aspect-ratio: 1; border-radius: 6px;
+    background: var(--ink-50); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-serif); font-size: 22px; color: var(--ink-400);
+    cursor: pointer; transition: transform var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  }
+  .dark .canvas-cell { background: color-mix(in srgb, var(--ink-900) 40%, transparent); }
+  .canvas-cell:hover { transform: translateY(-1px); }
+  .canvas-cell.traced { color: var(--vermilion-500); border-color: var(--vermilion-300); }
+  .canvas-tools { display: flex; align-items: center; gap: 8px; }
+  .canvas-tools .hint { font-size: 12px; color: var(--muted-foreground); }
+  .tool-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 34px; padding: 0 12px; border-radius: 999px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    border: 1px solid var(--border); background: transparent; color: var(--ink-600);
+  }
+  .dark .tool-btn { color: var(--ink-300); }
+  .tool-btn:hover { border-color: var(--vermilion-300); color: var(--vermilion-500); }
+  .atelier-side { padding: 30px; display: flex; flex-direction: column; gap: 22px; overflow: hidden; }
+  .atelier-block h4 {
+    font-family: var(--font-display); font-size: 15px; font-weight: 600;
+    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+  }
+  .atelier-block h4::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+  .etymology { font-size: 14px; color: var(--ink-600); line-height: 1.7; }
+  .dark .etymology { color: var(--ink-300); }
+  .example-list { display: flex; flex-direction: column; gap: 8px; }
+  .example-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px; border-radius: var(--radius-md);
+    background: var(--ink-50); border: 1px solid var(--border);
+  }
+  .dark .example-item { background: color-mix(in srgb, var(--ink-900) 40%, transparent); }
+  .example-item .hz { font-family: var(--font-serif); font-size: 16px; font-weight: 500; }
+  .example-item .gloss { font-size: 12px; color: var(--muted-foreground); }
+  .atelier-foot { padding: 14px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; align-items: center; }
+  .atelier-foot .spacer { flex: 1; }
+  .atelier-foot .btn-primary, .atelier-foot .btn-outline {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 42px; padding: 0 18px; border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer;
+  }
+  .atelier-foot .btn-primary { background: var(--vermilion-500); color: #fff; border: none; box-shadow: var(--shadow-glow); }
+  .atelier-foot .btn-primary:hover { transform: translateY(-1px); }
+  .atelier-foot .btn-outline { border: 1px solid var(--border); background: transparent; color: var(--ink-600); }
+  .dark .atelier-foot .btn-outline { color: var(--ink-300); }
+
+  /* ---------- 响应式 ---------- */
+  @media (max-width: 820px) {
+    .scroll-body, .atelier-body { grid-template-columns: 1fr; }
+    .scroll-hero { border-right: none; border-bottom: 1px solid var(--border); }
+    .atelier-desk { border-right: none; border-bottom: 1px solid var(--border); }
+    .stage-wrap { padding: 96px 16px 160px; }
+  }
+
+  /* ============================================================
+     PICKER —— 变体切换器（verbatim，来自 skill）
+     ============================================================ */
+  .proto-picker {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    z-index: 2147483647; display: flex; align-items: center; gap: 2px;
+    padding: 4px; border-radius: 999px;
+    background: rgba(10, 10, 10, 0.82);
+    -webkit-backdrop-filter: blur(12px) saturate(1.4);
+    backdrop-filter: blur(12px) saturate(1.4);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.08) inset,
+      0 8px 24px rgba(0, 0, 0, 0.24),
+      0 2px 6px rgba(0, 0, 0, 0.12);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 13px; line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    user-select: none; -webkit-user-select: none;
+  }
+  .proto-picker-highlight {
+    position: absolute; top: 4px; left: 0; height: 28px; border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12); will-change: transform;
+  }
+  .proto-picker[data-ready] .proto-picker-highlight {
+    transition: transform 250ms cubic-bezier(0.23, 1, 0.32, 1), width 250ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .proto-picker[data-ready] .proto-picker-highlight { transition: none; }
+  }
+  .proto-picker-item {
+    position: relative; display: flex; align-items: center;
+    height: 28px; padding: 0 12px; border: 0; border-radius: 999px;
+    background: transparent; color: rgba(255, 255, 255, 0.55); font: inherit; cursor: pointer;
+    transition: color 150ms ease-out;
+  }
+  .proto-picker-item:hover { color: rgba(255, 255, 255, 0.85); }
+  .proto-picker-item:active { transform: scale(0.97); }
+  .proto-picker-item:focus-visible { outline: 2px solid rgba(255, 255, 255, 0.4); outline-offset: 2px; }
+  .proto-picker-item[data-active] { color: #fff; }
+  .proto-picker-divider { width: 1px; height: 16px; margin: 0 4px; background: rgba(255, 255, 255, 0.12); }
+  .proto-picker-replay { padding: 0 10px; font-size: 14px; }
+  .proto-picker[data-position="top"] { bottom: auto; top: 24px; }
+</style>
+</head>
+<body>
+  <div class="stage-wrap">
+    <div class="page-context">
+      <h1>每日研习</h1>
+      <p>选择一个汉字，研读其音、形、义与用法。</p>
+    </div>
+    <div id="stage" class="stage" aria-live="polite"></div>
+  </div>
+
+  <nav class="proto-picker" data-position="top" aria-label="Prototype variants">
+    <span class="proto-picker-highlight" aria-hidden="true"></span>
+    <button class="proto-picker-item" data-active aria-current="true">水墨卷轴</button>
+    <button class="proto-picker-item">教学卡</button>
+    <button class="proto-picker-item">沉浸工作台</button>
+    <span class="proto-picker-divider" aria-hidden="true"></span>
+    <button class="proto-picker-item proto-picker-replay" aria-label="Replay animation (R)">↻</button>
+  </nav>
+
+<script>
+  /* ============ 变体渲染函数 ============ */
+  var WORD_EXAMPLES = [
+    { hanzi: '一日', py: 'yī rì', gloss: 'One day' },
+    { hanzi: '第一次', py: 'dì yī cì', gloss: 'The first time' },
+    { hanzi: '统一', py: 'tǒng yī', gloss: 'Unified' },
+  ];
+
+  function renderScroll() {
+    return '' +
+    '<article class="scroll-card" id="char-study-card">' +
+      '<div class="scroll-top">' +
+        '<span class="scroll-badge">基础汉字 · 01</span>' +
+        '<span class="spacer"></span>' +
+        '<button class="icon-btn" aria-label="播放读音">' +
+          '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 010 7"/></svg>' +
+        '</button>' +
+        '<button class="icon-btn" aria-label="标记已掌握">' +
+          '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>' +
+        '</button>' +
+      '</div>' +
+      '<div class="scroll-body">' +
+        '<div class="scroll-hero">' +
+          '<div class="scroll-char">一</div>' +
+          '<div class="scroll-meta">' +
+            '<div class="scroll-pinyin">yī</div>' +
+            '<div class="scroll-meaning">One / First</div>' +
+            '<div class="scroll-strokes">' +
+              '<span class="stroke-count-label">笔画</span>' +
+              '<span class="dot"></span><span class="dot empty"></span><span class="dot empty"></span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="scroll-actions">' +
+            '<button class="btn-primary">开始测验</button>' +
+            '<button class="btn-outline">下一字</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="scroll-panel">' +
+          '<div class="scroll-block">' +
+            '<h4>词组 <span class="cn">词</span></h4>' +
+            WORD_EXAMPLES.map(function (w) {
+              return '<div class="word-row"><div><span class="hanzi">' + w.hanzi + '</span> <span class="py">' + w.py + '</span></div><span class="gloss">' + w.gloss + '</span></div>';
+            }).join('') +
+          '</div>' +
+          '<div class="scroll-block">' +
+            '<h4>笔顺 <span class="cn">序</span></h4>' +
+            '<div class="stroke-demo">' +
+              '<div class="stroke-seq">' +
+                '<span class="stroke-chip active" data-n="1">一</span>' +
+                '<span class="stroke-chip" data-n="2">丨</span>' +
+                '<span class="stroke-chip" data-n="3">乚</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</article>';
+  }
+
+  function renderFlashcard() {
+    return '' +
+    '<article class="flash-card" id="char-study-card">' +
+      '<div class="flash-head">' +
+        '<span class="index">#01 / 基础汉字</span>' +
+        '<span class="badge">已掌握 ✓</span>' +
+      '</div>' +
+      '<div class="flash-main">' +
+        '<div class="flash-topline">' +
+          '<div class="flash-char">一</div>' +
+          '<div class="flash-info">' +
+            '<div class="pinyin">yī</div>' +
+            '<div class="meaning">One · First · Unity</div>' +
+            '<div class="flash-actions">' +
+              '<button class="mini-btn primary">开始测验</button>' +
+              '<button class="mini-btn">播放读音</button>' +
+              '<button class="mini-btn">下一字</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<hr class="flash-divider" />' +
+        '<div class="flash-section"><h4>词组</h4><span class="rule"></span></div>' +
+        '<div class="chip-row">' +
+          '<span class="word-chip">一日 <span class="gloss">one day</span></span>' +
+          '<span class="word-chip">第一次 <span class="gloss">first time</span></span>' +
+          '<span class="word-chip">统一 <span class="gloss">unified</span></span>' +
+        '</div>' +
+        '<div class="flash-section" style="margin-top:20px"><h4>笔顺</h4><span class="rule"></span></div>' +
+        '<div class="tab-row" role="tablist">' +
+          '<button class="tab active">演示</button>' +
+          '<button class="tab">跟写</button>' +
+        '</div>' +
+        '<div class="flash-grid">' +
+          '<span class="flash-cell filled active">一</span>' +
+          '<span class="flash-cell">丨</span>' +
+          '<span class="flash-cell">乚</span>' +
+          '<span class="flash-cell"></span><span class="flash-cell"></span><span class="flash-cell"></span><span class="flash-cell"></span>' +
+        '</div>' +
+      '</div>' +
+    '</article>';
+  }
+
+  function renderAtelier() {
+    return '' +
+    '<article class="atelier-card" id="char-study-card">' +
+      '<div class="atelier-head">' +
+        '<span class="atelier-title">研习工作台</span>' +
+        '<div class="atelier-progress">' +
+          '<div class="bar"><div class="fill"></div></div>' +
+          '<div class="meta"><span>本周掌握</span><span>3 / 7 字</span></div>' +
+        '</div>' +
+        '<button class="icon-btn" aria-label="播放读音">' +
+          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 010 7"/></svg>' +
+        '</button>' +
+      '</div>' +
+      '<div class="atelier-body">' +
+        '<div class="atelier-desk">' +
+          '<div class="atelier-desk-head">' +
+            '<span class="atelier-char">一</span>' +
+            '<span class="pinyin">yī · 一</span>' +
+          '</div>' +
+          '<div class="canvas-grid" id="traceCanvas">' +
+            '<span class="canvas-cell traced">一</span>' +
+            '<span class="canvas-cell">丨</span>' +
+            '<span class="canvas-cell">乚</span>' +
+            '<span class="canvas-cell"></span><span class="canvas-cell"></span><span class="canvas-cell"></span><span class="canvas-cell"></span>' +
+          '</div>' +
+          '<div class="canvas-tools">' +
+            '<button class="tool-btn" id="tracePrev">上一笔</button>' +
+            '<button class="tool-btn" id="traceNext">下一笔</button>' +
+            '<span class="hint">点击格子逐笔跟写</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="atelier-side">' +
+          '<div class="atelier-block">' +
+            '<h4>字源</h4>' +
+            '<p class="etymology">“一” 指事，以一笔象征万物的开端。古人以横画计数，横为一，故义为一、首、专一。</p>' +
+          '</div>' +
+          '<div class="atelier-block">' +
+            '<h4>词组</h4>' +
+            '<div class="example-list">' +
+              '<div class="example-item"><span class="hz">一日</span><span class="gloss">one day</span></div>' +
+              '<div class="example-item"><span class="hz">统一</span><span class="gloss">unified</span></div>' +
+              '<div class="example-item"><span class="hz">专一</span><span class="gloss">devoted</span></div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="atelier-foot">' +
+        '<button class="btn-outline">上一字</button>' +
+        '<span class="spacer"></span>' +
+        '<button class="btn-primary">开始测验</button>' +
+      '</div>' +
+    '</article>';
+  }
+
+  var variants = [renderScroll, renderFlashcard, renderAtelier];
+
+  /* ============ 变体内部交互（跟写演示） ============ */
+  function wireInteractions() {
+    var canvas = document.getElementById('traceCanvas');
+    if (canvas) {
+      var cells = canvas.querySelectorAll('.canvas-cell');
+      cells.forEach(function (c, i) {
+        c.addEventListener('click', function () {
+          cells.forEach(function (x) { x.classList.remove('traced'); });
+          for (var j = 0; j <= i; j++) cells[j].classList.add('traced');
+        });
+      });
+    }
+    var prev = document.getElementById('tracePrev');
+    var next = document.getElementById('traceNext');
+    if (prev && next && canvas) {
+      var cells = canvas.querySelectorAll('.canvas-cell');
+      var traced = function () { return Array.prototype.filter.call(cells, function (c) { return c.classList.contains('traced'); }).length; };
+      prev.addEventListener('click', function () {
+        var n = Math.max(0, traced() - 1);
+        cells.forEach(function (x) { x.classList.remove('traced'); });
+        for (var j = 0; j < n; j++) cells[j].classList.add('traced');
+      });
+      next.addEventListener('click', function () {
+        var n = Math.min(cells.length, traced() + 1);
+        cells.forEach(function (x) { x.classList.remove('traced'); });
+        for (var j = 0; j < n; j++) cells[j].classList.add('traced');
+      });
+    }
+    // 教学卡 tab
+    document.querySelectorAll('.tab').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        document.querySelectorAll('.tab').forEach(function (t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+      });
+    });
+  }
+
+  /* ============ PICKER 行为契约（verbatim） ============ */
+  var stage = document.getElementById('stage');
+  var picker = document.querySelector('.proto-picker');
+  var highlight = picker.querySelector('.proto-picker-highlight');
+  var items = Array.prototype.slice.call(picker.querySelectorAll('.proto-picker-item:not(.proto-picker-replay)'));
+  var replay = picker.querySelector('.proto-picker-replay');
+  var current = 0;
+
+  function moveHighlight() {
+    var el = items[current];
+    highlight.style.width = el.offsetWidth + 'px';
+    highlight.style.transform = 'translateX(' + el.offsetLeft + 'px)';
+  }
+
+  function mount(i) {
+    stage.innerHTML = '';
+    requestAnimationFrame(function () {
+      stage.innerHTML = variants[i]();
+      wireInteractions();
+    });
+  }
+
+  function setActive(i) {
+    if (i < 0 || i >= variants.length) return;
+    current = i;
+    items.forEach(function (el, j) {
+      el.toggleAttribute('data-active', j === i);
+      if (j === i) el.setAttribute('aria-current', 'true');
+      else el.removeAttribute('aria-current');
+    });
+    moveHighlight();
+    var url = new URL(location);
+    url.searchParams.set('v', i + 1);
+    history.replaceState(null, '', url);
+    mount(i);
+  }
+
+  items.forEach(function (el, i) { el.addEventListener('click', function () { setActive(i); }); });
+  replay.addEventListener('click', function () { mount(current); });
+  window.addEventListener('resize', moveHighlight);
+
+  document.addEventListener('keydown', function (e) {
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) || e.target.isContentEditable) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var num = parseInt(e.key, 10);
+    if (num >= 1 && num <= variants.length) setActive(num - 1);
+    else if (e.key === 'ArrowRight') setActive((current + 1) % variants.length);
+    else if (e.key === 'ArrowLeft') setActive((current - 1 + variants.length) % variants.length);
+    else if (e.key === 'r' || e.key === 'R') mount(current);
+  });
+
+  setActive((parseInt(new URLSearchParams(location.search).get('v'), 10) || 1) - 1);
+  requestAnimationFrame(function () { requestAnimationFrame(function () { picker.setAttribute('data-ready', ''); }); });
+</script>
+</body>
+</html>

@@ -1,5 +1,15 @@
 ﻿# Changelog
 
+## [5.2.10] - 文档规范审查与一致性修复
+### Documentation
+- 统一全部 openspec 文档版本戳至 v5.2.10：index.md、01-overview.md、06-testing.md、ui-ux-review-report.md、03-development.md、coding-standards.md、alignment-checklist.md（含内部快照表 §8/§11/§13 同步）。
+- `prototype/prototype.html` 头注同步至 v5.2.10；`prototypes/character-detail.html` 原为 v5.2.10（超前），本次统一后恰好对齐。
+- 修正 `openspec/03-development.md` §3.6 与 `04-api-reference.md` §7.3 的设计令牌：主色 `#c0392b → #c53d43`、辅助色 `#3f51b5 → #4f46e5`、primary-dark/foreground 对齐 globals.css。
+- 补全 `openspec/project.md`（原为空白占位模板）为实际项目上下文；精简 `openspec/AGENTS.md` 为项目实际协作约定（本仓库未接入 openspec CLI）。
+- `README/README_EN` 移除死代码引用 `use-quiz`（v5.2.1 已删除）；`docs/PROJECT_STRUCTURE.md` 修复 `prototype.html` 断链（指向 `prototype/prototype.html`）。
+- `docs/OPTIMIZATION_SUMMARY.md` 标注历史归档，更新已解决的「剩余问题」结论。
+- 同步版本号至 v5.2.10：package.json、metadata.json、README/README_EN、11 语言 i18n `footer.copyright` 与头注释。
+
 ## [5.2.9] - 代码清理与规范对齐
 ### Code Quality
 - 删除零引用的死代码组件 `src/components/ui/tabs.tsx`（`Tabs`/`TabsList`/`TabsTrigger`/`TabsContent` 全项目无任何消费方）。

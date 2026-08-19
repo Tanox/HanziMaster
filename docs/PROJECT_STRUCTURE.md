@@ -104,7 +104,7 @@ HanziMaster/
 | 文档 | 路径 | 说明 |
 |------|------|------|
 | 原型设计 | [openspec/07-design-prototype.md](../openspec/07-design-prototype.md) | 设计规范、原型说明 |
-| HTML 原型 | [prototype.html](../prototype.html) | 可直接在浏览器打开的高保真原型 |
+| HTML 原型 | [prototype.html](../prototype/prototype.html) | 可直接在浏览器打开的高保真原型 |
 
 ---
 
@@ -112,7 +112,7 @@ HanziMaster/
 
 ### 在线资源
 - [项目文档索引](../openspec/index.md) - 所有文档的导航
-- [HTML 原型图](../prototype.html) - 可视化原型预览
+- [HTML 原型图](../prototype/prototype.html) - 可视化原型预览
 
 ### 核心文档
 - [项目概述](../openspec/01-overview.md) - 了解项目基本信息

@@ -434,10 +434,10 @@ function Header() {
 
 ```css
 :root {
-  --primary: #c0392b;        /* 朱砂红 vermilion（主色） */
-  --primary-dark: #962d22;   /* 朱砂红深 */
-  --primary-foreground: #fdf6f3;
-  --accent: #3f51b5;         /* 靛蓝 indigo（辅助色） */
+  --primary: #c53d43;        /* 朱砂红 vermilion（主色） */
+  --primary-dark: #9b2c2c;   /* 朱砂红深 */
+  --primary-foreground: #ffffff;
+  --accent: #4f46e5;         /* 靛蓝 indigo（辅助色） */
   --font-display: 'Playfair Display', Georgia, serif;
 }
 ```

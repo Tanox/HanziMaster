@@ -51,7 +51,7 @@ npm run dev
 示例：
 
 ```typescript
-// src/lib/i18n/index.ts v5.2.4
+// src/lib/i18n/index.ts v5.2.10
 ```
 
 ### 3.2 版本管理 (SemVer 2.0.0)
@@ -110,7 +110,7 @@ npm run dev
 | 深色模式 | 通过根节点切换 `.dark` 类（由 ThemeProvider 注入，`globals.css` 中 `.dark` 选择器定义暗色变量） |
 | 汉字字体 | 使用 `.hanzi-font` 类（Noto Serif SC 展示字体） |
 | 全局样式 | 在 `globals.css` 中定义 CSS 变量与设计令牌 |
-| 设计令牌 | 朱砂红 `--primary`(`#c0392b`) / 靛蓝 `--accent`(`#3f51b5`)，字体 `--font-sans`/`--font-display`/`--font-serif`/`--font-mono` |
+| 设计令牌 | 朱砂红 `--primary`(`#c53d43`) / 靛蓝 `--accent`(`#4f46e5`)，字体 `--font-sans`/`--font-display`/`--font-serif`/`--font-mono` |
 | CSS 注释 | 使用 `/* */` 格式 |
 | TS/JS 注释 | 使用 `//` 格式 |
 

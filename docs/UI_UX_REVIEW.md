@@ -1,5 +1,7 @@
 # HanziMaster UI/UX 专业审查报告
 
+> **归档说明（v5.2.10）**：本文档为 2026-06-02 基于 v2.2.0 的历史审查报告，其中涉及 emerald（绿色）主题、Inter/Noto Sans SC 字体等描述已随设计系统演进为东方水墨·朱砂红（朱砂红 `#c53d43` / 靛蓝 `#4f46e5`、Space Grotesk/Playfair Display/Noto Serif SC）而不适用。所列缺陷大多已在后续版本修复（见 CHANGELOG v2.2.1 及之后）。当前设计对齐状态以 `openspec/alignment-checklist.md` 为准。
+>
 > 审查日期：2026-06-02 | 审查版本：v2.2.0  
 > 审查视角：资深 UI/UX 设计师
 
