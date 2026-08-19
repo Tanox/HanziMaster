@@ -1,5 +1,17 @@
 ﻿# Changelog
 
+## [5.2.8] - GA 仅生产环境上报
+### Feature
+- `src/components/google-analytics.tsx` 新增 `ENABLE_ANALYTICS` 开关：`process.env.NODE_ENV === 'production'` 时才注入 gtag.js，开发/预览/构建期不再向 GA 发送数据，避免污染统计。
+- 全站版本号统一至 v5.2.8（package.json、metadata.json）。
+
+## [5.2.7] - 接入 Google Analytics（G-TZG68T8J31）
+### Feature
+- 新增 `src/components/google-analytics.tsx`，通过 `next/script` 在 `<head>` 注入 gtag.js 并初始化衡量 ID `G-TZG68T8J31`。
+- `src/app/layout.tsx` 在 `<head>` 渲染 `GoogleAnalytics` 组件，全局收集页面访问数据。
+- `next.config.mjs` CSP 放行 `googletagmanager.com` / `google-analytics.com` 的 script 与 connect 来源，确保严格 CSP 下脚本可加载。
+- 全站版本号统一至 v5.2.7（package.json、metadata.json）。
+
 ## [5.2.6] - 适配腾讯云 EdgeOne Pages（Node 24.11.0）
 ### Chore
 - 新增 `edgeone.json` 声明 EO Pages 部署配置（框架 nextjs、构建命令、Node 24.11.0 运行时、静态资源长缓存头），替代 Vercel 专用的 `vercel.json` 缓存策略。

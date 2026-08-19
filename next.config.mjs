@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 
+// next.config.mjs v5.2.7
+
 // Security headers including Content Security Policy
 // Note: script-src 'unsafe-inline' is required for Next.js App Router compatibility
 // See: https://nextjs.org/docs/app/guides/content-security-policy
@@ -9,15 +11,15 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       // unsafe-inline required for Next.js inline scripts; eval disabled for production security
-      "script-src 'self' 'unsafe-inline'",
+      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com",
       // Google Fonts stylesheets
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       // Google Fonts and custom fonts
       "font-src 'self' https://fonts.gstatic.com",
       // Images: local, data URIs, HTTPS, and blob URLs
       "img-src 'self' data: https: blob:",
-      // API connections: self + Google Fonts
-      "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com",
+      // API connections: self + Google Fonts + Google Analytics
+      "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net",
       // Prevent clickjacking
       "frame-ancestors 'none'",
       // Restrict base URI

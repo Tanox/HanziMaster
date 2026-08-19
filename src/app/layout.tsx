@@ -1,6 +1,7 @@
-// src/app/layout.tsx v5.2.6
+// src/app/layout.tsx v5.2.7
 import type { Metadata, Viewport } from 'next';
 import { Space_Grotesk, Playfair_Display, Noto_Serif_SC, JetBrains_Mono } from 'next/font/google';
+import { GoogleAnalytics } from '@/components/google-analytics';
 import { ThemeProvider } from '@/components/theme-provider';
 import { LocaleProvider } from '@/components/locale-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -66,6 +67,8 @@ export default function RootLayout({
         {/* Preconnect to external resources */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Google Analytics */}
+        <GoogleAnalytics />
       </head>
       <body className="antialiased font-sans">
         <ThemeProvider>
