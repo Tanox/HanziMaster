@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ko.ts v5.2.10
+// src/lib/i18n/translations/ko.ts v5.2.11
 export const ko = {
   common: {
     home: '홈',
@@ -178,7 +178,7 @@ export const ko = {
     quizIncorrect: '오답',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v5.2.10. All rights reserved.',
+    copyright: '© 2026 HanziMaster 汉字大师 v5.2.11. All rights reserved.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

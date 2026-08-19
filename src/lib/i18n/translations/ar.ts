@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ar.ts v5.2.10
+// src/lib/i18n/translations/ar.ts v5.2.11
 export const ar = {
   common: {
     home: 'الرئيسية',
@@ -178,7 +178,7 @@ export const ar = {
     quizIncorrect: 'خطأ',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v5.2.10. جميع الحقوق محفوظة.',
+    copyright: '© 2026 HanziMaster 汉字大师 v5.2.11. جميع الحقوق محفوظة.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

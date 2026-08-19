@@ -1,6 +1,8 @@
 # 技术架构
 ============
 
+> 文档版本：v5.2.11（与项目版本同步，权威版本见 package.json）
+
 ## 1. 架构概述
 
 HanziMaster 采用 Next.js 16 的 App Router 架构，结合 React Server Components 和 Client Components，实现高性能的服务端渲染和客户端交互。

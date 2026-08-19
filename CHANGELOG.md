@@ -1,5 +1,11 @@
 ﻿# Changelog
 
+## [5.2.11] - 代码审查问题修复与规范对齐
+### Code Quality
+- `prototypes/character-detail.html` 修正：`<html lang>` 由 en 改为 zh-CN；三处渲染函数重复的 `id="char-study-card"` 改为语义化唯一 id（`-scroll`/`-flashcard`/`-atelier`）；内联色值 `#fff` 替换为 `--primary-foreground` token；移除未使用的 `--indigo-*` 色阶（globals.css 单一来源中无此 token）。
+- 补全 `openspec/02-architecture.md`、`openspec/05-deployment.md` 缺失的文档版本戳，使 `alignment-checklist.md` 快照表 §13.1 的 v5.2.11 标注与实际文件一致（原两文件无版本戳，快照表表述失实）。
+- 同步版本号至 v5.2.11：package.json、metadata.json、README/README_EN、11 语言 i18n `footer.copyright` 与头注释、openspec 各文档版本戳、CHANGELOG 新增小节。
+
 ## [5.2.10] - 文档规范审查与一致性修复
 ### Documentation
 - 统一全部 openspec 文档版本戳至 v5.2.10：index.md、01-overview.md、06-testing.md、ui-ux-review-report.md、03-development.md、coding-standards.md、alignment-checklist.md（含内部快照表 §8/§11/§13 同步）。

@@ -51,7 +51,7 @@ npm run dev
 示例：
 
 ```typescript
-// src/lib/i18n/index.ts v5.2.10
+// src/lib/i18n/index.ts v5.2.11
 ```
 
 ### 3.2 版本管理 (SemVer 2.0.0)
