@@ -2,8 +2,8 @@
 
 本文档记录项目规范文档、原型图与代码实现的对齐情况。
 
-**版本**: v5.2.4
-**检查日期**: 2026-07-21
+**版本**: v5.2.9
+**检查日期**: 2026-08-19
 **权威来源**: `openspec/07-design-prototype.md`（设计系统）+ `prototype/prototype.html`（唯一权威高保真原型）
 
 ---
@@ -170,7 +170,7 @@
 
 | 特性 | 规范文档 | 原型图 | 代码实现 | 状态 |
 |------|---------|--------|---------|------|
-| 语义化 HTML | ✅ 03-development.md | - | ✅ header/main/nav/footer | ✅ 对齐 |
+| 语义化 HTML | ✅ 03-development.md | - | ✅ header/main/nav/footer；关键容器 id：`site-header`/`site-footer`/`main-content`（v5.2.9 补录） | ✅ 对齐 |
 | Skip to content | ✅ 03-development.md | - | ✅ layout.tsx / prototype | ✅ 对齐 |
 | aria-expanded / aria-selected | ✅ 07-design-prototype.md §6.2 | ✅ | ✅ LocaleToggle | ✅ 对齐 |
 | aria-label | ✅ 07-design-prototype.md §6.2 | ✅ | ✅ 所有按钮 / 测验输入框 | ✅ 对齐 |

@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/es.ts v5.2.6
+// src/lib/i18n/translations/es.ts v5.2.9
 export const es = {
   common: {
     home: 'Inicio',
@@ -178,7 +178,7 @@ export const es = {
     quizIncorrect: 'Incorrecto',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 v5.2.3. Todos los derechos reservados.',
+    copyright: '© 2026 HanziMaster 汉字大师 v5.2.9. Todos los derechos reservados.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

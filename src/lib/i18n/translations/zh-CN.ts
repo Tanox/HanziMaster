@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/zh-CN.ts v5.2.6
+// src/lib/i18n/translations/zh-CN.ts v5.2.9
 export const zhCN = {
   common: {
     home: '首页',
@@ -178,7 +178,7 @@ export const zhCN = {
     quizIncorrect: '错误',
   },
   footer: {
-    copyright: '© 2026 汉字大师 HanziMaster v5.2.3. 保留所有权利。',
+    copyright: '© 2026 汉字大师 HanziMaster v5.2.9. 保留所有权利。',
   },
   meta: {
     title: 'HanziMaster 汉字大师',
