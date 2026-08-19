@@ -1,5 +1,13 @@
 ﻿# Changelog
 
+## [5.2.9] - 代码清理与规范对齐
+### Code Quality
+- 删除零引用的死代码组件 `src/components/ui/tabs.tsx`（`Tabs`/`TabsList`/`TabsTrigger`/`TabsContent` 全项目无任何消费方）。
+- 移除 `package.json` 中未使用的死依赖 `@google/generative-ai`，与「应用无 AI 后端」事实及 openspec 规范保持一致。
+- 修复 `src/components/practice/writing-canvas.tsx` 画布 `aria-label` 汉字重复的可用性问题（`${character} ${character} 书写练习画布` → `${character} 书写练习画布`）。
+- `src/components/layout-client.tsx` 的 `header`/`footer` 补充语义化 id（`site-header`/`site-footer`），便于调试定位与可访问性锚点。
+- 全站版本号统一至 v5.2.9（package.json、metadata.json、README/README_EN、en.ts footer）。
+
 ## [5.2.8] - GA 仅生产环境上报
 ### Feature
 - `src/components/google-analytics.tsx` 新增 `ENABLE_ANALYTICS` 开关：`process.env.NODE_ENV === 'production'` 时才注入 gtag.js，开发/预览/构建期不再向 GA 发送数据，避免污染统计。

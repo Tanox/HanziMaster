@@ -1,9 +1,10 @@
-// src/app/practice/page.tsx v5.2.6
+// src/app/practice/page.tsx v5.2.9
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useTranslation } from '@/components/locale-provider';
 import { useProgress } from '@/hooks/use-progress';
+import { useScrollReveal } from '@/hooks/use-scroll-reveal';
 import { characters } from '@/lib/characters';
 import type { CharacterQuiz } from '@/components/practice/practice-assets';
 import { PracticeOptionsGrid } from '@/components/practice/practice-options';
@@ -47,23 +48,7 @@ const INITIAL_QUIZ_STATE: QuizState = {
 export default function PracticePage() {
   const { t } = useTranslation();
   const progress = useProgress();
-
-  // 滚动揭示动画（reveal 元素进入视口时添加 revealed 类）
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-    );
-    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
+  useScrollReveal();
 
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [showWritingDialog, setShowWritingDialog] = useState(false);

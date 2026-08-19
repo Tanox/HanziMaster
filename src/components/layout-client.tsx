@@ -1,4 +1,4 @@
-// src/components/layout-client.tsx v5.2.6
+// src/components/layout-client.tsx v5.2.9
 'use client';
 
 import { usePathname } from 'next/navigation';
@@ -34,7 +34,7 @@ export function LayoutClient({ children }: LayoutClientProps) {
       </a>
 
       {/* Header - Oriental Ink Style with Glassmorphism */}
-      <header className="bg-card/70 dark:bg-ink-900/70 backdrop-blur-xl border-b border-ink-200/50 dark:border-ink-800/50 py-4 px-6 flex justify-between items-center sticky top-0 z-50">
+      <header id="site-header" className="bg-card/70 dark:bg-ink-900/70 backdrop-blur-xl border-b border-ink-200/50 dark:border-ink-800/50 py-4 px-6 flex justify-between items-center sticky top-0 z-50">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group shrink-0">
           <div className="w-10 h-10 bg-gradient-to-br from-vermilion-500 to-vermilion-600 rounded-xl flex items-center justify-center shadow-sm group-hover:scale-105 group-hover:shadow-md transition-[colors,transform,box-shadow] duration-300">
@@ -83,7 +83,7 @@ export function LayoutClient({ children }: LayoutClientProps) {
       </main>
 
       {/* Footer - Oriental Ink Style */}
-      <footer className="bg-ink-100/50 dark:bg-ink-900/50 border-t border-ink-200/50 dark:border-ink-800/50 py-12 px-6">
+      <footer id="site-footer" className="bg-ink-100/50 dark:bg-ink-900/50 border-t border-ink-200/50 dark:border-ink-800/50 py-12 px-6">
         <div className="max-w-6xl mx-auto flex flex-col items-center gap-6">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 bg-gradient-to-br from-vermilion-500 to-vermilion-600 rounded-xl flex items-center justify-center">
