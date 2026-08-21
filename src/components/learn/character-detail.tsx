@@ -5,6 +5,7 @@ import { useTranslation } from '@/components/locale-provider';
 import type { Character } from '@/lib/characters';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { StrokeOrderDemo } from '@/components/learn/stroke-order-demo';
 
 interface CharacterDetailProps {
   character: Character;
@@ -87,16 +88,7 @@ export function CharacterDetail({
             <h4 className="text-lg font-semibold text-ink-900 dark:text-ink-50 mb-4 display-font">
               {t('learn.strokeOrder')}
             </h4>
-            <div className="aspect-square bg-card dark:bg-ink-900/50 rounded-lg flex items-center justify-center border border-ink-100 dark:border-ink-800">
-              <span className="text-[80px] font-light serif-font text-ink-200 dark:text-ink-700">
-                {character.hanzi}
-              </span>
-            </div>
-            <div className="mt-4 flex justify-center gap-2">
-              {Array.from({ length: character.strokes }).map((_, i) => (
-                <div key={i} className="w-2 h-2 rounded-full bg-vermilion-500/30" />
-              ))}
-            </div>
+            <StrokeOrderDemo character={character.hanzi} strokeCount={character.strokes} />
           </div>
         </div>
       </div>

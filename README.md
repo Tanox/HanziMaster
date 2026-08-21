@@ -1,4 +1,4 @@
-﻿# HanziMaster 汉字大师 v5.2.11
+﻿# HanziMaster 汉字大师 v5.2.14
 
 [English](README_EN.md) | [简体中文](README.md)
 
@@ -67,9 +67,9 @@ src/
 │   ├── layout-client.tsx / nav-link.tsx / mobile-nav.tsx
 │   ├── learn/            # character-grid / character-detail / quiz-dialog
 │   ├── practice/         # writing-dialog / writing-canvas / quiz-dialog / weekly-progress / practice-options / practice-assets
-│   ├── ui/               # shadcn 风格基础组件（button、card、badge、dialog、dropdown-menu…）
-│   └── feature-card.tsx / stats-card.tsx / empty-state.tsx / toast.tsx
-├── hooks/                # use-progress / use-pronunciation / use-is-dark / use-scroll-reveal
+│   ├── ui/               # shadcn 风格基础组件（button、dialog、tooltip、badge）
+│   └── feature-card.tsx / stats-card.tsx / toast.tsx
+├── hooks/                # use-progress / use-pronunciation / use-scroll-reveal
 ├── lib/                  # characters / character-types / storage / utils / i18n（index + translations/）
 └── proxy.ts              # 基于 Nonce 的 Content Security Policy 中间件
 ```
@@ -134,4 +134,4 @@ src/
 
 ## 许可证
 
-© 2026 HanziMaster 汉字大师 v5.2.11
+© 2026 HanziMaster 汉字大师 v5.2.14

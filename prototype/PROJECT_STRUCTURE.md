@@ -4,10 +4,12 @@
 
 ```
 HanziMaster/
-├── docs/                    # 📚 项目文档和报告
-│   ├── UI_UX_REVIEW.md     # 🎯 UI/UX 专业审查报告
-│   ├── OPTIMIZATION_SUMMARY.md # ⚡ 项目优化执行总结
-│   └── PROJECT_STRUCTURE.md # 本文件：项目目录结构说明
+├── prototype/               # 🎨 设计原型与归档文档
+│   ├── prototype.html      # 🎯 高保真交互原型（唯一权威）
+│   ├── character-detail.html # 🀄 汉字研习卡变体原型
+│   ├── UI_UX_REVIEW.md     # 🎯 UI/UX 专业审查报告（归档）
+│   ├── OPTIMIZATION_SUMMARY.md # ⚡ 项目优化执行总结（归档）
+│   └── PROJECT_STRUCTURE.md # 本文件：项目目录结构说明（归档）
 ├── openspec/                # 📖 项目规范文档
 │   ├── index.md             # 📇 文档索引（必读）
 │   ├── 01-overview.md       # 📋 项目概述
@@ -65,7 +67,7 @@ HanziMaster/
 ## 🎯 目录整理原则
 
 ### 1. **文档分类清晰**
-- `docs/` - 项目报告、审查、优化总结等辅助文档
+- `prototype/` - 设计原型与归档文档（含历史报告、审查、优化总结）
 - `openspec/` - 项目规范文档（编码、架构、开发、测试等）
 - 根目录 - README、CHANGELOG、配置文件等核心文件
 
@@ -131,7 +133,7 @@ HanziMaster/
 | 类别 | 数量 | 说明 |
 |------|------|------|
 | 核心规范文档 | 10 | openspec/ 目录下的所有文档 |
-| 项目报告 | 3 | docs/ 目录下的报告文档 |
+| 项目报告 | 3 | prototype/ 目录下的归档报告文档 |
 | 源代码文件 | 70+ | src/ 目录下的 TSX/TS 文件（含 components/ui 子模块） |
 | 翻译文件 | 11 | 11 种语言的翻译 |
 | 配置文件 | 10+ | 根目录下的配置文件 |

@@ -1,5 +1,35 @@
 ﻿# Changelog
 
+## [5.2.14] - 清理冗余文件与冗余代码
+### Refactor / Cleanup
+- 删除 19 个未使用 shadcn `ui` 组件（accordion/avatar/card/command/dropdown-menu×4/input-group/input/textarea/label/pagination/select/separator/sheet/skeleton/slider/switch），保留实际在用的 button/dialog/tooltip/badge。
+- 删除零引用死代码：`src/hooks/use-is-dark.ts`、`src/components/empty-state.tsx`。
+- 移除冗余依赖：`hanzi-writer-data`（数据已内联至 stroke-order-data.ts，无实际 import）、`cmdk`（仅被未使用的 command.tsx 引用）、`eslint-plugin-react`、`globals`（eslint.config.js 未使用）。
+- 设计产物移入 `prototype/`：`prototypes/character-detail.html` → `prototype/character-detail.html`；`docs/` 三份归档报告（OPTIMIZATION_SUMMARY/PROJECT_STRUCTURE/UI_UX_REVIEW）移入 `prototype/`，更新 PROJECT_STRUCTURE 目录树与引用。
+- 同步版本号至 v5.2.14：package.json、metadata.json、README/README_EN、en.ts 头注释与 `footer.copyright`、本次改动文件头（character-detail、PROJECT_STRUCTURE）、CHANGELOG 本小节。
+
+## [5.2.13] - 书写练习补实现笔顺引导动画
+### Feature
+- 引入 `hanzi-writer-data`（npm 本地包，构建时打包、离线可用），内联 12 个练习汉字（一/二/三/人/大/小/口/日/月/山/水/火）的标准笔画 SVG path 与中位线数据至 `src/lib/stroke-order-data.ts`。
+- `WritingCanvas` 补实现"clear stroke-order guidance"：提供笔顺数据时，点击画布逐笔播放书写动画（沿中位线朱砂红描线，已完成笔浅色虚线轮廓），底部显示笔顺进度；无数据时回退原有淡字底图 + 自由书写。
+- `WritingDialog` 从 `stroke-order-data` 查询当前字符笔画数据传入画布，兑现 `practice.writingDesc` 文案承诺。
+- `character-types.ts` 新增 `StrokeOrderData` 接口。
+- 拆分：`writing-canvas.tsx` 绘制工具函数抽离至新文件 `writing-canvas-utils.ts`（scale/parsePath/drawHint/drawMedianStroke/resolve 函数），主文件由 254 行降至约 167 行，符合单文件 ≤200 行规则。
+- 同步版本号至 v5.2.13：package.json（新增 hanzi-writer-data 依赖 + version）、metadata.json、README/README_EN、en.ts 头注释与 `footer.copyright`、本次改动文件头（character-types、writing-canvas、writing-dialog）、CHANGELOG 本小节。
+
+## [5.2.12] - 高保真原型打磨（prototype.html）
+### Design / Prototype
+- 修复 `src/components/mobile-nav.tsx` 移动抽屉硬编码版本 `HanziMaster v5.2.1` → `v5.2.12`，文件头注释 `v5.2.6` → `v5.2.12`，消除与全局版本（en.ts/package.json/metadata.json/README/README_EN）脱节。
+- 暗色模式宣纸噪点纹理修复：原 `#2d2d2d`@0.4+soft-light 在近黑背景不可见，改为 `#ffffff`@0.06+overlay 混合，暗色下恢复宣纸质感。
+- 导航 active 态补齐规范要求的「底部圆点」：`nav-links a.active::after` 增加真实样式（5px 朱砂红圆点），`.nav-links a` 加 `position:relative` 与底部 padding。
+- 滚动揭示动画落地：新增 `.reveal`/`.is-visible` 类，IntersectionObserver 对 `.feature`/`.section-head`/`.stat`/`.progress-card` 生效（原 observer 仅设 style 未 observe，规范 §4.1 长期未实现）。
+- 书写练习文案对齐：详情页/卡片 `practice.write.desc` 由 "real-time feedback" 降级为 "stroke-order guidance"，消除原型虚假承诺（grill-me 决策：不引入外部笔顺库）。
+- 周进度「今日」态语义修正：今天(index4)改为未完成 pending + ring 高亮，不再既 done 又 today 造成混淆。
+- 写画布弹窗新增关闭按钮 `#writeClose`（与 quizModal 对称），删除 JS 死代码防御性绑定。
+- 语言菜单诚实化处理：保留 en/zh-CN/ja/es 完整翻译子集并加注释，避免「列出 11 种却 7 种回退英文」的虚假完整性。
+- badge 对比度提升：`--muted-foreground` → `--foreground`，满足 WCAG AA 小字阈值。
+- 同步版本号至 v5.2.12：package.json、metadata.json、README/README_EN、en.ts 头注释与 `footer.copyright`、prototype.html 头注、CHANGELOG 本小节。
+
 ## [5.2.11] - 代码审查问题修复与规范对齐
 ### Code Quality
 - `prototypes/character-detail.html` 修正：`<html lang>` 由 en 改为 zh-CN；三处渲染函数重复的 `id="char-study-card"` 改为语义化唯一 id（`-scroll`/`-flashcard`/`-atelier`）；内联色值 `#fff` 替换为 `--primary-foreground` token；移除未使用的 `--indigo-*` 色阶（globals.css 单一来源中无此 token）。

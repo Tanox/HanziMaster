@@ -7,6 +7,7 @@ import type { CharacterQuiz } from '@/components/practice/practice-assets';
 import { WritingCanvas, type WritingCanvasHandle } from '@/components/practice/writing-canvas';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { strokeOrderData } from '@/lib/stroke-order-data';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface WritingDialogProps {
@@ -22,6 +23,9 @@ export function WritingDialog({ open, onOpenChange, character, strokeCount, onNe
   const canvasRef = useRef<WritingCanvasHandle>(null);
 
   const clearCanvas = () => canvasRef.current?.clearCanvas();
+
+  // 从笔顺数据表查询当前字符的笔画路径与中位线（无则回退纯自由书写）
+  const strokeData = strokeOrderData[character.hanzi];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -49,7 +53,13 @@ export function WritingDialog({ open, onOpenChange, character, strokeCount, onNe
           </div>
 
           <div className="relative aspect-square w-full overflow-hidden rounded-lg border border-dashed border-border bg-card">
-            <WritingCanvas ref={canvasRef} character={character.hanzi} />
+            <WritingCanvas
+              ref={canvasRef}
+              character={character.hanzi}
+              strokePaths={strokeData?.strokes}
+              medians={strokeData?.medians}
+              strokeCount={strokeCount}
+            />
           </div>
 
           <p className="text-center text-xs text-muted-foreground">

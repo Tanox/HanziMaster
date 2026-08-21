@@ -1,4 +1,4 @@
-// src/components/mobile-nav.tsx v5.2.6
+// src/components/mobile-nav.tsx v5.2.12
 'use client';
 
 import { useEffect, useRef } from 'react';
@@ -125,7 +125,7 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
         {/* Drawer Footer */}
         <div className="p-5 border-t border-ink-100 dark:border-ink-800 text-center">
           <p className="text-xs text-ink-400 dark:text-ink-500">
-            HanziMaster v5.2.1
+            HanziMaster v5.2.12
           </p>
         </div>
       </div>
