@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.14",
-  "version": "5.2.14",
-  "description": "v5.2.14: 清理冗余文件与冗余代码——删除 19 个未使用 ui 组件与 use-is-dark/empty-state 死代码；移除冗余依赖（hanzi-writer-data/cmdk/eslint-plugin-react/globals）；设计产物（character-detail 原型、docs 归档）移入 prototype/。",
+  "name": "HanziMaster 汉字大师 v5.2.16",
+  "version": "5.2.16",
+  "description": "v5.2.16: 学习页补实现笔顺展示——新增 StrokeOrderDemo 组件（SVG 逐笔播放动画，复用 stroke-order-data 笔画路径），character-detail 笔顺区由静态灰字升级为可交互演示，对齐 stroke-order 文案承诺。",
   "keywords": [
     "Chinese characters",
     "Hanzi",

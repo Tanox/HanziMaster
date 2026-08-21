@@ -1,0 +1,45 @@
+name: 💡 功能建议 (Feature Request)
+description: 提出一个新功能、改进或设计想法
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你的创意！请描述清楚使用场景，便于我们评估优先级。
+  - type: textarea
+    id: problem
+    attributes:
+      label: 问题 / 动机
+      description: 这个功能要解决什么问题？当前体验有何不足？
+      placeholder: 例如：目前复习模式缺少间隔重复算法，长期记忆效果有限。
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: 期望方案
+      description: 你期望如何实现或表现这个功能？
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 备选方案（可选）
+      description: 是否有其他可以考虑的实现方式？
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: 补充信息（可选）
+      description: 相关截图、参考链接或设计草图。
+    validations:
+      required: false
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已搜索过现有 Issues / Discussions，确认该建议未被提出过
+          required: true

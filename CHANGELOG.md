@@ -1,5 +1,21 @@
 ﻿# Changelog
 
+## [5.2.16] - 完善 Community Health Files
+### Docs / Chore
+- 在 `.github/` 新增仓库治理与社区健康文件：行为准则 `CODE_OF_CONDUCT.md`、安全政策 `SECURITY.md`、支持指引 `SUPPORT.md`、赞助配置 `FUNDING.yml`、Issue 模板（`bug_report.yml` / `feature_request.yml` / `config.yml`）、Pull Request 模板 `PULL_REQUEST_TEMPLATE.md`。
+- 所有 Health Files 统一遵循 Contributor Covenant v2.1 与项目既有协作规范（Angular 提交规范、SemVer 版本管理、200 行拆分等），未创建 `.github/readme.md` 以避免与根 README 重复。
+
+### Feature / Fix
+- `writing-canvas.tsx` 落实 `practice.writingDesc`「clear stroke-order guidance」承诺：全部笔画播放完成后再次点击画布，自动重置并从第一笔重新引导，而非此前画满后点击无反应。
+- 笔顺进度标签国际化：底部「笔顺 X / Y」硬编码中文改为 `t('learn.strokeOrder')` + 已完成/总数，消除未走 i18n 的遗留。
+- 版本展示位对齐：en.ts `footer.copyright`、README/README_EN 标题、character-detail/stroke-order-demo/writing-dialog 头注释统一至 v5.2.16（此前 en.ts 页脚与部分头注释滞后于真实 HEAD v5.2.16）。
+
+## [5.2.15] - 学习页补实现笔顺展示
+### Feature
+- 新增 `src/components/learn/stroke-order-demo.tsx`：学习页笔顺演示组件，用 SVG 渲染汉字笔画（复用 `stroke-order-data` 的 Hanzi Writer 标准 path），点击「显示笔顺」逐笔播放书写动画（当前笔高亮朱砂红、已完成笔实线、未写笔浅灰），底部显示笔顺进度圆点，支持清除重置；无数据时回退灰字占位。
+- `character-detail.tsx` 笔顺区由静态灰字 + 圆点升级为可交互 `StrokeOrderDemo`，兑现 `learn.strokeOrder`/`showStrokeOrder` 文案承诺。
+- 版本号同步至 v5.2.15：package.json、metadata.json、README/README_EN、en.ts 头注释与 `footer.copyright`、本次改动文件头（character-detail、stroke-order-demo）、CHANGELOG 本小节。
+
 ## [5.2.14] - 清理冗余文件与冗余代码
 ### Refactor / Cleanup
 - 删除 19 个未使用 shadcn `ui` 组件（accordion/avatar/card/command/dropdown-menu×4/input-group/input/textarea/label/pagination/select/separator/sheet/skeleton/slider/switch），保留实际在用的 button/dialog/tooltip/badge。

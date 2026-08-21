@@ -1,0 +1,75 @@
+name: 🐛 缺陷报告 (Bug Report)
+description: 报告一个可复现的缺陷或异常行为
+title: "fix: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢提交缺陷报告！请尽量详尽地填写以下信息，以便我们快速定位问题。
+  - type: textarea
+    id: description
+    attributes:
+      label: 问题描述
+      description: 清晰、简明地描述所遇到的缺陷。
+      placeholder: 例如：在书写练习页点击发音按钮无声音输出。
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 列出复现该问题的最小步骤。
+      placeholder: |
+        1. 打开 '/learn' 页面
+        2. 选择一个汉字进入详情
+        3. 点击发音按钮
+        4. 观察无声音
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望行为
+      description: 你认为正确的行为应当是什么？
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际行为
+      description: 实际发生了什么？（如有报错，请粘贴控制台/终端日志）
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: 环境信息
+      description: 浏览器、操作系统、设备类型（桌面/移动）。
+      placeholder: "Chrome 126 / Windows 11 / 桌面"
+    validations:
+      required: false
+  - type: input
+    id: version
+    attributes:
+      label: 应用版本
+      description: 当前 `package.json` 版本（见页脚或关于页）。
+      placeholder: "v5.2.15"
+    validations:
+      required: false
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 截图 / 录屏（可选）
+      description: 如有相关截图或录屏，可在此粘贴或附链接。
+    validations:
+      required: false
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已搜索过现有 Issues，确认该问题未被报告过
+          required: true
+        - label: 我已阅读 CONTRIBUTING.md 与 SUPPORT.md
+          required: true

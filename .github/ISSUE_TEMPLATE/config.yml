@@ -1,0 +1,13 @@
+# Issue 模板配置
+# 控制 Issues 页面"新建 Issue"时的模板展示与联系入口
+
+blank_issues_enabled: false
+
+# 当 blank_issues_enabled 为 false 时，可在此引导用户到外部渠道
+contact_links:
+  - name: 💬 一般讨论 / 使用疑问
+    url: ../../discussions
+    about: 非缺陷/功能类问题，欢迎在 Discussions 交流
+  - name: 🔒 安全漏洞报告
+    url: ../../security/advisories/new
+    about: 安全相关问题请私下报告，勿公开 Issue（详见 SECURITY.md）
