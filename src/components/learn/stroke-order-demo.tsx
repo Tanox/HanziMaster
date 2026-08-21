@@ -1,4 +1,4 @@
-// src/components/learn/stroke-order-demo.tsx v5.2.13
+// src/components/learn/stroke-order-demo.tsx v5.2.16
 // 学习页笔顺演示组件：用 SVG 渲染汉字笔画，点击「显示笔顺」逐笔播放书写动画。
 // 数据来自 stroke-order-data（Hanzi Writer 标准 path），无数据时回退灰字占位。
 'use client';
@@ -128,7 +128,7 @@ export function StrokeOrderDemo({ character, strokeCount }: StrokeOrderDemoProps
                 onClick={handleReset}
                 className="rounded-full border border-ink-200 px-4 py-1.5 text-xs font-semibold text-ink-700 transition-colors hover:bg-ink-50 dark:border-ink-700 dark:text-ink-200"
               >
-                {t('common.clear')}
+                {t('practice.clear')}
               </button>
             )}
           </div>

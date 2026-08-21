@@ -1,11 +1,13 @@
-// src/components/practice/writing-canvas.tsx v5.2.13
+// src/components/practice/writing-canvas.tsx v5.2.16
 // 书写画布：淡字符底图 + 指针轨迹绘制 + 逐笔笔顺引导动画。
 // - 提供笔顺数据时：点击画布逐笔播放书写动画（沿中位线描线），当前笔高亮。
+// - 全部笔画播放完成后再次点击：重置并从第一笔重新引导。
 // - 无笔顺数据时：回退到原有淡字底图 + 自由书写。
 // 绘制工具函数抽离至 writing-canvas-utils.ts。
 'use client';
 
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
+import { useTranslation } from '@/components/locale-provider';
 import { drawHint, drawMedianStroke, parsePath, resolveFg, resolvePrimary } from './writing-canvas-utils';
 
 export interface WritingCanvasHandle {
@@ -24,6 +26,7 @@ interface WritingCanvasProps {
 
 export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>(
   ({ character, strokePaths, medians, strokeCount }, ref) => {
+    const { t } = useTranslation();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const isDrawing = useRef(false);
     const animRafRef = useRef<number | null>(null);
@@ -105,9 +108,15 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
     };
 
     const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
-      // 有笔顺数据且未画完时，点击先播放引导动画
-      if (strokePaths && completedRef.current.size < strokePaths.length && animStrokeRef.current === -1) {
-        playNextStroke();
+      // 有笔顺数据时，点击逐笔播放引导动画
+      if (strokePaths) {
+        // 全部笔画已播放完成：再次点击重置并从第一笔重新引导
+        if (completedRef.current.size >= strokePaths.length && animStrokeRef.current === -1) {
+          clearCanvas();
+        }
+        if (animStrokeRef.current === -1) {
+          playNextStroke();
+        }
         return;
       }
       isDrawing.current = true;
@@ -134,8 +143,9 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
     };
 
     const hasGuidance = !!strokePaths && strokePaths.length > 0;
+    const totalStrokes = hasGuidance ? (strokeCount ?? strokePaths.length) : 0;
     const progressLabel = hasGuidance
-      ? `${completedRef.current.size} / ${strokeCount ?? strokePaths.length}`
+      ? `${completedRef.current.size} / ${totalStrokes}`
       : undefined;
 
     return (
@@ -155,7 +165,7 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
         {hasGuidance && (
           <div className="pointer-events-none absolute inset-x-0 bottom-2 flex justify-center">
             <span className="rounded-full bg-card/80 px-3 py-1 text-xs text-muted-foreground backdrop-blur-sm">
-              笔顺 {progressLabel}
+              {t('learn.strokeOrder')}: {progressLabel}
             </span>
           </div>
         )}
