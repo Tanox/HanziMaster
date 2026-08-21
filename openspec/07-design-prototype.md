@@ -193,7 +193,7 @@
 | 场景 | 模式 |
 |------|------|
 | 页面切换 | `fade-in-elegant` 动画（0.6s），`scroll-behavior: smooth` |
-| 滚动揭示 | `.reveal` + `.revealed` 类，Intersection Observer 触发 |
+| 滚动揭示 | `.reveal` + `.is-visible` 类，Intersection Observer 触发 |
 | 错峰入场 | `.stagger-children`，6 阶延迟（0/120/240/360/480/600ms） |
 | Hero 入场 | `.hero-eyebrow` → `.hero-title` → `.hero-subtitle` → `.hero-cta` → `.hero-visual` |
 | 模态弹窗 | 背景模糊遮罩 + 内容缩放入场 |

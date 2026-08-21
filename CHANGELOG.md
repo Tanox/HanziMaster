@@ -23,6 +23,7 @@
 - `prototype.html` 头注释版本号 v5.2.12 → v5.2.17，对齐真实 HEAD（此前原型滞后于代码 5 个小版本）。
 - 补齐书写弹窗「笔顺引导演示」：点击画布逐笔点亮进度点并叠加当前笔示意轨迹，全部走完后 toast 模拟准确度，使 `practice.write.desc` 的 "stroke-order guidance" 承诺在原型中被演示兑现（真实代码由 `writing-canvas.tsx` 的 `scoreStroke` 实现，原型用轻量演示替代，未内联真实笔顺 path 数据）。
 - 已知歧义（非 bug）：规范 `07-design-prototype.md` §4.1 称揭示态类为 `.revealed`，原型实际用 `.is-visible`（CSS 与 JS 一致），文档待统一。
+- 收尾：已将 `07-design-prototype.md` §4.1 揭示态类名由 `.revealed` 统一为 `.is-visible`，与真实原型实现（CSS `.reveal.is-visible` + JS `classList.add('is-visible')`）完全一致，消除文档歧义。
 
 ## [5.2.15] - 学习页补实现笔顺展示
 ### Feature
