@@ -1,7 +1,7 @@
-// src/components/practice/writing-dialog.tsx v5.2.16
+// src/components/practice/writing-dialog.tsx v5.2.17
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from '@/components/locale-provider';
 import type { CharacterQuiz } from '@/components/practice/practice-assets';
 import { WritingCanvas, type WritingCanvasHandle } from '@/components/practice/writing-canvas';
@@ -21,8 +21,13 @@ interface WritingDialogProps {
 export function WritingDialog({ open, onOpenChange, character, strokeCount, onNext }: WritingDialogProps) {
   const { t } = useTranslation();
   const canvasRef = useRef<WritingCanvasHandle>(null);
+  // 描红整体准确度（0-1），由 WritingCanvas 跟写判定后回调
+  const [accuracy, setAccuracy] = useState<number | null>(null);
 
-  const clearCanvas = () => canvasRef.current?.clearCanvas();
+  const clearCanvas = () => {
+    canvasRef.current?.clearCanvas();
+    setAccuracy(null);
+  };
 
   // 从笔顺数据表查询当前字符的笔画路径与中位线（无则回退纯自由书写）
   const strokeData = strokeOrderData[character.hanzi];
@@ -59,12 +64,19 @@ export function WritingDialog({ open, onOpenChange, character, strokeCount, onNe
               strokePaths={strokeData?.strokes}
               medians={strokeData?.medians}
               strokeCount={strokeCount}
+              onAccuracyChange={setAccuracy}
             />
           </div>
 
           <p className="text-center text-xs text-muted-foreground">
             {t('practice.strokeCount')}: {strokeCount}
           </p>
+
+          {accuracy !== null && (
+            <p className="text-center text-sm text-vermilion-700">
+              {t('practice.accuracy')}: {Math.round(accuracy * 100)}%
+            </p>
+          )}
         </div>
 
         <DialogFooter className="gap-2 sm:justify-between">

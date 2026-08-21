@@ -10,6 +10,20 @@
 - 笔顺进度标签国际化：底部「笔顺 X / Y」硬编码中文改为 `t('learn.strokeOrder')` + 已完成/总数，消除未走 i18n 的遗留。
 - 版本展示位对齐：en.ts `footer.copyright`、README/README_EN 标题、character-detail/stroke-order-demo/writing-dialog 头注释统一至 v5.2.16（此前 en.ts 页脚与部分头注释滞后于真实 HEAD v5.2.16）。
 
+## [5.2.17] - 书写描红准确度反馈
+### Feature
+- `writing-canvas.tsx` 新增「跟写描红」模式：引导动画播完某一笔后，用户可沿笔形描摹；松手时对该笔做贴合度判定，并累加整体均值回传。
+- 新增 `scoreStroke`/`distToSegment`（`writing-canvas-utils.ts`）：基于 `Path2D.isPointInStroke` 容差判定，路径不可用时回退中位线折线距离，零外部依赖。
+- `writing-dialog.tsx` 接入 `onAccuracyChange`，练习后展示「书写准确度 X%」（复用 `practice.accuracy` 键，无新增 i18n 键）。
+
+### Chore
+- 版本号同步至 v5.2.17：package.json、metadata.json、README/README_EN 标题与页脚、en.ts `footer.copyright`、被改文件头注释。
+
+### Docs / Fix（原型）
+- `prototype.html` 头注释版本号 v5.2.12 → v5.2.17，对齐真实 HEAD（此前原型滞后于代码 5 个小版本）。
+- 补齐书写弹窗「笔顺引导演示」：点击画布逐笔点亮进度点并叠加当前笔示意轨迹，全部走完后 toast 模拟准确度，使 `practice.write.desc` 的 "stroke-order guidance" 承诺在原型中被演示兑现（真实代码由 `writing-canvas.tsx` 的 `scoreStroke` 实现，原型用轻量演示替代，未内联真实笔顺 path 数据）。
+- 已知歧义（非 bug）：规范 `07-design-prototype.md` §4.1 称揭示态类为 `.revealed`，原型实际用 `.is-visible`（CSS 与 JS 一致），文档待统一。
+
 ## [5.2.15] - 学习页补实现笔顺展示
 ### Feature
 - 新增 `src/components/learn/stroke-order-demo.tsx`：学习页笔顺演示组件，用 SVG 渲染汉字笔画（复用 `stroke-order-data` 的 Hanzi Writer 标准 path），点击「显示笔顺」逐笔播放书写动画（当前笔高亮朱砂红、已完成笔实线、未写笔浅灰），底部显示笔顺进度圆点，支持清除重置；无数据时回退灰字占位。

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- prototype.html · 东方水墨·朱砂红高保真交互原型 · v5.2.12 -->
+<!-- prototype.html · 东方水墨·朱砂红高保真交互原型 · v5.2.17 -->
 <html lang="en" class="">
 <head>
 <meta charset="UTF-8" />
@@ -424,6 +424,10 @@
   .write-head .wch .g { font-family: var(--font-serif); font-size: 40px; font-weight: 300; }
   .write-head .wch .meta .p { font-size: 18px; font-weight: 600; }
   .write-head .wch .meta .m { font-size: 13px; color: var(--muted-foreground); }
+  .write-dots { position: absolute; left: 0; right: 0; bottom: 10px; display: flex; gap: 7px; justify-content: center; pointer-events: none; }
+  .write-dots i { width: 9px; height: 9px; border-radius: 50%; background: color-mix(in srgb, var(--primary) 30%, transparent); transition: background-color var(--dur-fast), transform var(--dur-fast); }
+  .write-dots i.on { background: var(--primary); transform: scale(1.25); }
+  .write-hint { position: absolute; top: 10px; left: 0; right: 0; text-align: center; font-size: 12px; color: var(--muted-foreground); pointer-events: none; }
 
   /* ---------- 空状态 ---------- */
   .empty { text-align: center; padding: 56px 20px; border: 1px dashed var(--border); border-radius: var(--radius-3xl); background: var(--muted); max-width: 420px; margin: 0 auto; }
@@ -689,6 +693,8 @@
     </div>
     <div class="write-stage">
       <canvas id="writeCanvas"></canvas>
+      <div class="write-hint" id="writeHint"></div>
+      <div class="write-dots" id="writeDots"></div>
     </div>
     <div class="modal-foot">
       <button class="btn btn-outline" id="writeClear" data-i18n="practice.clear">Clear</button>
@@ -1036,16 +1042,25 @@ quizModal.addEventListener('click', e=>{ if(e.target===quizModal) quizModal.clas
 /* ===================== 书写弹窗 ===================== */
 const writeModal = $('#writeModal');
 let writeIdx = 0;
+let writeStrokeIdx = 0;   // 当前已引导的笔画数（笔顺引导演示）
+let writeAccuracy = 0;    // 模拟描红准确度（演示）
 function openWrite(){ writeIdx=0; fillWrite(); writeModal.classList.add('open'); requestAnimationFrame(setupCanvas); }
+function resetWrite(){
+  writeStrokeIdx = 0; writeAccuracy = 0;
+  buildWriteDots(CHARACTERS[writeIdx].strokes);
+  setupCanvas();
+  refreshWriteHint();
+}
 function fillWrite(){
   const c = CHARACTERS[writeIdx];
   $('#writeChar').textContent = c.hanzi;
   $('#writePy').textContent = c.pinyin;
   $('#writeMeta').textContent = c.en;
   $('#writeStroke').textContent = strokeCount(c.strokes);
+  resetWrite();
 }
-$('#writeClear').addEventListener('click', setupCanvas);
-$('#writeNext').addEventListener('click', ()=>{ writeIdx=(writeIdx+1)%CHARACTERS.length; fillWrite(); setupCanvas(); });
+$('#writeClear').addEventListener('click', resetWrite);
+$('#writeNext').addEventListener('click', ()=>{ writeIdx=(writeIdx+1)%CHARACTERS.length; fillWrite(); });
 writeModal.addEventListener('click', e=>{ if(e.target===writeModal) writeModal.classList.remove('open'); });
 $('#writeClose').addEventListener('click', ()=>writeModal.classList.remove('open'));
 
@@ -1071,9 +1086,57 @@ function canvasPos(canvas, e){
   const p = e.touches ? e.touches[0] : e;
   return { x:p.clientX-r.left, y:p.clientY-r.top };
 }
+// 笔顺引导演示：在灰字底图上叠加当前笔画的示意轨迹
+function drawStrokeHint(idx){
+  const canvas = $('#writeCanvas'); if(!canvas) return;
+  const ctx = canvas._ctx; if(!ctx) return;
+  const rect = canvas.getBoundingClientRect();
+  const primary = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#c53d43';
+  // 依据笔画序号在画布网格内分布一段示意折线，仅用于原型演示顺序
+  const cols = 3, rows = 3;
+  const cx = rect.width * (0.2 + 0.3*(idx % cols));
+  const cy = rect.height * (0.25 + 0.25*Math.floor(idx/cols));
+  ctx.save();
+  ctx.globalAlpha = 0.55; ctx.strokeStyle = primary; ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.moveTo(cx-rect.width*0.12, cy);
+  ctx.quadraticCurveTo(cx, cy-rect.height*0.12, cx+rect.width*0.12, cy+rect.height*0.04);
+  ctx.stroke();
+  ctx.restore();
+}
+function buildWriteDots(count){
+  const box = $('#writeDots'); if(!box) return;
+  box.innerHTML = '';
+  for(let i=0;i<count;i++){ const d=document.createElement('i'); box.appendChild(d); }
+}
+function refreshWriteHint(){
+  const hint = $('#writeHint');
+  const total = CHARACTERS[writeIdx].strokes;
+  if(hint) hint.textContent = writeStrokeIdx < total
+    ? `${DICT[STATE.lang].practice.strokeOrder}: ${writeStrokeIdx} / ${total}`
+    : `${DICT[STATE.lang].practice.accuracy}: ${writeAccuracy}%`;
+}
+function advanceStroke(){
+  const total = CHARACTERS[writeIdx].strokes;
+  if(writeStrokeIdx >= total) return;
+  setupCanvas(); // 重画灰字底图
+  drawStrokeHint(writeStrokeIdx);
+  writeStrokeIdx++;
+  const dots = $('#writeDots')?.children;
+  if(dots && dots[writeStrokeIdx-1]) dots[writeStrokeIdx-1].classList.add('on');
+  if(writeStrokeIdx >= total){
+    writeAccuracy = Math.round(72 + Math.random()*23);
+    toast('success', `${DICT[STATE.lang].practice.accuracy}: ${writeAccuracy}%`);
+  }
+  refreshWriteHint();
+}
 function bindCanvas(){
   const canvas = $('#writeCanvas');
-  const down = e=>{ canvas._drawing=true; canvas._last=canvasPos(canvas,e); };
+  const down = e=>{
+    const total = CHARACTERS[writeIdx].strokes;
+    if(writeStrokeIdx < total){ e.preventDefault(); advanceStroke(); return; }
+    canvas._drawing=true; canvas._last=canvasPos(canvas,e);
+  };
   const move = e=>{ if(!canvas._drawing) return; e.preventDefault(); const ctx=canvas._ctx; const p=canvasPos(canvas,e); ctx.beginPath(); ctx.moveTo(canvas._last.x,canvas._last.y); ctx.lineTo(p.x,p.y); ctx.stroke(); canvas._last=p; };
   const up = ()=>{ canvas._drawing=false; };
   canvas.addEventListener('mousedown',down); canvas.addEventListener('mousemove',move); window.addEventListener('mouseup',up);

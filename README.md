@@ -1,4 +1,4 @@
-﻿# HanziMaster 汉字大师 v5.2.16
+﻿# HanziMaster 汉字大师 v5.2.17
 
 [English](README_EN.md) | [简体中文](README.md)
 
@@ -134,4 +134,4 @@ src/
 
 ## 许可证
 
-© 2026 HanziMaster 汉字大师 v5.2.16
+© 2026 HanziMaster 汉字大师 v5.2.17

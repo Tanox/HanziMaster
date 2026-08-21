@@ -1,4 +1,4 @@
-// src/components/practice/writing-canvas-utils.ts v5.2.13
+// src/components/practice/writing-canvas-utils.ts v5.2.17
 // 书写画布的绘制工具函数集（与组件逻辑分离，保证单文件 ≤200 行）
 // 从设计 token 读取颜色与字体，避免 Canvas 写死色值（单一来源）
 
@@ -23,6 +23,61 @@ export function parsePath(d: string): Path2D | null {
   } catch {
     return null;
   }
+}
+
+// 点到线段最短距离（用于描红贴合度判定）
+export function distToSegment(
+  px: number,
+  py: number,
+  ax: number,
+  ay: number,
+  bx: number,
+  by: number,
+): number {
+  const dx = bx - ax;
+  const dy = by - ay;
+  const len2 = dx * dx + dy * dy;
+  if (len2 === 0) return Math.hypot(px - ax, py - ay);
+  let t = ((px - ax) * dx + (py - ay) * dy) / len2;
+  t = Math.max(0, Math.min(1, t));
+  return Math.hypot(px - (ax + t * dx), py - (ay + t * dy));
+}
+
+// 描红贴合度判定：返回 0-1，表示用户轨迹点落在笔形/中位线容差内的比例
+// - 优先用 strokePath（Path2D.isPointInStroke，带容差线宽）判断点是否在笔画内
+// - 路径不可用时回退到中位线折线距离判定
+export function scoreStroke(
+  points: { x: number; y: number }[],
+  strokePath: string | undefined,
+  median: number[][] | undefined,
+  size: number,
+  tol = 18,
+): number {
+  if (!points.length) return 0;
+  const path = strokePath ? parsePath(strokePath) : null;
+  const probe = document.createElement('canvas').getContext('2d');
+  if (path && probe) {
+    probe.lineWidth = tol * 2;
+    let hit = 0;
+    for (const p of points) {
+      if (probe.isPointInStroke(path, p.x, p.y)) hit++;
+    }
+    return hit / points.length;
+  }
+  if (median && median.length >= 2) {
+    let hit = 0;
+    const pts = median.map((m) => ({ x: scale(m[0], size), y: scale(m[1], size) }));
+    for (const p of points) {
+      let min = Infinity;
+      for (let i = 0; i < pts.length - 1; i++) {
+        const d = distToSegment(p.x, p.y, pts[i].x, pts[i].y, pts[i + 1].x, pts[i + 1].y);
+        if (d < min) min = d;
+      }
+      if (min <= tol) hit++;
+    }
+    return hit / points.length;
+  }
+  return 0;
 }
 
 // 淡字底图绘制
