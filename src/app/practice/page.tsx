@@ -1,4 +1,4 @@
-// src/app/practice/page.tsx v5.2.9
+// src/app/practice/page.tsx v5.2.19
 'use client';
 
 import { useState } from 'react';
@@ -113,7 +113,7 @@ export default function PracticePage() {
   const currentQuizChar = quizCharacters[quizState.currentIndex];
 
   return (
-    <div id="practice-page" className="min-h-screen bg-gradient-to-b from-ink-50/50 to-background dark:from-ink-950/50 dark:to-background">
+    <div id="practice-page" className="min-h-screen bg-linear-to-b from-ink-50/50 to-background dark:from-ink-950/50 dark:to-background">
       <div id="practice-content" className="max-w-6xl mx-auto px-6 py-16 safe-bottom">
         <div className="text-center mb-16 reveal">
           <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 text-ink-900 dark:text-ink-50 display-font">

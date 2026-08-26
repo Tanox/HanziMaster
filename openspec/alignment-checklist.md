@@ -2,7 +2,7 @@
 
 本文档记录项目规范文档、原型图与代码实现的对齐情况。
 
-**版本**: v5.2.17
+**版本**: v5.2.19
 **检查日期**: 2026-08-26
 **权威来源**: `openspec/07-design-prototype.md`（设计系统）+ `prototype/prototype.html`（唯一权威高保真原型）
 
@@ -208,6 +208,18 @@
 
 ---
 
+## 8.2 测试与工具链对齐
+| 项目 | 说明 | 状态 |
+|------|------|------|
+| 单测框架 | vitest | `vitest.config.ts` + `package.json` `test`/`test:watch` 脚本，devDep `vitest@^3.2.4` | ✅ 对齐 |
+| 纯逻辑覆盖 | characters / i18n / stroke-order | `src/lib/__tests__/` 3 套测试：12 字数据完整、11 语言键一致、笔顺 path/medians 非空 | ✅ 新增 |
+| 代码风格 | Prettier | `.prettierrc.json` + `.prettierignore` + `format` 脚本（semi/singleQuote/printWidth 100/lf） | ✅ 对齐 |
+| 样式一致性 | Tailwind 渐变 | 全仓统一 `bg-linear-to-*`（v4 新语法），消除 `bg-gradient-to-*`（v3 别名）混杂 | ✅ 对齐 |
+
+> 注：组件/hook 交互层（如 useProgress、usePronunciation）依赖 React 运行时，未纳入纯 node 环境单测；后续如需可补充 `@testing-library/react` 组件测试。
+
+---
+
 ## 9. 文档链接对齐
 
 | 文档 | 内部链接检查 | 状态 |
@@ -265,7 +277,7 @@
 | i18n 翻译文件 | 11 | 11 | ✅ 对齐 |
 | 全局样式 (globals.css) | 1 | 1 | ✅ 对齐 |
 | 设计规范 (07-design-prototype.md) | 1 | v5.0 | ✅ 对齐 |
-| 对齐清单 (本文档) | 1 | v5.2.17 | ✅ 对齐 |
+| 对齐清单 (本文档) | 1 | v5.2.19 | ✅ 对齐 |
 
 ---
 
@@ -318,7 +330,7 @@
 | 设计规范 | /workspace/openspec/07-design-prototype.md | v5.0（设计系统源） |
 | 编码规范 | /workspace/openspec/coding-standards.md | v5.2.11 |
 | 提交模板 | /workspace/openspec/commit-template.md | v5.2.11 |
-| **对齐清单** | /workspace/openspec/alignment-checklist.md | **v5.2.17** |
+| **对齐清单** | /workspace/openspec/alignment-checklist.md | **v5.2.19** |
 | UI/UX 审查报告 | /workspace/openspec/ui-ux-review-report.md | 2026-08-19 |
 
 ### 13.2 原型文件
@@ -345,8 +357,9 @@
 | 文档链接 | 10 | 10 | 0 | 100% |
 | 原型图 | 10 | 10 | 0 | 100% |
 | 分析接入 | 5 | 5 | 0 | 100% |
+| 测试与工具链 | 4 | 4 | 0 | 100% |
 | 版本一致性 | 7 | 7 | 0 | 100% |
-| **总计** | **109** | **109** | **0** | **100%** |
+| **总计** | **113** | **113** | **0** | **100%** |
 
 ### 14.2 结论
 

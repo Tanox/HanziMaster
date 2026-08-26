@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<!--
+  prototype/wireframes.html · 组件库规范（线框 + 设计交付） · v5.2.18
+  用途：定义 HanziMaster 组件库的视觉规范与交互契约。
+  - 基础组件（Button / Input …）
+  - 复合组件（Form / Card …）
+  - 业务组件（FeatureCard / StatsCard / EmptyState / Toast / NavLink …）
+  - 组件使用规则（间距 / 状态 / 无障碍 / 深色模式）
+  Design Token 与 globals.css @theme / 07-design-prototype.md 单一来源保持一致（东方水墨·朱砂红）。
+-->
+<html lang="zh-CN" class="">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>HanziMaster 组件库规范 · Wireframes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Noto+Serif+SC:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  /* ===== Design Token（单一来源，与 prototype.html / globals.css 对齐） ===== */
+  :root {
+    --background:#faf9f6; --foreground:#1a1a1a;
+    --muted:#f3f1eb; --muted-foreground:#6b6356;
+    --border:#e5e1d8; --card:#ffffff; --card-foreground:#1a1a1a;
+    --primary:#c53d43; --primary-dark:color-mix(in srgb,var(--primary) 78%,#000); --primary-foreground:#fff;
+    --accent:#4f46e5; --accent-foreground:#fff;
+    --destructive:#ef4444; --success:#34c759; --warning:#f59e0b; --info:#3b82f6; --ring:#c53d43;
+
+    --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:24px; --radius-3xl:28px; --radius-4xl:32px;
+    --shadow-ink:0 4px 20px rgba(26,26,26,0.08); --shadow-ink-lg:0 8px 40px rgba(26,26,26,0.12); --shadow-ink-xl:0 12px 60px rgba(26,26,26,0.16); --shadow-glow:0 0 30px rgba(197,61,67,0.20);
+    --dur-fast:0.15s; --dur-normal:0.25s; --dur-slow:0.4s; --dur-lg:0.6s;
+    --ease-out:cubic-bezier(0.22,1,0.36,1); --ease-spring:cubic-bezier(0.175,0.885,0.32,1.275); --ease-smooth:cubic-bezier(0.4,0,0.2,1);
+    --font-display:'Playfair Display',Georgia,serif; --font-serif:'Noto Serif SC',Georgia,serif;
+    --font-sans:'Space Grotesk',ui-sans-serif,system-ui,sans-serif; --font-mono:'JetBrains Mono',ui-monospace,monospace;
+    --font-heading:'Playfair Display',Georgia,serif;
+  }
+  .dark { --background:#0d0d0d; --foreground:#f3f1eb; --muted:#1a1a1a; --muted-foreground:#a69c89; --border:#2d2d2d; --card:#1a1a1a; --card-foreground:#f3f1eb; --accent:#6366f1; --destructive:#f87171; }
+
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { font-family:var(--font-sans); background:var(--background); color:var(--foreground); line-height:1.6; -webkit-font-smoothing:antialiased; padding:0 0 80px; }
+  .display-font { font-family:var(--font-display); }
+  .serif-font { font-family:var(--font-serif); }
+
+  /* 布局 */
+  .wrap { max-width:1180px; margin:0 auto; padding:48px 24px; }
+  .page-head { border-bottom:1px solid var(--border); padding-bottom:24px; margin-bottom:40px; }
+  .page-head h1 { font-family:var(--font-display); font-size:34px; font-weight:600; letter-spacing:-0.01em; }
+  .page-head p { color:var(--muted-foreground); margin-top:8px; max-width:680px; }
+  .section { margin-bottom:64px; scroll-margin-top:24px; }
+  .section > h2 { font-family:var(--font-display); font-size:24px; font-weight:600; margin-bottom:6px; display:flex; align-items:center; gap:10px; }
+  .section > h2::before { content:""; width:6px; height:24px; background:var(--primary); border-radius:3px; }
+  .section > .desc { color:var(--muted-foreground); margin-bottom:24px; }
+  .grid { display:grid; gap:20px; }
+  .grid.cols-2 { grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); }
+  .grid.cols-3 { grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); }
+
+  /* 组件卡（展示用容器，非产品卡片） */
+  .spec-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius-xl); padding:24px; box-shadow:var(--shadow-ink); }
+  .spec-card h3 { font-size:14px; font-weight:600; color:var(--muted-foreground); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:16px; }
+  .demo { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+  .label-row { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+  .tag { font-family:var(--font-mono); font-size:11px; padding:2px 8px; border-radius:999px; background:var(--muted); color:var(--muted-foreground); }
+
+  /* ===== 基础组件：Button ===== */
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; font-family:var(--font-sans); font-weight:600; font-size:14px; line-height:1; padding:12px 20px; border-radius:var(--radius-md); border:1px solid transparent; cursor:pointer; transition:transform var(--dur-fast) var(--ease-spring), box-shadow var(--dur-normal) var(--ease-smooth), background var(--dur-normal) var(--ease-smooth); -webkit-tap-highlight-color:transparent; }
+  .btn:active { transform:translateY(1px); }
+  .btn:focus-visible { outline:2px solid var(--ring); outline-offset:2px; }
+  .btn-default { background:var(--primary); color:var(--primary-foreground); }
+  .btn-default:hover { background:var(--primary-dark); transform:translateY(-2px); box-shadow:var(--shadow-glow); }
+  .btn-outline { background:transparent; color:var(--foreground); border-color:var(--border); }
+  .btn-outline:hover { border-color:var(--primary); color:var(--primary); transform:translateY(-2px); }
+  .btn-secondary { background:var(--muted); color:var(--foreground); }
+  .btn-secondary:hover { transform:translateY(-2px); box-shadow:var(--shadow-ink); }
+  .btn-ghost { background:transparent; color:var(--muted-foreground); }
+  .btn-ghost:hover { background:var(--muted); color:var(--foreground); }
+  .btn-destructive { background:var(--destructive); color:#fff; }
+  .btn-destructive:hover { transform:translateY(-2px); box-shadow:0 0 30px rgba(239,68,68,0.25); }
+  .btn-link { background:transparent; color:var(--primary); padding:12px 4px; }
+  .btn-link:hover { text-decoration:underline; }
+  .btn:disabled { opacity:0.5; cursor:not-allowed; transform:none; box-shadow:none; }
+  .btn-sm { padding:8px 14px; font-size:13px; border-radius:var(--radius-sm); }
+  .btn-lg { padding:16px 28px; font-size:16px; border-radius:var(--radius-lg); }
+
+  /* ===== 基础组件：Input ===== */
+  .field { display:flex; flex-direction:column; gap:6px; width:100%; }
+  .field label { font-size:13px; font-weight:500; color:var(--muted-foreground); }
+  .input { width:100%; font-family:var(--font-sans); font-size:14px; padding:12px 14px; background:var(--card); color:var(--foreground); border:2px solid var(--border); border-radius:var(--radius-md); transition:border-color var(--dur-fast) var(--ease-smooth), box-shadow var(--dur-fast) var(--ease-smooth); }
+  .input::placeholder { color:var(--muted-foreground); }
+  .input:focus { outline:none; border-color:var(--primary); box-shadow:0 0 0 4px rgba(197,61,67,0.15); }
+  .input--error { border-color:var(--destructive); }
+  .input--error:focus { box-shadow:0 0 0 4px rgba(239,68,68,0.15); }
+  .input-hint { font-size:12px; color:var(--muted-foreground); }
+  .input-error-msg { font-size:12px; color:var(--destructive); }
+  .input-group { display:flex; align-items:center; gap:8px; }
+  .input-icon { display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border:2px solid var(--border); border-radius:var(--radius-md); color:var(--muted-foreground); }
+
+  /* ===== 基础组件：Badge ===== */
+  .badge { display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600; padding:4px 12px; border-radius:999px; line-height:1.4; }
+  .badge-default { background:var(--primary); color:var(--primary-foreground); }
+  .badge-secondary { background:var(--muted); color:var(--foreground); }
+  .badge-outline { background:transparent; border:1px solid var(--border); color:var(--muted-foreground); }
+  .badge-ghost { background:transparent; color:var(--muted-foreground); }
+  .badge-success { background:rgba(52,199,89,0.15); color:#1a7a37; }
+  .badge-warning { background:rgba(245,158,11,0.15); color:#9a6200; }
+  .badge-info { background:rgba(59,130,246,0.15); color:#1d4ed8; }
+  .badge-destructive { background:rgba(239,68,68,0.15); color:var(--destructive); }
+  .dark .badge-success { color:#7ee2a0; } .dark .badge-warning { color:#fcd34d; } .dark .badge-info { color:#93c5fd; } .dark .badge-destructive { color:#fca5a5; }
+
+  /* ===== 复合组件：Card ===== */
+  .card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:24px; box-shadow:var(--shadow-ink); transition:transform var(--dur-normal) var(--ease-out), box-shadow var(--dur-normal) var(--ease-out); }
+  .card--interactive:hover { transform:translateY(-8px); box-shadow:var(--shadow-ink-lg); }
+  .card--glass { background:color-mix(in srgb,var(--card) 80%,transparent); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); }
+  .card-sm { padding:16px; border-radius:var(--radius-md); }
+  .card h4 { font-family:var(--font-heading); font-size:18px; font-weight:600; margin-bottom:8px; }
+  .card p { color:var(--muted-foreground); font-size:14px; }
+
+  /* ===== 复合组件：Form ===== */
+  .form { display:flex; flex-direction:column; gap:18px; max-width:420px; }
+  .form-row { display:flex; gap:12px; }
+  .form-row > * { flex:1; }
+  .form-actions { display:flex; gap:12px; margin-top:8px; }
+
+  /* ===== 业务组件：FeatureCard ===== */
+  .feature { background:var(--card); border:1px solid var(--border); border-radius:var(--radius-xl); padding:24px; box-shadow:var(--shadow-ink); transition:transform var(--dur-normal) var(--ease-out), box-shadow var(--dur-normal) var(--ease-out); }
+  .feature:hover { transform:translateY(-8px); box-shadow:var(--shadow-ink-lg); }
+  .feature .ico { width:80px; height:80px; border-radius:var(--radius-lg); display:flex; align-items:center; justify-content:center; font-size:34px; margin-bottom:16px; background:linear-gradient(135deg,var(--primary) 0%,var(--accent) 100%); color:#fff; }
+  .feature h4 { font-family:var(--font-heading); font-size:18px; font-weight:600; margin-bottom:8px; }
+  .feature p { color:var(--muted-foreground); font-size:14px; }
+
+  /* ===== 业务组件：StatsCard ===== */
+  .stat { position:relative; background:var(--card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:20px 24px; box-shadow:var(--shadow-ink); overflow:hidden; }
+  .stat::before { content:""; position:absolute; top:0; left:0; right:0; height:3px; }
+  .stat--vermilion::before { background:var(--primary); }
+  .stat--indigo::before { background:var(--accent); }
+  .stat--success::before { background:var(--success); }
+  .stat .num { font-family:var(--font-display); font-size:30px; font-weight:700; }
+  .stat .lab { color:var(--muted-foreground); font-size:13px; margin-top:4px; }
+
+  /* ===== 业务组件：EmptyState ===== */
+  .empty { display:flex; flex-direction:column; align-items:center; text-align:center; padding:48px 24px; background:var(--card); border:1px dashed var(--border); border-radius:var(--radius-xl); }
+  .empty .ico { width:64px; height:64px; border-radius:999px; background:var(--muted); display:flex; align-items:center; justify-content:center; font-size:28px; color:var(--muted-foreground); margin-bottom:16px; }
+  .empty h4 { font-family:var(--font-heading); font-size:18px; margin-bottom:6px; }
+  .empty p { color:var(--muted-foreground); font-size:14px; max-width:280px; margin-bottom:16px; }
+
+  /* ===== 业务组件：Toast ===== */
+  .toast { position:fixed; top:80px; right:16px; z-index:300; display:flex; align-items:center; gap:12px; min-width:280px; max-width:360px; padding:14px 16px; border-radius:var(--radius-md); box-shadow:var(--shadow-ink-lg); background:var(--card); border:1px solid var(--border); animation:slideInRight var(--dur-normal) var(--ease-out); }
+  .toast .dot { width:10px; height:10px; border-radius:999px; flex:none; }
+  .toast--success .dot { background:var(--success); } .toast--error .dot { background:var(--destructive); } .toast--warning .dot { background:var(--warning); } .toast--info .dot { background:var(--info); }
+  .toast .body { font-size:14px; } .toast .body b { display:block; } .toast .body span { color:var(--muted-foreground); font-size:13px; }
+  @keyframes slideInRight { from { opacity:0; transform:translateX(20px); } to { opacity:1; transform:translateX(0); } }
+
+  /* ===== 业务组件：NavLink ===== */
+  .nav { display:flex; gap:4px; background:var(--muted); padding:6px; border-radius:var(--radius-lg); }
+  .navlink { position:relative; display:flex; align-items:center; gap:8px; padding:10px 16px; border-radius:var(--radius-md); font-size:14px; font-weight:500; color:var(--muted-foreground); text-decoration:none; transition:color var(--dur-fast) var(--ease-smooth), background var(--dur-fast) var(--ease-smooth); }
+  .navlink:hover { color:var(--foreground); background:color-mix(in srgb,var(--card) 60%,transparent); }
+  .navlink.is-active { color:var(--primary); background:var(--card); box-shadow:var(--shadow-ink); }
+  .navlink.is-active::after { content:""; position:absolute; bottom:4px; left:50%; transform:translateX(-50%); width:5px; height:5px; border-radius:999px; background:var(--primary); }
+
+  /* ===== 业务组件：Switch / Tabs ===== */
+  .switch { width:46px; height:26px; border-radius:999px; background:var(--border); position:relative; cursor:pointer; transition:background var(--dur-normal) var(--ease-smooth); border:none; }
+  .switch::after { content:""; position:absolute; top:3px; left:3px; width:20px; height:20px; border-radius:999px; background:#fff; box-shadow:var(--shadow-ink); transition:transform var(--dur-normal) var(--ease-spring); }
+  .switch[aria-checked="true"] { background:var(--primary); }
+  .switch[aria-checked="true"]::after { transform:translateX(20px); }
+  .tabs { display:flex; gap:4px; border-bottom:1px solid var(--border); }
+  .tab { padding:10px 16px; font-size:14px; font-weight:500; color:var(--muted-foreground); background:transparent; border:none; border-bottom:2px solid transparent; cursor:pointer; transition:color var(--dur-fast), border-color var(--dur-fast); }
+  .tab.is-active { color:var(--primary); border-bottom-color:var(--primary); }
+
+  /* 规则表 */
+  table.rules { width:100%; border-collapse:collapse; font-size:14px; }
+  table.rules th, table.rules td { text-align:left; padding:12px 14px; border-bottom:1px solid var(--border); vertical-align:top; }
+  table.rules th { font-weight:600; color:var(--muted-foreground); background:var(--muted); }
+  table.rules code { font-family:var(--font-mono); font-size:12px; background:var(--muted); padding:2px 6px; border-radius:6px; color:var(--primary); }
+  .do { color:var(--success); font-weight:600; } .dont { color:var(--destructive); font-weight:600; }
+
+  .toc { position:sticky; top:16px; display:flex; flex-wrap:wrap; gap:8px; padding:12px; background:var(--card); border:1px solid var(--border); border-radius:var(--radius-lg); margin-bottom:32px; box-shadow:var(--shadow-ink); }
+  .toc a { font-size:13px; color:var(--muted-foreground); text-decoration:none; padding:6px 12px; border-radius:var(--radius-sm); }
+  .toc a:hover { background:var(--muted); color:var(--foreground); }
+
+  @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation-duration:0.01ms !important; transition-duration:0.01ms !important; } }
+  @media (max-width:640px) { .wrap { padding:32px 16px; } .page-head h1 { font-size:26px; } .form-row { flex-direction:column; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="page-head">
+    <h1 class="display-font">组件库规范 · Wireframes</h1>
+    <p>东方水墨 · 朱砂红设计语言下的组件交付标准。所有组件以 <code style="font-family:var(--font-mono)">globals.css @theme</code> 为 token 单一来源，深色模式通过 <code style="font-family:var(--font-mono)">.dark</code> 类切换。</p>
+  </header>
+
+  <nav class="toc" aria-label="目录">
+    <a href="#basic">基础组件</a>
+    <a href="#composite">复合组件</a>
+    <a href="#business">业务组件</a>
+    <a href="#rules">使用规则</a>
+  </nav>
+
+  <!-- ============ 基础组件 ============ -->
+  <section class="section" id="basic">
+    <h2>1 · 基础组件</h2>
+    <p class="desc">原子级交互元素，构成所有上层界面的基石。位于 <code style="font-family:var(--font-mono)">src/components/ui/</code>（基于 shadcn/ui 改造）。</p>
+
+    <h3 style="margin:24px 0 12px;font-size:16px;">1.1 Button 按钮</h3>
+    <div class="grid cols-2">
+      <div class="spec-card">
+        <h3>变体 Variants</h3>
+        <div class="demo">
+          <button class="btn btn-default">主要</button>
+          <button class="btn btn-outline">描边</button>
+          <button class="btn btn-secondary">次要</button>
+          <button class="btn btn-ghost">幽灵</button>
+          <button class="btn btn-destructive">危险</button>
+          <button class="btn btn-link">链接</button>
+        </div>
+      </div>
+      <div class="spec-card">
+        <h3>尺寸 & 状态</h3>
+        <div class="demo">
+          <button class="btn btn-default btn-sm">小</button>
+          <button class="btn btn-default">默认</button>
+          <button class="btn btn-default btn-lg">大</button>
+          <button class="btn btn-default" disabled>禁用</button>
+        </div>
+      </div>
+    </div>
+    <table class="rules" style="margin-top:20px;">
+      <thead><tr><th>规范项</th><th>要求</th></tr></thead>
+      <tbody>
+        <tr><td>主色</td><td>仅 <code>--primary</code>（朱砂红）用于主要操作；hover 上移 2px + 朱砂光环；active 下移 1px</td></tr>
+        <tr><td>圆角</td><td>默认 <code>rounded-md</code>(12px)；小尺寸 <code>rounded-sm</code>；大尺寸 <code>rounded-lg</code></td></tr>
+        <tr><td>最小触控</td><td>移动端高度 ≥ 44px（<code>.touch-target</code>）</td></tr>
+        <tr><td class="dont">禁止</td><td class="dont">禁止硬编码颜色、禁止 <code>transition-all</code>、禁止任意圆角 <code>rounded-[Npx]</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin:32px 0 12px;font-size:16px;">1.2 Input 输入框</h3>
+    <div class="grid cols-2">
+      <div class="spec-card">
+        <h3>默认 & 聚焦</h3>
+        <div class="field">
+          <label for="d1">汉字查询</label>
+          <input class="input" id="d1" placeholder="输入拼音或汉字…" />
+          <span class="input-hint">支持拼音 / 汉字 / 部首检索</span>
+        </div>
+      </div>
+      <div class="spec-card">
+        <h3>错误态 & 图标</h3>
+        <div class="field">
+          <label for="d2">邮箱</label>
+          <div class="input-group">
+            <span class="input-icon">✉</span>
+            <input class="input input--error" id="d2" value="not-an-email" />
+          </div>
+          <span class="input-error-msg">请输入有效的邮箱地址</span>
+        </div>
+      </div>
+    </div>
+    <table class="rules" style="margin-top:20px;">
+      <thead><tr><th>规范项</th><th>要求</th></tr></thead>
+      <tbody>
+        <tr><td>边框</td><td>默认 2px <code>--border</code>；focus 时变 <code>--primary</code> + 4px 朱砂光环</td></tr>
+        <tr><td>错误态</td><td><code>border-destructive</code> + 光环 + 错误文案（实时校验）</td></tr>
+        <tr><td class="dont">禁止</td><td class="dont">禁止内联 <code>style="color:#xxx"</code>，必须使用 token 类名</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin:32px 0 12px;font-size:16px;">1.3 Badge 徽章</h3>
+    <div class="spec-card">
+      <h3>语义化变体</h3>
+      <div class="demo">
+        <span class="badge badge-default">默认</span>
+        <span class="badge badge-secondary">次要</span>
+        <span class="badge badge-outline">描边</span>
+        <span class="badge badge-ghost">幽灵</span>
+        <span class="badge badge-success">已掌握</span>
+        <span class="badge badge-warning">复习中</span>
+        <span class="badge badge-info">新词</span>
+        <span class="badge badge-destructive">错误</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 复合组件 ============ -->
+  <section class="section" id="composite">
+    <h2>2 · 复合组件</h2>
+    <p class="desc">由基础组件组合而成，承载固定交互模式的容器级组件。</p>
+
+    <h3 style="margin:24px 0 12px;font-size:16px;">2.1 Card 卡片</h3>
+    <div class="grid cols-3">
+      <div class="card"><h4 class="display-font">默认卡片</h4><p>静态内容容器，1px 边框 + 柔和阴影。</p></div>
+      <div class="card card--interactive"><h4 class="display-font">可交互</h4><p>hover 上移 8px + 阴影加深，用于可点击项。</p></div>
+      <div class="card card--glass"><h4 class="display-font">玻璃态</h4><p>半透明 + backdrop-blur，用于浮层/弹窗。</p></div>
+    </div>
+    <table class="rules" style="margin-top:20px;">
+      <thead><tr><th>规范项</th><th>要求</th></tr></thead>
+      <tbody>
+        <tr><td>圆角</td><td>默认 <code>rounded-lg</code>(16px)；大卡片 <code>rounded-xl</code>(20px)；弹窗 <code>rounded-3xl</code>(28px)</td></tr>
+        <tr><td>阴影</td><td><code>shadow-ink</code> 默认 → <code>shadow-ink-lg</code> 悬停</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin:32px 0 12px;font-size:16px;">2.2 Form 表单</h3>
+    <div class="spec-card">
+      <h3>纵向排布 + 实时校验</h3>
+      <form class="form" onsubmit="return false;">
+        <div class="field">
+          <label for="f1">学习目标</label>
+          <input class="input" id="f1" placeholder="例如：HSK 3 词汇" />
+        </div>
+        <div class="form-row">
+          <div class="field"><label for="f2">每日字数</label><input class="input" id="f2" type="number" value="5" /></div>
+          <div class="field"><label for="f3">语言</label><input class="input" id="f3" value="English" /></div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-default">保存</button>
+          <button class="btn btn-ghost">取消</button>
+        </div>
+      </form>
+    </div>
+
+    <h3 style="margin:32px 0 12px;font-size:16px;">2.3 其它复合组件</h3>
+    <div class="grid cols-3">
+      <div class="spec-card">
+        <h3>Switch 开关</h3>
+        <div class="demo"><button class="switch" role="switch" aria-checked="true" aria-label="深色模式"></button><button class="switch" role="switch" aria-checked="false" aria-label="通知"></button></div>
+        <p style="margin-top:12px;color:var(--muted-foreground);font-size:13px;">checked 态为朱砂红，未选中为水墨灰。</p>
+      </div>
+      <div class="spec-card">
+        <h3>Tabs 选项卡</h3>
+        <div class="tabs"><button class="tab is-active">笔顺</button><button class="tab">词语</button><button class="tab">字义</button></div>
+        <p style="margin-top:12px;color:var(--muted-foreground);font-size:13px;">激活态朱砂红下划线。</p>
+      </div>
+      <div class="spec-card">
+        <h3>Dialog / Sheet</h3>
+        <div class="card card--glass" style="text-align:center;"><div style="font-size:32px;margin-bottom:8px;">🪟</div><p>玻璃态遮罩 + 缩放入场</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 业务组件 ============ -->
+  <section class="section" id="business">
+    <h2>3 · 业务组件</h2>
+    <p class="desc">承载 HanziMaster 特定业务语义的组件，位于 <code style="font-family:var(--font-mono)">src/components/</code>。</p>
+
+    <h3 style="margin:24px 0 12px;font-size:16px;">3.1 FeatureCard 功能卡</h3>
+    <div class="grid cols-3">
+      <div class="feature"><div class="ico">✍️</div><h4>笔画书写</h4><p>实时笔顺引导，像在宣纸上练字。</p></div>
+      <div class="feature"><div class="ico">🧠</div><h4>间隔记忆</h4><p>基于遗忘曲线的智能复习排程。</p></div>
+      <div class="feature"><div class="ico">🌏</div><h4>多语言</h4><p>11 种界面语言，全球学习者共用。</p></div>
+    </div>
+
+    <h3 style="margin:32px 0 12px;font-size:16px;">3.2 StatsCard 统计卡</h3>
+    <div class="grid cols-3">
+      <div class="stat stat--vermilion"><div class="num">128</div><div class="lab">已学汉字</div></div>
+      <div class="stat stat--indigo"><div class="num">23</div><div class="lab">连续天数</div></div>
+      <div class="stat stat--success"><div class="num">94%</div><div class="lab">测验正确率</div></div>
+    </div>
+
+    <h3 style="margin:32px 0 12px;font-size:16px;">3.3 EmptyState 空状态</h3>
+    <div class="grid cols-3">
+      <div class="empty"><div class="ico">📭</div><h4>无学习记录</h4><p>开始你的第一个汉字吧。</p><button class="btn btn-default btn-sm">开始学习</button></div>
+      <div class="empty"><div class="ico">🔍</div><h4>未找到结果</h4><p>试试其它关键词。</p><button class="btn btn-outline btn-sm">清除筛选</button></div>
+      <div class="empty"><div class="ico">⚠️</div><h4>加载失败</h4><p>网络似乎开了小差。</p><button class="btn btn-outline btn-sm">重试</button></div>
+    </div>
+
+    <h3 style="margin:32px 0 12px;font-size:16px;">3.4 Toast 通知 & NavLink 导航</h3>
+    <div class="grid cols-2">
+      <div class="spec-card">
+        <h3>四种语义</h3>
+        <div class="demo" style="flex-direction:column;align-items:stretch;gap:10px;">
+          <div class="toast toast--success"><span class="dot"></span><div class="body"><b>保存成功</b><span>进度已同步</span></div></div>
+          <div class="toast toast--error"><span class="dot"></span><div class="body"><b>网络错误</b><span>请检查连接后重试</span></div></div>
+          <div class="toast toast--warning"><span class="dot"></span><div class="body"><b>权限不足</b><span>请先登录</span></div></div>
+          <div class="toast toast--info"><span class="dot"></span><div class="body"><b>新功能</b><span>已支持日语界面</span></div></div>
+        </div>
+      </div>
+      <div class="spec-card">
+        <h3>导航选中态</h3>
+        <div class="nav" style="margin-bottom:16px;">
+          <a class="navlink" href="#">首页</a>
+          <a class="navlink is-active" href="#">学习</a>
+          <a class="navlink" href="#">练习</a>
+        </div>
+        <p style="color:var(--muted-foreground);font-size:13px;">active 态：淡朱砂背景 + 底部圆点指示器。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 使用规则 ============ -->
+  <section class="section" id="rules">
+    <h2>4 · 组件使用规则</h2>
+    <p class="desc">跨组件一致性的强制约束，违反即视为设计缺陷。</p>
+
+    <h3 style="margin:24px 0 12px;font-size:16px;">4.1 间距与对齐</h3>
+    <table class="rules">
+      <thead><tr><th>场景</th><th>规则</th></tr></thead>
+      <tbody>
+        <tr><td>组件内边距</td><td>卡片 24px；卡片内元素间距遵循 8px 网格（8/16/24）</td></tr>
+        <tr><td>栅格</td><td>汉字网格：移动 1 列 / sm 2 列 / md 3 列 / lg 6 列</td></tr>
+        <tr><td>最大行宽</td><td>正文阅读宽度 ≤ 680px；空状态描述 ≤ 280px</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin:32px 0 12px;font-size:16px;">4.2 状态规范</h3>
+    <table class="rules">
+      <thead><tr><th>状态</th><th>视觉表现</th></tr></thead>
+      <tbody>
+        <tr><td>默认</td><td>2px 水墨灰边框 / 静态阴影</td></tr>
+        <tr><td>悬停</td><td>上移 2–8px + 阴影加深（按层级）</td></tr>
+        <tr><td>聚焦</td><td>朱砂红边框 + 4px 光环（<code>ring-primary/20</code>）</td></tr>
+        <tr><td>选中</td><td>淡朱砂背景 <code>bg-primary/10</code> + 朱砂光环</td></tr>
+        <tr><td>禁用</td><td>opacity 0.5 + 禁止光标</td></tr>
+        <tr><td>加载</td><td>Skeleton <code>animate-pulse</code></td></tr>
+        <tr><td>错误</td><td>危险色边框 + 文案（实时校验）</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin:32px 0 12px;font-size:16px;">4.3 无障碍（A11y）</h3>
+    <table class="rules">
+      <thead><tr><th>要求</th><th>实现</th></tr></thead>
+      <tbody>
+        <tr><td>焦点可见</td><td><code>focus-visible</code>：2px <code>--ring</code> 轮廓 + 2px offset</td></tr>
+        <tr><td>语义角色</td><td>弹窗 <code>role="dialog"</code>；选项 <code>role="option"</code>；列表 <code>role="listbox"</code></td></tr>
+        <tr><td>状态属性</td><td><code>aria-selected</code> / <code>aria-expanded</code> / <code>aria-hidden</code></td></tr>
+        <tr><td>跳转</td><td>Skip-link 跳至 <code>#main-content</code></td></tr>
+        <tr><td>减少动画</td><td><code>prefers-reduced-motion</code> 时动画降至 0.01ms</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin:32px 0 12px;font-size:16px;">4.4 正反例</h3>
+    <table class="rules">
+      <thead><tr><th class="do">✓ 应该</th><th class="dont">✗ 不应该</th></tr></thead>
+      <tbody>
+        <tr><td>用 <code>rounded-xl</code> / <code>rounded-2xl</code> 等 token 圆角</td><td class="dont">用 <code>rounded-[28px]</code> 任意值</td></tr>
+        <tr><td>用 <code>bg-primary</code> / <code>text-foreground</code> 等 token 类</td><td class="dont">内联 <code>style={{color:'#c53d43'}}</code></td></tr>
+        <tr><td>深色模式用 <code>.dark</code> 类覆盖 CSS 变量</td><td class="dont">用 Tailwind <code>dark:</code> 前缀覆盖语义色</td></tr>
+        <tr><td>主操作用朱砂红，辅助操作用水墨灰</td><td class="dont">多处使用高饱和强调色造成噪点</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <p style="text-align:center;color:var(--muted-foreground);font-size:13px;margin-top:40px;">本规范与 <code style="font-family:var(--font-mono)">openspec/07-design-prototype.md</code> 互为补充 · v5.2.18</p>
+</div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-// src/components/stats-card.tsx v5.2.6
+// src/components/stats-card.tsx v5.2.19
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
@@ -29,7 +29,7 @@ export function StatsCard({ label, value, icon, accentVariant = 'vermilion' }: S
         className={`absolute top-0 left-0 right-0 h-[3px] origin-left group-hover:scale-x-100 transition-transform duration-300 ${accent.bar}`}
       />
       <div className="relative inline-block mb-4">
-        <div className="w-14 h-14 bg-gradient-to-br from-vermilion-500/10 to-indigo/10 dark:from-vermilion-500/20 dark:to-indigo/20 rounded-lg flex items-center justify-center text-vermilion-500">
+        <div className="w-14 h-14 bg-linear-to-br from-vermilion-500/10 to-indigo/10 dark:from-vermilion-500/20 dark:to-indigo/20 rounded-lg flex items-center justify-center text-vermilion-500">
           <span aria-hidden="true">{icon}</span>
         </div>
       </div>

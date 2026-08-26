@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<!--
+  prototype/practice.html · 练习页高保真交互原型 · v5.2.18
+  探索「测验 / 书写练习」界面：选择题、书写轨迹占位、即时反馈与进度条。
+  Design Token 与 globals.css @theme / 07-design-prototype.md 保持一致（东方水墨·朱砂红）。
+  仅用于设计探索，不导入生产代码。
+-->
+<html lang="zh-CN" class="">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)" />
+<title>HanziMaster · 练习页原型</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --background:#faf9f6; --foreground:#1a1a1a; --muted:#f3f1eb; --muted-foreground:#6b6356;
+    --border:#e5e1d8; --card:#ffffff; --card-foreground:#1a1a1a;
+    --primary:#c53d43; --primary-dark:color-mix(in srgb,var(--primary) 78%,#000); --primary-foreground:#fff;
+    --accent:#4f46e5; --accent-foreground:#fff; --destructive:#ef4444; --success:#34c759; --warning:#f59e0b; --info:#3b82f6; --ring:#c53d43;
+    --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:24px; --radius-3xl:28px; --radius-4xl:32px;
+    --shadow-ink:0 4px 20px rgba(26,26,26,0.08); --shadow-ink-lg:0 8px 40px rgba(26,26,26,0.12); --shadow-ink-xl:0 12px 60px rgba(26,26,26,0.16); --shadow-glow:0 0 30px rgba(197,61,67,0.20);
+    --dur-fast:0.15s; --dur-normal:0.25s; --dur-slow:0.4s; --dur-lg:0.6s;
+    --ease-out:cubic-bezier(0.22,1,0.36,1); --ease-spring:cubic-bezier(0.175,0.885,0.32,1.275); --ease-smooth:cubic-bezier(0.4,0,0.2,1);
+    --font-display:'Playfair Display',Georgia,serif; --font-serif:'Noto Serif SC',Georgia,serif;
+    --font-sans:'Space Grotesk',ui-sans-serif,system-ui,sans-serif; --font-mono:'JetBrains Mono',ui-monospace,monospace;
+    --font-heading:'Playfair Display',Georgia,serif; --scrim:rgba(13,13,13,0.5); --header-h:72px;
+  }
+  .dark { --background:#0d0d0d; --foreground:#f3f1eb; --muted:#1a1a1a; --muted-foreground:#a69c89; --border:#2d2d2d; --card:#1a1a1a; --card-foreground:#f3f1eb; --accent:#6366f1; --destructive:#f87171; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { font-family:var(--font-sans); background:var(--background); color:var(--foreground); line-height:1.6; -webkit-font-smoothing:antialiased; transition:background-color var(--dur-normal) var(--ease-smooth),color var(--dur-normal) var(--ease-smooth); }
+  .dark body { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM57 50c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9 21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E"); background-blend-mode:overlay; }
+  .display-font { font-family:var(--font-display); } .serif-font { font-family:var(--font-serif); }
+
+  header.topbar { position:sticky; top:0; z-index:50; height:var(--header-h); display:flex; align-items:center; gap:16px; padding:0 24px; background:color-mix(in srgb,var(--background) 80%,transparent); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); }
+  .brand { display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-weight:700; font-size:18px; }
+  .brand .mark { width:32px; height:32px; border-radius:10px; background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--font-serif); }
+  nav.mainnav { display:flex; gap:4px; margin-left:8px; }
+  .navlink { position:relative; padding:8px 14px; border-radius:var(--radius-md); font-size:14px; font-weight:500; color:var(--muted-foreground); text-decoration:none; transition:color var(--dur-fast),background var(--dur-fast); }
+  .navlink:hover { color:var(--foreground); background:var(--muted); }
+  .navlink.is-active { color:var(--primary); background:color-mix(in srgb,var(--primary) 10%,transparent); }
+  .navlink.is-active::after { content:""; position:absolute; bottom:2px; left:50%; transform:translateX(-50%); width:5px; height:5px; border-radius:999px; background:var(--primary); }
+  .spacer { flex:1; }
+  .icon-btn { width:40px; height:40px; border-radius:var(--radius-md); border:1px solid var(--border); background:var(--card); color:var(--foreground); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; transition:transform var(--dur-fast) var(--ease-spring); }
+  .icon-btn:hover { transform:translateY(-2px); }
+
+  main { max-width:880px; margin:0 auto; padding:40px 24px 80px; }
+  .page-head { margin-bottom:24px; }
+  .page-head .eyebrow { color:var(--primary); font-size:13px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; }
+  .page-head h1 { font-family:var(--font-display); font-size:32px; font-weight:600; margin:6px 0; }
+
+  /* 进度条 */
+  .progress-wrap { margin-bottom:28px; }
+  .progress-meta { display:flex; justify-content:space-between; font-size:13px; color:var(--muted-foreground); margin-bottom:8px; }
+  .progress-track { height:10px; background:var(--muted); border-radius:999px; overflow:hidden; }
+  .progress-fill { height:100%; background:linear-gradient(90deg,var(--primary),var(--accent)); border-radius:999px; transition:width var(--dur-lg) var(--ease-out); }
+
+  /* 模式切换 */
+  .modes { display:flex; gap:8px; margin-bottom:28px; }
+  .mode { flex:1; padding:14px; border:1px solid var(--border); border-radius:var(--radius-lg); background:var(--card); cursor:pointer; text-align:center; transition:all var(--dur-fast) var(--ease-smooth); }
+  .mode:hover { border-color:var(--primary); transform:translateY(-2px); }
+  .mode.is-active { border-color:var(--primary); background:color-mix(in srgb,var(--primary) 8%,var(--card)); box-shadow:var(--shadow-glow); }
+  .mode .mi { font-size:24px; }
+  .mode .mt { font-size:13px; font-weight:600; margin-top:6px; }
+
+  /* 测验卡 */
+  .quiz { background:var(--card); border:1px solid var(--border); border-radius:var(--radius-2xl); padding:32px; box-shadow:var(--shadow-ink); }
+  .quiz .q-glyph { font-family:var(--font-serif); font-size:88px; font-weight:500; text-align:center; margin-bottom:8px; }
+  .quiz .q-ask { text-align:center; color:var(--muted-foreground); margin-bottom:24px; }
+  .options { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .opt { padding:16px; border:2px solid var(--border); border-radius:var(--radius-lg); background:var(--card); font-size:16px; cursor:pointer; transition:all var(--dur-fast) var(--ease-smooth); text-align:left; display:flex; align-items:center; gap:12px; }
+  .opt:hover { border-color:var(--primary); transform:translateY(-2px); }
+  .opt .key { width:28px; height:28px; border-radius:8px; background:var(--muted); display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:13px; color:var(--muted-foreground); flex:none; }
+  .opt.correct { border-color:var(--success); background:rgba(52,199,89,0.12); }
+  .opt.wrong { border-color:var(--destructive); background:rgba(239,68,68,0.12); }
+  .opt:disabled { cursor:default; }
+  .quiz-feedback { margin-top:20px; padding:14px 16px; border-radius:var(--radius-md); font-size:14px; display:none; }
+  .quiz-feedback.ok { display:block; background:rgba(52,199,89,0.12); color:#1a7a37; }
+  .quiz-feedback.no { display:block; background:rgba(239,68,68,0.12); color:var(--destructive); }
+  .dark .quiz-feedback.ok { color:#7ee2a0; }
+  .quiz-actions { display:flex; justify-content:flex-end; margin-top:24px; }
+  .btn { display:inline-flex; align-items:center; gap:8px; font-family:var(--font-sans); font-weight:600; font-size:14px; padding:12px 22px; border-radius:var(--radius-md); border:1px solid transparent; cursor:pointer; transition:transform var(--dur-fast) var(--ease-spring),box-shadow var(--dur-normal); }
+  .btn-primary { background:var(--primary); color:var(--primary-foreground); }
+  .btn-primary:hover { background:var(--primary-dark); transform:translateY(-2px); box-shadow:var(--shadow-glow); }
+  .btn-primary:disabled { opacity:0.5; cursor:not-allowed; transform:none; box-shadow:none; }
+
+  /* 书写区 */
+  .write-panel { display:none; }
+  .write-panel.is-active { display:block; }
+  .canvas-wrap { position:relative; background:var(--muted); border-radius:var(--radius-xl); padding:20px; margin-bottom:20px; }
+  .write-target { font-family:var(--font-serif); font-size:160px; font-weight:500; text-align:center; color:var(--foreground); opacity:0.12; user-select:none; }
+  .write-hint { text-align:center; color:var(--muted-foreground); font-size:14px; }
+  .stroke-steps { display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; }
+  .step { width:40px; height:40px; border-radius:10px; background:var(--card); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:13px; }
+  .step.done { background:var(--primary); color:#fff; border-color:var(--primary); }
+
+  *:focus-visible { outline:2px solid var(--ring); outline-offset:2px; border-radius:4px; }
+  @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}}
+  @media (max-width:640px){ main{padding:28px 16px 60px;} .page-head h1{font-size:26px;} nav.mainnav{display:none;} .options{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="mark">汉</span> HanziMaster</div>
+  <nav class="mainnav">
+    <a class="navlink" href="prototype.html">首页</a>
+    <a class="navlink" href="learn.html">学习</a>
+    <a class="navlink is-active" href="practice.html">练习</a>
+    <a class="navlink" href="progress.html">进度</a>
+  </nav>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="themeToggle" aria-label="切换深色模式" title="切换深色模式">🌓</button>
+  <button class="icon-btn" aria-label="设置">⚙</button>
+</header>
+
+<main id="main-content">
+  <div class="page-head">
+    <span class="eyebrow">练习</span>
+    <h1 class="display-font">巩固所学</h1>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-meta"><span id="progLabel">第 1 / 5 题</span><span id="progPct">20%</span></div>
+    <div class="progress-track"><div class="progress-fill" id="progFill" style="width:20%"></div></div>
+  </div>
+
+  <div class="modes">
+    <div class="mode is-active" data-mode="quiz"><div class="mi">📝</div><div class="mt">选择题</div></div>
+    <div class="mode" data-mode="write"><div class="mi">✍️</div><div class="mt">书写练习</div></div>
+  </div>
+
+  <!-- 测验 -->
+  <div id="quizPanel">
+    <div class="quiz">
+      <div class="q-glyph serif-font" id="qGlyph">木</div>
+      <div class="q-ask">这个汉字的拼音是？</div>
+      <div class="options" id="qOptions"></div>
+      <div class="quiz-feedback" id="qFeedback"></div>
+      <div class="quiz-actions">
+        <button class="btn btn-primary" id="qNext" disabled>下一题 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 书写 -->
+  <div id="writePanel" class="write-panel">
+    <div class="quiz">
+      <div class="canvas-wrap">
+        <div class="write-target serif-font" id="wTarget">水</div>
+      </div>
+      <div class="write-hint">按笔顺描红，共 <span id="wStrokes">4</span> 笔</div>
+      <div class="stroke-steps" id="wSteps"></div>
+      <div class="quiz-actions">
+        <button class="btn btn-primary" id="wNext">下一个字 →</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+  // ===== 测验数据 =====
+  const quiz = [
+    { hanzi:'木', py:'mù', options:['mù','huǒ','shuǐ','rì'], answer:0 },
+    { hanzi:'火', py:'huǒ', options:['shān','huǒ','yuè','kǒu'], answer:1 },
+    { hanzi:'水', py:'shuǐ', options:['rì','shuǐ','dà','rén'], answer:1 },
+    { hanzi:'山', py:'shān', options:['shān','èr','sān','mù'], answer:0 },
+    { hanzi:'日', py:'rì', options:['yuè','kǒu','rì','huǒ'], answer:2 },
+  ];
+  let qi = 0, correct = 0;
+  const qGlyph=document.getElementById('qGlyph'), qOptions=document.getElementById('qOptions'),
+        qFeedback=document.getElementById('qFeedback'), qNext=document.getElementById('qNext'),
+        progFill=document.getElementById('progFill'), progLabel=document.getElementById('progLabel'), progPct=document.getElementById('progPct');
+
+  function loadQuiz(){
+    const q=quiz[qi]; qGlyph.textContent=q.hanzi; qFeedback.className='quiz-feedback'; qNext.disabled=true;
+    qOptions.innerHTML='';
+    const keys=['A','B','C','D'];
+    q.options.forEach((opt,i)=>{
+      const b=document.createElement('button'); b.className='opt'; b.innerHTML=`<span class="key">${keys[i]}</span><span>${opt}</span>`;
+      b.onclick=()=>choose(b,i,q); qOptions.appendChild(b);
+    });
+    updateProg();
+  }
+  function choose(btn,idx,q){
+    const opts=[...qOptions.children]; opts.forEach(o=>o.disabled=true);
+    if(idx===q.answer){ btn.classList.add('correct'); correct++; qFeedback.className='quiz-feedback ok'; qFeedback.textContent=`✓ 正确！${q.hanzi} 读作 ${q.py}。`; }
+    else { btn.classList.add('wrong'); opts[q.answer].classList.add('correct'); qFeedback.className='quiz-feedback no'; qFeedback.textContent=`✗ 正确答案是 ${q.options[q.answer]}（${q.py}）。`; }
+    qNext.disabled=false;
+  }
+  function updateProg(){ const pct=Math.round((qi)/quiz.length*100); progFill.style.width=pct+'%'; progLabel.textContent=`第 ${Math.min(qi+1,quiz.length)} / ${quiz.length} 题`; progPct.textContent=pct+'%'; }
+  qNext.onclick=()=>{ if(qi<quiz.length-1){ qi++; loadQuiz(); } else { finish(); } };
+  function finish(){
+    updateProg(); progFill.style.width='100%'; progPct.textContent='100%'; progLabel.textContent='完成';
+    qGlyph.textContent='🎉'; qOptions.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--muted-foreground);">本次测验正确率 ${correct}/${quiz.length}。继续保持！</div>`;
+    qFeedback.className='quiz-feedback ok'; qFeedback.textContent='已完成本轮练习。'; qNext.textContent='再来一轮 ↺'; qNext.disabled=false;
+    qNext.onclick=()=>{ qi=0; correct=0; qNext.textContent='下一题 →'; qNext.onclick=()=>{ if(qi<quiz.length-1){qi++;loadQuiz();}else{finish();} }; loadQuiz(); };
+  }
+  loadQuiz();
+
+  // 书写面板
+  const writeChars=['水','火','木','山','日'];
+  let wi=0;
+  function loadWrite(){
+    const c=writeChars[wi]; document.getElementById('wTarget').textContent=c;
+    const strokes={水:4,火:4,木:4,山:3,日:4}[c]; document.getElementById('wStrokes').textContent=strokes;
+    const steps=document.getElementById('wSteps'); steps.innerHTML='';
+    for(let i=1;i<=strokes;i++){const s=document.createElement('div');s.className='step';s.textContent=i;steps.appendChild(s);}
+    // 模拟描红进度
+    [...steps.children].forEach((s,i)=>setTimeout(()=>s.classList.add('done'),(i+1)*400));
+  }
+  document.getElementById('wNext').onclick=()=>{ wi=(wi+1)%writeChars.length; loadWrite(); };
+  loadWrite();
+
+  // 模式切换
+  document.querySelectorAll('.mode').forEach(m=>m.onclick=()=>{
+    document.querySelectorAll('.mode').forEach(x=>x.classList.remove('is-active')); m.classList.add('is-active');
+    const isQuiz=m.dataset.mode==='quiz';
+    document.getElementById('quizPanel').style.display=isQuiz?'block':'none';
+    document.getElementById('writePanel').classList.toggle('is-active',!isQuiz);
+  });
+
+  const tgl=document.getElementById('themeToggle');
+  tgl.onclick=()=>{ const d=document.documentElement.classList.toggle('dark'); localStorage.setItem('hm-theme',d?'dark':'light'); };
+  if(localStorage.getItem('hm-theme')==='dark') document.documentElement.classList.add('dark');
+</script>
+</body>
+</html>

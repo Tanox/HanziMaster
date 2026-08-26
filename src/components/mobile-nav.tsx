@@ -1,4 +1,4 @@
-// src/components/mobile-nav.tsx v5.2.12
+// src/components/mobile-nav.tsx v5.2.19
 'use client';
 
 import { useEffect, useRef } from 'react';
@@ -66,7 +66,7 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
         {/* Drawer Header */}
         <div className="flex justify-between items-center p-5 border-b border-ink-100 dark:border-ink-800">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-vermilion-500 to-vermilion-600 rounded-xl flex items-center justify-center shadow-sm">
+            <div className="w-10 h-10 bg-linear-to-br from-vermilion-500 to-vermilion-600 rounded-xl flex items-center justify-center shadow-sm">
               <span className="text-primary-foreground text-base font-bold serif-font">汉</span>
             </div>
             <span className="text-base font-bold text-ink-900 dark:text-ink-50 display-font">HanziMaster</span>

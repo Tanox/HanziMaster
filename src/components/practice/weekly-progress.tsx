@@ -1,4 +1,4 @@
-// src/components/practice/weekly-progress.tsx v5.2.6
+// src/components/practice/weekly-progress.tsx v5.2.19
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
@@ -37,7 +37,7 @@ export function WeeklyProgress({
               key={day}
               className={`flex flex-col items-center p-5 rounded-xl ${
                 active
-                  ? 'bg-gradient-to-br from-vermilion-500 to-vermilion-600 text-primary-foreground'
+                  ? 'bg-linear-to-br from-vermilion-500 to-vermilion-600 text-primary-foreground'
                   : 'bg-ink-50/50 dark:bg-ink-800/30 text-ink-600 dark:text-ink-400 border border-ink-100 dark:border-ink-800'
               } ${index === todayIndex ? 'ring-2 ring-vermilion-400' : ''}`}
             >

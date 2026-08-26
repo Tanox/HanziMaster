@@ -1,4 +1,4 @@
-// src/app/page.tsx v5.2.6
+// src/app/page.tsx v5.2.19
 'use client';
 
 import { useEffect } from 'react';
@@ -87,7 +87,7 @@ export default function HomePage() {
                     <span className="font-semibold text-vermilion-500">72%</span>
                   </div>
                   <div className="h-2 bg-ink-100 dark:bg-ink-800 rounded-full overflow-hidden">
-                    <div className="h-full w-[72%] bg-gradient-to-r from-vermilion-500 to-vermilion-400 rounded-full" />
+                    <div className="h-full w-[72%] bg-linear-to-r from-vermilion-500 to-vermilion-400 rounded-full" />
                   </div>
                 </div>
               </div>

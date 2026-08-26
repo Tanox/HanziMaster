@@ -1,5 +1,27 @@
 ﻿# Changelog
 
+## [5.2.19] - 统一样式与补充测试/工具链
+### Style
+- 统一 Tailwind 渐变类名为 v4 新语法 `bg-linear-to-*`（此前 `practice/page.tsx`、`page.tsx`、多个组件混用 v3 旧别名 `bg-gradient-to-*`，二者在 v4 均有效但风格不一）。
+
+### Test / Chore
+- 新增 `vitest.config.ts` 及 `package.json` 脚本 `test` / `test:watch` / `format`，引入 `vitest@^3.2.4`。
+- 新增核心纯逻辑单测：`src/lib/__tests__/characters.test.ts`（12 字数据完整性、必填字段、translationKey 合法性）、`i18n.test.ts`（11 语言叶子键与 en 完全一致）、`stroke-order.test.ts`（笔顺 path/medians 非空且数量一致）。
+- 新增 `.prettierrc.json` / `.prettierignore`，落实 Prettier 代码风格门禁。
+- 版本号同步至 v5.2.19：package.json、metadata.json、本次改动文件头注释、CHANGELOG 本小节。
+
+## [5.2.18] - 完善原型设计
+### Docs / Prototype
+- 新增 `prototype/wireframes.html`：组件库规范，含基础组件（Button / Input / Badge）、复合组件（Card / Form / Switch / Tabs / Dialog）、业务组件（FeatureCard / StatsCard / EmptyState / Toast / NavLink）与组件使用规则（间距 / 状态 / 无障碍 / 正反例）。
+- 新增 `prototype/learn.html`：学习页高保真原型——汉字网格、筛选搜索、详情弹窗（笔顺/词语/字义 Tab 切换）、主题切换，真实汉字数据。
+- 新增 `prototype/practice.html`：练习页高保真原型——选择题（即时反馈 + 进度条）、书写练习（笔顺描红占位）、测验完成汇总。
+- 新增 `prototype/progress.html`：进度页高保真原型——统计卡、5 周练习热力图、分类掌握度、最近活动流。
+- 新增 `prototype/DESIGN_SPEC.md`：原型设计规范文档，覆盖设计系统（色彩/字体/间距布局/图标/动效）、组件库、交互标准（模式库/反馈/错误处理/空状态）。
+- 所有原型文件 Design Token 与 `globals.css @theme` / `07-design-prototype.md` 单一来源对齐（东方水墨·朱砂红）。
+
+### Chore
+- 版本号同步至 v5.2.18：package.json、metadata.json、README/README_EN 标题与页脚、新增文件头注释、CHANGELOG 本小节。
+
 ## [5.2.16] - 完善 Community Health Files
 ### Docs / Chore
 - 在 `.github/` 新增仓库治理与社区健康文件：行为准则 `CODE_OF_CONDUCT.md`、安全政策 `SECURITY.md`、支持指引 `SUPPORT.md`、赞助配置 `FUNDING.yml`、Issue 模板（`bug_report.yml` / `feature_request.yml` / `config.yml`）、Pull Request 模板 `PULL_REQUEST_TEMPLATE.md`。

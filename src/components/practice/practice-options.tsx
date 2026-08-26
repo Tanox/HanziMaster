@@ -1,4 +1,4 @@
-// src/components/practice/practice-options.tsx v5.2.6
+// src/components/practice/practice-options.tsx v5.2.19
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
@@ -25,7 +25,7 @@ export function PracticeOptionsGrid({ selectedOption, onSelect }: PracticeOption
             }`}
           >
             <div className={`relative w-20 h-20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ${
-              isSelected ? 'bg-vermilion-500 text-primary-foreground' : 'bg-gradient-to-br from-vermilion-500/10 to-indigo/10 dark:from-vermilion-500/20 dark:to-indigo/20 text-vermilion-500'
+              isSelected ? 'bg-vermilion-500 text-primary-foreground' : 'bg-linear-to-br from-vermilion-500/10 to-indigo/10 dark:from-vermilion-500/20 dark:to-indigo/20 text-vermilion-500'
             }`}>
               {icons[option.icon]}
             </div>

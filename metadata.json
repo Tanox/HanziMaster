@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.17",
-  "version": "5.2.17",
-  "description": "v5.2.16: 学习页补实现笔顺展示——新增 StrokeOrderDemo 组件（SVG 逐笔播放动画，复用 stroke-order-data 笔画路径），character-detail 笔顺区由静态灰字升级为可交互演示，对齐 stroke-order 文案承诺。",
+  "name": "HanziMaster 汉字大师 v5.2.18",
+  "version": "5.2.19",
+  "description": "v5.2.18: 完善原型设计——新增 wireframes.html 组件库规范、learn/practice/progress 高保真原型页与 DESIGN_SPEC.md 设计规范文档。",
   "keywords": [
     "Chinese characters",
     "Hanzi",

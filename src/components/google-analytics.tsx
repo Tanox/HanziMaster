@@ -1,4 +1,4 @@
-// src/components/google-analytics.tsx v5.2.17
+// src/components/google-analytics.tsx v5.2.19
 import Script from 'next/script';
 
 // Google Analytics 衡量 ID（来自用户配置）

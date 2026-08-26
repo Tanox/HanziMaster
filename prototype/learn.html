@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<!--
+  prototype/learn.html · 学习页高保真交互原型 · v5.2.18
+  探索「学习 / 每日练习」界面的完整交互：汉字网格、筛选、详情弹窗（笔顺/词语/字义）。
+  Design Token 与 globals.css @theme / 07-design-prototype.md 保持一致（东方水墨·朱砂红）。
+  仅用于设计探索，不导入生产代码。
+-->
+<html lang="zh-CN" class="">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)" />
+<title>HanziMaster · 学习页原型</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --background:#faf9f6; --foreground:#1a1a1a; --muted:#f3f1eb; --muted-foreground:#6b6356;
+    --border:#e5e1d8; --card:#ffffff; --card-foreground:#1a1a1a;
+    --primary:#c53d43; --primary-dark:color-mix(in srgb,var(--primary) 78%,#000); --primary-foreground:#fff;
+    --accent:#4f46e5; --accent-foreground:#fff; --destructive:#ef4444; --success:#34c759; --warning:#f59e0b; --info:#3b82f6; --ring:#c53d43;
+    --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:24px; --radius-3xl:28px; --radius-4xl:32px;
+    --shadow-ink:0 4px 20px rgba(26,26,26,0.08); --shadow-ink-lg:0 8px 40px rgba(26,26,26,0.12); --shadow-ink-xl:0 12px 60px rgba(26,26,26,0.16); --shadow-glow:0 0 30px rgba(197,61,67,0.20);
+    --dur-fast:0.15s; --dur-normal:0.25s; --dur-slow:0.4s; --dur-lg:0.6s;
+    --ease-out:cubic-bezier(0.22,1,0.36,1); --ease-spring:cubic-bezier(0.175,0.885,0.32,1.275); --ease-smooth:cubic-bezier(0.4,0,0.2,1);
+    --font-display:'Playfair Display',Georgia,serif; --font-serif:'Noto Serif SC',Georgia,serif;
+    --font-sans:'Space Grotesk',ui-sans-serif,system-ui,sans-serif; --font-mono:'JetBrains Mono',ui-monospace,monospace;
+    --font-heading:'Playfair Display',Georgia,serif; --scrim:rgba(13,13,13,0.5); --header-h:72px;
+  }
+  .dark { --background:#0d0d0d; --foreground:#f3f1eb; --muted:#1a1a1a; --muted-foreground:#a69c89; --border:#2d2d2d; --card:#1a1a1a; --card-foreground:#f3f1eb; --accent:#6366f1; --destructive:#f87171; }
+
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { font-family:var(--font-sans); background:var(--background); color:var(--foreground); line-height:1.6; -webkit-font-smoothing:antialiased; transition:background-color var(--dur-normal) var(--ease-smooth),color var(--dur-normal) var(--ease-smooth); }
+  .dark body { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM57 50c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9 21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E"); background-blend-mode:overlay; }
+  .display-font { font-family:var(--font-display); }
+  .serif-font { font-family:var(--font-serif); }
+
+  /* Header */
+  header.topbar { position:sticky; top:0; z-index:50; height:var(--header-h); display:flex; align-items:center; gap:16px; padding:0 24px; background:color-mix(in srgb,var(--background) 80%,transparent); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); }
+  .brand { display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-weight:700; font-size:18px; }
+  .brand .mark { width:32px; height:32px; border-radius:10px; background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--font-serif); }
+  nav.mainnav { display:flex; gap:4px; margin-left:8px; }
+  .navlink { position:relative; padding:8px 14px; border-radius:var(--radius-md); font-size:14px; font-weight:500; color:var(--muted-foreground); text-decoration:none; transition:color var(--dur-fast),background var(--dur-fast); }
+  .navlink:hover { color:var(--foreground); background:var(--muted); }
+  .navlink.is-active { color:var(--primary); background:color-mix(in srgb,var(--primary) 10%,transparent); }
+  .navlink.is-active::after { content:""; position:absolute; bottom:2px; left:50%; transform:translateX(-50%); width:5px; height:5px; border-radius:999px; background:var(--primary); }
+  .spacer { flex:1; }
+  .icon-btn { width:40px; height:40px; border-radius:var(--radius-md); border:1px solid var(--border); background:var(--card); color:var(--foreground); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; transition:transform var(--dur-fast) var(--ease-spring); }
+  .icon-btn:hover { transform:translateY(-2px); }
+
+  /* Layout */
+  main { max-width:1200px; margin:0 auto; padding:40px 24px 80px; }
+  .page-head { margin-bottom:28px; }
+  .page-head .eyebrow { color:var(--primary); font-size:13px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; }
+  .page-head h1 { font-family:var(--font-display); font-size:32px; font-weight:600; margin:6px 0; }
+  .page-head p { color:var(--muted-foreground); }
+
+  /* Filters */
+  .filters { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:28px; }
+  .search { position:relative; flex:1; min-width:220px; }
+  .search input { width:100%; font-family:var(--font-sans); font-size:14px; padding:12px 14px 12px 42px; border:2px solid var(--border); border-radius:var(--radius-md); background:var(--card); color:var(--foreground); transition:border-color var(--dur-fast),box-shadow var(--dur-fast); }
+  .search input:focus { outline:none; border-color:var(--primary); box-shadow:0 0 0 4px rgba(197,61,67,0.15); }
+  .search .si { position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--muted-foreground); }
+  .chip { font-size:13px; font-weight:500; padding:9px 16px; border-radius:999px; border:1px solid var(--border); background:var(--card); color:var(--muted-foreground); cursor:pointer; transition:all var(--dur-fast) var(--ease-smooth); }
+  .chip:hover { color:var(--foreground); }
+  .chip.is-active { background:var(--primary); color:var(--primary-foreground); border-color:var(--primary); }
+
+  /* Hanzi grid */
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:16px; }
+  .hz-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:20px; text-align:center; cursor:pointer; box-shadow:var(--shadow-ink); transition:transform var(--dur-normal) var(--ease-out),box-shadow var(--dur-normal) var(--ease-out),border-color var(--dur-normal); }
+  .hz-card:hover { transform:translateY(-8px); box-shadow:var(--shadow-ink-lg); border-color:color-mix(in srgb,var(--primary) 40%,var(--border)); }
+  .hz-card .glyph { font-family:var(--font-serif); font-size:56px; font-weight:500; line-height:1.1; color:var(--foreground); }
+  .hz-card .py { font-family:var(--font-mono); font-size:13px; color:var(--accent); margin-top:8px; }
+  .hz-card .en { font-size:12px; color:var(--muted-foreground); margin-top:2px; }
+  .hz-card .badge { margin-top:10px; }
+
+  .badge { display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:600; padding:3px 10px; border-radius:999px; }
+  .badge-mastered { background:rgba(52,199,89,0.15); color:#1a7a37; }
+  .badge-learning { background:rgba(245,158,11,0.15); color:#9a6200; }
+  .badge-new { background:rgba(59,130,246,0.15); color:#1d4ed8; }
+  .dark .badge-mastered { color:#7ee2a0; } .dark .badge-learning { color:#fcd34d; } .dark .badge-new { color:#93c5fd; }
+
+  /* Dialog */
+  .overlay { position:fixed; inset:0; background:var(--scrim); backdrop-filter:blur(4px); display:none; align-items:center; justify-content:center; z-index:100; padding:20px; opacity:0; transition:opacity var(--dur-normal) var(--ease-smooth); }
+  .overlay.open { display:flex; opacity:1; }
+  .dialog { background:color-mix(in srgb,var(--card) 95%,transparent); backdrop-filter:blur(20px); border-radius:var(--radius-3xl); box-shadow:var(--shadow-ink-xl); width:min(560px,100%); max-height:90vh; overflow:auto; padding:32px; transform:scale(0.94); transition:transform var(--dur-normal) var(--ease-spring); }
+  .overlay.open .dialog { transform:scale(1); }
+  .dialog-head { display:flex; align-items:center; gap:18px; margin-bottom:20px; }
+  .dialog-head .big-glyph { font-family:var(--font-serif); font-size:72px; font-weight:500; width:110px; height:110px; border-radius:var(--radius-xl); background:var(--muted); display:flex; align-items:center; justify-content:center; }
+  .dialog-head h2 { font-family:var(--font-display); font-size:26px; }
+  .dialog-head .meta { color:var(--muted-foreground); font-size:14px; margin-top:4px; }
+  .dialog-head .close { margin-left:auto; }
+  .tabs { display:flex; gap:4px; border-bottom:1px solid var(--border); margin-bottom:18px; }
+  .tab { padding:10px 16px; font-size:14px; font-weight:500; color:var(--muted-foreground); background:transparent; border:none; border-bottom:2px solid transparent; cursor:pointer; transition:color var(--dur-fast),border-color var(--dur-fast); }
+  .tab.is-active { color:var(--primary); border-bottom-color:var(--primary); }
+  .tab-panel { display:none; animation:fadeIn var(--dur-normal) var(--ease-out); }
+  .tab-panel.is-active { display:block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+  .stroke-demo { display:flex; align-items:center; gap:20px; padding:20px; background:var(--muted); border-radius:var(--radius-lg); }
+  .stroke-demo .glyph { font-family:var(--font-serif); font-size:90px; font-weight:500; }
+  .stroke-demo ol { font-size:14px; color:var(--foreground); }
+  .stroke-demo ol li { margin:4px 0; }
+  .word-list { display:flex; flex-direction:column; gap:10px; }
+  .word-item { display:flex; align-items:center; gap:12px; padding:12px 14px; background:var(--muted); border-radius:var(--radius-md); }
+  .word-item .w { font-family:var(--font-serif); font-size:18px; font-weight:500; }
+  .word-item .p { font-family:var(--font-mono); font-size:13px; color:var(--accent); }
+  .word-item .e { color:var(--muted-foreground); font-size:13px; margin-left:auto; }
+  .example { padding:16px; background:var(--muted); border-radius:var(--radius-lg); font-family:var(--font-serif); font-size:16px; }
+  .example .py { font-family:var(--font-mono); font-size:13px; color:var(--accent); margin-top:6px; }
+  .example .en { color:var(--muted-foreground); font-size:13px; }
+
+  /* Toast */
+  .toast { position:fixed; top:80px; right:16px; z-index:200; display:flex; align-items:center; gap:12px; min-width:280px; padding:14px 16px; border-radius:var(--radius-md); box-shadow:var(--shadow-ink-lg); background:var(--card); border:1px solid var(--border); transform:translateX(120%); transition:transform var(--dur-normal) var(--ease-out); }
+  .toast.show { transform:translateX(0); }
+  .toast .dot { width:10px; height:10px; border-radius:999px; background:var(--success); }
+
+  .btn { display:inline-flex; align-items:center; gap:8px; font-family:var(--font-sans); font-weight:600; font-size:14px; padding:12px 20px; border-radius:var(--radius-md); border:1px solid transparent; cursor:pointer; transition:transform var(--dur-fast) var(--ease-spring),box-shadow var(--dur-normal); }
+  .btn-primary { background:var(--primary); color:var(--primary-foreground); }
+  .btn-primary:hover { background:var(--primary-dark); transform:translateY(-2px); box-shadow:var(--shadow-glow); }
+  .btn-outline { background:transparent; color:var(--foreground); border-color:var(--border); }
+  .btn-outline:hover { border-color:var(--primary); color:var(--primary); }
+
+  *:focus-visible { outline:2px solid var(--ring); outline-offset:2px; border-radius:4px; }
+  @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}}
+  @media (max-width:640px){ main{padding:28px 16px 60px;} .page-head h1{font-size:26px;} nav.mainnav{display:none;} }
+</style>
+</head>
+<body>
+<a href="#main-content" class="skip-link" style="position:absolute;top:-100%;left:16px;z-index:200;padding:12px 20px;background:var(--primary);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;">跳到主内容</a>
+
+<header class="topbar">
+  <div class="brand"><span class="mark">汉</span> HanziMaster</div>
+  <nav class="mainnav">
+    <a class="navlink" href="prototype.html">首页</a>
+    <a class="navlink is-active" href="learn.html">学习</a>
+    <a class="navlink" href="practice.html">练习</a>
+    <a class="navlink" href="progress.html">进度</a>
+  </nav>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="themeToggle" aria-label="切换深色模式" title="切换深色模式">🌓</button>
+  <button class="icon-btn" aria-label="设置">⚙</button>
+</header>
+
+<main id="main-content">
+  <div class="page-head">
+    <span class="eyebrow">每日练习</span>
+    <h1 class="display-font">选择一个汉字</h1>
+    <p>探索其笔顺、词语与字义，点击卡片查看详情。</p>
+  </div>
+
+  <div class="filters">
+    <div class="search">
+      <span class="si">🔍</span>
+      <input id="searchInput" placeholder="搜索拼音 / 汉字 / 部首…" aria-label="搜索汉字" />
+    </div>
+    <button class="chip is-active" data-filter="all">全部</button>
+    <button class="chip" data-filter="new">新词</button>
+    <button class="chip" data-filter="learning">复习中</button>
+    <button class="chip" data-filter="mastered">已掌握</button>
+  </div>
+
+  <div class="grid" id="hanziGrid"></div>
+</main>
+
+<!-- 详情弹窗 -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="dlgTitle">
+  <div class="dialog">
+    <div class="dialog-head">
+      <div class="big-glyph serif-font" id="dlgGlyph">木</div>
+      <div>
+        <h2 id="dlgTitle" class="display-font">木</h2>
+        <div class="meta" id="dlgMeta">mù · Wood · 4 画 · 部首 木</div>
+      </div>
+      <button class="icon-btn close" id="dlgClose" aria-label="关闭">✕</button>
+    </div>
+    <div class="tabs">
+      <button class="tab is-active" data-tab="stroke">笔顺</button>
+      <button class="tab" data-tab="words">词语</button>
+      <button class="tab" data-tab="meaning">字义</button>
+    </div>
+    <div class="tab-panel is-active" id="tab-stroke">
+      <div class="stroke-demo">
+        <div class="glyph serif-font" id="strokeGlyph">木</div>
+        <ol id="strokeList"></ol>
+      </div>
+    </div>
+    <div class="tab-panel" id="tab-words">
+      <div class="word-list" id="wordList"></div>
+    </div>
+    <div class="tab-panel" id="tab-meaning">
+      <div class="example" id="exampleBox"></div>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:24px;">
+      <button class="btn btn-primary" id="markLearned">标记为已掌握</button>
+      <button class="btn btn-outline" id="practiceBtn">去练习</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span class="dot"></span><div><b id="toastTitle">已掌握</b><span id="toastMsg">木 已加入已掌握列表</span></div></div>
+
+<script>
+  // ===== 真实汉字数据（与 src/lib/characters.ts 对齐） =====
+  const chars = [
+    { hanzi:'一', py:'yī', en:'One', strokes:1, radical:'一', status:'mastered',
+      words:[{w:'一个',p:'yí gè',e:'One (measure word)'},{w:'一月',p:'yī yuè',e:'January'},{w:'第一',p:'dì yī',e:'First'}],
+      example:{s:'他是一个好人。',p:'Tā shì yī gè hǎo rén.',e:'He is a good person.'} },
+    { hanzi:'二', py:'èr', en:'Two', strokes:2, radical:'二', status:'mastered',
+      words:[{w:'二月',p:'èr yuè',e:'February'},{w:'第二',p:'dì èr',e:'Second'},{w:'二十',p:'èr shí',e:'Twenty'}],
+      example:{s:'今天是二月二号。',p:'Jīntiān shì èr yuè èr hào.',e:"Today is February 2nd."} },
+    { hanzi:'三', py:'sān', en:'Three', strokes:3, radical:'三', status:'learning',
+      words:[{w:'三月',p:'sān yuè',e:'March'},{w:'三个',p:'sān gè',e:'Three items'},{w:'三十',p:'sān shí',e:'Thirty'}],
+      example:{s:'我有三个苹果。',p:'Wǒ yǒu sān gè píngguǒ.',e:'I have three apples.'} },
+    { hanzi:'人', py:'rén', en:'Person', strokes:2, radical:'人', status:'learning',
+      words:[{w:'人们',p:'rénmen',e:'People'},{w:'大人',p:'dàrén',e:'Adult'},{w:'中国人',p:'Zhōngguó rén',e:'Chinese person'}],
+      example:{s:'他是一个好人。',p:'Tā shì yī gè hǎo rén.',e:'He is a good person.'} },
+    { hanzi:'大', py:'dà', en:'Big', strokes:3, radical:'大', status:'mastered',
+      words:[{w:'大人',p:'dàrén',e:'Adult'},{w:'大学',p:'dàxué',e:'University'},{w:'伟大',p:'wěidà',e:'Great'}],
+      example:{s:'这是一所大学。',p:'Zhè shì yī suǒ dàxué.',e:'This is a university.'} },
+    { hanzi:'口', py:'kǒu', en:'Mouth', strokes:3, radical:'口', status:'new',
+      words:[{w:'口水',p:'kǒushuǐ',e:'Saliva'},{w:'入口',p:'rùkǒu',e:'Entrance'},{w:'出口',p:'chūkǒu',e:'Exit'}],
+      example:{s:'请从这个口出去。',p:'Qǐng cóng zhège kǒu chūqù.',e:'Please exit through this opening.'} },
+    { hanzi:'日', py:'rì', en:'Sun / Day', strokes:4, radical:'日', status:'new',
+      words:[{w:'日子',p:'rìzi',e:'Days'},{w:'明日',p:'míngrì',e:'Tomorrow'},{w:'日本',p:'Rìběn',e:'Japan'}],
+      example:{s:'今天是好日子。',p:'Jīntiān shì hǎo rìzi.',e:'Today is a good day.'} },
+    { hanzi:'月', py:'yuè', en:'Moon / Month', strokes:4, radical:'月', status:'learning',
+      words:[{w:'月亮',p:'yuèliàng',e:'Moon'},{w:'月份',p:'yuèfèn',e:'Month'},{w:'正月',p:'zhēngyuè',e:'First month'}],
+      example:{s:'今晚的月亮很美。',p:'Jīn wǎn de yuèliàng hěn měi.',e:'The moon is beautiful tonight.'} },
+    { hanzi:'山', py:'shān', en:'Mountain', strokes:3, radical:'山', status:'mastered',
+      words:[{w:'山水',p:'shānshuǐ',e:'Landscape'},{w:'上山',p:'shàngshān',e:'Climb mountain'},{w:'雪山',p:'xuěshān',e:'Snow mountain'}],
+      example:{s:'我想去爬山。',p:'Wǒ xiǎng qù pá shān.',e:'I want to go mountain climbing.'} },
+    { hanzi:'水', py:'shuǐ', en:'Water', strokes:4, radical:'水', status:'new',
+      words:[{w:'水果',p:'shuǐguǒ',e:'Fruit'},{w:'河水',p:'héshuǐ',e:'River water'},{w:'喝水',p:'hēshuǐ',e:'Drink water'}],
+      example:{s:'请给我一杯水。',p:'Qǐng gěi wǒ yī bēi shuǐ.',e:'Please give me a glass of water.'} },
+    { hanzi:'火', py:'huǒ', en:'Fire', strokes:4, radical:'火', status:'learning',
+      words:[{w:'火车',p:'huǒchē',e:'Train'},{w:'火苗',p:'huǒmiáo',e:'Flame'},{w:'火山',p:'huǒshān',e:'Volcano'}],
+      example:{s:'小心火！',p:'Xiǎoxīn huǒ!',e:'Be careful with fire!'} },
+    { hanzi:'木', py:'mù', en:'Wood / Tree', strokes:4, radical:'木', status:'mastered',
+      words:[{w:'木头',p:'mùtou',e:'Wood'},{w:'树木',p:'shùmù',e:'Trees'},{w:'木马',p:'mùmǎ',e:'Hobby horse'}],
+      example:{s:'这是一棵大树。',p:'Zhè shì yī kē dà shù.',e:'This is a big tree.'} },
+  ];
+  const statusMap = { mastered:{cls:'badge-mastered',label:'已掌握'}, learning:{cls:'badge-learning',label:'复习中'}, new:{cls:'badge-new',label:'新词'} };
+
+  const grid = document.getElementById('hanziGrid');
+  function render(list){
+    grid.innerHTML = '';
+    list.forEach(c=>{
+      const s = statusMap[c.status];
+      const el = document.createElement('button');
+      el.className = 'hz-card';
+      el.setAttribute('aria-label', `${c.hanzi} ${c.py}`);
+      el.innerHTML = `<div class="glyph serif-font">${c.hanzi}</div><div class="py">${c.py}</div><div class="en">${c.en}</div><span class="badge ${s.cls}">${s.label}</span>`;
+      el.onclick = ()=>openDialog(c);
+      grid.appendChild(el);
+    });
+  }
+  render(chars);
+
+  // 筛选 + 搜索
+  let curFilter='all';
+  document.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{
+    document.querySelectorAll('.chip').forEach(x=>x.classList.remove('is-active'));
+    ch.classList.add('is-active'); curFilter=ch.dataset.filter; applyFilter();
+  });
+  document.getElementById('searchInput').oninput = applyFilter;
+  function applyFilter(){
+    const q = document.getElementById('searchInput').value.trim().toLowerCase();
+    const list = chars.filter(c=>{
+      const okF = curFilter==='all' || c.status===curFilter;
+      const okQ = !q || c.hanzi.includes(q) || c.py.toLowerCase().includes(q) || c.en.toLowerCase().includes(q);
+      return okF && okQ;
+    });
+    render(list);
+  }
+
+  // 弹窗
+  const overlay=document.getElementById('overlay');
+  function openDialog(c){
+    document.getElementById('dlgGlyph').textContent=c.hanzi;
+    document.getElementById('dlgTitle').textContent=c.hanzi;
+    document.getElementById('dlgMeta').textContent=`${c.py} · ${c.en} · ${c.strokes} 画 · 部首 ${c.radical}`;
+    document.getElementById('strokeGlyph').textContent=c.hanzi;
+    const sl=document.getElementById('strokeList'); sl.innerHTML='';
+    for(let i=1;i<=c.strokes;i++){const li=document.createElement('li');li.textContent=`第 ${i} 笔`;sl.appendChild(li);}
+    const wl=document.getElementById('wordList'); wl.innerHTML='';
+    c.words.forEach(w=>{const d=document.createElement('div');d.className='word-item';d.innerHTML=`<span class="w">${w.w}</span><span class="p">${w.p}</span><span class="e">${w.e}</span>`;wl.appendChild(d);});
+    document.getElementById('exampleBox').innerHTML=`${c.example.s}<div class="py">${c.example.p}</div><div class="en">${c.example.e}</div>`;
+    overlay.classList.add('open');
+  }
+  function closeDialog(){overlay.classList.remove('open');}
+  document.getElementById('dlgClose').onclick=closeDialog;
+  overlay.onclick=(e)=>{if(e.target===overlay)closeDialog();};
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDialog();});
+  document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('is-active'));
+    document.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('is-active'));
+    t.classList.add('is-active'); document.getElementById('tab-'+t.dataset.tab).classList.add('is-active');
+  });
+  document.getElementById('markLearned').onclick=()=>{ showToast('已掌握', document.getElementById('dlgTitle').textContent+' 已加入已掌握列表'); };
+  document.getElementById('practiceBtn').onclick=()=>{ closeDialog(); window.location.href='practice.html'; };
+
+  // Toast
+  const toast=document.getElementById('toast'); let toastTimer;
+  function showToast(title,msg){ document.getElementById('toastTitle').textContent=title; document.getElementById('toastMsg').textContent=msg; toast.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>toast.classList.remove('show'),3000); }
+
+  // 主题切换
+  const tgl=document.getElementById('themeToggle');
+  tgl.onclick=()=>{ const d=document.documentElement.classList.toggle('dark'); localStorage.setItem('hm-theme',d?'dark':'light'); };
+  if(localStorage.getItem('hm-theme')==='dark') document.documentElement.classList.add('dark');
+</script>
+</body>
+</html>
