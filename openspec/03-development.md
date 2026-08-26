@@ -7,8 +7,8 @@
 
 | 工具 | 版本要求 | 说明 |
 |------|---------|------|
-| Node.js | >= 24.5.0 | 运行时环境 |
-| npm | 随 Node.js 安装 | 包管理工具 |
+| Node.js | >= 24.11.0 | 运行时环境 |
+| pnpm | >= 11（由 `packageManager` 锁定 `pnpm@11.24.0`） | 唯一包管理器 |
 | 现代浏览器 | Chrome、Firefox、Safari、Edge 最新版 | 开发和测试 |
 
 ### 1.2 安装步骤
@@ -18,12 +18,14 @@
 git clone <repository-url>
 cd <project-directory>
 
-# 2. 安装依赖
-npm install
+# 2. 安装依赖（仅允许 pnpm）
+pnpm install
 
 # 3. 启动开发服务器
-npm run dev
+pnpm dev
 ```
+
+> **强制使用 pnpm**：`package.json` 的 `preinstall` 钩子为 `npx only-allow pnpm`，执行 `npm install` / `yarn` 会被拦截并报错。根目录 `.npmrc` 设 `engine-strict=true` 与 `package-manager-strict=true`，版本不符时 pnpm 直接报错。pnpm 全局依赖仓库通过 `pnpm config set store-dir ~/.pnpm-store` 共享，避免重复下载。
 
 ### 1.3 开发服务器
 
@@ -33,10 +35,13 @@ npm run dev
 
 | 命令 | 说明 |
 |------|------|
-| `npm run dev` | 启动开发服务器 |
-| `npm run build` | 构建生产版本 |
-| `npm run start` | 启动生产服务器 |
-| `npm run lint` | 运行代码检查 |
+| `pnpm dev` | 启动开发服务器 |
+| `pnpm build` | 构建生产版本 |
+| `pnpm start` | 启动生产服务器 |
+| `pnpm lint` | 运行 ESLint 检查 |
+| `pnpm test` | 运行单元测试（Vitest） |
+| `pnpm test:watch` | 监听模式运行测试 |
+| `pnpm format` | Prettier 格式化 `src/**/*.{ts,tsx,css}` |
 
 ## 3. 编码规范
 
@@ -51,7 +56,7 @@ npm run dev
 示例：
 
 ```typescript
-// src/lib/i18n/index.ts v5.2.11
+// src/lib/i18n/index.ts v5.2.22
 ```
 
 ### 3.2 版本管理 (SemVer 2.0.0)

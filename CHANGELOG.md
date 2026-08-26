@@ -1,5 +1,17 @@
 ﻿# Changelog
 
+## [5.2.22] - 全面同步项目文档
+### Docs
+- README.md / README_EN.md：标题与页脚版本戳 v5.2.20 → v5.2.22；补充 pnpm 强制约束说明与常用脚本表（lint/test/format）；英文 Core Pages 移除已删除的「Etymology & Culture / Adaptive Learning」描述。
+- openspec/03-development.md：系统要求 Node.js `>= 24.5.0` → `>= 24.11.0`；安装与命令由 npm 改为 pnpm；新增 Vitest / Prettier 脚本与 only-allow 强制约束说明。
+- openspec/01-overview.md：版本 v5.2.11 → v5.2.22；Node 要求对齐；核心功能移除「自适应学习 / 词源与文化」与代码实际一致；技术栈表移除 Vite 误述并补 pnpm/Vitest/Prettier 与实际版本；目录树去 `/workspace` 前缀、修正 next.config.mjs、package-lock.json → pnpm-lock.yaml、补全 hooks/components 子目录。
+- openspec/index.md / commit-template.md / 04-api-reference.md / coding-standards.md：版本戳 v5.2.11 → v5.2.22；coding-standards lint 命令改 pnpm。
+- openspec/alignment-checklist.md：文档快照表版本戳统一至 v5.2.22。
+- prototype/PROJECT_STRUCTURE.md：`.nvmrc` 注释版本 `>= 24.5.0` → `>= 24.11.0`。
+
+### Chore
+- 同步 package.json、metadata.json 至 v5.2.22。
+
 ## [5.2.21] - 继续拆分书写画布组件
 ### Refactor
 - 进一步拆分 `writing-canvas.tsx`（194 行）：将进度标签子组件 `ProgressLabel` 与样式常量 `PROGRESS_LABEL_WRAPPER_CLASS` / `PROGRESS_LABEL_BADGE_CLASS` 抽离至新建 `writing-canvas-parts.tsx`，主文件仅保留状态管理与事件编排。

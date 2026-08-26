@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.21",
-  "version": "5.2.21",
-  "description": "v5.2.21: 进一步拆分书写画布组件，将进度标签子组件与样式常量抽离至 writing-canvas-parts.tsx，主文件降至 194 行。",
+  "name": "HanziMaster 汉字大师 v5.2.22",
+  "version": "5.2.22",
+  "description": "v5.2.22: 全面同步项目文档——README/openspec 升级至 v5.2.22，强制 pnpm 约束与 Node>=24.11.0 对齐，移除过时技术栈与残留功能描述，校正目录树与版本戳。",
   "keywords": [
     "Chinese characters",
     "Hanzi",

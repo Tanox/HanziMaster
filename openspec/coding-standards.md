@@ -11,7 +11,7 @@
 示例：
 
 ```typescript
-// src/lib/i18n/index.ts v5.2.11
+// src/lib/i18n/index.ts v5.2.22
 ```
 
 ## 2. 版本管理 (SemVer 2.0.0)
@@ -199,7 +199,7 @@ function MyComponent() {
 
 ### 10.4 代码质量
 
-- **运行 lint**：提交前运行 `npm run lint` 检查代码
+- **运行 lint**：提交前运行 `pnpm lint` 检查代码
 - **代码格式化**：使用一致的代码格式
 - **Code Review**：重要变更经过代码审查
 - **写注释**：为复杂逻辑写清晰的注释

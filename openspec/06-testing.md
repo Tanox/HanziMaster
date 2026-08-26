@@ -1,7 +1,7 @@
 # 测试规范
 ============
 
-> **状态说明（v5.2.11）**：本项目当前**尚未接入自动化测试框架**——`package.json` 无 `test` 脚本，亦无 Jest/Vitest 依赖，仓库内暂无 `*.test.*` 文件。下文为**目标规范与蓝图**，落地前需先按 §10 接入测试基础设施。请勿直接运行 `npm test`（尚未配置）。
+> **状态说明（v5.2.22）**：本项目**已接入 Vitest 单元测试框架**——`package.json` 含 `test` / `test:watch` 脚本与 `vitest@^3.2.4` 依赖，仓库内有 `src/lib/__tests__/`（characters / i18n / stroke-order 单测）。下文为测试规范与最佳实践。
 
 ## 1. 测试框架
 
@@ -26,9 +26,9 @@
 
 | 命令 | 说明 |
 |------|------|
-| `npm test` | 运行测试 |
-| `npm test -- --watch` | 运行测试并监听文件变化 |
-| `npm test -- --coverage` | 运行测试并生成覆盖率报告 |
+| `pnpm test` | 运行测试 |
+| `pnpm test:watch` | 运行测试并监听文件变化 |
+| `pnpm test -- --coverage` | 运行测试并生成覆盖率报告 |
 
 ## 4. 测试文件组织
 
@@ -227,7 +227,7 @@ it('should toggle theme', () => {
 
 提交代码前，确保：
 
-- [ ] 所有测试通过（`npm test`）
+- [ ] 所有测试通过（`pnpm test`）
 - [ ] 没有跳过的测试（除非有充分理由并注释说明）
 - [ ] 新功能添加了相应的测试
 - [ ] 测试覆盖率达到目标要求
@@ -244,7 +244,7 @@ it('should toggle theme', () => {
 
 1. **安装依赖**（开发依赖）：
    ```bash
-   npm install -D jest @testing-library/react @testing-library/jest-dom @testing-library/user-event jest-environment-jsdom @types/jest ts-node
+   pnpm add -D @testing-library/react @testing-library/jest-dom @testing-library/user-event @testing-library/dom jsdom @types/jest
    ```
 2. **添加 Jest 配置** `jest.config.mjs`：
    - `testEnvironment: 'jsdom'`

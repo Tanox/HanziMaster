@@ -15,12 +15,14 @@ Please keep communication friendly and respectful, and focus on technical issues
 git clone https://github.com/<your-username>/HanziMaster.git
 cd HanziMaster
 
-# 2. Install dependencies (Node.js >= 24.5.0 required)
-npm install
+# 2. Install dependencies (Node.js >= 24.11.0 required, pnpm only)
+pnpm install
 
 # 3. Start the dev server
-npm run dev
+pnpm dev
 ```
+
+> This project enforces pnpm: running `npm install` / `yarn` is blocked by the `preinstall` hook (`only-allow pnpm`).
 
 The dev server runs at `http://localhost:3000` by default.
 
@@ -29,8 +31,8 @@ The dev server runs at `http://localhost:3000` by default.
 1. Create a feature branch from `main`: `git checkout -b feature/<short-desc>` or `fix/<short-desc>`.
 2. Implement your change locally and make sure lint and build pass:
    ```bash
-   npm run lint
-   npm run build
+   pnpm lint
+   pnpm build
    ```
 3. Commit your changes (see Commit Convention below).
 4. Push the branch and open a Pull Request against `main`.

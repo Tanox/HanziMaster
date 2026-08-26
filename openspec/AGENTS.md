@@ -7,7 +7,7 @@ Instructions for AI coding assistants working in this project.
 
 ## 开始任何任务前
 
-- **版本基准**：读取 `package.json` 的 `version` 字段（权威单一来源，当前 v5.2.11）确认真实版本，勿凭旧记忆。
+- **版本基准**：读取 `package.json` 的 `version` 字段（权威单一来源，当前 v5.2.22）确认真实版本，勿凭旧记忆。
 - **规范文档**：相关任务先读 `openspec/` 目录下对应文档：
   - 项目概述：`01-overview.md`
   - 技术架构：`02-architecture.md`

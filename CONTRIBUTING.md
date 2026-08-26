@@ -15,12 +15,14 @@
 git clone https://github.com/<your-username>/HanziMaster.git
 cd HanziMaster
 
-# 2. 安装依赖（需 Node.js >= 24.5.0）
-npm install
+# 2. 安装依赖（需 Node.js >= 24.11.0，强制 pnpm）
+pnpm install
 
 # 3. 启动开发服务器
-npm run dev
+pnpm dev
 ```
+
+> 本项目强制使用 pnpm：执行 `npm install` / `yarn` 会被 `preinstall` 钩子（`only-allow pnpm`）拦截报错。
 
 开发服务器默认运行在 `http://localhost:3000`。
 
@@ -29,8 +31,8 @@ npm run dev
 1. 从 `main` 分支创建功能分支：`git checkout -b feature/<简短描述>` 或 `fix/<简短描述>`。
 2. 在本地完成开发，确保通过 lint 与构建：
    ```bash
-   npm run lint
-   npm run build
+   pnpm lint
+   pnpm build
    ```
 3. 提交变更（参见下方提交规范）。
 4. 推送分支并发起 Pull Request 到 `main`。

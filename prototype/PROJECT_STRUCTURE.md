@@ -54,7 +54,7 @@ HanziMaster/
 ├── vercel.json            # Vercel 部署配置
 ├── eslint.config.js       # ESLint 配置
 ├── .env.example          # 环境变量示例
-├── .nvmrc                # Node 版本配置（>= 24.5.0）
+├── .nvmrc                # Node 版本配置（>= 24.11.0）
 ├── .gitignore            # Git 忽略配置
 ├── README.md             # 项目说明（中文）
 ├── README_EN.md          # 项目说明（英文）

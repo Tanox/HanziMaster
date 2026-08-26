@@ -1,4 +1,4 @@
-﻿# HanziMaster 汉字大师 v5.2.20
+﻿# HanziMaster 汉字大师 v5.2.22
 
 [English](README_EN.md) | [简体中文](README.md)
 
@@ -58,6 +58,20 @@ pnpm build
 pnpm start
 ```
 
+### Common Scripts
+
+| Command | Description |
+|---------|-------------|
+| `pnpm dev` | Start dev server (with HMR) |
+| `pnpm build` | Build for production |
+| `pnpm start` | Start production server |
+| `pnpm lint` | Run ESLint |
+| `pnpm test` | Run unit tests (Vitest) |
+| `pnpm test:watch` | Run tests in watch mode |
+| `pnpm format` | Format `src/**` with Prettier |
+
+> This project enforces pnpm: running `npm install` / `yarn` is blocked by the `preinstall` hook (`only-allow pnpm`). The root `.npmrc` sets `engine-strict` and `package-manager-strict`.
+
 ## Project Structure
 
 ```
@@ -85,7 +99,7 @@ src/
 
 ### Home (/)
 - Hero section showcasing app features
-- Feature introduction (Stroke Feedback, Etymology & Culture, Adaptive Learning)
+- Feature introduction (Stroke Feedback, Multiple Learning Modes, Personalized Progress)
 - Responsive design with dark/light mode support
 
 ### Learn (/learn)
@@ -158,4 +172,4 @@ Types: `feat` | `fix` | `docs` | `style` | `refactor` | `perf` | `test` | `build
 
 ## License
 
-© 2026 HanziMaster 汉字大师 v5.2.20. All rights reserved.
+© 2026 HanziMaster 汉字大师 v5.2.22. All rights reserved.

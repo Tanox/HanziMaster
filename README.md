@@ -1,4 +1,4 @@
-﻿# HanziMaster 汉字大师 v5.2.20
+﻿# HanziMaster 汉字大师 v5.2.22
 
 [English](README_EN.md) | [简体中文](README.md)
 
@@ -23,7 +23,7 @@
 | 工具 | 版本要求 | 说明 |
 |------|---------|------|
 | Node.js | >= 24.11.0 | 运行时环境 |
-| 包管理器 | pnpm | 强制（preinstall 拦截 npm/yarn） |
+| 包管理器 | pnpm | 强制（`preinstall` 钩子拦截 npm/yarn，仅允许 pnpm） |
 | 现代浏览器 | Chrome、Firefox、Safari、Edge 最新版 | 开发与测试 |
 
 ### 安装
@@ -50,6 +50,20 @@ pnpm start
 ```
 
 构建产物位于 `.next` 目录，默认端口 3000。
+
+### 常用脚本
+
+| 命令 | 说明 |
+|------|------|
+| `pnpm dev` | 启动开发服务器（含 HMR） |
+| `pnpm build` | 构建生产版本 |
+| `pnpm start` | 启动生产服务器 |
+| `pnpm lint` | 运行 ESLint 检查 |
+| `pnpm test` | 运行单元测试（Vitest） |
+| `pnpm test:watch` | 监听模式运行测试 |
+| `pnpm format` | Prettier 格式化 `src/**` |
+
+> 本项目强制使用 pnpm：执行 `npm install` / `yarn` 会被 `preinstall` 钩子（`only-allow pnpm`）拦截报错。根目录 `.npmrc` 已设 `engine-strict` 与 `package-manager-strict`。
 
 ## 项目结构
 
@@ -134,4 +148,4 @@ src/
 
 ## 许可证
 
-© 2026 HanziMaster 汉字大师 v5.2.20
+© 2026 HanziMaster 汉字大师 v5.2.22
