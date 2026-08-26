@@ -2,8 +2,8 @@
 
 本文档记录项目规范文档、原型图与代码实现的对齐情况。
 
-**版本**: v5.2.11
-**检查日期**: 2026-08-19
+**版本**: v5.2.17
+**检查日期**: 2026-08-26
 **权威来源**: `openspec/07-design-prototype.md`（设计系统）+ `prototype/prototype.html`（唯一权威高保真原型）
 
 ---
@@ -184,13 +184,27 @@
 
 | 配置文件 | 规范文档 | 存在 | 版本一致性 | 状态 |
 |----------|---------|------|-----------|------|
-| package.json | ✅ 01-overview.md | ✅ | v5.2.11 | ✅ 对齐 |
+| package.json | ✅ 01-overview.md | ✅ | v5.2.17 | ✅ 对齐 |
 | tsconfig.json | ✅ 03-development.md | ✅ | strict:true | ✅ 对齐 |
 | next.config.mjs | ✅ 01-overview.md | ✅ | - | ✅ 对齐 |
 | tailwind.config.ts | ✅ 03-development.md | ✅ | - | ✅ 对齐 |
 | eslint.config.js | ✅ 03-development.md | ✅ | - | ✅ 对齐 |
 | vercel.json | ✅ 05-deployment.md | ✅ | - | ✅ 对齐 |
 | components.json | ✅ 07-design-prototype.md | ✅ | shadcn radix-nova | ✅ 对齐 |
+
+---
+
+## 8.1 分析接入对齐（Google Analytics）
+
+| 项目 | 说明 | 代码实现 | 状态 |
+|------|------|---------|------|
+| 衡量 ID | G-TZG68T8J31 | `metadata.json` `googleAnalyticsId` + `google-analytics.tsx` 常量 | ✅ 一致 |
+| 注入方式 | `next/script` + gtag.js | `src/components/google-analytics.tsx`（afterInteractive） | ✅ 对齐 |
+| 全局挂载 | `<head>` 渲染 | `src/app/layout.tsx` 引入 `<GoogleAnalytics />` | ✅ 对齐 |
+| 环境开关 | 仅 production 上报 | `ENABLE_ANALYTICS = process.env.NODE_ENV === 'production'`；dev/build 不发送 | ✅ 对齐 |
+| CSP 放行 | 严格策略下可加载 | `next.config.mjs` `script-src` 放行 `googletagmanager.com` / `google-analytics.com`；`connect-src` 放行 GA 域名 | ✅ 对齐 |
+
+> 注：原型图 `prototype.html` 未含 GA 脚本（原型为静态演示，不含真实上报）；分析接入属运行期增强，代码为唯一实现来源。
 
 ---
 
@@ -251,7 +265,7 @@
 | i18n 翻译文件 | 11 | 11 | ✅ 对齐 |
 | 全局样式 (globals.css) | 1 | 1 | ✅ 对齐 |
 | 设计规范 (07-design-prototype.md) | 1 | v5.0 | ✅ 对齐 |
-| 对齐清单 (本文档) | 1 | v5.2.11 | ✅ 对齐 |
+| 对齐清单 (本文档) | 1 | v5.2.17 | ✅ 对齐 |
 
 ---
 
@@ -304,7 +318,7 @@
 | 设计规范 | /workspace/openspec/07-design-prototype.md | v5.0（设计系统源） |
 | 编码规范 | /workspace/openspec/coding-standards.md | v5.2.11 |
 | 提交模板 | /workspace/openspec/commit-template.md | v5.2.11 |
-| **对齐清单** | /workspace/openspec/alignment-checklist.md | **v5.2.11** |
+| **对齐清单** | /workspace/openspec/alignment-checklist.md | **v5.2.17** |
 | UI/UX 审查报告 | /workspace/openspec/ui-ux-review-report.md | 2026-08-19 |
 
 ### 13.2 原型文件
@@ -330,8 +344,9 @@
 | 配置文件 | 7 | 7 | 0 | 100% |
 | 文档链接 | 10 | 10 | 0 | 100% |
 | 原型图 | 10 | 10 | 0 | 100% |
+| 分析接入 | 5 | 5 | 0 | 100% |
 | 版本一致性 | 7 | 7 | 0 | 100% |
-| **总计** | **104** | **104** | **0** | **100%** |
+| **总计** | **109** | **109** | **0** | **100%** |
 
 ### 14.2 结论
 
