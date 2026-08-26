@@ -1,5 +1,15 @@
 ﻿# Changelog
 
+## [5.2.20] - 修正版本展示位脱节与拆分画布组件
+### Fix / Docs
+- 修正全部 11 语言 `footer.copyright` 版本号脱节（10 语言停留在 v5.2.11、en 停留在 v5.2.17），统一至 v5.2.20。
+- 修正 `metadata.json` name/description 与 `README`/`README_EN` 标题、页脚版本号脱节（v5.2.18 → v5.2.20）。
+- 修正 `README`/`README_EN` 安装说明：包管理器由 npm 改为强制 pnpm，Node 版本由 >=24.5.0 改为 >=24.11.0（对齐 engines 与 only-allow 约束）。
+- 更新 `next.config.mjs` 头注释至 v5.2.20（被 CSP/GA 改动但未同步）。
+
+### Refactor
+- 拆分超 200 行 `writing-canvas.tsx`（230 → 200 行内）：引导动画帧循环抽至 `writing-canvas-animation.ts`，跟写判定抽至 `writing-canvas-utils.ts` 的 `judgeUserStroke`，主组件仅保留状态与事件编排。
+
 ## [5.2.19] - 统一样式与补充测试/工具链
 ### Style
 - 统一 Tailwind 渐变类名为 v4 新语法 `bg-linear-to-*`（此前 `practice/page.tsx`、`page.tsx`、多个组件混用 v3 旧别名 `bg-gradient-to-*`，二者在 v4 均有效但风格不一）。
