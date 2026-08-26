@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/zh-TW.ts v5.2.11
+// src/lib/i18n/translations/zh-TW.ts v5.2.20
 export const zhTW = {
   common: {
     home: '首頁',
@@ -178,7 +178,7 @@ export const zhTW = {
     quizIncorrect: '錯誤',
   },
   footer: {
-    copyright: '© 2026 漢字大師 HanziMaster v5.2.11. 保留所有權利。',
+    copyright: '© 2026 漢字大師 HanziMaster v5.2.20. 保留所有權利。',
   },
   meta: {
     title: 'HanziMaster 漢字大師',

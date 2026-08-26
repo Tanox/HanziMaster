@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.18",
-  "version": "5.2.19",
-  "description": "v5.2.18: 完善原型设计——新增 wireframes.html 组件库规范、learn/practice/progress 高保真原型页与 DESIGN_SPEC.md 设计规范文档。",
+  "name": "HanziMaster 汉字大师 v5.2.20",
+  "version": "5.2.20",
+  "description": "v5.2.20: 修正全部 i18n 页脚与文档版本展示位脱节（统一至 v5.2.20）、README 安装说明改为 pnpm、拆分超 200 行书写画布组件。",
   "keywords": [
     "Chinese characters",
     "Hanzi",

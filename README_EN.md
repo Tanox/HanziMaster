@@ -1,4 +1,4 @@
-﻿# HanziMaster 汉字大师 v5.2.18
+﻿# HanziMaster 汉字大师 v5.2.20
 
 [English](README_EN.md) | [简体中文](README.md)
 
@@ -28,8 +28,8 @@ HanziMaster is a Chinese character learning app that helps you master handwritin
 
 ### Prerequisites
 
-- Node.js >= 24.5.0
-- npm or yarn
+- Node.js >= 24.11.0
+- pnpm (required; npm/yarn blocked by preinstall hook)
 
 ### Installation
 
@@ -41,12 +41,12 @@ HanziMaster is a Chinese character learning app that helps you master handwritin
 
 2. Install dependencies
    ```bash
-   npm install
+   pnpm install
    ```
 
 3. Start the development server
    ```bash
-   npm run dev
+   pnpm dev
    ```
 
 The development server will start at `http://localhost:3000`.
@@ -54,8 +54,8 @@ The development server will start at `http://localhost:3000`.
 ### Production Build
 
 ```bash
-npm run build
-npm run start
+pnpm build
+pnpm start
 ```
 
 ## Project Structure
@@ -153,9 +153,9 @@ Types: `feat` | `fix` | `docs` | `style` | `refactor` | `perf` | `test` | `build
 
 1. Log in to EdgeOne Pages console
 2. Import project
-3. Configure build command: `npm run build`
+3. Configure build command: `pnpm build`
 4. Configure output directory: `.next`
 
 ## License
 
-© 2026 HanziMaster 汉字大师 v5.2.18. All rights reserved.
+© 2026 HanziMaster 汉字大师 v5.2.20. All rights reserved.

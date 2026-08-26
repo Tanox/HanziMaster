@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 
-// next.config.mjs v5.2.7
+// next.config.mjs v5.2.20
 
 // Security headers including Content Security Policy
 // Note: script-src 'unsafe-inline' is required for Next.js App Router compatibility

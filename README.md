@@ -1,4 +1,4 @@
-﻿# HanziMaster 汉字大师 v5.2.18
+﻿# HanziMaster 汉字大师 v5.2.20
 
 [English](README_EN.md) | [简体中文](README.md)
 
@@ -22,8 +22,8 @@
 
 | 工具 | 版本要求 | 说明 |
 |------|---------|------|
-| Node.js | >= 24.5.0 | 运行时环境 |
-| 包管理器 | npm / yarn / pnpm | 任选其一 |
+| Node.js | >= 24.11.0 | 运行时环境 |
+| 包管理器 | pnpm | 强制（preinstall 拦截 npm/yarn） |
 | 现代浏览器 | Chrome、Firefox、Safari、Edge 最新版 | 开发与测试 |
 
 ### 安装
@@ -34,10 +34,10 @@ git clone <仓库地址>
 cd HanziMaster
 
 # 安装依赖
-npm install
+pnpm install
 
 # 启动开发服务器
-npm run dev
+pnpm dev
 ```
 
 访问 `http://localhost:3000` 即可使用。
@@ -45,8 +45,8 @@ npm run dev
 ### 生产构建
 
 ```bash
-npm run build
-npm run start
+pnpm build
+pnpm start
 ```
 
 构建产物位于 `.next` 目录，默认端口 3000。
@@ -129,9 +129,9 @@ src/
 
 1. 登录 EdgeOne Pages 控制台
 2. 导入项目
-3. 构建命令：`npm run build`
+3. 构建命令：`pnpm build`
 4. 输出目录：`.next`
 
 ## 许可证
 
-© 2026 HanziMaster 汉字大师 v5.2.18
+© 2026 HanziMaster 汉字大师 v5.2.20

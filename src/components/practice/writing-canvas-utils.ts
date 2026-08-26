@@ -1,4 +1,4 @@
-// src/components/practice/writing-canvas-utils.ts v5.2.17
+// src/components/practice/writing-canvas-utils.ts v5.2.20
 // 书写画布的绘制工具函数集（与组件逻辑分离，保证单文件 ≤200 行）
 // 从设计 token 读取颜色与字体，避免 Canvas 写死色值（单一来源）
 
@@ -133,3 +133,21 @@ export const drawMedianStroke = (
   }
   ctx.stroke();
 };
+
+// 跟写描红结束：判定当前笔的贴合度并累加，返回更新后的准确度数组与均值
+export function judgeUserStroke(params: {
+  userPoints: { x: number; y: number }[];
+  strokePath: string | undefined;
+  median: number[][] | undefined;
+  size: number;
+  prevAccuracies: number[];
+  onAccuracyChange?: (avg: number) => void;
+}): number[] {
+  const { userPoints, strokePath, median, size, prevAccuracies, onAccuracyChange } = params;
+  if (userPoints.length === 0) return prevAccuracies;
+  const acc = scoreStroke(userPoints, strokePath, median, size);
+  const next = [...prevAccuracies, acc];
+  const avg = next.reduce((a, b) => a + b, 0) / next.length;
+  onAccuracyChange?.(avg);
+  return next;
+}

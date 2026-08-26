@@ -1,22 +1,16 @@
-// src/components/practice/writing-canvas.tsx v5.2.17
+// src/components/practice/writing-canvas.tsx v5.2.20
 // 书写画布：淡字符底图 + 指针轨迹绘制 + 逐笔笔顺引导动画。
 // - 提供笔顺数据时：点击画布逐笔播放书写动画（沿中位线描线），当前笔高亮；
 //   引导播完后可跟写描红，松手判定该笔与笔形的贴合度（0-100%）。
 // - 全部笔画播放完成后再次点击：重置并从第一笔重新引导。
 // - 无笔顺数据时：回退到原有淡字底图 + 自由书写。
-// 绘制与判定工具函数抽离至 writing-canvas-utils.ts。
+// 绘制/判定工具函数抽离至 writing-canvas-utils.ts，引导动画抽离至 writing-canvas-animation.ts。
 'use client';
 
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import { useTranslation } from '@/components/locale-provider';
-import {
-  drawHint,
-  drawMedianStroke,
-  parsePath,
-  resolveFg,
-  resolvePrimary,
-  scoreStroke,
-} from './writing-canvas-utils';
+import { drawHint, judgeUserStroke } from './writing-canvas-utils';
+import { runStrokeAnimation, type StrokeAnimationHandle } from './writing-canvas-animation';
 
 export interface WritingCanvasHandle {
   clearCanvas: () => void;
@@ -39,7 +33,7 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
     const { t } = useTranslation();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const isDrawing = useRef(false);
-    const animRafRef = useRef<number | null>(null);
+    const animHandleRef = useRef<StrokeAnimationHandle | null>(null);
     const animStrokeRef = useRef(-1);
     const completedRef = useRef<Set<number>>(new Set());
     // 当前笔用户描红轨迹点（仅在引导播完后跟写时收集）
@@ -51,8 +45,8 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
       const canvas = canvasRef.current;
       if (!canvas) return;
       drawHint(canvas, character);
-      if (animRafRef.current !== null) cancelAnimationFrame(animRafRef.current);
-      animRafRef.current = null;
+      animHandleRef.current?.cancel();
+      animHandleRef.current = null;
       animStrokeRef.current = -1;
       completedRef.current = new Set();
       userPointsRef.current = [];
@@ -69,7 +63,8 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
       userPointsRef.current = [];
       accuracyRef.current = [];
       return () => {
-        if (animRafRef.current !== null) cancelAnimationFrame(animRafRef.current);
+        animHandleRef.current?.cancel();
+        animHandleRef.current = null;
       };
     }, [character]);
 
@@ -85,44 +80,24 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
       if (!canvas || !strokePaths) return;
       const count = strokePaths.length;
       const next = completedRef.current.size;
-      if (next >= count || animRafRef.current !== null) return;
+      if (next >= count || animHandleRef.current) return;
       animStrokeRef.current = next;
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
       const rect = canvas.getBoundingClientRect();
       const size = Math.min(rect.width, rect.height);
       const median = medians?.[next];
-      const primary = resolvePrimary();
-      const start = performance.now();
-      const dur = 500;
-
-      const frame = (now: number) => {
-        const progress = Math.min((now - start) / dur, 1);
-        drawHint(canvas, character);
-        // 已完成笔：浅色虚线轮廓
-        completedRef.current.forEach((i) => {
-          const p = parsePath(strokePaths[i]);
-          if (!p) return;
-          ctx.strokeStyle = resolveFg();
-          ctx.globalAlpha = 0.25;
-          ctx.setLineDash([6, 6]);
-          ctx.stroke(p);
-          ctx.setLineDash([]);
-          ctx.globalAlpha = 1;
-        });
-        // 当前笔：沿中位线动画描线
-        if (median && median.length >= 2) {
-          drawMedianStroke(ctx, median, size, progress, primary, 5);
-        }
-        if (progress < 1) {
-          animRafRef.current = requestAnimationFrame(frame);
-        } else {
+      animHandleRef.current = runStrokeAnimation({
+        canvas,
+        character,
+        median: median ?? [],
+        size,
+        completed: completedRef.current,
+        strokePaths,
+        onComplete: () => {
           completedRef.current.add(next);
           animStrokeRef.current = -1;
-          animRafRef.current = null;
-        }
-      };
-      animRafRef.current = requestAnimationFrame(frame);
+          animHandleRef.current = null;
+        },
+      });
     };
 
     const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
