@@ -1,12 +1,13 @@
-// src/components/practice/writing-canvas.tsx v5.2.20
+// src/components/practice/writing-canvas.tsx v5.2.21
 // 书写画布：淡字底图 + 指针描线 + 逐笔笔顺引导动画；绘制/判定逻辑分置于
-// writing-canvas-utils.ts，引导动画帧循环分置于 writing-canvas-animation.ts。
+// writing-canvas-utils.ts，引导动画帧循环分置于 writing-canvas-animation.ts，
+// 进度标签子组件与样式常量分置于 writing-canvas-parts.tsx。
 'use client';
 
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
-import { useTranslation } from '@/components/locale-provider';
 import { drawHint, judgeUserStroke } from './writing-canvas-utils';
 import { runStrokeAnimation, type StrokeAnimationHandle } from './writing-canvas-animation';
+import { ProgressLabel } from './writing-canvas-parts';
 
 export interface WritingCanvasHandle {
   clearCanvas: () => void;
@@ -26,7 +27,6 @@ interface WritingCanvasProps {
 
 export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>(
   ({ character, strokePaths, medians, strokeCount, onAccuracyChange }, ref) => {
-    const { t } = useTranslation();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const isDrawing = useRef(false);
     const animHandleRef = useRef<StrokeAnimationHandle | null>(null);
@@ -166,9 +166,7 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
 
     const hasGuidance = !!strokePaths && strokePaths.length > 0;
     const totalStrokes = hasGuidance ? (strokeCount ?? strokePaths.length) : 0;
-    const progressLabel = hasGuidance
-      ? `${completedRef.current.size} / ${totalStrokes}`
-      : undefined;
+    const progressLabel = hasGuidance ? `${completedRef.current.size} / ${totalStrokes}` : '';
 
     return (
       <div className="relative h-full w-full">
@@ -184,13 +182,7 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
           onPointerLeave={stopDrawing}
           onPointerCancel={stopDrawing}
         />
-        {hasGuidance && (
-          <div className="pointer-events-none absolute inset-x-0 bottom-2 flex justify-center">
-            <span className="rounded-full bg-card/80 px-3 py-1 text-xs text-muted-foreground backdrop-blur-sm">
-              {t('learn.strokeOrder')}: {progressLabel}
-            </span>
-          </div>
-        )}
+        {hasGuidance && <ProgressLabel character={character} progressLabel={progressLabel} />}
       </div>
     );
   },

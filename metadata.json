@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.20",
-  "version": "5.2.20",
-  "description": "v5.2.20: 修正全部 i18n 页脚与文档版本展示位脱节（统一至 v5.2.20）、README 安装说明改为 pnpm、拆分超 200 行书写画布组件。",
+  "name": "HanziMaster 汉字大师 v5.2.21",
+  "version": "5.2.21",
+  "description": "v5.2.21: 进一步拆分书写画布组件，将进度标签子组件与样式常量抽离至 writing-canvas-parts.tsx，主文件降至 194 行。",
   "keywords": [
     "Chinese characters",
     "Hanzi",

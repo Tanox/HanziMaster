@@ -1,5 +1,10 @@
 ﻿# Changelog
 
+## [5.2.21] - 继续拆分书写画布组件
+### Refactor
+- 进一步拆分 `writing-canvas.tsx`（194 行）：将进度标签子组件 `ProgressLabel` 与样式常量 `PROGRESS_LABEL_WRAPPER_CLASS` / `PROGRESS_LABEL_BADGE_CLASS` 抽离至新建 `writing-canvas-parts.tsx`，主文件仅保留状态管理与事件编排。
+- 收敛 `progressLabel` 类型为非空字符串，修复 `hasGuidance` 渲染分支的 TS2322 类型错误。
+
 ## [5.2.20] - 修正版本展示位脱节与拆分画布组件
 ### Fix / Docs
 - 修正全部 11 语言 `footer.copyright` 版本号脱节（10 语言停留在 v5.2.11、en 停留在 v5.2.17），统一至 v5.2.20。
