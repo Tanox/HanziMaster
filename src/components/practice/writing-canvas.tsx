@@ -1,10 +1,6 @@
 // src/components/practice/writing-canvas.tsx v5.2.20
-// 书写画布：淡字符底图 + 指针轨迹绘制 + 逐笔笔顺引导动画。
-// - 提供笔顺数据时：点击画布逐笔播放书写动画（沿中位线描线），当前笔高亮；
-//   引导播完后可跟写描红，松手判定该笔与笔形的贴合度（0-100%）。
-// - 全部笔画播放完成后再次点击：重置并从第一笔重新引导。
-// - 无笔顺数据时：回退到原有淡字底图 + 自由书写。
-// 绘制/判定工具函数抽离至 writing-canvas-utils.ts，引导动画抽离至 writing-canvas-animation.ts。
+// 书写画布：淡字底图 + 指针描线 + 逐笔笔顺引导动画；绘制/判定逻辑分置于
+// writing-canvas-utils.ts，引导动画帧循环分置于 writing-canvas-animation.ts。
 'use client';
 
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
@@ -149,22 +145,20 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
     const stopDrawing = () => {
       if (!isDrawing.current) return;
       isDrawing.current = false;
-      // 跟写描红结束：判定刚播放完的那一笔贴合度
       if (strokePaths && userPointsRef.current.length > 0) {
         const current = completedRef.current.size - 1;
         const canvas = canvasRef.current;
         if (canvas && current >= 0) {
           const rect = canvas.getBoundingClientRect();
           const size = Math.min(rect.width, rect.height);
-          const acc = scoreStroke(
-            userPointsRef.current,
-            strokePaths[current],
-            medians?.[current],
+          accuracyRef.current = judgeUserStroke({
+            userPoints: userPointsRef.current,
+            strokePath: strokePaths[current],
+            median: medians?.[current],
             size,
-          );
-          accuracyRef.current.push(acc);
-          const avg = accuracyRef.current.reduce((a, b) => a + b, 0) / accuracyRef.current.length;
-          onAccuracyChange?.(avg);
+            prevAccuracies: accuracyRef.current,
+            onAccuracyChange,
+          });
         }
         userPointsRef.current = [];
       }
