@@ -1,5 +1,10 @@
 ﻿# Changelog
 
+## [5.2.23] - 修正 i18n 页脚版本脱节
+### Fix
+- 修正全部 11 语言翻译文件 `footer.copyright` 版本号脱节（v5.2.21/v5.2.22 两次提交漏同步，停留在 v5.2.20），统一至 v5.2.23。
+- 同步全局版本展示位：`package.json`/`metadata.json` version、`README`/`README_EN` 标题与页脚至 v5.2.23；更新 11 个 i18n 文件头注释至 v5.2.23。
+
 ## [5.2.22] - 全面同步项目文档
 ### Docs
 - README.md / README_EN.md：标题与页脚版本戳 v5.2.20 → v5.2.22；补充 pnpm 强制约束说明与常用脚本表（lint/test/format）；英文 Core Pages 移除已删除的「Etymology & Culture / Adaptive Learning」描述。
