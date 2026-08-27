@@ -1,4 +1,4 @@
-// src/components/practice/writing-canvas-utils.ts v5.2.20
+// src/components/practice/writing-canvas-utils.ts v5.2.25
 // 书写画布的绘制工具函数集（与组件逻辑分离，保证单文件 ≤200 行）
 // 从设计 token 读取颜色与字体，避免 Canvas 写死色值（单一来源）
 

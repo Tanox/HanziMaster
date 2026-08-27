@@ -1,4 +1,4 @@
-// src/lib/__tests__/characters.test.ts v5.2.19
+// src/lib/__tests__/characters.test.ts v5.2.25
 import { describe, it, expect } from 'vitest';
 import { characters } from '@/lib/characters';
 import { en } from '@/lib/i18n/translations/en';

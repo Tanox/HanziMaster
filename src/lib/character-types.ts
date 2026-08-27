@@ -1,4 +1,4 @@
-// src/lib/character-types.ts v5.2.13
+// src/lib/character-types.ts v5.2.25
 import type { TranslationKey } from '@/lib/i18n';
 
 // 笔顺引导数据（Hanzi Writer 标准格式，坐标 0-1000 绝对坐标）

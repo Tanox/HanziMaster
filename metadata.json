@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.24",
-  "version": "5.2.24",
-  "description": "v5.2.24: 同步 openspec 文档与 i18n 版本戳至 v5.2.24，统一全部文档展示位与 package.json 一致。",
+  "name": "HanziMaster 汉字大师 v5.2.25",
+  "version": "5.2.25",
+  "description": "v5.2.25: 为功能组件补全语义化 id，全量对齐所有源文件头注释至 v5.2.25。",
   "keywords": [
     "Chinese characters",
     "Hanzi",

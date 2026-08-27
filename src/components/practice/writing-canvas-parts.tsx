@@ -1,4 +1,4 @@
-// src/components/practice/writing-canvas-parts.tsx v5.2.21
+// src/components/practice/writing-canvas-parts.tsx v5.2.25
 // 书写画布渲染子组件与局部常量，主组件 writing-canvas.tsx 仅保留编排逻辑。
 import { useTranslation } from '@/components/locale-provider';
 
@@ -19,7 +19,7 @@ interface ProgressLabelProps {
 export function ProgressLabel({ character, progressLabel }: ProgressLabelProps) {
   const { t } = useTranslation();
   return (
-    <div className={PROGRESS_LABEL_WRAPPER_CLASS}>
+    <div id="progress-label" className={PROGRESS_LABEL_WRAPPER_CLASS}>
       <span className={PROGRESS_LABEL_BADGE_CLASS}>
         {t('learn.strokeOrder')}: {progressLabel}
       </span>

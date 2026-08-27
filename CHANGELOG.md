@@ -1,5 +1,13 @@
 ﻿# Changelog
 
+## [5.2.25] - 补全语义化 id 与全量对齐头注释
+### Feat
+- 为 5 个主要用户可见组件补全语义化 `id`：`feature-card`(`#feature-card`)、`quiz-dialog`(`#quiz-dialog`)、`stroke-order-demo`(`#stroke-order-demo`)、`writing-canvas-parts`(`#progress-label`)、`writing-dialog`(`#writing-dialog`)，便于调试定位、ARIA 锚点与端到端测试。
+
+### Docs / Chore
+- 全量对齐所有源文件（`src/` 56 个 + 配置文件）头注释至 v5.2.25（用户授权一次性对齐，牺牲"未改文件禁止批量刷写"规则换取一致性）。
+- 同步全局展示位：`package.json`/`metadata.json`/`README`/`README_EN`/11 语言 `footer.copyright`/openspec 文档头注释至 v5.2.25。
+
 ## [5.2.24] - 同步 openspec 与 i18n 文档版本戳
 ### Docs
 - 同步 openspec 文档版本戳 v5.2.22 → v5.2.24：`index.md`、`01-overview.md`、`02-architecture.md`、`03-development.md`、`04-api-reference.md`、`05-deployment.md`、`06-testing.md`、`coding-standards.md`、`commit-template.md`、`AGENTS.md`、`alignment-checklist.md`。

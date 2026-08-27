@@ -1,4 +1,4 @@
-// src/components/practice/writing-dialog.tsx v5.2.17
+// src/components/practice/writing-dialog.tsx v5.2.25
 'use client';
 
 import { useRef, useState } from 'react';
@@ -34,7 +34,7 @@ export function WritingDialog({ open, onOpenChange, character, strokeCount, onNe
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="border-border bg-background sm:max-w-md">
+      <DialogContent id="writing-dialog" className="border-border bg-background sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="font-serif text-2xl text-foreground">
             {t('practice.writingTitle')}

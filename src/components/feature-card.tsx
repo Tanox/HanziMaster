@@ -1,4 +1,4 @@
-// src/components/feature-card.tsx v5.2.19
+// src/components/feature-card.tsx v5.2.25
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
@@ -18,7 +18,7 @@ export function FeatureCard({
   const { t } = useTranslation();
 
   return (
-    <div className="group text-center p-8 rounded-2xl border border-ink-100 dark:border-ink-800 bg-card/50 dark:bg-ink-900/50 backdrop-blur-sm hover:-translate-y-2 hover:shadow-ink-lg hover:border-ink-200 dark:hover:border-ink-700 transition-[colors,transform] duration-300 reveal">
+    <div id="feature-card" className="group text-center p-8 rounded-2xl border border-ink-100 dark:border-ink-800 bg-card/50 dark:bg-ink-900/50 backdrop-blur-sm hover:-translate-y-2 hover:shadow-ink-lg hover:border-ink-200 dark:hover:border-ink-700 transition-[colors,transform] duration-300 reveal">
       <div className="relative inline-block mb-6">
         <div className="absolute inset-0 bg-vermilion-500/10 rounded-xl group-hover:bg-vermilion-500/20 transition-colors duration-300" />
         <div className="relative w-20 h-20 bg-linear-to-br from-vermilion-500/5 to-indigo/5 dark:from-vermilion-500/10 dark:to-indigo/10 rounded-xl flex items-center justify-center text-vermilion-500 group-hover:scale-110 transition-transform duration-300">

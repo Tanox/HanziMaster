@@ -1,4 +1,4 @@
-// src/app/page.tsx v5.2.19
+// src/app/page.tsx v5.2.25
 'use client';
 
 import { useEffect } from 'react';

@@ -1,4 +1,4 @@
-// src/components/learn/character-grid.tsx v5.2.6
+// src/components/learn/character-grid.tsx v5.2.25
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';

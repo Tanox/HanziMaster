@@ -1,4 +1,4 @@
-// src/lib/__tests__/stroke-order.test.ts v5.2.19
+// src/lib/__tests__/stroke-order.test.ts v5.2.25
 import { describe, it, expect } from 'vitest';
 import { strokeOrderData } from '@/lib/stroke-order-data';
 import { characters } from '@/lib/characters';

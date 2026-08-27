@@ -1,4 +1,4 @@
-// src/components/practice/writing-canvas.tsx v5.2.21
+// src/components/practice/writing-canvas.tsx v5.2.25
 // 书写画布：淡字底图 + 指针描线 + 逐笔笔顺引导动画；绘制/判定逻辑分置于
 // writing-canvas-utils.ts，引导动画帧循环分置于 writing-canvas-animation.ts，
 // 进度标签子组件与样式常量分置于 writing-canvas-parts.tsx。

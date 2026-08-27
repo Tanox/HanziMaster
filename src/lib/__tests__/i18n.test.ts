@@ -1,4 +1,4 @@
-// src/lib/__tests__/i18n.test.ts v5.2.19
+// src/lib/__tests__/i18n.test.ts v5.2.25
 import { describe, it, expect } from 'vitest';
 import { translations } from '@/lib/i18n';
 import type { Locale, Translations } from '@/lib/i18n';

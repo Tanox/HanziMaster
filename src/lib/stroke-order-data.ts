@@ -1,4 +1,4 @@
-// src/lib/stroke-order-data.ts v5.2.13
+// src/lib/stroke-order-data.ts v5.2.25
 // 12 个练习汉字的笔顺数据（Hanzi Writer 标准格式，坐标 0-1000 绝对坐标）。
 // 数据来源：hanzi-writer-data 包按需内联，避免打包全量字库（离线可用、构建时打包）。
 // 结构：{ strokes: string[]（每笔一个 SVG path）; medians: number[][][]（每笔的中位线点集） }

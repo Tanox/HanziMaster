@@ -1,4 +1,4 @@
-// src/components/stats-card.tsx v5.2.19
+// src/components/stats-card.tsx v5.2.25
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';

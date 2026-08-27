@@ -1,4 +1,4 @@
-// src/components/learn/character-detail.tsx v5.2.16
+// src/components/learn/character-detail.tsx v5.2.25
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';

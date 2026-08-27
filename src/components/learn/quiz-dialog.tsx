@@ -1,4 +1,4 @@
-// src/components/learn/quiz-dialog.tsx v5.2.6
+// src/components/learn/quiz-dialog.tsx v5.2.25
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
@@ -36,7 +36,7 @@ export function QuizDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-card/95 dark:bg-ink-900/95 backdrop-blur-xl rounded-3xl border-ink-100 dark:border-ink-800 shadow-ink-xl">
+      <DialogContent id="quiz-dialog" className="bg-card/95 dark:bg-ink-900/95 backdrop-blur-xl rounded-3xl border-ink-100 dark:border-ink-800 shadow-ink-xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold text-ink-900 dark:text-ink-50 display-font">
             {t('learn.quizTitle')}
