@@ -1,7 +1,7 @@
 # 测试规范
 ============
 
-> **状态说明（v5.2.22）**：本项目**已接入 Vitest 单元测试框架**——`package.json` 含 `test` / `test:watch` 脚本与 `vitest@^3.2.4` 依赖，仓库内有 `src/lib/__tests__/`（characters / i18n / stroke-order 单测）。下文为测试规范与最佳实践。
+> **状态说明（v5.2.24）**：本项目**已接入 Vitest 单元测试框架**——`package.json` 含 `test` / `test:watch` 脚本与 `vitest@^3.2.4` 依赖，仓库内有 `src/lib/__tests__/`（characters / i18n / stroke-order 单测）。下文为测试规范与最佳实践。
 
 ## 1. 测试框架
 

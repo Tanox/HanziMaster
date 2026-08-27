@@ -1,5 +1,12 @@
 ﻿# Changelog
 
+## [5.2.24] - 同步 openspec 与 i18n 文档版本戳
+### Docs
+- 同步 openspec 文档版本戳 v5.2.22 → v5.2.24：`index.md`、`01-overview.md`、`02-architecture.md`、`03-development.md`、`04-api-reference.md`、`05-deployment.md`、`06-testing.md`、`coding-standards.md`、`commit-template.md`、`AGENTS.md`、`alignment-checklist.md`。
+- 同步 11 个语言翻译文件 `footer.copyright` 与文件头注释 v5.2.23 → v5.2.24。
+- 同步 `README.md` / `README_EN.md` 标题与页脚版本戳 v5.2.23 → v5.2.24。
+- 同步全局单一来源 `package.json` / `metadata.json` 至 v5.2.24。
+
 ## [5.2.23] - 修正 i18n 页脚版本脱节
 ### Fix
 - 修正全部 11 语言翻译文件 `footer.copyright` 版本号脱节（v5.2.21/v5.2.22 两次提交漏同步，停留在 v5.2.20），统一至 v5.2.23。
