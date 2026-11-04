@@ -1,6 +1,6 @@
 # 已完成任务归档 · Tasks Done
 
-> 文档版本：v5.2.32（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.33（与项目版本同步，权威版本见 `package.json`）
 > 归档时间：2026-11-04 20:35（UTC+8）
 
 ## 说明
@@ -29,11 +29,22 @@
 
 > 以上为 2026-11-04 首批全部 14 项（T1–T14）的完成归档。
 
+## 归档（2026-11-04 冗余文件清理批次）
+
+| ID | 任务 | 分类 | 完成版本 | 实现要点 |
+|----|------|------|---------|---------|
+| P0-15 | 修复 security:audit 脚本（npm audit → pnpm audit） | 构建 | v5.2.33 | `security:audit` = `pnpm audit --prod --audit-level=high`、新增 `security:audit:dev` = `pnpm audit --audit-level=high`；`.github/SECURITY.md:40` 与 `docs/05-deployment.md:128` 命令同步；实测 `pnpm audit --prod` 0 漏洞 |
+| P0-26 | 完善 scripts/ 测试运行器与产物目录 | 仓库卫生 | v5.2.33 | `scripts/run-tests.mjs` 支持 `--coverage` 透传、产物落 `reports/test-out.txt`；`scripts/check-line-count.mjs` 产物落 `reports/line-count.txt`；`.gitignore` 增 `/reports/`；`package.json` 新增 `test:run` / `check:lines` |
+| P0-28 | 删除空 test/ 目录 | 仓库卫生 | v5.2.33 | 仓库根 `test/` 空目录已删除（E2E 目录预留改用 `e2e/`，见 P1-22） |
+
+> 本批次为「项目冗余文件分析与清理」的执行结果：另删除 `i18n-add.mjs` / `sync-5231.mjs` / `audit-parse.mjs`（一次性迁移与解析脚本，能力已并入 `scripts/`）与 `test-out.txt` / `build-out.txt` / `build-err.txt` / `linecheck-result.txt` / `vitest-*.txt`（可再生产物）。
+
 ## 归档（2026-11-04 生产就绪度审查批次）
 
 | ID | 任务 | 分类 | 完成版本 | 实现要点 |
 |----|------|------|---------|---------|
 | P0-25 | 删除根目录高危脚本 `deploy-fix.mjs` | 仓库卫生 | v5.2.32 | 该脚本硬编码 `V = '5.2.30'` 并会改写 `package.json` / `README` / `CHANGELOG`，误执行即污染版本号；已从仓库根删除。其版本同步能力由 P2-9（`scripts/sync-version.mjs`，版本号动态读取 `package.json`）承接 |
 | P0-27 | 删除根目录审计与测试产物 JSON | 仓库卫生 | v5.2.32 | 删除 `audit-raw.json`（82.28 KB）、`audit-prod.json`（590 B）、`vitest-result.json`（18.3 KB，记录的是已过期的失败态 `success:false`）；实测基线为 Vitest 9 文件 / 47 用例全通过。产物落 `reports/` 由 P0-26 承接 |
+| P0-14 | 修复 `pnpm lint` 脚本（`next lint` 已从 Next 16 移除） | 构建 | v5.2.32 | `package.json` 的 `"lint": "next lint"` → `"eslint ."`（覆盖 `src/` + `prototype/` + `scripts/`）；实测 `node node_modules/eslint/bin/eslint.js .` → 0 error / 0 warning，退出码 0 |
 
-> 本批次由生产就绪度审查（P0 清单）派生；P0-26（scripts/ 测试运行器完善与 `reports/` 产物目录）仍在 `tasks.md` 中处于「进行中」。
+> 本批次由生产就绪度审查（P0 清单）派生；P0-15（`security:audit` 拆分生产/全量）、P0-26（scripts/ 测试运行器完善与 `reports/` 产物目录）仍在 `tasks.md` 中处于「进行中」。

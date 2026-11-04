@@ -65,10 +65,14 @@ pnpm start
 | `pnpm dev` | Start dev server (with HMR) |
 | `pnpm build` | Build for production |
 | `pnpm start` | Start production server |
-| `pnpm lint` | Run ESLint |
+| `pnpm lint` | Run ESLint (`src` + root TS configs) |
+| `pnpm lint:fix` | Run ESLint with auto-fix |
 | `pnpm test` | Run unit tests (Vitest) |
 | `pnpm test:watch` | Run tests in watch mode |
+| `pnpm test:run` | Test runner wrapper (artifacts to `reports/`, supports `--coverage`) |
+| `pnpm check:lines` | Source line-count gate (≤ 200 lines per file) |
 | `pnpm format` | Format `src/**` with Prettier |
+| `pnpm security:audit` | Production dependency audit (`pnpm audit --prod`) |
 
 > This project enforces pnpm: running `npm install` / `yarn` is blocked by the `preinstall` hook (`only-allow pnpm`). The root `.npmrc` sets `engine-strict` and `package-manager-strict`.
 

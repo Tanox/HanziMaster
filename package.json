@@ -1,6 +1,6 @@
 {
   "name": "hanzi-master",
-  "version": "5.2.32",
+  "version": "5.2.33",
   "private": true,
   "packageManager": "pnpm@11.24.0",
   "type": "module",
@@ -9,12 +9,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:run": "node scripts/run-tests.mjs",
     "check:lines": "node scripts/check-line-count.mjs",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
-    "security:audit": "pnpm audit --audit-level=high",
+    "security:audit": "pnpm audit --prod --audit-level=high",
+    "security:audit:dev": "pnpm audit --audit-level=high",
     "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {

@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.32",
-  "version": "5.2.32",
-  "description": "v5.2.32: 完成生产就绪度审查，将完善建议拆分为 84 项最小粒度任务写入 docs/tasks.md（P0 阻断上线 26 项 / P1 高 36 项 / P2 中 18 项 / P3 低 4 项）。",
+  "name": "HanziMaster 汉字大师 v5.2.33",
+  "version": "5.2.33",
+  "description": "v5.2.33: 冗余文件分析与清理（根目录一次性脚本与产物清零、scripts/ 与 reports/ 归位、lint 与 security:audit 脚本修复、删除空 test/ 目录）。",
   "keywords": [
     "Chinese characters",
     "Hanzi",

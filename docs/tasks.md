@@ -1,6 +1,6 @@
 # 任务清单 · Task Backlog
 
-> 文档版本：v5.2.32（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.33（与项目版本同步，权威版本见 `package.json`）
 > 最后更新：2026-11-04 21:20（UTC+8）
 
 ## 0. 说明与规则（单一来源）
@@ -11,16 +11,16 @@
 - 任务 ID 规则：`P0-xx` 阻断上线（正式发布前必须闭环）、`P1-xx` 高优先级（首个生产版本前完成）、`P2-xx` 中优先级（可排期）、`P3-xx` 低优先级（长期/可选）。
 - 每个任务已拆到**最小可执行模块**：一个任务 = 一处明确改动 + 一条可验证验收标准。
 
-### 0.1 当前清单概览（共 84 项）
+### 0.1 当前清单概览（共 80 项）
 
 | 优先级 | 数量 | 分组 | 含义 |
 |--------|------|------|------|
-| **P0** | 26 | 法律与合规 13 · 质量门禁与 CI 7 · 可观测性 4 · 仓库卫生 2 | 正式发布前必须闭环 |
+| **P0** | 22 | 法律与合规 13 · 质量门禁与 CI 5 · 可观测性 4 | 正式发布前必须闭环 |
 | **P1** | 36 | SEO 与 i18n 架构 9 · 性能 5 · 测试 9 · 无障碍 6 · 安全 3 · RTL 4 | 首个生产版本前完成 |
 | **P2** | 18 | 代码质量 / 架构 / 文档 / 产品体验 | 可排期 |
 | **P3** | 4 | 工具与流程 | 长期 / 可选 |
 
-> 另有 2 项（P0-25、P0-27）已在生产就绪度审查批次完成，归档于 [tasks-done.md](tasks-done.md)。
+> 另有 6 项（P0-14、P0-15、P0-25、P0-26、P0-27、P0-28）已完成，归档于 [tasks-done.md](tasks-done.md)。
 
 ## 1. 生产就绪度评估结论（2026-11-04 审查）
 
@@ -151,19 +151,12 @@
 
 ### 2.2 质量门禁与 CI/CD
 
-#### P0-14 · 修复 lint 脚本（next lint 已从 Next 16 移除） `构建` `待办`
+#### P0-15 · 修复 security:audit 脚本（npm audit → pnpm audit） `构建` `已完成`
 
-- **现状**：`package.json:11` 为 `"lint": "next lint"`；`node_modules/next/dist/cli/` 下**无** `next-lint.js`，脚本必然报错（实测 `node node_modules/eslint/bin/eslint.js src` 本身 0 error / 0 warning）。
-- **目标**：改为 `"lint": "eslint src"`，并新增 `"lint:fix": "eslint src --fix"`。
-- **验收**：`pnpm lint` 退出码 0；README 脚本表同步。
-- **涉及**：`package.json`、`README.md`、`README_EN.md`
-
-#### P0-15 · 修复 security:audit 脚本（npm audit → pnpm audit） `构建` `待办`
-
-- **现状**：`package.json:15` 为 `"security:audit": "npm audit --audit-level=high"`；项目强制 pnpm（`preinstall` only-allow pnpm、`.npmrc` `package-manager-strict=true`），仓库只有 `pnpm-lock.yaml`，`npm audit` 无 lockfile 可用 → 脚本必失败；`.github/SECURITY.md:40` 还引用该命令。
-- **目标**：改为 `"security:audit": "pnpm audit --prod --audit-level=high"`，另加 `"security:audit:dev": "pnpm audit --audit-level=high"`。
-- **验收**：① `pnpm security:audit` 退出码 0；② `SECURITY.md` 命令引用同步。
-- **涉及**：`package.json`、`.github/SECURITY.md`
+- **现状（已修）**：`package.json` 原为 `"security:audit": "npm audit --audit-level=high"`（项目强制 pnpm，仓库只有 `pnpm-lock.yaml`，`npm audit` 无 lockfile 可用 → 必失败）。
+- **完成（v5.2.33）**：① 拆分为 `security:audit` = `pnpm audit --prod --audit-level=high`（生产依赖）与 `security:audit:dev` = `pnpm audit --audit-level=high`（全量含 dev 链）；② `.github/SECURITY.md:40` 的命令描述与两条脚本一一对应；③ `docs/05-deployment.md:128` 上线检查项同步为 `pnpm run security:audit`。
+- **验收**：① `pnpm run security:audit` 与 `pnpm run security:audit:dev` 均可执行且退出码 0；② `SECURITY.md:40` 命令与实现一一对应。
+- **涉及**：`package.json`、`.github/SECURITY.md`、`docs/05-deployment.md`
 
 #### P0-16 · 新增 GitHub Actions CI 工作流 `CI` `待办`
 
@@ -237,17 +230,16 @@
 
 ### 2.4 仓库卫生
 
-#### P0-26 · 完善 scripts/ 测试运行器与产物目录 `仓库卫生` `进行中`
+#### P0-26 · 完善 scripts/ 测试运行器与产物目录 `仓库卫生` `已完成`
 
-- **已完成部分**：`test-run.mjs` → `scripts/run-tests.mjs`、`line-check.mjs` → `scripts/check-line-count.mjs`（根目录临时脚本清零）。
-- **剩余项**：① `scripts/run-tests.mjs` 支持 `process.argv` 解析 `--coverage` 参数并透传给 vitest；② 测试产物改写入 `reports/`（`.gitignore` 增 `reports/`），不再落 `test-out.txt` 到仓库根；③ `scripts/check-line-count.mjs` 纳入 `pnpm` 脚本（`scripts.check:lines`）。
-- **验收**：① `node scripts/run-tests.mjs --coverage` 可产出覆盖率报告到 `reports/`；② 仓库根不再出现 `test-out.txt`；③ `pnpm scripts.check:lines` 可运行。
+- **完成（v5.2.33）**：`test-run.mjs` → `scripts/run-tests.mjs`、`line-check.mjs` → `scripts/check-line-count.mjs`（根目录临时脚本清零）；`scripts/run-tests.mjs` 支持 `--coverage` 参数透传 vitest 且产物落 `reports/test-out.txt`；`scripts/check-line-count.mjs` 产物落 `reports/line-count.txt`；`package.json` 新增 `test:run` / `check:lines` 脚本；`.gitignore` 增 `/reports/`。
+- **验收**：① `node scripts/run-tests.mjs --coverage` 可产出覆盖率报告到 `reports/`；② 仓库根不再出现 `test-out.txt` / `linecheck-result.txt`；③ `pnpm run check:lines` 可运行。
 - **涉及**：`scripts/run-tests.mjs`、`scripts/check-line-count.mjs`、`.gitignore`、`package.json`
 
-#### P0-28 · 删除空 test/ 目录 `仓库卫生` `待办`
+#### P0-28 · 删除空 test/ 目录 `仓库卫生` `已完成`
 
 - **现状**：`test/` 为 0 文件空目录（Git 不跟踪空目录，但本地残留易误导维护者）。
-- **目标**：删除 `test/` 空目录；若后续引入 E2E 则按 P1-22 改用 `e2e/` 命名。
+- **完成（v5.2.33）**：`test/` 空目录已删除；若后续引入 E2E 则按 P1-22 改用 `e2e/` 命名。
 - **验收**：仓库根无 `test/` 空目录。
 - **涉及**：`test/`（删除）
 
@@ -707,7 +699,7 @@
 
 | 里程碑 | 包含任务 | 出口标准 |
 |--------|----------|----------|
-| **M1 仓库与门禁就绪** | P0-14、P0-15、P0-16、P0-17、P0-19、P0-20、P0-26、P0-28 | `pnpm lint` / `pnpm security:audit` / `pnpm test --coverage` 可用；CI 在 PR 上全绿；根目录无临时脚本与过期产物 |
+| **M1 仓库与门禁就绪** | P0-15、P0-16、P0-17、P0-19、P0-20、P0-26、P0-28 | `pnpm lint` / `pnpm security:audit` / `pnpm test --coverage` 可用；CI 在 PR 上全绿；根目录无临时脚本与过期产物 |
 | **M2 合规闭环** | P0-1 ~ P0-13、P2-7 | LICENSE / NOTICE / 隐私政策 / 服务条款齐备；GA 需显式授权；页脚可跳转法律页 |
 | **M3 线上可观测** | P0-21 ~ P0-24、P2-6、P2-15 | 异常可上报并告警；根/子路由均有错误边界；`/api/health` 可用 |
 | **M4 SEO 与可访问** | P1-1 ~ P1-9、P1-24 ~ P1-29、P2-8 | sitemap / robots / manifest / JSON-LD / hreflang 齐备；axe 扫描 0 严重违规；核心功能键盘可达 |

@@ -37,6 +37,7 @@ next-env.d.ts
 
 # Testing
 /coverage
+/reports/
 
 # Misc
 *.pem

@@ -58,10 +58,14 @@ pnpm start
 | `pnpm dev` | 启动开发服务器（含 HMR） |
 | `pnpm build` | 构建生产版本 |
 | `pnpm start` | 启动生产服务器 |
-| `pnpm lint` | 运行 ESLint 检查 |
+| `pnpm lint` | 运行 ESLint 检查（`src` + 根级 TS 配置） |
+| `pnpm lint:fix` | ESLint 自动修复 |
 | `pnpm test` | 运行单元测试（Vitest） |
 | `pnpm test:watch` | 监听模式运行测试 |
+| `pnpm test:run` | 测试运行包装器（产物落 `reports/`，支持 `--coverage`） |
+| `pnpm check:lines` | 源文件行数门禁（单文件 ≤ 200 行） |
 | `pnpm format` | Prettier 格式化 `src/**` |
+| `pnpm security:audit` | 生产依赖安全审计（`pnpm audit --prod`） |
 
 > 本项目强制使用 pnpm：执行 `npm install` / `yarn` 会被 `preinstall` 钩子（`only-allow pnpm`）拦截报错。根目录 `.npmrc` 已设 `engine-strict` 与 `package-manager-strict`。
 

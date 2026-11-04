@@ -125,7 +125,7 @@ location / {
 - [ ] 本地构建成功（`npm run build`）
 - [ ] 环境变量已配置（如需要）
 - [ ] 构建产物大小在合理范围内
-- [ ] 检查是否有安全漏洞（`npm audit`）
+- [ ] 检查是否有安全漏洞（`pnpm run security:audit`，即 `pnpm audit --prod`）
 
 ## 6. 性能优化建议
 

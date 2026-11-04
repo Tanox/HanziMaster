@@ -37,7 +37,7 @@
 ## 安全实践
 
 - 仓库不包含任何密钥 / Token / 凭证；贡献时请勿提交 `.env`、私钥等敏感文件
-- 依赖定期审计：`npm run security:audit`
+- 依赖定期审计：`pnpm run security:audit`（生产依赖）/ `pnpm run security:audit:dev`（全量含开发链）
 - 生产环境强制 HTTPS
 - 用户输入与渲染需防范 XSS、路径穿越等常见攻击
 
