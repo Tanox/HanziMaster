@@ -1,7 +1,7 @@
 {
   "name": "HanziMaster 汉字大师 v5.2.32",
   "version": "5.2.32",
-  "description": "v5.2.32: 完成生产就绪度审查，将完善建议拆分为 85 项最小粒度任务写入 docs/tasks.md（P0 阻断上线 27 项 / P1 高 36 项 / P2 中 18 项 / P3 低 4 项）。",
+  "description": "v5.2.32: 完成生产就绪度审查，将完善建议拆分为 84 项最小粒度任务写入 docs/tasks.md（P0 阻断上线 26 项 / P1 高 36 项 / P2 中 18 项 / P3 低 4 项）。",
   "keywords": [
     "Chinese characters",
     "Hanzi",

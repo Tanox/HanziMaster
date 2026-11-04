@@ -3,8 +3,9 @@
 ## [5.2.32] - 生产就绪度审查并重写任务清单为最小粒度任务
 ### Docs
 - 完成 HanziMaster 生产就绪度全维度审查（代码质量 / 错误处理 / SEO / 性能 / a11y / i18n / 测试 / 可观测性 / 安全 / 合规 / 代码卫生），实测基线：`tsc --noEmit` 0 error、`eslint src` 0 error/0 warning、Vitest 9 文件 47 用例全通过、生产依赖漏洞 0。
-- 重写 `docs/tasks.md` 为单一来源任务清单，将完善建议拆分为 **85 项最小可执行任务**：P0 阻断上线 27 项（法律合规 13 / 质量门禁与 CI 7 / 可观测性 4 / 仓库卫生 3）、P1 高优先级 36 项（SEO 与 i18n 架构 9 / 性能 5 / 测试 9 / 无障碍 6 / 安全 3 / RTL 4）、P2 中优先级 18 项、P3 低优先级 4 项；每项含现状证据、目标、验收标准、涉及文件与依赖。
+- 重写 `docs/tasks.md` 为单一来源任务清单，将完善建议拆分为 **84 项最小可执行任务**：P0 阻断上线 26 项（法律合规 13 / 质量门禁与 CI 7 / 可观测性 4 / 仓库卫生 2）、P1 高优先级 36 项（SEO 与 i18n 架构 9 / 性能 5 / 测试 9 / 无障碍 6 / 安全 3 / RTL 4）、P2 中优先级 18 项、P3 低优先级 4 项；每项含现状证据、目标、验收标准、涉及文件与依赖。
 - 新增章节「生产就绪度评估结论」「建议执行顺序（里程碑 M1–M6）」「已知约束」。
+- 归档 P0-25（删除高危脚本 `deploy-fix.mjs`）、P0-27（删除过期审计/测试产物 JSON）至 `docs/tasks-done.md`。
 - 同步 `docs/index.md`、`docs/alignment-checklist.md`、`docs/tasks-done.md`、`prototype/DESIGN_SPEC.md` 版本戳至 v5.2.32。
 ### Chore
 - 同步全局展示位至 v5.2.32（`package.json` / `metadata.json` / `README.md` / `README_EN.md`）。
