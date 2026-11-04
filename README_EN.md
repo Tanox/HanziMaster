@@ -1,4 +1,4 @@
-﻿# HanziMaster 汉字大师 v5.2.32
+﻿# HanziMaster 汉字大师 v5.2.33
 
 [English](README_EN.md) | [简体中文](README.md)
 
@@ -188,4 +188,4 @@ Types: `feat` | `fix` | `docs` | `style` | `refactor` | `perf` | `test` | `build
 
 ## License
 
-© 2026 HanziMaster 汉字大师 v5.2.32. All rights reserved.
+© 2026 HanziMaster 汉字大师 v5.2.33. All rights reserved.

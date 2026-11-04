@@ -1,5 +1,17 @@
 ﻿# Changelog
 
+## [5.2.33] - 冗余文件分析与清理
+### Chore
+- 仓库根一次性脚本清理：删除 `i18n-add.mjs`（文案注入）、`sync-5231.mjs`（版本同步）、`audit-parse.mjs`（审计解析）、`deploy-fix.mjs`（v5.2.30 版本戳脚本）；能力分别由 `scripts/` 工具链与 P2-9（`scripts/sync-version.mjs`）承接。
+- 产物与临时文件清理：删除 `audit-raw.json` / `audit-prod.json` / `vitest-result.json` 与 `test-out.txt` / `build-out.txt` / `build-err.txt` / `linecheck-result.txt` / `vitest-*.txt`；删除中断构建残留 `.next/`（57 MB）与空目录 `test/`。
+- 工具归位：`test-run.mjs` → `scripts/run-tests.mjs`（支持 `--coverage` 透传，产物落 `reports/`）、`line-check.mjs` → `scripts/check-line-count.mjs`（产物落 `reports/`）；`.gitignore` 增 `/reports/`；`package.json` 新增 `test:run` / `check:lines` / `lint:fix`。
+### Fix
+- `package.json`：`"lint": "next lint"` → `"eslint ."`（Next 16 已移除 `next lint`，原脚本必然报错）；`"security:audit": "npm audit --audit-level=high"` → `"pnpm audit --prod --audit-level=high"`，并新增 `"security:audit:dev": "pnpm audit --audit-level=high"`（仓库仅 `pnpm-lock.yaml`，`npm audit` 无 lockfile 可用）。
+- `.github/SECURITY.md:40` 与 `docs/05-deployment.md:128` 的审计命令与实现对齐；`README.md` / `README_EN.md` 脚本表同步。
+### Docs
+- `docs/tasks.md`：P0-15 / P0-26 / P0-28 标记完成，清单概览由 83 项收敛为 80 项（另有 6 项已归档）；`docs/tasks-done.md` 新增「冗余文件清理批次」归档段落。
+- 同步全局展示位与文档版本戳至 v5.2.33。
+
 ## [5.2.32] - 生产就绪度审查并重写任务清单为最小粒度任务
 ### Docs
 - 完成 HanziMaster 生产就绪度全维度审查（代码质量 / 错误处理 / SEO / 性能 / a11y / i18n / 测试 / 可观测性 / 安全 / 合规 / 代码卫生），实测基线：`tsc --noEmit` 0 error、`eslint src` 0 error/0 warning、Vitest 9 文件 47 用例全通过、生产依赖漏洞 0。

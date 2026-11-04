@@ -1,4 +1,4 @@
-﻿# HanziMaster 汉字大师 v5.2.32
+﻿# HanziMaster 汉字大师 v5.2.33
 
 [English](README_EN.md) | [简体中文](README.md)
 
@@ -163,4 +163,4 @@ docs/                     # 项目规范文档（14 篇，由原规范目录合�
 
 ## 许可证
 
-© 2026 HanziMaster 汉字大师 v5.2.32
+© 2026 HanziMaster 汉字大师 v5.2.33
