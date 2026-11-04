@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  prototype/learn.html · 学习页高保真交互原型 · v5.2.18
+  prototype/learn.html · 学习页高保真交互原型 · v5.2.27
   探索「学习 / 每日练习」界面的完整交互：汉字网格、筛选、详情弹窗（笔顺/词语/字义）。
   Design Token 与 globals.css @theme / 07-design-prototype.md 保持一致（东方水墨·朱砂红）。
   仅用于设计探索，不导入生产代码。
@@ -131,30 +131,30 @@
 <body>
 <a href="#main-content" class="skip-link" style="position:absolute;top:-100%;left:16px;z-index:200;padding:12px 20px;background:var(--primary);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;">跳到主内容</a>
 
-<header class="topbar">
+<header class="topbar" id="page-header">
   <div class="brand"><span class="mark">汉</span> HanziMaster</div>
-  <nav class="mainnav">
+  <nav class="mainnav" id="main-nav">
     <a class="navlink" href="prototype.html">首页</a>
     <a class="navlink is-active" href="learn.html">学习</a>
     <a class="navlink" href="practice.html">练习</a>
     <a class="navlink" href="progress.html">进度</a>
   </nav>
   <span class="spacer"></span>
-  <button class="icon-btn" id="themeToggle" aria-label="切换深色模式" title="切换深色模式">🌓</button>
+  <button class="icon-btn" id="theme-toggle" aria-label="切换深色模式" title="切换深色模式">🌓</button>
   <button class="icon-btn" aria-label="设置">⚙</button>
 </header>
 
 <main id="main-content">
-  <div class="page-head">
+  <div class="page-head" id="learn-page-head">
     <span class="eyebrow">每日练习</span>
     <h1 class="display-font">选择一个汉字</h1>
     <p>探索其笔顺、词语与字义，点击卡片查看详情。</p>
   </div>
 
-  <div class="filters">
+  <div class="filters" id="learn-filters">
     <div class="search">
       <span class="si">🔍</span>
-      <input id="searchInput" placeholder="搜索拼音 / 汉字 / 部首…" aria-label="搜索汉字" />
+      <input id="character-search" placeholder="搜索拼音 / 汉字 / 部首…" aria-label="搜索汉字" />
     </div>
     <button class="chip is-active" data-filter="all">全部</button>
     <button class="chip" data-filter="new">新词</button>
@@ -162,19 +162,19 @@
     <button class="chip" data-filter="mastered">已掌握</button>
   </div>
 
-  <div class="grid" id="hanziGrid"></div>
+  <div class="grid" id="hanzi-grid"></div>
 </main>
 
 <!-- 详情弹窗 -->
-<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="dlgTitle">
-  <div class="dialog">
+<div class="overlay" id="detail-overlay" role="dialog" aria-modal="true" aria-labelledby="detail-title">
+  <div class="dialog" id="learn-detail-dialog">
     <div class="dialog-head">
-      <div class="big-glyph serif-font" id="dlgGlyph">木</div>
+      <div class="big-glyph serif-font" id="detail-glyph">木</div>
       <div>
-        <h2 id="dlgTitle" class="display-font">木</h2>
-        <div class="meta" id="dlgMeta">mù · Wood · 4 画 · 部首 木</div>
+        <h2 id="detail-title" class="display-font">木</h2>
+        <div class="meta" id="detail-meta">mù · Wood · 4 画 · 部首 木</div>
       </div>
-      <button class="icon-btn close" id="dlgClose" aria-label="关闭">✕</button>
+      <button class="icon-btn close" id="detail-close" aria-label="关闭">✕</button>
     </div>
     <div class="tabs">
       <button class="tab is-active" data-tab="stroke">笔顺</button>
@@ -183,24 +183,24 @@
     </div>
     <div class="tab-panel is-active" id="tab-stroke">
       <div class="stroke-demo">
-        <div class="glyph serif-font" id="strokeGlyph">木</div>
-        <ol id="strokeList"></ol>
+        <div class="glyph serif-font" id="stroke-glyph">木</div>
+        <ol id="stroke-list"></ol>
       </div>
     </div>
     <div class="tab-panel" id="tab-words">
-      <div class="word-list" id="wordList"></div>
+      <div class="word-list" id="word-list"></div>
     </div>
     <div class="tab-panel" id="tab-meaning">
-      <div class="example" id="exampleBox"></div>
+      <div class="example" id="example-box"></div>
     </div>
     <div style="display:flex;gap:12px;margin-top:24px;">
-      <button class="btn btn-primary" id="markLearned">标记为已掌握</button>
-      <button class="btn btn-outline" id="practiceBtn">去练习</button>
+      <button class="btn btn-primary" id="mark-learned">标记为已掌握</button>
+      <button class="btn btn-outline" id="practice-link">去练习</button>
     </div>
   </div>
 </div>
 
-<div class="toast" id="toast"><span class="dot"></span><div><b id="toastTitle">已掌握</b><span id="toastMsg">木 已加入已掌握列表</span></div></div>
+<div class="toast" id="learn-toast"><span class="dot"></span><div><b id="toast-title">已掌握</b><span id="toast-message">木 已加入已掌握列表</span></div></div>
 
 <script>
   // ===== 真实汉字数据（与 src/lib/characters.ts 对齐） =====
@@ -244,7 +244,7 @@
   ];
   const statusMap = { mastered:{cls:'badge-mastered',label:'已掌握'}, learning:{cls:'badge-learning',label:'复习中'}, new:{cls:'badge-new',label:'新词'} };
 
-  const grid = document.getElementById('hanziGrid');
+  const grid = document.getElementById('hanzi-grid');
   function render(list){
     grid.innerHTML = '';
     list.forEach(c=>{
@@ -265,9 +265,9 @@
     document.querySelectorAll('.chip').forEach(x=>x.classList.remove('is-active'));
     ch.classList.add('is-active'); curFilter=ch.dataset.filter; applyFilter();
   });
-  document.getElementById('searchInput').oninput = applyFilter;
+  document.getElementById('character-search').oninput = applyFilter;
   function applyFilter(){
-    const q = document.getElementById('searchInput').value.trim().toLowerCase();
+    const q = document.getElementById('character-search').value.trim().toLowerCase();
     const list = chars.filter(c=>{
       const okF = curFilter==='all' || c.status===curFilter;
       const okQ = !q || c.hanzi.includes(q) || c.py.toLowerCase().includes(q) || c.en.toLowerCase().includes(q);
@@ -277,21 +277,21 @@
   }
 
   // 弹窗
-  const overlay=document.getElementById('overlay');
+  const overlay=document.getElementById('detail-overlay');
   function openDialog(c){
-    document.getElementById('dlgGlyph').textContent=c.hanzi;
-    document.getElementById('dlgTitle').textContent=c.hanzi;
-    document.getElementById('dlgMeta').textContent=`${c.py} · ${c.en} · ${c.strokes} 画 · 部首 ${c.radical}`;
-    document.getElementById('strokeGlyph').textContent=c.hanzi;
-    const sl=document.getElementById('strokeList'); sl.innerHTML='';
+    document.getElementById('detail-glyph').textContent=c.hanzi;
+    document.getElementById('detail-title').textContent=c.hanzi;
+    document.getElementById('detail-meta').textContent=`${c.py} · ${c.en} · ${c.strokes} 画 · 部首 ${c.radical}`;
+    document.getElementById('stroke-glyph').textContent=c.hanzi;
+    const sl=document.getElementById('stroke-list'); sl.innerHTML='';
     for(let i=1;i<=c.strokes;i++){const li=document.createElement('li');li.textContent=`第 ${i} 笔`;sl.appendChild(li);}
-    const wl=document.getElementById('wordList'); wl.innerHTML='';
+    const wl=document.getElementById('word-list'); wl.innerHTML='';
     c.words.forEach(w=>{const d=document.createElement('div');d.className='word-item';d.innerHTML=`<span class="w">${w.w}</span><span class="p">${w.p}</span><span class="e">${w.e}</span>`;wl.appendChild(d);});
-    document.getElementById('exampleBox').innerHTML=`${c.example.s}<div class="py">${c.example.p}</div><div class="en">${c.example.e}</div>`;
+    document.getElementById('example-box').innerHTML=`${c.example.s}<div class="py">${c.example.p}</div><div class="en">${c.example.e}</div>`;
     overlay.classList.add('open');
   }
   function closeDialog(){overlay.classList.remove('open');}
-  document.getElementById('dlgClose').onclick=closeDialog;
+  document.getElementById('detail-close').onclick=closeDialog;
   overlay.onclick=(e)=>{if(e.target===overlay)closeDialog();};
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDialog();});
   document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
@@ -299,15 +299,15 @@
     document.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('is-active'));
     t.classList.add('is-active'); document.getElementById('tab-'+t.dataset.tab).classList.add('is-active');
   });
-  document.getElementById('markLearned').onclick=()=>{ showToast('已掌握', document.getElementById('dlgTitle').textContent+' 已加入已掌握列表'); };
-  document.getElementById('practiceBtn').onclick=()=>{ closeDialog(); window.location.href='practice.html'; };
+  document.getElementById('mark-learned').onclick=()=>{ showToast('已掌握', document.getElementById('detail-title').textContent+' 已加入已掌握列表'); };
+  document.getElementById('practice-link').onclick=()=>{ closeDialog(); window.location.href='practice.html'; };
 
   // Toast
-  const toast=document.getElementById('toast'); let toastTimer;
-  function showToast(title,msg){ document.getElementById('toastTitle').textContent=title; document.getElementById('toastMsg').textContent=msg; toast.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>toast.classList.remove('show'),3000); }
+  const toast=document.getElementById('learn-toast'); let toastTimer;
+  function showToast(title,msg){ document.getElementById('toast-title').textContent=title; document.getElementById('toast-message').textContent=msg; toast.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>toast.classList.remove('show'),3000); }
 
   // 主题切换
-  const tgl=document.getElementById('themeToggle');
+  const tgl=document.getElementById('theme-toggle');
   tgl.onclick=()=>{ const d=document.documentElement.classList.toggle('dark'); localStorage.setItem('hm-theme',d?'dark':'light'); };
   if(localStorage.getItem('hm-theme')==='dark') document.documentElement.classList.add('dark');
 </script>

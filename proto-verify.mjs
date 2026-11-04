@@ -1,0 +1,34 @@
+import fs from 'fs';
+const files = ['prototype.html', 'character-detail.html', 'wireframes.html', 'learn.html', 'practice.html', 'progress.html'];
+const out = [];
+let problems = 0;
+for (const name of files) {
+  const src = fs.readFileSync('prototype/' + name, 'utf8');
+  const lines = src.split(/\r?\n/);
+  const ids = [...src.matchAll(/\sid="([^"]+)"/g)].map(m => m[1]);
+  const dup = ids.filter((v, i) => ids.indexOf(v) !== i);
+  const ref = [];
+  const collect = (re) => { for (const m of src.matchAll(re)) ref.push(m[1]); };
+  collect(/aria-(?:controls|labelledby|describedby|owns|activedescendant)="([^"]+)"/g);
+  collect(/\sfor="([^"]+)"/g);
+  collect(/href="#([^"]+)"/g);
+  collect(/getElementById\(\s*['"]([^'"]+)['"]\s*\)/g);
+  collect(/querySelector(?:All)?\(\s*['"]#([^'"\s.,>:[]+)/g);
+  collect(/\$\(\s*['"]#([^'"\s.,>:[]+)/g);
+  const unresolved = [...new Set(ref)].filter(r => !ids.includes(r));
+  const camel = ids.filter(i => /[A-Z]/.test(i));
+  const version = (src.match(/v5\.2\.\d+/) || ['(none)'])[0];
+  const ai = [];
+  lines.forEach((l, i) => { if (/\bAI\b|CON IA|IA inteligente|AI搭載|AI驱动|AI洞察|generated on demand|间隔记忆|智能复习/i.test(l)) ai.push(i + 1); });
+  const bad = dup.length + unresolved.length + camel.length + ai.length;
+  problems += bad + (version === 'v5.2.27' ? 0 : 1);
+  out.push(`${name} (${lines.length} lines) ids=${ids.length} ver=${version} ${bad ? 'FAIL' : 'OK'}`);
+  if (dup.length) out.push(`  duplicate ids: ${[...new Set(dup)].join(', ')}`);
+  if (unresolved.length) out.push(`  unresolved refs: ${unresolved.join(', ')}`);
+  if (camel.length) out.push(`  non-kebab ids: ${camel.join(', ')}`);
+  if (ai.length) out.push(`  stale AI copy lines: ${ai.join(', ')}`);
+  out.push(`  ids: ${ids.join(', ')}`);
+}
+out.unshift(`problems=${problems}`);
+fs.writeFileSync('proto-verify-result.txt', out.join('\n') + '\n', 'utf8');
+console.log(`problems=${problems}`);

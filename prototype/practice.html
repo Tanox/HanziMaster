@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  prototype/practice.html · 练习页高保真交互原型 · v5.2.18
+  prototype/practice.html · 练习页高保真交互原型 · v5.2.27
   探索「测验 / 书写练习」界面：选择题、书写轨迹占位、即时反馈与进度条。
   Design Token 与 globals.css @theme / 07-design-prototype.md 保持一致（东方水墨·朱砂红）。
   仅用于设计探索，不导入生产代码。
@@ -104,58 +104,58 @@
 </style>
 </head>
 <body>
-<header class="topbar">
+<header class="topbar" id="page-header">
   <div class="brand"><span class="mark">汉</span> HanziMaster</div>
-  <nav class="mainnav">
+  <nav class="mainnav" id="main-nav">
     <a class="navlink" href="prototype.html">首页</a>
     <a class="navlink" href="learn.html">学习</a>
     <a class="navlink is-active" href="practice.html">练习</a>
     <a class="navlink" href="progress.html">进度</a>
   </nav>
   <span class="spacer"></span>
-  <button class="icon-btn" id="themeToggle" aria-label="切换深色模式" title="切换深色模式">🌓</button>
+  <button class="icon-btn" id="theme-toggle" aria-label="切换深色模式" title="切换深色模式">🌓</button>
   <button class="icon-btn" aria-label="设置">⚙</button>
 </header>
 
 <main id="main-content">
-  <div class="page-head">
+  <div class="page-head" id="practice-page-head">
     <span class="eyebrow">练习</span>
     <h1 class="display-font">巩固所学</h1>
   </div>
 
-  <div class="progress-wrap">
-    <div class="progress-meta"><span id="progLabel">第 1 / 5 题</span><span id="progPct">20%</span></div>
-    <div class="progress-track"><div class="progress-fill" id="progFill" style="width:20%"></div></div>
+  <div class="progress-wrap" id="practice-progress">
+    <div class="progress-meta"><span id="progress-label">第 1 / 5 题</span><span id="progress-percent">20%</span></div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:20%"></div></div>
   </div>
 
-  <div class="modes">
+  <div class="modes" id="practice-modes">
     <div class="mode is-active" data-mode="quiz"><div class="mi">📝</div><div class="mt">选择题</div></div>
     <div class="mode" data-mode="write"><div class="mi">✍️</div><div class="mt">书写练习</div></div>
   </div>
 
   <!-- 测验 -->
-  <div id="quizPanel">
-    <div class="quiz">
-      <div class="q-glyph serif-font" id="qGlyph">木</div>
+  <div id="quiz-panel">
+    <div class="quiz" id="quiz-card">
+      <div class="q-glyph serif-font" id="quiz-glyph">木</div>
       <div class="q-ask">这个汉字的拼音是？</div>
-      <div class="options" id="qOptions"></div>
-      <div class="quiz-feedback" id="qFeedback"></div>
+      <div class="options" id="quiz-options"></div>
+      <div class="quiz-feedback" id="quiz-feedback"></div>
       <div class="quiz-actions">
-        <button class="btn btn-primary" id="qNext" disabled>下一题 →</button>
+        <button class="btn btn-primary" id="quiz-next" disabled>下一题 →</button>
       </div>
     </div>
   </div>
 
   <!-- 书写 -->
-  <div id="writePanel" class="write-panel">
-    <div class="quiz">
+  <div id="writing-panel" class="write-panel">
+    <div class="quiz" id="writing-card">
       <div class="canvas-wrap">
-        <div class="write-target serif-font" id="wTarget">水</div>
+        <div class="write-target serif-font" id="writing-target">水</div>
       </div>
-      <div class="write-hint">按笔顺描红，共 <span id="wStrokes">4</span> 笔</div>
-      <div class="stroke-steps" id="wSteps"></div>
+      <div class="write-hint">按笔顺描红，共 <span id="writing-stroke-count">4</span> 笔</div>
+      <div class="stroke-steps" id="writing-steps"></div>
       <div class="quiz-actions">
-        <button class="btn btn-primary" id="wNext">下一个字 →</button>
+        <button class="btn btn-primary" id="writing-next">下一个字 →</button>
       </div>
     </div>
   </div>
@@ -171,9 +171,9 @@
     { hanzi:'日', py:'rì', options:['yuè','kǒu','rì','huǒ'], answer:2 },
   ];
   let qi = 0, correct = 0;
-  const qGlyph=document.getElementById('qGlyph'), qOptions=document.getElementById('qOptions'),
-        qFeedback=document.getElementById('qFeedback'), qNext=document.getElementById('qNext'),
-        progFill=document.getElementById('progFill'), progLabel=document.getElementById('progLabel'), progPct=document.getElementById('progPct');
+  const qGlyph=document.getElementById('quiz-glyph'), qOptions=document.getElementById('quiz-options'),
+        qFeedback=document.getElementById('quiz-feedback'), qNext=document.getElementById('quiz-next'),
+        progFill=document.getElementById('progress-fill'), progLabel=document.getElementById('progress-label'), progPct=document.getElementById('progress-percent');
 
   function loadQuiz(){
     const q=quiz[qi]; qGlyph.textContent=q.hanzi; qFeedback.className='quiz-feedback'; qNext.disabled=true;
@@ -205,25 +205,25 @@
   const writeChars=['水','火','木','山','日'];
   let wi=0;
   function loadWrite(){
-    const c=writeChars[wi]; document.getElementById('wTarget').textContent=c;
-    const strokes={水:4,火:4,木:4,山:3,日:4}[c]; document.getElementById('wStrokes').textContent=strokes;
-    const steps=document.getElementById('wSteps'); steps.innerHTML='';
+    const c=writeChars[wi]; document.getElementById('writing-target').textContent=c;
+    const strokes={水:4,火:4,木:4,山:3,日:4}[c]; document.getElementById('writing-stroke-count').textContent=strokes;
+    const steps=document.getElementById('writing-steps'); steps.innerHTML='';
     for(let i=1;i<=strokes;i++){const s=document.createElement('div');s.className='step';s.textContent=i;steps.appendChild(s);}
     // 模拟描红进度
     [...steps.children].forEach((s,i)=>setTimeout(()=>s.classList.add('done'),(i+1)*400));
   }
-  document.getElementById('wNext').onclick=()=>{ wi=(wi+1)%writeChars.length; loadWrite(); };
+  document.getElementById('writing-next').onclick=()=>{ wi=(wi+1)%writeChars.length; loadWrite(); };
   loadWrite();
 
   // 模式切换
   document.querySelectorAll('.mode').forEach(m=>m.onclick=()=>{
     document.querySelectorAll('.mode').forEach(x=>x.classList.remove('is-active')); m.classList.add('is-active');
     const isQuiz=m.dataset.mode==='quiz';
-    document.getElementById('quizPanel').style.display=isQuiz?'block':'none';
-    document.getElementById('writePanel').classList.toggle('is-active',!isQuiz);
+    document.getElementById('quiz-panel').style.display=isQuiz?'block':'none';
+    document.getElementById('writing-panel').classList.toggle('is-active',!isQuiz);
   });
 
-  const tgl=document.getElementById('themeToggle');
+  const tgl=document.getElementById('theme-toggle');
   tgl.onclick=()=>{ const d=document.documentElement.classList.toggle('dark'); localStorage.setItem('hm-theme',d?'dark':'light'); };
   if(localStorage.getItem('hm-theme')==='dark') document.documentElement.classList.add('dark');
 </script>

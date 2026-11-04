@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  prototype/wireframes.html · 组件库规范（线框 + 设计交付） · v5.2.18
+  prototype/wireframes.html · 组件库规范（线框 + 设计交付） · v5.2.27
   用途：定义 HanziMaster 组件库的视觉规范与交互契约。
   - 基础组件（Button / Input …）
   - 复合组件（Form / Card …）
@@ -182,13 +182,13 @@
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="page-head">
+<div class="wrap" id="wireframes-main">
+  <header class="page-head" id="wireframes-header">
     <h1 class="display-font">组件库规范 · Wireframes</h1>
     <p>东方水墨 · 朱砂红设计语言下的组件交付标准。所有组件以 <code style="font-family:var(--font-mono)">globals.css @theme</code> 为 token 单一来源，深色模式通过 <code style="font-family:var(--font-mono)">.dark</code> 类切换。</p>
   </header>
 
-  <nav class="toc" aria-label="目录">
+  <nav class="toc" id="wireframes-toc" aria-label="目录">
     <a href="#basic">基础组件</a>
     <a href="#composite">复合组件</a>
     <a href="#business">业务组件</a>
@@ -238,18 +238,18 @@
       <div class="spec-card">
         <h3>默认 & 聚焦</h3>
         <div class="field">
-          <label for="d1">汉字查询</label>
-          <input class="input" id="d1" placeholder="输入拼音或汉字…" />
+          <label for="character-query-input">汉字查询</label>
+          <input class="input" id="character-query-input" placeholder="输入拼音或汉字…" />
           <span class="input-hint">支持拼音 / 汉字 / 部首检索</span>
         </div>
       </div>
       <div class="spec-card">
         <h3>错误态 & 图标</h3>
         <div class="field">
-          <label for="d2">邮箱</label>
+          <label for="email-input">邮箱</label>
           <div class="input-group">
             <span class="input-icon">✉</span>
-            <input class="input input--error" id="d2" value="not-an-email" />
+            <input class="input input--error" id="email-input" value="not-an-email" />
           </div>
           <span class="input-error-msg">请输入有效的邮箱地址</span>
         </div>
@@ -302,14 +302,14 @@
     <h3 style="margin:32px 0 12px;font-size:16px;">2.2 Form 表单</h3>
     <div class="spec-card">
       <h3>纵向排布 + 实时校验</h3>
-      <form class="form" onsubmit="return false;">
+      <form class="form" id="settings-form" onsubmit="return false;">
         <div class="field">
-          <label for="f1">学习目标</label>
-          <input class="input" id="f1" placeholder="例如：HSK 3 词汇" />
+          <label for="learning-goal-input">学习目标</label>
+          <input class="input" id="learning-goal-input" placeholder="例如：HSK 3 词汇" />
         </div>
         <div class="form-row">
-          <div class="field"><label for="f2">每日字数</label><input class="input" id="f2" type="number" value="5" /></div>
-          <div class="field"><label for="f3">语言</label><input class="input" id="f3" value="English" /></div>
+          <div class="field"><label for="daily-char-count-input">每日字数</label><input class="input" id="daily-char-count-input" type="number" value="5" /></div>
+          <div class="field"><label for="language-input">语言</label><input class="input" id="language-input" value="English" /></div>
         </div>
         <div class="form-actions">
           <button class="btn btn-default">保存</button>
@@ -345,7 +345,7 @@
     <h3 style="margin:24px 0 12px;font-size:16px;">3.1 FeatureCard 功能卡</h3>
     <div class="grid cols-3">
       <div class="feature"><div class="ico">✍️</div><h4>笔画书写</h4><p>实时笔顺引导，像在宣纸上练字。</p></div>
-      <div class="feature"><div class="ico">🧠</div><h4>间隔记忆</h4><p>基于遗忘曲线的智能复习排程。</p></div>
+      <div class="feature"><div class="ico">📈</div><h4>进度追踪</h4><p>用周热力图与连续天数回顾练习记录。</p></div>
       <div class="feature"><div class="ico">🌏</div><h4>多语言</h4><p>11 种界面语言，全球学习者共用。</p></div>
     </div>
 

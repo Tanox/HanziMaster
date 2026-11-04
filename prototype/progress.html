@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  prototype/progress.html · 进度/统计页高保真交互原型 · v5.2.18
+  prototype/progress.html · 进度/统计页高保真交互原型 · v5.2.27
   探索「学习进度」仪表盘：统计卡、周练习热力图、连续天数、分类掌握度。
   Design Token 与 globals.css @theme / 07-design-prototype.md 保持一致（东方水墨·朱砂红）。
   仅用于设计探索，不导入生产代码。
@@ -100,36 +100,36 @@
 </style>
 </head>
 <body>
-<header class="topbar">
+<header class="topbar" id="page-header">
   <div class="brand"><span class="mark">汉</span> HanziMaster</div>
-  <nav class="mainnav">
+  <nav class="mainnav" id="main-nav">
     <a class="navlink" href="prototype.html">首页</a>
     <a class="navlink" href="learn.html">学习</a>
     <a class="navlink" href="practice.html">练习</a>
     <a class="navlink is-active" href="progress.html">进度</a>
   </nav>
   <span class="spacer"></span>
-  <button class="icon-btn" id="themeToggle" aria-label="切换深色模式" title="切换深色模式">🌓</button>
+  <button class="icon-btn" id="theme-toggle" aria-label="切换深色模式" title="切换深色模式">🌓</button>
   <button class="icon-btn" aria-label="设置">⚙</button>
 </header>
 
 <main id="main-content">
-  <div class="page-head">
+  <div class="page-head" id="progress-page-head">
     <span class="eyebrow">学习进度</span>
     <h1 class="display-font">你的水墨旅程</h1>
   </div>
 
-  <div class="stats">
+  <div class="stats" id="progress-stats">
     <div class="stat stat--vermilion"><div class="num">128</div><div class="lab">已学汉字</div><div class="sub">↑ 本周 +12</div></div>
     <div class="stat stat--indigo"><div class="num">23</div><div class="lab">连续天数</div><div class="sub">🔥 保持中</div></div>
     <div class="stat stat--success"><div class="num">94%</div><div class="lab">测验正确率</div><div class="sub">↑ 2%</div></div>
     <div class="stat stat--warning"><div class="num">7</div><div class="lab">待复习</div><div class="sub">今天到期</div></div>
   </div>
 
-  <div class="grid-2">
+  <div class="grid-2" id="progress-breakdown">
     <div class="card">
       <h3>近 5 周练习热力图</h3>
-      <div class="heat" id="heat"></div>
+      <div class="heat" id="activity-heatmap"></div>
       <div class="heat-legend"><span>少</span><span class="cell"></span><span class="cell l1"></span><span class="cell l2"></span><span class="cell l3"></span><span class="cell l4"></span><span>多</span></div>
     </div>
     <div class="card">
@@ -144,7 +144,7 @@
     </div>
   </div>
 
-  <div class="card">
+  <div class="card" id="recent-activity-card">
     <h3>最近活动</h3>
     <div class="activity">
       <div class="act"><span class="ico">✍️</span><div><div class="a-t">书写练习 · 水</div><div class="a-d">4 笔全部描红成功</div></div><span class="a-time">10 分钟前</span></div>
@@ -157,11 +157,11 @@
 
 <script>
   // 热力图：5 周 × 7 天 = 35 格
-  const heat=document.getElementById('heat');
+  const heat=document.getElementById('activity-heatmap');
   const levels=[0,1,2,3,4,2,1, 0,2,3,4,4,3,2, 1,2,3,4,2,1,0, 2,3,4,4,3,2,1, 0,1,2,3,4,2,0];
   levels.forEach(l=>{ const c=document.createElement('div'); c.className='cell'+(l?(' l'+l):''); heat.appendChild(c); });
 
-  const tgl=document.getElementById('themeToggle');
+  const tgl=document.getElementById('theme-toggle');
   tgl.onclick=()=>{ const d=document.documentElement.classList.toggle('dark'); localStorage.setItem('hm-theme',d?'dark':'light'); };
   if(localStorage.getItem('hm-theme')==='dark') document.documentElement.classList.add('dark');
 </script>

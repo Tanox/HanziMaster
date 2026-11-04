@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  prototype/character-detail.html · HanziMaster 汉字学习卡变体原型 · v5.2.14
+  prototype/character-detail.html · HanziMaster 汉字学习卡变体原型 · v5.2.27
   探索「汉字研习卡」的三种方向。仅用于设计探索，不导入生产代码。
   设计 Token 与 globals.css @theme / 07-design-prototype.md 保持一致（东方水墨·朱砂红）。
 -->
@@ -453,15 +453,15 @@
 </style>
 </head>
 <body>
-  <div class="stage-wrap">
-    <div class="page-context">
+  <div class="stage-wrap" id="character-detail-main">
+    <div class="page-context" id="page-context">
       <h1>每日研习</h1>
       <p>选择一个汉字，研读其音、形、义与用法。</p>
     </div>
-    <div id="stage" class="stage" aria-live="polite"></div>
+    <div id="variant-stage" class="stage" aria-live="polite"></div>
   </div>
 
-  <nav class="proto-picker" data-position="top" aria-label="Prototype variants">
+  <nav class="proto-picker" id="variant-picker" data-position="top" aria-label="Prototype variants">
     <span class="proto-picker-highlight" aria-hidden="true"></span>
     <button class="proto-picker-item" data-active aria-current="true">水墨卷轴</button>
     <button class="proto-picker-item">教学卡</button>
@@ -590,15 +590,15 @@
             '<span class="atelier-char">一</span>' +
             '<span class="pinyin">yī · 一</span>' +
           '</div>' +
-          '<div class="canvas-grid" id="traceCanvas">' +
+          '<div class="canvas-grid" id="trace-canvas">' +
             '<span class="canvas-cell traced">一</span>' +
             '<span class="canvas-cell">丨</span>' +
             '<span class="canvas-cell">乚</span>' +
             '<span class="canvas-cell"></span><span class="canvas-cell"></span><span class="canvas-cell"></span><span class="canvas-cell"></span>' +
           '</div>' +
           '<div class="canvas-tools">' +
-            '<button class="tool-btn" id="tracePrev">上一笔</button>' +
-            '<button class="tool-btn" id="traceNext">下一笔</button>' +
+            '<button class="tool-btn" id="trace-previous">上一笔</button>' +
+            '<button class="tool-btn" id="trace-next">下一笔</button>' +
             '<span class="hint">点击格子逐笔跟写</span>' +
           '</div>' +
         '</div>' +
@@ -629,7 +629,7 @@
 
   /* ============ 变体内部交互（跟写演示） ============ */
   function wireInteractions() {
-    var canvas = document.getElementById('traceCanvas');
+    var canvas = document.getElementById('trace-canvas');
     if (canvas) {
       var cells = canvas.querySelectorAll('.canvas-cell');
       cells.forEach(function (c, i) {
@@ -639,8 +639,8 @@
         });
       });
     }
-    var prev = document.getElementById('tracePrev');
-    var next = document.getElementById('traceNext');
+    var prev = document.getElementById('trace-previous');
+    var next = document.getElementById('trace-next');
     if (prev && next && canvas) {
       var cells = canvas.querySelectorAll('.canvas-cell');
       var traced = function () { return Array.prototype.filter.call(cells, function (c) { return c.classList.contains('traced'); }).length; };
@@ -665,7 +665,7 @@
   }
 
   /* ============ PICKER 行为契约（verbatim） ============ */
-  var stage = document.getElementById('stage');
+  var stage = document.getElementById('variant-stage');
   var picker = document.querySelector('.proto-picker');
   var highlight = picker.querySelector('.proto-picker-highlight');
   var items = Array.prototype.slice.call(picker.querySelectorAll('.proto-picker-item:not(.proto-picker-replay)'));
