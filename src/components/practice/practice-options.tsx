@@ -1,4 +1,4 @@
-// src/components/practice/practice-options.tsx v5.2.25
+// src/components/practice/practice-options.tsx v5.2.31
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
@@ -13,14 +13,14 @@ export function PracticeOptionsGrid({ selectedOption, onSelect }: PracticeOption
   const { t } = useTranslation();
 
   return (
-    <div id="practice-options" className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 mb-16 stagger-children">
+    <div id="practice-options" className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 mb-16 stagger-children reveal">
       {practiceOptions.map((option) => {
         const isSelected = selectedOption === option.id;
         return (
           <button
             key={option.id}
             onClick={() => onSelect(option.id)}
-            className={`group bg-card/80 dark:bg-ink-900/80 backdrop-blur-sm p-10 rounded-3xl border-2 border-ink-100 dark:border-ink-800 hover:border-vermilion-300 dark:hover:border-vermilion-500 hover:-translate-y-2 hover:shadow-ink-lg transition-[colors,transform] duration-300 text-left ${
+            className={`group bg-card/80 dark:bg-ink-900/80 backdrop-blur-sm p-10 rounded-3xl border-2 border-ink-100 dark:border-ink-800 hover:border-primary-border hover:-translate-y-2 hover:shadow-ink-lg transition-[colors,transform,box-shadow] duration-300 text-left ${
               isSelected ? 'border-vermilion-500 shadow-vermilion-glow' : ''
             }`}
           >

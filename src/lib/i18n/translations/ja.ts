@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ja.ts v5.2.27
+// src/lib/i18n/translations/ja.ts v5.2.31
 export const ja = {
   common: {
     home: 'ホーム',
@@ -27,6 +27,14 @@ export const ja = {
     openMenu: 'メニューを開く',
     closeMenu: 'メニューを閉じる',
     navigationMenu: 'ナビゲーションメニュー',
+    emptyTitle: 'まだ何もありません',
+    emptyDesc: '漢字を選んで学習を始めましょう。',
+    errorTitle: '問題が発生しました',
+    errorDesc: '予期しないエラーが発生しました。',
+    notFoundTitle: 'ページが見つかりません',
+    notFoundDesc: 'お探しのページは存在しません。',
+    retry: '再試行',
+    backHome: 'ホームに戻る',
   },
   home: {
     heroTitle: '中国語をマスター',
@@ -176,6 +184,7 @@ export const ja = {
     quizPlaceholder: 'ピンインを入力…',
     quizCorrect: '正解！',
     quizIncorrect: '不正解',
+    kbdHint: '← → で漢字を切り替え',
   },
   footer: {
     copyright: '© 2026 HanziMaster 汉字大师 {{versionLabel}}. All rights reserved.',

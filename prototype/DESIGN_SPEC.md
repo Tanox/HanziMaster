@@ -1,6 +1,6 @@
 # HanziMaster 原型设计规范文档
 
-> 版本 v5.2.28 · 与 `docs/07-design-prototype.md` 互为补充，本文聚焦**原型交付侧**的细化规范（图标、布局网格、交互模式库、反馈/错误/空状态规范）。
+> 版本 v5.2.31 · 与 `docs/07-design-prototype.md` 互为补充，本文聚焦**原型交付侧**的细化规范（图标、布局网格、交互模式库、反馈/错误/空状态规范）。
 > Design Token 单一来源为 `src/app/globals.css` 的 `@theme` 块，原型文件（`prototype.html` / `wireframes.html` / `learn.html` / `practice.html` / `progress.html` / `character-detail.html`）中的 CSS 变量须与之对齐。
 
 ---
@@ -26,6 +26,7 @@
 
 - 工具类：`.display-font` / `.serif-font` / `.mono-font`。
 - 汉字字形统一用 `font-weight:500`，保证笔画清晰。
+- 排版微调（v5.2.31）：大标题（h1–h3）统一 `-0.01em` 字间距；移动端小字号（`text-xs/sm`）行高 ≥ 1.65，规则见 `src/app/globals.css`。
 
 ### 1.3 间距与布局规范
 

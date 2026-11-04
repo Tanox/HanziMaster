@@ -1,4 +1,4 @@
-/* src/app/styles/utilities.css v5.2.26 */
+/* src/app/styles/utilities.css v5.2.31 */
 /* 自定义工具类（从 globals.css 拆分，保持单文件 ≤200 行） */
 
 @layer utilities {
@@ -69,6 +69,21 @@
   .touch-target {
     min-width: 44px;
     min-height: 44px;
+  }
+
+  .kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.75rem;
+    height: 1.5rem;
+    padding: 0 0.4rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-muted-foreground);
   }
 
   .glass {

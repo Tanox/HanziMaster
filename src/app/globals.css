@@ -1,4 +1,4 @@
-/* src/app/globals.css v5.2.26 */
+/* src/app/globals.css v5.2.31 */
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -20,6 +20,9 @@
   --color-primary: #c53d43;
   --color-primary-dark: #9b2c2c;
   --color-primary-foreground: #ffffff;
+  /* 派生强调色（color-mix 单一来源） */
+  --color-primary-hover: color-mix(in srgb, var(--color-primary) 88%, #000);
+  --color-primary-border: color-mix(in srgb, var(--color-primary) 45%, transparent);
 
   /* 中性色 - 水墨灰 */
   --color-background: #faf9f6;
@@ -124,10 +127,28 @@ body {
   background-blend-mode: soft-light;
 }
 
+h1,
+h2,
+h3 {
+  letter-spacing: -0.01em;
+}
+
+@media (max-width: 640px) {
+  .text-xs,
+  .text-sm {
+    line-height: 1.65;
+  }
+}
+
 *:focus-visible {
   outline: 2px solid var(--color-ring);
   outline-offset: 2px;
   border-radius: 4px;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-ring) 22%, transparent);
+}
+
+.dark *:focus-visible {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-ring) 38%, transparent);
 }
 
 .skip-to-content {

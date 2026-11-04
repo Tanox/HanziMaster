@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/de.ts v5.2.27
+// src/lib/i18n/translations/de.ts v5.2.31
 export const de = {
   common: {
     home: 'Startseite',
@@ -27,6 +27,14 @@ export const de = {
     openMenu: 'Menü öffnen',
     closeMenu: 'Menü schließen',
     navigationMenu: 'Navigationsmenü',
+    emptyTitle: 'Hier ist noch nichts',
+    emptyDesc: 'Wähle ein Zeichen aus, um zu lernen.',
+    errorTitle: 'Etwas ist schiefgelaufen',
+    errorDesc: 'Ein unerwarteter Fehler ist aufgetreten.',
+    notFoundTitle: 'Seite nicht gefunden',
+    notFoundDesc: 'Die gesuchte Seite existiert nicht.',
+    retry: 'Erneut versuchen',
+    backHome: 'Zurück zur Startseite',
   },
   home: {
     heroTitle: 'Chinesisch Meistern',
@@ -176,6 +184,7 @@ export const de = {
     quizPlaceholder: 'Pinyin eingeben...',
     quizCorrect: 'Richtig!',
     quizIncorrect: 'Falsch',
+    kbdHint: 'Mit ← → Zeichen wechseln',
   },
   footer: {
     copyright: '© 2026 HanziMaster 汉字大师 {{versionLabel}}. Alle Rechte vorbehalten.',

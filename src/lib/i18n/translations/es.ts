@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/es.ts v5.2.27
+// src/lib/i18n/translations/es.ts v5.2.31
 export const es = {
   common: {
     home: 'Inicio',
@@ -27,6 +27,14 @@ export const es = {
     openMenu: 'Abrir menú',
     closeMenu: 'Cerrar menú',
     navigationMenu: 'Menú de navegación',
+    emptyTitle: 'Aún no hay nada aquí',
+    emptyDesc: 'Selecciona un carácter para empezar a aprender.',
+    errorTitle: 'Algo salió mal',
+    errorDesc: 'Ocurrió un error inesperado.',
+    notFoundTitle: 'Página no encontrada',
+    notFoundDesc: 'La página que buscas no existe.',
+    retry: 'Reintentar',
+    backHome: 'Volver al inicio',
   },
   home: {
     heroTitle: 'Domina el Chino',
@@ -176,6 +184,7 @@ export const es = {
     quizPlaceholder: 'Ingrese pinyin...',
     quizCorrect: '¡Correcto!',
     quizIncorrect: 'Incorrecto',
+    kbdHint: 'Usa ← → para cambiar de carácter',
   },
   footer: {
     copyright: '© 2026 HanziMaster 汉字大师 {{versionLabel}}. Todos los derechos reservados.',

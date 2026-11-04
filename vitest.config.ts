@@ -1,4 +1,4 @@
-// vitest.config.ts v5.2.19
+// vitest.config.ts v5.2.31
 import { defineConfig } from 'vitest/config';
 import { fileURLToPath } from 'node:url';
 
@@ -9,8 +9,9 @@ export default defineConfig({
     },
   },
   test: {
-    environment: 'node',
-    include: ['src/**/*.test.ts'],
+    environment: 'jsdom',
+    include: ['src/**/*.test.{ts,tsx}'],
+    setupFiles: ['./vitest.setup.ts'],
     globals: true,
   },
 });

@@ -1,4 +1,4 @@
-// src/lib/storage.ts v5.2.25
+// src/lib/storage.ts v5.2.31
 // src/lib/storage.ts
 // Secure localStorage utilities with version control
 
@@ -18,7 +18,7 @@ export function safeGetItem<T>(key: string, defaultValue: T): T {
   }
   
   try {
-    const item = localStorage.getItem(key);
+    const item = window.localStorage.getItem(key);
     if (!item) return defaultValue;
     
     const parsed = JSON.parse(item) as StorageData<T>;
@@ -47,7 +47,7 @@ export function safeSetItem<T>(key: string, value: T): void {
       _v: STORAGE_VERSION,
       _d: value,
     };
-    localStorage.setItem(key, JSON.stringify(data));
+    window.localStorage.setItem(key, JSON.stringify(data));
   } catch {
     // Silently fail for quota exceeded or other storage errors
   }

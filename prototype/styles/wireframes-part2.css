@@ -1,0 +1,133 @@
+/* prototype/styles/wireframes-part2.css · 组件状态可视化与断点指示 · v5.2.31 */
+/* 供 wireframes.html §3.5 使用：强制态演示、状态组件、动画预览、断点徽标 */
+
+.note {
+  margin-top: 12px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.btn-states {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+/* 强制态演示（非交互态的视觉参考） */
+.btn.is-hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(26, 26, 26, 0.14);
+  filter: brightness(1.05);
+}
+
+.btn.is-active {
+  transform: translateY(1px);
+  box-shadow: none;
+  filter: brightness(0.97);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 状态组件（与 src/components/state/state-views.tsx 交付实现一致） */
+.state-row {
+  display: grid;
+  gap: 16px;
+}
+
+.mini-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 18px 12px;
+  border: 1px dashed var(--border);
+  border-radius: 16px;
+  text-align: center;
+}
+
+.ms-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.ms-desc {
+  margin: 0;
+  max-width: 280px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+
+.ms-ic {
+  font-size: 26px;
+}
+
+.ms-retry {
+  margin-top: 6px;
+}
+
+.ms-spinner {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 3px solid var(--primary);
+  border-top-color: transparent;
+  animation: wf-spin 0.8s linear infinite;
+}
+
+@keyframes wf-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 动画帧预览 */
+.anim-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.anim-glyph {
+  font-size: 64px;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+@keyframes brushStroke {
+  0% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+.animate-brush {
+  animation: brushStroke 0.8s var(--ease-out, ease-out) forwards;
+}
+
+/* 响应式断点指示器 */
+#bp-badge {
+  position: fixed;
+  left: 12px;
+  bottom: 12px;
+  z-index: 999;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--card) 88%, transparent);
+  color: var(--muted-foreground);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  pointer-events: none;
+}

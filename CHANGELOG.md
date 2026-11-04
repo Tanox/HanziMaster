@@ -1,5 +1,17 @@
 ﻿# Changelog
 
+## [5.2.31] - 完成 tasks.md T1/T2/T4–T14，T3 安全修复推进中
+### Feat
+- T1：新增 `state-views.tsx`（EmptyState / ErrorState / LoadingSpinner）与全局 `error.tsx` / `not-found.tsx` / `loading.tsx`。
+- T5–T7：滚动 reveal 扩展、移动抽屉右滑关闭（`use-swipe-close`）、路由加载旋转指示与练习/测验震动反馈（`use-haptic`）。
+- T9–T13：学习页 ←/→ 键盘切换 + kbd 提示、字符卡悬停缩放、导航平滑下划线、color-mix 派生 token（`--color-primary-hover/-border`）、排版微调。
+- T14：`wireframes.html` 新增 §3.5 组件状态可视化、断点指示器与动画帧重播。
+- T4：接入 `@testing-library/react` + jsdom，新增 4 个组件/交互测试文件（总计 9 文件 / 47 用例）；vitest 环境切 jsdom 并以内存 Storage 兜底 Node 24 localStorage getter。
+### Fix
+- T3：`next` 16.2.9 → 16.2.11（高危公告）；`shadcn` 移至 devDependencies；`pnpm-workspace.yaml` overrides 钉住 14 个传递依赖补丁版下限；`storage.ts` 改用 `window.localStorage`。
+### Docs
+- 新增 `docs/tasks-done.md` 归档已完成任务；`docs/tasks.md` 更新进度与时间戳（2026-11-04 19:50 UTC+8）；`DESIGN_SPEC.md` 补 §3.5 组件状态规范；11 语言补 `common.empty*` / `common.error*` / `learn.kbdHint` 文案。
+
 ## [5.2.30] - 修复 EdgeOne 部署安装命令
 ### Fix
 - `edgeone.json` `installCommand` 由 `npm install` 改为 `npm install -g pnpm@11 && pnpm install`：构建器默认 npm install 会触发项目 `preinstall` 的 only-allow pnpm 守卫而失败。

@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/fr.ts v5.2.27
+// src/lib/i18n/translations/fr.ts v5.2.31
 export const fr = {
   common: {
     home: 'Accueil',
@@ -27,6 +27,14 @@ export const fr = {
     openMenu: 'Ouvrir le menu',
     closeMenu: 'Fermer le menu',
     navigationMenu: 'Menu de navigation',
+    emptyTitle: 'Rien ici pour l’instant',
+    emptyDesc: 'Sélectionnez un caractère pour commencer à apprendre.',
+    errorTitle: 'Une erreur est survenue',
+    errorDesc: 'Une erreur inattendue s’est produite.',
+    notFoundTitle: 'Page introuvable',
+    notFoundDesc: 'La page que vous recherchez n’existe pas.',
+    retry: 'Réessayer',
+    backHome: 'Retour à l’accueil',
   },
   home: {
     heroTitle: 'Maîtrisez le Chinois',
@@ -176,6 +184,7 @@ export const fr = {
     quizPlaceholder: 'Saisissez le pinyin...',
     quizCorrect: 'Correct !',
     quizIncorrect: 'Incorrect',
+    kbdHint: 'Utilisez ← → pour changer de caractère',
   },
   footer: {
     copyright: '© 2026 HanziMaster 汉字大师 {{versionLabel}}. Tous droits réservés.',

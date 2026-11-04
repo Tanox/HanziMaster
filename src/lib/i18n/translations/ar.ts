@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ar.ts v5.2.27
+// src/lib/i18n/translations/ar.ts v5.2.31
 export const ar = {
   common: {
     home: 'الرئيسية',
@@ -27,6 +27,14 @@ export const ar = {
     openMenu: 'فتح القائمة',
     closeMenu: 'إغلاق القائمة',
     navigationMenu: 'قائمة التنقل',
+    emptyTitle: 'لا يوجد شيء هنا بعد',
+    emptyDesc: 'اختر حرفًا لبدء التعلم.',
+    errorTitle: 'حدث خطأ ما',
+    errorDesc: 'حدث خطأ غير متوقع.',
+    notFoundTitle: 'الصفحة غير موجودة',
+    notFoundDesc: 'الصفحة التي تبحث عنها غير موجودة.',
+    retry: 'إعادة المحاولة',
+    backHome: 'العودة إلى الرئيسية',
   },
   home: {
     heroTitle: 'أتقن الصينية',
@@ -176,6 +184,7 @@ export const ar = {
     quizPlaceholder: 'أدخل بينيين...',
     quizCorrect: 'صحيح!',
     quizIncorrect: 'خطأ',
+    kbdHint: 'استخدم ← → للتبديل بين الأحرف',
   },
   footer: {
     copyright: '© 2026 HanziMaster 汉字大师 {{versionLabel}}. جميع الحقوق محفوظة.',

@@ -331,7 +331,8 @@
 | 编码规范 | docs/coding-standards.md | v5.2.28 |
 | 提交模板 | docs/commit-template.md | v5.2.28 |
 | **对齐清单** | docs/alignment-checklist.md | **v5.2.29** |
-| 任务清单 | docs/tasks.md | v5.2.29 |
+| 任务清单 | docs/tasks.md | v5.2.31 |
+| 任务归档 | docs/tasks-done.md | v5.2.31 |
 
 ### 13.2 原型文件
 | 文件 | 路径 | 说明 |

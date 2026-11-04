@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ko.ts v5.2.27
+// src/lib/i18n/translations/ko.ts v5.2.31
 export const ko = {
   common: {
     home: '홈',
@@ -27,6 +27,14 @@ export const ko = {
     openMenu: '메뉴 열기',
     closeMenu: '메뉴 닫기',
     navigationMenu: '탐색 메뉴',
+    emptyTitle: '아직 아무것도 없습니다',
+    emptyDesc: '한자를 선택하여 학습을 시작하세요.',
+    errorTitle: '문제가 발생했습니다',
+    errorDesc: '예기치 않은 오류가 발생했습니다.',
+    notFoundTitle: '페이지를 찾을 수 없습니다',
+    notFoundDesc: '찾으시는 페이지가 존재하지 않습니다.',
+    retry: '다시 시도',
+    backHome: '홈으로 돌아가기',
   },
   home: {
     heroTitle: '중국어 마스터',
@@ -176,6 +184,7 @@ export const ko = {
     quizPlaceholder: '병음 입력…',
     quizCorrect: '정답!',
     quizIncorrect: '오답',
+    kbdHint: '← → 키로 한자 전환',
   },
   footer: {
     copyright: '© 2026 HanziMaster 汉字大师 {{versionLabel}}. All rights reserved.',

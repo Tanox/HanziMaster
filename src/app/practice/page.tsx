@@ -1,10 +1,11 @@
-// src/app/practice/page.tsx v5.2.25
+// src/app/practice/page.tsx v5.2.31
 'use client';
 
 import { useState } from 'react';
 import { useTranslation } from '@/components/locale-provider';
 import { useProgress } from '@/hooks/use-progress';
 import { useScrollReveal } from '@/hooks/use-scroll-reveal';
+import { useHaptic } from '@/hooks/use-haptic';
 import { characters } from '@/lib/characters';
 import type { CharacterQuiz } from '@/components/practice/practice-assets';
 import { PracticeOptionsGrid } from '@/components/practice/practice-options';
@@ -48,6 +49,7 @@ const INITIAL_QUIZ_STATE: QuizState = {
 export default function PracticePage() {
   const { t } = useTranslation();
   const progress = useProgress();
+  const vibrate = useHaptic();
   useScrollReveal();
 
   const [selectedOption, setSelectedOption] = useState<string>('');
@@ -87,6 +89,7 @@ export default function PracticePage() {
       wrongCount: isCorrect ? prev.wrongCount : prev.wrongCount + 1,
       answered: true,
     }));
+    vibrate(isCorrect ? 'success' : 'error');
   };
 
   const resetQuiz = () => {

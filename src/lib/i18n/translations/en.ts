@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/en.ts v5.2.27
+// src/lib/i18n/translations/en.ts v5.2.31
 export const en = {
   common: {
     home: 'Home',
@@ -27,6 +27,14 @@ export const en = {
     openMenu: 'Open menu',
     closeMenu: 'Close menu',
     navigationMenu: 'Navigation menu',
+    emptyTitle: 'Nothing here yet',
+    emptyDesc: 'Select a character to start learning.',
+    errorTitle: 'Something went wrong',
+    errorDesc: 'An unexpected error occurred.',
+    notFoundTitle: 'Page not found',
+    notFoundDesc: 'The page you are looking for does not exist.',
+    retry: 'Retry',
+    backHome: 'Back to home',
   },
   home: {
     heroTitle: 'Master Chinese',
@@ -176,6 +184,7 @@ export const en = {
     quizPlaceholder: 'Enter pinyin...',
     quizCorrect: 'Correct!',
     quizIncorrect: 'Incorrect',
+    kbdHint: 'Use ← → to switch characters',
   },
   footer: {
     copyright: '© 2026 HanziMaster 汉字大师 {{versionLabel}}. All rights reserved.',

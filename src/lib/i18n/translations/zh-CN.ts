@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/zh-CN.ts v5.2.27
+// src/lib/i18n/translations/zh-CN.ts v5.2.31
 export const zhCN = {
   common: {
     home: '首页',
@@ -27,6 +27,14 @@ export const zhCN = {
     openMenu: '打开菜单',
     closeMenu: '关闭菜单',
     navigationMenu: '导航菜单',
+    emptyTitle: '这里还是空的',
+    emptyDesc: '选择一个汉字开始学习。',
+    errorTitle: '出错了',
+    errorDesc: '发生了意外错误。',
+    notFoundTitle: '页面不存在',
+    notFoundDesc: '您访问的页面不存在。',
+    retry: '重试',
+    backHome: '返回首页',
   },
   home: {
     heroTitle: '精通中文',
@@ -176,6 +184,7 @@ export const zhCN = {
     quizPlaceholder: '输入拼音…',
     quizCorrect: '正确！',
     quizIncorrect: '错误',
+    kbdHint: '使用 ← → 切换汉字',
   },
   footer: {
     copyright: '© 2026 汉字大师 HanziMaster {{versionLabel}}. 保留所有权利。',

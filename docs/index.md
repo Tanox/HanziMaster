@@ -17,6 +17,7 @@
 | 提交模板 | [commit-template.md](commit-template.md) | Git 提交消息规范和模板 |
 | **UI 原型图** | **[../prototype/prototype.html](../prototype/prototype.html)** | **页面 UI 设计原型和交互说明（东方水墨·朱砂红设计系统 v5.0）** |
 | **任务清单** | **[tasks.md](tasks.md)** | **项目所有任务（待办/改进/backlog）的唯一来源** |
+| 已完成任务归档 | [tasks-done.md](tasks-done.md) | 已完成任务的归档与实现要点 |
 | 对齐检查清单 | [alignment-checklist.md](alignment-checklist.md) | 规范文档、原型图与代码实现对齐检查 |
 
 ## 快速导航
@@ -30,7 +31,7 @@
 
 ### 文档版本
 
-所有文档版本与项目版本保持同步：**v5.2.29**
+所有文档版本与项目版本保持同步：**v5.2.31**
 
 ## 项目链接
 

@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.30",
-  "version": "5.2.30",
-  "description": "v5.2.30: 修复 EdgeOne 部署安装命令（改用 pnpm，绕开 only-allow pnpm 守卫）。",
+  "name": "HanziMaster 汉字大师 v5.2.31",
+  "version": "5.2.31",
+  "description": "v5.2.31: 完成 tasks.md T1/T2/T4–T14（状态组件、焦点增强、动效与手势、组件测试、原型状态可视化），T3 安全修复推进中。",
   "keywords": [
     "Chinese characters",
     "Hanzi",

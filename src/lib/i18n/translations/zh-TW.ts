@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/zh-TW.ts v5.2.27
+// src/lib/i18n/translations/zh-TW.ts v5.2.31
 export const zhTW = {
   common: {
     home: '首頁',
@@ -27,6 +27,14 @@ export const zhTW = {
     openMenu: '打開選單',
     closeMenu: '關閉選單',
     navigationMenu: '導覽選單',
+    emptyTitle: '這裡還是空的',
+    emptyDesc: '選擇一個漢字開始學習。',
+    errorTitle: '發生錯誤',
+    errorDesc: '發生了意外錯誤。',
+    notFoundTitle: '頁面不存在',
+    notFoundDesc: '您造訪的頁面不存在。',
+    retry: '重試',
+    backHome: '返回首頁',
   },
   home: {
     heroTitle: '精通中文',
@@ -176,6 +184,7 @@ export const zhTW = {
     quizPlaceholder: '輸入拼音…',
     quizCorrect: '正確！',
     quizIncorrect: '錯誤',
+    kbdHint: '使用 ← → 切換漢字',
   },
   footer: {
     copyright: '© 2026 漢字大師 HanziMaster {{versionLabel}}. 保留所有權利。',

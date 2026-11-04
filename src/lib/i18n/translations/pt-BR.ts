@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/pt-BR.ts v5.2.27
+// src/lib/i18n/translations/pt-BR.ts v5.2.31
 export const ptBR = {
   common: {
     home: 'Início',
@@ -27,6 +27,14 @@ export const ptBR = {
     openMenu: 'Abrir menu',
     closeMenu: 'Fechar menu',
     navigationMenu: 'Menu de navegação',
+    emptyTitle: 'Nada aqui ainda',
+    emptyDesc: 'Selecione um caractere para começar a aprender.',
+    errorTitle: 'Algo deu errado',
+    errorDesc: 'Ocorreu um erro inesperado.',
+    notFoundTitle: 'Página não encontrada',
+    notFoundDesc: 'A página que você procura não existe.',
+    retry: 'Tentar novamente',
+    backHome: 'Voltar para o início',
   },
   home: {
     heroTitle: 'Domine o Chinês',
@@ -176,6 +184,7 @@ export const ptBR = {
     quizPlaceholder: 'Digite o pinyin...',
     quizCorrect: 'Correto!',
     quizIncorrect: 'Incorreto',
+    kbdHint: 'Use ← → para trocar de caractere',
   },
   footer: {
     copyright: '© 2026 HanziMaster 汉字大师 {{versionLabel}}. Todos os direitos reservados.',

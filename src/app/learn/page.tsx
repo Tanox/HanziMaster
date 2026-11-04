@@ -1,19 +1,22 @@
-// src/app/learn/page.tsx v5.2.25
+// src/app/learn/page.tsx v5.2.31
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from '@/components/locale-provider';
 import { useScrollReveal } from '@/hooks/use-scroll-reveal';
 import { usePronunciation } from '@/hooks/use-pronunciation';
+import { useHaptic } from '@/hooks/use-haptic';
 import { characters } from '@/lib/characters';
 import { CharacterGrid } from '@/components/learn/character-grid';
 import { CharacterDetail } from '@/components/learn/character-detail';
 import { QuizDialog } from '@/components/learn/quiz-dialog';
+import { EmptyState } from '@/components/state/state-views';
 
 export default function LearnPage() {
   const { t } = useTranslation();
   useScrollReveal();
   const { speak } = usePronunciation();
+  const vibrate = useHaptic();
   const [selectedCharacterId, setSelectedCharacterId] = useState<number | null>(characters[0]?.id ?? null);
   const [showQuizDialog, setShowQuizDialog] = useState(false);
   const [quizAnswer, setQuizAnswer] = useState('');
@@ -28,6 +31,7 @@ export default function LearnPage() {
     if (!selectedCharacter) return;
     const isCorrect = quizAnswer.toLowerCase() === selectedCharacter.pinyin.toLowerCase();
     setQuizCorrect(isCorrect);
+    vibrate(isCorrect ? 'success' : 'error');
     if (isCorrect) {
       autoCloseTimer.current = setTimeout(() => {
         setShowQuizDialog(false);
@@ -47,11 +51,24 @@ export default function LearnPage() {
   // 组件卸载时清理定时器
   useEffect(() => clearAutoCloseTimer, []);
 
-  const handleNextCharacter = () => {
+  const goCharacter = (delta: number) => {
     const idx = characters.findIndex((c) => c.id === (selectedCharacterId ?? -1));
-    const next = characters[(idx + 1) % characters.length];
+    const next = characters[(idx + delta + characters.length) % characters.length];
     setSelectedCharacterId(next.id);
   };
+
+  const handleNextCharacter = () => goCharacter(1);
+
+  // 键盘快捷键：← → 切换汉字（弹窗打开或组合键时忽略）
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (showQuizDialog || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.key === 'ArrowRight') goCharacter(1);
+      if (e.key === 'ArrowLeft') goCharacter(-1);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  });
 
   return (
     <div id="learn-page" className="min-h-screen bg-linear-to-b from-ink-50/50 to-background dark:from-ink-950/50 dark:to-background">
@@ -67,14 +84,23 @@ export default function LearnPage() {
 
         <CharacterGrid selectedId={selectedCharacterId} onSelect={setSelectedCharacterId} />
 
-        {selectedCharacter && (
+        {selectedCharacter ? (
           <CharacterDetail
+            key={selectedCharacter.id}
             character={selectedCharacter}
             onStartQuiz={() => setShowQuizDialog(true)}
             onNextCharacter={handleNextCharacter}
             onSpeak={speak}
           />
+        ) : (
+          <EmptyState className="mb-12" />
         )}
+
+        <p className="hidden md:flex items-center justify-center gap-2 text-xs text-ink-400 dark:text-ink-500">
+          <kbd className="kbd" aria-hidden="true">←</kbd>
+          <kbd className="kbd" aria-hidden="true">→</kbd>
+          <span>{t('learn.kbdHint')}</span>
+        </p>
       </div>
 
       <QuizDialog

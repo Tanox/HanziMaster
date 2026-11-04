@@ -1,4 +1,4 @@
-// src/components/learn/character-grid.tsx v5.2.25
+// src/components/learn/character-grid.tsx v5.2.31
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
@@ -14,7 +14,7 @@ export function CharacterGrid({ selectedId, onSelect }: CharacterGridProps) {
 
   return (
     <div
-      className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-5 mb-12 stagger-children"
+      className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-5 mb-12 stagger-children reveal"
       id="character-grid"
       role="listbox"
       aria-label={t('common.masterCharacters')}
@@ -28,7 +28,7 @@ export function CharacterGrid({ selectedId, onSelect }: CharacterGridProps) {
             role="option"
             aria-selected={isSelected}
             aria-label={`${character.hanzi}, ${character.pinyin}`}
-            className={`group aspect-square rounded-2xl border-2 border-transparent hover:border-vermilion-300 dark:hover:border-vermilion-500 hover:bg-vermilion-50/50 dark:hover:bg-vermilion-900/10 hover:shadow-ink transition-[colors,transform] duration-300 flex flex-col items-center justify-center relative overflow-hidden ${
+            className={`group aspect-square rounded-2xl border-2 border-transparent hover:border-primary-border hover:bg-vermilion-50/50 dark:hover:bg-vermilion-900/10 hover:shadow-ink hover:scale-[1.03] active:scale-[0.98] transition-[colors,transform,box-shadow] duration-300 flex flex-col items-center justify-center relative overflow-hidden ${
               isSelected
                 ? 'bg-vermilion-500 text-primary-foreground shadow-vermilion-glow'
                 : 'bg-card dark:bg-ink-900/50 text-ink-900 dark:text-ink-50'

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  prototype/wireframes.html · 组件库规范（线框 + 设计交付） · v5.2.28
+  prototype/wireframes.html · 组件库规范（线框 + 设计交付） · v5.2.31
   用途：定义 HanziMaster 组件库的视觉规范与交互契约。
   - 基础组件（Button / Input …）
   - 复合组件（Form / Card …）
@@ -17,6 +17,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Noto+Serif+SC:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles/wireframes-part1.css" />
+<link rel="stylesheet" href="styles/wireframes-part2.css" />
 </head>
 <body>
 <div class="wrap" id="wireframes-main">
@@ -29,6 +30,7 @@
     <a href="#basic">基础组件</a>
     <a href="#composite">复合组件</a>
     <a href="#business">业务组件</a>
+    <a href="#states">状态展示</a>
     <a href="#rules">使用规则</a>
   </nav>
 
@@ -97,6 +99,56 @@
   <section class="section" id="business">
   </section>
 
+  <!-- ============ 组件状态可视化 ============ -->
+  <section class="section" id="states">
+    <h2>3.5 · 组件状态可视化</h2>
+    <p class="desc">悬停 / 按压 / 禁用 / 聚焦的强制态演示，状态组件（加载 / 空 / 错误）的交付样式与关键帧动画预览。当前断点见左下角指示器。</p>
+
+    <div class="grid cols-3">
+      <div class="spec-card">
+        <h3>按钮状态</h3>
+        <div class="demo btn-states">
+          <button class="btn btn-default">默认</button>
+          <button class="btn btn-default is-hover" aria-label="悬停态演示">悬停</button>
+          <button class="btn btn-default is-active" aria-label="按压态演示">按压</button>
+          <button class="btn btn-default" disabled>禁用</button>
+        </div>
+        <p class="note">悬停上移 + 阴影加深；按压回落；禁用 opacity 0.5；聚焦为 2px 朱砂红描边 + 光环（Tab 键体验）。</p>
+      </div>
+
+      <div class="spec-card">
+        <h3>状态组件</h3>
+        <div class="state-row">
+          <div class="mini-state" role="status">
+            <span class="ms-spinner" aria-hidden="true"></span>
+            <p class="ms-title">加载中…</p>
+          </div>
+          <div class="mini-state" role="status">
+            <span class="ms-ic" aria-hidden="true">📭</span>
+            <p class="ms-title">这里还是空的</p>
+            <p class="ms-desc">选择一个汉字开始学习。</p>
+          </div>
+          <div class="mini-state" role="alert">
+            <span class="ms-ic" aria-hidden="true">⚠️</span>
+            <p class="ms-title">出错了</p>
+            <p class="ms-desc">发生了意外错误。</p>
+            <button class="btn btn-ghost ms-retry">重试</button>
+          </div>
+        </div>
+        <p class="note">与 <code style="font-family:var(--font-mono)">src/components/state/state-views.tsx</code> 交付实现一致。</p>
+      </div>
+
+      <div class="spec-card">
+        <h3>动画帧预览</h3>
+        <div class="demo anim-demo">
+          <div class="anim-glyph serif-font animate-brush" id="anim-glyph">永</div>
+          <button class="btn btn-ghost" id="anim-replay">重播笔触动画</button>
+        </div>
+        <p class="note">关键帧：<code style="font-family:var(--font-mono)">brushStroke / fadeInElegant</code>（见 keyframes.css）。点击重播观察逐帧过渡。</p>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ 使用规则 ============ -->
   <section class="section" id="rules">
     <h2>4 · 组件使用规则</h2>
@@ -150,8 +202,10 @@
     </table>
   </section>
 
-  <p style="text-align:center;color:var(--muted-foreground);font-size:13px;margin-top:40px;">本规范与 <code style="font-family:var(--font-mono)">docs/07-design-prototype.md</code> 互为补充 · v5.2.18</p>
+  <p style="text-align:center;color:var(--muted-foreground);font-size:13px;margin-top:40px;">本规范与 <code style="font-family:var(--font-mono)">docs/07-design-prototype.md</code> 互为补充 · v5.2.31</p>
 </div>
+<div id="bp-badge" aria-hidden="true">—</div>
 <script src="scripts/wireframes-fragments.js"></script>
+<script src="scripts/wireframes-states.js"></script>
 </body>
 </html>

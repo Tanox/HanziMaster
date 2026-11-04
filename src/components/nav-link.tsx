@@ -1,4 +1,4 @@
-// src/components/nav-link.tsx v5.2.25
+// src/components/nav-link.tsx v5.2.31
 'use client';
 
 import Link from 'next/link';
@@ -23,10 +23,15 @@ export function NavLink({ href, children }: NavLinkProps) {
       }`}
     >
       {children}
-      {/* Active indicator dot */}
-      {isActive && (
-        <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-vermilion-500 rounded-full" />
-      )}
+      {/* Active underline + hover reveal（平滑下划线动画） */}
+      <span
+        aria-hidden="true"
+        className={`absolute bottom-0 left-3 right-3 h-0.5 rounded-full bg-vermilion-500 origin-left transition-transform duration-300 ease-out ${
+          isActive
+            ? 'scale-x-100'
+            : 'scale-x-0 group-hover:scale-x-50 group-hover:bg-vermilion-500/40'
+        }`}
+      />
     </Link>
   );
 }

@@ -1,10 +1,11 @@
-// src/components/mobile-nav.tsx v5.2.27
+// src/components/mobile-nav.tsx v5.2.31
 'use client';
 
 import { APP_VERSION } from '@/lib/version';
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useSwipeClose } from '@/hooks/use-swipe-close';
 import type { TranslationKey } from '@/lib/i18n';
 
 interface MobileNavProps {
@@ -17,6 +18,7 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
   const pathname = usePathname();
   const drawerRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const swipe = useSwipeClose(isOpen, onClose);
 
   useEffect(() => {
     if (isOpen) {
@@ -63,6 +65,8 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
         aria-label={t('common.navigationMenu')}
         className="fixed right-0 top-0 h-full w-72 max-w-[85vw] bg-card/95 dark:bg-ink-900/95 backdrop-blur-xl shadow-ink-xl z-50 animate-slide-in-right flex flex-col overscroll-contain"
         id="mobile-nav"
+        onTouchStart={swipe.onTouchStart}
+        onTouchEnd={swipe.onTouchEnd}
       >
         {/* Drawer Header */}
         <div className="flex justify-between items-center p-5 border-b border-ink-100 dark:border-ink-800">

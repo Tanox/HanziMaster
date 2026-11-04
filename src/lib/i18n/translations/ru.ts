@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ru.ts v5.2.27
+// src/lib/i18n/translations/ru.ts v5.2.31
 export const ru = {
   common: {
     home: 'Главная',
@@ -27,6 +27,14 @@ export const ru = {
     openMenu: 'Открыть меню',
     closeMenu: 'Закрыть меню',
     navigationMenu: 'Навигационное меню',
+    emptyTitle: 'Здесь пока ничего нет',
+    emptyDesc: 'Выберите иероглиф, чтобы начать обучение.',
+    errorTitle: 'Что-то пошло не так',
+    errorDesc: 'Произошла непредвиденная ошибка.',
+    notFoundTitle: 'Страница не найдена',
+    notFoundDesc: 'Страница, которую вы ищете, не существует.',
+    retry: 'Повторить',
+    backHome: 'На главную',
   },
   home: {
     heroTitle: 'Освойте Китайский',
@@ -176,6 +184,7 @@ export const ru = {
     quizPlaceholder: 'Введите пиньинь...',
     quizCorrect: 'Верно!',
     quizIncorrect: 'Неверно',
+    kbdHint: 'Переключайте иероглифы клавишами ← →',
   },
   footer: {
     copyright: '© 2026 HanziMaster 汉字大师 {{versionLabel}}. Все права защищены.',
