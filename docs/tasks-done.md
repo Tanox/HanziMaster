@@ -1,7 +1,7 @@
 # 已完成任务归档 · Tasks Done
 
-> 文档版本：v5.2.31（与项目版本同步，权威版本见 `package.json`）
-> 归档时间：2026-11-04 19:50（UTC+8）
+> 文档版本：v5.2.32（与项目版本同步，权威版本见 `package.json`）
+> 归档时间：2026-11-04 20:35（UTC+8）
 
 ## 说明
 
@@ -25,5 +25,6 @@
 | T12 | color-mix 派生强调色 | UI/UX | v5.2.31 | `@theme` 新增 `--color-primary-hover / --color-primary-border`（color-mix 单一来源派生），字符卡 / 练习选项边框接入 |
 | T13 | 排版微调 | UI/UX | v5.2.31 | h1–h3 统一 `-0.01em` 字间距；移动端（≤640px）小字号行高 ≥ 1.65 |
 | T14 | 原型图增强 | 原型 | v5.2.31 | `wireframes.html` 新增 §3.5 状态可视化（强制态演示 / 状态组件 / 动画帧重播）+ 断点指示器（`wireframes-part2.css` / `wireframes-states.js`）；深色模式预览由既有 theme 切换支持 |
+| T3 | 安全审计与修复（`pnpm audit --prod` 零漏洞） | 部署/安全 | v5.2.31 | `next` 16.2.9 → **16.4.4**（清零 16.2/16.3 系列 5 个 critical 公告）；`shadcn` 移至 devDependencies（切断 `systeminformation` critical 到生产路径）；`pnpm-workspace.yaml` overrides 钉住 14 个传递依赖补丁版下限（sharp / undici / vite / zod / js-yaml / fast-uri 等）；dev 工具链残留 moderate/low 不进入生产产物，随升级持续消化 |
 
-> T3（安全审计与修复）视复验结果保留在 [tasks.md](tasks.md)。
+> 以上为 2026-11-04 首批全部 14 项（T1–T14）的完成归档。
