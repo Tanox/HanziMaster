@@ -1,5 +1,26 @@
 ﻿# Changelog
 
+## [5.2.26] - 修复重复/硬编码语义化 id、移除死代码与样式拆分
+### Fix
+- 修复重复语义化 `id`：列表渲染组件 `feature-card`(`#feature-card`)、`stats-card`(`#stats-card)` 在 `.map` 中被渲染多次导致非法重复 id；学习/练习两个 `quiz-dialog` 共用 `quiz-dialog` id。分别移除列表组件静态 id、将 quiz-dialog 拆为 `learn-quiz-dialog` / `practice-quiz-dialog`。
+- 移除未接入 Next.js 中间件的死代码 `src/proxy.ts`：文件名非 `middleware.ts`、无任何引用，且与 `next.config.mjs` 的 CSP 重复；若误启用会因 nonce 策略阻断 Next 内联脚本。
+- 修正 `mobile-nav.tsx` 抽屉页脚硬编码过时版本号 `v5.2.12` → `v5.2.26`。
+- `stroke-order-demo.tsx` 内联硬编码色值 `#c53d43` / `#e5e1d8` → 改用设计 token `var(--color-primary)` / `var(--color-border)`，遵循单一 token 来源。
+
+### Refactor
+- 拆分全局样式 `globals.css`（323 行）为 `globals.css` + `src/app/styles/utilities.css` + `src/app/styles/keyframes.css`，各模块 ≤200 行，保持设计 token 单一来源。
+
+### Docs
+- 修正 `openspec/project.md`「尚未接入自动化测试框架」错误陈述（项目已接入 Vitest）。
+- 修正 `openspec/alignment-checklist.md`：基础/业务组件数量（24/11 → 4/24）、移除 `/workspace/` 路径前缀、同步文档版本戳至 v5.2.26。
+- `README.md` / `README_EN.md` 移除已删除的 `proxy.ts` 引用、修正 EN 版 ui 组件列表、同步版本至 v5.2.26。
+
+### Build
+- 新增 `pnpm-workspace.yaml` 配置 `onlyBuiltDependencies`（esbuild / sharp），适配 pnpm v10+ 构建脚本授权位置迁移。
+
+### Chore
+- 同步全局展示位（`package.json` / `metadata.json` / `README` / `README_EN` / 11 语言 `footer.copyright`）至 v5.2.26。
+
 ## [5.2.25] - 补全语义化 id 与全量对齐头注释
 ### Feat
 - 为 5 个主要用户可见组件补全语义化 `id`：`feature-card`(`#feature-card`)、`quiz-dialog`(`#quiz-dialog`)、`stroke-order-demo`(`#stroke-order-demo`)、`writing-canvas-parts`(`#progress-label`)、`writing-dialog`(`#writing-dialog`)，便于调试定位、ARIA 锚点与端到端测试。

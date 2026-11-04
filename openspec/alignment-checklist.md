@@ -2,7 +2,7 @@
 
 本文档记录项目规范文档、原型图与代码实现的对齐情况。
 
-**版本**: v5.2.21
+**版本**: v5.2.26
 **检查日期**: 2026-08-26
 **权威来源**: `openspec/07-design-prototype.md`（设计系统）+ `prototype/prototype.html`（唯一权威高保真原型）
 
@@ -272,8 +272,8 @@
 | 文件类型 | 文件数 | 版本一致 | 状态 |
 |----------|-------|---------|------|
 | 页面组件 (src/app/) | 3 | 3 | ✅ 对齐 |
-| 基础组件 (src/components/ui/) | 24 | 24 | ✅ 对齐 |
-| 业务组件 (src/components/) | 11 | 11 | ✅ 对齐 |
+| 基础组件 (src/components/ui/) | 4 | 4 | ✅ 对齐（button/badge/dialog/tooltip；其余 shadcn 组件已于 v5.2.14 清理） |
+| 业务组件 (src/components/**) | 24 | 24 | ✅ 对齐 |
 | i18n 翻译文件 | 11 | 11 | ✅ 对齐 |
 | 全局样式 (globals.css) | 1 | 1 | ✅ 对齐 |
 | 设计规范 (07-design-prototype.md) | 1 | v5.0 | ✅ 对齐 |
@@ -319,19 +319,19 @@
 ### 13.1 文档文件
 | 文件 | 路径 | 最新更新 |
 |------|------|---------|
-| README | /workspace/README.md | 2026-08-26 |
-| 项目索引 | /workspace/openspec/index.md | v5.2.24 |
-| 项目概述 | /workspace/openspec/01-overview.md | v5.2.24 |
-| 架构文档 | /workspace/openspec/02-architecture.md | v5.2.24 |
-| 开发指南 | /workspace/openspec/03-development.md | v5.2.24 |
-| API 参考 | /workspace/openspec/04-api-reference.md | v5.2.24 |
-| 部署文档 | /workspace/openspec/05-deployment.md | v5.2.24 |
-| 测试文档 | /workspace/openspec/06-testing.md | v5.2.24 |
-| 设计规范 | /workspace/openspec/07-design-prototype.md | v5.0（设计系统源） |
-| 编码规范 | /workspace/openspec/coding-standards.md | v5.2.24 |
-| 提交模板 | /workspace/openspec/commit-template.md | v5.2.24 |
-| **对齐清单** | /workspace/openspec/alignment-checklist.md | **v5.2.24** |
-| UI/UX 审查报告 | /workspace/openspec/ui-ux-review-report.md | 2026-08-19 |
+| README | README.md | 2026-08-26 |
+| 项目索引 | openspec/index.md | v5.2.26 |
+| 项目概述 | openspec/01-overview.md | v5.2.26 |
+| 架构文档 | openspec/02-architecture.md | v5.2.26 |
+| 开发指南 | openspec/03-development.md | v5.2.26 |
+| API 参考 | openspec/04-api-reference.md | v5.2.26 |
+| 部署文档 | openspec/05-deployment.md | v5.2.26 |
+| 测试文档 | openspec/06-testing.md | v5.2.26 |
+| 设计规范 | openspec/07-design-prototype.md | v5.0（设计系统源） |
+| 编码规范 | openspec/coding-standards.md | v5.2.26 |
+| 提交模板 | openspec/commit-template.md | v5.2.26 |
+| **对齐清单** | openspec/alignment-checklist.md | **v5.2.26** |
+| UI/UX 审查报告 | openspec/ui-ux-review-report.md | 2026-08-19 |
 
 ### 13.2 原型文件
 | 文件 | 路径 | 说明 |

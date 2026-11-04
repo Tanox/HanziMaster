@@ -31,7 +31,7 @@ HanziMaster 汉字大师是一个现代化的汉字学习平台，通过引导�
 
 ### Testing Strategy
 
-- 当前尚未接入自动化测试框架（`package.json` 无 test 脚本、无 Jest/Vitest 依赖）。目标规范见 `06-testing.md` §10 蓝图。
+- 已接入 Vitest 单元测试框架（`package.json` 含 `test` / `test:watch` 脚本与 `vitest@^3.2.4` 依赖），单测位于 `src/lib/__tests__/`（characters / i18n / stroke-order）。测试规范见 `06-testing.md`。
 - 质量门禁以 `tsc --noEmit` 为准（权威类型验证，勿用 `npx tsc`）。
 
 ### Git Workflow
