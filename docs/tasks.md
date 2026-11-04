@@ -532,7 +532,8 @@
 #### P2-1 · 移除 Tailwind v4 死配置 `构建` `待办`
 
 - **现状**：`tailwind.config.ts`（5.36 KB）存在，但 v4 CSS-first 配置需 `@config` 指令才生效 —— `src/app/globals.css:1-6` 无 `@config`；实际 token 全在 `globals.css:11-90` 的 `@theme`。
-- **目标**：删除 `tailwind.config.ts`，或补 `@config` 使其生效并消除双源 token。
+- **实测证据（2026-11-04 清理批次）**：构建产物 `.next/static/chunks/*.css`（64.6 KB 主 CSS）中**有** `--color-primary`、`@keyframes brushStroke`，但**缺失** `--color-ink-500` / `.text-ink-900` / `.bg-vermilion-50` / `--shadow-ink-lg` / `--animate-brush-stroke`——这些 token 仅存在于 `tailwind.config.ts`；仓内 24 个文件使用 ink/vermilion 色类、14 个文件使用 `shadow-ink*` 与 `animate-*`，故「直接删除」虽不改产物，但会让这批类持续缺失。
+- **目标**：删除 `tailwind.config.ts`，或补 `@config` 使其生效并消除双源 token。**建议**：先把 `ink` / `vermilion` 色阶、`shadow-ink*` / `shadow-vermilion-glow`、`animate-*`、`paper-texture` 迁入 `globals.css` 的 `@theme`（与 P2-18 合并做），再删除该文件；避免"删掉即永久缺失"。
 - **验收**：① 构建产物 CSS 不变；② token 只有一个来源。
 - **涉及**：`tailwind.config.ts`、`src/app/globals.css`
 
@@ -654,7 +655,7 @@
 
 #### P2-18 · 动画令牌单一来源收敛 `代码质量` `待办`
 
-- **现状**：动画相关定义散落于 `src/app/styles/keyframes.css`、`src/app/globals.css` 的 `@theme`、`tailwind.config.ts`（死文件）、`src/app/page.tsx:34` 的内联 `style={{animation:...}}`。
+- **现状**：动画相关定义散落于 `src/app/styles/keyframes.css`、`src/app/globals.css` 的 `@theme`、`tailwind.config.ts`（死文件）、`src/app/page.tsx:34` 的内联 `style={{animation:...}}`；`animate-*` 工具类因 `tailwind.config.ts` 未生效而未进入产物 CSS（实测 `.animate-brush-stroke` 缺失），当前仅 `keyframes.css` 的裸 `@keyframes` 生效。
 - **目标**：收敛为单一来源（`@theme` + `keyframes.css`），删除内联硬编码动画名。
 - **验收**：① 动画名全部来自 token；② 视觉表现无变化。
 - **依赖**：P2-1

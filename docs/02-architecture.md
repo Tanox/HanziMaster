@@ -1,192 +1,116 @@
 # 技术架构
-============
 
-> 文档版本：v5.2.28（与项目版本同步，权威版本见 package.json）
+> 文档版本：v5.2.34（与项目版本同步，权威版本见 `package.json`）
 
-## 1. 架构概述
+本文描述**当前代码的实际架构**。组件 API 见 [04-api-reference.md](04-api-reference.md)，设计系统见 [07-design-prototype.md](07-design-prototype.md)，编码约束见 [coding-standards.md](coding-standards.md)。
 
-HanziMaster 采用 Next.js 16 的 App Router 架构，结合 React Server Components 和 Client Components，实现高性能的服务端渲染和客户端交互。
-
-## 2. 系统架构图
-
-### 2.1 整体架构
+## 1. 架构分层
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                        用户界面层                             │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────┐  │
-│  │   Home 页面     │  │   Learn 页面    │  │ 组件库        │  │
-│  │  (Server)       │  │  (Client)       │  │ (Client)     │  │
-│  └─────────────────┘  └─────────────────┘  └──────────────┘  │
-│  ┌───────────────────────────────────────────────────────┐  │
-│  │              Root Layout（布局与导航）                  │  │
-│  └───────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                              │
-┌─────────────────────────────────────────────────────────────┐
-│                        状态管理层                             │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────┐  │
-│  │  LocaleContext  │  │  ThemeContext   │  │             │  │
-│  │  (i18n)        │  │  (主题)         │  │              │  │
-│  └─────────────────┘  └─────────────────┘  └──────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                              │
-┌─────────────────────────────────────────────────────────────┐
-│                        基础设施层                             │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────┐  │
-│  │  Next.js 16    │  │  React Context  │  │  LocalStorage│  │
-│  │  App Router    │  │  API            │  │              │  │
-│  └─────────────────┘  └─────────────────┘  └──────────────┘  │
-└─────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────┐
+│ 入口层  src/app/                                          │
+│   layout.tsx（Server Component：字体、Metadata、Providers） │
+│   page.tsx / learn/page.tsx / practice/page.tsx           │
+│   （三者均为 'use client'，依赖 i18n Context 与浏览器 API） │
+│   error.tsx / loading.tsx / not-found.tsx                 │
+├──────────────────────────────────────────────────────────┤
+│ 状态层  React Context                                     │
+│   LocaleProvider（locale / t / setLocale）                 │
+│   ThemeProvider（theme / setTheme）                        │
+│   useProgress（进度、连胜、准确率、周活动）                 │
+├──────────────────────────────────────────────────────────┤
+│ 组件层  src/components/                                   │
+│   ui/（button / dialog / tooltip / badge）                 │
+│   learn/ · practice/ · state/ · 导航与卡片                  │
+├──────────────────────────────────────────────────────────┤
+│ 逻辑层  src/hooks/ + src/lib/                             │
+│   characters / stroke-order-data / progress-utils          │
+│   i18n（index + translate + 11 语言） / storage / version  │
+├──────────────────────────────────────────────────────────┤
+│ 基础设施                                                  │
+│   next.config.mjs（CSP + 安全头 + 版本/build 注入）         │
+│   next/font/google（字体） · localStorage（持久化）         │
+│   Vercel / EdgeOne（部署）                                 │
+└──────────────────────────────────────────────────────────┘
 ```
 
-## 3. 核心模块架构
+> 历史版本本文的架构图把首页标为 Server Component，与代码不符。当前三个页面都是 Client Component；根布局保持 Server Component。规范不要求强行改造为 RSC，但新增纯静态区块应优先留在服务端边界。
 
-### 3.1 应用入口层
+## 2. 路由与页面
 
-| 文件 | 职责 |
+| 路由 | 文件 | 边界 | 职责 |
+|------|------|------|------|
+| `/` | `src/app/page.tsx` | Client | Hero、功能特性、永字八法演示 |
+| `/learn` | `src/app/learn/page.tsx` | Client | 字符网格、详情、发音、笔顺、测验、键盘切换 |
+| `/practice` | `src/app/practice/page.tsx` | Client | 书写练习、拼音测验、真实进度统计 |
+| 路由态 | `error.tsx` / `loading.tsx` / `not-found.tsx` | Client | 错误边界、加载、404 |
+| 根布局 | `layout.tsx` | Server | 字体、Metadata、Provider 组合、GA、`LayoutClient` |
+
+`src/app/styles/` 存放从 `globals.css` 拆出的 `utilities.css` 与 `keyframes.css`，保证单文件 ≤ 200 行。
+
+## 3. 模块职责
+
+| 模块 | 路径 | 职责 |
+|------|------|------|
+| 布局与导航 | `layout-client.tsx` / `nav-link.tsx` / `mobile-nav.tsx` | 站点头尾、桌面导航、移动抽屉、版本展示 |
+| 主题 | `theme-provider.tsx` / `theme-toggle.tsx` | dark / light / system 三态，`.dark` 类切换与持久化 |
+| 国际化 | `components/locale-provider.tsx`、`lib/i18n/` | 语言状态、`t()` 插值、`TranslationKey` 类型、11 语言包 |
+| 学习 | `components/learn/` | 字符网格/详情、笔顺演示、测验弹窗 |
+| 练习 | `components/practice/` | 书写弹窗与 Canvas（拆为 `writing-canvas-*`）、练习选项、周进度、测验 |
+| 状态视图 | `components/state/state-views.tsx` | `EmptyState` / `ErrorState` / `LoadingSpinner` |
+| 基础原语 | `components/ui/` | `button` / `dialog` / `tooltip` / `badge`（shadcn 风格，radix-nova preset） |
+| 数据与逻辑 | `lib/characters*.ts`、`stroke-order-data.ts`、`progress-utils.ts` | 12 个汉字数据、笔顺数据、进度计算 |
+| 存储 | `lib/storage.ts` | `safeGetItem` / `safeSetItem`，版本化 + schema 校验，统一 `window.localStorage` |
+| 版本 | `lib/version.ts` | `APP_VERSION` / `BUILD_ID` / `VERSION_LABEL`（读取注入值） |
+| hooks | `hooks/use-*.ts` | 进度、发音、滚动 reveal、右滑关闭、震动反馈 |
+| 通用 | `lib/utils.ts`、`feature-card.tsx`、`stats-card.tsx`、`toast.tsx` | 类名合并、卡片与提示 |
+
+## 4. 数据流
+
+```
+用户交互
+  ├─ 主题切换 → ThemeProvider → document.documentElement.classList(.dark)
+  │            → safeSetItem('hanzi-master-theme')
+  ├─ 语言切换 → LocaleProvider → document.documentElement.lang
+  │            → safeSetItem('hanzi-master-locale') → 所有 t() 消费组件重渲染
+  └─ 书写/测验 → useProgress → progress-utils 计算
+               → safeSetItem('hanzi-master-progress') → 周活动/准确率/连胜视图
+```
+
+持久化统一走 `src/lib/storage.ts`（带 `STORAGE_VERSION` 与 schema 校验，过滤 NaN 与非法日期），业务代码不直接访问 `localStorage`。无云端同步，无第三方 API 调用。
+
+## 5. 版本与构建标识
+
+`package.json` 的 `version` 是唯一权威源。`next.config.mjs` 在 dev / build 时读取它，注入 `NEXT_PUBLIC_APP_VERSION` 与构建时刻的 `NEXT_PUBLIC_BUILD_ID`（`yyyymmddhhmm`）；`src/lib/version.ts` 暴露 `VERSION_LABEL`；`layout-client.tsx` 通过 `t('footer.copyright', { versionLabel })` 插值到 `#footer-version`，移动抽屉读 `#drawer-version`。因此 11 个语言文件不含字面版本号。完整链路见 [03-development.md](03-development.md) §4。
+
+## 6. 安全与配置
+
+- CSP 与 `X-Content-Type-Options` / `X-Frame-Options` / `X-XSS-Protection` / `Referrer-Policy` / `Permissions-Policy` 由 `next.config.mjs` 的 `headers()` 对 `/:path*` 统一注入；生产 CSP 放行 Google Fonts 与 Analytics 域名，`script-src` 因 App Router 内联脚本需要 `'unsafe-inline'`。
+- **无中间件**：不存在 `middleware.ts` / `proxy.ts`；历史上曾存在名为 `proxy.ts` 的文件，因文件名不生效且与 CSP 重复已删除。不要在文档或代码中恢复该引用。
+- `next/font/google` 是唯一联网构建依赖；离线构建失败属环境限制。
+- `components.json` 记录 shadcn 配置（style `radix-nova`、`rsc: true`、别名 `@/components` 等）。
+- 设计令牌双重来源：`globals.css @theme`（语义 token）+ `tailwind.config.ts`（扩展色阶/字体/动画），见 [coding-standards.md](coding-standards.md) §8。
+
+## 7. 测试与质量
+
+Vitest + jsdom，测试就近放在各模块 `__tests__/`，当前 9 文件 / 47 用例；`i18n.test.ts` 校验 11 语言叶子键一致。质量门禁（类型检查 / lint / 单测 / 行数 / 审计 / 构建）见 [coding-standards.md](coding-standards.md) §11，测试细节见 [06-testing.md](06-testing.md)。
+
+## 8. 技术选型理由
+
+| 选择 | 理由 |
 |------|------|
-| [layout.tsx](../src/app/layout.tsx) | 根布局组件，包含主题和国际化 Provider |
-| [page.tsx](../src/app/page.tsx) | 首页组件，展示应用介绍和主要功能 |
-
-### 3.2 路由系统
-
-项目使用 Next.js App Router 进行路由管理，默认使用服务端渲染：
-
-```typescript
-// 路由文件结构
-src/
-└── app/
-    ├── page.tsx           // 首页 (/)
-    ├── learn/
-    │   └── page.tsx       // 学习页 (/learn)
-    └── practice/
-        └── page.tsx       // 练习页 (/practice)
-```
-
-### 3.3 页面层
-
-| 页面组件 | 职责 | 文件路径 |
-|---------|------|---------|
-| Home | 首页，展示应用介绍、功能特性和演示 | [src/app/page.tsx](../src/app/page.tsx) |
-| Learn | 学习页面，提供汉字学习和选择功能 | [src/app/learn/page.tsx](../src/app/learn/page.tsx) |
-| Practice | 练习页面，提供书写练习、记忆测验和进度追踪 | [src/app/practice/page.tsx](../src/app/practice/page.tsx) |
-
-### 3.4 组件层
-
-| 组件 | 职责 | 文件路径 |
-|------|------|---------|
-| LocaleProvider | 国际化上下文提供组件，管理语言切换和翻译 | [src/components/locale-provider.tsx](../src/components/locale-provider.tsx) |
-| LocaleToggle | 语言切换组件，支持 11 种语言 | [src/components/locale-toggle.tsx](../src/components/locale-toggle.tsx) |
-| ThemeProvider | 主题上下文提供组件，管理深色/浅色模式 | [src/components/theme-provider.tsx](../src/components/theme-provider.tsx) |
-| ThemeToggle | 主题切换组件，支持深色/浅色模式 | [src/components/theme-toggle.tsx](../src/components/theme-toggle.tsx) |
-| MobileNav | 移动端导航抽屉组件，提供响应式导航菜单 | [src/components/mobile-nav.tsx](../src/components/mobile-nav.tsx) |
-| NavLink | 导航链接组件，带有活跃状态指示器 | [src/components/nav-link.tsx](../src/components/nav-link.tsx) |
-| FeatureCard | 功能特性卡片组件，展示笔顺反馈、词源文化等特性 | [src/components/feature-card.tsx](../src/components/feature-card.tsx) |
-| StatsCard | 统计数据卡片组件，显示学习统计信息 | [src/components/stats-card.tsx](../src/components/stats-card.tsx) |
-
-### 3.5 国际化模块
-
-| 文件 | 职责 | 文件路径 |
-|------|------|---------|
-| i18n/index.ts | 国际化配置，导出翻译数据和类型定义 | [src/lib/i18n/index.ts](../src/lib/i18n/index.ts) |
-| translations/*.ts | 各语言翻译文件（11种语言） | [src/lib/i18n/translations/](../src/lib/i18n/translations/) |
-
-## 4. 技术选型说明
-
-### 4.1 前端框架：Next.js 16
-
-**选择理由：**
-- 全栈框架，支持服务端渲染和客户端交互
-- App Router 提供更好的路由管理和数据获取
-- 内置优化，性能优秀
-- 强类型 TypeScript 支持
-
-**关键特性：**
-- React Server Components（服务端组件）
-- Client Components（客户端组件）
-- App Router（新路由系统）
-- 自动优化和缓存
-
-### 4.2 样式框架：Tailwind CSS 4.0
-
-**选择理由：**
-- 原子化 CSS 设计，开发效率高
-- 完整的深色模式支持
-- 响应式设计开箱即用
-- 优秀的性能和可维护性
-
-### 4.3 状态管理：React Context API
-
-**选择理由：**
-- 框架内置，无需额外依赖
-- 简单直观的 API
-- 适合轻量级状态管理
-- 与 React 完美配合
-
-## 5. 核心技术特性
-
-| 特性 | 说明 |
-|------|------|
-| React Server Components | 服务端渲染，提升首屏加载性能 |
-| Client Components | 客户端交互，支持 hooks 和状态管理 |
-| App Router | Next.js 13+ 新路由系统，文件系统路由 |
-| React Context API | 用于主题和国际化状态管理 |
-| 响应式设计 | Tailwind CSS 提供完全响应式布局 |
-| 主题系统 | 完整的深色/浅色/系统主题支持，持久化用户偏好 |
-| 国际化 | 支持 11 种语言，浏览器语言自动检测 |
-
-## 6. 数据流
-
-应用采用 React Context API 进行状态管理：
-
-```
-用户交互 → Context 更新 → 组件重渲染 → 视图更新
-     ↓
-LocalStorage（持久化）
-     ↓
-LocalStorage（读取进度）
-```
-
-### 6.1 主题切换流程
-
-1. 用户选择主题（dark/light/system）
-2. `ThemeProvider` 更新主题状态
-3. 如果选择 system，则根据系统主题偏好切换
-4. 同步更新 `document.documentElement.classList`
-5. 保存到 `localStorage`（key: `hanzi-master-theme`）
-6. 视图自动更新
-
-### 6.2 语言切换流程
-
-1. 用户选择语言
-2. `LocaleProvider` 更新 `locale` 状态
-3. 同步更新 `document.documentElement.lang`
-4. 保存到 `localStorage`（key: `hanzi-master-locale`）
-5. 所有使用 `t()` 的组件自动更新
-
-## 7. 设计原则
-
-1. **组件化**：UI 拆分为可复用、独立的组件
-2. **响应式**：使用 Tailwind CSS 实现完全响应式设计
-3. **性能优先**：采用 React Server Components 和 Next.js 优化性能
-4. **可访问性**：支持深色/浅色模式和系统主题检测
-5. **类型安全**：严格的 TypeScript 类型检查
-6. **国际化**：所有用户可见文本支持多语言
-
-## 8. 关键文件说明
-
-| 文件 | 关键内容 |
-|------|---------|
-| [src/app/layout.tsx](../src/app/layout.tsx) | 根布局：ThemeProvider、LocaleProvider、导航 |
-| [src/app/page.tsx](../src/app/page.tsx) | 首页组件：Hero 区域、功能特性展示 |
-| [src/components/locale-provider.tsx](../src/components/locale-provider.tsx) | 国际化上下文：语言切换、翻译函数 |
-| [src/components/theme-provider.tsx](../src/components/theme-provider.tsx) | 主题上下文：深色/浅色模式切换 |
-| [src/lib/i18n/index.ts](../src/lib/i18n/index.ts) | 国际化配置：翻译数据导出、类型定义 |
-| [src/app/globals.css](../src/app/globals.css) | 全局样式：Tailwind CSS 导入、字体定义 |
+| Next.js 16 App Router | 文件系统路由、RSC 边界、内置构建与安全头注入 |
+| React Context | 状态规模小，无需额外状态库；Provider 组合清晰 |
+| Tailwind CSS 4 + `@theme` | 语义 token 与原子类结合，深色模式与响应式统一 |
+| 自定义 i18n | 11 语言静态包 + `TranslationKey` 编译期约束，无运行时依赖 |
+| localStorage | 本地优先、离线可用、无账户与后端成本 |
+| Vitest + Testing Library | 与 Vite 生态一致，jsdom 覆盖组件与交互路径 |
 
 ## 9. 相关文档
 
-- [项目概述](01-overview.md) - 项目基本信息和技术栈
-- [开发指南](03-development.md) - 开发环境配置和编码规范
-- [API 参考](04-api-reference.md) - 详细的 API 文档和代码示例
+- [项目概述](01-overview.md)
+- [开发指南](03-development.md)
+- [API 参考](04-api-reference.md)
+- [编码规范](coding-standards.md)
+- [设计系统规范](07-design-prototype.md)
+- [部署指南](05-deployment.md)

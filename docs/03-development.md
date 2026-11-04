@@ -1,302 +1,106 @@
 # 开发指南
-============
 
-## 1. 开发环境准备
+> 文档版本：v5.2.34（与项目版本同步，权威版本见 `package.json`）
 
-### 1.1 系统要求
+本文负责**开发环境、命令表与日常流程**。编码风格、命名、目录组织、设计 token、i18n、版本号与质量门禁的唯一权威是 [coding-standards.md](coding-standards.md)；提交、分支与审查见 [git-workflow.md](git-workflow.md)。
 
-| 工具 | 版本要求 | 说明 |
-|------|---------|------|
-| Node.js | >= 24.11.0 | 运行时环境 |
-| pnpm | >= 11（由 `packageManager` 锁定 `pnpm@11.24.0`） | 唯一包管理器 |
-| 现代浏览器 | Chrome、Firefox、Safari、Edge 最新版 | 开发和测试 |
+## 1. 环境要求
 
-### 1.2 安装步骤
+| 工具 | 要求 | 依据 |
+|------|------|------|
+| Node.js | `>= 24.11.0` | `package.json` `engines` / `.nvmrc`（`24.11.0`） |
+| pnpm | `>= 11`，锁定 `pnpm@11.24.0` | `packageManager` / `.npmrc` `package-manager-strict` |
+| 浏览器 | Chrome / Firefox / Safari / Edge 最新两个主要版本 | 开发与手工验证 |
+
+强制 pnpm：`preinstall` 为 `npx only-allow pnpm`，执行 `npm install` / `yarn` 会被拦截；`.npmrc` 设 `engine-strict=true` 与 `package-manager-strict=true`，版本不符直接报错。仓库只有 `pnpm-lock.yaml`，不使用 `package-lock.json` / `yarn.lock`。
+
+`pnpm-workspace.yaml` 在 pnpm v10+ 承载 `onlyBuiltDependencies`（esbuild / sharp）与 `overrides`（传递依赖补丁版本下限），不要把这些配置写回 `package.json` 的 `pnpm` 字段。
+
+## 2. 安装与启动
 
 ```bash
-# 1. 克隆项目
 git clone <repository-url>
-cd <project-directory>
-
-# 2. 安装依赖（仅允许 pnpm）
+cd HanziMaster
 pnpm install
-
-# 3. 启动开发服务器
 pnpm dev
 ```
 
-> **强制使用 pnpm**：`package.json` 的 `preinstall` 钩子为 `npx only-allow pnpm`，执行 `npm install` / `yarn` 会被拦截并报错。根目录 `.npmrc` 设 `engine-strict=true` 与 `package-manager-strict=true`，版本不符时 pnpm 直接报错。pnpm 全局依赖仓库通过 `pnpm config set store-dir ~/.pnpm-store` 共享，避免重复下载。
-
-### 1.3 开发服务器
-
-开发服务器将在 `http://localhost:3000` 启动，支持热模块替换（HMR）。
-
-## 2. 项目命令
-
-| 命令 | 说明 |
-|------|------|
-| `pnpm dev` | 启动开发服务器 |
-| `pnpm build` | 构建生产版本 |
-| `pnpm start` | 启动生产服务器 |
-| `pnpm lint` | 运行 ESLint 检查 |
-| `pnpm test` | 运行单元测试（Vitest） |
-| `pnpm test:watch` | 监听模式运行测试 |
-| `pnpm format` | Prettier 格式化 `src/**/*.{ts,tsx,css}` |
-
-## 3. 编码规范
-
-### 3.1 文件头注释
-
-所有代码文件的第一行必须使用以下格式的单行注释：
-
-```
-// <文件相对路径> v<版本号>
-```
-
-示例：
-
-```typescript
-// src/lib/i18n/index.ts v5.2.24
-```
-
-### 3.2 版本管理 (SemVer 2.0.0)
-
-修改代码时必须同时更新以下文件的版本号：
-
-| 序号 | 更新位置 | 说明 |
-|------|----------|------|
-| 1 | 当前改动的源文件头注释 | 仅更新本次实际新增/修改的文件（`// <路径> v<版本>`），未改动文件不批量刷写 |
-| 2 | `package.json` | 更新 `version` 字段（单一权威来源） |
-| 3 | `metadata.json` | 同步 `name` 中的版本与 `version` 字段 |
-| 4 | `CHANGELOG.md` | 新增对应版本小节（递增补丁版本，不记录日期） |
-| 5 | `README.md` / `README_EN.md` | 同步页脚版本号与版本徽章 |
-| 6 | `prototype/prototype.html` | 同步文件头注释版本号 |
-| 7 | 运行期展示位 | 如 `footer.copyright`（`common.appVersion`）等页面呈现版本 |
-
-### 3.3 TypeScript 样式规范
-
-| 规范项 | 要求 |
-|--------|------|
-| 严格模式 | 启用 `strict: true` |
-| 文件扩展名 | `.ts` 用于工具函数，`.tsx` 用于 React 组件 |
-| 客户端组件 | 使用 `'use client'` 指令标记 |
-
-### 3.4 命名规范
-
-| 类型 | 规范 | 示例 |
-|------|------|------|
-| 组件函数名 | PascalCase | `LocaleProvider`, `ThemeToggle` |
-| 文件名 | kebab-case | `locale-provider.tsx`, `theme-toggle.tsx` |
-| 常量 | UPPER_CASE | `STORAGE_KEY`, `LOCAL_STORAGE_KEY` |
-| 变量/函数 | camelCase | `isDarkMode`, `getBrowserLocale()` |
-| 接口名 | PascalCase（前缀 I 可选） | `Character`, `ICharacter` |
-
-### 3.5 React 组件规范
-
-#### 3.5.1 组件类型
-
-| 类型 | 标记 | 使用场景 |
-|-----|------|---------|
-| Server Components | 无标记（默认） | 数据获取、静态内容渲染 |
-| Client Components | `'use client'` | 需要交互、hooks、状态管理 |
-
-#### 3.5.2 组件开发原则
-
-1. **区分组件类型**：根据需求选择 Server 或 Client 组件
-2. **单一职责**：每个组件只负责一个功能
-3. **类型安全**：使用 TypeScript 严格模式
-4. **可复用性**：设计可复用的通用组件
-
-### 3.6 CSS/Tailwind 规范
-
-| 规范项 | 要求 |
-|--------|------|
-| 框架版本 | Tailwind CSS 4.0 |
-| 深色模式 | 通过根节点切换 `.dark` 类（由 ThemeProvider 注入，`globals.css` 中 `.dark` 选择器定义暗色变量） |
-| 汉字字体 | 使用 `.hanzi-font` 类（Noto Serif SC 展示字体） |
-| 全局样式 | 在 `globals.css` 中定义 CSS 变量与设计令牌 |
-| 设计令牌 | 朱砂红 `--primary`(`#c53d43`) / 靛蓝 `--accent`(`#4f46e5`)，字体 `--font-sans`/`--font-display`/`--font-serif`/`--font-mono` |
-| CSS 注释 | 使用 `/* */` 格式 |
-| TS/JS 注释 | 使用 `//` 格式 |
-
-### 3.7 路由规范
-
-| 规范项 | 要求 |
-|--------|------|
-| 路由目录 | `src/app/` |
-| 页面文件 | `page.tsx` |
-| 布局文件 | `layout.tsx` |
-| 动态路由 | `[param]/page.tsx` |
-| 路径别名 | `@/` → `src/` |
-
-### 3.8 注释规范
-
-- 所有公共函数必须包含简洁的 JSDoc 注释
-- 复杂逻辑添加说明注释
-- 注释尽量单行简洁
-- 避免无意义的注释
-
-## 4. 国际化 (i18n) 规范
-
-### 4.1 翻译原则
-
-| 规范项 | 要求 |
-|--------|------|
-| 用户可见文本 | 必须通过 `useTranslation` hook 进行翻译 |
-| 翻译文件位置 | `src/lib/i18n/translations/` 目录 |
-| 翻译访问 | 通过 `t()` 函数访问翻译数据 |
-| 语言选择器 | 使用 `LocaleToggle` 组件 |
-| 偏好存储 | 用户语言偏好自动保存到 localStorage |
-
-### 4.2 支持的语言
-
-| 语言代码 | 语言名称 | 文件名 |
-|----------|----------|--------|
-| `en` | 英语 | `en.ts` |
-| `zh-CN` | 简体中文 | `zh-CN.ts` |
-| `zh-TW` | 繁体中文 | `zh-TW.ts` |
-| `es` | 西班牙语 | `es.ts` |
-| `ar` | 阿拉伯语 | `ar.ts` |
-| `fr` | 法语 | `fr.ts` |
-| `pt-BR` | 葡萄牙语（巴西） | `pt-BR.ts` |
-| `de` | 德语 | `de.ts` |
-| `ja` | 日语 | `ja.ts` |
-| `ko` | 韩语 | `ko.ts` |
-| `ru` | 俄语 | `ru.ts` |
-
-### 4.3 翻译文件结构
-
-翻译文件应按照功能模块组织：
-
-```typescript
-// src/lib/i18n/translations/en.ts
-export const en = {
-  common: { /* 通用翻译：导航、主题、操作等 */ },
-  home: { /* 首页翻译：hero、特性、永字八法演示 */ },
-  learn: { /* 学习页翻译：汉字词条与例句 */ },
-  practice: { /* 练习页翻译：书写/测验/进度 */ },
-  footer: { /* 页脚翻译 */ },
-  meta: { /* 元数据翻译 */ }
-};
-```
-
-### 4.4 使用示例
-
-```typescript
-// 在客户端组件中
-'use client';
-
-import { useTranslation } from '@/components/locale-provider';
-
-function MyComponent() {
-  const { t } = useTranslation();
-  
-  return (
-    <div>
-      <h1>{t('home.title')}</h1>
-      <p>{t('common.description')}</p>
-    </div>
-  );
-}
-```
-
-## 5. Git 提交规范
-
-### 5.1 提交消息格式
-
-基于 Angular 提交规范，格式如下：
-
-```
-<类型>: <描述>
-
-[可选正文]
-
-[可选页脚]
-```
-
-### 5.2 类型 (Type)
-
-| 类型 | 说明 |
-|------|------|
-| `feat` | 新功能 |
-| `fix` | 缺陷修复 |
-| `docs` | 文档变更 |
-| `style` | 代码格式变更（不影响功能） |
-| `refactor` | 代码重构 |
-| `perf` | 性能优化 |
-| `test` | 测试添加/修改 |
-| `build` | 构建系统变更 |
-| `ci` | CI/CD 配置变更 |
-| `chore` | 其他杂项变更 |
-
-### 5.3 格式规范
-
-| 规范项 | 要求 |
-|--------|------|
-| 标题长度 | 限制在 50 字符以内 |
-| 首字母 | 小写 |
-| 语气 | 祈使语气 |
-| 结尾 | 不使用句号 |
-
-### 5.4 示例
+开发服务器默认 `http://localhost:3000`，支持 HMR。生产验证：
 
 ```bash
-feat: 在学习页面实现字符选择功能
-fix: 解决主题切换组件初始化问题
-docs: 更新项目概述文档
-refactor: 优化主题持久化逻辑
+pnpm build
+pnpm start
 ```
 
-## 6. 目录结构规范
+构建产物位于 `.next/`。应用无需任何环境变量即可运行；`.env.local` 为本地可选文件且不提交。
 
-### 6.1 新增组件
+## 3. 命令表
+
+与 `package.json` `scripts` 一一对应：
+
+| 命令 | 底层调用 | 说明 |
+|------|---------|------|
+| `pnpm dev` | `next dev` | 开发服务器 |
+| `pnpm build` | `next build` | 生产构建 |
+| `pnpm start` | `next start` | 生产服务器 |
+| `pnpm lint` | `eslint .` | ESLint 检查（flat config） |
+| `pnpm lint:fix` | `eslint . --fix` | 自动修复 |
+| `pnpm test` | `vitest run` | 单元测试 |
+| `pnpm test:watch` | `vitest` | 监听模式 |
+| `pnpm test:run` | `node scripts/run-tests.mjs` | 包装器，产物写 `reports/`，可透传 `--coverage` |
+| `pnpm check:lines` | `node scripts/check-line-count.mjs` | 单文件 ≤ 200 行门禁，结果写 `reports/line-count.txt` |
+| `pnpm format` | `prettier --write "src/**/*.{ts,tsx,css}"` | 按 `.prettierrc.json` 格式化；**当前 `prettier` 未声明为依赖，脚本暂不可用**（格式配置仍有效） |
+| `pnpm security:audit` | `pnpm audit --prod --audit-level=high` | 生产依赖审计 |
+| `pnpm security:audit:dev` | `pnpm audit --audit-level=high` | 全量（含 dev 链）审计 |
+
+类型检查无独立脚本，用 `pnpm exec tsc --noEmit`（`tsconfig.json` 已设 `noEmit: true`）。
+
+## 4. 版本与 build 注入链路
 
 ```
-src/components/
-└── my-component.tsx
+package.json version（唯一权威源）
+  └─ next.config.mjs 读取并注入（dev / build 均生效）
+       ├─ NEXT_PUBLIC_APP_VERSION = 5.2.34
+       └─ NEXT_PUBLIC_BUILD_ID   = yyyymmddhhmm（构建时刻本地时间）
+            └─ src/lib/version.ts
+                 ├─ APP_VERSION / BUILD_ID / VERSION_LABEL
+                 └─ layout-client.tsx 用 t('footer.copyright', { versionLabel }) 插值
+                      └─ #footer-version / #drawer-version 展示
 ```
 
-### 6.2 新增页面
+- `VERSION_LABEL` 格式：`vX.Y.Z · build yyyymmddhhmm`；`BUILD_ID` 缺失时回退为 `vX.Y.Z`。
+- 11 个语言包的 `footer.copyright` 只含 `{{versionLabel}}` 占位符，**发版不需要改动翻译文件**。
+- 不存在 `common.appVersion` 键；`src/lib/version.ts` 与 `next.config.mjs` 不含硬编码版本号。
+- 需要手工同步的全局展示位见 [coding-standards.md](coding-standards.md) §3。
 
-```
-src/app/
-└── my-page/
-    └── page.tsx
-```
+## 5. 日常开发流程
 
-### 6.3 新增工具函数
+1. 实查版本与状态：`node -e "console.log(require('./package.json').version)"`，确认工作区无意外改动。
+2. 从 `develop` 创建分支（命名与例外见 [git-workflow.md](git-workflow.md) §1）。
+3. 编码前读 [coding-standards.md](coding-standards.md) 与 [04-api-reference.md](04-api-reference.md)，确认复用既有组件与 hooks。
+4. 涉及设计改动时对照 [07-design-prototype.md](07-design-prototype.md) 与 `prototype/prototype.html`。
+5. 本地验证：格式化 → 类型检查 → lint → 单测 → 行数 → 审计 → 构建（命令见 §3 与 [coding-standards.md](coding-standards.md) §11）。
+6. 按 [commit-template.md](commit-template.md) 提交并 bump 版本；按 [git-workflow.md](git-workflow.md) §5 发起 PR 与审查。
+7. 任务状态更新到 [tasks.md](tasks.md)（唯一来源），完成后归档到 [tasks-done.md](tasks-done.md)。
 
-```
-src/lib/
-└── my-utility.ts
-```
+## 6. 本机工具链注意事项
 
-## 7. 最佳实践
+- pnpm v10+ 的 deps 状态检查可能因 esbuild / sharp 构建脚本被忽略而报 `ERR_PNPM_IGNORED_BUILDS`，阻断 `pnpm exec` / `pnpm test`。此时用 Node 直跑等价命令：
+  - `node node_modules/typescript/bin/tsc --noEmit`
+  - `node node_modules/vitest/vitest.mjs run --reporter=dot`
+  - `node node_modules/eslint/bin/eslint.js src`
+  - `node scripts/check-line-count.mjs`
+- 含 `vitest` 字样的长命令可能被工具误判为 watch 并提前中断，用 `node scripts/run-tests.mjs` 包装并读取 `reports/test-out.txt`。
+- Node 24 的 `globalThis.localStorage` getter 会遮蔽 jsdom 实现，`vitest.setup.ts` 已安装内存 Storage 兜底；业务代码统一用 `window.localStorage`（见 [06-testing.md](06-testing.md) §1）。
+- 离线环境 `next build` 可能因 `next/font/google` 下载字体失败，见 [05-deployment.md](05-deployment.md) §1。
+- 推送 GitHub 返回 `remote: Internal Server Error` 时，用 `git -c http.version=HTTP/1.1 push origin <branch>` 重试。
 
-### 7.1 性能优化
+## 7. 相关文档
 
-1. 使用 React Server Components 进行服务端渲染
-2. 合理使用 Client Components
-3. 避免在渲染函数中进行复杂计算
-4. 使用 React.memo 优化组件重渲染
-
-### 7.2 可维护性
-
-1. 组件单一职责
-2. 类型安全，避免 `any`
-3. 合理的代码注释
-4. 遵循 DRY 原则
-
-### 7.3 可访问性
-
-1. 支持深色/浅色模式
-2. 语义化 HTML
-3. 响应式设计
-4. 键盘导航支持
-
-## 8. 相关文档
-
-- [项目概述](01-overview.md) - 项目基本信息和技术栈
-- [技术架构](02-architecture.md) - 系统架构设计和技术选型
-- [API 参考](04-api-reference.md) - 详细的 API 文档和代码示例
-- [测试规范](06-testing.md) - 测试策略和最佳实践
+- [编码规范（权威）](coding-standards.md)
+- [提交信息规范](commit-template.md)
+- [Git 工作流与代码审查](git-workflow.md)
+- [API 参考](04-api-reference.md)
+- [测试规范](06-testing.md)
+- [部署指南](05-deployment.md)
+- [文档中心与术语约定](index.md)

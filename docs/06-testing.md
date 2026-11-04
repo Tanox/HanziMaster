@@ -1,245 +1,134 @@
 # 测试规范
-============
 
-> **状态说明（v5.2.29）**：本项目**已接入 Vitest 单元测试框架**——`package.json` 含 `test` / `test:watch` 脚本与 `vitest@^3.2.4` 依赖，仓库内有 `src/lib/__tests__/`（characters / i18n / stroke-order 单测）。下文为测试规范与最佳实践。
+> 文档版本：v5.2.34（与项目版本同步，权威版本见 `package.json`）
 
-## 1. 测试框架
+本文描述项目**当前真实**的测试基础设施与编写规范。质量门禁的定义与完整命令表见 [coding-standards.md](coding-standards.md) §11；未完成的测试改进任务见 [tasks.md](tasks.md)。
 
-项目已接入 **Vitest** 作为单元测试框架（见文件头状态说明）；React 组件测试所需的 `@testing-library/react` 尚未安装，相关任务见 [tasks.md](tasks.md) T4。
+## 1. 测试栈现状
 
-| 工具 | 用途 |
-|------|------|
-| Vitest（已接入） | 单元测试框架 |
-| React Testing Library（待接入，见 T4） | React 组件测试 |
+| 组件 | 版本 / 配置 | 说明 |
+|------|------------|------|
+| Vitest | `^3.2.4` | 单元测试运行器 |
+| 环境 | `jsdom`（`vitest.config.ts`） | 组件与 DOM 相关测试 |
+| 全局 API | `globals: true` | 可直接使用 `describe` / `it` / `expect` / `vi` |
+| 别名 | `@` → `src` | 与 `tsconfig.json` 一致 |
+| 匹配范围 | `src/**/*.test.{ts,tsx}` | 就近放在所属模块 `__tests__/` |
+| 初始化 | `./vitest.setup.ts` | 内存 Storage 兜底 |
+| Testing Library | `@testing-library/react ^16.3.3`、`jest-dom ^7.0.1`、`user-event ^14.6.8` | 组件与交互测试 |
+| jsdom | `^30.1.3` | DOM 环境 |
 
-## 2. 测试类型
+> **不使用 Jest**。历史上本文曾包含 Jest 接入蓝图与 `jest.fn()` 示例，均已废弃；Mock 用 Vitest 的 `vi.fn()` / `vi.spyOn()`。
 
-| 测试类型 | 说明 | 优先级 |
-|---------|------|--------|
-| 单元测试 | 测试独立的组件、hooks 和函数 | 高 |
-| 集成测试 | 测试组件间的交互 | 中 |
-| 端到端测试 | 测试完整的用户流程 | 低 |
+`vitest.setup.ts` 的必要性：Node 24 的实验性 `globalThis.localStorage` getter 在未传 `--localstorage-file` 时为 `undefined`，会遮蔽 jsdom 实现，导致 `localStorage` 与 `window.localStorage` 均不可用。setup 在缺失时安装内存 `Storage`；业务代码统一走 `src/lib/storage.ts` 的 `safeGetItem` / `safeSetItem`（内部用 `window.localStorage`）。
 
-## 3. 测试命令
+## 2. 当前测试清单
 
-> 实际命令（Vitest 已配置 `test` / `test:watch` 脚本，可直接运行）：
+`src/` 下共 **9 个测试文件 / 47 个用例**（`pnpm test` 全通过）：
+
+| 文件 | 用例数 | 覆盖内容 |
+|------|-------|---------|
+| `src/lib/__tests__/characters.test.ts` | 4 | 汉字数据完整性 |
+| `src/lib/__tests__/i18n.test.ts` | 3 | 11 语言叶子键与 `en` 完全一致 |
+| `src/lib/__tests__/progress-utils.test.ts` | 13 | 连胜、准确率、周活动计算 |
+| `src/lib/__tests__/stroke-order.test.ts` | 2 | 笔顺数据 |
+| `src/lib/__tests__/translate.test.ts` | 9 | `getNestedValue` / `interpolate`、原型链与插值安全 |
+| `src/components/learn/__tests__/character-grid.test.tsx` | 3 | 字符网格渲染与选择 |
+| `src/components/state/__tests__/state-views.test.tsx` | 7 | 空/错/加载态 |
+| `src/hooks/__tests__/use-progress.test.tsx` | 4 | 进度 hook |
+| `src/hooks/__tests__/use-pronunciation.test.tsx` | 2 | 发音 hook |
+
+> 用例数会随开发变化，以 `pnpm test` 输出为准，不要手工维护文档里的数字。
+
+## 3. 命令
 
 | 命令 | 说明 |
 |------|------|
-| `pnpm test` | 运行测试 |
-| `pnpm test:watch` | 运行测试并监听文件变化 |
-| `pnpm test -- --coverage` | 运行测试并生成覆盖率报告 |
+| `pnpm test` | 运行全部单测（`vitest run`） |
+| `pnpm test:watch` | 监听模式 |
+| `pnpm test:run` | 包装器 `scripts/run-tests.mjs`，产物写 `reports/test-out.txt`，透传 `--coverage` |
+| `pnpm check:lines` | 源码行数门禁，与测试无关的独立门禁 |
+
+本机 pnpm v10+ 触发 `ERR_PNPM_IGNORED_BUILDS` 时改用：`node node_modules/vitest/vitest.mjs run --reporter=dot`，或用 `node scripts/run-tests.mjs` 包装器（可避开工具对长时间 watch 命令的误判）。
+
+**覆盖率现状**：`@vitest/coverage-v8` 尚未安装，`vitest.config.ts` 未配置 `coverage` 段，因此当前**不能**声称 `pnpm test -- --coverage` 可用；覆盖率接入与阈值门禁是 [tasks.md](tasks.md) 中的待办。下文 §7 的目标值是接入后的验收标准，不代表现状。
 
 ## 4. 测试文件组织
 
-### 4.1 文件命名规范
+- 命名：`<被测文件>.test.ts`（纯逻辑）或 `<被测文件>.test.tsx`（组件/hook）。
+- 位置：被测模块同级的 `__tests__/` 目录，例如 `src/lib/__tests__/`、`src/hooks/__tests__/`、`src/components/state/__tests__/`。
+- 不新建独立的顶层 `test/` 目录；不在仓库根生成测试产物，统一写 `reports/`（已被 `.gitignore` 忽略）。
+- 测试文件同样遵守单文件 ≤ 200 行规则。
 
-测试文件应与源代码放在同一目录下，命名规则为：
+## 5. 编写规范
 
-```
-[source-file-name].test.tsx
-```
+### 5.1 结构与命名
 
-**示例：**
-
-```
-src/components/
-├── theme-toggle.tsx
-└── theme-toggle.test.tsx
-
-src/app/
-├── page.tsx
-└── page.test.tsx
-```
-
-### 4.2 目录结构
-
-```
-src/
-├── components/
-│   ├── theme-toggle.tsx
-│   ├── theme-toggle.test.tsx
-│   ├── locale-toggle.tsx
-│   └── locale-toggle.test.tsx
-├── app/
-│   ├── page.tsx
-│   ├── page.test.tsx
-│   └── learn/
-│       ├── page.tsx
-│       └── page.test.tsx
-└── lib/
-    └── i18n/
-        ├── index.ts
-        └── index.test.ts
-```
-
-## 5. 测试编写规范
-
-### 5.1 测试结构
-
-使用 `describe` 和 `it` 组织测试：
+用 `describe` / `it` 组织，测试名描述预期行为；采用 Arrange–Act–Assert 结构，测试之间互不依赖。
 
 ```typescript
-describe('MyComponent', () => {
-  // 测试准备
-  beforeEach(() => {
-    // ...
-  });
+import { describe, it, expect } from 'vitest';
 
-  it('should create', () => {
-    // 测试逻辑
+describe('getStreak', () => {
+  it('returns 0 when there is no practice record', () => {
+    // Arrange
+    const records: PracticeRecord[] = [];
+    // Act
+    const streak = getStreak(records);
+    // Assert
+    expect(streak).toBe(0);
   });
 });
 ```
 
-### 5.2 测试命名规范
+### 5.2 组件测试
 
-测试描述应清晰说明测试的预期行为，使用 "should" 开头：
+```tsx
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { EmptyState } from '@/components/state/state-views';
 
-```typescript
-it('should render correctly', () => { /* ... */ });
-it('should update theme when toggle button clicked', () => { /* ... */ });
-it('should save preference to localStorage', () => { /* ... */ });
-```
-
-### 5.3 单元测试示例
-
-#### 5.3.1 组件测试
-
-```typescript
-import { render, screen, fireEvent } from '@testing-library/react';
-import ThemeToggleClient from './theme-toggle';
-
-describe('ThemeToggleClient', () => {
-  beforeEach(() => {
-    // Mock localStorage
-    Storage.prototype.setItem = jest.fn();
-    Storage.prototype.getItem = jest.fn(() => 'light');
-  });
-
-  it('should render the toggle button', () => {
-    render(<ThemeToggleClient />);
-    expect(screen.getByRole('button')).toBeInTheDocument();
-  });
-
-  it('should toggle theme when button clicked', () => {
-    render(<ThemeToggleClient />);
-    const button = screen.getByRole('button');
-    
-    fireEvent.click(button);
-    
-    expect(localStorage.setItem).toHaveBeenCalledWith('hanzi-master-theme', 'dark');
-  });
+it('renders the empty title', () => {
+  render(<EmptyState title="暂无数据" />);
+  expect(screen.getByText('暂无数据')).toBeInTheDocument();
 });
 ```
 
-#### 5.3.2 Hook 测试
+- 优先用 `getByRole` / `getByLabelText` 等可访问性查询，其次才是 `getByText`。
+- 交互用 `userEvent`，不要直接操作 DOM。
+- 断言扩展来自 `@testing-library/jest-dom`，由 setup 注册；组件若依赖 Provider，需在测试内显式包裹 `ThemeProvider` / `LocaleProvider`。
 
-```typescript
-import { renderHook, act } from '@testing-library/react';
-import { useTranslation } from './locale-provider';
+### 5.3 Mock 与副作用
 
-describe('useTranslation', () => {
-  it('should return translation function', () => {
-    const { result } = renderHook(() => useTranslation());
-    
-    expect(result.current.t).toBeDefined();
-    expect(typeof result.current.t).toBe('function');
-  });
+- Mock 用 `vi.fn()` / `vi.spyOn()` / `vi.mock()`，**不用 `jest.fn()`**。
+- 存储相关测试依赖 `vitest.setup.ts` 的内存 Storage，每个用例前用 `window.localStorage.clear()` 隔离。
+- 事件监听、定时器、Observer 等须在用例结束后清理，避免跨用例污染。
 
-  it('should return translated text', () => {
-    const { result } = renderHook(() => useTranslation());
-    
-    const translated = result.current.t('common.learn');
-    expect(typeof translated).toBe('string');
-  });
-});
-```
+### 5.4 i18n 相关改动
 
-### 5.4 Mock 依赖
+新增或修改翻译键必须同步 11 个语言文件，`src/lib/__tests__/i18n.test.ts` 会校验叶子键与 `en` 完全一致；`t()` 的 key 还受 `TranslationKey` 联合类型约束，类型检查也会拦截未定义键。
 
-使用 Jest 来 Mock 依赖：
+## 6. 覆盖要求（目标，非现状）
 
-```typescript
-// Mock localStorage
-const mockSetItem = jest.fn();
-const mockGetItem = jest.fn(() => 'en');
+| 指标 | 目标 |
+|------|------|
+| 语句 Statements | ≥ 80% |
+| 分支 Branches | ≥ 70% |
+| 函数 Functions | ≥ 80% |
+| 行 Lines | ≥ 80% |
 
-beforeEach(() => {
-  Storage.prototype.setItem = mockSetItem;
-  Storage.prototype.getItem = mockGetItem;
-});
+新功能须带对应测试；纯逻辑优先单测，交互路径优先集成测试；不追求对实现细节的覆盖率，重点覆盖边界条件与真实数据。端到端测试当前未接入。
 
-afterEach(() => {
-  jest.clearAllMocks();
-});
-```
+## 7. 提交前检查
 
-## 6. 测试覆盖率目标
+- [ ] `pnpm test` 全部通过（或等价的 Node 直跑命令）
+- [ ] 新增逻辑有对应测试，无无理由跳过的 `it.skip`
+- [ ] 11 语言键一致性测试通过
+- [ ] 无 `jest.*` API、无硬编码环境依赖
+- [ ] 测试产物未提交到仓库（在 `reports/` 下且被忽略）
 
-| 指标 | 目标覆盖率 |
-|------|-----------|
-| 语句（Statements） | ≥ 80% |
-| 分支（Branches） | ≥ 70% |
-| 函数（Functions） | ≥ 80% |
-| 行（Lines） | ≥ 80% |
+## 8. 相关文档
 
-## 7. 测试最佳实践
-
-### 7.1 单元测试
-
-1. **测试独立功能**：每个测试应只关注一个功能点
-2. **避免依赖外部状态**：测试之间应相互独立
-3. **使用描述性的测试名称**：清楚说明测试的内容
-4. **遵循 AAA 模式**：
-   - Arrange（准备）：设置测试数据和环境
-   - Act（执行）：执行要测试的操作
-   - Assert（断言）：验证结果是否符合预期
-
-```typescript
-it('should toggle theme', () => {
-  // Arrange
-  const { result } = renderHook(() => useTheme());
-  
-  // Act
-  act(() => {
-    result.current.toggleTheme();
-  });
-  
-  // Assert
-  expect(result.current.isDark).toBe(true);
-});
-```
-
-### 7.2 集成测试
-
-1. **测试组件交互**：验证多个组件一起工作的情况
-2. **保持简洁**：不要过度测试，重点在关键交互路径
-3. **使用真实组件**：尽量使用真实组件而非完全 Mock
-
-### 7.3 测试维护
-
-1. **及时更新测试**：代码变更时同步更新测试
-2. **删除过时测试**：删除不再需要的测试
-3. **重构测试代码**：保持测试代码的可维护性
-
-## 8. 测试前检查清单
-
-提交代码前，确保：
-
-- [ ] 所有测试通过（`pnpm test`）
-- [ ] 没有跳过的测试（除非有充分理由并注释说明）
-- [ ] 新功能添加了相应的测试
-- [ ] 测试覆盖率达到目标要求
-- [ ] 测试运行速度在可接受范围内
-
-## 9. 相关文档
-
-- [项目概述](01-overview.md) - 项目基本信息和技术栈
-- [开发指南](03-development.md) - 开发环境配置和编码规范
-
-## 10. 测试基础设施现状
-
-项目已采用 **Vitest**（`vitest@^3.2.4`）作为单元测试框架，配置见 `vitest.config.ts`，脚本为 `test` / `test:watch`。纯逻辑层（characters / i18n / stroke-order）已有单测覆盖。
-
-React 组件 / 交互层测试所需的 `@testing-library/react` 尚未安装，列为任务清单 [tasks.md](tasks.md) T4。上文 Jest 接入蓝图已废弃，请勿按此执行。
+- [编码规范与质量门禁](coding-standards.md)
+- [开发指南](03-development.md)
+- [Git 工作流](git-workflow.md)
+- [任务清单（覆盖率等待办）](tasks.md)
