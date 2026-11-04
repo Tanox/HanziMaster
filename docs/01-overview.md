@@ -6,7 +6,7 @@
 | 项目属性 | 值 |
 |---------|-----|
 | **项目名称** | HanziMaster 汉字大师 |
-| **版本** | v5.2.27 |
+| **版本** | v5.2.28 |
 | **说明** | 中文字符学习平台 |
 | **主要语言** | TypeScript |
 | **项目类型** | Web 应用 |
@@ -106,7 +106,7 @@ HanziMaster/
 │       └── i18n/                   # 国际化模块
 │           ├── translations/        # 翻译文件目录（en/zh-CN/zh-TW/es/ar/fr/pt-BR/de/ja/ko/ru）
 │           └── index.ts            # 国际化配置导出（含 TranslationKey 类型）
-├── openspec/                       # 项目规范文档
+├── docs/                       # 项目规范文档
 │   ├── index.md                    # 文档索引
 │   ├── 01-overview.md              # 项目概述（本文档）
 │   ├── 02-architecture.md          # 技术架构

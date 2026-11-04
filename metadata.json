@@ -1,11 +1,11 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.27",
-  "version": "5.2.27",
-  "description": "v5.2.27: 修复进度连胜 DST 与翻译插值健壮性，规范原型语义化 id 并模块化拆分，接入版本单一来源与 build 编号。",
+  "name": "HanziMaster 汉字大师 v5.2.28",
+  "version": "5.2.28",
+  "description": "v5.2.28: 合并 openspec 规范文档至 docs/ 并统一全仓库路径引用。",
   "keywords": [
     "Chinese characters",
     "Hanzi",
-    "OpenSpec",
+    "Documentation",
     "PWA",
     "i18n",
     "internationalization",

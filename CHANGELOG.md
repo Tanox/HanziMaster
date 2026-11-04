@@ -1,5 +1,24 @@
 ﻿# Changelog
 
+## [5.2.28] - 合并规范文档至 docs/ 并统一路径引用
+### Refactor
+- 将 `openspec/` 下 14 篇规范文档合并迁入 `docs/`，删除空目录，Git 以 rename 保留文件历史。
+- 更新全部当前有效路径引用：`CONTRIBUTING.md` / `CONTRIBUTING_EN.md`、
+  `prototype/PROJECT_STRUCTURE.md` / `DESIGN_SPEC.md` / `UI_UX_REVIEW.md` /
+  `wireframes.html`，以及 docs 内部目录树、AGENTS 指引与对齐清单快照表。
+- CHANGELOG 历史条目与归档文档中的历史路径叙述按「历史记录不篡改」原则保留原文。
+
+### Docs
+- `docs/index.md` 改为规范文档中心并说明统一目录；`docs/AGENTS.md` 路径指引改指 `docs/`。
+- `README` / `README_EN` 补 `docs/` 目录说明；原型结构文档同步目录与文档统计；
+  `metadata.json` 关键词移除已停用的 OpenSpec。
+- 同步被改动文档的版本戳与项目记忆至 v5.2.28。
+
+### Chore
+- 同步全局展示位至 v5.2.28：`package.json` / `metadata.json` / `README` /
+  `README_EN` / CHANGELOG 新小节。11 语言页脚使用插值无需改动。
+
+
 ## [5.2.27] - 核心逻辑健壮性修复、原型模块化与版本单一来源
 ### Fix
 - 修复连续学习天数因 `toISOString()` UTC 偏移与 DST 23/25 小时日导致的断连：改用本地日历字段与 UTC 天序号计算。

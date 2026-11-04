@@ -13,7 +13,7 @@ HanziMaster/
 │   ├── UI_UX_REVIEW.md     # 🎯 UI/UX 专业审查报告（归档）
 │   ├── OPTIMIZATION_SUMMARY.md # ⚡ 项目优化执行总结（归档）
 │   └── PROJECT_STRUCTURE.md # 本文件：项目目录结构说明（归档）
-├── openspec/                # 📖 项目规范文档
+├── docs/                # 📖 项目规范文档
 │   ├── index.md             # 📇 文档索引（必读）
 │   ├── 01-overview.md       # 📋 项目概述
 │   ├── 02-architecture.md   # 🏗️ 技术架构
@@ -69,7 +69,7 @@ HanziMaster/
 
 ### 1. **文档分类清晰**
 - `prototype/` - 设计原型与归档文档（含历史报告、审查、优化总结）
-- `openspec/` - 项目规范文档（编码、架构、开发、测试等）
+- `docs/` - 项目规范文档（编码、架构、开发、测试等）
 - 根目录 - README、CHANGELOG、配置文件等核心文件
 
 ### 2. **避免冗余**
@@ -90,23 +90,23 @@ HanziMaster/
 
 | 文档 | 路径 | 说明 |
 |------|------|------|
-| 文档索引 | [openspec/index.md](../openspec/index.md) | 项目所有文档的导航和索引 |
-| 项目概述 | [openspec/01-overview.md](../openspec/01-overview.md) | 项目基本信息、技术栈、核心功能 |
-| 开发指南 | [openspec/03-development.md](../openspec/03-development.md) | 开发环境搭建、项目命令、编码规范 |
+| 文档索引 | [docs/index.md](../docs/index.md) | 项目所有文档的导航和索引 |
+| 项目概述 | [docs/01-overview.md](../docs/01-overview.md) | 项目基本信息、技术栈、核心功能 |
+| 开发指南 | [docs/03-development.md](../docs/03-development.md) | 开发环境搭建、项目命令、编码规范 |
 
 ### 🔧 开发人员必读
 
 | 文档 | 路径 | 说明 |
 |------|------|------|
-| API 参考 | [openspec/04-api-reference.md](../openspec/04-api-reference.md) | 所有组件的 API 文档 |
-| 编码标准 | [openspec/coding-standards.md](../openspec/coding-standards.md) | 代码风格、最佳实践 |
-| 提交模板 | [openspec/commit-template.md](../openspec/commit-template.md) | Git 提交规范 |
+| API 参考 | [docs/04-api-reference.md](../docs/04-api-reference.md) | 所有组件的 API 文档 |
+| 编码标准 | [docs/coding-standards.md](../docs/coding-standards.md) | 代码风格、最佳实践 |
+| 提交模板 | [docs/commit-template.md](../docs/commit-template.md) | Git 提交规范 |
 
 ### 🎨 设计师必读
 
 | 文档 | 路径 | 说明 |
 |------|------|------|
-| 原型设计 | [openspec/07-design-prototype.md](../openspec/07-design-prototype.md) | 设计规范、原型说明 |
+| 原型设计 | [docs/07-design-prototype.md](../docs/07-design-prototype.md) | 设计规范、原型说明 |
 | HTML 原型 | [prototype.html](../prototype/prototype.html) | 可直接在浏览器打开的高保真原型 |
 
 ---
@@ -114,13 +114,13 @@ HanziMaster/
 ## 🔗 快速链接
 
 ### 在线资源
-- [项目文档索引](../openspec/index.md) - 所有文档的导航
+- [项目文档索引](../docs/index.md) - 所有文档的导航
 - [HTML 原型图](../prototype/prototype.html) - 可视化原型预览
 
 ### 核心文档
-- [项目概述](../openspec/01-overview.md) - 了解项目基本信息
-- [技术架构](../openspec/02-architecture.md) - 了解系统架构
-- [API 参考](../openspec/04-api-reference.md) - 查看组件 API
+- [项目概述](../docs/01-overview.md) - 了解项目基本信息
+- [技术架构](../docs/02-architecture.md) - 了解系统架构
+- [API 参考](../docs/04-api-reference.md) - 查看组件 API
 
 ### 辅助文档
 - [项目结构说明](./PROJECT_STRUCTURE.md) - 项目目录结构和文件分布
@@ -133,9 +133,9 @@ HanziMaster/
 
 | 类别 | 数量 | 说明 |
 |------|------|------|
-| 核心规范文档 | 14 | openspec/ 目录下的所有文档（v5.2.27 实算） |
-| 原型文档 | 4 | prototype/ 目录下的规范与归档文档（v5.2.27 实算） |
-| 源代码文件 | 65 | src/ 目录下的 TS/TSX/CSS 文件（v5.2.27 实算） |
+| 核心规范文档 | 14 | docs/ 目录下的所有文档（v5.2.28 实算） |
+| 原型文档 | 4 | prototype/ 目录下的规范与归档文档（v5.2.28 实算） |
+| 源代码文件 | 65 | src/ 目录下的 TS/TSX/CSS 文件（v5.2.28 实算） |
 | 翻译文件 | 11 | 11 种语言的翻译 |
 | 配置文件 | 10+ | 根目录下的配置文件 |
 
@@ -146,7 +146,7 @@ HanziMaster/
 ### 文档更新流程
 
 1. **发现问题** → 发现文档与代码不一致
-2. **更新文档** → 修改对应的 openspec/ 文档
+2. **更新文档** → 修改对应的 docs/ 文档
 3. **更新索引** → 更新 index.md 的交叉引用
 4. **验证一致性** → 确保文档与代码完全对齐
 
@@ -159,5 +159,5 @@ HanziMaster/
 
 ---
 
-**最后更新：** 2026-11-04（v5.2.27）
+**最后更新：** 2026-11-04（v5.2.28）
 **维护者：** HanziMaster 开发团队

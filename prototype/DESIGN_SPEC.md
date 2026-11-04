@@ -1,6 +1,6 @@
 # HanziMaster 原型设计规范文档
 
-> 版本 v5.2.27 · 与 `openspec/07-design-prototype.md` 互为补充，本文聚焦**原型交付侧**的细化规范（图标、布局网格、交互模式库、反馈/错误/空状态规范）。
+> 版本 v5.2.28 · 与 `docs/07-design-prototype.md` 互为补充，本文聚焦**原型交付侧**的细化规范（图标、布局网格、交互模式库、反馈/错误/空状态规范）。
 > Design Token 单一来源为 `src/app/globals.css` 的 `@theme` 块，原型文件（`prototype.html` / `wireframes.html` / `learn.html` / `practice.html` / `progress.html` / `character-detail.html`）中的 CSS 变量须与之对齐。
 
 ---
@@ -170,4 +170,4 @@ FeatureCard（80px 渐变图标 + 标题 hover 上移 8px）、StatsCard（`acce
 
 ---
 
-*本文档为原型交付规范，权威设计系统定义见 `openspec/07-design-prototype.md`。两者冲突时以 `07` 为准。*
+*本文档为原型交付规范，权威设计系统定义见 `docs/07-design-prototype.md`。两者冲突时以 `07` 为准。*

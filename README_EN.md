@@ -1,4 +1,4 @@
-﻿# HanziMaster 汉字大师 v5.2.27
+﻿# HanziMaster 汉字大师 v5.2.28
 
 [English](README_EN.md) | [简体中文](README.md)
 
@@ -99,6 +99,8 @@ prototype/                # High-fidelity prototypes (every source file ≤200 l
 ├── styles/*.css          # Style modules split by responsibility
 └── scripts/*.js          # Interaction scripts + static markup fragments
 
+docs/                     # Project specs (14 docs, merged into one directory)
+
 (CSP is injected centrally via `next.config.mjs` `securityHeaders`.)
 
 ## Version & Build Identifier
@@ -182,4 +184,4 @@ Types: `feat` | `fix` | `docs` | `style` | `refactor` | `perf` | `test` | `build
 
 ## License
 
-© 2026 HanziMaster 汉字大师 v5.2.27. All rights reserved.
+© 2026 HanziMaster 汉字大师 v5.2.28. All rights reserved.

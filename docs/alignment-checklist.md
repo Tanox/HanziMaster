@@ -2,9 +2,9 @@
 
 本文档记录项目规范文档、原型图与代码实现的对齐情况。
 
-**版本**: v5.2.27
+**版本**: v5.2.28
 **检查日期**: 2026-08-26
-**权威来源**: `openspec/07-design-prototype.md`（设计系统）+ `prototype/prototype.html`（唯一权威高保真原型）
+**权威来源**: `docs/07-design-prototype.md`（设计系统）+ `prototype/prototype.html`（唯一权威高保真原型）
 
 ---
 
@@ -184,7 +184,7 @@
 
 | 配置文件 | 规范文档 | 存在 | 版本一致性 | 状态 |
 |----------|---------|------|-----------|------|
-| package.json | ✅ 01-overview.md | ✅ | v5.2.27 | ✅ 对齐 |
+| package.json | ✅ 01-overview.md | ✅ | v5.2.28 | ✅ 对齐 |
 | tsconfig.json | ✅ 03-development.md | ✅ | strict:true | ✅ 对齐 |
 | next.config.mjs | ✅ 01-overview.md | ✅ | - | ✅ 对齐 |
 | tailwind.config.ts | ✅ 03-development.md | ✅ | - | ✅ 对齐 |
@@ -283,7 +283,7 @@
 
 ## 12. 设计系统规范（权威摘要）
 
-> 完整规范见 `openspec/07-design-prototype.md`。本节为对齐用速查，取代旧版「Apple 风格设计规范」。
+> 完整规范见 `docs/07-design-prototype.md`。本节为对齐用速查，取代旧版「Apple 风格设计规范」。
 
 ### 12.1 设计原则
 - **东方水墨美学**：水墨灰为主，朱砂红为唯一强调色，靛蓝为辅助色
@@ -320,18 +320,18 @@
 | 文件 | 路径 | 最新更新 |
 |------|------|---------|
 | README | README.md | 2026-08-26 |
-| 项目索引 | openspec/index.md | v5.2.27 |
-| 项目概述 | openspec/01-overview.md | v5.2.27 |
-| 架构文档 | openspec/02-architecture.md | v5.2.27 |
-| 开发指南 | openspec/03-development.md | v5.2.27 |
-| API 参考 | openspec/04-api-reference.md | v5.2.27 |
-| 部署文档 | openspec/05-deployment.md | v5.2.27 |
-| 测试文档 | openspec/06-testing.md | v5.2.27 |
-| 设计规范 | openspec/07-design-prototype.md | v5.0（设计系统源） |
-| 编码规范 | openspec/coding-standards.md | v5.2.27 |
-| 提交模板 | openspec/commit-template.md | v5.2.27 |
-| **对齐清单** | openspec/alignment-checklist.md | **v5.2.27** |
-| UI/UX 审查报告 | openspec/ui-ux-review-report.md | 2026-08-19 |
+| 项目索引 | docs/index.md | v5.2.28 |
+| 项目概述 | docs/01-overview.md | v5.2.28 |
+| 架构文档 | docs/02-architecture.md | v5.2.28 |
+| 开发指南 | docs/03-development.md | v5.2.28 |
+| API 参考 | docs/04-api-reference.md | v5.2.28 |
+| 部署文档 | docs/05-deployment.md | v5.2.28 |
+| 测试文档 | docs/06-testing.md | v5.2.28 |
+| 设计规范 | docs/07-design-prototype.md | v5.0（设计系统源） |
+| 编码规范 | docs/coding-standards.md | v5.2.28 |
+| 提交模板 | docs/commit-template.md | v5.2.28 |
+| **对齐清单** | docs/alignment-checklist.md | **v5.2.28** |
+| UI/UX 审查报告 | docs/ui-ux-review-report.md | 2026-08-19 |
 
 ### 13.2 原型文件
 | 文件 | 路径 | 说明 |

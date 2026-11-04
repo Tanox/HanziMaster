@@ -82,7 +82,7 @@ Update: the file-header `// path vX.Y.Z` comment on changed files, the `version`
 - Split any source file exceeding 200 lines by responsibility.
 - Follow Tailwind CSS 4.0 and the design-system tokens; no hardcoded colors.
 
-See [openspec/03-development.md](openspec/03-development.md) and [openspec/coding-standards.md](openspec/coding-standards.md) for details.
+See [docs/03-development.md](docs/03-development.md) and [docs/coding-standards.md](docs/coding-standards.md) for details.
 
 ## Reporting Issues
 

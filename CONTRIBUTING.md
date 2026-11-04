@@ -82,7 +82,7 @@ pnpm dev
 - 单文件超过 200 行需按职责拆分为更小模块。
 - 遵循 Tailwind CSS 4.0 与设计系统 token，禁止硬编码颜色值。
 
-详细规范参见 [openspec/03-development.md](openspec/03-development.md) 与 [openspec/coding-standards.md](openspec/coding-standards.md)。
+详细规范参见 [docs/03-development.md](docs/03-development.md) 与 [docs/coding-standards.md](docs/coding-standards.md)。
 
 ## 报告问题
 

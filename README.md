@@ -1,4 +1,4 @@
-﻿# HanziMaster 汉字大师 v5.2.27
+﻿# HanziMaster 汉字大师 v5.2.28
 
 [English](README_EN.md) | [简体中文](README.md)
 
@@ -91,6 +91,8 @@ prototype/                # 高保真原型（每个源码文件 ≤200 行）
 ├── *.html                # 6 个页面骨架：结构标记与语义化 id
 ├── styles/*.css          # 按职责拆出的样式模块
 └── scripts/*.js          # 按职责拆出的交互脚本与静态标记片段
+
+docs/                     # 项目规范文档（14 篇，由原规范目录合并迁入）
 ```
 
 ## 版本与构建标识
@@ -157,4 +159,4 @@ prototype/                # 高保真原型（每个源码文件 ≤200 行）
 
 ## 许可证
 
-© 2026 HanziMaster 汉字大师 v5.2.27
+© 2026 HanziMaster 汉字大师 v5.2.28
