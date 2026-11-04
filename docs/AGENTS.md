@@ -1,6 +1,8 @@
 <!-- OPENSPEC:START -->
 # OpenSpec Instructions
 
+> 文档版本：v5.2.34（与项目版本同步，权威版本见 `package.json`）
+
 Instructions for AI coding assistants working in this project.
 
 > 注：本项目**未接入 openspec CLI**（无 `specs/`、`changes/`、`archive/` 目录）。规范以 `docs/*.md` 文档形式维护；保留 OpenSpec 方法论名称与上述工具标记仅为兼容既有工具链。以下为项目实际协作约定，权威规则见对应文档。
