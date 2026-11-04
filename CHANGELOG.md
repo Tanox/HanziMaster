@@ -1,5 +1,12 @@
 ﻿# Changelog
 
+## [5.2.30] - 修复 EdgeOne 部署安装命令
+### Fix
+- `edgeone.json` `installCommand` 由 `npm install` 改为 `npm install -g pnpm@11 && pnpm install`：构建器默认 npm install 会触发项目 `preinstall` 的 only-allow pnpm 守卫而失败。
+- `docs/05-deployment.md` 补充 EdgeOne 安装命令说明并同步文档版本戳。
+### Chore
+- 同步全局展示位至 v5.2.30。
+
 ## [5.2.29] - 集中项目任务清单至 docs/tasks.md
 ### Docs
 - 新增 `docs/tasks.md` 作为项目所有任务（待办/改进/backlog）的唯一来源。

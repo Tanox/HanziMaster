@@ -1,7 +1,7 @@
 # 部署指南
 ============
 
-> 文档版本：v5.2.28（与项目版本同步，权威版本见 package.json）
+> 文档版本：v5.2.30（与项目版本同步，权威版本见 package.json）
 
 ## 1. 部署平台
 
@@ -60,6 +60,7 @@
 
 | 配置项 | 值 |
 |--------|-----|
+| 安装命令 | `npm install -g pnpm@11 && pnpm install`（edgeone.json `installCommand`；项目 preinstall 守卫仅允许 pnpm，默认 npm install 会失败） |
 | 构建命令 | `npm run build` |
 | 输出目录 | `.next/` |
 | Node.js 版本 | >= 24.11.0 |

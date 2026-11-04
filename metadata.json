@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.29",
-  "version": "5.2.29",
-  "description": "v5.2.29: 集中项目任务清单至 docs/tasks.md（单一来源），合并 UI/UX/测试/部署/对齐中的任务记录，修正 06-testing.md 过时表述，删除冗余 ui-ux-review-report.md。",
+  "name": "HanziMaster 汉字大师 v5.2.30",
+  "version": "5.2.30",
+  "description": "v5.2.30: 修复 EdgeOne 部署安装命令（改用 pnpm，绕开 only-allow pnpm 守卫）。",
   "keywords": [
     "Chinese characters",
     "Hanzi",

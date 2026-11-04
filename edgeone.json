@@ -1,6 +1,6 @@
 {
   "name": "hanzi-master",
-  "installCommand": "npm install",
+  "installCommand": "npm install -g pnpm@11 && pnpm install",
   "buildCommand": "npm run build",
   "nodeVersion": "24.11.0",
   "headers": [
