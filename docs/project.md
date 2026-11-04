@@ -61,7 +61,7 @@ HanziMaster (汉字大师) is a local-first Chinese character learning web app: 
 
 - No environment variables are required at runtime. Google Fonts is the only network dependency at build time; offline `next build` may fail on font download (environment limitation, not a code defect).
 - CSP and all security headers are injected centrally by `next.config.mjs` `headers()` for `/:path*`. There is **no** `middleware.ts` / `proxy.ts`; do not reintroduce it.
-- Coverage tooling (`@vitest/coverage-v8`) and a CI workflow (` .github/workflows/`) are not yet configured; do not claim `pnpm test -- --coverage` works. Remaining work is tracked in [tasks.md](tasks.md).
+- Coverage tooling (`@vitest/coverage-v8`) and a CI workflow (`.github/workflows/`) are not yet configured; do not claim `pnpm test -- --coverage` works. Remaining work is tracked in [tasks.md](tasks.md).
 - Historical `openspec/` paths inside `CHANGELOG.md` and archived documents are historical records — do not bulk-replace them.
 
 ## External Dependencies

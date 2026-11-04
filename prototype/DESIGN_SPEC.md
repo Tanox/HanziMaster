@@ -1,7 +1,8 @@
 # HanziMaster 原型设计规范文档
 
-> 版本 v5.2.33 · 与 `docs/07-design-prototype.md` 互为补充，本文聚焦**原型交付侧**的细化规范（图标、布局网格、交互模式库、反馈/错误/空状态规范）。
-> Design Token 单一来源为 `src/app/globals.css` 的 `@theme` 块，原型文件（`prototype.html` / `wireframes.html` / `learn.html` / `practice.html` / `progress.html` / `character-detail.html`）中的 CSS 变量须与之对齐。
+> 文档版本：v5.2.34（与项目版本同步，权威版本见 `package.json`）· 与 [docs/07-design-prototype.md](../docs/07-design-prototype.md) 互为补充，本文聚焦**原型交付侧**的细化规范（图标、布局网格、交互模式库、反馈/错误/空状态规范）。
+> Design Token 为**双重来源、职责不同**：`src/app/globals.css` 的 `@theme` 定义语义 token（`--color-*`），`tailwind.config.ts` 定义扩展色阶/字体/动画；原型文件（`prototype.html` / `wireframes.html` / `learn.html` / `practice.html` / `progress.html` / `character-detail.html`）中的 CSS 变量须与语义 token 对齐。
+> 本文 §2 描述的是 `wireframes.html` 的**原型组件库演示**，不是生产代码组件清单；生产组件以 [docs/04-api-reference.md](../docs/04-api-reference.md) §6 为准。
 
 ---
 
@@ -10,7 +11,7 @@
 ### 1.1 色彩规范
 
 - **语义色 token**（`@theme` 权威）：`--color-background / foreground / primary / secondary / muted / card / popover / accent / destructive / border / input / ring / success / warning / info`，详见 `07-design-prototype.md §2.1`。
-- **品牌色约束**：朱砂红 `--primary #c53d43` 为唯一强调色，用于主操作、选中态、链接；靛蓝 `--accent #4f46e5` 为辅助色，用于次要信息（拼音标注、分类指示）。
+- **品牌色约束**：朱砂红 `--color-primary #c53d43` 为唯一强调色，用于主操作、选中态、链接；靛蓝 `--color-accent #4f46e5` 为辅助色，用于次要信息（拼音标注、分类指示）。派生色用 `color-mix()` 从 `--color-primary` 生成。
 - **深色模式**：通过 `.dark` 类覆盖 CSS 变量，**禁止** Tailwind `dark:` 前缀覆盖语义色。
 - **禁止**：组件内联 `style="color:#xxx"`；任意色值硬编码；多主色竞用造成视觉噪点。
 
@@ -76,9 +77,9 @@
 
 ## 2 · 组件库规范
 
-> 完整组件清单、变体与代码级规范见 `wireframes.html`（可交互组件库）。本节给出分类索引与契约要点。
+> 完整原型组件演示见 `wireframes.html`（可交互组件库）。本节是**原型侧的组件契约索引**，不代表生产代码：`src/components/ui/` 当前只有 `button` / `badge` / `dialog` / `tooltip` 4 个原语，生产清单与 API 见 [docs/04-api-reference.md](../docs/04-api-reference.md) §6。下表中 Accordion / DropdownMenu / Separator 属设计规范目标，原型中尚未实现。
 
-### 2.1 基础组件（`src/components/ui/`）
+### 2.1 原型基础组件演示（`wireframes.html`）
 
 | 组件 | 关键契约 |
 |------|---------|
@@ -94,9 +95,11 @@
 
 Dialog（玻璃态 + 缩放入场 + `role="dialog"` + Escape 关闭）、Sheet（右侧抽屉 + 背景遮罩）、Select（触发器 ink 边框 + vermilion focus）、DropdownMenu、Accordion（`accordion-down/up` 动画）。
 
-### 2.3 业务组件（`src/components/`）
+### 2.3 原型业务组件演示
 
 FeatureCard（80px 渐变图标 + 标题 hover 上移 8px）、StatsCard（`accentVariant: vermilion/indigo/success`，顶部 3px 装饰条）、EmptyState（64px 圆形图标 + 描述 + CTA）、Toast（4 类型，右上 `top-20 right-4`，`slide-in-right`）、NavLink（active 淡朱砂 + 底部圆点）、MobileNav（右侧抽屉）、LayoutClient（玻璃态 header + skip-link）。
+
+生产侧对照：`EmptyState` / `ErrorState` / `LoadingSpinner` 位于 `src/components/state/state-views.tsx`（不存在 `empty-state.tsx`）；NavLink 活跃态为朱砂红文字 + 下划线指示器；两个测验弹窗 id 分别为 `learn-quiz-dialog` 与 `practice-quiz-dialog`。
 
 ### 2.4 组件使用规则
 

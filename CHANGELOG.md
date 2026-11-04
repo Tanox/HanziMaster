@@ -1,5 +1,19 @@
 ﻿# Changelog
 
+## [5.2.34] - 更新并完善项目文档与开发规范
+### Docs
+- 重建文档分层与单一职责矩阵：`docs/index.md` 明确入口层 / 规范层 / 状态层 / 原型层 / 归档层 / 协作层，逐篇规定「唯一负责的内容」与「不得写入」，新增术语表、格式约定、版本戳规则（只更新本次改动文档）与 `npm` 字样豁免清单。
+- 新增 `docs/git-workflow.md`：分支模型（`main` / `develop` / `feature|fix|bugfix|hotfix|release/*`）、日常开发流程、合并前 11 项质量门禁、代码审查角色/状态/顺序/意见严重度、发版流程与禁止事项。
+- 重写 `docs/coding-standards.md` 为编码唯一权威（文件头注释、SemVer 与全局同步清单、目录组织、命名约定、TS/React 风格、双重设计 token、i18n、200 行拆分、质量门禁），`docs/commit-template.md` 为提交唯一权威（Conventional Commits、10 类 type、版本号标注、`.gitmessage` 模板）；`03-development.md` 收敛为环境/命令/版本注入链路，消除三处重复且互相矛盾的规则定义。
+- 与代码实现对齐：`06-testing.md` 改为真实 Vitest + jsdom + Testing Library（9 文件 / 47 用例），删除废弃 Jest 蓝图与「尚未接入组件测试」表述，如实标注覆盖率工具未配置；`05-deployment.md` 统一 pnpm、对齐 `vercel.json` / `edgeone.json` 真实配置、删除与 App Router 冲突的 SPA `index.html` 重写说明；`01-overview.md` 修正版本、依赖版本与目录树（移除不存在的 `.env.example`、补全 16 篇文档与 `state/` 等）；`02-architecture.md` 纠正「首页为 Server Component」并补齐 CSP、版本注入、无中间件与模块清单；`04-api-reference.md` 修正混乱编号、真实导出签名、`TranslationKey`、6 个翻译键域、`--color-*` token 与 4 个 UI 原语。
+- `07-design-prototype.md` 与 `prototype/DESIGN_SPEC.md` 按真实组件重写组件库章节（删除 20+ 未实现原语、修正 `empty-state.tsx` 错误路径），统一「设计令牌双重来源」表述与原型文件索引；明确 DESIGN_SPEC §2 是 `wireframes.html` 的原型演示组件，不是生产清单。
+- `alignment-checklist.md` 重写为当前对齐基线，删除虚报的「113 项 100% 对齐」「24 个基础组件」历史快照，新增已知差异说明并指向 `tasks.md`（本文不维护待办）。
+- 入口与模板同步：`AGENTS.md` / `project.md` / `CONTRIBUTING.md` / `CONTRIBUTING_EN.md` / `README.md` / `README_EN.md` / `.github/PULL_REQUEST_TEMPLATE.md` / `.trae/rules/git-commit-message.md` / `prototype/PROJECT_STRUCTURE.md` 统一术语与命令，补齐规范索引、分支与审查链接、PR 门禁清单，并如实标注 `prettier` 未声明依赖导致 `pnpm format` 暂不可用；`.github/SUPPORT.md` 修复失效相对链接并改指 `docs/`。
+- `docs/tasks.md` / `tasks-done.md` 本次未改动（保留工作区未提交内容），其版本戳按「未改动文件不批量刷写」规则保持不变。
+
+### Chore
+- 版本同步至 v5.2.34：`package.json` / `metadata.json` / `README.md` / `README_EN.md` / 本次改动文档版本戳 / CHANGELOG 新小节。运行期版本与 build 编号仍由 `next.config.mjs` 注入，11 语言 `footer.copyright` 无需改动。
+
 ## [5.2.33] - 冗余文件分析与清理
 ### Chore
 - 仓库根一次性脚本清理：删除 `i18n-add.mjs`（文案注入）、`sync-5231.mjs`（版本同步）、`audit-parse.mjs`（审计解析）、`deploy-fix.mjs`（v5.2.30 版本戳脚本）；能力分别由 `scripts/` 工具链与 P2-9（`scripts/sync-version.mjs`）承接。
