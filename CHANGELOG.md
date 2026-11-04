@@ -1,5 +1,14 @@
 ﻿# Changelog
 
+## [5.2.29] - 集中项目任务清单至 docs/tasks.md
+### Docs
+- 新增 `docs/tasks.md` 作为项目所有任务（待办/改进/backlog）的唯一来源。
+- 合并原分散在 `ui-ux-review-report.md`、`06-testing.md`、`05-deployment.md`、`alignment-checklist.md` 的任务记录；删除冗余的 `ui-ux-review-report.md`（其 2026-08-19 审查结论已吸收进 tasks.md）。
+- 修正 `06-testing.md` 过时表述：项目已接入 Vitest（`test` 脚本存在），移除 Jest 接入蓝图，组件测试列为 tasks.md T4。
+- `docs/index.md` / `alignment-checklist.md` 更新文档索引与文件清单；`AGENTS.md` 补充任务清单单一来源指引。
+### Chore
+- 同步全局展示位至 v5.2.29。
+
 ## [5.2.28] - 合并规范文档至 docs/ 并统一路径引用
 ### Refactor
 - 将 `openspec/` 下 14 篇规范文档合并迁入 `docs/`，删除空目录，Git 以 rename 保留文件历史。

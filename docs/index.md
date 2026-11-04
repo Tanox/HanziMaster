@@ -16,7 +16,7 @@
 | 编码规范 | [coding-standards.md](coding-standards.md) | 项目编码标准、最佳实践和代码风格指南 |
 | 提交模板 | [commit-template.md](commit-template.md) | Git 提交消息规范和模板 |
 | **UI 原型图** | **[../prototype/prototype.html](../prototype/prototype.html)** | **页面 UI 设计原型和交互说明（东方水墨·朱砂红设计系统 v5.0）** |
-| **UI/UX 审查报告** | **[ui-ux-review-report.md](ui-ux-review-report.md)** | **从设计师视角的优化改进建议** |
+| **任务清单** | **[tasks.md](tasks.md)** | **项目所有任务（待办/改进/backlog）的唯一来源** |
 | 对齐检查清单 | [alignment-checklist.md](alignment-checklist.md) | 规范文档、原型图与代码实现对齐检查 |
 
 ## 快速导航
@@ -30,7 +30,7 @@
 
 ### 文档版本
 
-所有文档版本与项目版本保持同步：**v5.2.28**
+所有文档版本与项目版本保持同步：**v5.2.29**
 
 ## 项目链接
 

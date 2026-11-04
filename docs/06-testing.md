@@ -1,16 +1,16 @@
 # 测试规范
 ============
 
-> **状态说明（v5.2.28）**：本项目**已接入 Vitest 单元测试框架**——`package.json` 含 `test` / `test:watch` 脚本与 `vitest@^3.2.4` 依赖，仓库内有 `src/lib/__tests__/`（characters / i18n / stroke-order 单测）。下文为测试规范与最佳实践。
+> **状态说明（v5.2.29）**：本项目**已接入 Vitest 单元测试框架**——`package.json` 含 `test` / `test:watch` 脚本与 `vitest@^3.2.4` 依赖，仓库内有 `src/lib/__tests__/`（characters / i18n / stroke-order 单测）。下文为测试规范与最佳实践。
 
 ## 1. 测试框架
 
-项目计划使用 Next.js 推荐的测试工具（待接入）：
+项目已接入 **Vitest** 作为单元测试框架（见文件头状态说明）；React 组件测试所需的 `@testing-library/react` 尚未安装，相关任务见 [tasks.md](tasks.md) T4。
 
 | 工具 | 用途 |
 |------|------|
-| Jest | 测试框架 |
-| React Testing Library | React 组件测试 |
+| Vitest（已接入） | 单元测试框架 |
+| React Testing Library（待接入，见 T4） | React 组件测试 |
 
 ## 2. 测试类型
 
@@ -22,7 +22,7 @@
 
 ## 3. 测试命令
 
-> 以下为**目标命令**，需先完成 §10 的测试基础设施接入后方可使用。当前直接运行会报 `missing script: "test"`。
+> 实际命令（Vitest 已配置 `test` / `test:watch` 脚本，可直接运行）：
 
 | 命令 | 说明 |
 |------|------|
@@ -238,28 +238,8 @@ it('should toggle theme', () => {
 - [项目概述](01-overview.md) - 项目基本信息和技术栈
 - [开发指南](03-development.md) - 开发环境配置和编码规范
 
-## 10. 测试基础设施接入步骤（待执行）
+## 10. 测试基础设施现状
 
-为落地上述规范，需按以下步骤接入测试框架：
+项目已采用 **Vitest**（`vitest@^3.2.4`）作为单元测试框架，配置见 `vitest.config.ts`，脚本为 `test` / `test:watch`。纯逻辑层（characters / i18n / stroke-order）已有单测覆盖。
 
-1. **安装依赖**（开发依赖）：
-   ```bash
-   pnpm add -D @testing-library/react @testing-library/jest-dom @testing-library/user-event @testing-library/dom jsdom @types/jest
-   ```
-2. **添加 Jest 配置** `jest.config.mjs`：
-   - `testEnvironment: 'jsdom'`
-   - `setupFilesAfterEnv: ['<rootDir>/jest.setup.ts']`
-   - `moduleNameMapper`: 将 `@/` 别名映射到 `src/`，并将 `.css` 映射为空模块
-   - `transform`: 使用 `ts-jest`（或 `babel-jest`）处理 `.ts(x)`
-3. **添加 `jest.setup.ts`**：引入 `@testing-library/jest-dom`
-4. **在 `package.json` 增加脚本**：
-   ```json
-   "scripts": {
-     "test": "jest",
-     "test:watch": "jest --watch",
-     "test:coverage": "jest --coverage"
-   }
-   ```
-5. **补充测试文件**：按 §4 命名规范（`*.test.tsx` 同目录），优先覆盖 `theme-toggle`、`locale-toggle`、`useTranslation` 等纯逻辑/交互组件。
-
-> 完成接入后，移除本文档顶部的「尚未接入」状态说明。
+React 组件 / 交互层测试所需的 `@testing-library/react` 尚未安装，列为任务清单 [tasks.md](tasks.md) T4。上文 Jest 接入蓝图已废弃，请勿按此执行。

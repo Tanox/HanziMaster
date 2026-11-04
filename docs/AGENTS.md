@@ -18,6 +18,7 @@ Instructions for AI coding assistants working in this project.
   - 设计系统（权威）：`07-design-prototype.md`
   - 编码规范：`coding-standards.md`
   - 提交规范：`commit-template.md`
+  - 任务清单：`tasks.md`（项目任务唯一来源：待办/改进/backlog 均在此记录，其他文档不重复记任务）
   - 对齐检查：`alignment-checklist.md`
   - 项目约定：`project.md`
 - **设计原型**：`prototype/prototype.html` 为唯一权威高保真原型。
