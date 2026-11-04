@@ -1,97 +1,55 @@
 # Contributing
 
-Thank you for considering contributing to **HanziMaster 汉字大师**! This document explains how to get involved in development and submit changes.
+Thank you for considering contributing to **HanziMaster 汉字大师**. This page is the **entry point**; the authoritative rules live in `docs/`.
 
-[中文](CONTRIBUTING.md)
+[中文](CONTRIBUTING.md) · [Documentation hub](docs/index.md)
 
 ## Code of Conduct
 
-Please keep communication friendly and respectful, and focus on technical issues.
+Keep communication friendly and respectful, focused on technical issues. See `.github/CODE_OF_CONDUCT.md`; report security issues per `.github/SECURITY.md`.
 
 ## Development Setup
 
 ```bash
-# 1. Fork and clone the repository
 git clone https://github.com/<your-username>/HanziMaster.git
 cd HanziMaster
-
-# 2. Install dependencies (Node.js >= 24.11.0 required, pnpm only)
 pnpm install
-
-# 3. Start the dev server
 pnpm dev
 ```
 
-> This project enforces pnpm: running `npm install` / `yarn` is blocked by the `preinstall` hook (`only-allow pnpm`).
-
-The dev server runs at `http://localhost:3000` by default.
+- Node.js `>= 24.11.0`, pnpm `>= 11` (pinned `11.24.0`). pnpm is enforced; `npm install` / `yarn` are blocked by the `preinstall` hook.
+- Dev server: `http://localhost:3000`. No environment variables are required.
+- Full setup and script table: [docs/03-development.md](docs/03-development.md).
 
 ## Development Workflow
 
-1. Create a feature branch from `main`: `git checkout -b feature/<short-desc>` or `fix/<short-desc>`.
-2. Implement your change locally and make sure lint and build pass:
-   ```bash
-   pnpm lint
-   pnpm build
-   ```
-3. Commit your changes (see Commit Convention below).
-4. Push the branch and open a Pull Request against `main`.
+1. Branch from `develop`: `feature/<desc>` or `fix/<desc>`. Naming and exceptions: [docs/git-workflow.md](docs/git-workflow.md) §1.
+2. Read the [coding standards](docs/coding-standards.md) (naming, layout, i18n, design tokens, line limit, version sync) and the [API reference](docs/04-api-reference.md).
+3. Run all [quality gates](docs/coding-standards.md) §11: type check, lint, unit tests, line count, security audit, build.
+4. Write commits per the [commit convention](docs/commit-template.md), including the new version number in the body/footer.
+5. Push the branch, open a PR using the [PR template](.github/PULL_REQUEST_TEMPLATE.md), and complete the [code review flow](docs/git-workflow.md) §5 before a reviewer merges it.
 
-## Commit Convention
+> If `pnpm exec` / `pnpm test` fails locally with `ERR_PNPM_IGNORED_BUILDS`, use the equivalent Node commands in [coding standards](docs/coding-standards.md) §11 and note them in the PR.
 
-This project follows the Angular commit convention:
+## Rule Index (not redefined here)
 
-```
-<type>: <description>
+| Topic | Authoritative document |
+|-------|------------------------|
+| Code style, naming, directory layout, i18n, design tokens, quality gates | [docs/coding-standards.md](docs/coding-standards.md) |
+| Commit message format and the 10 allowed types | [docs/commit-template.md](docs/commit-template.md) |
+| Branches, PRs, code review, release | [docs/git-workflow.md](docs/git-workflow.md) |
+| Test organization and conventions | [docs/06-testing.md](docs/06-testing.md) |
+| Deployment and release checklist | [docs/05-deployment.md](docs/05-deployment.md) |
+| Terminology, formatting, document version stamps | [docs/index.md](docs/index.md) §4 / §5 |
+| All pending tasks and improvements | [docs/tasks.md](docs/tasks.md) |
 
-[optional body]
+## Versioning Summary
 
-[optional footer]
-```
-
-| Type | Description |
-|------|-------------|
-| `feat` | New feature |
-| `fix` | Bug fix |
-| `docs` | Documentation change |
-| `style` | Code style only (no logic change) |
-| `refactor` | Code refactoring |
-| `perf` | Performance improvement |
-| `test` | Test changes |
-| `build` | Build/dependency changes |
-| `ci` | CI/CD changes |
-| `chore` | Other misc changes |
-
-Rules: lowercase first letter, imperative mood, ≤ 50 characters, no trailing period.
-
-## Versioning
-
-Any code or docs change must bump the version per [SemVer](https://semver.org/) (minimum is a patch bump):
-
-- Fix/docs/config → `x.y.Z+1`
-- New feature (backward-compatible) → `x.Y+1.0`
-- Breaking change → `X+1.0.0`
-
-Update: the file-header `// path vX.Y.Z` comment on changed files, the `version` field in `package.json`, and add a new section in `CHANGELOG.md`.
-
-## Code Standards Summary
-
-- Use TypeScript strict mode; avoid `any`.
-- Mark client components with `'use client'`.
-- All user-visible text must go through i18n (see `src/lib/i18n/`).
-- Split any source file exceeding 200 lines by responsibility.
-- Follow Tailwind CSS 4.0 and the design-system tokens; no hardcoded colors.
-
-See [docs/03-development.md](docs/03-development.md) and [docs/coding-standards.md](docs/coding-standards.md) for details.
+Every change (including docs) bumps at least a patch version. `package.json` `version` is the single source of truth; also sync `metadata.json`, both READMEs, `CHANGELOG.md`, and the header comment / version stamp of changed files. Full list: [docs/coding-standards.md](docs/coding-standards.md) §3.
 
 ## Reporting Issues
 
-Please open a GitHub Issue with:
-
-- Steps to reproduce
-- Expected vs. actual behavior
-- Browser/OS environment
-- Screenshots if relevant
+Open a GitHub Issue with: reproduction steps, expected vs actual behavior, browser/OS, and screenshots if relevant.
 
 ---
 

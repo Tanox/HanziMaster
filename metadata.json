@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.33",
-  "version": "5.2.33",
-  "description": "v5.2.33: 冗余文件分析与清理（根目录一次性脚本与产物清零、scripts/ 与 reports/ 归位、lint 与 security:audit 脚本修复、删除空 test/ 目录）。",
+  "name": "HanziMaster 汉字大师 v5.2.34",
+  "version": "5.2.34",
+  "description": "v5.2.34: 更新并完善项目文档与开发规范（梳理文档分层与单一职责矩阵、补齐分支管理与代码审查流程、对齐测试/部署/架构/API 与代码实现、统一术语与版本戳规则）。",
   "keywords": [
     "Chinese characters",
     "Hanzi",

@@ -1,4 +1,8 @@
-# HanziMaster 设计规范文档 v5.0
+# 设计规范与原型
+
+> 文档版本：v5.2.34（与项目版本同步，权威版本见 `package.json`）
+
+本文是设计系统的权威说明。编码层面的 token 使用约束见 [coding-standards.md](coding-standards.md) §8；原型交付侧细化规范见 `prototype/DESIGN_SPEC.md`。文中组件清单以 `src/components/` 实际文件为准。
 
 ## 1. 设计概述
 
@@ -11,9 +15,9 @@
 
 ### 1.2 技术架构
 
-- **CSS 变量系统**：`globals.css` 的 `@theme` 块为所有设计 token 的权威来源
-- **Tailwind v4**：通过 `@theme` 自动生成工具类，`tailwind.config.ts` 提供向后兼容
-- **shadcn/ui**：所有基础组件已改造为 ink/vermilion 设计语言
+- **CSS 变量系统**：`globals.css` 的 `@theme` 块定义语义 token（`--color-*` / 字体 / 圆角）
+- **Tailwind v4**：`@theme` 自动生成语义工具类；`tailwind.config.ts` 定义扩展色阶、字体族、动画与阴影，二者职责不同
+- **shadcn/ui**：当前 4 个基础原语（`button` / `badge` / `dialog` / `tooltip`）已改造为 ink/vermilion 设计语言
 - **深色模式**：通过 `.dark` 类切换 CSS 变量，覆盖所有语义色 token
 
 ## 2. 设计系统
@@ -148,43 +152,40 @@
 
 ## 3. 组件库规范
 
-### 3.1 基础组件
+### 3.1 基础原语（实际存在）
 
-所有基础组件位于 `src/components/ui/`，基于 shadcn/ui 改造为 ink/vermilion 设计语言。
+`src/components/ui/` 当前只有 4 个基础原语，均基于 shadcn/ui（radix-nova preset）改造：
 
-| 组件 | 变体 | 关键样式 |
+| 组件 | 文件 | 关键样式 |
 |------|------|---------|
-| **Button** | default / outline / secondary / ghost / destructive / link | 朱砂红主色，hover 上移+阴影，active 下移 |
-| **Input** | - | 2px ink 边框，focus 时 vermilion 边框+光环 |
-| **Badge** | default / secondary / outline / ghost / success / warning / info / destructive | rounded-full，6px 间距 |
-| **Card** | default / sm | 玻璃态 `bg-white/80 backdrop-blur-xl`，hover 上移+阴影 |
-| **Switch** | - | checked 时 vermilion-500，unchecked 时 ink-200 |
-| **Tabs** | default / line | 激活态 vermilion 下划线 |
-| **Separator** | - | `bg-ink-200 dark:bg-ink-700` |
-| **Skeleton** | - | `bg-ink-100 dark:bg-ink-800 rounded-xl animate-pulse` |
-| **Tooltip** | - | `bg-ink-900 text-ink-50 rounded-xl shadow-ink` |
+| **Button** | `ui/button.tsx` | `class-variance-authority` 变体；朱砂红主色，hover 上移 + 阴影，active 下移 |
+| **Badge** | `ui/badge.tsx` | 圆角胶囊，状态色取 token |
+| **Dialog** | `ui/dialog.tsx` | 遮罩 + 内容缩放入场；Radix 焦点陷阱；标题关联 `aria-labelledby` |
+| **Tooltip** | `ui/tooltip.tsx` | 含 `TooltipProvider`；`bg-ink-900` + `shadow-ink` |
 
-### 3.2 复合组件
+> 历史版本本节列出 Input / Card / Switch / Tabs / Separator / Skeleton / Sheet / Select / DropdownMenu / Accordion 等 20+ 组件，均**未在仓库中实现**，已移除。需要新增原语时用 `components.json` 的 shadcn 配置生成，并同步本节与 [04-api-reference.md](04-api-reference.md) §6。
 
-| 组件 | 关键样式 |
-|------|---------|
-| **Dialog** | `bg-white/95 backdrop-blur-xl rounded-3xl shadow-ink-xl`，标题用 `display-font` |
-| **Sheet** | `bg-white/95 backdrop-blur-xl shadow-ink-xl`，标题用 `display-font` |
-| **Select** | 触发器 ink 边框+vermilion focus，内容 `bg-white/95 backdrop-blur-xl rounded-2xl` |
-| **DropdownMenu** | `bg-white/95 backdrop-blur-xl rounded-2xl shadow-ink-lg`，hover `bg-ink-50` |
-| **Accordion** | `border-ink-200`，trigger hover `text-vermilion-500`，accordion-down/up 动画 |
+### 3.2 弹窗与抽屉（业务实现）
+
+| 组件 | 位置 | 说明 |
+|------|------|------|
+| 学习页测验弹窗 | `components/learn/quiz-dialog.tsx` | id `learn-quiz-dialog` |
+| 练习页测验弹窗 | `components/practice/quiz-dialog.tsx` | id `practice-quiz-dialog` |
+| 书写弹窗 | `components/practice/writing-dialog.tsx` | 内嵌 Canvas，拆分为 `writing-canvas-*` 模块 |
+| 移动导航抽屉 | `components/mobile-nav.tsx` | 右侧滑入、遮罩、Escape / 右滑关闭、`aria-modal` |
+
+两个测验弹窗 id 必须保持区分，禁止列表渲染复用静态 id。
 
 ### 3.3 业务组件
 
 | 组件 | 位置 | 说明 |
 |------|------|------|
-| **FeatureCard** | `src/components/feature-card.tsx` | 80px 渐变图标 + display-font 标题，hover 上移 8px |
-| **StatsCard** | `src/components/stats-card.tsx` | `accentVariant: 'vermilion' \| 'indigo' \| 'success'` prop，顶部 3px 装饰条 |
-| **EmptyState** | `src/components/empty-state.tsx` | 64px 圆形图标，描述 max-w-280px |
-| **Toast** | `src/components/toast.tsx` | 4 类型（success/error/warning/info），位置 `top-20 right-4`，slide-in-right 动画 |
-| **NavLink** | `src/components/nav-link.tsx` | active 态 `bg-vermilion-500/10` + 底部圆点 |
-| **MobileNav** | `src/components/mobile-nav.tsx` | 右侧抽屉 w-72，backdrop-blur-xl，Escape 关闭 |
-| **LayoutClient** | `src/components/layout-client.tsx` | 玻璃态 header，skip-link，page-transition |
+| **FeatureCard** | `components/feature-card.tsx` | 渐变图标 + `display-font` 标题，hover 上移 |
+| **StatsCard** | `components/stats-card.tsx` | `accentVariant` prop，顶部装饰条 |
+| **EmptyState / ErrorState / LoadingSpinner** | `components/state/state-views.tsx` | 空 / 错 / 加载态统一出口；**不存在 `empty-state.tsx`** |
+| **Toast** | `components/toast.tsx` | 4 类型（success/error/warning/info），`slide-in-right` 动画 |
+| **NavLink** | `components/nav-link.tsx` | active 态朱砂红文字 + 下划线指示器 |
+| **LayoutClient** | `components/layout-client.tsx` | 玻璃态 header、skip-link、页脚版本插值 |
 
 ## 4. 交互标准
 
@@ -220,11 +221,14 @@
 
 ### 4.4 空状态
 
-| 场景 | 组件 |
-|------|------|
-| 无学习记录 | EmptyState（图标 + 标题 + 描述 + CTA 按钮） |
-| 无搜索结果 | EmptyState（搜索图标 + "未找到结果" + 清除筛选按钮） |
-| 加载失败 | EmptyState（警告图标 + "加载失败" + 重试按钮） |
+| 场景 | 组件与文案键 |
+|------|-------------|
+| 无学习记录 | `EmptyState`（`components/state/state-views.tsx`），`common.emptyTitle` / `common.emptyDesc` |
+| 运行错误 | `ErrorState` + `common.errorTitle` / `common.errorDesc` / `common.retry`，或路由级 `error.tsx` |
+| 加载中 | `LoadingSpinner` 或路由级 `loading.tsx` |
+| 404 | `not-found.tsx` + `common.notFoundTitle` / `common.notFoundDesc` |
+
+所有场景文案须走 i18n，11 语言键一致。
 
 ## 5. 响应式设计
 
@@ -264,14 +268,26 @@
 
 ## 7. 原型文件
 
-**高保真原型**：`prototype/prototype.html`
+`prototype/` 下 6 个 HTML 页面骨架，均为结构标记 + 语义化 id；样式与脚本按职责外置：
 
-功能：完整响应式设计、深色/浅色主题、页面切换、汉字选择交互、Toast 通知、移动端抽屉。
+| 文件 | 用途 |
+|------|------|
+| `prototype.html` | **唯一权威高保真原型**：响应式、主题/语言切换、汉字选择、Toast、移动抽屉、测验、Canvas 书写 |
+| `wireframes.html` | 线框规范、组件状态可视化（§3.5）与断点指示器 |
+| `learn.html` / `practice.html` / `progress.html` / `character-detail.html` | 分页面骨架 |
+
+- `prototype/styles/*.css`（11 个）与 `prototype/scripts/*.js`（11 个）单文件均 ≤ 200 行。
+- `prototype-fragments.js` / `wireframes-fragments.js` 承载外置静态标记片段，通过 `innerHTML` 注入占位容器，**必须最先加载**。
+- 原型 id 全量 kebab-case 语义命名；ARIA 引用、锚点与选择器零悬空；书写弹窗 `aria-labelledby` 指向 sr-only 标题 `writing-title`。
+- 原型 I18N 的 AI 生成式能力声明已下架，对齐生产真实能力（笔顺反馈 / 互动学习）；字典键 `feat.ai.*` 已改为 `feat.feedback.*`。
 
 ## 8. Token 维护规则
 
-1. **单一来源**：`globals.css` 的 `@theme` 块为语义色 token 的权威来源
-2. **深色模式**：通过 `.dark` 类覆盖 CSS 变量，不使用 Tailwind 的 `dark:` 前缀覆盖语义色
-3. **扩展色阶**：`ink`、`vermilion`、`indigo` 色阶在 `tailwind.config.ts` 中定义
-4. **禁止内联色值**：组件中不使用 `style={{ color: '#xxx' }}`，必须使用 Tailwind 类名
-5. **圆角 token**：使用 `rounded-xl`/`rounded-2xl` 等 token，禁止 `rounded-[28px]` 任意值
+1. **双重来源、职责不同**：`globals.css` 的 `@theme` 定义语义 token（`--color-*` / 字体 / 圆角）；`tailwind.config.ts` 定义 `ink` / `vermilion` / `indigo` 扩展色阶、字体族、keyframes 与阴影。二者不得互相覆盖。
+2. **深色模式**：通过 `.dark` 类覆盖 CSS 变量（`@custom-variant dark`），不用随意的色值分支替代语义色。
+3. **禁止内联色值**：组件中不使用 `style={{ color: '#xxx' }}` / `bg-[#...]`，统一取 `var(--color-*)` 或对应 Tailwind 类。
+4. **圆角与过渡**：使用 `rounded-xl` / `rounded-2xl` 等 token 与 transition token，禁止 `rounded-[28px]` 任意值、`transition-all`。
+5. **派生色**：`--color-primary-hover` / `--color-primary-border` 用 `color-mix()` 从 `--color-primary` 派生，不新增平行色值。
+6. **改动同步**：修改 token 时同批次更新本文、[04-api-reference.md](04-api-reference.md) §10、原型 CSS 变量与 [alignment-checklist.md](alignment-checklist.md) §4。
+
+完整编码约束见 [coding-standards.md](coding-standards.md) §8。

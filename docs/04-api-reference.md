@@ -1,463 +1,187 @@
 # API 参考
-============
 
-> 文档版本：v5.2.28（与项目版本同步，权威版本见 package.json）
+> 文档版本：v5.2.34（与项目版本同步，权威版本见 `package.json`）
 
-## 1. LocaleProvider 国际化上下文组件
+本文列出应用内部**公开模块与组件的真实签名**。类型与导出以源码为准；本文只做稳定契约说明，不逐字复制实现。设计 token 完整色板见 [07-design-prototype.md](07-design-prototype.md)，编码用法见 [coding-standards.md](coding-standards.md)。
 
-### 1.1 组件概述
+## 1. 组件边界总览
 
-`LocaleProvider` 是应用的核心国际化组件，提供翻译、语言切换等功能。
+| 文件 | 边界 | 主要导出 |
+|------|------|---------|
+| `src/app/layout.tsx` | Server | 默认导出根布局 |
+| `src/app/page.tsx` / `learn/page.tsx` / `practice/page.tsx` | Client | 默认导出页面组件 |
+| `src/components/locale-provider.tsx` | Client | `LocaleProvider`、`useLocale`、`useTranslation` |
+| `src/components/theme-provider.tsx` | Client | `ThemeProvider`、`useTheme` |
+| `src/components/*-toggle.tsx` | Client | `ThemeToggleClient`、`LocaleToggleClient` |
+| `src/components/state/state-views.tsx` | Client | `EmptyState`、`ErrorState`、`LoadingSpinner` |
+| `src/components/ui/*` | Client | `Button`、`Badge`、`Dialog`、`Tooltip` 等原语 |
 
-**文件路径：** [src/components/locale-provider.tsx](../src/components/locale-provider.tsx)
+## 2. LocaleProvider 与翻译 hooks
 
-### 1.2 类型定义
+**路径**：`src/components/locale-provider.tsx`
 
-```typescript
-type Locale = 
-  | 'en' 
-  | 'zh-CN' 
-  | 'zh-TW' 
-  | 'es' 
-  | 'ar' 
-  | 'fr' 
-  | 'pt-BR' 
-  | 'de' 
-  | 'ja' 
-  | 'ko' 
-  | 'ru';
-```
+Props：
 
-### 1.3 公共 API
+| Prop | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `children` | `React.ReactNode` | — | 子组件 |
+| `defaultLocale` | `Locale` | 浏览器检测值 | 初始语言 |
+| `storageKey` | `string` | `hanzi-master-locale` | 偏好存储键 |
 
-| API | 类型 | 说明 |
-|-----|------|------|
+`useLocale()` 与 `useTranslation()` 返回同一上下文对象：
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
 | `locale` | `Locale` | 当前语言 |
-| `t(key: string)` | `string` | 翻译函数，根据 key 获取翻译文本 |
-| `setLocale(locale: Locale)` | `void` | 设置当前语言 |
-| `availableLocales` | `Locale[]` | 获取所有支持的语言列表 |
-
-### 1.4 使用示例
-
-```typescript
-'use client';
-
-import { useTranslation } from '@/components/locale-provider';
-
-function MyComponent() {
-  const { t, setLocale, locale } = useTranslation();
-  
-  return (
-    <div>
-      <h1>{t('home.heroTitle')}</h1>
-      <button onClick={() => setLocale('zh-CN')}>
-        Switch to Chinese
-      </button>
-    </div>
-  );
-}
-```
-
-### 1.5 翻译对象结构
-
-```typescript
-{
-  common: {
-    home: string; learn: string; practice: string;
-    startLearning: string; exploreLibrary: string;
-    dailyPractice: string; masterCharacters: string;
-    dayStreak: string; practiceWriting: string; hearPronunciation: string;
-    strokeCount: string; strokes: string; foreverQuote: string;
-    learners: string; strokeMastery: string;
-    theme: { light: string; dark: string; system: string };
-    cancel: string; submit: string; skipToContent: string;
-    openMenu: string; closeMenu: string; navigationMenu: string;
-  },
-  home: {
-    heroTitle: string; heroSubtitle: string; heroSuffix: string; heroDescription: string;
-    aiInsightsTitle: string; aiInsightsDesc: string;
-    etymologyTitle: string; etymologyDesc: string;
-    adaptiveTitle: string; adaptiveDesc: string;
-    featuresTitle: string; featuresSubtitle: string;
-    aiBadge: string;
-    yongCharacterTitle: string; yongCharacterDesc: string; yongCharacterStrokes: string;
-  },
-  practice: {
-    center: string; subtitle: string;
-    writingTitle: string; writingDesc: string;
-    quizTitle: string; quizDesc: string;
-    progressTitle: string; progressDesc: string;
-    startNow: string; weeklyProgress: string;
-    mon: string; tue: string; wed: string; thu: string; fri: string; sat: string; sun: string;
-    today: string; pending: string;
-    charactersLearned: string; dayStreak: string; accuracy: string;
-    /* 弹窗 / 测验 / 进度等交互文案 */
-    writingDialogDesc: string; characterProgress: string; clear: string; next: string; done: string;
-    quizDialogDesc: string; quizComplete: string; correct: string; wrong: string;
-    close: string; retake: string; viewResults: string;
-    listenPronunciation: string; nextQuestion: string;
-    progressDialogDesc: string; writeOnCanvas: string; question: string;
-    learnedCharacters: string; dayStreakLabel: string; accuracyLabel: string;
-    studyCharacters: string; strokeCount: string;
-  },
-  learn: {
-    one: string; two: string; three: string; person: string; big: string; small: string;
-    mouth: string; sunDay: string; moonMonth: string; mountain: string; water: string; fire: string;
-    radical: string; structure: string; independent: string;
-    wordsTitle: string; exampleTitle: string;
-    showStrokeOrder: string; hideStrokeOrder: string;
-    words: { oneDay: string; oneItem: string; first: string; february: string; second: string; /* … */ };
-    /* … 其余汉字与例句键 */
-  },
-  footer: {
-    copyright: string;
-  },
-  meta: {
-    title: string; description: string;
-  }
-}
-```
-
-## 2. useTranslation Hook
-
-### 2.1 Hook 概述
-
-`useTranslation` 是一个自定义 hook，用于在组件中获取翻译函数。
-
-**文件路径：** [src/components/locale-provider.tsx](../src/components/locale-provider.tsx)
-
-### 2.2 返回值
-
-| 属性 | 类型 | 说明 |
-|------|------|------|
-| `t` | `(key: string) => string` | 翻译函数 |
-
-### 2.3 使用示例
-
-```typescript
-'use client';
-
-import { useTranslation } from '@/components/locale-provider';
-
-function MyComponent() {
-  const { t } = useTranslation();
-  
-  return <h1>{t('home.heroTitle')}</h1>;
-}
-```
-
-## 3. ThemeProvider 主题上下文组件
-
-### 3.1 组件概述
-
-主题上下文提供组件，管理深色/浅色/系统主题三态切换。
-
-**文件路径：** [src/components/theme-provider.tsx](../src/components/theme-provider.tsx)
-
-### 3.2 公共 API
-
-| API | 类型 | 说明 |
-|------|------|------|
-| `theme` | `'dark' \| 'light' \| 'system'` | 当前主题 |
-| `setTheme(theme)` | `void` | 设置主题 |
-
-### 3.3 使用示例
-
-```typescript
-'use client';
-
-import { useTheme } from '@/components/theme-provider';
-
-function MyComponent() {
-  const { theme, setTheme } = useTheme();
-  
-  return (
-    <div>
-      <button onClick={() => setTheme('light')}>Light</button>
-      <button onClick={() => setTheme('dark')}>Dark</button>
-      <button onClick={() => setTheme('system')}>System</button>
-    </div>
-  );
-}
-```
-
-### 3.4 持久化
-
-- **LocalStorage Key：** `hanzi-master-theme`
-- **值：** `'dark'`, `'light'`, 或 `'system'`
-
-### 3.5 主题翻译键
-
-翻译文件中需包含以下键：
-
-```typescript
-common: {
-  theme: {
-    light: '浅色' | 'Light',
-    dark: '深色' | 'Dark',
-    system: '跟随系统' | 'System'
-  }
-}
-```
-
-## 4. ThemeToggle 主题切换组件
-
-### 4.1 组件概述
-
-主题切换组件，支持深色/浅色/系统主题三态循环切换，自动持久化用户偏好。
-
-**文件路径：** [src/components/theme-toggle.tsx](../src/components/theme-toggle.tsx)
-
-### 4.2 功能特性
-
-- 三态循环切换：Light → Dark → System → Light
-- 每个状态对应不同的 SVG 图标
-- 悬停显示工具提示（使用翻译键 `common.theme.${theme}`）
-- 支持无障碍访问（ARIA label）
-- 最小触控区域 44x44px
-
-### 4.3 使用示例
-
-```typescript
-'use client';
-
-import { ThemeToggleClient } from '@/components/theme-toggle';
-
-function Header() {
-  return <ThemeToggleClient />;
-}
-```
-
-### 4.4 主题切换顺序
-
-```
-Light → Dark → System → Light
-```
-
-### 4.5 翻译键要求
-
-```typescript
-common: {
-  theme: {
-    light: '浅色' | 'Light',
-    dark: '深色' | 'Dark',
-    system: '跟随系统' | 'System'
-  }
-}
-```
-
-## 4.1 NavLink 导航链接组件
-
-### 4.1.1 组件概述
-
-导航链接组件，用于桌面端导航栏，支持活跃状态高亮和动画效果。
-
-**文件路径：** [src/components/nav-link.tsx](../src/components/nav-link.tsx)
-
-### 4.1.2 功能特性
-
-- 根据当前路由自动判断活跃状态
-- 活跃状态高亮显示（朱砂红文字 + 朱砂红下划线指示器）
-- 悬停效果和过渡动画
-- 最小触控区域 40px
-
-### 4.1.3 使用示例
-
-```typescript
-import { NavLink } from '@/components/nav-link';
-
-<NavLink href="/learn">学习</NavLink>
-```
-
-### 4.1.4 样式说明
-
-| 状态 | 样式 |
-|------|------|
-| 默认 | 灰色文字 + 透明背景 |
-| 悬停 | 朱砂红文字 + 浅色背景 |
-| 活跃 | 朱砂红文字 + 朱砂红下划线指示器 |
-
-## 4.2 MobileNav 移动端导航组件
-
-### 4.2.1 组件概述
-
-移动端抽屉导航组件，提供侧边栏导航菜单。
-
-**文件路径：** [src/components/mobile-nav.tsx](../src/components/mobile-nav.tsx)
-
-### 4.2.2 功能特性
-
-- 侧边栏抽屉式导航
-- 背景遮罩层
-- Escape 键关闭
-- 滚动锁定
-- 无障碍支持（role="dialog", aria-modal）
-- 当前路由高亮显示
-
-### 4.2.3 使用示例
-
-```typescript
-import { MobileNav } from '@/components/mobile-nav';
-
-<MobileNav isOpen={isOpen} onClose={closeNav} t={t} />
-```
-
-### 4.2.4 Props
-
-| Prop | 类型 | 说明 |
-|------|------|------|
-| `isOpen` | `boolean` | 是否展开 |
-| `onClose` | `() => void` | 关闭回调 |
-| `t` | `(key: string) => string` | 翻译函数 |
-
-## 5. LocaleToggle 语言切换组件
-
-### 5.1 组件概述
-
-语言切换组件，提供下拉菜单选择 11 种语言，支持完整的无障碍访问。
-
-**文件路径：** [src/components/locale-toggle.tsx](../src/components/locale-toggle.tsx)
-
-### 5.2 功能特性
-
-- 支持 11 种语言切换
-- 完整的 ARIA 属性支持（`role="listbox"`, `aria-expanded`, `aria-haspopup`）
-- 键盘导航支持（Escape 关闭，Arrow 键上下移动）
-- 点击外部自动关闭
-- 最大高度限制（70vh）防止溢出
-- 选中状态高亮显示
-- 最小触控区域 44x44px
-
-### 5.3 使用示例
-
-```typescript
-'use client';
-
-import { LocaleToggleClient } from '@/components/locale-toggle';
-
-function Header() {
-  return <LocaleToggleClient />;
-}
-```
-
-### 5.4 语言名称映射
-
-```typescript
-{
-  'en': 'English',
-  'zh-CN': '简体中文',
-  'zh-TW': '繁體中文',
-  'es': 'Español',
-  'ar': 'العربية',
-  'fr': 'Français',
-  'pt-BR': 'Português (BR)',
-  'de': 'Deutsch',
-  'ja': '日本語',
-  'ko': '한국어',
-  'ru': 'Русский'
-}
-```
-
-### 5.5 无障碍特性
-
-| 特性 | 实现 |
-|------|------|
-| `aria-expanded` | 展开/收起状态 |
-| `aria-haspopup` | listbox |
-| `role="listbox"` | 下拉列表容器 |
-| `role="option"` | 语言选项 |
-| `aria-selected` | 当前选中语言 |
-| 键盘导航 | Escape, Arrow Up/Down |
-
-## 6. 国际化模块
-
-### 6.1 i18n 配置
-
-**文件路径：** [src/lib/i18n/index.ts](../src/lib/i18n/index.ts)
-
-**导出内容：**
-
-| 导出项 | 类型 | 说明 |
-|--------|------|------|
-| `translations` | `Record<Locale, Translations>` | 所有语言的翻译数据 |
-| `locales` | `Locale[]` | 支持的语言列表 |
-| `Locale` | `type` | 语言类型定义 |
-| `Translations` | `type` | 翻译对象类型定义 |
-
-### 6.2 翻译文件位置
-
-翻译文件存放在 `src/lib/i18n/translations/` 目录下：
-
-| 文件 | 语言 |
-|------|------|
-| `en.ts` | 英语 |
-| `zh-CN.ts` | 简体中文 |
-| `zh-TW.ts` | 繁体中文 |
-| `es.ts` | 西班牙语 |
-| `ar.ts` | 阿拉伯语 |
-| `fr.ts` | 法语 |
-| `pt-BR.ts` | 葡萄牙语（巴西） |
-| `de.ts` | 德语 |
-| `ja.ts` | 日语 |
-| `ko.ts` | 韩语 |
-| `ru.ts` | 俄语 |
-
-## 7. 样式与主题
-
-### 7.1 字体配置
-
-**文件路径：** [src/app/globals.css](../src/app/globals.css)
-
-| 字体变量 | 字体名称 | 用途 |
-|----------|----------|------|
-| `--font-sans` | Space Grotesk | 主要界面字体（UI 文本） |
-| `--font-display` | Playfair Display | 标题与展示字体 |
-| `--font-heading` | Space Grotesk | 区块标题字体 |
-| `--font-serif` | Noto Serif SC | 汉字展示字体 |
-| `--font-mono` | JetBrains Mono | 代码 / 拼音等等宽字体 |
-
-### 7.2 hanzi-font 类
-
-用于显示汉字的专用类：
-
-```css
-.hanzi-font {
-  font-family: var(--font-serif);
-}
-```
-
-**使用示例：**
+| `t` | `(key: TranslationKey, params?: Record<string, string \| number>) => string` | 翻译 + `{{name}}` 插值 |
+| `setLocale` | `(locale: Locale) => void` | 切换语言并持久化 |
+| `availableLocales` | `Locale[]` | 11 种语言列表 |
 
 ```tsx
-<span className="text-4xl font-bold hanzi-font">永</span>
-```
+'use client';
 
-### 7.3 主题色
+import { useTranslation } from '@/components/locale-provider';
 
-```css
-:root {
-  --primary: #c53d43;        /* 朱砂红 vermilion（主色） */
-  --primary-dark: #9b2c2c;   /* 朱砂红深 */
-  --primary-foreground: #ffffff;
-  --accent: #4f46e5;         /* 靛蓝 indigo（辅助色） */
-  --font-display: 'Playfair Display', Georgia, serif;
+export function Example() {
+  const { t, locale, setLocale } = useTranslation();
+  return (
+    <button onClick={() => setLocale('zh-CN')}>
+      {t('home.heroTitle')} · {locale}
+    </button>
+  );
 }
 ```
 
-## 8. 环境变量
+`t()` 的 key 受 `TranslationKey` 点分联合类型约束；传入不存在的键会在类型检查阶段报错。插值由 `src/lib/i18n/translate.ts` 的 `interpolate` 完成，已处理原型链与占位符安全。
 
-| 变量名 | 说明 | 必填 | 示例值 |
-|--------|------|------|--------|
-| （无） | HanziMaster 无需环境变量即可运行 | 否 | — |
+## 3. ThemeProvider 与主题组件
 
-## 9. 浏览器要求
+**路径**：`src/components/theme-provider.tsx`、`src/components/theme-toggle.tsx`
 
-- 现代浏览器（Chrome、Firefox、Safari、Edge 最新版）
-- 需要启用 JavaScript
-- 需要支持 localStorage
+| 项 | 签名 / 值 |
+|----|----------|
+| `Theme` | `'dark' \| 'light' \| 'system'` |
+| `ThemeProvider` Props | `children`、`defaultTheme?: Theme`（默认 `system`）、`storageKey?: string`（默认 `hanzi-master-theme`） |
+| `useTheme()` | 返回 `{ theme: Theme; setTheme: (theme: Theme) => void }` |
+| `ThemeToggleClient` | 无 props，三态循环切换：`light → dark → system → light` |
 
-## 10. 相关文档
+主题由根节点 `.dark` 类切换（`globals.css` 内定义暗色变量），偏好经 `safeSetItem` 持久化；Tooltip 文案取 `common.theme.*`。
 
-- [项目概述](01-overview.md) - 项目基本信息和技术栈
-- [技术架构](02-architecture.md) - 系统架构设计和技术选型
-- [开发指南](03-development.md) - 开发环境配置和编码规范
+## 4. 导航与语言切换组件
+
+| 组件 | 路径 | 签名 / 说明 |
+|------|------|------------|
+| `LocaleToggleClient` | `components/locale-toggle.tsx` | 无 props；11 语言下拉，`role="listbox"`、`aria-expanded`、Escape / 方向键、点击外部关闭 |
+| `NavLink` | `components/nav-link.tsx` | `({ href, children }: NavLinkProps)`；活跃态朱砂红文字 + 下划线 |
+| `MobileNav` | `components/mobile-nav.tsx` | `({ isOpen, onClose, t }: MobileNavProps)`；`t` 类型同 §2；抽屉支持 Escape 关闭、右滑关闭（`useSwipeClose`）、滚动锁定、`aria-modal` |
+| `LayoutClient` | `components/layout-client.tsx` | 站点头尾与抽屉编排；页脚 `#footer-version` 用 `VERSION_LABEL` 插值 |
+
+`MobileNavProps.t` 是显式传入的翻译函数，类型使用 `TranslationKey`，**不是** `(key: string) => string`。
+
+## 5. 状态视图
+
+**路径**：`src/components/state/state-views.tsx`
+
+| 导出 | 用途 |
+|------|------|
+| `EmptyState` | 空数据态（标题、描述、可选操作） |
+| `ErrorState` | 错误态与重试 |
+| `LoadingSpinner` | 加载指示，接受 `className` |
+
+配合路由级 `src/app/error.tsx` / `loading.tsx` / `not-found.tsx` 使用，文案取 `common.empty*` / `common.error*` / `common.notFound*`。
+
+## 6. 基础原语与通用组件
+
+`src/components/ui/` 当前只有 4 个基础原语：`button.tsx`、`badge.tsx`、`dialog.tsx`、`tooltip.tsx`（含 `TooltipProvider`）。历史文档曾列 24 个，属过时快照，勿据此引用不存在的组件。
+
+跨页面组件：`feature-card.tsx`、`stats-card.tsx`、`toast.tsx`、`google-analytics.tsx`。业务子组件按页面归入 `components/learn/`、`components/practice/`。
+
+## 7. Hooks
+
+**路径**：`src/hooks/`
+
+| Hook | 职责 |
+|------|------|
+| `useProgress` | 读写 `hanzi-master-progress`，提供连胜、准确率、周活动与记录接口 |
+| `usePronunciation` | 浏览器语音合成发音播放 |
+| `useScrollReveal` | IntersectionObserver 滚动入场动效 |
+| `useSwipeClose` | 移动抽屉右滑关闭手势 |
+| `useHaptic` | 震动反馈（受设备能力约束） |
+
+所有 hooks 只能在 Client Component 中调用；进度相关逻辑的纯函数位于 `src/lib/progress-utils.ts`。
+
+## 8. i18n 模块 API
+
+**路径**：`src/lib/i18n/index.ts`、`src/lib/i18n/translate.ts`
+
+| 导出 | 类型 / 说明 |
+|------|------------|
+| `Locale` | `'en' \| 'zh-CN' \| 'zh-TW' \| 'es' \| 'ar' \| 'fr' \| 'pt-BR' \| 'de' \| 'ja' \| 'ko' \| 'ru'` |
+| `Translations` | `typeof en`，以 `en.ts` 为结构基准 |
+| `TranslationKey` | `Translations` 全部叶子键的点分联合类型 |
+| `translations` | `Record<Locale, Translations>` |
+| `locales` | `Locale[]`，由 `Object.keys(translations)` 生成 |
+| `getNestedValue` | `(obj: Translations, path: string) => string`，按点分路径取值 |
+| `interpolate` | 把 `{{name}}` 占位符替换为传入参数 |
+
+翻译文件：`src/lib/i18n/translations/{en,zh-CN,zh-TW,es,ar,fr,pt-BR,de,ja,ko,ru}.ts`，共 11 个。`src/lib/__tests__/i18n.test.ts` 校验其余 10 语言的叶子键与 `en` 完全一致。
+
+### 8.1 翻译键域
+
+`en.ts` 顶层共 6 个键域；**具体键以 `en.ts` 源码为准**，新增键须同步 11 个语言文件：
+
+| 键域 | 内容 | 示例 |
+|------|------|------|
+| `common` | 导航、主题、通用操作、空/错/404 状态 | `common.theme.dark`、`common.emptyTitle` |
+| `home` | 首页 Hero、特性、永字八法 | `home.heroTitle`、`home.featuresTitle` |
+| `learn` | 12 个汉字词条、例句、笔顺、测验、键盘提示 | `learn.showStrokeOrder`、`learn.kbdHint` |
+| `practice` | 三种练习模式、弹窗/测验/进度文案、星期 | `practice.writingTitle`、`practice.accuracy` |
+| `footer` | 页脚版权 | `footer.copyright` |
+| `meta` | 页面元数据 | `meta.title`、`meta.description` |
+
+`footer.copyright` 固定使用 `{{versionLabel}}` 占位符（如 `© 2026 HanziMaster 汉字大师 {{versionLabel}}. All rights reserved.`），由 `layout-client.tsx` 用 `VERSION_LABEL` 插值；**不存在 `common.appVersion` 键**，禁止把版本号写进翻译文件。
+
+> `home` 域中保留 `aiInsights*` / `etymology*` / `adaptive*` / `aiBadge` 等历史键名，首页仍有引用；它们只是文案键，不代表项目存在 AI 后端或 Gemini 依赖。
+
+## 9. 工具模块 API
+
+| 路径 | 导出 | 说明 |
+|------|------|------|
+| `src/lib/storage.ts` | `safeGetItem<T>(key, defaultValue)`、`safeSetItem<T>(key, value)` | 版本化 + schema 校验，内部统一 `window.localStorage`，异常静默降级 |
+| `src/lib/utils.ts` | `cn(...inputs: ClassValue[])` | `clsx` + `twMerge` 合并类名 |
+| `src/lib/version.ts` | `APP_VERSION`、`BUILD_ID`、`VERSION_LABEL` | 读取 `NEXT_PUBLIC_*` 注入值，缺失时回退 |
+| `src/lib/characters*.ts` | 汉字数据与类型 | 12 个基础汉字，拆分为 `characters-part1/2.ts` |
+| `src/lib/stroke-order-data.ts` | 笔顺数据 | 学习页笔顺演示 |
+| `src/lib/progress-utils.ts` | 连胜 / 准确率 / 周活动纯函数 | 由 `useProgress` 调用 |
+
+## 10. 样式与主题 token
+
+语义 token 定义在 `src/app/globals.css` 的 `@theme`，命名带 `--color-` 前缀：
+
+| Token | 值（浅色） | 用途 |
+|-------|-----------|------|
+| `--color-primary` | `#c53d43` | 朱砂红品牌主色 |
+| `--color-primary-dark` | `#9b2c2c` | 主色深阶 |
+| `--color-primary-hover` / `--color-primary-border` | `color-mix(...)` 派生 | 悬停 / 边框 |
+| `--color-accent` | `#4f46e5` | 靛蓝辅助色 |
+| `--color-background` / `--color-foreground` | `#faf9f6` / `#1a1a1a` | 页面背景 / 主文本 |
+| `--color-ring` | `#c53d43` | 焦点环 |
+| `--color-destructive` | `#ef4444` | 危险色 |
+
+字体变量：`--font-sans`（Space Grotesk）、`--font-display` / `--font-heading`（Playfair Display）、`--font-serif`（Noto Serif SC）、`--font-mono`（JetBrains Mono）。汉字用 `.hanzi-font`（`--font-serif`）。
+
+> 旧版本本文使用 `--primary` / `--accent`（无 `--color-` 前缀）并把 `--font-heading` 写成 Space Grotesk，均与 `globals.css` 不符，已纠正。扩展色阶与动画见 `tailwind.config.ts`，完整设计系统见 [07-design-prototype.md](07-design-prototype.md)。
+
+## 11. 环境变量与浏览器要求
+
+- 环境变量：**无需任何**。运行期版本由 `next.config.mjs` 注入 `NEXT_PUBLIC_APP_VERSION` / `NEXT_PUBLIC_BUILD_ID`，不需手工配置。
+- 浏览器：Chrome / Firefox / Safari / Edge 最新两个主要版本；需启用 JavaScript、`localStorage`、Canvas 与（发音功能）Web Speech API。
+- 构建期联网资源：`next/font/google`（Google Fonts）。
+
+## 12. 相关文档
+
+- [技术架构](02-architecture.md)
+- [编码规范](coding-standards.md)
+- [国际化与命名约定](coding-standards.md) §9
+- [设计系统规范](07-design-prototype.md)
+- [测试规范](06-testing.md)

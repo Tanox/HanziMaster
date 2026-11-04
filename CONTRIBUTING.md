@@ -1,97 +1,55 @@
-# 贡献指南 (Contributing)
+# 贡献指南
 
-感谢你考虑为 **HanziMaster 汉字大师** 做出贡献！本文档说明如何参与开发与提交变更。
+欢迎为 **HanziMaster 汉字大师** 做出贡献。本文是贡献流程的**入口**，规则细节以 `docs/` 下的权威文档为准。
 
-[English](CONTRIBUTING_EN.md)
+[English](CONTRIBUTING_EN.md) · [文档中心](docs/index.md)
 
 ## 行为准则
 
-请始终保持友善、尊重的交流氛围，专注于技术问题本身。
+保持友善、尊重，聚焦技术问题。社区规范见 `.github/CODE_OF_CONDUCT.md`，安全漏洞报告见 `.github/SECURITY.md`。
 
-## 开发环境搭建
+## 开发环境
 
 ```bash
-# 1. Fork 并克隆仓库
 git clone https://github.com/<your-username>/HanziMaster.git
 cd HanziMaster
-
-# 2. 安装依赖（需 Node.js >= 24.11.0，强制 pnpm）
 pnpm install
-
-# 3. 启动开发服务器
 pnpm dev
 ```
 
-> 本项目强制使用 pnpm：执行 `npm install` / `yarn` 会被 `preinstall` 钩子（`only-allow pnpm`）拦截报错。
-
-开发服务器默认运行在 `http://localhost:3000`。
+- Node.js `>= 24.11.0`、pnpm `>= 11`（锁定 `11.24.0`），项目强制 pnpm，`npm install` / `yarn` 会被 `preinstall` 钩子拦截。
+- 开发服务器默认 `http://localhost:3000`；应用无需环境变量。
+- 完整环境说明与命令表见 [docs/03-development.md](docs/03-development.md)。
 
 ## 开发工作流
 
-1. 从 `main` 分支创建功能分支：`git checkout -b feature/<简短描述>` 或 `fix/<简短描述>`。
-2. 在本地完成开发，确保通过 lint 与构建：
-   ```bash
-   pnpm lint
-   pnpm build
-   ```
-3. 提交变更（参见下方提交规范）。
-4. 推送分支并发起 Pull Request 到 `main`。
+1. 从 `develop` 创建分支：`feature/<描述>`、`fix/<描述>` 等；分支命名与例外见 [docs/git-workflow.md](docs/git-workflow.md) §1。
+2. 编码前阅读 [编码规范](docs/coding-standards.md)（命名、目录、i18n、设计 token、行数、版本同步）与 [API 参考](docs/04-api-reference.md)。
+3. 本地跑完 [质量门禁](docs/coding-standards.md) §11：类型检查、lint、单测、行数、安全审计、构建。
+4. 提交信息按 [提交规范](docs/commit-template.md) 书写，并在正文/页脚标注新版本号。
+5. 推送分支，按 [PR 模板](.github/PULL_REQUEST_TEMPLATE.md) 发起 PR，完成 [代码审查流程](docs/git-workflow.md) §5 后由审查者合并。
 
-## 提交规范
+> 本机 `pnpm exec` / `pnpm test` 若被 `ERR_PNPM_IGNORED_BUILDS` 阻断，使用 [编码规范](docs/coding-standards.md) §11 中的 Node 直跑等价命令，并在 PR 中注明。
 
-本项目采用基于 Angular 的提交规范：
+## 规则索引（不在本文重复定义）
 
-```
-<type>: <description>
+| 主题 | 权威文档 |
+|------|---------|
+| 编码风格、命名约定、目录组织、i18n、设计 token、质量门禁 | [docs/coding-standards.md](docs/coding-standards.md) |
+| 提交信息格式与 10 类 type | [docs/commit-template.md](docs/commit-template.md) |
+| 分支管理、PR、代码审查、发版 | [docs/git-workflow.md](docs/git-workflow.md) |
+| 测试组织与编写规范 | [docs/06-testing.md](docs/06-testing.md) |
+| 部署与上线检查 | [docs/05-deployment.md](docs/05-deployment.md) |
+| 术语、格式与文档版本戳 | [docs/index.md](docs/index.md) §4 / §5 |
+| 所有待办与改进任务 | [docs/tasks.md](docs/tasks.md) |
 
-[可选正文]
+## 版本管理摘要
 
-[可选页脚]
-```
-
-| 类型 | 说明 |
-|------|------|
-| `feat` | 新功能 |
-| `fix` | 缺陷修复 |
-| `docs` | 文档变更 |
-| `style` | 代码格式（不影响功能） |
-| `refactor` | 代码重构 |
-| `perf` | 性能优化 |
-| `test` | 测试变更 |
-| `build` | 构建/依赖变更 |
-| `ci` | CI/CD 变更 |
-| `chore` | 其他杂项 |
-
-要求：描述首字母小写、祈使语气、不超过 50 字符、结尾无句号。
-
-## 版本管理
-
-任何代码或文档修改都需按 [SemVer](https://semver.org/lang/zh-CN/) 升级版本号（最小为 patch）：
-
-- 修复/文档/配置 → `x.y.Z+1`
-- 新功能（向后兼容） → `x.Y+1.0`
-- 破坏性变更 → `X+1.0.0`
-
-需同步更新的位置：被改动文件的文件头 `// path vX.Y.Z` 注释、`package.json` 的 `version` 字段、以及 `CHANGELOG.md` 新增对应版本小节。
-
-## 代码规范摘要
-
-- 使用 TypeScript strict 模式，避免 `any`。
-- 客户端组件使用 `'use client'` 指令。
-- 所有用户可见文本必须通过 i18n 翻译（见 `src/lib/i18n/`）。
-- 单文件超过 200 行需按职责拆分为更小模块。
-- 遵循 Tailwind CSS 4.0 与设计系统 token，禁止硬编码颜色值。
-
-详细规范参见 [docs/03-development.md](docs/03-development.md) 与 [docs/coding-standards.md](docs/coding-standards.md)。
+任何改动（含文档）至少 bump 一次 patch；版本唯一权威源是 `package.json` 的 `version`，须同步 `metadata.json`、两份 README、`CHANGELOG.md` 与被改动文件的头注释/版本戳。完整清单见 [docs/coding-standards.md](docs/coding-standards.md) §3。
 
 ## 报告问题
 
-请在 GitHub Issues 中提交 bug 或功能建议，并尽量包含：
-
-- 复现步骤
-- 期望与实际行为
-- 浏览器/系统环境
-- 相关截图（如有）
+在 GitHub Issues 中提交 bug 或建议，请包含：复现步骤、期望与实际行为、浏览器/系统环境、相关截图（如有）。
 
 ---
 

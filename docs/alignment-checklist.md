@@ -1,393 +1,112 @@
 ﻿# 对齐检查清单
 
-本文档记录项目规范文档、原型图与代码实现的对齐情况。
+> 文档版本：v5.2.34（与项目版本同步，权威版本见 `package.json`）
+> 基线日期：2026-11-04
 
-**版本**: v5.2.29
-**检查日期**: 2026-08-26
-**权威来源**: `docs/07-design-prototype.md`（设计系统）+ `prototype/prototype.html`（唯一权威高保真原型）
+本文记录**当前**规范文档、原型与代码实现的对齐状态。它是状态报告，**不是任务清单**：所有待办只在 [tasks.md](tasks.md) 维护。历史版本本文曾包含「113 项 100% 对齐」的快照与 24 个 UI 组件的统计，与代码不符，已整体替换；历史叙述保留在 `CHANGELOG.md` 中，不回改。
 
----
+权威来源：编码/版本/门禁 → [coding-standards.md](coding-standards.md)；提交 → [commit-template.md](commit-template.md)；分支与审查 → [git-workflow.md](git-workflow.md)；设计系统 → [07-design-prototype.md](07-design-prototype.md)；高保真原型 → `prototype/prototype.html`。
 
-## 1. 页面路由对齐
+## 1. 对齐基线
 
-| 路由 | 规范文档 | 原型图 | 代码实现 | 状态 |
-|------|---------|--------|---------|------|
-| `/` | ✅ 01-overview.md | ✅ prototype.html | ✅ src/app/page.tsx | ✅ 对齐 |
-| `/learn` | ✅ 02-architecture.md | ✅ prototype.html | ✅ src/app/learn/page.tsx | ✅ 对齐 |
-| `/practice` | ✅ 02-architecture.md | ✅ prototype.html | ✅ src/app/practice/page.tsx | ✅ 对齐 |
-
-> 原型图唯一权威文件为 `prototype/prototype.html`（东方水墨·朱砂红设计语言）。旧版 `openspec/prototype.html`（Apple Blue OKLCH 风格）已于 2026-07-21 删除，因其与设计系统冲突且冗余。
-
----
-
-## 2. 组件对齐
-
-### 2.1 基础组件（shadcn/ui）
-
-所有基础组件位于 `src/components/ui/`，基于 shadcn/ui（radix-nova preset）改造为 ink/vermilion 设计语言，共 24 个：button, badge, card, input, input-group, label, select, textarea, dialog, sheet, dropdown-menu, command, tabs, accordion, avatar, separator, skeleton, slider, switch, tooltip, pagination, switch 等。
-
-| 组件 | 规范文档 | 代码实现 | 状态 |
+| 领域 | 权威文档 | 代码实现 | 状态 |
 |------|---------|---------|------|
-| Button | ✅ 07-design-prototype.md §3.1 | ✅ ui/button.tsx | ✅ 对齐 |
-| Badge | ✅ 07-design-prototype.md §3.1 | ✅ ui/badge.tsx | ✅ 对齐 |
-| Card | ✅ 07-design-prototype.md §3.1 | ✅ ui/card.tsx | ✅ 对齐 |
-| Dialog | ✅ 07-design-prototype.md §3.2 | ✅ ui/dialog.tsx | ✅ 对齐 |
-| Select / Tabs / Sheet / DropdownMenu / Accordion | ✅ 07-design-prototype.md §3.2 | ✅ ui/* | ✅ 对齐 |
+| 项目定位 / 技术栈 | `01-overview.md` | `package.json` / `src/` | 已对齐（v5.2.34 版本与依赖表） |
+| 架构分层 | `02-architecture.md` | `src/app/` + `src/components/` + `src/lib/` | 已对齐（3 页面均为 Client Component，根布局 Server） |
+| 环境与命令 | `03-development.md` | `package.json` scripts / `scripts/` | 已对齐（`format` 依赖缺失已在文档标注） |
+| 组件 API | `04-api-reference.md` | `src/components/` / `src/lib/` | 已对齐（签名按源码重写） |
+| 部署 | `05-deployment.md` | `vercel.json` / `edgeone.json` / `next.config.mjs` | 已对齐（删除不适用的 SPA 重写说明） |
+| 测试 | `06-testing.md` | `vitest.config.ts` / `vitest.setup.ts` / 9 个测试文件 | 已对齐（删除废弃的 Jest 蓝图） |
+| 编码规范 | `coding-standards.md` | `tsconfig.json` / `eslint.config.js` / `.prettierrc.json` | 已对齐（单一权威） |
+| 提交规范 | `commit-template.md` | `CONTRIBUTING*` / `.trae/rules/` / PR 模板 | 已对齐（10 类 type 与版本标注） |
+| Git 流程 | `git-workflow.md` | `.github/PULL_REQUEST_TEMPLATE.md` | 已对齐（新增分支与审查流程） |
+| 设计系统 | `07-design-prototype.md` | `globals.css @theme` / `tailwind.config.ts` | 已对齐（组件清单按真实 4 个原语修正） |
+| 任务状态 | `tasks.md` / `tasks-done.md` | — | 单一来源，不在本文重复 |
 
-### 2.2 业务组件
+## 2. 页面与组件
 
-| 组件 | 规范文档 | 代码实现 | 状态 |
-|------|---------|---------|------|
-| FeatureCard | ✅ 07-design-prototype.md §3.3 | ✅ feature-card.tsx | ✅ 对齐 |
-| StatsCard | ✅ 07-design-prototype.md §3.3 | ✅ stats-card.tsx | ✅ 对齐 |
-| EmptyState | ✅ 07-design-prototype.md §3.3 / §4.4 | ✅ empty-state.tsx（已对齐 radius token） | ✅ 对齐 |
-| Toast | ✅ 07-design-prototype.md §3.3 | ✅ toast.tsx | ✅ 对齐 |
-| NavLink | ✅ 07-design-prototype.md §3.3 | ✅ nav-link.tsx | ✅ 对齐 |
-| MobileNav | ✅ 07-design-prototype.md §3.3 | ✅ mobile-nav.tsx | ✅ 对齐 |
-| LayoutClient | ✅ 07-design-prototype.md §3.3 | ✅ layout-client.tsx | ✅ 对齐 |
-| LocaleToggle / ThemeToggle | ✅ 04-api-reference.md | ✅ locale-toggle.tsx / theme-toggle.tsx | ✅ 对齐（已修正灰色 token → ink/muted） |
+| 路由 / 分组 | 实际文件 | 备注 |
+|------------|---------|------|
+| `/` | `src/app/page.tsx` | Client |
+| `/learn` | `src/app/learn/page.tsx` | Client |
+| `/practice` | `src/app/practice/page.tsx` | Client |
+| 路由态 | `error.tsx` / `loading.tsx` / `not-found.tsx` | 配合 `state/state-views.tsx` |
+| 根布局 | `src/app/layout.tsx` | Server；字体、Metadata、Providers、GA |
+| 基础原语 | `src/components/ui/{button,badge,dialog,tooltip}.tsx` | **共 4 个**，非历史文档的 24 个 |
+| 业务组件 | `learn/` `practice/` `state/` 及跨页面组件 | `EmptyState` / `ErrorState` / `LoadingSpinner` 在 `state/state-views.tsx`，不存在 `empty-state.tsx` |
+| 语义化 id | `site-header` / `site-footer` / `main-content` / `footer-version` / `drawer-version` / `learn-quiz-dialog` / `practice-quiz-dialog` | 列表渲染无重复静态 id |
 
-### 2.3 冗余组件清理（2026-07-21）
+## 3. 国际化
 
-| 组件 | 处理 | 说明 |
+- 11 语言包：`en, zh-CN, zh-TW, es, ar, fr, pt-BR, de, ja, ko, ru`（`src/lib/i18n/translations/`）。
+- `en.ts` 顶层 6 个键域：`common` / `home` / `learn` / `practice` / `footer` / `meta`；`i18n.test.ts` 校验 11 语言叶子键一致。
+- `t()` 的 key 为 `TranslationKey` 点分联合类型；插值 `{{name}}` 由 `translate.ts` 处理。
+- `footer.copyright` 用 `{{versionLabel}}`；**不存在 `common.appVersion`**，文档与代码均无此键。
+- `home` 域的历史 `ai*` / `etymology*` / `adaptive*` 键仍被首页引用，只是文案键，不代表存在 AI 后端。
+
+## 4. 设计系统
+
+| 项 | 权威来源 | 实际值 |
+|----|---------|--------|
+| 语义 token | `src/app/globals.css` `@theme` | `--color-primary: #c53d43`、`--color-accent: #4f46e5`、`--color-ring: #c53d43` 等 |
+| 扩展色阶 / 字体 / 动画 | `tailwind.config.ts` | ink 11 阶、vermilion 9 阶、indigo 10 阶、状态色与 keyframes |
+| 字体 | `next/font/google` | Space Grotesk / Playfair Display / Noto Serif SC / JetBrains Mono |
+| 深色模式 | `ThemeProvider` → `.dark` | `@custom-variant dark (&:is(.dark *))` |
+| 组件约束 | `coding-standards.md` §8 | 禁止硬编码色值、`rounded-[Npx]`、`transition-all` |
+
+> 设计令牌是**双重来源、职责不同**，旧文档中的「单一 token 来源」表述已废弃。
+
+## 5. 配置与工具链
+
+| 配置 | 文件 | 现状 |
 |------|------|------|
-| `src/components/skeleton.tsx` | 🗑 删除 | 与 shadcn `ui/skeleton.tsx` 重复，且全项目无引用 |
-| `src/components/loading.tsx` | 🗑 删除 | 手写 Loading 旋转器（含 `#007aff`），全项目无引用，非 shadcn 原语 |
-| `src/components/empty-state.tsx` | ✅ 保留 | 文档化业务组件，已对齐 radius token（rounded-2xl） |
-
----
-
-## 3. 国际化 (i18n) 对齐
-
-### 3.1 支持语言
-
-应用支持 11 种语言：en, zh-CN, zh-TW, es, ar, fr, pt-BR, de, ja, ko, ru（翻译文件位于 `src/lib/i18n/translations/`）。高保真原型演示覆盖 en / zh-CN / ja / es 四种。
-
-| 语言代码 | 规范文档 | 翻译文件 | 状态 |
-|----------|---------|---------|------|
-| en / zh-CN / zh-TW / es / ar / fr / pt-BR / de / ja / ko / ru | ✅ 03-development.md | ✅ 各 .ts | ✅ 对齐 |
-
-### 3.2 翻译键对齐（示例）
-
-| 翻译键路径 | 规范文档 | en.ts | zh-CN.ts | 代码使用 | 状态 |
-|-----------|---------|-------|---------|---------|------|
-| common.learn / common.practice | ✅ | ✅ | ✅ | ✅ NavLink | ✅ 对齐 |
-| home.heroTitle / home.heroSubtitle | ✅ | ✅ | ✅ | ✅ HomePage | ✅ 对齐 |
-| learn.strokeCount / learn.pinyin | ✅ | ✅ | ✅ | ✅ LearnPage | ✅ 对齐 |
-| practice.strokeCount / practice.weekTitle | ✅ | ✅ | ✅ | ✅ PracticePage | ✅ 对齐 |
-
----
-
-## 4. 样式系统对齐
-
-### 4.1 字体配置（实际值）
-
-| 字体变量 | 规范文档 | globals.css | 状态 |
-|----------|---------|-------------|------|
-| --font-sans (Space Grotesk) | ✅ 07-design-prototype.md §2.2 | ✅ | ✅ 对齐 |
-| --font-display (Playfair Display) | ✅ 07-design-prototype.md §2.2 | ✅ | ✅ 对齐 |
-| --font-serif (Noto Serif SC) | ✅ 07-design-prototype.md §2.2 | ✅ | ✅ 对齐 |
-| --font-mono (JetBrains Mono) | ✅ 07-design-prototype.md §2.2 | ✅ | ✅ 对齐 |
-
-### 4.2 颜色系统（实际值 · 朱砂红 / 水墨灰）
-
-| 颜色 | 规范文档 | globals.css | tailwind.config.ts | 状态 |
-|------|---------|-------------|-------------------|------|
-| 品牌主色 primary / 朱砂红 (#c53d43) | ✅ 07-design-prototype.md §2.1 | ✅ | ✅ (vermilion-500) | ✅ 对齐 |
-| primary-dark (#9b2c2c) | ✅ 07-design-prototype.md §2.1 | ✅ | ✅ (vermilion-600) | ✅ 对齐 |
-| 背景色 (#faf9f6 / #0d0d0d) | ✅ 07-design-prototype.md §2.1 | ✅ | ✅ (ink-50 / ink-950) | ✅ 对齐 |
-| 前景色 (#1a1a1a / #f3f1eb) | ✅ 07-design-prototype.md §2.1 | ✅ | ✅ (ink-900 / ink-50) | ✅ 对齐 |
-| 辅助色 accent / 靛蓝 (#4f46e5) | ✅ 07-design-prototype.md §2.1 | ✅ | ✅ (indigo-500) | ✅ 对齐 |
-
-> ⚠️ 历史版本（v3.1.0）曾将主色记为 Apple Blue `#007aff` / `#5856d6`，与真实设计系统冲突，已于 v5.0.0 更正。
-
-### 4.3 圆角 Token 对齐
-
-| 任意值（旧） | Token（新） | 用途 |
-|------|-----------|------|
-| rounded-[12px] | rounded-md | 小卡片/按钮内元素 |
-| rounded-[16px] | rounded-lg | 卡片 |
-| rounded-[20px] | rounded-xl | 大卡片 |
-| rounded-[24px] | rounded-2xl | 弹窗/图标容器 |
-| rounded-[28px] | rounded-3xl | 展示卡片/Dialog |
-| rounded-[32px] | rounded-4xl | Hero/详情大卡片 |
-
-所有页面与组件已清除 `rounded-[Npx]` 任意值，统一使用 radius token（见 §6 修复记录）。
-
-### 4.4 动画类
-
-| 动画类 | 规范文档 | globals.css | 代码使用 | 状态 |
-|--------|---------|-------------|---------|------|
-| animate-fade-in-elegant | ✅ 07-design-prototype.md §2.6 | ✅ | ✅ HomePage / LearnPage | ✅ 对齐 |
-| animate-brush-stroke | ✅ 07-design-prototype.md §2.6 | ✅ | ✅ 汉字展示 | ✅ 对齐 |
-| animate-slide-in-right | ✅ 07-design-prototype.md §2.6 | ✅ | ✅ Toast / MobileNav | ✅ 对齐 |
-| page-transition | ✅ 07-design-prototype.md §2.6 | ✅ | ✅ Layout | ✅ 对齐 |
-| skeleton (animate-pulse) | ✅ ui/skeleton.tsx | ✅ | ✅ 加载状态 | ✅ 对齐 |
-
----
-
-## 5. 响应式设计对齐
-
-### 5.1 断点配置
-
-| 断点 | 规范文档 | 原型图 | 代码实现 | 状态 |
-|------|---------|--------|---------|------|
-| sm (640px) | ✅ 07-design-prototype.md §5.1 | ✅ | ✅ 全局使用 | ✅ 对齐 |
-| md (768px) | ✅ 07-design-prototype.md §5.1 | ✅ | ✅ 全局使用 | ✅ 对齐 |
-| lg (1024px) | ✅ 07-design-prototype.md §5.1 | ✅ | ✅ 桌面导航 (lg:flex) | ✅ 对齐 |
-
-### 5.2 响应式组件
-
-| 组件 | 规范要求 | 原型图 | 代码实现 | 状态 |
-|------|---------|--------|---------|------|
-| Header | 移动端隐藏导航 + 汉堡菜单 | ✅ | ✅ lg:flex + MobileNav | ✅ 对齐 |
-| 字符网格 | 2–6 列响应式 | ✅ | ✅ grid-cols-3 → sm:4 → lg:6 | ✅ 对齐 |
-| 练习选项 | 1–3 列响应式 | ✅ | ✅ sm:grid-cols-2 md:grid-cols-3 | ✅ 对齐 |
-| 周进度 | 7 列网格 | ✅ | ✅ grid-cols-7 | ✅ 对齐 |
-
----
-
-## 6. 代码规范修复记录（v5.0.0 重审）
-
-| 文件 | 问题 | 修复 |
-|------|------|------|
-| `src/app/page.tsx` | `rounded-[32px]` 任意值、`transition-all` | ✅ rounded-4xl + `transition-[colors,transform,opacity]` |
-| `src/app/learn/page.tsx` | 多处 `rounded-[Npx]`、`transition-all`、死控件 | ✅ radius token；`transition-[colors,transform]`；配音按钮接 `speechSynthesis`；「下一个字」按钮接 `setSelectedCharacterId`；测验输入框补 `aria-label` |
-| `src/app/practice/page.tsx` | 多处 `rounded-[Npx]`、`transition-all`、笔划数写死、Canvas 起点缺失 | ✅ radius token；`transition-[colors,transform]`；笔划数取自 `characters.ts` 真实数据；Canvas 鼠标起点 `beginPath/moveTo` |
-| `src/components/feature-card.tsx` | `rounded-[24px]`/`rounded-[20px]`、`transition-all` | ✅ rounded-2xl/rounded-xl + `transition-[colors,transform]` |
-| `src/components/stats-card.tsx` | `rounded-[20px]`/`rounded-[16px]`、`transition-all` | ✅ rounded-xl/rounded-lg + `transition-[colors,transform]` |
-| `src/components/layout-client.tsx` | `transition-all` | ✅ `transition-[colors,transform,box-shadow]` |
-| `src/components/toast.tsx` | `transition-all` | ✅ `transition-[opacity,transform]` |
-| `src/components/locale-toggle.tsx` | `hover:bg-gray-*`、`bg-[#007aff]` 蓝/灰 token | ✅ `hover:bg-muted` + 选中态 `vermilion` token |
-| `src/components/theme-toggle.tsx` | `hover:bg-gray-*`、tooltip `bg-gray-*` | ✅ `hover:bg-muted` + `bg-ink-800 dark:bg-ink-100` |
-| `src/components/empty-state.tsx` | `rounded-[24px]` | ✅ rounded-2xl |
-
-> 设计系统硬性规则（07-design-prototype.md §8）：禁止内联色值、禁止 `rounded-[Npx]` 任意值、禁止 `transition-all`；所有视觉值必须来自 globals.css / tailwind.config.ts 的 token 单一来源。
-
----
-
-## 7. 无障碍 (A11y) 对齐
-
-| 特性 | 规范文档 | 原型图 | 代码实现 | 状态 |
-|------|---------|--------|---------|------|
-| 语义化 HTML | ✅ 03-development.md | - | ✅ header/main/nav/footer；关键容器 id：`site-header`/`site-footer`/`main-content`（v5.2.9 补录） | ✅ 对齐 |
-| Skip to content | ✅ 03-development.md | - | ✅ layout.tsx / prototype | ✅ 对齐 |
-| aria-expanded / aria-selected | ✅ 07-design-prototype.md §6.2 | ✅ | ✅ LocaleToggle | ✅ 对齐 |
-| aria-label | ✅ 07-design-prototype.md §6.2 | ✅ | ✅ 所有按钮 / 测验输入框 | ✅ 对齐 |
-| 键盘导航 (Escape/Arrow) | ✅ 07-design-prototype.md §6.1 | ✅ | ✅ LocaleToggle / Dialog / Drawer | ✅ 对齐 |
-| 触控目标 44px | ✅ 07-design-prototype.md §5.2 | ✅ | ✅ minWidth/minHeight | ✅ 对齐 |
-| prefers-reduced-motion | ✅ 07-design-prototype.md §2.6.3 | ✅ | ✅ globals.css + prototype | ✅ 对齐 |
-
----
-
-## 8. 配置文件对齐
-
-| 配置文件 | 规范文档 | 存在 | 版本一致性 | 状态 |
-|----------|---------|------|-----------|------|
-| package.json | ✅ 01-overview.md | ✅ | v5.2.28 | ✅ 对齐 |
-| tsconfig.json | ✅ 03-development.md | ✅ | strict:true | ✅ 对齐 |
-| next.config.mjs | ✅ 01-overview.md | ✅ | - | ✅ 对齐 |
-| tailwind.config.ts | ✅ 03-development.md | ✅ | - | ✅ 对齐 |
-| eslint.config.js | ✅ 03-development.md | ✅ | - | ✅ 对齐 |
-| vercel.json | ✅ 05-deployment.md | ✅ | - | ✅ 对齐 |
-| components.json | ✅ 07-design-prototype.md | ✅ | shadcn radix-nova | ✅ 对齐 |
-
----
-
-## 8.1 分析接入对齐（Google Analytics）
-
-| 项目 | 说明 | 代码实现 | 状态 |
-|------|------|---------|------|
-| 衡量 ID | G-TZG68T8J31 | `metadata.json` `googleAnalyticsId` + `google-analytics.tsx` 常量 | ✅ 一致 |
-| 注入方式 | `next/script` + gtag.js | `src/components/google-analytics.tsx`（afterInteractive） | ✅ 对齐 |
-| 全局挂载 | `<head>` 渲染 | `src/app/layout.tsx` 引入 `<GoogleAnalytics />` | ✅ 对齐 |
-| 环境开关 | 仅 production 上报 | `ENABLE_ANALYTICS = process.env.NODE_ENV === 'production'`；dev/build 不发送 | ✅ 对齐 |
-| CSP 放行 | 严格策略下可加载 | `next.config.mjs` `script-src` 放行 `googletagmanager.com` / `google-analytics.com`；`connect-src` 放行 GA 域名 | ✅ 对齐 |
-
-> 注：原型图 `prototype.html` 未含 GA 脚本（原型为静态演示，不含真实上报）；分析接入属运行期增强，代码为唯一实现来源。
-
----
-
-## 8.2 测试与工具链对齐
-| 项目 | 说明 | 状态 |
-|------|------|------|
-| 单测框架 | vitest | `vitest.config.ts` + `package.json` `test`/`test:watch` 脚本，devDep `vitest@^3.2.4` | ✅ 对齐 |
-| 纯逻辑覆盖 | characters / i18n / stroke-order | `src/lib/__tests__/` 3 套测试：12 字数据完整、11 语言键一致、笔顺 path/medians 非空 | ✅ 新增 |
-| 代码风格 | Prettier | `.prettierrc.json` + `.prettierignore` + `format` 脚本（semi/singleQuote/printWidth 100/lf） | ✅ 对齐 |
-| 样式一致性 | Tailwind 渐变 | 全仓统一 `bg-linear-to-*`（v4 新语法），消除 `bg-gradient-to-*`（v3 别名）混杂 | ✅ 对齐 |
-
-> 注：组件/hook 交互层（如 useProgress、usePronunciation）依赖 React 运行时，未纳入纯 node 环境单测；补充 `@testing-library/react` 组件测试已列为 [tasks.md](tasks.md) T4。
-
----
-
-## 9. 文档链接对齐
-
-| 文档 | 内部链接检查 | 状态 |
-|------|-------------|------|
-| index.md | ✅ 所有链接正确 | ✅ 对齐 |
-| 01-overview.md | ✅ 已更新原型树引用（移除 openspec/prototype.html 冗余项） | ✅ 对齐 |
-| 02-architecture.md | ✅ 所有链接正确 | ✅ 对齐 |
-| 03-development.md | ✅ 所有链接正确 | ✅ 对齐 |
-| 04-api-reference.md | ✅ 所有链接正确 | ✅ 对齐 |
-| 05-deployment.md | ✅ 所有链接正确 | ✅ 对齐 |
-| 06-testing.md | ✅ 所有链接正确 | ✅ 对齐 |
-| 07-design-prototype.md | ✅ 设计系统权威 | ✅ 对齐 |
-| coding-standards.md | ✅ 已修复链接 | ✅ 对齐 |
-| commit-template.md | ✅ 已修复链接 | ✅ 对齐 |
-
----
-
-## 10. 原型图对齐检查
-
-### 10.1 首页原型（东方水墨·朱砂红）
-
-| 区域 | 原型图描述 | 代码实现 | 状态 |
-|------|-----------|---------|------|
-| 导航栏 | Logo + NavLink + LocaleToggle + ThemeToggle（玻璃态） | ✅ layout-client.tsx | ✅ 对齐 |
-| Hero 区域 | 超大字号 + 清晰 CTA + 永字毛笔笔触展示 | ✅ page.tsx | ✅ 对齐 |
-| 功能特性 | 3 列网格 FeatureCard | ✅ page.tsx | ✅ 对齐 |
-| 页脚 | 简洁版权与导航链接 | ✅ layout-client.tsx | ✅ 对齐 |
-
-### 10.2 学习页原型
-
-| 区域 | 原型图描述 | 代码实现 | 状态 |
-|------|-----------|---------|------|
-| 字符网格 | 12 个真实汉字卡片，选中态朱砂红 | ✅ learn/page.tsx | ✅ 对齐 |
-| 详情面板 | 大字号字符 + 词语 + 笔顺 + 测验 | ✅ learn/page.tsx | ✅ 对齐 |
-| 发音 / 下一字 | 真实语音合成 / 切换字符 | ✅ learn/page.tsx（已修复死控件） | ✅ 对齐 |
-
-### 10.3 练习页原型
-
-| 区域 | 原型图描述 | 代码实现 | 状态 |
-|------|-----------|---------|------|
-| 练习选项 | 3 个选项卡片 | ✅ practice/page.tsx | ✅ 对齐 |
-| 书写画布 | Canvas 描红 + 真实笔划数 | ✅ practice/page.tsx（已修复笔划数/起点） | ✅ 对齐 |
-| 记忆测验 | 拼音选择 | ✅ practice/page.tsx | ✅ 对齐 |
-| 周进度 | 7 天网格 + 统计卡片 | ✅ practice/page.tsx | ✅ 对齐 |
-
----
-
-## 11. 版本一致性检查
-
-| 文件类型 | 文件数 | 版本一致 | 状态 |
-|----------|-------|---------|------|
-| 页面组件 (src/app/) | 3 | 3 | ✅ 对齐 |
-| 基础组件 (src/components/ui/) | 4 | 4 | ✅ 对齐（button/badge/dialog/tooltip；其余 shadcn 组件已于 v5.2.14 清理） |
-| 业务组件 (src/components/**) | 24 | 24 | ✅ 对齐 |
-| i18n 翻译文件 | 11 | 11 | ✅ 对齐 |
-| 全局样式 (globals.css) | 1 | 1 | ✅ 对齐 |
-| 设计规范 (07-design-prototype.md) | 1 | v5.0 | ✅ 对齐 |
-| 对齐清单 (本文档) | 1 | v5.2.19 | ✅ 对齐 |
-
----
-
-## 12. 设计系统规范（权威摘要）
-
-> 完整规范见 `docs/07-design-prototype.md`。本节为对齐用速查，取代旧版「Apple 风格设计规范」。
-
-### 12.1 设计原则
-- **东方水墨美学**：水墨灰为主，朱砂红为唯一强调色，靛蓝为辅助色
-- **极简主义**：去除非必要元素，突出核心内容
-- **充足留白**：8px 网格，大量呼吸空间
-- **清晰层次**：字号与字重明确信息层级
-- **微交互**：克制的悬停/点击反馈（translate-y + 阴影 + 光环）
-
-### 12.2 色彩系统
-| 用途 | 颜色值 | 说明 |
-|------|--------|------|
-| 品牌主色 | #c53d43 | 朱砂红 vermilion，用于 CTA、强调、选中态 |
-| 品牌深 | #9b2c2c | vermilion-600 |
-| 背景（浅/深） | #faf9f6 / #0d0d0d | ink-50 / ink-950 |
-| 前景（浅/深） | #1a1a1a / #f3f1eb | ink-900 / ink-50 |
-| 辅助色 | #4f46e5 | 靛蓝 indigo |
-| 状态色 | success #34c759 / warning #f59e0b / info #3b82f6 / destructive #ef4444 | - |
-
-### 12.3 圆角规范
-| Token | 值 | 用途 |
-|------|-----|------|
-| rounded-md | 12px | 小卡片 |
-| rounded-lg | 16px | 卡片 |
-| rounded-xl | 20px | 大卡片 |
-| rounded-2xl | 24px | 弹窗/图标容器 |
-| rounded-3xl | 28px | Dialog/展示卡片 |
-| rounded-4xl | 32px | Hero/详情大卡片 |
-
----
-
-## 13. 完整文件清单
-
-### 13.1 文档文件
-| 文件 | 路径 | 最新更新 |
-|------|------|---------|
-| README | README.md | 2026-08-26 |
-| 项目索引 | docs/index.md | v5.2.29 |
-| 项目概述 | docs/01-overview.md | v5.2.28 |
-| 架构文档 | docs/02-architecture.md | v5.2.28 |
-| 开发指南 | docs/03-development.md | v5.2.28 |
-| API 参考 | docs/04-api-reference.md | v5.2.28 |
-| 部署文档 | docs/05-deployment.md | v5.2.28 |
-| 测试文档 | docs/06-testing.md | v5.2.29 |
-| 设计规范 | docs/07-design-prototype.md | v5.0（设计系统源） |
-| 编码规范 | docs/coding-standards.md | v5.2.28 |
-| 提交模板 | docs/commit-template.md | v5.2.28 |
-| **对齐清单** | docs/alignment-checklist.md | **v5.2.29** |
-| 任务清单 | docs/tasks.md | v5.2.33 |
-| 任务归档 | docs/tasks-done.md | v5.2.33 |
-
-### 13.2 原型文件
-| 文件 | 路径 | 说明 |
-|------|------|------|
-| **高保真原型（唯一权威）** | /workspace/prototype/prototype.html | 2026-07-21 东方水墨·朱砂红 v5.0，含真实汉字数据、主题/语言切换、移动抽屉、Toast、测验、Canvas 书写 |
-
----
-
-## 14. 总结
-
-### 14.1 对齐状态统计
-
-| 类别 | 检查项 | 通过 | 失败 | 通过率 |
-|------|-------|------|------|--------|
-| 页面路由 | 3 | 3 | 0 | 100% |
-| 基础组件 (shadcn/ui) | 24 | 24 | 0 | 100% |
-| 业务组件 | 11 | 11 | 0 | 100% |
-| 国际化 | 11 | 11 | 0 | 100% |
-| 样式系统 | 8 | 8 | 0 | 100% |
-| 响应式设计 | 6 | 6 | 0 | 100% |
-| 无障碍 | 7 | 7 | 0 | 100% |
-| 配置文件 | 7 | 7 | 0 | 100% |
-| 文档链接 | 10 | 10 | 0 | 100% |
-| 原型图 | 10 | 10 | 0 | 100% |
-| 分析接入 | 5 | 5 | 0 | 100% |
-| 测试与工具链 | 4 | 4 | 0 | 100% |
-| 版本一致性 | 7 | 7 | 0 | 100% |
-| **总计** | **113** | **113** | **0** | **100%** |
-
-### 14.2 结论
-
-✅ **所有规范文档、原型图与代码实现已完全对齐，东方水墨·朱砂红设计系统已全面应用**
-
-**v5.0.0 完成的工作**：
-1. 重写高保真交互原型 `prototype/prototype.html`（东方水墨·朱砂红，真实汉字数据，响应式，主题/语言切换，移动抽屉，Toast，测验，Canvas 书写，ARIA，prefers-reduced-motion）
-2. 删除冗余且冲突的旧版 `openspec/prototype.html`（Apple Blue OKLCH 风格）
-3. 修正对齐清单历史冲突：主色由 Apple Blue `#007aff` 更正为朱砂红 `#c53d43`；字体由 Inter/Noto Sans SC 更正为 Space Grotesk/Playfair Display/Noto Serif SC
-4. 代码对齐设计系统：清除全部 `rounded-[Npx]` 任意值与 `transition-all`，统一使用 radius / transition token
-5. 修正蓝/灰硬编码 token（locale-toggle、theme-toggle）→ ink/vermilion/muted
-6. 删除冗余组件 `skeleton.tsx`、`loading.tsx`（与 shadcn 原语重复且无引用）
-7. 修复功能缺陷：学习页「播放发音」接语音合成、「下一个字」接状态切换、测验输入框补 aria-label；练习页笔划数取自真实数据、Canvas 鼠标起点补 beginPath
-8. 更新 `openspec/01-overview.md` 原型树引用
-
-**v5.2.1 维护加固（本次审查）**：
-1. 删除未被引用且与原型规范偏离（米字格网格）的死代码 `hooks/use-canvas.ts`。
-2. 将 `components/practice/writing-dialog.tsx`（201 行）拆分为 `writing-canvas.tsx` 子模块，消除超 200 行文件。
-3. `writing-canvas.tsx` 改用指针事件（Pointer Events）+ `touch-none`，统一鼠标/触控/触控笔输入，避免绘制时页面滚动，继续保持原型「无网格虚线框 + 淡字符底图」。
-4. `hooks/use-progress.ts` 连胜/周活动/今日标记改用本地时区日期，修复 UTC 偏移导致的跨零点判定错误。
-5. 同步全部文件头、package.json、metadata.json、README 与 openspec 版本戳至 v5.2.1；更新 README_EN 项目结构说明。
-
-**项目质量状态**：
-- ✅ 东方水墨·朱砂红设计系统：极简主义、大字号、充足留白
-- ✅ 响应式设计：完善的移动端和桌面端适配
-- ✅ 主题系统：深色/浅色模式切换（localStorage 持久化）
-- ✅ 无障碍支持：语义化 HTML、ARIA 标签、键盘导航、焦点管理、reduced-motion
-- ✅ shadcn/ui 组件库：24 个基础原语 + 11 个业务组件，token 单一来源
-- ✅ 国际化：11 种语言完整支持
-- ✅ 交互标准：Hover/Focus/Active/Loading/Success/Error/空状态规范齐全
+| 版本注入 | `next.config.mjs` | 读 `package.json`，注入 `NEXT_PUBLIC_APP_VERSION` / `NEXT_PUBLIC_BUILD_ID` |
+| 安全响应头 | `next.config.mjs` `headers()` | CSP + 6 个安全头，作用于 `/:path*`；**无中间件** |
+| 部署 | `vercel.json` / `edgeone.json` | 静态资源缓存；EdgeOne 安装命令先装 pnpm |
+| 依赖约束 | `.npmrc` / `pnpm-workspace.yaml` | 强制 pnpm；`onlyBuiltDependencies` 与 `overrides` 在 workspace 文件 |
+| 类型 / Lint | `tsconfig.json` / `eslint.config.js` | strict；ESLint 9 flat config |
+| 格式化 | `.prettierrc.json` | 配置存在，`prettier` **未声明为依赖**，`pnpm format` 暂不可用 |
+| 测试 | `vitest.config.ts` / `vitest.setup.ts` | jsdom + globals + 内存 Storage 兜底 |
+| CI | `.github/workflows/` | **当前不存在**，门禁靠本地与 PR 检查表执行 |
+| 覆盖率 | `@vitest/coverage-v8` | **未安装**，`vitest.config.ts` 无 `coverage` 段 |
+
+## 6. 测试
+
+当前 **9 个测试文件 / 47 个用例**（以 `pnpm test` 输出为准）：5 个纯逻辑测试在 `src/lib/__tests__/`，2 个组件测试在 `src/components/**/__tests__/`，2 个 hook 测试在 `src/hooks/__tests__/`。使用 Vitest + Testing Library，不使用 Jest。详见 [06-testing.md](06-testing.md) §2。
+
+## 7. 文档体系
+
+- `docs/` 共 **16 篇**；[index.md](index.md) 的 §2 单一职责矩阵规定「一类规则只在一个文档定义」。
+- 文档版本戳格式统一为 `> 文档版本：vX.Y.Z（与项目版本同步，权威版本见 package.json）`；**只更新本次改动的文档**，未改动文档保留旧戳合法。
+- 术语、格式与 `npm` 字样豁免规则见 [index.md](index.md) §4 / §6。
+- 归档文档 `prototype/UI_UX_REVIEW.md`、`prototype/OPTIMIZATION_SUMMARY.md`、`prototype/PROJECT_STRUCTURE.md` 与 `CHANGELOG.md` 历史条目按「历史记录不篡改」保留原文，不作为当前状态依据。
+
+## 8. 原型
+
+- 6 个 HTML 骨架：`prototype.html`（唯一权威高保真原型）、`wireframes.html`、`learn.html`、`practice.html`、`progress.html`、`character-detail.html`。
+- 资源按职责拆到 `prototype/styles/*.css`（11 个）与 `prototype/scripts/*.js`（11 个），单文件均 ≤ 200 行。
+- `prototype-fragments.js` / `wireframes-fragments.js` 必须**最先加载**，否则后续脚本引用的 DOM 不存在。
+- 原型 ID 全量 kebab-case 语义命名；`aria-labelledby` 等引用零悬空。
+
+## 9. 版本一致性
+
+| 位置 | 值 / 机制 |
+|------|----------|
+| `package.json` `version` | `5.2.34`（唯一权威源） |
+| `metadata.json` | `name` 内版本与 `version` 同步 |
+| `README.md` / `README_EN.md` | 标题与页脚同步 |
+| `CHANGELOG.md` | 新增 `5.2.34` 小节 |
+| `src/lib/version.ts` / `next.config.mjs` | 不硬编码版本号，读注入值 |
+| 11 语言 `footer.copyright` | `{{versionLabel}}` 插值，无需改动 |
+| 页脚展示 | `#footer-version` 显示 `vX.Y.Z · build yyyymmddhhmm`；`#drawer-version` 显示版本号 |
+
+## 10. 已知差异（不在本文跟踪）
+
+以下为**当前实现与理想状态**的差异，进度与验收标准以 [tasks.md](tasks.md) 为准，本文不重复列任务：Prettier 依赖缺失、覆盖率工具与阈值未配置、CI workflow 未接入、`pnpm test -- --coverage` 暂不可用、部分历史文案键名仍带 `ai*` 前缀、无 URL 级 i18n 与 RTL 支持。
+
+## 11. 维护规则
+
+- 代码行为变更后，同批次更新受影响的权威文档、原型与本文对应表格。
+- 本文只写「事实与对齐状态」，不写「待办」「计划」「建议」。
+- 不得恢复历史快照中的 100% 对齐统计或虚构组件数量；需要历史数据时查 `CHANGELOG.md`。
+- 改动本文时同步版本戳与 `CHANGELOG.md`，并遵守 [coding-standards.md](coding-standards.md) §3 的版本同步清单。
