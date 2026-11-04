@@ -1,5 +1,6 @@
 import fs from 'node:fs';
-let b = fs.readFileSync('audit-raw.json');
+const file = process.argv[2] ?? 'audit-raw.json';
+let b = fs.readFileSync(file);
 let s = b[0] === 0xff && b[1] === 0xfe ? b.toString('utf16le') : b.toString('utf8');
 s = s.replace(/^\uFEFF/, '');
 const j = JSON.parse(s);
