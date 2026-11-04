@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.25",
-  "version": "5.2.25",
-  "description": "v5.2.25: 为功能组件补全语义化 id，全量对齐所有源文件头注释至 v5.2.25。",
+  "name": "HanziMaster 汉字大师 v5.2.26",
+  "version": "5.2.26",
+  "description": "v5.2.26: 修复重复/硬编码语义化 id、移除死代码 proxy.ts、拆分 globals.css、同步文档与版本。",
   "keywords": [
     "Chinese characters",
     "Hanzi",

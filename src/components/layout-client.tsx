@@ -1,4 +1,4 @@
-// src/components/layout-client.tsx v5.2.25
+// src/components/layout-client.tsx v5.2.26
 'use client';
 
 import { usePathname } from 'next/navigation';
@@ -27,7 +27,7 @@ export function LayoutClient({ children }: LayoutClientProps) {
   }, [pathname]);
 
   return (
-    <div className="min-h-screen bg-ink-50 dark:bg-ink-950 text-ink-900 dark:text-ink-50 flex flex-col">
+    <div id="app-shell" className="min-h-screen bg-ink-50 dark:bg-ink-950 text-ink-900 dark:text-ink-50 flex flex-col">
       {/* Skip to content - accessibility */}
       <a href="#main-content" className="skip-to-content">
         {t('common.skipToContent')}

@@ -1,0 +1,83 @@
+/* src/app/styles/utilities.css v5.2.26 */
+/* 自定义工具类（从 globals.css 拆分，保持单文件 ≤200 行） */
+
+@layer utilities {
+  .serif-font {
+    font-family: var(--font-serif);
+  }
+
+  .display-font {
+    font-family: var(--font-display);
+  }
+
+  .animate-brush-stroke {
+    animation: brushStroke 0.8s var(--ease-out) forwards;
+  }
+
+  .animate-ink-spread {
+    animation: inkSpread 1.2s ease-out forwards;
+  }
+
+  .animate-paper-flip {
+    animation: paperFlip 0.6s var(--ease-smooth);
+  }
+
+  .animate-fade-in-elegant {
+    animation: fadeInElegant 0.8s ease-out forwards;
+  }
+
+  .animate-float-gentle {
+    animation: floatGentle 6s ease-in-out infinite;
+  }
+
+  .animate-slide-in-right {
+    animation: slideInRight 0.3s var(--ease-out);
+  }
+
+  .page-transition {
+    animation: fadeInElegant 0.6s ease-out;
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 16px);
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+  }
+
+  .reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .stagger-children > *:nth-child(1) { transition-delay: 0ms; }
+  .stagger-children > *:nth-child(2) { transition-delay: 120ms; }
+  .stagger-children > *:nth-child(3) { transition-delay: 240ms; }
+  .stagger-children > *:nth-child(4) { transition-delay: 360ms; }
+  .stagger-children > *:nth-child(5) { transition-delay: 480ms; }
+  .stagger-children > *:nth-child(6) { transition-delay: 600ms; }
+
+  .hero-eyebrow { animation-delay: 0.15s; }
+  .hero-title { animation-delay: 0.3s; }
+  .hero-subtitle { animation-delay: 0.45s; }
+  .hero-cta { animation-delay: 0.6s; }
+  .hero-visual { animation-delay: 0.75s; }
+
+  .touch-target {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .glass {
+    background: color-mix(in srgb, var(--color-card) 85%, transparent);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+  }
+
+  .dark .glass {
+    background: color-mix(in srgb, var(--color-background) 85%, transparent);
+  }
+}

@@ -1,4 +1,4 @@
-﻿# HanziMaster 汉字大师 v5.2.25
+﻿# HanziMaster 汉字大师 v5.2.26
 
 [English](README_EN.md) | [简体中文](README.md)
 
@@ -85,7 +85,7 @@ src/
 │   └── feature-card.tsx / stats-card.tsx / toast.tsx
 ├── hooks/                # use-progress / use-pronunciation / use-scroll-reveal
 ├── lib/                  # characters / character-types / storage / utils / i18n（index + translations/）
-└── proxy.ts              # 基于 Nonce 的 Content Security Policy 中间件
+└── (CSP 由 next.config.mjs 的 securityHeaders 统一注入)
 ```
 
 ## 页面介绍
@@ -148,4 +148,4 @@ src/
 
 ## 许可证
 
-© 2026 HanziMaster 汉字大师 v5.2.25
+© 2026 HanziMaster 汉字大师 v5.2.26
