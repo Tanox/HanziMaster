@@ -235,26 +235,19 @@
 
 ### 2.4 仓库卫生
 
-#### P0-25 · 删除根目录高危脚本 deploy-fix.mjs `仓库卫生` `待办`
+#### P0-26 · 完善 scripts/ 测试运行器与产物目录 `仓库卫生` `进行中`
 
-- **现状**：`deploy-fix.mjs:2` 硬编码 `const V = '5.2.30'`（与当前 `package.json` 的 5.2.32 已不一致），`:9-11` 改写 `package.json`、`:19` 改写 README、`:21-30` 改写 CHANGELOG —— 误执行即污染版本号。
-- **目标**：删除该文件；若其逻辑仍有价值，改为 `scripts/release.mjs` 且版本号必须从 `package.json` 读取（禁止硬编码）。
-- **验收**：仓库根不再存在改写版本号的临时脚本；`scripts/` 下脚本版本号均动态读取。
-- **涉及**：`deploy-fix.mjs`（删除）、可选 `scripts/release.mjs`
+- **已完成部分**：`test-run.mjs` → `scripts/run-tests.mjs`、`line-check.mjs` → `scripts/check-line-count.mjs`（根目录临时脚本清零）。
+- **剩余项**：① `scripts/run-tests.mjs` 支持 `process.argv` 解析 `--coverage` 参数并透传给 vitest；② 测试产物改写入 `reports/`（`.gitignore` 增 `reports/`），不再落 `test-out.txt` 到仓库根；③ `scripts/check-line-count.mjs` 纳入 `pnpm` 脚本（`scripts.check:lines`）。
+- **验收**：① `node scripts/run-tests.mjs --coverage` 可产出覆盖率报告到 `reports/`；② 仓库根不再出现 `test-out.txt`；③ `pnpm scripts.check:lines` 可运行。
+- **涉及**：`scripts/run-tests.mjs`、`scripts/check-line-count.mjs`、`.gitignore`、`package.json`
 
-#### P0-26 · 迁移 test-run.mjs 至 scripts/ 并清理其余临时脚本 `仓库卫生` `待办`
+#### P0-28 · 删除空 test/ 目录 `仓库卫生` `待办`
 
-- **现状**：根目录残留 `audit-parse.mjs`、`i18n-add.mjs`、`line-check.mjs`、`sync-5231.mjs`、`test-run.mjs` 共 5 个一次性脚本；`test-run.mjs:9` 写 `test-out.txt`（被 `.gitignore` 的 `*.txt` 静默隐藏）。
-- **目标**：`test-run.mjs` 迁至 `scripts/run-tests.mjs` 并改为读取 `process.argv` 支持 `--coverage`；其余 4 个无长期价值的一律删除（`sync-5231.mjs` 的版本同步能力由 P2-9 承接）。
-- **验收**：① 仓库根仅保留 `package.json` / `next.config.mjs` 等标准配置与 `.mjs` 工具脚本；② `node scripts/run-tests.mjs` 可跑通全部测试。
-- **涉及**：`scripts/run-tests.mjs`（新增）、`audit-parse.mjs`/`i18n-add.mjs`/`line-check.mjs`/`sync-5231.mjs`/`test-run.mjs`（删除或迁移）
-
-#### P0-27 · 删除根目录审计与测试产物 JSON `仓库卫生` `待办`
-
-- **现状**：根目录残留 `audit-raw.json`（82.28 KB）、`audit-prod.json`（590 B）、`vitest-result.json`（18.3 KB）。其中 `vitest-result.json` 记录的是**失败态**（`success:false`，use-progress 4 例失败），与当前实测（9 文件 / 47 用例全通过）不一致，属过期误导产物。
-- **目标**：三个产物文件全部删除；审计与测试产物改为写入 CI artifact 或 `reports/`（已 gitignore）。
-- **验收**：仓库根无过期产物；`.gitignore` 增 `reports/`；重跑测试与审计不再在根目录落文件。
-- **涉及**：`audit-raw.json`/`audit-prod.json`/`vitest-result.json`（删除）、`.gitignore`
+- **现状**：`test/` 为 0 文件空目录（Git 不跟踪空目录，但本地残留易误导维护者）。
+- **目标**：删除 `test/` 空目录；若后续引入 E2E 则按 P1-22 改用 `e2e/` 命名。
+- **验收**：仓库根无 `test/` 空目录。
+- **涉及**：`test/`（删除）
 
 ---
 

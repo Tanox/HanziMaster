@@ -28,3 +28,12 @@
 | T3 | 安全审计与修复（`pnpm audit --prod` 零漏洞） | 部署/安全 | v5.2.31 | `next` 16.2.9 → **16.4.4**（清零 16.2/16.3 系列 5 个 critical 公告）；`shadcn` 移至 devDependencies（切断 `systeminformation` critical 到生产路径）；`pnpm-workspace.yaml` overrides 钉住 14 个传递依赖补丁版下限（sharp / undici / vite / zod / js-yaml / fast-uri 等）；dev 工具链残留 moderate/low 不进入生产产物，随升级持续消化 |
 
 > 以上为 2026-11-04 首批全部 14 项（T1–T14）的完成归档。
+
+## 归档（2026-11-04 生产就绪度审查批次）
+
+| ID | 任务 | 分类 | 完成版本 | 实现要点 |
+|----|------|------|---------|---------|
+| P0-25 | 删除根目录高危脚本 `deploy-fix.mjs` | 仓库卫生 | v5.2.32 | 该脚本硬编码 `V = '5.2.30'` 并会改写 `package.json` / `README` / `CHANGELOG`，误执行即污染版本号；已从仓库根删除。其版本同步能力由 P2-9（`scripts/sync-version.mjs`，版本号动态读取 `package.json`）承接 |
+| P0-27 | 删除根目录审计与测试产物 JSON | 仓库卫生 | v5.2.32 | 删除 `audit-raw.json`（82.28 KB）、`audit-prod.json`（590 B）、`vitest-result.json`（18.3 KB，记录的是已过期的失败态 `success:false`）；实测基线为 Vitest 9 文件 / 47 用例全通过。产物落 `reports/` 由 P0-26 承接 |
+
+> 本批次由生产就绪度审查（P0 清单）派生；P0-26（scripts/ 测试运行器完善与 `reports/` 产物目录）仍在 `tasks.md` 中处于「进行中」。

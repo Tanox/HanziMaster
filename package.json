@@ -8,11 +8,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:run": "node scripts/run-tests.mjs",
+    "check:lines": "node scripts/check-line-count.mjs",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
-    "security:audit": "npm audit --audit-level=high",
+    "security:audit": "pnpm audit --audit-level=high",
     "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
