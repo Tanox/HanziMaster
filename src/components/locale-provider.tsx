@@ -1,8 +1,9 @@
-// src/components/locale-provider.tsx v5.2.25
+// src/components/locale-provider.tsx v5.2.27
 'use client';
 
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { Locale, translations, locales, Translations, type TranslationKey } from '@/lib/i18n';
+import { Locale, translations, locales, type TranslationKey } from '@/lib/i18n';
+import { getNestedValue, interpolate } from '@/lib/i18n/translate';
 import { safeGetItem, safeSetItem } from '@/lib/storage';
 
 type LocaleProviderProps = {
@@ -20,27 +21,8 @@ type LocaleProviderState = {
 
 const STORAGE_KEY = 'hanzi-master-locale';
 
-const getNestedValue = (obj: Translations, path: string): string => {
-  const keys = path.split('.');
-  let current: unknown = obj;
-  for (const key of keys) {
-    if (current && typeof current === 'object' && key in current) {
-      current = (current as Record<string, unknown>)[key];
-    } else {
-      return path;
-    }
-  }
-  return typeof current === 'string' ? current : path;
-};
-
-const initialState: LocaleProviderState = {
-  locale: 'en',
-  t: (key: TranslationKey) => key,
-  setLocale: () => null,
-  availableLocales: locales,
-};
-
-const LocaleProviderContext = createContext<LocaleProviderState>(initialState);
+// undefined 表示「缺少 Provider」，让 useLocale 能可靠抛错而非静默降级
+const LocaleProviderContext = createContext<LocaleProviderState | undefined>(undefined);
 
 const getBrowserLocale = (): Locale => {
   if (typeof navigator === 'undefined') return 'en';
@@ -96,15 +78,9 @@ export function LocaleProvider({
     document.documentElement.lang = newLocale;
   }, [storageKey]);
 
-  // Use direct translation lookup with interpolation support
+  // 翻译查找与插值均委托给可测试的纯函数模块
   const t = useCallback((key: TranslationKey, params?: Record<string, string | number>): string => {
-    let result = translate(locale, key);
-    if (params) {
-      Object.entries(params).forEach(([k, v]) => {
-        result = result.replace(new RegExp(`{{${k}}}`, 'g'), String(v));
-      });
-    }
-    return result;
+    return interpolate(translate(locale, key), params);
   }, [locale]);
 
   const value = {
