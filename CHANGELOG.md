@@ -1,5 +1,31 @@
 ﻿# Changelog
 
+## [5.2.27] - 核心逻辑健壮性修复、原型模块化与版本单一来源
+### Fix
+- 修复连续学习天数因 `toISOString()` UTC 偏移与 DST 23/25 小时日导致的断连：改用本地日历字段与 UTC 天序号计算。
+- `use-progress` 增加 localStorage 脏数据运行时校验（去重、过滤非法日期键/NaN/错误记录），并把一次测验的多次 `setProgress` 合并为单次原子更新。
+- `locale-provider` 的 Context 改为 `undefined` 初值，缺少 Provider 时 `useLocale` 真正抛错而非静默降级。
+- 翻译查找仅访问自有属性，阻断 `__proto__` / `constructor` 原型链路径；插值改用字面量 `split/join`，避免正则元字符与 `$&/$1` 注入。
+- 修复原型书写弹窗悬空 `aria-labelledby="writeTitle"`：新增屏幕阅读器专用标题 `writing-title` 与 `.sr-only` 工具类。
+- 修复页脚与移动抽屉硬编码版本号导致的反复脱节；移除原型中失实的 AI 生成式能力声明（4 语言 I18N + 静态文案 + 组件规范示例），对齐生产真实功能。
+
+### Feat
+- 版本单一来源：`next.config.mjs` 从 `package.json` 读取版本并注入 `NEXT_PUBLIC_APP_VERSION` 与构建时 `NEXT_PUBLIC_BUILD_ID`（`yyyymmddhhmm`），`src/lib/version.ts` 统一暴露给客户端。
+- 11 语言 `footer.copyright` 改用 `{{versionLabel}}` 插值，页脚展示版本号与 build 编号（`#site-footer` / `#footer-version`），移动抽屉补 `#drawer-version`。
+
+### Refactor
+- 抽离纯函数模块 `src/lib/progress-utils.ts`、`src/lib/i18n/translate.ts`，`use-progress` / `locale-provider` 只保留编排逻辑。
+- 6 个原型 HTML 的内联 `<style>` / `<script>` 拆为 `prototype/styles/*.css` 与 `prototype/scripts/*.js`；过长静态标记抽为 `*-fragments.js` 片段模块。拆分前后 CSS/JS 逐行等价，全部源码文件 ≤200 行（最大 192 行）。
+- 原型 ID 全量规范化为 kebab-case 语义命名（`d1/f1` 等无意义 ID、`camelCase` ID 全部替换），补齐主容器/导航/弹窗/表单语义化 id，ID 唯一性与 ARIA/锚点引用零悬空。
+
+### Test
+- 新增 `progress-utils.test.ts`（本地日期、跨月/跨年/闰日、DST 连胜、脏数据、准确率、周活动）与 `translate.test.ts`（点分路径、原型链、11 语言、插值字面量安全）。
+- `tsc --noEmit` 通过；Vitest 5 个测试文件 / 31 个用例全部通过；原型 JS 逐文件 `node --check` 通过。
+
+### Docs / Chore
+- 同步全局展示位至 v5.2.27：`package.json` / `metadata.json` / `README` / `README_EN` / 原型与新增模块头注释 / openspec 版本戳。
+- `README` / `README_EN` 补充原型模块化目录与版本注入说明；`prototype/PROJECT_STRUCTURE.md` 修正已删除的 `proxy.ts`、重复目录段与过时依赖描述；更新项目记忆。
+
 ## [5.2.26] - 修复重复/硬编码语义化 id、移除死代码与样式拆分
 ### Fix
 - 修复重复语义化 `id`：列表渲染组件 `feature-card`(`#feature-card`)、`stats-card`(`#stats-card)` 在 `.map` 中被渲染多次导致非法重复 id；学习/练习两个 `quiz-dialog` 共用 `quiz-dialog` id。分别移除列表组件静态 id、将 quiz-dialog 拆为 `learn-quiz-dialog` / `practice-quiz-dialog`。

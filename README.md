@@ -1,4 +1,4 @@
-﻿# HanziMaster 汉字大师 v5.2.26
+﻿# HanziMaster 汉字大师 v5.2.27
 
 [English](README_EN.md) | [简体中文](README.md)
 
@@ -84,9 +84,18 @@ src/
 │   ├── ui/               # shadcn 风格基础组件（button、dialog、tooltip、badge）
 │   └── feature-card.tsx / stats-card.tsx / toast.tsx
 ├── hooks/                # use-progress / use-pronunciation / use-scroll-reveal
-├── lib/                  # characters / character-types / storage / utils / i18n（index + translations/）
+├── lib/                  # characters / character-types / storage / utils / version / progress-utils / i18n（index + translate + translations/）
 └── (CSP 由 next.config.mjs 的 securityHeaders 统一注入)
+
+prototype/                # 高保真原型（每个源码文件 ≤200 行）
+├── *.html                # 6 个页面骨架：结构标记与语义化 id
+├── styles/*.css          # 按职责拆出的样式模块
+└── scripts/*.js          # 按职责拆出的交互脚本与静态标记片段
 ```
+
+## 版本与构建标识
+
+版本号唯一权威源是 `package.json` 的 `version`。`next.config.mjs` 在 dev / build 时读取并注入 `NEXT_PUBLIC_APP_VERSION` 与构建时间编号 `NEXT_PUBLIC_BUILD_ID`（`yyyymmddhhmm`），由 `src/lib/version.ts` 统一暴露。页脚（`#site-footer` / `#footer-version`）与移动抽屉（`#drawer-version`）展示版本号与 build 编号；11 语言 `footer.copyright` 使用 `{{versionLabel}}` 插值，避免每次发版手工刷写翻译文件。
 
 ## 页面介绍
 
@@ -148,4 +157,4 @@ src/
 
 ## 许可证
 
-© 2026 HanziMaster 汉字大师 v5.2.26
+© 2026 HanziMaster 汉字大师 v5.2.27

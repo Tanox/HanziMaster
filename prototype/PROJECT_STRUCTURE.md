@@ -4,9 +4,12 @@
 
 ```
 HanziMaster/
-├── prototype/               # 🎨 设计原型与归档文档
-│   ├── prototype.html      # 🎯 高保真交互原型（唯一权威）
-│   ├── character-detail.html # 🀄 汉字研习卡变体原型
+├── prototype/               # 🎨 设计原型、模块化资源与归档文档
+│   ├── prototype.html      # 🎯 高保真交互原型（唯一权威，页面骨架）
+│   ├── character-detail.html / wireframes.html / learn.html / practice.html / progress.html
+│   ├── styles/*.css         # 按职责拆出的样式模块（各 ≤200 行）
+│   ├── scripts/*.js         # 交互脚本 + 静态标记片段（各 ≤200 行）
+│   ├── DESIGN_SPEC.md       # 🎯 原型交付侧设计规范
 │   ├── UI_UX_REVIEW.md     # 🎯 UI/UX 专业审查报告（归档）
 │   ├── OPTIMIZATION_SUMMARY.md # ⚡ 项目优化执行总结（归档）
 │   └── PROJECT_STRUCTURE.md # 本文件：项目目录结构说明（归档）
@@ -21,8 +24,6 @@ HanziMaster/
 │   ├── 07-design-prototype.md # 🎨 原型设计
 │   ├── coding-standards.md  # 📝 编码标准
 │   └── commit-template.md   # 📌 Git 提交模板
-├── prototype/               # 🎨 高保真 HTML 原型（唯一权威）
-│   └── prototype.html       # 东方水墨·朱砂红交互原型
 ├── src/                     # 💻 源代码目录
 │   ├── app/                # Next.js App Router
 │   │   ├── learn/          # 学习页面
@@ -44,11 +45,11 @@ HanziMaster/
 │   │   ├── i18n/           # 国际化模块（index + translations/ 11 种语言）
 │   │   ├── characters.ts / character-types.ts / characters-part1.ts / characters-part2.ts
 │   │   ├── storage.ts / utils.ts
-│   └── proxy.ts            # 基于 Nonce 的 CSP 中间件
-├── package.json            # npm 依赖配置
-├── package-lock.json       # 依赖锁定文件
+│   └── (CSP 由 next.config.mjs 的 securityHeaders 统一注入；无中间件)
+├── package.json            # pnpm 依赖配置与版本单一来源
+├── pnpm-workspace.yaml     # pnpm 构建脚本授权
 ├── tsconfig.json          # TypeScript 配置
-├── next.config.mjs        # Next.js 配置（含安全响应头）
+├── next.config.mjs        # Next.js 配置（安全响应头 + 版本/build 注入）
 ├── postcss.config.js      # PostCSS 配置
 ├── tailwind.config.ts     # Tailwind CSS 配置
 ├── vercel.json            # Vercel 部署配置
@@ -132,9 +133,9 @@ HanziMaster/
 
 | 类别 | 数量 | 说明 |
 |------|------|------|
-| 核心规范文档 | 10 | openspec/ 目录下的所有文档 |
-| 项目报告 | 3 | prototype/ 目录下的归档报告文档 |
-| 源代码文件 | 70+ | src/ 目录下的 TSX/TS 文件（含 components/ui 子模块） |
+| 核心规范文档 | 14 | openspec/ 目录下的所有文档（v5.2.27 实算） |
+| 原型文档 | 4 | prototype/ 目录下的规范与归档文档（v5.2.27 实算） |
+| 源代码文件 | 65 | src/ 目录下的 TS/TSX/CSS 文件（v5.2.27 实算） |
 | 翻译文件 | 11 | 11 种语言的翻译 |
 | 配置文件 | 10+ | 根目录下的配置文件 |
 
@@ -158,5 +159,5 @@ HanziMaster/
 
 ---
 
-**最后更新：** 2026-08-13  
+**最后更新：** 2026-11-04（v5.2.27）
 **维护者：** HanziMaster 开发团队

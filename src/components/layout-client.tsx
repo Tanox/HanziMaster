@@ -1,6 +1,7 @@
-// src/components/layout-client.tsx v5.2.26
+// src/components/layout-client.tsx v5.2.27
 'use client';
 
+import { VERSION_LABEL } from '@/lib/version';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
@@ -95,7 +96,7 @@ export function LayoutClient({ children }: LayoutClientProps) {
             <Link href="/learn" className="hover:text-vermilion-500 transition-colors">{t('common.learn')}</Link>
             <Link href="/practice" className="hover:text-vermilion-500 transition-colors">{t('common.practice')}</Link>
           </nav>
-          <p className="text-xs sm:text-sm text-ink-400 dark:text-ink-500 text-center">{t('footer.copyright')}</p>
+          <p id="footer-version" className="text-xs sm:text-sm text-ink-400 dark:text-ink-500 text-center">{t('footer.copyright', { versionLabel: VERSION_LABEL })}</p>
         </div>
       </footer>
     </div>

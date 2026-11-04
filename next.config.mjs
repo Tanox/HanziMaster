@@ -1,6 +1,16 @@
 /** @type {import('next').NextConfig} */
 
-// next.config.mjs v5.2.20
+// next.config.mjs v5.2.27
+
+import { readFileSync } from 'node:fs';
+
+// 版本号取自 package.json 单一来源；build 编号按本地构建时间生成（yyyymmddhhmm）
+const { version: appVersion } = JSON.parse(
+  readFileSync(new URL('./package.json', import.meta.url), 'utf8')
+);
+const pad = (n) => String(n).padStart(2, '0');
+const now = new Date();
+const buildId = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}${pad(now.getHours())}${pad(now.getMinutes())}`;
 
 // Security headers including Content Security Policy
 // Note: script-src 'unsafe-inline' is required for Next.js App Router compatibility
@@ -52,6 +62,11 @@ const securityHeaders = [
 
 const nextConfig = {
   reactStrictMode: true,
+  // 构建时注入，dev / build 均生效；页脚与移动抽屉从此处读取，杜绝硬编码版本脱节
+  env: {
+    NEXT_PUBLIC_APP_VERSION: appVersion,
+    NEXT_PUBLIC_BUILD_ID: buildId,
+  },
   // Apply security headers to all routes
   async headers() {
     return [

@@ -1,4 +1,4 @@
-﻿# HanziMaster 汉字大师 v5.2.26
+﻿# HanziMaster 汉字大师 v5.2.27
 
 [English](README_EN.md) | [简体中文](README.md)
 
@@ -91,9 +91,19 @@ src/
 │   ├── ui/               # shadcn-style primitives (button, dialog, tooltip, badge)
 │   └── feature-card.tsx / stats-card.tsx / toast.tsx
 ├── hooks/                # use-progress / use-pronunciation / use-scroll-reveal
-├── lib/                  # characters / character-types / storage / utils / i18n (index + translations/)
+├── lib/                  # characters / character-types / storage / utils / version / progress-utils / i18n (index + translate + translations/)
 ```
+
+prototype/                # High-fidelity prototypes (every source file ≤200 lines)
+├── *.html                # 6 page skeletons: markup + semantic ids
+├── styles/*.css          # Style modules split by responsibility
+└── scripts/*.js          # Interaction scripts + static markup fragments
+
 (CSP is injected centrally via `next.config.mjs` `securityHeaders`.)
+
+## Version & Build Identifier
+
+`package.json` `version` is the single source of truth. `next.config.mjs` injects `NEXT_PUBLIC_APP_VERSION` and a build-time `NEXT_PUBLIC_BUILD_ID` (`yyyymmddhhmm`) for both dev and build; `src/lib/version.ts` exposes them to the client. The footer (`#site-footer` / `#footer-version`) and mobile drawer (`#drawer-version`) show the version plus build id. All 11 `footer.copyright` translations use the `{{versionLabel}}` placeholder, so releases no longer require editing translation files.
 
 ## Core Pages
 
@@ -172,4 +182,4 @@ Types: `feat` | `fix` | `docs` | `style` | `refactor` | `perf` | `test` | `build
 
 ## License
 
-© 2026 HanziMaster 汉字大师 v5.2.26. All rights reserved.
+© 2026 HanziMaster 汉字大师 v5.2.27. All rights reserved.
