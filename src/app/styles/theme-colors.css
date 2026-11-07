@@ -1,0 +1,64 @@
+/* src/app/styles/theme-colors.css v5.2.43 */
+/* 色阶与阴影 Token（Tailwind v4 @theme）：
+   修复 P2-1 —— 原 tailwind.config.ts 为死配置，ink / vermilion / indigo 等
+   色阶工具类从未进入构建产物；本文件是这些 Token 的唯一来源。 */
+
+@theme {
+  /* 中性色 - 水墨灰 ink */
+  --color-ink-50: #faf9f6;
+  --color-ink-100: #f3f1eb;
+  --color-ink-200: #e5e1d8;
+  --color-ink-300: #c9c2b5;
+  --color-ink-400: #a69c89;
+  --color-ink-500: #867d6a;
+  --color-ink-600: #6b6356;
+  --color-ink-700: #564f45;
+  --color-ink-800: #48433b;
+  --color-ink-900: #1a1a1a;
+  --color-ink-950: #0d0d0d;
+
+  /* 品牌色 - 朱砂红 vermilion */
+  --color-vermilion-50: #fef2f2;
+  --color-vermilion-100: #fee2e2;
+  --color-vermilion-200: #fecaca;
+  --color-vermilion-300: #fca5a5;
+  --color-vermilion-400: #f87171;
+  --color-vermilion-500: #c53d43;
+  --color-vermilion-600: #9b2c2c;
+  --color-vermilion-700: #7f2727;
+  --color-vermilion-800: #6b2727;
+  --color-vermilion-900: #5a2525;
+
+  /* 辅助色 - 靛蓝 indigo */
+  --color-indigo: #4f46e5;
+  --color-indigo-50: #eef2ff;
+  --color-indigo-100: #e0e7ff;
+  --color-indigo-200: #c7d2fe;
+  --color-indigo-300: #a5b4fc;
+  --color-indigo-400: #818cf8;
+  --color-indigo-500: #4f46e5;
+  --color-indigo-600: #4338ca;
+  --color-indigo-700: #3730a3;
+  --color-indigo-800: #312e81;
+  --color-indigo-900: #1e1b4b;
+
+  /* 状态色阶 */
+  --color-success-50: #f0fdf4;
+  --color-success-100: #dcfce7;
+  --color-success-500: #34c759;
+  --color-success-600: #16a34a;
+  --color-warning-50: #fffbeb;
+  --color-warning-100: #fef3c7;
+  --color-warning-500: #f59e0b;
+  --color-warning-600: #d97706;
+  --color-info-50: #eff6ff;
+  --color-info-100: #dbeafe;
+  --color-info-500: #3b82f6;
+  --color-info-600: #2563eb;
+
+  /* 阴影 */
+  --shadow-ink: 0 4px 20px rgb(26 26 26 / 0.08);
+  --shadow-ink-lg: 0 8px 40px rgb(26 26 26 / 0.12);
+  --shadow-ink-xl: 0 12px 60px rgb(26 26 26 / 0.16);
+  --shadow-vermilion-glow: 0 0 30px rgb(197 61 67 / 0.2);
+}

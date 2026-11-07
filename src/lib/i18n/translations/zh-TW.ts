@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/zh-TW.ts v5.2.38
+// src/lib/i18n/translations/zh-TW.ts v5.2.42
 export const zhTW = {
   common: {
     home: '首頁',
@@ -22,6 +22,7 @@ export const zhTW = {
       system: '跟隨系統',
     },
     cancel: '取消',
+    close: '關閉',
     submit: '提交',
     skipToContent: '跳到主要內容',
     openMenu: '打開選單',

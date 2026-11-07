@@ -1,4 +1,4 @@
-// src/lib/storage.ts v5.2.31
+// src/lib/storage.ts v5.2.42
 // src/lib/storage.ts
 // Secure localStorage utilities with version control
 
@@ -41,7 +41,7 @@ export function safeSetItem<T>(key: string, value: T): void {
   if (typeof window === 'undefined') {
     return;
   }
-  
+
   try {
     const data: StorageData<T> = {
       _v: STORAGE_VERSION,
@@ -52,5 +52,21 @@ export function safeSetItem<T>(key: string, value: T): void {
     // Silently fail for quota exceeded or other storage errors
   }
 }
+
+/**
+ * Safely remove a key from localStorage
+ */
+export function safeRemoveItem(key: string): void {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  try {
+    window.localStorage.removeItem(key);
+  } catch {
+    // Silently fail for storage errors
+  }
+}
+
 
 

@@ -1,4 +1,4 @@
-// scripts/check-root-clean.mjs v5.2.39
+// scripts/check-root-clean.mjs v5.2.43
 // 根目录清洁度门禁：禁止临时脚本 / 一次性产物落盘仓库根目录。
 // 规则：根目录每个条目必须命中白名单（工具链约定文件或生成产物目录），否则判失败。
 // 用法：node scripts/check-root-clean.mjs（结果写 reports/root-clean.txt，失败退出码 1）
@@ -21,7 +21,7 @@ const ALLOWED_FILES = new Set([
   'metadata.json', 'next-env.d.ts', 'next.config.mjs', 'NOTICE', 'package.json',
   'playwright.config.ts', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', 'postcss.config.js',
   'README.md', 'README_EN.md', 'sentry.edge.config.ts', 'sentry.server.config.ts',
-  'tailwind.config.ts', 'tsconfig.json', 'tsconfig.tsbuildinfo', 'vercel.json',
+  'tsconfig.json', 'tsconfig.tsbuildinfo', 'vercel.json',
   'vitest.config.ts', 'vitest.setup.ts',
 ]);
 

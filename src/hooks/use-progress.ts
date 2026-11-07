@@ -1,4 +1,4 @@
-// src/hooks/use-progress.ts v5.2.27
+// src/hooks/use-progress.ts v5.2.42
 // Progress tracking with localStorage persistence
 
 import { useState, useEffect, useCallback } from 'react';
@@ -13,18 +13,19 @@ import {
   validateProgress,
 } from '@/lib/progress-utils';
 
-const STORAGE_KEY = 'hanzi-master-progress';
+/** 学习进度的唯一存储键；设置面板「重置学习进度」亦通过 safeRemoveItem 清除它。 */
+export const PROGRESS_STORAGE_KEY = 'hanzi-master-progress';
 
 export function useProgress() {
   const [progress, setProgress] = useState<ProgressData>(() => {
     if (typeof window === 'undefined') {
       return getDefaultProgress();
     }
-    return validateProgress(safeGetItem<ProgressData>(STORAGE_KEY, getDefaultProgress()));
+    return validateProgress(safeGetItem<ProgressData>(PROGRESS_STORAGE_KEY, getDefaultProgress()));
   });
 
   useEffect(() => {
-    safeSetItem(STORAGE_KEY, progress);
+    safeSetItem(PROGRESS_STORAGE_KEY, progress);
   }, [progress]);
 
   const markTodayActive = useCallback(() => {

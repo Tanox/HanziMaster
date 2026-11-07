@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ru.ts v5.2.38
+// src/lib/i18n/translations/ru.ts v5.2.42
 export const ru = {
   common: {
     home: 'Главная',
@@ -22,6 +22,7 @@ export const ru = {
       system: 'Системная',
     },
     cancel: 'Отмена',
+    close: 'Закрыть',
     submit: 'Отправить',
     skipToContent: 'Перейти к содержанию',
     openMenu: 'Открыть меню',

@@ -1,6 +1,6 @@
 # API 参考
 
-> 文档版本：v5.2.37（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.43（与项目版本同步，权威版本见 `package.json`）
 
 本文列出应用内部**公开模块与组件的真实签名**。类型与导出以源码为准；本文只做稳定契约说明，不逐字复制实现。设计 token 完整色板见 [07-design-prototype.md](07-design-prototype.md)，编码用法见 [coding-standards.md](coding-standards.md)。
 
@@ -142,6 +142,7 @@ export function Example() {
 | `home` | 首页 Hero、特性、永字八法 | `home.heroTitle`、`home.featuresTitle` |
 | `learn` | 12 个汉字词条、例句、笔顺、测验、键盘提示 | `learn.showStrokeOrder`、`learn.kbdHint` |
 | `practice` | 三种练习模式、弹窗/测验/进度文案、星期 | `practice.writingTitle`、`practice.accuracy` |
+| `settings` | 设置面板：标题/描述、外观（主题/语言）、反馈（震动）、动效（减少动效）、数据（重置进度及确认） | `settings.title`、`settings.reduceMotion`、`settings.resetDone` |
 | `footer` | 页脚版权 | `footer.copyright` |
 | `meta` | 页面元数据 | `meta.title`、`meta.description` |
 
@@ -187,7 +188,7 @@ export function Example() {
 
 字体变量：`--font-sans`（Space Grotesk）、`--font-display` / `--font-heading`（Playfair Display）、`--font-serif`（Noto Serif SC）、`--font-mono`（JetBrains Mono）。汉字用 `.hanzi-font`（`--font-serif`）。
 
-> 旧版本本文使用 `--primary` / `--accent`（无 `--color-` 前缀）并把 `--font-heading` 写成 Space Grotesk，均与 `globals.css` 不符，已纠正。扩展色阶与动画见 `tailwind.config.ts`，完整设计系统见 [07-design-prototype.md](07-design-prototype.md)。
+> 旧版本本文使用 `--primary` / `--accent`（无 `--color-` 前缀）并把 `--font-heading` 写成 Space Grotesk，均与 `globals.css` 不符，已纠正。扩展色阶见 `styles/theme-colors.css`，动画工具类见 `styles/utilities.css`，完整设计系统见 [07-design-prototype.md](07-design-prototype.md)。
 
 ## 12. 环境变量与浏览器要求
 

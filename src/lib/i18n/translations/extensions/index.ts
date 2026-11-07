@@ -1,20 +1,22 @@
-// src/lib/i18n/translations/extensions/index.ts v5.2.35
+// src/lib/i18n/translations/extensions/index.ts v5.2.42
 
 import { a11yByLocale } from './a11y';
 import { legalByLocale } from './legal';
 import { meaningsByLocale } from './meanings';
+import { settingsByLocale } from './settings';
 
 /** 基准语言包结构；扩展模块单独成文件，避免任一语言文件超过 200 行。 */
 type BaseTranslations = typeof import('../en').en;
 
 /**
- * 把合规、无障碍与汉字释义扩展合并进基准语言包。
+ * 把合规、无障碍、汉字释义与设置面板扩展合并进基准语言包。
  * 所有语言经过同一函数，叶子键集合天然一致，由 i18n.test.ts 校验。
  */
 export function extendTranslations(base: BaseTranslations, locale: string) {
   const a11y = a11yByLocale[locale] ?? a11yByLocale.en;
   const legal = legalByLocale[locale] ?? legalByLocale.en;
   const meanings = meaningsByLocale[locale] ?? meaningsByLocale.en;
+  const settings = settingsByLocale[locale] ?? settingsByLocale.en;
 
   return {
     ...base,
@@ -25,6 +27,7 @@ export function extendTranslations(base: BaseTranslations, locale: string) {
       canvasLabel: a11y.practice.canvasLabel,
       meanings,
     },
+    settings,
     legal,
   };
 }

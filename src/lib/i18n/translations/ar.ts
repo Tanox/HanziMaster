@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ar.ts v5.2.38
+// src/lib/i18n/translations/ar.ts v5.2.42
 export const ar = {
   common: {
     home: 'الرئيسية',
@@ -22,6 +22,7 @@ export const ar = {
       system: 'النظام',
     },
     cancel: 'إلغاء',
+    close: 'إغلاق',
     submit: 'إرسال',
     skipToContent: 'تخطَّ إلى المحتوى',
     openMenu: 'فتح القائمة',

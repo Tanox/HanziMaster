@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/zh-CN.ts v5.2.38
+// src/lib/i18n/translations/zh-CN.ts v5.2.42
 export const zhCN = {
   common: {
     home: '首页',
@@ -22,6 +22,7 @@ export const zhCN = {
       system: '跟随系统',
     },
     cancel: '取消',
+    close: '关闭',
     submit: '提交',
     skipToContent: '跳到主要内容',
     openMenu: '打开菜单',

@@ -1,7 +1,7 @@
 # 已完成任务归档 · Tasks Done
 
-> 文档版本：v5.2.40（与项目版本同步，权威版本见 `package.json`）
-> 最近归档：2026-11-07 16:10（UTC+8）
+> 文档版本：v5.2.43（与项目版本同步，权威版本见 `package.json`）
+> 最近归档：2026-11-07 17:30（UTC+8）
 
 ## 说明
 
@@ -141,3 +141,11 @@
 | P0-29 | 根目录清洁度门禁与产物目录规范 | 仓库卫生 | v5.2.40 | 新增 `scripts/check-root-clean.mjs`（白名单制门禁，结果写 `reports/root-clean.txt`）+ `package.json` `check:root`；CI `quality` job 首步执行；`.gitignore` 兜底 `*.out` / `audit-*.json` / `*-result.json`；`coding-standards.md` §4 增产物目录强制说明、§11 门禁表加行；`03-development.md` §3 与两份 README 脚本表同步。配套将「脚本产物统一落 `reports/`、一次性脚本放 `scripts/`」固化为全局用户规则（`code-quality.mdc`） |
 
 > 归档实测（2026-11-07，v5.2.40）：`check:root` → `root clean`；`version:check` → `v5.2.40 in sync`。
+
+## 归档（2026-11-07 仓库页面优化批次 · v5.2.43）
+
+| ID | 任务 | 分类 | 完成版本 | 实现要点 |
+|----|------|------|---------|---------|
+| P2-1 | 移除 Tailwind v4 死配置并迁移色阶 token | 构建/设计系统 | v5.2.43 | 死配置 `tailwind.config.ts`（v4 需 `@config` 才生效，从未引入）导致 `ink` / `vermilion` / `indigo` 色阶与 `shadow-ink*` 阴影从未进入产物 CSS——主页 hero CTA、导航 Logo 渐变、强调文字等在浅色模式白底白字不可见。修复：色阶与阴影迁入新增 `src/app/styles/theme-colors.css` 的 `@theme`；删除 `tailwind.config.ts`；`components.json` `tailwind.config` 置空；产物 CSS 实测含 `.bg-vermilion-500` / `.text-ink-900` / `.shadow-ink-lg` / `.from-vermilion-500`；10 处文档引用同步为单一来源表述 |
+
+> 归档实测（2026-11-07，v5.2.43）：`next build` 成功；页面截图核实浅色/深色模式视觉恢复设计稿效果（`docs/assets/screenshots/`）。

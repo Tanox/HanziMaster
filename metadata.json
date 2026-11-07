@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.40",
-  "version": "5.2.40",
-  "description": "v5.2.40: 根目录清洁度门禁（scripts/check-root-clean.mjs + check:root，CI 首步执行，.gitignore 兜底临时产物）；页脚版本展示规范统一——build 编号固定为 10 位 yymmddhhmm（next.config.mjs 生成逻辑调整 + version.test.ts 格式断言固化）。",
+  "name": "HanziMaster 汉字大师 v5.2.43",
+  "version": "5.2.43",
+  "description": "v5.2.43: 修复设计系统色阶失效（P2-1：删除死配置 tailwind.config.ts，色阶与阴影迁入 styles/theme-colors.css 的 @theme，浅色模式 CTA/Logo/强调色恢复）；仓库页面优化——两份 README 增徽章行与预览截图区，新增 docs/assets/screenshots/ 四张生产实拍图。",
   "keywords": [
     "Chinese characters",
     "Hanzi",

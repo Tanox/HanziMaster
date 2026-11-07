@@ -1,6 +1,6 @@
 # 项目结构说明（归档）
 
-> 文档版本：v5.2.35（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.43（与项目版本同步，权威版本见 `package.json`）
 >
 > **归档说明**：本文保留原型目录的结构说明与历史导航，属于归档层文档。**当前权威**是 [docs/index.md](../docs/index.md)（文档分层与单一职责矩阵）、[docs/01-overview.md](../docs/01-overview.md) §6（完整目录树）与 [docs/coding-standards.md](../docs/coding-standards.md) §4（目录组织规则）。三者与本文冲突时以权威文档为准。
 
@@ -58,7 +58,7 @@ HanziMaster/
 ├── sentry.server.config.ts / sentry.edge.config.ts
 ├── playwright.config.ts / vitest.config.ts / vitest.setup.ts
 ├── tsconfig.json / eslint.config.js
-├── tailwind.config.ts / postcss.config.js / components.json
+├── postcss.config.js / components.json
 ├── vercel.json / edgeone.json
 ├── .prettierrc.json / .prettierignore / .env.example / .gitignore
 ├── README.md / README_EN.md / CONTRIBUTING.md / CONTRIBUTING_EN.md

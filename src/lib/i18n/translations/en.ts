@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/en.ts v5.2.38
+// src/lib/i18n/translations/en.ts v5.2.42
 export const en = {
   common: {
     home: 'Home',
@@ -22,6 +22,7 @@ export const en = {
       system: 'System',
     },
     cancel: 'Cancel',
+    close: 'Close',
     submit: 'Submit',
     skipToContent: 'Skip to content',
     openMenu: 'Open menu',

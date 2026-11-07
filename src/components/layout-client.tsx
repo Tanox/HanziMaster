@@ -1,4 +1,4 @@
-// src/components/layout-client.tsx v5.2.35
+// src/components/layout-client.tsx v5.2.42
 'use client';
 
 import { VERSION_LABEL } from '@/lib/version';
@@ -10,6 +10,7 @@ import { ThemeToggleClient } from '@/components/theme-toggle';
 import { LocaleToggleClient } from '@/components/locale-toggle';
 import { MobileNav } from '@/components/mobile-nav';
 import { NavLink } from '@/components/nav-link';
+import { SettingsButton } from '@/components/settings-dialog';
 import { ToastContainer } from '@/components/toast';
 
 interface LayoutClientProps {
@@ -34,41 +35,45 @@ export function LayoutClient({ children }: LayoutClientProps) {
         {t('common.skipToContent')}
       </a>
 
-      {/* Header - Oriental Ink Style with Glassmorphism */}
-      <header id="site-header" className="bg-card/70 dark:bg-ink-900/70 backdrop-blur-xl border-b border-ink-200/50 dark:border-ink-800/50 py-4 px-6 flex justify-between items-center sticky top-0 z-50">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 group shrink-0">
-          <div className="w-10 h-10 bg-linear-to-br from-vermilion-500 to-vermilion-600 rounded-xl flex items-center justify-center shadow-sm group-hover:scale-105 group-hover:shadow-md transition-[colors,transform,box-shadow] duration-300">
-            <span className="text-primary-foreground text-lg font-bold serif-font">汉</span>
+      {/* Header - Oriental Ink Style with Glassmorphism（背景全宽，内容与内容区 max-w-6xl 对齐） */}
+      <header id="site-header" className="bg-card/70 dark:bg-ink-900/70 backdrop-blur-xl border-b border-ink-200/50 dark:border-ink-800/50 py-4 sticky top-0 z-50">
+        <div className="container-page flex justify-between items-center">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-3 group shrink-0">
+            <div className="w-10 h-10 bg-linear-to-br from-vermilion-500 to-vermilion-600 rounded-xl flex items-center justify-center shadow-sm group-hover:scale-105 group-hover:shadow-md transition-[colors,transform,box-shadow] duration-300">
+              <span className="text-primary-foreground text-lg font-bold serif-font">汉</span>
+            </div>
+            <span className="text-xl font-semibold tracking-tight hidden sm:block display-font">
+              HanziMaster
+            </span>
+          </Link>
+
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-8">
+            <NavLink href="/learn">{t('common.learn')}</NavLink>
+            <NavLink href="/practice">{t('common.practice')}</NavLink>
+            <div className="w-px h-6 bg-ink-200 dark:bg-ink-700"></div>
+            <LocaleToggleClient />
+            <ThemeToggleClient />
+            <SettingsButton />
+          </nav>
+
+          {/* Mobile Controls */}
+          <div className="flex items-center gap-2 lg:hidden">
+            <ThemeToggleClient />
+            <LocaleToggleClient />
+            <SettingsButton />
+            <button
+              onClick={() => setMobileNavOpen(true)}
+              className="p-2 rounded-xl hover:bg-ink-100 dark:hover:bg-ink-800 transition-colors duration-200 touch-target"
+              aria-label={t('common.openMenu')}
+              aria-expanded={mobileNavOpen}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16"/>
+              </svg>
+            </button>
           </div>
-          <span className="text-xl font-semibold tracking-tight hidden sm:block display-font">
-            HanziMaster
-          </span>
-        </Link>
-
-        {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-8">
-          <NavLink href="/learn">{t('common.learn')}</NavLink>
-          <NavLink href="/practice">{t('common.practice')}</NavLink>
-          <div className="w-px h-6 bg-ink-200 dark:bg-ink-700"></div>
-          <LocaleToggleClient />
-          <ThemeToggleClient />
-        </nav>
-
-        {/* Mobile Controls */}
-        <div className="flex items-center gap-2 lg:hidden">
-          <ThemeToggleClient />
-          <LocaleToggleClient />
-          <button
-            onClick={() => setMobileNavOpen(true)}
-            className="p-2 rounded-xl hover:bg-ink-100 dark:hover:bg-ink-800 transition-colors duration-200 touch-target"
-            aria-label={t('common.openMenu')}
-            aria-expanded={mobileNavOpen}
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16"/>
-            </svg>
-          </button>
         </div>
       </header>
 

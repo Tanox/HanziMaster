@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/pt-BR.ts v5.2.38
+// src/lib/i18n/translations/pt-BR.ts v5.2.42
 export const ptBR = {
   common: {
     home: 'Início',
@@ -22,6 +22,7 @@ export const ptBR = {
       system: 'Sistema',
     },
     cancel: 'Cancelar',
+    close: 'Fechar',
     submit: 'Enviar',
     skipToContent: 'Pular para o conteúdo',
     openMenu: 'Abrir menu',

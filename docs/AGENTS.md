@@ -1,7 +1,7 @@
 <!-- OPENSPEC:START -->
 # OpenSpec Instructions
 
-> 文档版本：v5.2.35（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.43（与项目版本同步，权威版本见 `package.json`）
 
 Instructions for AI coding assistants working in this project.
 
@@ -27,7 +27,7 @@ Instructions for AI coding assistants working in this project.
 2. **源文件 ≤ 200 行**：超限按职责拆分（组件 / hooks / utils / types / constants 分别成文件）。**文档 `.md` 不拆分**，即使超长也保持单文件完整。
 3. **语义化 id**：主要容器、区块、关键 DOM 用 kebab-case 唯一 id；列表渲染禁用静态 id。
 4. **版本号规则**：任意修改 bump 最小版本（patch ≥ +1）。同步 `package.json` version、`metadata.json` name/version、`README` / `README_EN` 标题与页脚、`CHANGELOG.md` 新小节、本次改动源码的头注释与文档版本戳。未改动文件不批量刷写；11 语言 `footer.copyright` 用 `{{versionLabel}}` 插值，无需改动；不存在 `common.appVersion`。
-5. **设计令牌双重来源**：`globals.css @theme`（语义 token）+ `tailwind.config.ts`（扩展色阶/字体/动画）。禁止内联色值、`rounded-[Npx]` 任意值、`transition-all`。
+5. **设计令牌单一来源**：`globals.css @theme`（语义 token）+ `styles/theme-colors.css`（扩展色阶/阴影）+ `styles/utilities.css`（动画工具类）；`tailwind.config.ts` 已删除。禁止内联色值、`rounded-[Npx]` 任意值、`transition-all`。
 6. **i18n 类型安全**：`t()` 键受 `TranslationKey` 约束，新增键同步 11 语言包，`i18n.test.ts` 校验叶子键一致。
 7. **质量门禁**：类型检查 / lint / 单测 / 行数 / 安全审计 / 构建全绿。本机用 `node node_modules/typescript/bin/tsc --noEmit`、`node node_modules/vitest/vitest.mjs run`、`node scripts/run-tests.mjs` 等 Node 直跑命令绕过 pnpm deps 状态检查，详见 `coding-standards.md` §11。
 8. **任务来源**：新增/跟踪任务只写 `tasks.md`，完成后移入 `tasks-done.md`；不得在规范文档、代码注释或对齐清单中维护待办。

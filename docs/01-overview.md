@@ -1,6 +1,6 @@
 ﻿# 项目概述
 
-> 文档版本：v5.2.37（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.43（与项目版本同步，权威版本见 `package.json`）
 
 ## 1. 基本信息
 
@@ -52,7 +52,7 @@ HanziMaster 汉字大师通过引导式练习、笔顺展示与结构提示帮�
 | 语言 | TypeScript | `^5.7.3` | 类型系统（strict） |
 | 样式 | Tailwind CSS | `^4.0.12` | 原子化样式 |
 | 样式编译 | `@tailwindcss/postcss` / PostCSS | `^4.2.11` / `8.5.15` | 构建链 |
-| 设计令牌 | `globals.css @theme` + `tailwind.config.ts` | — | 语义 token 与扩展色阶（双重来源，职责不同） |
+| 设计令牌 | `globals.css @theme` + `styles/theme-colors.css` | — | 语义 token 与扩展色阶（单一来源，分层组织） |
 | 组件原语 | `@radix-ui/react-dialog ^1.3.1` / `react-slot ^1.5.0` / `react-tooltip ^1.4.1`；`shadcn ^4.11.0`（dev）；`lucide-react ^0.544.0` | — | 按需子包（无聚合包）、基础组件、图标 |
 | 样式工具 | `clsx` / `tailwind-merge` / `class-variance-authority` / `tw-animate-css` | — | 类名合并与变体 |
 | 错误监控 | `@sentry/nextjs ^11.10.0` | — | 未配置 DSN 时零开销（见 §7） |
@@ -99,7 +99,7 @@ HanziMaster/
 ├── metadata.json                   # 项目展示元数据（版本需同步）
 ├── next.config.mjs                 # CSP 与安全响应头、版本/build 注入、Sentry 包装、体积分析
 ├── tsconfig.json / eslint.config.js / vitest.config.ts / vitest.setup.ts
-├── playwright.config.ts / tailwind.config.ts / postcss.config.js / components.json
+├── playwright.config.ts / postcss.config.js / components.json
 ├── vercel.json / edgeone.json      # 部署平台配置
 ├── .env.example / .npmrc / .nvmrc / .prettierrc.json / .prettierignore
 ├── LICENSE / NOTICE                # MIT 许可与第三方声明

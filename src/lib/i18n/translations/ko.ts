@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ko.ts v5.2.38
+// src/lib/i18n/translations/ko.ts v5.2.42
 export const ko = {
   common: {
     home: '홈',
@@ -22,6 +22,7 @@ export const ko = {
       system: '시스템',
     },
     cancel: '취소',
+    close: '닫기',
     submit: '제출',
     skipToContent: '콘텐츠로 건너뛰기',
     openMenu: '메뉴 열기',

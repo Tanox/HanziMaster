@@ -11,7 +11,7 @@ HanziMaster (汉字大师) is a local-first Chinese character learning web app: 
 ## Tech Stack
 
 - **Framework**: Next.js `16.4.4` (App Router) + React `^19.1.0` + TypeScript `^5.7.3` (strict, `noEmit`).
-- **Styling**: Tailwind CSS `^4.0.12` + `@tailwindcss/postcss ^4.2.11`; design tokens have **two sources with distinct roles**: `src/app/globals.css` `@theme` (semantic `--color-*` tokens) and `tailwind.config.ts` (ink/vermilion/indigo scales, fonts, keyframes, shadows).
+- **Styling**: Tailwind CSS `^4.0.12` + `@tailwindcss/postcss ^4.2.11`; design tokens have a **single source**: `src/app/globals.css` `@theme` (semantic `--color-*` tokens) + `src/app/styles/theme-colors.css` `@theme` (ink/vermilion/indigo scales, status scales, shadows).
 - **Fonts**: `next/font/google` — Space Grotesk (`--font-sans`), Playfair Display (`--font-display` / `--font-heading`), Noto Serif SC (`--font-serif`), JetBrains Mono (`--font-mono`).
 - **Primitives**: shadcn/ui `radix-nova` preset (`components.json`); `src/components/ui/` currently contains only `button`, `badge`, `dialog`, `tooltip`.
 - **i18n**: custom `LocaleProvider` context, 11 language packs in `src/lib/i18n/translations/`, `t()` constrained by the `TranslationKey` dotted union, `{{name}}` interpolation via `src/lib/i18n/translate.ts`.

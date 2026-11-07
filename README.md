@@ -1,8 +1,23 @@
-﻿# HanziMaster 汉字大师 v5.2.40
+﻿# HanziMaster 汉字大师 v5.2.43
 
 [English](README_EN.md) | [简体中文](README.md)
 
+[![CI](https://github.com/Tanox/HanziMaster/actions/workflows/ci.yml/badge.svg)](https://github.com/Tanox/HanziMaster/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+![Node](https://img.shields.io/badge/node-%E2%89%A524.11.0-339933)
+![pnpm](https://img.shields.io/badge/pnpm-%E2%89%A511-F9AD00)
+![Next.js](https://img.shields.io/badge/Next.js-16.4.4-black)
+![React](https://img.shields.io/badge/React-19-61DAFB)
+![i18n](https://img.shields.io/badge/i18n-11%20%E8%AF%AD%E8%A8%80-8A2BE2)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
 一款汉字学习应用，通过引导式练习、笔顺展示与沉浸式复习帮助你掌握汉字书写。纯前端、本地优先：进度保存在浏览器 localStorage，无账户、无后端 API。
+
+## 预览
+
+| 首页（浅色 / 深色） | 学习 · 练习 |
+| --- | --- |
+| ![首页浅色](docs/assets/screenshots/home-light.png) ![首页深色](docs/assets/screenshots/home-dark.png) | ![学习页](docs/assets/screenshots/learn.png) ![练习页](docs/assets/screenshots/practice.png) |
 
 ## 主要功能
 
@@ -163,4 +178,4 @@ CSP 与安全响应头由 `next.config.mjs` 的 `headers()` 统一注入；项�
 
 本项目按 [MIT 许可证](LICENSE) 发布；第三方依赖许可见 [NOTICE](NOTICE)。贡献与安全报告流程见 [CONTRIBUTING.md](CONTRIBUTING.md)、[CODE_OF_CONDUCT.md](.github/CODE_OF_CONDUCT.md)、[SECURITY.md](.github/SECURITY.md)、[SUPPORT.md](.github/SUPPORT.md) 与 [PR 模板](.github/PULL_REQUEST_TEMPLATE.md)。
 
-© 2026 HanziMaster 汉字大师 v5.2.40
+© 2026 HanziMaster 汉字大师 v5.2.43

@@ -1,6 +1,6 @@
 # 技术架构
 
-> 文档版本：v5.2.40（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.43（与项目版本同步，权威版本见 `package.json`）
 
 本文描述**当前代码的实际架构**。组件 API 见 [04-api-reference.md](04-api-reference.md)，设计系统见 [07-design-prototype.md](07-design-prototype.md)，编码约束见 [coding-standards.md](coding-standards.md)。
 
@@ -56,6 +56,7 @@
 | 模块 | 路径 | 职责 |
 |------|------|------|
 | 布局与导航 | `layout-client.tsx` / `nav-link.tsx` / `mobile-nav.tsx` | 站点头尾、桌面导航、移动抽屉、版本展示 |
+| 设置 | `settings-dialog.tsx`、`lib/settings.ts` | 头部齿轮按钮 + 全局设置弹窗（主题/语言/震动/减少动效/重置进度），偏好版本化持久化于 `hanzi-master-settings` |
 | 主题 | `theme-provider.tsx` / `theme-toggle.tsx` | dark / light / system 三态，`.dark` 类切换与持久化 |
 | 国际化 | `components/locale-provider.tsx`、`lib/i18n/` | 语言状态、`t()` 插值、`TranslationKey` 类型、11 语言包 |
 | 学习 | `components/learn/` | 字符网格/详情、笔顺演示、测验弹窗 |
@@ -92,7 +93,7 @@
 - **无中间件**：不存在 `middleware.ts` / `proxy.ts`；历史上曾存在名为 `proxy.ts` 的文件，因文件名不生效且与 CSP 重复已删除。不要在文档或代码中恢复该引用。
 - `next/font/google` 是唯一联网构建依赖；离线构建失败属环境限制。
 - `components.json` 记录 shadcn 配置（style `radix-nova`、`rsc: true`、别名 `@/components` 等）。
-- 设计令牌双重来源：`globals.css @theme`（语义 token）+ `tailwind.config.ts`（扩展色阶/字体/动画），见 [coding-standards.md](coding-standards.md) §8。
+- 设计令牌单一来源：`globals.css @theme`（语义 token）+ `styles/theme-colors.css`（扩展色阶/阴影）+ `styles/utilities.css`（动画工具类），见 [coding-standards.md](coding-standards.md) §8。
 
 ## 7. 测试与质量
 

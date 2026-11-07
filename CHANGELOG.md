@@ -1,5 +1,30 @@
 ﻿# Changelog
 
+## [5.2.43] - 修复设计系统色阶失效并优化仓库页面
+### Fixed
+- **P2-1 落地**：死配置 `tailwind.config.ts`（v4 需 `@config` 才生效，从未引入）删除；`ink` / `vermilion` / `indigo` 色阶、状态色阶与 `shadow-ink*` 阴影迁入新增 `src/app/styles/theme-colors.css` 的 `@theme`。此前产物 CSS 缺失这批工具类，主页 hero CTA（`bg-vermilion-500`）、导航 Logo 渐变、强调文字等在浅色模式白底白字不可见、卡片阴影全部失效；实测修复后产物 CSS 含 `.bg-vermilion-500` / `.text-ink-900` / `.shadow-ink-lg` / `.from-vermilion-500`，浅色/深色模式视觉恢复设计稿效果。
+- `components.json` 的 `tailwind.config` 置空；10 处文档的「双重 token 来源」表述同步为单一来源（`globals.css @theme` + `theme-colors.css` + `utilities.css`）。
+### Added
+- 仓库页面优化：两份 README 增加徽章行（CI / License / Node / pnpm / Next.js / React / i18n / PRs）与「预览」截图区；新增 `docs/assets/screenshots/`（首页浅色/深色、学习页、练习页，生产构建实拍）。
+### Changed
+- `docs/tasks.md` 清单 23 → 22 项（P2-1 完成归档）；P2-18 现状刷新。
+
+## [5.2.42] - 新增设置按钮与全局设置面板
+### Added
+- `settings-dialog.tsx`（新）：头部齿轮按钮（桌面导航与移动端控件区）打开全局设置弹窗，四个分区——**外观**（明暗/系统主题三选 + 11 语言下拉，头部快捷按钮保留）、**反馈**（震动反馈开关）、**动效**（减少动效开关）、**数据**（重置学习进度，危险区二次确认 + 成功 toast）。
+- `lib/settings.ts`（新）：偏好设置版本化持久化（`hanzi-master-settings`，逐字段校验抵御损坏数据）；`lib/storage.ts` 补 `safeRemoveItem`。
+- `use-haptic.ts` 触发时读取「震动反馈」开关（默认开）；`use-scroll-reveal.ts` 在「减少动效」开启时跳过观察、所有 `.reveal` 立即显示；`globals.css` 新增 `html.reduce-motion` 动画抑制规则（优先级独立于系统 `prefers-reduced-motion`）。
+- `use-progress.ts` 导出 `PROGRESS_STORAGE_KEY`；`locale-toggle.tsx` 导出 `localeNames` 供面板复用。
+- i18n：新增 `settings` 扩展模块（15 键 × 11 语言，遵循「扩展模块单独成文件避免语言基准包超 200 行」既有机制）与基准包 `common.close`，`TranslationKey` 类型自动扩展。
+
+### Test
+- 新增 `settings.test.ts`（默认值/往返/损坏数据归一化/版本不匹配忽略）与 `settings-dialog.test.tsx`（开关持久化、减少动效类即时生效与挂载恢复、重置进度二次确认）；`use-haptic.test.ts` 补「开关关闭时不震动」用例。
+
+## [5.2.41] - 顶部栏内容宽度与内容区对齐
+### Fix
+- `layout-client.tsx`：`#site-header` 玻璃背景与底边框保持全宽，内部 Logo / 导航 / 语言与主题切换 / 移动端菜单按钮改由 `container-page`（`max-w-6xl mx-auto px-6`）容器包裹，与 learn / practice / 首页等内容区的 `max-w-6xl mx-auto px-6` 完全对齐，宽屏下头部元素不再向视口两侧拉伸。
+- `globals.css` 原有但未被引用的 `container-page` 工具类自此生效，作为内容区容器的唯一实现。
+
 ## [5.2.40] - 根目录清洁度门禁；页脚 build 编号统一为 10 位 yymmddhhmm
 ### Added
 - 根目录清洁度门禁（P0-29）：新增 `scripts/check-root-clean.mjs` 与 `pnpm check:root`（白名单制，临时脚本/一次性产物禁止落仓库根，结果写 `reports/root-clean.txt`）；`.github/workflows/ci.yml` `quality` job 首步执行；`.gitignore` 兜底 `*.out` / `audit-*.json` / `*-result.json`；`coding-standards.md` §4 增产物目录强制说明、§11 门禁表加行；`03-development.md` §3 与两份 README 脚本表同步。

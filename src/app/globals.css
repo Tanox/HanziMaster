@@ -1,8 +1,9 @@
-/* src/app/globals.css v5.2.35 */
+/* src/app/globals.css v5.2.43 */
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "./styles/utilities.css";
+@import "./styles/theme-colors.css";
 @import "./styles/keyframes.css";
 @import "./styles/rtl.css";
 
@@ -179,4 +180,14 @@ h3 {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* 设置面板「减少动效」开关：与系统 prefers-reduced-motion 相同的动画抑制，优先级独立于系统设置 */
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
 }

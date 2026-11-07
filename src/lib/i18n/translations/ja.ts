@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ja.ts v5.2.38
+// src/lib/i18n/translations/ja.ts v5.2.42
 export const ja = {
   common: {
     home: 'ホーム',
@@ -22,6 +22,7 @@ export const ja = {
       system: 'システム',
     },
     cancel: 'キャンセル',
+    close: '閉じる',
     submit: '送信',
     skipToContent: 'コンテンツへスキップ',
     openMenu: 'メニューを開く',

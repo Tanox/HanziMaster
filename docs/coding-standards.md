@@ -1,6 +1,6 @@
 # 编码规范
 
-> 文档版本：v5.2.35（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.43（与项目版本同步，权威版本见 `package.json`）
 
 本文是项目**编码风格、命名约定、目录组织与质量门禁的唯一权威**。提交信息、分支与代码审查见 [git-workflow.md](git-workflow.md)，环境与命令见 [03-development.md](03-development.md)。其他文档只做摘要与链接，不得另立一套规则。
 
@@ -133,12 +133,13 @@ Next.js 约定文件名（`page.tsx` / `layout.tsx` / `error.tsx` / `loading.tsx
 
 ## 8. 样式与设计令牌
 
-**双重来源，职责不同，不得混用**：
+**单一来源，分层组织，不得另立他源**：
 
 | 来源 | 负责内容 |
 |------|---------|
 | `src/app/globals.css` 的 `@theme` | 语义 token：`--color-background` / `--color-primary` / `--color-ring` / 字体与圆角变量 |
-| `tailwind.config.ts` 的 `theme.extend` | 扩展色阶（ink / vermilion / indigo / success / warning / info）、字体族、动画与阴影 |
+| `src/app/styles/theme-colors.css` 的 `@theme` | 扩展色阶（ink / vermilion / indigo / success / warning / info）与阴影（`shadow-ink*` / `shadow-vermilion-glow`） |
+| `src/app/styles/utilities.css` | 动画工具类（`animate-*`）与复合工具类 |
 
 - 组件用 `var(--color-*)` 或对应 Tailwind 语义类取色，**禁止硬编码色值**（含 `bg-[#...]` / `style={{ color: '#...' }}`）。
 - 禁止 `rounded-[Npx]` 任意值与 `transition-all`，使用 radius / transition token。

@@ -1,4 +1,4 @@
-// scripts/i18n-lint.mjs v5.2.35
+// scripts/i18n-lint.mjs v5.2.42
 // 校验 11 语言包、扩展模块与站点语言常量的键/清单一致性。
 // 叶子键一致性由单测 src/lib/__tests__/i18n.test.ts 与 site.test.ts 负责。
 
@@ -20,7 +20,8 @@ for (const locale of expected) {
   if (!site.includes(`'${locale}'`)) errors.push(`site.ts missing locale: ${locale}`);
 }
 
-for (const module of ['legal', 'a11y', 'meanings']) {
+const extensionModules = ['legal', 'a11y', 'meanings', 'settings'];
+for (const module of extensionModules) {
   const source = fs.readFileSync(path.join(root, 'extensions', `${module}.ts`), 'utf8');
   for (const locale of expected) {
     if (!source.includes(`'${locale}':`) && !source.includes(`  ${locale}:`)) {
@@ -33,4 +34,4 @@ if (errors.length) {
   console.error(errors.join('\n'));
   process.exit(1);
 }
-console.log(`i18n lint OK: ${expected.length} locales, 3 extension modules`);
+console.log(`i18n lint OK: ${expected.length} locales, ${extensionModules.length} extension modules`);

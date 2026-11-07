@@ -1,6 +1,6 @@
 # 任务清单 · Task Backlog
 
-> 文档版本：v5.2.38（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.43（与项目版本同步，权威版本见 `package.json`）
 > 最后更新：2026-11-07 18:40（UTC+8）
 > 本次更新：依赖重建后实测归档 P1-17/18/19；完成并归档 P2-15（404 noindex）、P2-16（发音降级提示）、P2-13（骨架屏）；清单收敛至 23 项。
 
@@ -12,13 +12,13 @@
 - 任务 ID 规则：`P0-xx` 阻断上线（正式发布前必须闭环）、`P1-xx` 高优先级（首个生产版本前完成）、`P2-xx` 中优先级（可排期）、`P3-xx` 低优先级（长期/可选）。
 - 每个任务已拆到**最小可执行模块**：一个任务 = 一处明确改动 + 一条可验证验收标准。
 
-### 0.1 当前清单概览（共 23 项未完成）
+### 0.1 当前清单概览（共 22 项未完成）
 
 | 优先级 | 数量 | 分组 | 含义 |
 |--------|------|------|------|
 | **P0** | 0 | 法律与合规 / 质量门禁与 CI / 可观测性 | **22 项已全部闭环并归档** |
 | **P1** | 14 | i18n 架构 3 · 性能 2 · 无障碍 4 · 内容 i18n 1 · 安全 1 · RTL 2 · CI/发布 1 | 首个生产版本前完成 |
-| **P2** | 8 | 构建 / 架构 / 运维 / 产品体验 / 代码质量 | 可排期 |
+| **P2** | 7 | 架构 / 运维 / 产品体验 / 代码质量 | 可排期 |
 | **P3** | 1 | i18n 译文质量审校流程 | 长期 / 可选 |
 
 > 归档记录共 78 项：历史批次 20 项（T1–T14 与 P0 系列 6 项），2026-11-05 批次 **51 项**，2026-11-07 批次 **7 项**（文档同步 1 + 测试实测 3 + UX/SEO/骨架屏 3），见 [tasks-done.md](tasks-done.md)。
@@ -223,13 +223,12 @@
 
 ## 4. P2 · 中优先级（可排期）
 
-#### P2-1 · 移除 Tailwind v4 死配置 `构建` `待办（降级）`
+#### P2-1 · 移除 Tailwind v4 死配置 `构建` `已完成`
 
-- **现状**：`tailwind.config.ts`（5.36 KB）存在，但 v4 CSS-first 配置需 `@config` 指令才生效 —— `src/app/globals.css:1-6` 无 `@config`；实际 token 全在 `globals.css:11-90` 的 `@theme`。
-- **实测证据（2026-11-04 清理批次）**：构建产物 `.next/static/chunks/*.css`（64.6 KB 主 CSS）中**有** `--color-primary`、`@keyframes brushStroke`，但**缺失** `--color-ink-500` / `.text-ink-900` / `.bg-vermilion-50` / `--shadow-ink-lg` / `--animate-brush-stroke`——这些 token 仅存在于 `tailwind.config.ts`；仓内 24 个文件使用 ink/vermilion 色类、14 个文件使用 `shadow-ink*` 与 `animate-*`，故「直接删除」虽不改产物，但会让这批类持续缺失。
-- **目标**：删除 `tailwind.config.ts`，或补 `@config` 使其生效并消除双源 token。**建议**：先把 `ink` / `vermilion` 色阶、`shadow-ink*` / `shadow-vermilion-glow`、`animate-*`、`paper-texture` 迁入 `globals.css` 的 `@theme`（与 P2-18 合并做），再删除该文件；避免"删掉即永久缺失"。
-- **验收**：① 构建产物 CSS 不变；② token 只有一个来源。
-- **涉及**：`tailwind.config.ts`、`src/app/globals.css`
+- **问题**：`tailwind.config.ts` 为死配置（v4 CSS-first 需 `@config` 指令才生效，项目从未引入），其中 `ink` / `vermilion` / `indigo` 色阶与 `shadow-ink*` 阴影从未进入构建产物 —— 主页 hero CTA（`bg-vermilion-500`）、导航 Logo 渐变（`from-vermilion-500`）、强调文字（`text-vermilion-500`）等在浅色模式下白底白字不可见，`shadow-ink-lg` 全部失效。
+- **修复（v5.2.41）**：色阶与阴影迁入新增 `src/app/styles/theme-colors.css` 的 `@theme`（含 `--shadow-ink` / `--shadow-ink-lg` / `--shadow-ink-xl` / `--shadow-vermilion-glow`）；删除 `tailwind.config.ts`；`components.json` 的 `tailwind.config` 置空；动画工具类确认由 `styles/utilities.css` 承接（keyframes 在 `keyframes.css`）。
+- **验收**：✅ 产物 CSS 含 `.bg-vermilion-500` / `.text-ink-900` / `.shadow-ink-lg` / `.from-vermilion-500`；✅ token 单一来源（`globals.css @theme` + `theme-colors.css`）；✅ 页面视觉恢复设计稿效果（截图核实）。
+- **归档**：已移入 [tasks-done.md](tasks-done.md)（v5.2.41）。涉及文档（project / index / coding-standards §8 / 07-design-prototype / 02-architecture / 01-overview / 04-api-reference / alignment-checklist / AGENTS / prototype 两篇）已同步为单一来源表述。
 
 
 #### P2-5 · 拆分客户端边界，提升 RSC 比例 `架构/性能` `待办（降级）`
@@ -279,10 +278,10 @@
 
 #### P2-18 · 动画令牌单一来源收敛 `代码质量` `待办`
 
-- **现状**：动画相关定义散落于 `src/app/styles/keyframes.css`、`src/app/globals.css` 的 `@theme`、`tailwind.config.ts`（死文件）、`src/app/page.tsx:34` 的内联 `style={{animation:...}}`；`animate-*` 工具类因 `tailwind.config.ts` 未生效而未进入产物 CSS（实测 `.animate-brush-stroke` 缺失），当前仅 `keyframes.css` 的裸 `@keyframes` 生效。
-- **目标**：收敛为单一来源（`@theme` + `keyframes.css`），删除内联硬编码动画名。
+- **现状**：动画定义位于 `src/app/styles/keyframes.css`（`@keyframes`）与 `src/app/styles/utilities.css`（`animate-*` 工具类），单一来源已就绪（P2-1 完成后死配置 `tailwind.config.ts` 已删除）；剩余 `src/app/page.tsx:34` 的内联 `style={{animation:...}}` 引用 `floatGentle`。
+- **目标**：删除内联硬编码动画名，改用 `animate-float-gentle` 工具类。
 - **验收**：① 动画名全部来自 token；② 视觉表现无变化。
-- **依赖**：P2-1
+- **依赖**：~~P2-1~~（已完成）
 - **涉及**：`src/app/page.tsx`、`src/app/styles/keyframes.css`、`src/app/globals.css`
 
 ---

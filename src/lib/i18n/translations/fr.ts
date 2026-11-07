@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/fr.ts v5.2.38
+// src/lib/i18n/translations/fr.ts v5.2.42
 export const fr = {
   common: {
     home: 'Accueil',
@@ -22,6 +22,7 @@ export const fr = {
       system: 'Système',
     },
     cancel: 'Annuler',
+    close: 'Fermer',
     submit: 'Envoyer',
     skipToContent: 'Aller au contenu',
     openMenu: 'Ouvrir le menu',

@@ -1,6 +1,6 @@
 ﻿# 对齐检查清单
 
-> 文档版本：v5.2.40（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.43（与项目版本同步，权威版本见 `package.json`）
 > 基线日期：2026-11-07
 
 本文记录**当前**规范文档、原型与代码实现的对齐状态。它是状态报告，**不是任务清单**：所有待办只在 [tasks.md](tasks.md) 维护。历史版本本文曾包含「113 项 100% 对齐」的快照与 24 个 UI 组件的统计，与代码不符，已整体替换；历史叙述保留在 `CHANGELOG.md` 中，不回改。
@@ -20,7 +20,7 @@
 | 编码规范 | `coding-standards.md` | `tsconfig.json` / `eslint.config.js` / `.prettierrc.json` | 已对齐（单一权威） |
 | 提交规范 | `commit-template.md` | `CONTRIBUTING*` / `.trae/rules/` / PR 模板 | 已对齐（10 类 type 与版本标注） |
 | Git 流程 | `git-workflow.md` | `.github/PULL_REQUEST_TEMPLATE.md` | 已对齐（新增分支与审查流程） |
-| 设计系统 | `07-design-prototype.md` | `globals.css @theme` / `tailwind.config.ts` | 已对齐（组件清单按真实 4 个原语修正） |
+| 设计系统 | `07-design-prototype.md` | `globals.css @theme` / `styles/theme-colors.css` | 已对齐（组件清单按真实 4 个原语修正） |
 | 任务状态 | `tasks.md` / `tasks-done.md` | — | 单一来源，不在本文重复 |
 
 ## 2. 页面与组件
@@ -49,7 +49,7 @@
 | 项 | 权威来源 | 实际值 |
 |----|---------|--------|
 | 语义 token | `src/app/globals.css` `@theme` | `--color-primary: #c53d43`、`--color-accent: #4f46e5`、`--color-ring: #c53d43` 等 |
-| 扩展色阶 / 字体 / 动画 | `tailwind.config.ts` | ink 11 阶、vermilion 9 阶、indigo 10 阶、状态色与 keyframes |
+| 扩展色阶 / 字体 / 动画 | `styles/theme-colors.css` + `styles/utilities.css` | ink 11 阶、vermilion 9 阶、indigo 10 阶、状态色与阴影；动画工具类在 utilities.css |
 | 字体 | `next/font/google` | Space Grotesk / Playfair Display / Noto Serif SC / JetBrains Mono |
 | 深色模式 | `ThemeProvider` → `.dark` | `@custom-variant dark (&:is(.dark *))` |
 | 组件约束 | `coding-standards.md` §8 | 禁止硬编码色值、`rounded-[Npx]`、`transition-all` |

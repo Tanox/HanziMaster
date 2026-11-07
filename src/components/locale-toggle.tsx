@@ -1,11 +1,11 @@
-// src/components/locale-toggle.tsx v5.2.35
+// src/components/locale-toggle.tsx v5.2.42
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocale } from './locale-provider';
 import type { Locale } from '@/lib/i18n';
 
-const localeNames: Record<string, string> = {
+export const localeNames: Record<string, string> = {
   'en': 'English',
   'zh-CN': '简体中文',
   'zh-TW': '繁體中文',

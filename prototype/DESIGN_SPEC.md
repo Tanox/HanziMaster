@@ -1,7 +1,7 @@
 # HanziMaster 原型设计规范文档
 
-> 文档版本：v5.2.35（与项目版本同步，权威版本见 `package.json`）· 与 [docs/07-design-prototype.md](../docs/07-design-prototype.md) 互为补充，本文聚焦**原型交付侧**的细化规范（图标、布局网格、交互模式库、反馈/错误/空状态规范）。
-> Design Token 为**双重来源、职责不同**：`src/app/globals.css` 的 `@theme` 定义语义 token（`--color-*`），`tailwind.config.ts` 定义扩展色阶/字体/动画；原型文件（`prototype.html` / `wireframes.html` / `learn.html` / `practice.html` / `progress.html` / `character-detail.html`）中的 CSS 变量须与语义 token 对齐。
+> 文档版本：v5.2.43（与项目版本同步，权威版本见 `package.json`）· 与 [docs/07-design-prototype.md](../docs/07-design-prototype.md) 互为补充，本文聚焦**原型交付侧**的细化规范（图标、布局网格、交互模式库、反馈/错误/空状态规范）。
+> Design Token 为**单一来源、分层组织**：`src/app/globals.css` 的 `@theme` 定义语义 token（`--color-*`），`src/app/styles/theme-colors.css` 定义扩展色阶/阴影，`src/app/styles/utilities.css` 定义动画工具类；原型文件（`prototype.html` / `wireframes.html` / `learn.html` / `practice.html` / `progress.html` / `character-detail.html`）中的 CSS 变量须与语义 token 对齐。
 > 本文 §2 描述的是 `wireframes.html` 的**原型组件库演示**，不是生产代码组件清单；生产组件以 [docs/04-api-reference.md](../docs/04-api-reference.md) §6 为准。
 
 ---

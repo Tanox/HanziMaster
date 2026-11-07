@@ -1,6 +1,6 @@
 # 设计规范与原型
 
-> 文档版本：v5.2.35（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.43（与项目版本同步，权威版本见 `package.json`）
 
 本文是设计系统的权威说明。编码层面的 token 使用约束见 [coding-standards.md](coding-standards.md) §8；原型交付侧细化规范见 `prototype/DESIGN_SPEC.md`。文中组件清单以 `src/components/` 实际文件为准。
 
@@ -11,12 +11,12 @@
 - **东方水墨美学**：融合中国传统书法艺术与现代极简设计
 - **克制用色**：以水墨灰为主，朱砂红作为唯一强调色，靛蓝作为辅助色
 - **呼吸感**：大量留白，元素间距遵循 8px 网格系统
-- **一致性**：所有组件遵循统一的设计语言，token 为双重来源（`@theme` 语义 token + `tailwind.config.ts` 扩展色阶，见 §8.1），不引入硬编码色值
+- **一致性**：所有组件遵循统一的设计语言，token 单一来源（`@theme` 语义 token + `styles/theme-colors.css` 扩展色阶，见 §8.1），不引入硬编码色值
 
 ### 1.2 技术架构
 
 - **CSS 变量系统**：`globals.css` 的 `@theme` 块定义语义 token（`--color-*` / 字体 / 圆角）
-- **Tailwind v4**：`@theme` 自动生成语义工具类；`tailwind.config.ts` 定义扩展色阶、字体族、动画与阴影，二者职责不同
+- **Tailwind v4**：`@theme` 自动生成全部语义与色阶工具类（扩展色阶与阴影在 `styles/theme-colors.css`，动画工具类在 `styles/utilities.css`）
 - **shadcn/ui**：当前 4 个基础原语（`button` / `badge` / `dialog` / `tooltip`）已改造为 ink/vermilion 设计语言
 - **深色模式**：通过 `.dark` 类切换 CSS 变量，覆盖所有语义色 token
 
@@ -51,7 +51,7 @@
 | `--color-warning` | `#f59e0b` | `#f59e0b` | 警告状态 |
 | `--color-info` | `#3b82f6` | `#3b82f6` | 信息状态 |
 
-#### 2.1.2 扩展色阶（tailwind.config.ts）
+#### 2.1.2 扩展色阶（styles/theme-colors.css）
 
 **水墨灰 ink**（11 阶）：50 `#faf9f6` → 950 `#0d0d0d`
 **朱砂红 vermilion**（9 阶）：50 `#fef2f2` → 900 `#5a2525`，主色 500 `#c53d43`
@@ -283,7 +283,7 @@
 
 ## 8. Token 维护规则
 
-1. **双重来源、职责不同**：`globals.css` 的 `@theme` 定义语义 token（`--color-*` / 字体 / 圆角）；`tailwind.config.ts` 定义 `ink` / `vermilion` / `indigo` 扩展色阶、字体族、keyframes 与阴影。二者不得互相覆盖。
+1. **单一来源、分层组织**：`globals.css` 的 `@theme` 定义语义 token（`--color-*` / 字体 / 圆角）；`styles/theme-colors.css` 的 `@theme` 定义 `ink` / `vermilion` / `indigo` 扩展色阶、状态色阶与阴影；`styles/utilities.css` 定义动画工具类。不得另立他源或互相覆盖。
 2. **深色模式**：通过 `.dark` 类覆盖 CSS 变量（`@custom-variant dark`），不用随意的色值分支替代语义色。
 3. **禁止内联色值**：组件中不使用 `style={{ color: '#xxx' }}` / `bg-[#...]`，统一取 `var(--color-*)` 或对应 Tailwind 类。
 4. **圆角与过渡**：使用 `rounded-xl` / `rounded-2xl` 等 token 与 transition token，禁止 `rounded-[28px]` 任意值、`transition-all`。

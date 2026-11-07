@@ -1,6 +1,6 @@
 ﻿# HanziMaster 文档中心
 
-> 文档版本：v5.2.35（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.43（与项目版本同步，权威版本见 `package.json`）
 
 本目录是项目**规范文档的唯一存放位置**（`docs/` 共 16 篇）。本文给出文档分层、单一职责矩阵、术语与格式约定；根级 README / CONTRIBUTING 只是入口摘要，不另立规则。
 
@@ -66,7 +66,7 @@
 | 源文件头注释 | `// <相对路径> vX.Y.Z`，仅源码 | 文档里写文件头注释 |
 | Conventional Commits | `<type>: <description>` 提交格式 | Angular 提交规范（可作括注，不作正式名） |
 | 质量门禁 | 类型检查 / Lint / 单测 / 行数 / 安全审计 / 构建 | 校验、检查脚本混称 |
-| 设计令牌（design token） | `globals.css @theme` 语义 token + `tailwind.config.ts` 扩展色阶 | 「单一 token 来源」（实为双重来源，职责不同） |
+| 设计令牌（design token） | `globals.css @theme` 语义 token + `styles/theme-colors.css` 扩展色阶 | 「双重 token 来源」（`tailwind.config.ts` 已删除，token 单一来源） |
 | 东方水墨·朱砂红 | 设计系统名 | Apple Blue、emerald、Apple-HIG（仅历史记录中出现） |
 | 高保真原型 | `prototype/prototype.html`（唯一权威） | 把 `wireframes.html` 称为唯一权威 |
 | 任务清单 | `docs/tasks.md`，所有待办的唯一来源 | 在其他文档维护待办表 |

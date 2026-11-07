@@ -1,8 +1,23 @@
-﻿# HanziMaster 汉字大师 v5.2.40
+﻿# HanziMaster 汉字大师 v5.2.43
 
 [English](README_EN.md) | [简体中文](README.md)
 
+[![CI](https://github.com/Tanox/HanziMaster/actions/workflows/ci.yml/badge.svg)](https://github.com/Tanox/HanziMaster/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+![Node](https://img.shields.io/badge/node-%E2%89%A524.11.0-339933)
+![pnpm](https://img.shields.io/badge/pnpm-%E2%89%A511-F9AD00)
+![Next.js](https://img.shields.io/badge/Next.js-16.4.4-black)
+![React](https://img.shields.io/badge/React-19-61DAFB)
+![i18n](https://img.shields.io/badge/i18n-11%20Locales-8A2BE2)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING_EN.md)
+
 HanziMaster is a Chinese character learning app that helps you master handwriting through guided practice, stroke-order demonstrations, and immersive review. It is purely client-side and local-first: progress is stored in browser localStorage, with no accounts and no backend API.
+
+## Preview
+
+| Home (light / dark) | Learn · Practice |
+| --- | --- |
+| ![Home light](docs/assets/screenshots/home-light.png) ![Home dark](docs/assets/screenshots/home-dark.png) | ![Learn](docs/assets/screenshots/learn.png) ![Practice](docs/assets/screenshots/practice.png) |
 
 ## Features
 
@@ -163,4 +178,4 @@ Character data, pinyin, examples, stroke-order animations and structure hints ar
 
 Released under the [MIT License](LICENSE); third-party dependency licenses are listed in [NOTICE](NOTICE). Contribution and security guidelines: [CONTRIBUTING.md](CONTRIBUTING.md), [CODE_OF_CONDUCT.md](.github/CODE_OF_CONDUCT.md), [SECURITY.md](.github/SECURITY.md), [SUPPORT.md](.github/SUPPORT.md), [PR template](.github/PULL_REQUEST_TEMPLATE.md).
 
-© 2026 HanziMaster 汉字大师 v5.2.40
+© 2026 HanziMaster 汉字大师 v5.2.43
