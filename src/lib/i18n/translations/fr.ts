@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/fr.ts v5.2.31
+// src/lib/i18n/translations/fr.ts v5.2.38
 export const fr = {
   common: {
     home: 'Accueil',
@@ -177,6 +177,7 @@ export const fr = {
     strokeOrder: 'Ordre des traits',
     strokeCount: 'Nombre de traits : {{count}}',
     playAudio: 'Lire l’audio',
+    pronunciationUnavailable: 'La prononciation vocale n\'est pas prise en charge par ce navigateur',
     startQuiz: 'Commencer le quiz',
     nextCharacter: 'Caractère suivant',
     quizTitle: 'Quiz de caractères',

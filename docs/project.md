@@ -1,6 +1,6 @@
 # Project Context
 
-> Document version: v5.2.34 (single source of truth: `package.json`)
+> Document version: v5.2.40 (single source of truth: `package.json`)
 
 This file is the English project context consumed by AI tooling. It is a **summary only**: the authoritative rules live in [coding-standards.md](coding-standards.md), [commit-template.md](commit-template.md), [git-workflow.md](git-workflow.md) and [index.md](index.md). If this file conflicts with them, fix this file.
 
@@ -16,8 +16,8 @@ HanziMaster (汉字大师) is a local-first Chinese character learning web app: 
 - **Primitives**: shadcn/ui `radix-nova` preset (`components.json`); `src/components/ui/` currently contains only `button`, `badge`, `dialog`, `tooltip`.
 - **i18n**: custom `LocaleProvider` context, 11 language packs in `src/lib/i18n/translations/`, `t()` constrained by the `TranslationKey` dotted union, `{{name}}` interpolation via `src/lib/i18n/translate.ts`.
 - **State**: React Context (`ThemeProvider`, `LocaleProvider`) + `useProgress`; persistence through `src/lib/storage.ts` over `window.localStorage` (versioned + schema-validated).
-- **Testing**: Vitest `^3.2.4` + jsdom `^30.1.3` + `@testing-library/react ^16.3.3`; 9 test files / 47 cases. See [06-testing.md](06-testing.md).
-- **Tooling**: pnpm `11.24.0` (enforced by `preinstall` + `.npmrc`), Node `>= 24.11.0`, ESLint 9 flat config, `.prettierrc.json` exists but `prettier` is **not declared as a dependency** (`pnpm format` is currently unusable).
+- **Testing**: Vitest `^3.2.4` + jsdom `^30.1.3` + `@testing-library/react ^16.3.3` + `@vitest/coverage-v8` (thresholds 80/70/80/80, logic-layer scope); 24 unit test files plus Playwright E2E (`e2e/`, `@axe-core/playwright`). Case counts: see [06-testing.md](06-testing.md).
+- **Tooling**: pnpm `11.24.0` (enforced by `preinstall` + `.npmrc`), Node `>= 24.11.0`, ESLint 9 flat config, `prettier ^3.9.10` installed (`pnpm format` works).
 - **Deployment**: Vercel (`vercel.json`) / Tencent Cloud EdgeOne Pages (`edgeone.json`).
 
 ## Project Conventions
@@ -34,11 +34,11 @@ HanziMaster (汉字大师) is a local-first Chinese character learning web app: 
 
 ### Directory Layout
 
-`src/app/` (routes + global styles), `src/components/` (`ui/`, `learn/`, `practice/`, `state/`, shared), `src/hooks/`, `src/lib/` (`i18n/`, data, utils, `version.ts`, `__tests__/`), `prototype/` (6 HTML skeletons + `styles/` + `scripts/`), `scripts/`, `docs/`, `reports/` (ignored). Full tree: [01-overview.md](01-overview.md) §6.
+`src/app/` (routes + global styles, incl. `privacy/` / `terms/` pages, `api/health/route.ts`, `manifest.ts` / `robots.ts` / `sitemap.ts`), `src/components/` (`ui/`, `learn/`, `practice/`, `state/`, shared), `src/hooks/`, `src/lib/` (`i18n/` + `extensions/`, data, utils, `version.ts`, `__tests__/`), `src/content/` (legal copy), `e2e/` (Playwright), `prototype/` (6 HTML skeletons + `styles/` + `scripts/`), `scripts/` (7 tool scripts), `docs/`, `reports/` (ignored), `.github/workflows/` (`ci.yml` / `deploy.yml`). Full tree: [01-overview.md](01-overview.md) §6.
 
 ### Versioning
 
-`package.json` `version` is the only authoritative source. `next.config.mjs` injects `NEXT_PUBLIC_APP_VERSION` and a build-time `NEXT_PUBLIC_BUILD_ID` (`yyyymmddhhmm`); `src/lib/version.ts` exposes `VERSION_LABEL`; `layout-client.tsx` interpolates it into `footer.copyright` (`{{versionLabel}}`). Translation files contain no literal versions. Every change bumps at least a patch and syncs `metadata.json`, both READMEs and `CHANGELOG.md`. There is no `common.appVersion` key and no `VERSION` file.
+`package.json` `version` is the only authoritative source. `next.config.mjs` injects `NEXT_PUBLIC_APP_VERSION` and a build-time `NEXT_PUBLIC_BUILD_ID` (`yymmddhhmm`, 10 digits); `src/lib/version.ts` exposes `VERSION_LABEL` (`v{semver} · build {yymmddhhmm}`); `layout-client.tsx` interpolates it into `footer.copyright` (`{{versionLabel}}`). Translation files contain no literal versions. Every change bumps at least a patch and syncs `metadata.json`, both READMEs and `CHANGELOG.md`. There is no `common.appVersion` key and no `VERSION` file.
 
 ### Git Workflow
 
@@ -59,9 +59,9 @@ HanziMaster (汉字大师) is a local-first Chinese character learning web app: 
 
 ## Important Constraints
 
-- No environment variables are required at runtime. Google Fonts is the only network dependency at build time; offline `next build` may fail on font download (environment limitation, not a code defect).
+- Core pages need no environment variables at runtime; optional variables (`NEXT_PUBLIC_SITE_URL`, GA, Sentry, `ANALYZE`) are documented in `.env.example` and [01-overview.md](01-overview.md) §7. Google Fonts is the only network dependency at build time; offline `next build` may fail on font download (environment limitation, not a code defect).
 - CSP and all security headers are injected centrally by `next.config.mjs` `headers()` for `/:path*`. There is **no** `middleware.ts` / `proxy.ts`; do not reintroduce it.
-- Coverage tooling (`@vitest/coverage-v8`) and a CI workflow (`.github/workflows/`) are not yet configured; do not claim `pnpm test -- --coverage` works. Remaining work is tracked in [tasks.md](tasks.md).
+- CI lives in `.github/workflows/` (`ci.yml`: quality / coverage / e2e jobs; `deploy.yml`: Vercel). Coverage runs via `pnpm test:run --coverage` with thresholds in `vitest.config.ts`; `release.yml` (auto GitHub Releases) is planned, see [git-workflow.md](git-workflow.md) §6.1 and [tasks.md](tasks.md) P1-37.
 - Historical `openspec/` paths inside `CHANGELOG.md` and archived documents are historical records — do not bulk-replace them.
 
 ## External Dependencies

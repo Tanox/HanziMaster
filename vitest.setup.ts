@@ -1,4 +1,6 @@
-// vitest.setup.ts v5.2.31
+// vitest.setup.ts v5.2.35
+import '@testing-library/jest-dom/vitest';
+
 // Node 22+ 的实验性 globalThis.localStorage（未提供 --localstorage-file 时为 undefined）
 // 会遮蔽 jsdom 的实现，导致测试环境读写存储失败；此处统一兜底为内存 Storage。
 function createMemoryStorage(): Storage {

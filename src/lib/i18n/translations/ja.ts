@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ja.ts v5.2.31
+// src/lib/i18n/translations/ja.ts v5.2.38
 export const ja = {
   common: {
     home: 'ホーム',
@@ -177,6 +177,7 @@ export const ja = {
     strokeOrder: '筆順',
     strokeCount: '画数: {{count}}',
     playAudio: '音声を再生',
+    pronunciationUnavailable: 'このブラウザは音声読み上げに対応していません',
     startQuiz: 'クイズを始める',
     nextCharacter: '次の文字',
     quizTitle: '漢字クイズ',

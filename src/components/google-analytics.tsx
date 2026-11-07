@@ -1,37 +1,50 @@
-// src/components/google-analytics.tsx v5.2.25
+// src/components/google-analytics.tsx v5.2.35
+'use client';
+
 import Script from 'next/script';
+import { useEffect, useState } from 'react';
+import { CONSENT_CHANGE_EVENT, getConsent } from '@/lib/consent';
 
-// Google Analytics 衡量 ID（来自用户配置）
-const GA_MEASUREMENT_ID = 'G-TZG68T8J31';
-
-// 仅生产环境上报：开发/预览/构建期不向 GA 发送数据，避免污染统计
-const ENABLE_ANALYTICS = process.env.NODE_ENV === 'production';
+// 衡量 ID 由部署环境注入；未配置时不加载任何统计脚本（合规默认关闭）
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 /**
- * 全局 Google Analytics 注入组件。
- * 使用 Next.js next/script 在 <head> 中加载 gtag.js，
- * 并初始化衡量 ID 对应的数据收集。
- * 通过 ENABLE_ANALYTICS 控制仅在 production 环境上报。
+ * 统计脚本注入：三重门控 —— 仅生产环境 + 用户明确同意 + 客户端挂载后。
+ * 未同意时组件不渲染任何 <script>，因此首屏不会向第三方发起请求。
  */
 export function GoogleAnalytics() {
-  if (!ENABLE_ANALYTICS) {
+  const [allowed, setAllowed] = useState(false);
+
+  useEffect(() => {
+    const sync = () => {
+      setAllowed(process.env.NODE_ENV === 'production' && getConsent() === 'granted');
+    };
+    sync();
+    window.addEventListener(CONSENT_CHANGE_EVENT, sync);
+    window.addEventListener('storage', sync);
+    return () => {
+      window.removeEventListener(CONSENT_CHANGE_EVENT, sync);
+      window.removeEventListener('storage', sync);
+    };
+  }, []);
+
+  if (!allowed || !GA_MEASUREMENT_ID) {
     return null;
   }
 
   return (
     <>
       <Script
+        id="google-analytics-lib"
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
         strategy="afterInteractive"
       />
-      <Script id="google-analytics" strategy="afterInteractive">
+      <Script id="google-analytics-init" strategy="afterInteractive">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', '${GA_MEASUREMENT_ID}', {
-            page_path: window.location.pathname,
-          });
+          gtag('config', '${GA_MEASUREMENT_ID}', { page_path: window.location.pathname });
         `}
       </Script>
     </>

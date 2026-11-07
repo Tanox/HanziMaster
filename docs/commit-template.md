@@ -1,6 +1,6 @@
 # Git 提交信息规范
 
-> 文档版本：v5.2.34（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.35（与项目版本同步，权威版本见 `package.json`）
 
 本文是**提交信息格式的唯一权威**。分支、PR、审查与发版见 [git-workflow.md](git-workflow.md)；编码规则见 [coding-standards.md](coding-standards.md)。[README.md](../README.md)、[CONTRIBUTING.md](../CONTRIBUTING.md) 中的提交段落均为本文摘要，冲突以本文为准。
 
@@ -52,7 +52,7 @@
 | 原子性 | 一次提交只做一件事，禁止夹带无关改动 |
 | 语言 | 中文优先；`type` 固定为英文小写 |
 
-**版本号标注是硬性要求**：每次提交对应一次最小版本 bump（规则见 [coding-standards.md](coding-standards.md) §3），须在正文或页脚写出新版本号，例如 `版本：v5.2.34`。
+**版本号标注是硬性要求**：每次提交对应一次最小版本 bump（规则见 [coding-standards.md](coding-standards.md) §3），须在正文或页脚写出新版本号，例如 `版本：v5.2.35`。
 
 ## 4. 示例
 
@@ -64,7 +64,7 @@ feat: 添加书写笔顺提示动效
 - 尊重 prefers-reduced-motion，关闭时退化为静态展示
 
 Closes #123
-版本：v5.2.34
+版本：v5.2.35
 ```
 
 ```
@@ -74,7 +74,7 @@ docs: 统一开发规范并同步文档结构
 - 修正测试/部署/架构文档与代码实现不一致的表述
 - 补齐分支管理与代码审查流程
 
-版本：v5.2.34
+版本：v5.2.35
 ```
 
 ```
@@ -84,16 +84,16 @@ fix: 修复移动抽屉重复 id 导致的 ARIA 关联错误
 - 列表渲染移除静态 id
 
 Closes #456
-版本：v5.2.34
+版本：v5.2.35
 ```
 
 单行示例：
 
 ```bash
-git commit -m "feat: 在学习页面实现字符选择功能" -m "版本：v5.2.34"
-git commit -m "fix: 解决主题切换组件初始化问题" -m "版本：v5.2.34"
-git commit -m "docs: 更新项目概述文档" -m "版本：v5.2.34"
-git commit -m "refactor: 优化主题持久化逻辑" -m "版本：v5.2.34"
+git commit -m "feat: 在学习页面实现字符选择功能" -m "版本：v5.2.35"
+git commit -m "fix: 解决主题切换组件初始化问题" -m "版本：v5.2.35"
+git commit -m "docs: 更新项目概述文档" -m "版本：v5.2.35"
+git commit -m "refactor: 优化主题持久化逻辑" -m "版本：v5.2.35"
 ```
 
 ## 5. 提交模板

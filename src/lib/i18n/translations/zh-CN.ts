@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/zh-CN.ts v5.2.31
+// src/lib/i18n/translations/zh-CN.ts v5.2.38
 export const zhCN = {
   common: {
     home: '首页',
@@ -177,6 +177,7 @@ export const zhCN = {
     strokeOrder: '笔顺',
     strokeCount: '笔画数：{{count}}',
     playAudio: '播放发音',
+    pronunciationUnavailable: '当前浏览器不支持语音发音',
     startQuiz: '开始测验',
     nextCharacter: '下一个字',
     quizTitle: '汉字测验',

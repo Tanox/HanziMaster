@@ -1,6 +1,6 @@
 # 编码规范
 
-> 文档版本：v5.2.34（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.35（与项目版本同步，权威版本见 `package.json`）
 
 本文是项目**编码风格、命名约定、目录组织与质量门禁的唯一权威**。提交信息、分支与代码审查见 [git-workflow.md](git-workflow.md)，环境与命令见 [03-development.md](03-development.md)。其他文档只做摘要与链接，不得另立一套规则。
 
@@ -15,7 +15,7 @@
 所有源码文件首行使用单行注释标注路径与版本：
 
 ```typescript
-// src/lib/version.ts v5.2.34
+// src/lib/version.ts v5.2.35
 ```
 
 - 路径为**仓库根目录起算的相对路径**，分隔符用 `/`。
@@ -90,6 +90,8 @@ HanziMaster/
 
 禁止：在仓库根新增一次性脚本或产物文件；把跨页面组件塞进页面目录；把纯函数与 UI 混写在同一文件。
 
+> 根目录清洁度由 `pnpm check:root`（`scripts/check-root-clean.mjs`，白名单制）强制：新增会产生落盘产物的脚本，输出必须指向 `reports/`（或对应生成目录）并先 `mkdir -p`；`.gitignore` 预置 `*.out` / `audit-*.json` / `*-result.json` 兜底。CI 首步即执行该门禁。
+
 ## 5. 命名约定
 
 | 对象 | 规则 | 示例 |
@@ -116,7 +118,7 @@ Next.js 约定文件名（`page.tsx` / `layout.tsx` / `error.tsx` / `loading.tsx
 - 用 `type` 定义 Props 与联合类型；导出给外部使用的类型显式声明。
 - 让 TypeScript 推导局部变量类型，不写冗余注解；不应修改的字段用 `readonly`。
 - 格式化以 `.prettierrc.json` 为准：`semi: true`、`singleQuote: true`、`trailingComma: all`、`printWidth: 100`、`tabWidth: 2`、`arrowParens: always`、`endOfLine: lf`。
-- **现状说明**：`package.json` 有 `format` 脚本（`prettier --write "src/**/*.{ts,tsx,css}"`），但当前 `devDependencies` **未声明 `prettier`**，脚本直接运行会失败。补齐依赖前，按上述配置与 ESLint 结果人工保持格式一致；不要把它当作已可用的门禁。
+- v5.2.35 起 `prettier` 已声明为开发依赖，`pnpm format` 可用；格式化范围由 `package.json` 的 `format` 脚本定义。
 - ESLint 采用 flat config（`eslint.config.js`）：Next 推荐规则 + `core-web-vitals` + `@typescript-eslint/no-unused-vars`（`varsIgnorePattern: "^_"`）。**error 与 warning 都必须清零**。
 - 禁止 `console.log` / `debugger` 进入提交；Promise 必须显式处理错误。
 
@@ -167,7 +169,8 @@ Next.js 约定文件名（`page.tsx` / `layout.tsx` / `error.tsx` / `loading.tsx
 | Lint | `pnpm lint` | 0 error / 0 warning |
 | 单测 | `pnpm test` | 全部通过 |
 | 行数 | `pnpm check:lines` | `all <= 200` |
-| 格式化 | `pnpm format`（依赖未声明，暂不可用，见 §6） | 按 `.prettierrc.json` 人工核对 |
+| 根目录清洁度 | `pnpm check:root` | 根目录条目全部命中白名单（临时脚本/产物禁止落仓库根） |
+| 格式化 | `pnpm format` | 按 `.prettierrc.json` 无遗留 diff |
 | 安全审计 | `pnpm security:audit` | 生产依赖 0 高危 |
 | 构建 | `pnpm build` | 构建成功 |
 

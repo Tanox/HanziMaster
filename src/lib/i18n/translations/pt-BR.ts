@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/pt-BR.ts v5.2.31
+// src/lib/i18n/translations/pt-BR.ts v5.2.38
 export const ptBR = {
   common: {
     home: 'Início',
@@ -177,6 +177,7 @@ export const ptBR = {
     strokeOrder: 'Ordem dos traços',
     strokeCount: 'Número de traços: {{count}}',
     playAudio: 'Reproduzir áudio',
+    pronunciationUnavailable: 'Seu navegador não suporta pronúncia por voz',
     startQuiz: 'Iniciar quiz',
     nextCharacter: 'Próximo caractere',
     quizTitle: 'Quiz de caracteres',

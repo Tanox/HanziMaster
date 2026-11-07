@@ -1,7 +1,7 @@
 ﻿# 对齐检查清单
 
-> 文档版本：v5.2.34（与项目版本同步，权威版本见 `package.json`）
-> 基线日期：2026-11-04
+> 文档版本：v5.2.40（与项目版本同步，权威版本见 `package.json`）
+> 基线日期：2026-11-07
 
 本文记录**当前**规范文档、原型与代码实现的对齐状态。它是状态报告，**不是任务清单**：所有待办只在 [tasks.md](tasks.md) 维护。历史版本本文曾包含「113 项 100% 对齐」的快照与 24 个 UI 组件的统计，与代码不符，已整体替换；历史叙述保留在 `CHANGELOG.md` 中，不回改。
 
@@ -11,12 +11,12 @@
 
 | 领域 | 权威文档 | 代码实现 | 状态 |
 |------|---------|---------|------|
-| 项目定位 / 技术栈 | `01-overview.md` | `package.json` / `src/` | 已对齐（v5.2.34 版本与依赖表） |
-| 架构分层 | `02-architecture.md` | `src/app/` + `src/components/` + `src/lib/` | 已对齐（3 页面均为 Client Component，根布局 Server） |
-| 环境与命令 | `03-development.md` | `package.json` scripts / `scripts/` | 已对齐（`format` 依赖缺失已在文档标注） |
-| 组件 API | `04-api-reference.md` | `src/components/` / `src/lib/` | 已对齐（签名按源码重写） |
-| 部署 | `05-deployment.md` | `vercel.json` / `edgeone.json` / `next.config.mjs` | 已对齐（删除不适用的 SPA 重写说明） |
-| 测试 | `06-testing.md` | `vitest.config.ts` / `vitest.setup.ts` / 9 个测试文件 | 已对齐（删除废弃的 Jest 蓝图） |
+| 项目定位 / 技术栈 | `01-overview.md` | `package.json` / `src/` | 已对齐（依赖表含 Radix 按需子包与 Sentry） |
+| 架构分层 | `02-architecture.md` | `src/app/` + `src/components/` + `src/lib/` | 已对齐（3 页面均为 Client Component，根布局 Server；法律页与 `/api/health` 为 Server） |
+| 环境与命令 | `03-development.md` | `package.json` scripts / `scripts/`（7 个） | 已对齐（命令表与 21 条 scripts 一一对应） |
+| 组件 API | `04-api-reference.md` | `src/components/` / `src/lib/` | 已对齐（签名按源码重写，含 `/api/health`） |
+| 部署 | `05-deployment.md` | `vercel.json` / `edgeone.json` / `next.config.mjs` / workflows | 已对齐（CI 工作流一览 + 自动发布规则；`release.yml` 规划中） |
+| 测试 | `06-testing.md` | `vitest.config.ts` / `vitest.setup.ts` / `playwright.config.ts` / 24 个单测 + 2 个 e2e | 已对齐（覆盖率阈值 80/70/80/80 已生效） |
 | 编码规范 | `coding-standards.md` | `tsconfig.json` / `eslint.config.js` / `.prettierrc.json` | 已对齐（单一权威） |
 | 提交规范 | `commit-template.md` | `CONTRIBUTING*` / `.trae/rules/` / PR 模板 | 已对齐（10 类 type 与版本标注） |
 | Git 流程 | `git-workflow.md` | `.github/PULL_REQUEST_TEMPLATE.md` | 已对齐（新增分支与审查流程） |
@@ -65,14 +65,14 @@
 | 部署 | `vercel.json` / `edgeone.json` | 静态资源缓存；EdgeOne 安装命令先装 pnpm |
 | 依赖约束 | `.npmrc` / `pnpm-workspace.yaml` | 强制 pnpm；`onlyBuiltDependencies` 与 `overrides` 在 workspace 文件 |
 | 类型 / Lint | `tsconfig.json` / `eslint.config.js` | strict；ESLint 9 flat config |
-| 格式化 | `.prettierrc.json` | 配置存在，`prettier` **未声明为依赖**，`pnpm format` 暂不可用 |
-| 测试 | `vitest.config.ts` / `vitest.setup.ts` | jsdom + globals + 内存 Storage 兜底 |
-| CI | `.github/workflows/` | **当前不存在**，门禁靠本地与 PR 检查表执行 |
-| 覆盖率 | `@vitest/coverage-v8` | **未安装**，`vitest.config.ts` 无 `coverage` 段 |
+| 格式化 | `.prettierrc.json` | `prettier ^3.9.10` 已安装，`pnpm format` 可用 |
+| 测试 | `vitest.config.ts` / `vitest.setup.ts` / `playwright.config.ts` | jsdom + globals + 内存 Storage 兜底；coverage 阈值 80/70/80/80；Playwright chromium |
+| CI | `.github/workflows/` | `ci.yml`（quality / coverage / e2e）+ `deploy.yml`（Vercel，无 Secrets 自动跳过）；`release.yml` 规划中（P1-37） |
+| 覆盖率 | `@vitest/coverage-v8@3.2.4` | 已安装，`vitest.config.ts` 含 coverage 段与阈值门禁 |
 
 ## 6. 测试
 
-当前 **9 个测试文件 / 47 个用例**（以 `pnpm test` 输出为准）：5 个纯逻辑测试在 `src/lib/__tests__/`，2 个组件测试在 `src/components/**/__tests__/`，2 个 hook 测试在 `src/hooks/__tests__/`。使用 Vitest + Testing Library，不使用 Jest。详见 [06-testing.md](06-testing.md) §2。
+当前 **24 个单测文件**（分布在 `src/lib` / `src/hooks` / `src/components` 的 `__tests__/`）+ **2 个 e2e 测试**（`e2e/home.spec.ts`、`e2e/a11y.spec.ts`）。使用 Vitest + Testing Library + Playwright，不使用 Jest；用例数以 `pnpm test` 输出为准。详见 [06-testing.md](06-testing.md) §2、§6。
 
 ## 7. 文档体系
 
@@ -92,17 +92,17 @@
 
 | 位置 | 值 / 机制 |
 |------|----------|
-| `package.json` `version` | `5.2.34`（唯一权威源） |
+| `package.json` `version` | `5.2.37`（唯一权威源） |
 | `metadata.json` | `name` 内版本与 `version` 同步 |
 | `README.md` / `README_EN.md` | 标题与页脚同步 |
 | `CHANGELOG.md` | 新增 `5.2.34` 小节 |
 | `src/lib/version.ts` / `next.config.mjs` | 不硬编码版本号，读注入值 |
 | 11 语言 `footer.copyright` | `{{versionLabel}}` 插值，无需改动 |
-| 页脚展示 | `#footer-version` 显示 `vX.Y.Z · build yyyymmddhhmm`；`#drawer-version` 显示版本号 |
+| 页脚展示 | `#footer-version` 显示 `vX.Y.Z · build yymmddhhmm`（10 位 build 编号）；`#drawer-version` 显示版本号 |
 
 ## 10. 已知差异（不在本文跟踪）
 
-以下为**当前实现与理想状态**的差异，进度与验收标准以 [tasks.md](tasks.md) 为准，本文不重复列任务：Prettier 依赖缺失、覆盖率工具与阈值未配置、CI workflow 未接入、`pnpm test -- --coverage` 暂不可用、部分历史文案键名仍带 `ai*` 前缀、无 URL 级 i18n 与 RTL 支持。
+以下为**当前实现与理想状态**的差异，进度与验收标准以 [tasks.md](tasks.md) 为准，本文不重复列任务：`release.yml` 自动发布工作流未创建（P1-37）、URL 级 `[locale]` 路由未迁移（P1-7/8/9）、部分历史文案键名仍带 `ai*` 前缀、`tailwind.config.ts` 与 `@theme` 双重来源待收敛（P2-1/P2-18）、EdgeOne 平台安全头透传待验证（P1-32）。
 
 ## 11. 维护规则
 

@@ -18,7 +18,7 @@
 请通过以下方式私下告知维护者：
 
 - 在 GitHub 上通过 **Private vulnerability reporting**（仓库 → Security → Report a vulnerability）提交
-- 或发送邮件至维护者邮箱（见 `metadata.json` / 仓库主页 Profile）
+- 或通过 GitHub 仓库主页的维护者 Profile 联系（`metadata.json` 不含邮箱字段，请勿引用其作为联系方式）
 
 请在报告中尽量包含：
 

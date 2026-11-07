@@ -1,8 +1,8 @@
 # 部署指南
 
-> 文档版本：v5.2.34（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.40（与项目版本同步，权威版本见 `package.json`）
 
-本文描述项目的部署配置与上线流程。构建前的完整质量门禁见 [coding-standards.md](coding-standards.md) §11，发版流程见 [git-workflow.md](git-workflow.md) §6。
+本文描述项目的部署配置与上线流程。构建前的完整质量门禁见 [coding-standards.md](coding-standards.md) §11，发版与自动发布流程见 [git-workflow.md](git-workflow.md) §6 与 §6.1。
 
 ## 1. 部署目标与约束
 
@@ -90,7 +90,19 @@ pnpm start          # 默认监听 3000
 - 启用 Gzip 或 Brotli 压缩；面向国内用户可配合 CDN。
 - Google Analytics 相关域名由 CSP 的 `script-src` / `connect-src` 放行，新增第三方脚本须同步更新 `next.config.mjs` 的 `securityHeaders`。
 
-## 6. 部署前检查清单
+## 6. CI/CD 工作流与自动发布
+
+GitHub Actions 工作流（`.github/workflows/`）一览：
+
+| 工作流 | 触发 | Job | 说明 |
+|--------|------|-----|------|
+| `ci.yml` | push / PR（`main`、`develop`）、手动 | `quality` / `coverage` / `e2e` | 全量质量门禁：lint、`tsc --noEmit`、单测、行数门禁、生产依赖审计、`pnpm build`、体积预算、i18n 与版本展示位校验；coverage 上传报告 artifact；e2e 含 a11y（Playwright + axe） |
+| `deploy.yml` | push `main`、手动 | `vercel` | Vercel 生产部署；未配置 Secrets 时自动跳过（见工作流内 `::notice::`） |
+| `release.yml` | push tag `v*`、手动 | `release` | **自动发布 GitHub Releases**，规则见 [git-workflow.md](git-workflow.md) §6.1。**尚未创建**（规划中，落地任务 [tasks.md](tasks.md) P1-37）；落地前打 Tag 后按旧流程手工发布 |
+
+**自动发布规则**：推送 tag `vX.Y.Z` 后，仅当本次触发的 CI 全部 job 与同一 commit 在 `main` 上最近一次 Deploy 均为绿色（Deploy 被跳过视为可发布）时，自动创建 GitHub Release——标题 `vX.Y.Z`，正文取 `CHANGELOG.md` 对应版本小节；任一门禁失败则不发布并在 Action 日志标注原因。实现落地见 [tasks.md](tasks.md) P1-37。
+
+## 7. 部署前检查清单
 
 - [ ] 代码已按 [git-workflow.md](git-workflow.md) 合并到目标分支，`CHANGELOG.md` 与版本号已同步
 - [ ] `pnpm lint` 0 error / 0 warning
@@ -99,11 +111,12 @@ pnpm start          # 默认监听 3000
 - [ ] `pnpm check:lines` 输出 `all <= 200`
 - [ ] `pnpm security:audit`（`pnpm audit --prod --audit-level=high`）无高危
 - [ ] `pnpm build` 成功
-- [ ] 生产页脚 `#footer-version` 显示 `vX.Y.Z · build yyyymmddhhmm`（版本号来自 `package.json`，build 编号由 `next.config.mjs` 构建时注入，无需手工维护）
+- [ ] CI 全部工作流在目标 commit 上为绿色；`release.yml` 落地（P1-37）后打 Tag 确认 Release 自动创建，落地前按 [git-workflow.md](git-workflow.md) §6.1 旧流程手工发布
+- [ ] 生产页脚 `#footer-version` 显示 `vX.Y.Z · build yymmddhhmm`（10 位 build 编号；版本号来自 `package.json`，build 编号由 `next.config.mjs` 构建时注入，无需手工维护）
 - [ ] CSP 与 `X-Frame-Options` 等响应头在部署环境生效
 - [ ] 11 语言切换、深色模式、Canvas 书写与发音在目标环境手工验证
 
-## 7. 相关文档
+## 8. 相关文档
 
 - [编码规范与质量门禁](coding-standards.md)
 - [Git 工作流与发版流程](git-workflow.md)

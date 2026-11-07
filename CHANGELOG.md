@@ -1,5 +1,83 @@
 ﻿# Changelog
 
+## [5.2.40] - 根目录清洁度门禁；页脚 build 编号统一为 10 位 yymmddhhmm
+### Added
+- 根目录清洁度门禁（P0-29）：新增 `scripts/check-root-clean.mjs` 与 `pnpm check:root`（白名单制，临时脚本/一次性产物禁止落仓库根，结果写 `reports/root-clean.txt`）；`.github/workflows/ci.yml` `quality` job 首步执行；`.gitignore` 兜底 `*.out` / `audit-*.json` / `*-result.json`；`coding-standards.md` §4 增产物目录强制说明、§11 门禁表加行；`03-development.md` §3 与两份 README 脚本表同步。
+### Docs
+- 更新项目规范：页脚 `#footer-version`（及移动抽屉 `#drawer-version`）展示 `v{semver} · build {yymmddhhmm}`，build 编号固定为构建时刻本地时间的 **10 位** `yymmddhhmm`（如 `v5.2.40 · build 2611071530`）；同步 `03-development` / `02-architecture` / `05-deployment` / `git-workflow` / `alignment-checklist` / `project.md` 与两份 README 的格式描述。
+
+### Chore
+- `next.config.mjs` 的 `NEXT_PUBLIC_BUILD_ID` 生成从 12 位 `yyyymmddhhmm` 改为 10 位 `yymmddhhmm`（两位年份）；历史 CHANGELOG 条目中的旧格式描述按「历史记录不篡改」保留。
+- `version.test.ts` 新增展示格式断言 `/^v\d+\.\d+\.\d+( · build \d{10})?$/`，把页脚版本展示规范固化为门禁。
+
+## [5.2.38] - M1 收尾：noindex、发音降级提示与骨架屏
+### Added
+- 404 页 noindex（P2-15）：`src/app/not-found.tsx` 拆为 Server 外壳（`robots: { index: false, follow: false }`）+ 新增 `src/components/not-found-client.tsx` Client 内核；`global-error.tsx` 为 Client 组件无法导出 `metadata`（Next.js 规范限制），5xx 响应本身不被索引，作降级说明。
+- 发音能力降级提示（P2-16）：`use-pronunciation.ts` 新增 `speechSupported` 三态返回（挂载后检测，避免 hydration mismatch）；`character-detail.tsx` 不支持或播放失败时禁用发音按钮并以 `role="status"` 展示提示；新增 i18n 键 `learn.pronunciationUnavailable`（11 语言同步）。
+- 路由骨架屏（P2-13）：新增 `src/app/learn/loading.tsx`（标题 + 12 字卡网格，断点与 `character-grid.tsx` 一致 + 详情大卡）与 `src/app/practice/loading.tsx`（标题 + 选项卡 + 周进度卡），语义 token + `animate-pulse`。
+### Test
+- `use-pronunciation.test.tsx` 新增 `speechSupported` 挂载后解析为 `false` 用例（jsdom 无 Web Speech API）；全套 24 文件 / 138 用例通过。
+- 依赖重建后实测归档 P1-17 / P1-18 / P1-19：24 文件 / 137 用例全绿，`writing-canvas-utils.ts` 行覆盖 100%（验收 ≥90%），总体覆盖率 93.88% 行 / 94.65% 分支。
+### Chore
+- 同步全局展示位至 v5.2.38；`docs/tasks.md` 概览收敛至 23 项未完成（进行中 6 / 降级 13 / 待办 4），`docs/tasks-done.md` 归档总数 75 → 78。
+
+## [5.2.37] - 全量文档与代码库一致性审查（P2-8 完成）
+### Docs
+- `docs/01-overview.md`：技术栈表改 Radix 按需子包并补 `@sentry/nextjs` / `@vitest/coverage-v8` / Playwright；目录树补 `privacy/` `terms/` `api/health` `manifest/robots/sitemap` `e2e/` `src/content/` `instrumentation*` `.env.example` `LICENSE/NOTICE` 与 `styles/rtl.css`；§7 环境变量表由「无」改为 5 组可选变量实表。
+- `docs/02-architecture.md`：路由表补 `/privacy` `/terms` `/api/health` 与 SEO 路由；安全头清单移除已废弃 `X-XSS-Protection`、补 `Cross-Origin-Opener-Policy`；测试基线改 24 个单测文件 + E2E + 覆盖率阈值。
+- `docs/03-development.md`：命令表补 8 个缺失脚本（`bundle:check` / `e2e` / `e2e:ui` / `analyze` / `i18n:lint` / `version:sync` / `version:check` / `prototype:parity`）；版本注入链去掉硬编码示例值；`format` 底层调用写明完整 glob。
+- `docs/04-api-reference.md`：组件边界表补法律页 / 健康端点 / SEO 路由 / 错误兜底；`useTheme()` 补 `resolvedTheme`；`Translations` 类型改为 `ReturnType<typeof extendTranslations>`；§8 补扩展文案模块（3 组 + index）；§9 补 `site.ts` / `consent.ts` / `error-reporting.ts`；新增 §10「HTTP 端点」（`/api/health`）。
+- `docs/06-testing.md`：测试清单改 24 个测试文件实表（不再维护易失真的用例数）；新增 §6「端到端测试（Playwright）」；覆盖要求由「目标」改为「阈值已生效」并标注 v5.2.35 实测为快照。
+- `docs/alignment-checklist.md`：§1 基线表、§5 工具链现状（prettier 已装 / CI 已存在 / coverage 已配）、§6 测试数、§9 版本、§10 已知差异全部刷新至当前状态。
+- `README.md` / `README_EN.md`：脚本表补 6 条；目录树补 e2e / content / api / legal 路由；技术栈补 Sentry 与 E2E；页面表补 `/privacy` `/terms` `/api/health`；部署章节补 `.env.example` 指引。
+- `prototype/PROJECT_STRUCTURE.md`：文件计数刷新（111 TS/TSX + 4 CSS、24 测试、扩展模块 3 组）。
+- `docs/tasks.md`：P1-17/18/19 状态由「待办」改为「进行中」（测试文件已存在，待实测归档）；P2-8 完成并归档至 `tasks-done.md`（归档总数 71 → 72）。
+### Fix
+- `.github/dependabot.yml`：生产依赖分组 pattern `'radix-ui'` → `'@radix-ui/*'`（聚合包已移除，原 pattern 永不匹配）。
+- `.github/SECURITY.md`：移除「维护者邮箱见 metadata.json」的错误指引。
+- `docs/07-design-prototype.md` §1.1 与 `prototype/DESIGN_SPEC.md` §1.7：token 术语统一为「双重来源」，动效 token 命名统一为 `--duration-*`。
+### Chore
+- 同步全局展示位至 v5.2.37（`package.json` / `metadata.json` / 双 README）。
+
+## [5.2.36] - 新增规范：GitHub Actions 全绿后自动发布 Releases
+### Docs
+- 新增自动发布规范 `docs/git-workflow.md` §6.1「自动发布 Releases（GitHub Actions）」：推送 tag `vX.Y.Z` 后，当本次触发的 `ci.yml` 全部 job（quality / coverage / e2e）与同一 commit 在 `main` 上最近一次 `deploy.yml` 均为绿色（Deploy 因未配置 Secrets 被跳过视为可发布）时，由 `release.yml` 自动创建 GitHub Release——标题 `vX.Y.Z`，正文取 `CHANGELOG.md` 对应版本小节；任一门禁失败则不发布并标注原因；禁止删除重建同名 Tag，失败改用新 patch 版本重走发版流程。
+- `docs/git-workflow.md` §6 发版流程步骤 4–5 对齐上述规则（打 Tag 并推送 → 自动发布 → 复验页脚版本 / Release / 正文一致性）。
+- `docs/05-deployment.md` 新增 §6「CI/CD 工作流与自动发布」：`ci.yml` / `deploy.yml` / `release.yml` 三工作流触发与职责一览，部署前检查清单新增「CI 全绿 + Release 自动创建确认」项；后续章节编号顺延（§7 检查清单、§8 相关文档）。
+- `docs/tasks.md` 新增 P1-37「新增 release.yml 自动发布 GitHub Releases」（现状 / 目标 / 验收标准 / 涉及文件），纳入里程碑 M3；清单概览更新为 30 项未完成。
+### Chore
+- 同步全局展示位至 v5.2.36（`package.json` / `metadata.json` / `README.md` / `README_EN.md`）。
+
+## [5.2.35] - 推进任务清单：合规、CI、可观测性、SEO 与测试基线
+### Docs
+- `tasks.md` 归档 51 项已完成任务至 `tasks-done.md`，剩余 29 项按 M1/M2/M3 三批重排优先级与状态（`进行中` / `待办（降级）` / `待办`），记录 2026-11-05 12:38（UTC+8）更新时间戳与 v5.2.35 实测基线；`tasks-done.md` 按单一来源规则承接完成记录。
+
+### Feat / 法律与合规
+- 新增 `LICENSE`（MIT）、`NOTICE`（9 个生产依赖的实查许可/主页 + 字体与笔顺数据来源署名）、`package.json` 的 `license: MIT`。
+- 新增 `src/content/privacy.ts` / `terms.ts`（中英双语分段）与 `/privacy`、`/terms` 静态 Server 页面；页脚新增 11 语言法律链接与免责声明；两份 README 补数据准确性免责声明与社区文件互链。
+- 新增 `src/lib/consent.ts` + `src/components/consent-banner.tsx`；`google-analytics.tsx` 改为「生产环境 + 用户同意 + 衡量 ID 由 `NEXT_PUBLIC_GA_MEASUREMENT_ID` 注入」三重门控，未配置时零统计请求。
+- i18n 新增 `translations/extensions/`（legal / a11y / meanings 三组 11 语言文案），由 `extendTranslations` 统一合并进 11 语言包，`TranslationKey` 自动覆盖新键；单文件仍 ≤200 行。
+
+### Feat / CI 与可观测性
+- 新增 `.github/workflows/ci.yml`（lint / tsc / test / lines / audit / build / bundle / i18n / version 九项门禁 + coverage + E2E）、`deploy.yml`（未配置 Secrets 时安全跳过）、`dependabot.yml`、`.env.example`。
+- 接入 `@sentry/nextjs`：`sentry.server/edge.config.ts`、`src/instrumentation.ts`、`instrumentation-client.ts`、`src/lib/error-reporting.ts`、`src/app/global-error.tsx` 与 `/learn`、`/practice` 路由级 `error.tsx`；`next.config.mjs` 仅在配置 DSN 时包装。新增 `/api/health` 探针。
+- CSP 补强（`object-src`/`frame-src`/`worker-src`/`manifest-src`、`strict-origin-when-cross-origin`、`COOP`），移除废弃的 `X-XSS-Protection`、无效 `images.remotePatterns` 与 `preconnect`；`@next/bundle-analyzer` 与体积预算门禁落地（实测 1108 KB / 最大 424 KB）。
+
+### Feat / SEO、i18n 与 RTL
+- 新增 `sitemap.ts`（含语言变体）、`robots.ts`、`manifest.ts`、`public/icon.svg`、`structured-data.tsx`；根布局补全 metadataBase / canonical / hreflang / OpenGraph / Twitter / icons，子页面通过 Server `layout.tsx` 提供 metadata。
+- 根布局按 cookie 输出 SSR `lang`/`dir`；`LocaleProvider` 支持 `?lang=` 可分享 URL、cookie 同步与 RTL `document.dir`；`LocaleToggleClient` 实现 roving tabindex 与 aria 文案 i18n；新增 `src/app/styles/rtl.css`。
+
+### Test
+- `vitest.setup.ts` 注册 `@testing-library/jest-dom/vitest`；`vitest.config.ts` 配置 V8 覆盖率与 80/70/80/80 阈值（逻辑层口径）。实测 **92.77% 行 / 90.19% 函数 / 93.66% 分支**。
+- 新增 10 个测试文件（storage / consent / version / site / use-haptic / use-scroll-reveal / use-swipe-close / ui-primitives / providers / toast），单测由 9 文件 47 用例增至 **19 文件 77 用例**。
+- 新增 `playwright.config.ts` + `e2e/home.spec.ts` + `e2e/a11y.spec.ts`（axe 扫描 5 个路由的 critical 违规）。
+
+### Chore / 工具链
+- 依赖归位：移除聚合 `radix-ui`，改按需子包 `@radix-ui/react-{dialog,tooltip,slot}` 并归入生产依赖；新增 prettier / coverage-v8 / bundle-analyzer / Sentry / Playwright / axe 等开发依赖。
+- 修复 `pnpm-workspace.yaml` 的 `allowBuilds` 占位与 `brace-expansion` 全局降级（后者曾导致覆盖率工具崩溃）；`.gitignore` 停止忽略 `pnpm-workspace.yaml`，否则 CI 无法解析构建策略。
+- 新增 `scripts/sync-version.mjs`、`i18n-lint.mjs`、`prototype-parity.mjs`、`analyze.mjs`、`check-bundle-size.mjs`；`format` glob 扩展到 e2e / scripts / prototype。
+- `useTheme()` 新增 `resolvedTheme` 并修复系统主题变化监听；`DialogContent` 支持 `closeLabel` 注入，三个弹窗接入 `common.close`。
+
 ## [5.2.34] - 更新并完善项目文档与开发规范
 ### Docs
 - 重建文档分层与单一职责矩阵：`docs/index.md` 明确入口层 / 规范层 / 状态层 / 原型层 / 归档层 / 协作层，逐篇规定「唯一负责的内容」与「不得写入」，新增术语表、格式约定、版本戳规则（只更新本次改动文档）与 `npm` 字样豁免清单。

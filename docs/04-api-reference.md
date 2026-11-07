@@ -1,6 +1,6 @@
 # API 参考
 
-> 文档版本：v5.2.34（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.37（与项目版本同步，权威版本见 `package.json`）
 
 本文列出应用内部**公开模块与组件的真实签名**。类型与导出以源码为准；本文只做稳定契约说明，不逐字复制实现。设计 token 完整色板见 [07-design-prototype.md](07-design-prototype.md)，编码用法见 [coding-standards.md](coding-standards.md)。
 
@@ -10,6 +10,10 @@
 |------|------|---------|
 | `src/app/layout.tsx` | Server | 默认导出根布局 |
 | `src/app/page.tsx` / `learn/page.tsx` / `practice/page.tsx` | Client | 默认导出页面组件 |
+| `src/app/privacy/page.tsx` / `terms/page.tsx` | Server | 法律条款静态页（文案取 `src/content/`） |
+| `src/app/api/health/route.ts` | Server | `GET` 健康检查（见 §10） |
+| `src/app/manifest.ts` / `robots.ts` / `sitemap.ts` | Server | PWA manifest、robots、sitemap 生成 |
+| `src/app/global-error.tsx`、`learn/error.tsx`、`practice/error.tsx` | Client | 根级 / 路由级错误兜底 |
 | `src/components/locale-provider.tsx` | Client | `LocaleProvider`、`useLocale`、`useTranslation` |
 | `src/components/theme-provider.tsx` | Client | `ThemeProvider`、`useTheme` |
 | `src/components/*-toggle.tsx` | Client | `ThemeToggleClient`、`LocaleToggleClient` |
@@ -62,7 +66,7 @@ export function Example() {
 |----|----------|
 | `Theme` | `'dark' \| 'light' \| 'system'` |
 | `ThemeProvider` Props | `children`、`defaultTheme?: Theme`（默认 `system`）、`storageKey?: string`（默认 `hanzi-master-theme`） |
-| `useTheme()` | 返回 `{ theme: Theme; setTheme: (theme: Theme) => void }` |
+| `useTheme()` | 返回 `{ theme: Theme; resolvedTheme: 'dark' \| 'light'; setTheme: (theme: Theme) => void }`；`resolvedTheme` 是 `system` 解析后的实际主题 |
 | `ThemeToggleClient` | 无 props，三态循环切换：`light → dark → system → light` |
 
 主题由根节点 `.dark` 类切换（`globals.css` 内定义暗色变量），偏好经 `safeSetItem` 持久化；Tooltip 文案取 `common.theme.*`。
@@ -117,14 +121,16 @@ export function Example() {
 | 导出 | 类型 / 说明 |
 |------|------------|
 | `Locale` | `'en' \| 'zh-CN' \| 'zh-TW' \| 'es' \| 'ar' \| 'fr' \| 'pt-BR' \| 'de' \| 'ja' \| 'ko' \| 'ru'` |
-| `Translations` | `typeof en`，以 `en.ts` 为结构基准 |
+| `Translations` | `ReturnType<typeof extendTranslations>`：以 `en.ts` 为基准 + `extensions/` 合并后的最终结构 |
 | `TranslationKey` | `Translations` 全部叶子键的点分联合类型 |
 | `translations` | `Record<Locale, Translations>` |
 | `locales` | `Locale[]`，由 `Object.keys(translations)` 生成 |
 | `getNestedValue` | `(obj: Translations, path: string) => string`，按点分路径取值 |
 | `interpolate` | 把 `{{name}}` 占位符替换为传入参数 |
 
-翻译文件：`src/lib/i18n/translations/{en,zh-CN,zh-TW,es,ar,fr,pt-BR,de,ja,ko,ru}.ts`，共 11 个。`src/lib/__tests__/i18n.test.ts` 校验其余 10 语言的叶子键与 `en` 完全一致。
+翻译文件：`src/lib/i18n/translations/{en,zh-CN,zh-TW,es,ar,fr,pt-BR,de,ja,ko,ru}.ts`，共 11 个。`src/lib/__tests__/i18n.test.ts` 校验其余 10 语言的叶子键与 `en` 完全一致；`pnpm i18n:lint` 做同口径的命令行校验。
+
+**扩展文案模块**：`src/lib/i18n/translations/extensions/` 下共 3 组（`a11y`、`legal`、`meanings`）+ 1 个 `index.ts` 合并入口；`extendTranslations(base, locale)` 把三组文案合并进 11 个语言包，`Translations` 与 `TranslationKey` 类型随之自动扩展。新增文案模块时必须 11 语言齐全并保持叶子键一致。
 
 ### 8.1 翻译键域
 
@@ -150,11 +156,22 @@ export function Example() {
 | `src/lib/storage.ts` | `safeGetItem<T>(key, defaultValue)`、`safeSetItem<T>(key, value)` | 版本化 + schema 校验，内部统一 `window.localStorage`，异常静默降级 |
 | `src/lib/utils.ts` | `cn(...inputs: ClassValue[])` | `clsx` + `twMerge` 合并类名 |
 | `src/lib/version.ts` | `APP_VERSION`、`BUILD_ID`、`VERSION_LABEL` | 读取 `NEXT_PUBLIC_*` 注入值，缺失时回退 |
+| `src/lib/site.ts` | `SITE_URL` | 站点绝对地址（`NEXT_PUBLIC_SITE_URL`，回退 `http://localhost:3000`），供 canonical / sitemap 使用 |
+| `src/lib/consent.ts` | GA 同意状态读写 | 同意门控（`getConsent` / `setConsent` 等），配合 `consent-banner.tsx` |
+| `src/lib/error-reporting.ts` | 错误上报封装 | 未配置 Sentry DSN 时为空操作 |
 | `src/lib/characters*.ts` | 汉字数据与类型 | 12 个基础汉字，拆分为 `characters-part1/2.ts` |
 | `src/lib/stroke-order-data.ts` | 笔顺数据 | 学习页笔顺演示 |
 | `src/lib/progress-utils.ts` | 连胜 / 准确率 / 周活动纯函数 | 由 `useProgress` 调用 |
 
-## 10. 样式与主题 token
+## 10. HTTP 端点
+
+| 端点 | 方法 | 响应 |
+|------|------|------|
+| `/api/health` | `GET` | `{ status: 'ok', version, build }`；`version` / `build` 取 `NEXT_PUBLIC_APP_VERSION` / `NEXT_PUBLIC_BUILD_ID`，未注入时为 `unknown`。用于部署后健康探测，无鉴权、无副作用。 |
+
+这是当前唯一的 HTTP 端点；应用无业务后端 API。
+
+## 11. 样式与主题 token
 
 语义 token 定义在 `src/app/globals.css` 的 `@theme`，命名带 `--color-` 前缀：
 
@@ -172,13 +189,13 @@ export function Example() {
 
 > 旧版本本文使用 `--primary` / `--accent`（无 `--color-` 前缀）并把 `--font-heading` 写成 Space Grotesk，均与 `globals.css` 不符，已纠正。扩展色阶与动画见 `tailwind.config.ts`，完整设计系统见 [07-design-prototype.md](07-design-prototype.md)。
 
-## 11. 环境变量与浏览器要求
+## 12. 环境变量与浏览器要求
 
-- 环境变量：**无需任何**。运行期版本由 `next.config.mjs` 注入 `NEXT_PUBLIC_APP_VERSION` / `NEXT_PUBLIC_BUILD_ID`，不需手工配置。
+- 环境变量：核心页面**无需任何**即可运行；可选变量（`NEXT_PUBLIC_SITE_URL` / GA / Sentry / `ANALYZE`）见 `.env.example` 与 [01-overview.md](01-overview.md) §7。运行期版本由 `next.config.mjs` 注入 `NEXT_PUBLIC_APP_VERSION` / `NEXT_PUBLIC_BUILD_ID`，不需手工配置。
 - 浏览器：Chrome / Firefox / Safari / Edge 最新两个主要版本；需启用 JavaScript、`localStorage`、Canvas 与（发音功能）Web Speech API。
 - 构建期联网资源：`next/font/google`（Google Fonts）。
 
-## 12. 相关文档
+## 13. 相关文档
 
 - [技术架构](02-architecture.md)
 - [编码规范](coding-standards.md)

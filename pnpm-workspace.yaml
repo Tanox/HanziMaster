@@ -1,0 +1,26 @@
+# pnpm 工作区配置（v10+ 将 onlyBuiltDependencies / overrides 迁移至此）
+packages:
+  - '.'
+allowBuilds:
+  esbuild: true
+  sharp: true
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+# 安全审计（pnpm audit）后对传递依赖声明的补丁版本下限
+overrides:
+  sharp: ^0.35.0
+  systeminformation: ^5.33.16
+  proxy-addr: ^2.0.8
+  tinypool: ^2.1.1
+  undici: ^7.29.1
+  js-yaml: ^4.3.2
+  fast-uri: ^3.1.7
+  # 仅约束 1.x 安全补丁；minimatch 10.x / test-exclude 依赖 2.x+ 的新版 API，不能全局降级
+  'brace-expansion@1': ^1.1.20
+  source-map-js: ^1.2.2
+  body-parser: ^2.4.0
+  zod: ^4.6.6
+  vite: ^7.3.7
+  '@modelcontextprotocol/sdk': ^1.31.0
+  postcss: ^8.5.12

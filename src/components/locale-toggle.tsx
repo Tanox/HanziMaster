@@ -1,4 +1,4 @@
-// src/components/locale-toggle.tsx v5.2.25
+// src/components/locale-toggle.tsx v5.2.35
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
@@ -16,12 +16,12 @@ const localeNames: Record<string, string> = {
   'de': 'Deutsch',
   'ja': '日本語',
   'ko': '한국어',
-  'ru': 'Русский'
+  'ru': 'Русский',
 };
 
 export function LocaleToggleClient() {
   const [isOpen, setIsOpen] = useState(false);
-  const { locale, setLocale, availableLocales } = useLocale();
+  const { locale, setLocale, availableLocales, t } = useLocale();
   const menuRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -36,7 +36,6 @@ export function LocaleToggleClient() {
     close();
   }, [setLocale, close]);
 
-  /* Click outside to close */
   useEffect(() => {
     if (!isOpen) return;
     const handleClickOutside = (event: MouseEvent) => {
@@ -48,7 +47,7 @@ export function LocaleToggleClient() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen, close]);
 
-  /* Keyboard: Escape to close, Arrow keys to navigate */
+  /* Roving tabindex：仅当前项进 Tab 序列，方向键在列表内移动 */
   useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -57,13 +56,15 @@ export function LocaleToggleClient() {
         close();
         return;
       }
-      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Home' || e.key === 'End') {
         e.preventDefault();
         const items = listRef.current?.querySelectorAll<HTMLButtonElement>('[role="option"]');
         if (!items || items.length === 0) return;
         const currentIndex = Array.from(items).findIndex((el) => el === document.activeElement);
-        const nextIndex = e.key === 'ArrowDown'
-          ? (currentIndex + 1) % items.length
+        const nextIndex =
+          e.key === 'Home' ? 0
+          : e.key === 'End' ? items.length - 1
+          : e.key === 'ArrowDown' ? (currentIndex + 1) % items.length
           : (currentIndex - 1 + items.length) % items.length;
         items[nextIndex]?.focus();
       }
@@ -75,10 +76,11 @@ export function LocaleToggleClient() {
   return (
     <div id="locale-toggle" className="relative" ref={menuRef}>
       <button
+        id="locale-toggle-button"
         ref={buttonRef}
         onClick={() => setIsOpen((v) => !v)}
         className="p-2 rounded-lg hover:bg-muted transition-colors"
-        aria-label={`Change language (current: ${localeNames[locale] || locale})`}
+        aria-label={`${t('common.changeLanguage')} (${localeNames[locale] || locale})`}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         style={{ minWidth: 44, minHeight: 44 }}
@@ -89,9 +91,10 @@ export function LocaleToggleClient() {
       </button>
       {isOpen && (
         <div
+          id="locale-toggle-menu"
           ref={listRef}
           role="listbox"
-          aria-label="Select language"
+          aria-label={t('common.selectLanguage')}
           className="absolute right-0 mt-2 w-48 max-h-[70vh] overflow-y-auto bg-card dark:bg-ink-900 rounded-lg shadow-ink-lg border border-border z-50"
         >
           {availableLocales.map((loc) => (
@@ -100,7 +103,7 @@ export function LocaleToggleClient() {
               role="option"
               aria-selected={locale === loc}
               onClick={() => selectLocale(loc)}
-              tabIndex={0}
+              tabIndex={locale === loc ? 0 : -1}
               className={`w-full text-left px-4 py-2.5 text-sm hover:bg-muted transition-colors first:rounded-t-lg last:rounded-b-lg ${
                 locale === loc
                   ? 'bg-vermilion-500/10 dark:bg-vermilion-500/20 text-vermilion-600 dark:text-vermilion-400 font-semibold'

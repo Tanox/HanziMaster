@@ -1,4 +1,4 @@
-// src/components/layout-client.tsx v5.2.27
+// src/components/layout-client.tsx v5.2.35
 'use client';
 
 import { VERSION_LABEL } from '@/lib/version';
@@ -92,10 +92,15 @@ export function LayoutClient({ children }: LayoutClientProps) {
             </div>
             <span className="text-lg font-semibold display-font">HanziMaster</span>
           </div>
-          <nav className="flex flex-wrap justify-center gap-8 text-sm text-ink-500 dark:text-ink-400">
+          <nav id="footer-nav" aria-label={t('legal.legalHeading')} className="flex flex-wrap justify-center gap-8 text-sm text-ink-500 dark:text-ink-400">
             <Link href="/learn" className="hover:text-vermilion-500 transition-colors">{t('common.learn')}</Link>
             <Link href="/practice" className="hover:text-vermilion-500 transition-colors">{t('common.practice')}</Link>
+            <Link id="footer-privacy-link" href="/privacy" className="hover:text-vermilion-500 transition-colors">{t('legal.privacyLink')}</Link>
+            <Link id="footer-terms-link" href="/terms" className="hover:text-vermilion-500 transition-colors">{t('legal.termsLink')}</Link>
           </nav>
+          <p id="footer-disclaimer" className="max-w-xl text-center text-xs text-ink-400 dark:text-ink-500">
+            {t('legal.disclaimerShort')}
+          </p>
           <p id="footer-version" className="text-xs sm:text-sm text-ink-400 dark:text-ink-500 text-center">{t('footer.copyright', { versionLabel: VERSION_LABEL })}</p>
         </div>
       </footer>

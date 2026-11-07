@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ru.ts v5.2.31
+// src/lib/i18n/translations/ru.ts v5.2.38
 export const ru = {
   common: {
     home: 'Главная',
@@ -177,6 +177,7 @@ export const ru = {
     strokeOrder: 'Порядок черт',
     strokeCount: 'Количество черт: {{count}}',
     playAudio: 'Воспроизвести аудио',
+    pronunciationUnavailable: 'Ваш браузер не поддерживает голосовое произношение',
     startQuiz: 'Начать тест',
     nextCharacter: 'Следующий символ',
     quizTitle: 'Тест по иероглифам',

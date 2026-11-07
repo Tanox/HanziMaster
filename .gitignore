@@ -42,8 +42,16 @@ next-env.d.ts
 # Misc
 *.pem
 
-# pnpm 自动生成的占位 workspace 模板（单体项目无需）
-pnpm-workspace.yaml
+# pnpm-workspace.yaml 必须提交：pnpm v10+ 的 onlyBuiltDependencies / allowBuilds / overrides 均在此文件
+
+# E2E 产物
+/playwright-report/
+/test-results/
+
+# 根目录临时产物兜底（正式产物统一写 reports/，门禁见 scripts/check-root-clean.mjs）
+*.out
+audit-*.json
+*-result.json
 
 # Debug
 npm-debug.log*

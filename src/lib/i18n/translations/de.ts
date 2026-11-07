@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/de.ts v5.2.31
+// src/lib/i18n/translations/de.ts v5.2.38
 export const de = {
   common: {
     home: 'Startseite',
@@ -177,6 +177,7 @@ export const de = {
     strokeOrder: 'Strichfolge',
     strokeCount: 'Strichanzahl: {{count}}',
     playAudio: 'Audio abspielen',
+    pronunciationUnavailable: 'Sprachausgabe wird von diesem Browser nicht unterstützt',
     startQuiz: 'Quiz starten',
     nextCharacter: 'Nächstes Zeichen',
     quizTitle: 'Zeichen-Quiz',

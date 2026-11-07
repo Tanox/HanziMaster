@@ -1,9 +1,10 @@
-/* src/app/globals.css v5.2.31 */
+/* src/app/globals.css v5.2.35 */
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "./styles/utilities.css";
 @import "./styles/keyframes.css";
+@import "./styles/rtl.css";
 
 @custom-variant dark (&:is(.dark *));
 

@@ -1,6 +1,6 @@
 # 测试规范
 
-> 文档版本：v5.2.34（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.37（与项目版本同步，权威版本见 `package.json`）
 
 本文描述项目**当前真实**的测试基础设施与编写规范。质量门禁的定义与完整命令表见 [coding-standards.md](coding-standards.md) §11；未完成的测试改进任务见 [tasks.md](tasks.md)。
 
@@ -23,21 +23,18 @@
 
 ## 2. 当前测试清单
 
-`src/` 下共 **9 个测试文件 / 47 个用例**（`pnpm test` 全通过）：
+`src/` 下共 **24 个测试文件**（`pnpm test` 全通过；用例数随开发变化，以 `pnpm test` 输出为准，文档不维护具体数字）：
 
-| 文件 | 用例数 | 覆盖内容 |
-|------|-------|---------|
-| `src/lib/__tests__/characters.test.ts` | 4 | 汉字数据完整性 |
-| `src/lib/__tests__/i18n.test.ts` | 3 | 11 语言叶子键与 `en` 完全一致 |
-| `src/lib/__tests__/progress-utils.test.ts` | 13 | 连胜、准确率、周活动计算 |
-| `src/lib/__tests__/stroke-order.test.ts` | 2 | 笔顺数据 |
-| `src/lib/__tests__/translate.test.ts` | 9 | `getNestedValue` / `interpolate`、原型链与插值安全 |
-| `src/components/learn/__tests__/character-grid.test.tsx` | 3 | 字符网格渲染与选择 |
-| `src/components/state/__tests__/state-views.test.tsx` | 7 | 空/错/加载态 |
-| `src/hooks/__tests__/use-progress.test.tsx` | 4 | 进度 hook |
-| `src/hooks/__tests__/use-pronunciation.test.tsx` | 2 | 发音 hook |
-
-> 用例数会随开发变化，以 `pnpm test` 输出为准，不要手工维护文档里的数字。
+| 分组 | 文件 | 覆盖内容 |
+|------|------|---------|
+| lib 纯逻辑 | `characters` / `stroke-order` | 汉字数据与笔顺数据完整性 |
+| lib 纯逻辑 | `i18n` / `translate` | 11 语言叶子键一致、`getNestedValue` / `interpolate` 安全 |
+| lib 纯逻辑 | `progress-utils` / `storage` | 连胜、准确率、周活动；localStorage 版本化与 schema 校验 |
+| lib 纯逻辑 | `consent` / `site` / `version` | GA 同意门控、站点 URL、版本注入回退 |
+| hooks | `use-progress` / `use-pronunciation` / `use-haptic` / `use-scroll-reveal` / `use-swipe-close` | 进度、发音、震动、滚动入场、右滑关闭 |
+| components | `character-grid` / `learn/quiz-dialog` / `practice/quiz-dialog` | 字符网格与两个测验弹窗 |
+| components | `writing-canvas-utils` / `writing-canvas-drawing` / `writing-canvas-geometry` | Canvas 书写的纯逻辑拆分（工具 / 绘制 / 几何判定） |
+| components | `state-views` / `ui-primitives` / `providers` / `toast` | 状态视图、UI 原语、Provider 组合、toast |
 
 ## 3. 命令
 
@@ -46,11 +43,14 @@
 | `pnpm test` | 运行全部单测（`vitest run`） |
 | `pnpm test:watch` | 监听模式 |
 | `pnpm test:run` | 包装器 `scripts/run-tests.mjs`，产物写 `reports/test-out.txt`，透传 `--coverage` |
+| `pnpm test:run --coverage` | 带覆盖率运行，报告写 `coverage/`（text / json-summary / html） |
+| `pnpm e2e` | Playwright 端到端测试（`e2e/home.spec.ts`、`e2e/a11y.spec.ts`） |
+| `pnpm e2e:ui` | E2E 可视化调试模式 |
 | `pnpm check:lines` | 源码行数门禁，与测试无关的独立门禁 |
 
 本机 pnpm v10+ 触发 `ERR_PNPM_IGNORED_BUILDS` 时改用：`node node_modules/vitest/vitest.mjs run --reporter=dot`，或用 `node scripts/run-tests.mjs` 包装器（可避开工具对长时间 watch 命令的误判）。
 
-**覆盖率现状**：`@vitest/coverage-v8` 尚未安装，`vitest.config.ts` 未配置 `coverage` 段，因此当前**不能**声称 `pnpm test -- --coverage` 可用；覆盖率接入与阈值门禁是 [tasks.md](tasks.md) 中的待办。下文 §7 的目标值是接入后的验收标准，不代表现状。
+**覆盖率现状（v5.2.35）**：`@vitest/coverage-v8@3.2.4` 已安装，`vitest.config.ts` 配置 V8 provider 与 `80/70/80/80` 阈值。实测 **92.77% 行 / 92.77% 语句 / 90.19% 函数 / 93.66% 分支**，门禁通过。统计口径为逻辑层（`src/lib`、`src/hooks`、`src/components/state`、`src/components/ui`），静态文案与数据表不计入。
 
 ## 4. 测试文件组织
 
@@ -107,28 +107,47 @@ it('renders the empty title', () => {
 
 新增或修改翻译键必须同步 11 个语言文件，`src/lib/__tests__/i18n.test.ts` 会校验叶子键与 `en` 完全一致；`t()` 的 key 还受 `TranslationKey` 联合类型约束，类型检查也会拦截未定义键。
 
-## 6. 覆盖要求（目标，非现状）
+## 6. 端到端测试（Playwright）
 
-| 指标 | 目标 |
+E2E 已接入，配置在 `playwright.config.ts`，测试在 `e2e/`：
+
+| 项 | 值 | 说明 |
+|----|-----|------|
+| 测试文件 | `e2e/home.spec.ts`、`e2e/a11y.spec.ts` | 首页渲染与交互；无障碍（`@axe-core/playwright`） |
+| 浏览器 | 仅 `chromium`（Desktop Chrome） | 单 project，控制执行时长 |
+| baseURL | `E2E_BASE_URL`，默认 `http://127.0.0.1:3000` | 指向已运行实例时设此变量 |
+| webServer | `pnpm dev`，自动起服务；CI 外复用已有服务 | 首次运行前无需手工起服务 |
+| 重试 / 产物 | CI 中 retries 1、trace on-first-retry、失败截图 | 本地 retries 0 |
+
+> E2E 运行前需安装浏览器：`pnpm exec playwright install --with-deps chromium`（CI 已内置此步骤）。E2E 不计入覆盖率统计口径。
+
+## 7. 覆盖要求（阈值已生效）
+
+`vitest.config.ts` 已配置 V8 provider 与阈值门禁，任一指标低于阈值即测试失败：
+
+| 指标 | 阈值 |
 |------|------|
 | 语句 Statements | ≥ 80% |
 | 分支 Branches | ≥ 70% |
 | 函数 Functions | ≥ 80% |
 | 行 Lines | ≥ 80% |
 
-新功能须带对应测试；纯逻辑优先单测，交互路径优先集成测试；不追求对实现细节的覆盖率，重点覆盖边界条件与真实数据。端到端测试当前未接入。
+统计口径为逻辑层（`src/lib/**/*.ts`、`src/hooks/**/*.ts`、`src/components/state|ui/**`、`writing-canvas-utils.ts`），页面 JSX、静态文案（`translations/`）与数据表（`characters*` / `stroke-order-data`）不计入。v5.2.37 实测快照：93.88% 行 / 93.88% 语句 / 91.8% 函数 / 94.65% 分支（24 文件 / 137 用例全通过）。
 
-## 7. 提交前检查
+新功能须带对应测试；纯逻辑优先单测，交互路径优先集成测试；不追求对实现细节的覆盖率，重点覆盖边界条件与真实数据。
+
+## 8. 提交前检查
 
 - [ ] `pnpm test` 全部通过（或等价的 Node 直跑命令）
 - [ ] 新增逻辑有对应测试，无无理由跳过的 `it.skip`
 - [ ] 11 语言键一致性测试通过
 - [ ] 无 `jest.*` API、无硬编码环境依赖
-- [ ] 测试产物未提交到仓库（在 `reports/` 下且被忽略）
+- [ ] 涉及页面渲染或无障碍的改动跑过 `pnpm e2e`
+- [ ] 测试产物未提交到仓库（在 `reports/` / `coverage/` / `test-results/` 下且被忽略）
 
-## 8. 相关文档
+## 9. 相关文档
 
 - [编码规范与质量门禁](coding-standards.md)
 - [开发指南](03-development.md)
 - [Git 工作流](git-workflow.md)
-- [任务清单（覆盖率等待办）](tasks.md)
+- [任务清单（剩余测试改进）](tasks.md)

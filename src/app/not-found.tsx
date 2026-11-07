@@ -1,21 +1,12 @@
-// src/app/not-found.tsx v5.2.31
-'use client';
+// src/app/not-found.tsx v5.2.38
+import type { Metadata } from 'next';
+import NotFoundClient from '@/components/not-found-client';
 
-import { useRouter } from 'next/navigation';
-import { useTranslation } from '@/components/locale-provider';
-import { ErrorState } from '@/components/state/state-views';
+// 404 页面禁止被搜索引擎收录（P2-15）；交互逻辑在 Client 内核 not-found-client.tsx
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default function NotFound() {
-  const { t } = useTranslation();
-  const router = useRouter();
-
-  return (
-    <ErrorState
-      className="min-h-[60vh]"
-      title={t('common.notFoundTitle')}
-      description={t('common.notFoundDesc')}
-      retryLabel={t('common.backHome')}
-      onRetry={() => router.push('/')}
-    />
-  );
+  return <NotFoundClient />;
 }

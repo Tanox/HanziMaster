@@ -1,4 +1,4 @@
-// src/hooks/use-pronunciation.ts v5.2.25
+// src/hooks/use-pronunciation.ts v5.2.38
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
@@ -8,6 +8,12 @@ import { useCallback, useEffect, useState } from 'react';
 export function usePronunciation() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [pronounceError, setPronounceError] = useState(false);
+  // 能力检测：三态（null = 未检测），挂载后检测以避免 SSR/客户端 hydration 不一致（P2-16）
+  const [speechSupported, setSpeechSupported] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    setSpeechSupported('speechSynthesis' in window);
+  }, []);
 
   const speak = useCallback((hanzi: string) => {
     if (!('speechSynthesis' in window)) {
@@ -38,5 +44,5 @@ export function usePronunciation() {
     };
   }, []);
 
-  return { isSpeaking, pronounceError, speak };
+  return { isSpeaking, pronounceError, speechSupported, speak };
 }

@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/en.ts v5.2.31
+// src/lib/i18n/translations/en.ts v5.2.38
 export const en = {
   common: {
     home: 'Home',
@@ -177,6 +177,7 @@ export const en = {
     strokeOrder: 'Stroke Order',
     strokeCount: 'Stroke Count: {{count}}',
     playAudio: 'Play Audio',
+    pronunciationUnavailable: 'Pronunciation is not supported in this browser',
     startQuiz: 'Start Quiz',
     nextCharacter: 'Next Character',
     quizTitle: 'Character Quiz',

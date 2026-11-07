@@ -1,6 +1,6 @@
 # 技术架构
 
-> 文档版本：v5.2.34（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.40（与项目版本同步，权威版本见 `package.json`）
 
 本文描述**当前代码的实际架构**。组件 API 见 [04-api-reference.md](04-api-reference.md)，设计系统见 [07-design-prototype.md](07-design-prototype.md)，编码约束见 [coding-standards.md](coding-standards.md)。
 
@@ -43,10 +43,13 @@
 | `/` | `src/app/page.tsx` | Client | Hero、功能特性、永字八法演示 |
 | `/learn` | `src/app/learn/page.tsx` | Client | 字符网格、详情、发音、笔顺、测验、键盘切换 |
 | `/practice` | `src/app/practice/page.tsx` | Client | 书写练习、拼音测验、真实进度统计 |
-| 路由态 | `error.tsx` / `loading.tsx` / `not-found.tsx` | Client | 错误边界、加载、404 |
+| `/privacy` · `/terms` | `src/app/privacy/page.tsx` / `terms/page.tsx` | Server | 法律条款静态页（文案在 `src/content/`） |
+| `/api/health` | `src/app/api/health/route.ts` | Server | 健康检查，返回版本与 build 编号 |
+| SEO / PWA | `manifest.ts` / `robots.ts` / `sitemap.ts` | Server | manifest、robots、sitemap 生成 |
+| 路由态 | `error.tsx` / `loading.tsx` / `not-found.tsx` / `global-error.tsx`（含 `learn/`、`practice/` 级 error） | Client | 错误边界、加载、404 |
 | 根布局 | `layout.tsx` | Server | 字体、Metadata、Provider 组合、GA、`LayoutClient` |
 
-`src/app/styles/` 存放从 `globals.css` 拆出的 `utilities.css` 与 `keyframes.css`，保证单文件 ≤ 200 行。
+`src/app/styles/` 存放从 `globals.css` 拆出的 `utilities.css`、`keyframes.css` 与 `rtl.css`（RTL 布局规则），保证单文件 ≤ 200 行。
 
 ## 3. 模块职责
 
@@ -81,11 +84,11 @@
 
 ## 5. 版本与构建标识
 
-`package.json` 的 `version` 是唯一权威源。`next.config.mjs` 在 dev / build 时读取它，注入 `NEXT_PUBLIC_APP_VERSION` 与构建时刻的 `NEXT_PUBLIC_BUILD_ID`（`yyyymmddhhmm`）；`src/lib/version.ts` 暴露 `VERSION_LABEL`；`layout-client.tsx` 通过 `t('footer.copyright', { versionLabel })` 插值到 `#footer-version`，移动抽屉读 `#drawer-version`。因此 11 个语言文件不含字面版本号。完整链路见 [03-development.md](03-development.md) §4。
+`package.json` 的 `version` 是唯一权威源。`next.config.mjs` 在 dev / build 时读取它，注入 `NEXT_PUBLIC_APP_VERSION` 与构建时刻的 `NEXT_PUBLIC_BUILD_ID`（`yymmddhhmm`，10 位）；`src/lib/version.ts` 暴露 `VERSION_LABEL`；`layout-client.tsx` 通过 `t('footer.copyright', { versionLabel })` 插值到 `#footer-version`，移动抽屉读 `#drawer-version`。因此 11 个语言文件不含字面版本号。完整链路见 [03-development.md](03-development.md) §4。
 
 ## 6. 安全与配置
 
-- CSP 与 `X-Content-Type-Options` / `X-Frame-Options` / `X-XSS-Protection` / `Referrer-Policy` / `Permissions-Policy` 由 `next.config.mjs` 的 `headers()` 对 `/:path*` 统一注入；生产 CSP 放行 Google Fonts 与 Analytics 域名，`script-src` 因 App Router 内联脚本需要 `'unsafe-inline'`。
+- CSP 与 `X-Content-Type-Options` / `X-Frame-Options` / `Referrer-Policy` / `Permissions-Policy` / `Cross-Origin-Opener-Policy` 由 `next.config.mjs` 的 `headers()` 对 `/:path*` 统一注入；生产 CSP 放行 Google Fonts 与 Analytics 域名，`script-src` 因 App Router 内联脚本需要 `'unsafe-inline'`。已废弃的 `X-XSS-Protection` **不再发送**。
 - **无中间件**：不存在 `middleware.ts` / `proxy.ts`；历史上曾存在名为 `proxy.ts` 的文件，因文件名不生效且与 CSP 重复已删除。不要在文档或代码中恢复该引用。
 - `next/font/google` 是唯一联网构建依赖；离线构建失败属环境限制。
 - `components.json` 记录 shadcn 配置（style `radix-nova`、`rsc: true`、别名 `@/components` 等）。
@@ -93,7 +96,7 @@
 
 ## 7. 测试与质量
 
-Vitest + jsdom，测试就近放在各模块 `__tests__/`，当前 9 文件 / 47 用例；`i18n.test.ts` 校验 11 语言叶子键一致。质量门禁（类型检查 / lint / 单测 / 行数 / 审计 / 构建）见 [coding-standards.md](coding-standards.md) §11，测试细节见 [06-testing.md](06-testing.md)。
+Vitest + jsdom，测试就近放在各模块 `__tests__/`，当前 **24 个单测文件**；`i18n.test.ts` 校验 11 语言叶子键一致。另有 Playwright E2E（`e2e/`，含 axe 无障碍断言）与覆盖率阈值门禁（`@vitest/coverage-v8`，80/70/80/80）。质量门禁（类型检查 / lint / 单测 / 行数 / 审计 / 构建 / 体积 / i18n / 版本展示位）见 [coding-standards.md](coding-standards.md) §11，测试细节见 [06-testing.md](06-testing.md)；CI 工作流见 [05-deployment.md](05-deployment.md) §6。
 
 ## 8. 技术选型理由
 

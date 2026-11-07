@@ -1,13 +1,13 @@
 ﻿# 项目概述
 
-> 文档版本：v5.2.34（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.37（与项目版本同步，权威版本见 `package.json`）
 
 ## 1. 基本信息
 
 | 项目属性 | 值 |
 |---------|-----|
 | 项目名称 | HanziMaster 汉字大师 |
-| 当前版本 | v5.2.34（权威源 `package.json` 的 `version`） |
+| 当前版本 | v5.2.35（权威源 `package.json` 的 `version`） |
 | 项目类型 | 汉字学习 Web 应用（纯前端，本地优先） |
 | 主要语言 | TypeScript（strict） |
 | 应用框架 | Next.js 16 App Router + React 19 |
@@ -18,7 +18,7 @@
 
 ## 2. 项目简介
 
-HanziMaster 汉字大师通过引导式练习、笔顺展示与结构提示帮助用户掌握汉字书写，提供基础学习、田字格书写练习、拼音测验与学习进度追踪；界面支持深色/浅色模式、11 种语言与移动端适配。所有进度数据保存在浏览器 localStorage，无用户账户体系、无后端 API、无 AI 服务依赖。
+HanziMaster 汉字大师通过引导式练习、笔顺展示与结构提示帮助用户掌握汉字书写，提供基础学习、田字格书写练习、拼音测验与学习进度追踪；界面支持深色/浅色模式、11 种语言与移动端适配。所有进度数据保存在浏览器 localStorage，无用户账户体系、无业务后端（仅 `/api/health` 健康检查端点）、无 AI 服务依赖。
 
 ## 3. 目标与范围
 
@@ -53,12 +53,14 @@ HanziMaster 汉字大师通过引导式练习、笔顺展示与结构提示帮�
 | 样式 | Tailwind CSS | `^4.0.12` | 原子化样式 |
 | 样式编译 | `@tailwindcss/postcss` / PostCSS | `^4.2.11` / `8.5.15` | 构建链 |
 | 设计令牌 | `globals.css @theme` + `tailwind.config.ts` | — | 语义 token 与扩展色阶（双重来源，职责不同） |
-| 组件原语 | `radix-ui ^1.5.0` / `shadcn ^4.11.0`（dev） / `lucide-react ^0.544.0` | — | 基础组件、图标 |
+| 组件原语 | `@radix-ui/react-dialog ^1.3.1` / `react-slot ^1.5.0` / `react-tooltip ^1.4.1`；`shadcn ^4.11.0`（dev）；`lucide-react ^0.544.0` | — | 按需子包（无聚合包）、基础组件、图标 |
 | 样式工具 | `clsx` / `tailwind-merge` / `class-variance-authority` / `tw-animate-css` | — | 类名合并与变体 |
+| 错误监控 | `@sentry/nextjs ^11.10.0` | — | 未配置 DSN 时零开销（见 §7） |
 | 国际化 | 自定义 i18n Context | — | 11 语言，`TranslationKey` 联合类型 |
-| 测试 | Vitest `^3.2.4` + jsdom `^30.1.3` + Testing Library `^16.3.3` | — | 9 文件 / 47 用例 |
+| 测试 | Vitest `^3.2.4` + jsdom `^30.1.3` + Testing Library `^16.3.3` + `@vitest/coverage-v8` | — | 24 个单测文件 |
+| E2E | Playwright `^1.64.1` + `@axe-core/playwright` | — | `e2e/`（home / a11y） |
 | Lint | ESLint `^9.39.4` + `@typescript-eslint ^8.60.0` + Next 插件 | — | flat config |
-| 格式化 | `.prettierrc.json`（配置存在） | — | `format` 脚本存在，但 `prettier` **尚未声明为依赖**，暂不可用 |
+| 格式化 | `.prettierrc.json`（配置存在） | — | `prettier` 已安装，`pnpm format` 可用 |
 | 字体 | `next/font/google` | — | Space Grotesk / Playfair Display / Noto Serif SC / JetBrains Mono |
 
 版本信息的唯一权威源是 `package.json`；本表在依赖变更时同步，勿按记忆填写。运行期版本展示链路见 [03-development.md](03-development.md) §4。
@@ -68,41 +70,59 @@ HanziMaster 汉字大师通过引导式练习、笔顺展示与结构提示帮�
 ```
 HanziMaster/
 ├── src/                            # 应用源码
-│   ├── app/                        # App Router：page / learn / practice / layout
-│   │   ├── error.tsx / loading.tsx / not-found.tsx
+│   ├── app/                        # App Router 路由与全局样式
+│   │   ├── page.tsx / learn/ / practice/          # 三个页面路由
+│   │   ├── error.tsx / loading.tsx / not-found.tsx / global-error.tsx
+│   │   ├── learn/error.tsx · practice/error.tsx   # 路由级错误边界
+│   │   ├── privacy/ · terms/       # 法律条款静态页（内容在 src/content/）
+│   │   ├── api/health/route.ts     # 健康检查端点
+│   │   ├── manifest.ts / robots.ts / sitemap.ts   # PWA 与 SEO
 │   │   ├── globals.css             # 语义 design token（@theme）
-│   │   └── styles/                 # utilities.css / keyframes.css
+│   │   └── styles/                 # utilities.css / keyframes.css / rtl.css
 │   ├── components/                 # ui/ learn/ practice/ state/ 与跨页面组件
 │   ├── hooks/                      # use-progress / use-pronunciation / use-haptic …
+│   ├── content/                    # privacy / terms 法律文案（中英分段）
+│   ├── instrumentation.ts / instrumentation-client.ts   # Sentry 初始化钩子
 │   └── lib/                        # characters / storage / utils / version / progress-utils
-│       ├── i18n/                   # index.ts / translate.ts / translations/*.ts（11 语言）
+│       ├── i18n/                   # index.ts / translate.ts / translations/（11 语言）+ extensions/
 │       └── __tests__/              # 纯逻辑单测
+├── e2e/                            # Playwright 端到端测试（home / a11y）
 ├── docs/                           # 规范文档 16 篇（见 docs/index.md）
 ├── prototype/                      # 6 个 HTML 骨架 + styles/ + scripts/ + 4 篇文档
-├── scripts/                        # run-tests.mjs / check-line-count.mjs
+├── scripts/                        # 7 个 Node 工具脚本（见 [03-development.md](03-development.md) §3）
 ├── reports/                        # 脚本产物（gitignore，不提交）
-├── .github/                        # PR 模板、Issue 模板、SECURITY / SUPPORT 等社区文件
+├── .github/                        # workflows/（ci.yml / deploy.yml）、dependabot.yml、社区文件
 ├── .trae/                          # 编辑器协作规则与命令
+├── sentry.edge.config.ts / sentry.server.config.ts       # Sentry 构建配置（未配 DSN 时不启用）
 ├── package.json                    # 依赖、脚本、版本唯一权威源
-├── pnpm-lock.yaml / pnpm-workspace.yaml
+├── pnpm-workspace.yaml / pnpm-lock.yaml
 ├── metadata.json                   # 项目展示元数据（版本需同步）
-├── next.config.mjs                 # CSP 与安全响应头、版本/build 注入
+├── next.config.mjs                 # CSP 与安全响应头、版本/build 注入、Sentry 包装、体积分析
 ├── tsconfig.json / eslint.config.js / vitest.config.ts / vitest.setup.ts
-├── tailwind.config.ts / postcss.config.js / components.json
+├── playwright.config.ts / tailwind.config.ts / postcss.config.js / components.json
 ├── vercel.json / edgeone.json      # 部署平台配置
-├── .npmrc / .nvmrc / .prettierrc.json / .prettierignore
+├── .env.example / .npmrc / .nvmrc / .prettierrc.json / .prettierignore
+├── LICENSE / NOTICE                # MIT 许可与第三方声明
 ├── README.md / README_EN.md / CONTRIBUTING.md / CONTRIBUTING_EN.md
 ├── CHANGELOG.md / HanziMaster.code-workspace
-└── (无 VERSION 文件、无 .env.example、无 .gitmessage、无 .github/workflows)
+└── (无 VERSION 文件、无 .gitmessage)
 ```
 
-> `.env.local` 若存在属于本地可选文件且被忽略；仓库中不存在 `.env.example`，因为运行应用不需要环境变量。原型与归档文档目录说明见 `prototype/PROJECT_STRUCTURE.md`（归档性质，以本文与 [index.md](index.md) 为准）。
+> `.env.local` 若存在属于本地可选文件且被忽略；可选环境变量及占位说明见 `.env.example` 与本文 §7。原型与归档文档目录说明见 `prototype/PROJECT_STRUCTURE.md`（归档性质，以本文与 [index.md](index.md) 为准）。
 
 ## 7. 环境变量
 
+运行核心页面**不需要任何变量**；以下均为可选，占位说明见 `.env.example`：
+
 | 变量 | 说明 | 必填 |
 |------|------|------|
-| （无） | 应用无需任何环境变量；版本与 build 编号由 `next.config.mjs` 构建时注入 `NEXT_PUBLIC_APP_VERSION` / `NEXT_PUBLIC_BUILD_ID` | 否 |
+| `NEXT_PUBLIC_SITE_URL` | 站点绝对地址，用于 `metadataBase` / canonical / hreflang / sitemap；本地留空回退 `http://localhost:3000` | 生产部署必填 |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | GA4 衡量 ID；未设置完全不加载统计脚本，设置后仍需用户在同意横幅中选择「接受」 | 否 |
+| `SENTRY_DSN` / `NEXT_PUBLIC_SENTRY_DSN` / `SENTRY_ORG` / `SENTRY_PROJECT` / `SENTRY_AUTH_TOKEN` | Sentry 错误监控与 source maps 上传；未设置 DSN 时不启用、零开销 | 否（CI 构建需 AUTH_TOKEN 上传） |
+| `ANALYZE` | `ANALYZE=1 pnpm build` 生成 bundle 分析报告（写 `reports/`） | 否 |
+| `VERCEL_TOKEN` / `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` | 仅 `deploy.yml`（GitHub Actions）使用，配置在仓库 Secrets | CI 部署时 |
+
+版本与 build 编号由 `next.config.mjs` 构建时注入 `NEXT_PUBLIC_APP_VERSION` / `NEXT_PUBLIC_BUILD_ID`，无需手工配置。
 
 ## 8. 相关文档
 

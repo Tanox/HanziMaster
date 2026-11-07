@@ -1,4 +1,4 @@
-// src/app/learn/page.tsx v5.2.31
+// src/app/learn/page.tsx v5.2.38
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -15,7 +15,7 @@ import { EmptyState } from '@/components/state/state-views';
 export default function LearnPage() {
   const { t } = useTranslation();
   useScrollReveal();
-  const { speak } = usePronunciation();
+  const { speak, pronounceError, speechSupported } = usePronunciation();
   const vibrate = useHaptic();
   const [selectedCharacterId, setSelectedCharacterId] = useState<number | null>(characters[0]?.id ?? null);
   const [showQuizDialog, setShowQuizDialog] = useState(false);
@@ -91,6 +91,8 @@ export default function LearnPage() {
             onStartQuiz={() => setShowQuizDialog(true)}
             onNextCharacter={handleNextCharacter}
             onSpeak={speak}
+            speechSupported={speechSupported}
+            pronounceError={pronounceError}
           />
         ) : (
           <EmptyState className="mb-12" />

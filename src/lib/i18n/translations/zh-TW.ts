@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/zh-TW.ts v5.2.31
+// src/lib/i18n/translations/zh-TW.ts v5.2.38
 export const zhTW = {
   common: {
     home: '首頁',
@@ -177,6 +177,7 @@ export const zhTW = {
     strokeOrder: '筆順',
     strokeCount: '筆畫數：{{count}}',
     playAudio: '播放發音',
+    pronunciationUnavailable: '目前瀏覽器不支援語音發音',
     startQuiz: '開始測驗',
     nextCharacter: '下一個字',
     quizTitle: '漢字測驗',

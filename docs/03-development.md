@@ -1,6 +1,6 @@
 # 开发指南
 
-> 文档版本：v5.2.34（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.40（与项目版本同步，权威版本见 `package.json`）
 
 本文负责**开发环境、命令表与日常流程**。编码风格、命名、目录组织、设计 token、i18n、版本号与质量门禁的唯一权威是 [coding-standards.md](coding-standards.md)；提交、分支与审查见 [git-workflow.md](git-workflow.md)。
 
@@ -32,7 +32,7 @@ pnpm build
 pnpm start
 ```
 
-构建产物位于 `.next/`。应用无需任何环境变量即可运行；`.env.local` 为本地可选文件且不提交。
+构建产物位于 `.next/`。核心页面无需任何环境变量即可运行；可选变量（站点地址 / GA / Sentry / 体积分析）见 `.env.example` 与 [01-overview.md](01-overview.md) §7，`.env.local` 为本地可选文件且不提交。
 
 ## 3. 命令表
 
@@ -49,7 +49,16 @@ pnpm start
 | `pnpm test:watch` | `vitest` | 监听模式 |
 | `pnpm test:run` | `node scripts/run-tests.mjs` | 包装器，产物写 `reports/`，可透传 `--coverage` |
 | `pnpm check:lines` | `node scripts/check-line-count.mjs` | 单文件 ≤ 200 行门禁，结果写 `reports/line-count.txt` |
-| `pnpm format` | `prettier --write "src/**/*.{ts,tsx,css}"` | 按 `.prettierrc.json` 格式化；**当前 `prettier` 未声明为依赖，脚本暂不可用**（格式配置仍有效） |
+| `pnpm check:root` | `node scripts/check-root-clean.mjs` | 根目录清洁度门禁（白名单制），结果写 `reports/root-clean.txt` |
+| `pnpm bundle:check` | `node scripts/check-bundle-size.mjs` | 构建产物体积预算门禁（写 `reports/`） |
+| `pnpm e2e` | `playwright test` | Playwright 端到端测试（`e2e/`，含 axe 无障碍断言） |
+| `pnpm e2e:ui` | `playwright test --ui` | E2E 可视化调试模式 |
+| `pnpm analyze` | `node scripts/analyze.mjs` | 构建产物分析（配合 `ANALYZE=1`） |
+| `pnpm i18n:lint` | `node scripts/i18n-lint.mjs` | 11 语言键一致性与扩展模块校验 |
+| `pnpm version:sync` | `node scripts/sync-version.mjs` | 以 `package.json` 为权威源同步全局版本展示位 |
+| `pnpm version:check` | `node scripts/sync-version.mjs --check` | 只校验不同步，CI 使用 |
+| `pnpm prototype:parity` | `node scripts/prototype-parity.mjs` | 原型与应用的 token / 结构对齐校验 |
+| `pnpm format` | `prettier --write`（覆盖 `src/**`、`e2e/**`、`scripts/**`、`*.{ts,mjs,js}`、`prototype/scripts/**`、`prototype/styles/**`） | 按 `.prettierrc.json` 格式化；`prettier ^3.9.10` 已安装 |
 | `pnpm security:audit` | `pnpm audit --prod --audit-level=high` | 生产依赖审计 |
 | `pnpm security:audit:dev` | `pnpm audit --audit-level=high` | 全量（含 dev 链）审计 |
 
@@ -60,15 +69,15 @@ pnpm start
 ```
 package.json version（唯一权威源）
   └─ next.config.mjs 读取并注入（dev / build 均生效）
-       ├─ NEXT_PUBLIC_APP_VERSION = 5.2.34
-       └─ NEXT_PUBLIC_BUILD_ID   = yyyymmddhhmm（构建时刻本地时间）
+       ├─ NEXT_PUBLIC_APP_VERSION = <package.json 的 version，无硬编码>
+       └─ NEXT_PUBLIC_BUILD_ID   = yymmddhhmm（构建时刻本地时间的 10 位编号）
             └─ src/lib/version.ts
                  ├─ APP_VERSION / BUILD_ID / VERSION_LABEL
                  └─ layout-client.tsx 用 t('footer.copyright', { versionLabel }) 插值
                       └─ #footer-version / #drawer-version 展示
 ```
 
-- `VERSION_LABEL` 格式：`vX.Y.Z · build yyyymmddhhmm`；`BUILD_ID` 缺失时回退为 `vX.Y.Z`。
+- `VERSION_LABEL` 格式：`vX.Y.Z · build yymmddhhmm`（10 位 build 编号，如 `v5.2.40 · build 2611071530`）；`BUILD_ID` 缺失时回退为 `vX.Y.Z`。
 - 11 个语言包的 `footer.copyright` 只含 `{{versionLabel}}` 占位符，**发版不需要改动翻译文件**。
 - 不存在 `common.appVersion` 键；`src/lib/version.ts` 与 `next.config.mjs` 不含硬编码版本号。
 - 需要手工同步的全局展示位见 [coding-standards.md](coding-standards.md) §3。

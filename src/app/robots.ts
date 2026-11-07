@@ -1,0 +1,18 @@
+// src/app/robots.ts v5.2.35
+
+import type { MetadataRoute } from 'next';
+import { SITE_URL } from '@/lib/site';
+
+export default function robots(): MetadataRoute.Robots {
+  return {
+    rules: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/api/', '/monitoring'],
+      },
+    ],
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
+  };
+}

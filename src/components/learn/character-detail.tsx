@@ -1,4 +1,4 @@
-// src/components/learn/character-detail.tsx v5.2.31
+// src/components/learn/character-detail.tsx v5.2.38
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
@@ -12,6 +12,9 @@ interface CharacterDetailProps {
   onStartQuiz: () => void;
   onNextCharacter: () => void;
   onSpeak: (text: string) => void;
+  /** 三态：null = 挂载后能力检测中 */
+  speechSupported: boolean | null;
+  pronounceError: boolean;
 }
 
 export function CharacterDetail({
@@ -19,8 +22,12 @@ export function CharacterDetail({
   onStartQuiz,
   onNextCharacter,
   onSpeak,
+  speechSupported,
+  pronounceError,
 }: CharacterDetailProps) {
   const { t } = useTranslation();
+  // 发音能力不可用或播放失败时，展示可读的降级提示而非静默失败（P2-16）；null = 检测中不干预
+  const showPronunciationHint = speechSupported === false || pronounceError;
 
   return (
     <div id="character-detail" className="bg-card/80 dark:bg-ink-900/80 backdrop-blur-xl rounded-4xl p-10 border border-ink-100 dark:border-ink-800 reveal revealed animate-fade-in-elegant shadow-ink-lg">
@@ -30,12 +37,24 @@ export function CharacterDetail({
             <Badge variant="outline" className="rounded-full border-vermilion-200 text-vermilion-600 dark:border-vermilion-500 dark:text-vermilion-400">
               {t('learn.strokeCount', { count: character.strokes })}
             </Badge>
-            <Button variant="ghost" size="sm" onClick={() => onSpeak(character.hanzi)} className="text-ink-500 dark:text-ink-400 hover:text-vermilion-500">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onSpeak(character.hanzi)}
+              disabled={speechSupported === false}
+              aria-describedby={showPronunciationHint ? 'pronunciation-hint' : undefined}
+              className="text-ink-500 dark:text-ink-400 hover:text-vermilion-500 disabled:opacity-60"
+            >
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
               </svg>
               {t('learn.playAudio')}
             </Button>
+            {showPronunciationHint && (
+              <p id="pronunciation-hint" role="status" className="mt-2 text-xs text-ink-500 dark:text-ink-400">
+                {t('learn.pronunciationUnavailable')}
+              </p>
+            )}
           </div>
 
           <div className="relative inline-block mb-8">

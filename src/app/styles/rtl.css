@@ -1,0 +1,43 @@
+/* src/app/styles/rtl.css v5.2.35 */
+/* RTL 基础适配：LocaleProvider 会在 <html dir="rtl"> 时切换书写方向。
+   浏览器原生 direction 已处理 flex/grid 排列与文本流；此处只纠正显式
+   物理方向工具类，避免阿拉伯语下标题、抽屉与箭头反向。 */
+
+:where([dir='rtl']) .text-left {
+  text-align: right;
+}
+
+:where([dir='rtl']) .text-right {
+  text-align: left;
+}
+
+:where([dir='rtl']) .left-2 {
+  right: 0.5rem;
+  left: auto;
+}
+
+:where([dir='rtl']) .right-2 {
+  left: 0.5rem;
+  right: auto;
+}
+
+:where([dir='rtl']) .right-4 {
+  left: 1rem;
+  right: auto;
+}
+
+:where([dir='rtl']) .rounded-r-xl {
+  border-start-start-radius: 0.75rem;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+  border-end-start-radius: 0.75rem;
+}
+
+:where([dir='rtl']) .rounded-l-xl {
+  border-start-start-radius: 0;
+  border-start-end-radius: 0.75rem;
+  border-end-end-radius: 0.75rem;
+  border-end-start-radius: 0;
+}
+
+/* 新增组件优先使用 ms-* / me-* / ps-* / pe-* 等逻辑属性工具类 */

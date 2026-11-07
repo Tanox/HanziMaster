@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ar.ts v5.2.31
+// src/lib/i18n/translations/ar.ts v5.2.38
 export const ar = {
   common: {
     home: 'الرئيسية',
@@ -177,6 +177,7 @@ export const ar = {
     strokeOrder: 'ترتيب الضربات',
     strokeCount: 'عدد الضربات: {{count}}',
     playAudio: 'تشغيل الصوت',
+    pronunciationUnavailable: 'متصفحك لا يدعم النطق الصوتي',
     startQuiz: 'بدء الاختبار',
     nextCharacter: 'الحرف التالي',
     quizTitle: 'اختبار الأحرف',

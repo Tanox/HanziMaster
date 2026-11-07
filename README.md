@@ -1,4 +1,4 @@
-﻿# HanziMaster 汉字大师 v5.2.34
+﻿# HanziMaster 汉字大师 v5.2.40
 
 [English](README_EN.md) | [简体中文](README.md)
 
@@ -55,7 +55,13 @@ pnpm start
 | `pnpm test:watch` | 监听模式 |
 | `pnpm test:run` | 测试包装器（产物落 `reports/`，透传 `--coverage`） |
 | `pnpm check:lines` | 源文件行数门禁（≤ 200 行） |
-| `pnpm format` | Prettier 格式化；**当前 `prettier` 未声明为依赖，暂不可用** |
+| `pnpm check:root` | 根目录清洁度门禁（临时脚本/产物禁止落仓库根） |
+| `pnpm bundle:check` | 构建产物体积预算门禁 |
+| `pnpm e2e` | Playwright 端到端测试（含 axe 无障碍断言） |
+| `pnpm e2e:ui` | E2E 可视化调试模式 |
+| `pnpm i18n:lint` | 11 语言键一致性校验 |
+| `pnpm version:check` | 校验全局版本展示位一致性（CI 使用） |
+| `pnpm format` | Prettier 格式化 |
 | `pnpm security:audit` | 生产依赖审计（`pnpm audit --prod --audit-level=high`） |
 | `pnpm security:audit:dev` | 全量审计（含 dev 链） |
 
@@ -67,30 +73,35 @@ pnpm start
 
 ```
 src/
-├── app/                     # App Router：page / learn / practice / layout
-│   ├── error.tsx / loading.tsx / not-found.tsx
+├── app/                     # App Router：page / learn / practice + privacy / terms
+│   ├── error.tsx / loading.tsx / not-found.tsx / global-error.tsx
+│   ├── api/health/route.ts  # 健康检查端点
+│   ├── manifest.ts / robots.ts / sitemap.ts
 │   ├── globals.css          # 语义 design token（@theme）
-│   └── styles/              # utilities.css / keyframes.css
+│   └── styles/              # utilities.css / keyframes.css / rtl.css
 ├── components/              # ui/ learn/ practice/ state/ 与跨页面组件
 │   ├── ui/                  # button / badge / dialog / tooltip
 │   ├── learn/ · practice/   # 页面业务子组件
 │   └── state/               # EmptyState / ErrorState / LoadingSpinner
 ├── hooks/                   # use-progress / use-pronunciation / use-haptic …
+├── content/                 # 法律条款文案（中英分段）
 └── lib/                     # characters / storage / utils / version / progress-utils
-    ├── i18n/                # index + translate + 11 语言 translations/
+    ├── i18n/                # index + translate + 11 语言 translations/ + extensions/
     └── __tests__/           # 纯逻辑单测
 
+e2e/                         # Playwright 端到端测试（home / a11y）
 prototype/                   # 6 个 HTML 骨架 + styles/ + scripts/（源码均 ≤200 行）
 docs/                        # 规范文档 16 篇（入口 docs/index.md）
-scripts/                     # run-tests.mjs / check-line-count.mjs
+scripts/                     # 7 个 Node 工具脚本（见 docs/03-development.md §3）
 reports/                     # 脚本产物（gitignore，不提交）
+.github/workflows/           # ci.yml（质量门禁）/ deploy.yml（Vercel 部署）
 ```
 
 CSP 与安全响应头由 `next.config.mjs` 的 `headers()` 统一注入；项目无中间件。完整目录树见 [docs/01-overview.md](docs/01-overview.md) §6。
 
 ## 版本与构建标识
 
-版本号唯一权威源是 `package.json` 的 `version`。`next.config.mjs` 在 dev / build 时读取并注入 `NEXT_PUBLIC_APP_VERSION` 与构建时刻的 `NEXT_PUBLIC_BUILD_ID`（`yyyymmddhhmm`），`src/lib/version.ts` 统一暴露。页脚 `#site-footer` / `#footer-version` 与移动抽屉 `#drawer-version` 展示 `vX.Y.Z · build yyyymmddhhmm`；11 语言 `footer.copyright` 使用 `{{versionLabel}}` 插值，发版无需改动翻译文件。详见 [docs/03-development.md](docs/03-development.md) §4。
+版本号唯一权威源是 `package.json` 的 `version`。`next.config.mjs` 在 dev / build 时读取并注入 `NEXT_PUBLIC_APP_VERSION` 与构建时刻的 `NEXT_PUBLIC_BUILD_ID`（`yymmddhhmm`），`src/lib/version.ts` 统一暴露。页脚 `#site-footer` / `#footer-version` 与移动抽屉 `#drawer-version` 展示 `vX.Y.Z · build yymmddhhmm`；11 语言 `footer.copyright` 使用 `{{versionLabel}}` 插值，发版无需改动翻译文件。详见 [docs/03-development.md](docs/03-development.md) §4。
 
 ## 页面介绍
 
@@ -99,6 +110,9 @@ CSP 与安全响应头由 `next.config.mjs` 的 `headers()` 统一注入；项�
 | 首页 | `/` | 功能介绍、永字八法演示 |
 | 学习 | `/learn` | 12 个基础汉字、发音、笔顺、测验、键盘切换 |
 | 练习 | `/practice` | 书写练习、拼音测验、真实进度统计 |
+| 隐私政策 | `/privacy` | 数据收集与处理说明 |
+| 服务条款 | `/terms` | 使用条款与免责声明 |
+| 健康检查 | `/api/health` | 返回应用状态、版本与 build 编号 |
 
 ## 技术栈
 
@@ -107,10 +121,11 @@ CSP 与安全响应头由 `next.config.mjs` 的 `headers()` 统一注入；项�
 | 框架 | Next.js `16.4.4`（App Router）+ React `^19.1.0` |
 | 语言 | TypeScript `^5.7.3`（strict） |
 | 样式 | Tailwind CSS `^4.0.12` + `@tailwindcss/postcss ^4.2.11` |
-| 组件 | shadcn / radix-ui 原语、lucide-react 图标 |
+| 组件 | shadcn + `@radix-ui` 按需子包（dialog / slot / tooltip）、lucide-react 图标 |
+| 错误监控 | Sentry（`@sentry/nextjs`，未配置 DSN 时零开销） |
 | 字体 | Space Grotesk / Playfair Display / Noto Serif SC / JetBrains Mono（`next/font/google`） |
 | 国际化 | 自定义 i18n Context，11 语言，`TranslationKey` 类型约束 |
-| 测试 | Vitest `^3.2.4` + jsdom + Testing Library（9 文件 / 47 用例） |
+| 测试 | Vitest `^3.2.4` + jsdom + Testing Library（24 个单测文件）+ Playwright E2E |
 | 部署 | Vercel / 腾讯云 EdgeOne Pages |
 
 ## 开发规范
@@ -136,10 +151,16 @@ CSP 与安全响应头由 `next.config.mjs` 的 `headers()` 统一注入；项�
 
 ## 部署
 
-应用**无需环境变量**；`vercel.json` / `edgeone.json` 仅配置静态资源缓存与 EdgeOne 构建命令。Vercel 使用默认 Next.js 流程；EdgeOne 构建命令 `pnpm build`（平台配置文件内为 `npm run build`，属平台内部写法），输出目录 `.next`。部署前检查清单见 [docs/05-deployment.md](docs/05-deployment.md) §6。
+核心页面**无需环境变量**即可运行；可选变量（站点地址 / GA 统计 / Sentry 错误监控 / 体积分析）见 [.env.example](.env.example)。`vercel.json` / `edgeone.json` 仅配置静态资源缓存与 EdgeOne 构建命令。Vercel 使用默认 Next.js 流程；EdgeOne 构建命令 `pnpm build`（平台配置文件内为 `npm run build`，属平台内部写法），输出目录 `.next`。部署前检查清单见 [docs/05-deployment.md](docs/05-deployment.md) §7。
 
 > `next/font/google` 是唯一联网构建依赖，离线环境构建可能因字体下载失败，属环境限制。
 
-## 许可证
+## 数据准确性与免责声明
 
-© 2026 HanziMaster 汉字大师 v5.2.34
+汉字数据、拼音、例句、笔顺演示与结构提示为项目自行整理的教学示例，仅供学习参考，可能存在版本差异或表述简化；用于教学、出版或考试准备时，请以权威字典、教材与规范字形为准自行核对。发音依赖浏览器内置语音合成，效果随设备与语言而异。应用按「现状」提供，在法律允许范围内不提供任何明示或默示保证。详见 [服务条款](src/app/terms/page.tsx) 与 [隐私政策](src/app/privacy/page.tsx) 页面（部署后为 `/terms`、`/privacy`）。
+
+## 许可证与第三方声明
+
+本项目按 [MIT 许可证](LICENSE) 发布；第三方依赖许可见 [NOTICE](NOTICE)。贡献与安全报告流程见 [CONTRIBUTING.md](CONTRIBUTING.md)、[CODE_OF_CONDUCT.md](.github/CODE_OF_CONDUCT.md)、[SECURITY.md](.github/SECURITY.md)、[SUPPORT.md](.github/SUPPORT.md) 与 [PR 模板](.github/PULL_REQUEST_TEMPLATE.md)。
+
+© 2026 HanziMaster 汉字大师 v5.2.40

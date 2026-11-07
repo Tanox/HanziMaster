@@ -1,7 +1,7 @@
 <!-- OPENSPEC:START -->
 # OpenSpec Instructions
 
-> 文档版本：v5.2.34（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.35（与项目版本同步，权威版本见 `package.json`）
 
 Instructions for AI coding assistants working in this project.
 

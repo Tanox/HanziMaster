@@ -1,4 +1,4 @@
-// src/lib/i18n/index.ts v5.2.25
+// src/lib/i18n/index.ts v5.2.35
 import { en } from './translations/en';
 import { zhCN } from './translations/zh-CN';
 import { zhTW } from './translations/zh-TW';
@@ -10,10 +10,11 @@ import { de } from './translations/de';
 import { ja } from './translations/ja';
 import { ko } from './translations/ko';
 import { ru } from './translations/ru';
+import { extendTranslations } from './translations/extensions';
 
 export type Locale = 'en' | 'zh-CN' | 'zh-TW' | 'es' | 'ar' | 'fr' | 'pt-BR' | 'de' | 'ja' | 'ko' | 'ru';
 
-export type Translations = typeof en;
+export type Translations = ReturnType<typeof extendTranslations>;
 
 // 递归生成所有叶子键的点分路径联合类型，用于约束 t() 入参，防止使用不存在的 i18n 键
 type LeafKeys<T> = T extends string
@@ -34,18 +35,19 @@ export type TranslationKey = LeafKeys<Translations> extends infer S
     : never
   : never;
 
+// 所有语言经过同一扩展函数，保证叶子键集合一致（由 i18n.test.ts 校验）
 export const translations: Record<Locale, Translations> = {
-  'en': en,
-  'zh-CN': zhCN,
-  'zh-TW': zhTW,
-  'es': es,
-  'ar': ar,
-  'fr': fr,
-  'pt-BR': ptBR,
-  'de': de,
-  'ja': ja,
-  'ko': ko,
-  'ru': ru,
+  'en': extendTranslations(en, 'en'),
+  'zh-CN': extendTranslations(zhCN, 'zh-CN'),
+  'zh-TW': extendTranslations(zhTW, 'zh-TW'),
+  'es': extendTranslations(es, 'es'),
+  'ar': extendTranslations(ar, 'ar'),
+  'fr': extendTranslations(fr, 'fr'),
+  'pt-BR': extendTranslations(ptBR, 'pt-BR'),
+  'de': extendTranslations(de, 'de'),
+  'ja': extendTranslations(ja, 'ja'),
+  'ko': extendTranslations(ko, 'ko'),
+  'ru': extendTranslations(ru, 'ru'),
 };
 
 export const locales: Locale[] = Object.keys(translations) as Locale[];

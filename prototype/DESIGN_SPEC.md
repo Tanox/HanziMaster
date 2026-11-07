@@ -1,6 +1,6 @@
 # HanziMaster 原型设计规范文档
 
-> 文档版本：v5.2.34（与项目版本同步，权威版本见 `package.json`）· 与 [docs/07-design-prototype.md](../docs/07-design-prototype.md) 互为补充，本文聚焦**原型交付侧**的细化规范（图标、布局网格、交互模式库、反馈/错误/空状态规范）。
+> 文档版本：v5.2.35（与项目版本同步，权威版本见 `package.json`）· 与 [docs/07-design-prototype.md](../docs/07-design-prototype.md) 互为补充，本文聚焦**原型交付侧**的细化规范（图标、布局网格、交互模式库、反馈/错误/空状态规范）。
 > Design Token 为**双重来源、职责不同**：`src/app/globals.css` 的 `@theme` 定义语义 token（`--color-*`），`tailwind.config.ts` 定义扩展色阶/字体/动画；原型文件（`prototype.html` / `wireframes.html` / `learn.html` / `practice.html` / `progress.html` / `character-detail.html`）中的 CSS 变量须与语义 token 对齐。
 > 本文 §2 描述的是 `wireframes.html` 的**原型组件库演示**，不是生产代码组件清单；生产组件以 [docs/04-api-reference.md](../docs/04-api-reference.md) §6 为准。
 
@@ -68,7 +68,7 @@
 
 ### 1.7 动效规范
 
-- **时长**：`--dur-fast 0.15s`（微交互）/ `--dur-normal 0.25s`（状态切换）/ `--dur-slow 0.4s` / `--dur-lg 0.6s`（页面/入场）。
+- **时长**：`--duration-fast 0.15s`（微交互）/ `--duration-normal 0.25s`（状态切换）/ `--duration-slow 0.4s` / `--duration-lg 0.6s`（页面/入场，与 `globals.css` 命名一致）。
 - **缓动**：`--ease-out`（出场）/ `--ease-spring`（弹性回弹，如按钮、开关）/ `--ease-smooth`（通用）。
 - **预设动画**：`brush-stroke`（笔触揭示）、`ink-spread`（墨水扩散入场）、`paper-flip`（卡片翻转）、`fade-in-elegant`（页面加载）、`float-gentle`（背景浮动）、`slide-in-right`（Toast）、`accordion-down/up`。
 - **无障碍**：`prefers-reduced-motion: reduce` 时所有动画/过渡降至 `0.01ms`。

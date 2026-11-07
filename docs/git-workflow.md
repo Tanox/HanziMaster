@@ -1,6 +1,6 @@
 # Git 工作流与代码审查规范
 
-> 文档版本：v5.2.34（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.40（与项目版本同步，权威版本见 `package.json`）
 
 本文是**分支管理、Pull Request、代码审查与发版流程的唯一权威**。提交信息格式见 [commit-template.md](commit-template.md)，编码规则见 [coding-standards.md](coding-standards.md)，版本同步位置清单见 [coding-standards.md](coding-standards.md) §3。
 
@@ -50,7 +50,7 @@
 - `type` ∈ `feat` / `fix` / `docs` / `style` / `refactor` / `perf` / `test` / `build` / `ci` / `chore`。
 - 描述 ≤ 50 字符、首字母小写、动词开头、祈使语气、结尾无句号。
 - 正文每行 ≤ 72 字符，说明「为什么」而非复述 diff；页脚用 `Closes #123` 关联 issue。
-- 正文或页脚**必须标注新版本号**（如 `版本：v5.2.34`），破坏性变更在页脚写 `BREAKING CHANGE:`。
+- 正文或页脚**必须标注新版本号**（如 `版本：v5.2.35`），破坏性变更在页脚写 `BREAKING CHANGE:`。
 - 完整定义、类型表、示例与 `.gitmessage` 模板见 [commit-template.md](commit-template.md)。
 
 ## 4. 合并前质量门禁
@@ -101,9 +101,24 @@ PR 检查清单与 CI 判定依据一致，任一项失败即阻断合并：
 
 1. 从 `develop` 创建 `release/vX.Y.Z`，确认 `package.json` 的 `version` 为唯一权威源。
 2. 按 [coding-standards.md](coding-standards.md) §3 同步 `metadata.json`、`README.md` / `README_EN.md`、改动文件头注释/文档版本戳、`CHANGELOG.md` 新小节。
-3. 跑一遍 §4 全部门禁，核对页脚 `#footer-version` 展示 `vX.Y.Z · build yyyymmddhhmm`（由 `next.config.mjs` 注入 `NEXT_PUBLIC_APP_VERSION` / `NEXT_PUBLIC_BUILD_ID`，无需手工维护）。
-4. PR 合并 `release/*` → `main`，打 Tag `vX.Y.Z`；同期回合 `develop`。
-5. 部署见 [05-deployment.md](05-deployment.md)；发布后在 `main` 上复验生产页脚版本与 build 编号。
+3. 跑一遍 §4 全部门禁，核对页脚 `#footer-version` 展示 `vX.Y.Z · build yymmddhhmm`（10 位 build 编号，由 `next.config.mjs` 注入 `NEXT_PUBLIC_APP_VERSION` / `NEXT_PUBLIC_BUILD_ID`，无需手工维护）。
+4. PR 合并 `release/*` → `main`，打 Tag `vX.Y.Z` 并推送；同期回合 `develop`。
+5. 推送 Tag 自动触发 GitHub Release 发布（§6.1）；平台部署见 [05-deployment.md](05-deployment.md)。发布完成后在 `main` 上复验三件事：生产页脚版本与 build 编号、GitHub Release 是否创建、Release 正文与 `CHANGELOG.md` 是否一致。
+
+### 6.1 自动发布 Releases（GitHub Actions）
+
+**规则：当 GitHub Actions 所有相关工作流全绿后，自动发布 GitHub Releases；任一工作流未通过则不发布。**
+
+- **触发**：向 `main` 推送 tag `vX.Y.Z`（即上面步骤 4），由 `.github/workflows/release.yml` 接管；`workflow_dispatch` 仅供门禁全绿但自动化异常时的手动兜底。
+- **「全绿」的定义**（三者同时满足才发布）：
+  1. 本次 tag 触发的 `ci.yml` 全部 job（`quality` / `coverage` / `e2e`）结论为 `success`；
+  2. 同一 commit SHA 在 `main` 上最近一次 `deploy.yml` 运行结论为 `success`（Deploy 因未配置 Vercel Secrets 而跳过时，视为可发布）；
+  3. tag 名与 `package.json` 的 `version` 一致（`v5.2.36` ↔ `5.2.36`），不一致直接失败，不发 Release。
+- **发布内容**：Release 标题 `vX.Y.Z`；正文取 `CHANGELOG.md` 中该版本小节（以 `## [X.Y.Z]` 起始到下一个小节）；附件使用 GitHub 自动生成的源码归档（Source code zip/tar.gz）。
+- **失败处理**：任一 job 失败 → `release.yml` 短路退出，不创建 Release，并在日志输出 `::error::` 标明哪个门禁未通过。此时**禁止删除重建同名 Tag**（§7），应修复后使用新的 patch 版本重新走 §6 流程。
+- **幂等与重复**：同名 Release / Tag 已存在时视为异常，直接失败并告警，不做覆盖式更新。
+- **权限**：`release.yml` 仅申请 `contents: write`，不授予其他 scope；Token 使用默认 `GITHUB_TOKEN`。
+- **实现任务**：该规则的落地工作流见 [tasks.md](tasks.md) P1-37（`release.yml` 尚未创建时，本节为规范目标态，发布仍按旧流程手工执行）。
 
 ## 7. 禁止事项
 

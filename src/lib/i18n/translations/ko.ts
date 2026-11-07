@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/ko.ts v5.2.31
+// src/lib/i18n/translations/ko.ts v5.2.38
 export const ko = {
   common: {
     home: '홈',
@@ -177,6 +177,7 @@ export const ko = {
     strokeOrder: '획순',
     strokeCount: '획수: {{count}}',
     playAudio: '오디오 재생',
+    pronunciationUnavailable: '이 브라우저는 음성 발음을 지원하지 않습니다',
     startQuiz: '퀴즈 시작',
     nextCharacter: '다음 글자',
     quizTitle: '한자 퀴즈',

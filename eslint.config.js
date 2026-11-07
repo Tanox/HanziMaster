@@ -4,7 +4,15 @@ import tsPlugin from "@typescript-eslint/eslint-plugin";
 /** @type {import("eslint").Linter.FlatConfig[]} */
 export default [
   {
-    ignores: [".next/**", "node_modules/**", "**/node_modules/**"],
+    ignores: [
+      ".next/**",
+      "node_modules/**",
+      "**/node_modules/**",
+      "coverage/**",
+      "reports/**",
+      "playwright-report/**",
+      "test-results/**",
+    ],
   },
   {
     files: ["**/*.ts", "**/*.tsx"],
