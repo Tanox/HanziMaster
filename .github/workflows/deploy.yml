@@ -17,7 +17,7 @@ jobs:
     # 未配置 Secrets 时自动跳过，避免 forks / 本地镜像仓库误报失败
     if: ${{ github.repository_owner != '' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: pnpm/action-setup@v4
         with:
