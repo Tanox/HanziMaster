@@ -1,4 +1,4 @@
-// src/components/__tests__/settings-dialog.test.tsx v5.2.42
+// src/components/__tests__/settings-dialog.test.tsx v5.2.44
 
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -6,6 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { LocaleProvider } from '../locale-provider';
 import { ThemeProvider } from '../theme-provider';
 import { SettingsButton } from '../settings-dialog';
+import { ToastProvider } from '../toast';
 import { loadSettings } from '@/lib/settings';
 import { PROGRESS_STORAGE_KEY } from '@/hooks/use-progress';
 
@@ -13,7 +14,9 @@ function renderPanel() {
   return render(
     <ThemeProvider>
       <LocaleProvider>
-        <SettingsButton />
+        <ToastProvider>
+          <SettingsButton />
+        </ToastProvider>
       </LocaleProvider>
     </ThemeProvider>
   );

@@ -1,13 +1,14 @@
-// src/components/practice/writing-dialog.tsx v5.2.35
+// src/components/practice/writing-dialog.tsx v5.2.44
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from '@/components/locale-provider';
 import type { CharacterQuiz } from '@/components/practice/practice-assets';
 import { WritingCanvas, type WritingCanvasHandle } from '@/components/practice/writing-canvas';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { strokeOrderData } from '@/lib/stroke-order-data';
+import { loadStrokeOrder } from '@/lib/stroke-order-loader';
+import type { StrokeOrderData } from '@/lib/character-types';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface WritingDialogProps {
@@ -23,14 +24,25 @@ export function WritingDialog({ open, onOpenChange, character, strokeCount, onNe
   const canvasRef = useRef<WritingCanvasHandle>(null);
   // 描红整体准确度（0-1），由 WritingCanvas 跟写判定后回调
   const [accuracy, setAccuracy] = useState<number | null>(null);
+  const [strokeData, setStrokeData] = useState<StrokeOrderData | null>(null);
+
+  // 笔顺数据按需加载：打开弹窗/切换字符时才拉取对应 chunk（P1-12）
+  useEffect(() => {
+    if (!open) return;
+    let active = true;
+    setStrokeData(null);
+    loadStrokeOrder(character.hanzi).then((data) => {
+      if (active) setStrokeData(data ?? null);
+    });
+    return () => {
+      active = false;
+    };
+  }, [open, character.hanzi]);
 
   const clearCanvas = () => {
     canvasRef.current?.clearCanvas();
     setAccuracy(null);
   };
-
-  // 从笔顺数据表查询当前字符的笔画路径与中位线（无则回退纯自由书写）
-  const strokeData = strokeOrderData[character.hanzi];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -53,7 +65,7 @@ export function WritingDialog({ open, onOpenChange, character, strokeCount, onNe
               <Badge variant="outline" className="border-vermilion-200 text-vermilion-700">
                 {character.pinyin}
               </Badge>
-              <p className="mt-1 text-sm text-muted-foreground">{character.meaning}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{t(character.meaningKey)}</p>
             </div>
           </div>
 

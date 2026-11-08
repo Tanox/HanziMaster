@@ -1,4 +1,4 @@
-// src/components/practice/__tests__/quiz-dialog.test.tsx v5.2.36
+// src/components/practice/__tests__/quiz-dialog.test.tsx v5.2.44
 import { useState, type ComponentProps } from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -16,7 +16,7 @@ const quizChar: CharacterQuiz = {
   hanzi: '一',
   pinyin: 'yī',
   translationKey: 'learn.one',
-  meaning: 'One',
+  meaningKey: 'practice.meanings.one',
 };
 const OPTIONS = ['一', '二', '三', '人', '大', '小', '口', '日'];
 
@@ -60,7 +60,7 @@ function renderDialog(overrides: Partial<QuizProps> = {}) {
 }
 
 const optionButtons = () =>
-  OPTIONS.map((char) => screen.getByRole('button', { name: char }) as HTMLButtonElement);
+  OPTIONS.map((char) => screen.getByRole('radio', { name: new RegExp(char) }) as HTMLButtonElement);
 
 describe('practice QuizDialog · 渲染与交互', () => {
   it('renders the title, prompt character, pinyin and meaning', () => {
@@ -68,7 +68,7 @@ describe('practice QuizDialog · 渲染与交互', () => {
     expect(screen.getByRole('dialog')).toBeInTheDocument();
     expect(screen.getByText(en.practice.quizTitle)).toBeInTheDocument();
     expect(screen.getByText(quizChar.pinyin)).toBeInTheDocument();
-    expect(screen.getByText(quizChar.meaning)).toBeInTheDocument();
+    expect(screen.getByText(en.practice.meanings.one)).toBeInTheDocument();
   });
 
   it('renders nothing when closed', () => {
@@ -83,7 +83,7 @@ describe('practice QuizDialog · 渲染与交互', () => {
 
   it('forwards the chosen character to onAnswer', () => {
     const { props } = renderDialog();
-    fireEvent.click(screen.getByRole('button', { name: '三' }));
+    fireEvent.click(screen.getByRole('radio', { name: '三' }));
     expect(props.onAnswer).toHaveBeenCalledWith('三');
   });
 
@@ -95,13 +95,13 @@ describe('practice QuizDialog · 渲染与交互', () => {
   it('shows the correct feedback for the right answer', () => {
     renderDialog({ answered: true, selectedAnswer: quizChar.hanzi });
     expect(screen.getByText(en.practice.correct)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: quizChar.hanzi }).className).toContain('bg-vermilion-500');
+    expect(screen.getByRole('radio', { name: quizChar.hanzi }).className).toContain('bg-vermilion-500');
   });
 
   it('shows the wrong feedback for an incorrect answer', () => {
     renderDialog({ answered: true, selectedAnswer: '二' });
     expect(screen.getByText(en.practice.wrong)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: '二' }).className).toContain('bg-destructive');
+    expect(screen.getByRole('radio', { name: '二' }).className).toContain('bg-destructive');
   });
 
   it('hides feedback while unanswered', () => {
@@ -161,7 +161,7 @@ const renderHarness = () =>
 describe('practice QuizDialog · 得分回写', () => {
   it('records a correct selection as 100% accuracy', () => {
     renderHarness();
-    fireEvent.click(screen.getByRole('button', { name: quizChar.hanzi }));
+    fireEvent.click(screen.getByRole('radio', { name: quizChar.hanzi }));
     expect(screen.getByTestId('accuracy')).toHaveTextContent('100');
     expect(screen.getByText(en.practice.correct)).toBeInTheDocument();
     expect(window.localStorage.getItem('hanzi-master-progress')).toContain('"correct":true');
@@ -169,25 +169,25 @@ describe('practice QuizDialog · 得分回写', () => {
 
   it('records a wrong selection as 0% accuracy', () => {
     renderHarness();
-    fireEvent.click(screen.getByRole('button', { name: '二' }));
+    fireEvent.click(screen.getByRole('radio', { name: '二' }));
     expect(screen.getByTestId('accuracy')).toHaveTextContent('0');
     expect(screen.getByText(en.practice.wrong)).toBeInTheDocument();
   });
 
   it('ignores a second click while answered', () => {
     renderHarness();
-    fireEvent.click(screen.getByRole('button', { name: quizChar.hanzi }));
-    fireEvent.click(screen.getByRole('button', { name: '二' }));
+    fireEvent.click(screen.getByRole('radio', { name: quizChar.hanzi }));
+    fireEvent.click(screen.getByRole('radio', { name: '二' }));
     expect(screen.getByTestId('accuracy')).toHaveTextContent('100');
     expect(screen.getByText(en.practice.correct)).toBeInTheDocument();
   });
 
   it('accumulates 50% accuracy across two questions', () => {
     renderHarness();
-    fireEvent.click(screen.getByRole('button', { name: '二' }));
+    fireEvent.click(screen.getByRole('radio', { name: '二' }));
     fireEvent.click(screen.getByRole('button', { name: en.practice.nextQuestion }));
     expect(screen.queryByText(en.practice.wrong)).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: quizChar.hanzi }));
+    fireEvent.click(screen.getByRole('radio', { name: quizChar.hanzi }));
     expect(screen.getByTestId('accuracy')).toHaveTextContent('50');
   });
 });

@@ -1,4 +1,4 @@
-// src/components/ui/__tests__/ui-primitives.test.tsx v5.2.35
+// src/components/ui/__tests__/ui-primitives.test.tsx v5.2.44
 
 import { render, screen } from '@testing-library/react';
 import { beforeAll, describe, expect, it } from 'vitest';
@@ -12,6 +12,7 @@ import {
   DialogTitle,
 } from '../dialog';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../tooltip';
+import { LocaleProvider } from '../../locale-provider';
 
 beforeAll(() => {
   // Radix Portal 在 jsdom 下会探测 ResizeObserver，提供最小实现
@@ -42,15 +43,17 @@ describe('Badge', () => {
 describe('Dialog', () => {
   it('renders title, description, header and footer', () => {
     render(
-      <Dialog open>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>测验说明</DialogTitle>
-            <DialogDescription>请选择一个答案</DialogDescription>
-          </DialogHeader>
-          <DialogFooter showCloseButton>底部</DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <LocaleProvider>
+        <Dialog open>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>测验说明</DialogTitle>
+              <DialogDescription>请选择一个答案</DialogDescription>
+            </DialogHeader>
+            <DialogFooter showCloseButton>底部</DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </LocaleProvider>
     );
     expect(screen.getByText('测验说明')).toBeInTheDocument();
     expect(screen.getByText('请选择一个答案')).toBeInTheDocument();

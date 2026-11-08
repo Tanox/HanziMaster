@@ -1,4 +1,4 @@
-// src/components/practice/practice-assets.tsx v5.2.25
+// src/components/practice/practice-assets.tsx v5.2.44
 import type { TranslationKey } from '@/lib/i18n';
 
 export interface PracticeOption {
@@ -13,7 +13,8 @@ export interface CharacterQuiz {
   hanzi: string;
   pinyin: string;
   translationKey: TranslationKey;
-  meaning: string;
+  /** 释义走 i18n 词典键，避免英文硬编码（P1-29） */
+  meaningKey: TranslationKey;
 }
 
 export const icons = {

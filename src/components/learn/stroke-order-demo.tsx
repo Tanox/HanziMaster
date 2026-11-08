@@ -1,11 +1,12 @@
-// src/components/learn/stroke-order-demo.tsx v5.2.27
+// src/components/learn/stroke-order-demo.tsx v5.2.44
 // 学习页笔顺演示组件：用 SVG 渲染汉字笔画，点击「显示笔顺」逐笔播放书写动画。
 // 数据来自 stroke-order-data（Hanzi Writer 标准 path），无数据时回退灰字占位。
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from '@/components/locale-provider';
-import { strokeOrderData } from '@/lib/stroke-order-data';
+import { loadStrokeOrder } from '@/lib/stroke-order-loader';
+import type { StrokeOrderData } from '@/lib/character-types';
 
 interface StrokeOrderDemoProps {
   character: string;
@@ -17,7 +18,7 @@ const PLAY_INTERVAL = 550; // 每笔间隔 ms
 
 export function StrokeOrderDemo({ character, strokeCount }: StrokeOrderDemoProps) {
   const { t } = useTranslation();
-  const data = strokeOrderData[character];
+  const [data, setData] = useState<StrokeOrderData | null>(null);
   const [activeStroke, setActiveStroke] = useState(0); // 0 = 未开始
   const [playing, setPlaying] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -34,6 +35,19 @@ export function StrokeOrderDemo({ character, strokeCount }: StrokeOrderDemoProps
   };
 
   useEffect(() => () => stop(), []);
+
+  // 笔顺 chunk 按需加载，切换字符时重置播放进度（P1-12）
+  useEffect(() => {
+    let active = true;
+    setData(null);
+    setActiveStroke(0);
+    loadStrokeOrder(character).then((loaded) => {
+      if (active) setData(loaded ?? null);
+    });
+    return () => {
+      active = false;
+    };
+  }, [character]);
 
   const handleToggle = () => {
     if (!data) return;
@@ -70,7 +84,7 @@ export function StrokeOrderDemo({ character, strokeCount }: StrokeOrderDemoProps
             viewBox="0 0 1000 1000"
             className="h-full w-full"
             role="img"
-            aria-label={`${character} 笔顺演示`}
+            aria-label={`${character} ${t('learn.strokeDemoLabel')}`}
           >
             {/* 已完成笔画：实线朱砂红；当前笔：高亮 */}
             {data.strokes.map((d, i) => {

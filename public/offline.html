@@ -1,0 +1,28 @@
+<!doctype html>
+<!-- public/offline.html v5.2.44 · 自包含离线页，不依赖任何外部资源 -->
+<html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>离线 · HanziMaster 汉字大师</title>
+    <style>
+      :root { color-scheme: light dark; font-family: system-ui, -apple-system, "Microsoft YaHei", sans-serif; }
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #faf9f6; color: #1a1a1a; }
+      @media (prefers-color-scheme: dark) { body { background: #0d0d0d; color: #faf9f6; } }
+      main { max-width: 32rem; padding: 2.5rem; text-align: center; }
+      .brand { font-size: 2.5rem; font-weight: 700; color: #c53d43; }
+      h1 { font-size: 1.5rem; margin: 1.5rem 0 .75rem; }
+      p { line-height: 1.7; opacity: .8; }
+      button { margin-top: 1.5rem; padding: .75rem 1.75rem; border: 0; border-radius: .75rem; background: #c53d43; color: #fff; font-size: 1rem; cursor: pointer; }
+      button:focus-visible { outline: 3px solid #c53d43; outline-offset: 3px; }
+    </style>
+  </head>
+  <body>
+    <main id="offline-page">
+      <div id="offline-brand" class="brand" aria-hidden="true">汉</div>
+      <h1 id="offline-title">当前处于离线状态 / You are offline</h1>
+      <p id="offline-hint">联网后即可继续学习；本机保存的学习进度不会丢失。Reconnect to continue; your local progress is still saved on this device.</p>
+      <button id="offline-retry" type="button" onclick="location.reload()">重试 / Retry</button>
+    </main>
+  </body>
+</html>

@@ -1,4 +1,4 @@
-// src/components/practice/quiz-dialog.tsx v5.2.35
+// src/components/practice/quiz-dialog.tsx v5.2.44
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
@@ -55,27 +55,35 @@ export function QuizDialog({
             </span>
             <div className="text-right">
               <p className="text-2xl font-medium text-ink-900 dark:text-ink-50">{character.pinyin}</p>
-              <p className="text-sm text-ink-500 dark:text-ink-400">{character.meaning}</p>
+              <p className="text-sm text-ink-500 dark:text-ink-400">{t(character.meaningKey)}</p>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            {QUIZ_OPTIONS.map((char) => (
-              <button
-                key={char}
-                onClick={() => onAnswer(char)}
-                disabled={answered}
-                className={`py-6 text-3xl font-light serif-font rounded-lg transition-[colors,transform] duration-300 ${
-                  selectedAnswer === char
-                    ? char === character.hanzi
-                      ? 'bg-vermilion-500 text-primary-foreground shadow-vermilion-glow'
-                      : 'bg-destructive text-destructive-foreground'
-                    : 'bg-ink-50/50 dark:bg-ink-800/30 text-ink-900 dark:text-ink-50 border border-ink-200 dark:border-ink-700 hover:border-vermilion-300 dark:hover:border-vermilion-500'
-                }`}
-              >
-                {char}
-              </button>
-            ))}
+          <div id="practice-quiz-options" role="radiogroup" aria-label={t('practice.quizTitle')} className="grid grid-cols-2 gap-4">
+            {QUIZ_OPTIONS.map((char) => {
+              const checked = selectedAnswer === char;
+              return (
+                <button
+                  key={char}
+                  type="button"
+                  role="radio"
+                  aria-checked={checked}
+                  onClick={() => onAnswer(char)}
+                  disabled={answered}
+                  className={`relative py-6 text-3xl font-light serif-font rounded-lg transition-[colors,transform] duration-300 ${
+                    checked
+                      ? char === character.hanzi
+                        ? 'bg-vermilion-500 text-primary-foreground shadow-vermilion-glow ring-2 ring-vermilion-600'
+                        : 'bg-destructive text-destructive-foreground ring-2 ring-destructive'
+                      : 'bg-ink-50/50 dark:bg-ink-800/30 text-ink-900 dark:text-ink-50 border border-ink-200 dark:border-ink-700 hover:border-vermilion-300 dark:hover:border-vermilion-500'
+                  }`}
+                >
+                  {char}
+                  {/* 选中态的第二视觉线索：颜色之外提供勾选图标 */}
+                  {checked && <span aria-hidden="true" className="absolute top-1 end-2 text-base">✓</span>}
+                </button>
+              );
+            })}
           </div>
 
           {answered && (

@@ -1,0 +1,91 @@
+# .github/workflows/release.yml v5.2.44
+# docs/git-workflow.md §6.1：门禁全绿后自动发布 GitHub Release
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: '要发布的 Tag（vX.Y.Z）'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.inputs.tag || github.ref }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.11.0
+
+      - name: 解析 Tag
+        id: meta
+        run: echo "tag=${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || github.ref_name }}" >> "$GITHUB_OUTPUT"
+
+      - name: 校验 Tag 与 package.json 一致并抽取 CHANGELOG 正文
+        env:
+          TAG: ${{ steps.meta.outputs.tag }}
+        run: node scripts/extract-changelog.mjs "$TAG"
+
+      - name: 校验 CI / Deploy 门禁全绿
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const sha = context.sha;
+            const fail = (msg) => { core.error(msg); core.setFailed(msg); };
+
+            // 1) 同一 commit 的 ci.yml 全部 job 必须 success
+            const ci = await github.rest.actions.listWorkflowRuns({
+              owner, repo, workflow_id: 'ci.yml', head_sha: sha, per_page: 10,
+            });
+            const ciRun = ci.data.workflow_runs.find((run) => run.conclusion !== null);
+            if (!ciRun) return fail(`未找到 commit ${sha} 的 ci.yml 运行记录`);
+            if (ciRun.conclusion !== 'success') return fail(`ci.yml 结论为 ${ciRun.conclusion}`);
+            const jobs = await github.rest.actions.listJobsForWorkflowRun({
+              owner, repo, run_id: ciRun.id, per_page: 100,
+            });
+            const badJob = jobs.data.jobs.find((job) => job.conclusion !== 'success');
+            if (badJob) return fail(`ci.yml job ${badJob.name} 未通过（${badJob.conclusion}）`);
+            if (!['quality', 'coverage', 'e2e'].every((name) => jobs.data.jobs.some((j) => j.name === name))) {
+              return fail('ci.yml 缺少 quality / coverage / e2e 中的某个 job');
+            }
+
+            // 2) 同一 commit 的 deploy.yml：成功或跳过均视为可发布
+            const deploy = await github.rest.actions.listWorkflowRuns({
+              owner, repo, workflow_id: 'deploy.yml', head_sha: sha, per_page: 10,
+            });
+            const deployRun = deploy.data.workflow_runs.find((run) => run.conclusion !== null);
+            if (deployRun && !['success', 'skipped'].includes(deployRun.conclusion)) {
+              return fail(`deploy.yml 结论为 ${deployRun.conclusion}`);
+            }
+
+            // 3) 同名 Release 已存在则失败（禁止覆盖）
+            try {
+              await github.rest.repos.getReleaseByTag({ owner, repo, tag: '${{ steps.meta.outputs.tag }}' });
+              return fail('同名 Release 已存在，禁止覆盖式更新');
+            } catch (error) {
+              if (error.status !== 404) throw error;
+            }
+            core.info('门禁校验通过');
+
+      - name: 创建 GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.meta.outputs.tag }}
+        run: gh release create "$TAG" --title "$TAG" --notes-file reports/release-notes.md --verify-tag

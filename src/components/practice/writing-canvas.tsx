@@ -1,13 +1,15 @@
-// src/components/practice/writing-canvas.tsx v5.2.27
-// 书写画布：淡字底图 + 指针描线 + 逐笔笔顺引导动画；绘制/判定逻辑分置于
-// writing-canvas-utils.ts，引导动画帧循环分置于 writing-canvas-animation.ts，
-// 进度标签子组件与样式常量分置于 writing-canvas-parts.tsx。
+// src/components/practice/writing-canvas.tsx v5.2.44
+// 书写画布：淡字底图 + 指针描线 + 逐笔笔顺引导 + 键盘替代路径。
+// 绘制/判定在 writing-canvas-utils.ts，帧循环在 writing-canvas-animation.ts，评分编排在 use-keyboard-strokes.ts。
 'use client';
 
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
+import { useTranslation } from '@/components/locale-provider';
 import { drawHint, judgeUserStroke } from './writing-canvas-utils';
-import { runStrokeAnimation, type StrokeAnimationHandle } from './writing-canvas-animation';
+import { startNextStroke, type StrokeAnimationHandle } from './writing-canvas-animation';
 import { ProgressLabel } from './writing-canvas-parts';
+import { KeyboardStrokeForm } from './writing-canvas-keyboard';
+import { useKeyboardStrokes } from './use-keyboard-strokes';
 
 export interface WritingCanvasHandle {
   clearCanvas: () => void;
@@ -27,7 +29,10 @@ interface WritingCanvasProps {
 
 export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>(
   ({ character, strokePaths, medians, strokeCount, onAccuracyChange }, ref) => {
+    const { t } = useTranslation();
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const hasGuidance = !!strokePaths && strokePaths.length > 0;
+    const totalStrokes = hasGuidance ? (strokeCount ?? strokePaths.length) : 0;
     const isDrawing = useRef(false);
     const animHandleRef = useRef<StrokeAnimationHandle | null>(null);
     const animStrokeRef = useRef(-1);
@@ -36,8 +41,18 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
     const userPointsRef = useRef<{ x: number; y: number }[]>([]);
     // 已判定笔的准确度累计（0-1），用于计算整体均值
     const accuracyRef = useRef<number[]>([]);
+    const keyboard = useKeyboardStrokes({
+      strokePaths,
+      medians,
+      totalStrokes,
+      canvasRef,
+      accuracyRef,
+      completedRef,
+      onAccuracyChange,
+    });
 
     const clearCanvas = useCallback(() => {
+      keyboard.reset();
       const canvas = canvasRef.current;
       if (!canvas) return;
       drawHint(canvas, character);
@@ -47,7 +62,7 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
       completedRef.current = new Set();
       userPointsRef.current = [];
       accuracyRef.current = [];
-    }, [character]);
+    }, [character, keyboard.reset]);
 
     useImperativeHandle(ref, () => ({ clearCanvas }), [clearCanvas]);
 
@@ -70,29 +85,18 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
       return { x: e.clientX - rect.left, y: e.clientY - rect.top };
     };
 
-    // 触发下一笔的引导动画
+    // 触发下一笔的引导动画（具体帧循环在 writing-canvas-animation.ts）
     const playNextStroke = () => {
       const canvas = canvasRef.current;
       if (!canvas || !strokePaths) return;
-      const count = strokePaths.length;
-      const next = completedRef.current.size;
-      if (next >= count || animHandleRef.current) return;
-      animStrokeRef.current = next;
-      const rect = canvas.getBoundingClientRect();
-      const size = Math.min(rect.width, rect.height);
-      const median = medians?.[next];
-      animHandleRef.current = runStrokeAnimation({
+      startNextStroke({
         canvas,
         character,
-        median: median ?? [],
-        size,
-        completed: completedRef.current,
         strokePaths,
-        onComplete: () => {
-          completedRef.current.add(next);
-          animStrokeRef.current = -1;
-          animHandleRef.current = null;
-        },
+        medians,
+        completed: completedRef.current,
+        animHandleRef,
+        animStrokeRef,
       });
     };
 
@@ -164,17 +168,17 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
       }
     };
 
-    const hasGuidance = !!strokePaths && strokePaths.length > 0;
-    const totalStrokes = hasGuidance ? (strokeCount ?? strokePaths.length) : 0;
     const progressLabel = hasGuidance ? `${completedRef.current.size} / ${totalStrokes}` : '';
 
     return (
+      <>
       <div className="relative h-full w-full">
         <canvas
           id="writing-canvas"
           ref={canvasRef}
           role="img"
-          aria-label={`${character} 书写练习画布${hasGuidance ? '，点击播放笔顺引导，引导后可跟写描红' : ''}`}
+          aria-label={`${character} ${t('practice.canvasLabel')}`}
+          aria-describedby="writing-stroke-help"
           className="h-full w-full cursor-crosshair touch-none"
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
@@ -184,6 +188,10 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
         />
         {hasGuidance && <ProgressLabel progressLabel={progressLabel} />}
       </div>
+      {hasGuidance && (
+        <KeyboardStrokeForm totalStrokes={totalStrokes} result={keyboard.result} onSubmit={keyboard.submit} />
+      )}
+      </>
     );
   },
 );

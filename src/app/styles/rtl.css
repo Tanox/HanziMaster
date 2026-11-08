@@ -1,7 +1,14 @@
-/* src/app/styles/rtl.css v5.2.35 */
-/* RTL 基础适配：LocaleProvider 会在 <html dir="rtl"> 时切换书写方向。
-   浏览器原生 direction 已处理 flex/grid 排列与文本流；此处只纠正显式
-   物理方向工具类，避免阿拉伯语下标题、抽屉与箭头反向。 */
+/* src/app/styles/rtl.css v5.2.44 */
+/* RTL 适配（P1-35 / P1-36）：
+   1. 应用源码统一使用逻辑属性工具类（ms/me/ps/pe、start/end、text-start/end），
+      浏览器依 <html dir="rtl"> 自动翻转布局，无需逐组件覆写。
+   2. 下方覆写仅作为历史物理类名的兼容兜底，新增组件不应再依赖。
+   3. 汉字笔顺 SVG 与田字格 Canvas 是几何绘制：dir="rtl" 不得镜像笔画（禁止 scaleX(-1)），
+      笔画编号序列仍按 1→N 顺序阅读，否则汉字结构与书写教学含义会被破坏。 */
+
+:where([dir='rtl']) :is(#writing-canvas, #stroke-order-demo svg) {
+  transform: none;
+}
 
 :where([dir='rtl']) .text-left {
   text-align: right;
@@ -39,5 +46,3 @@
   border-end-end-radius: 0.75rem;
   border-end-start-radius: 0;
 }
-
-/* 新增组件优先使用 ms-* / me-* / ps-* / pe-* 等逻辑属性工具类 */

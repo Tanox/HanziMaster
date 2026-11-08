@@ -1,4 +1,4 @@
-// src/components/consent-banner.tsx v5.2.35
+// src/components/consent-banner.tsx v5.2.44
 'use client';
 
 import Link from 'next/link';
@@ -30,7 +30,7 @@ export function ConsentBanner() {
       id="consent-banner"
       role="region"
       aria-labelledby="consent-banner-title"
-      className="fixed bottom-4 left-4 right-4 z-60 mx-auto max-w-2xl rounded-2xl border border-border bg-card/95 p-5 shadow-lg backdrop-blur-xl"
+      className="fixed bottom-4 start-4 end-4 z-60 mx-auto max-w-2xl rounded-2xl border border-border bg-card/95 p-5 shadow-lg backdrop-blur-xl"
     >
       <h2 id="consent-banner-title" className="text-base font-semibold text-foreground">
         {t('legal.consentTitle')}

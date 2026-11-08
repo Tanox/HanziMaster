@@ -1,4 +1,4 @@
-// src/components/practice/writing-canvas-utils.ts v5.2.25
+// src/components/practice/writing-canvas-utils.ts v5.2.44
 // 书写画布的绘制工具函数集（与组件逻辑分离，保证单文件 ≤200 行）
 // 从设计 token 读取颜色与字体，避免 Canvas 写死色值（单一来源）
 
@@ -150,4 +150,39 @@ export function judgeUserStroke(params: {
   const avg = next.reduce((a, b) => a + b, 0) / next.length;
   onAccuracyChange?.(avg);
   return next;
+}
+
+/** 键盘替代路径（P1-25）：把提交的笔画编号序列转成轨迹点，复用与指针路径完全相同的 judgeUserStroke 评分管线。
+ *  顺序错误时，用「提交笔画的中位线」去对照「期望笔画的路径」，自然得到低分，无需第二套评分规则。 */
+export function scoreKeyboardSequence(params: {
+  sequence: number[];
+  totalStrokes: number;
+  strokePaths: string[];
+  medians: number[][][];
+  size: number;
+  prevAccuracies: number[];
+}): { correct: boolean; accuracies: number[] } {
+  const { sequence, totalStrokes, strokePaths, medians, size, prevAccuracies } = params;
+  const expected = Array.from({ length: totalStrokes }, (_, i) => i + 1);
+  const correct =
+    totalStrokes > 0 &&
+    sequence.length === expected.length &&
+    sequence.every((n, i) => n === expected[i]);
+
+  let accuracies = prevAccuracies;
+  expected.forEach((_, i) => {
+    const points = (medians[sequence[i] - 1] ?? []).map(([x, y]) => ({
+      x: scale(x, size),
+      y: scale(y, size),
+    }));
+    accuracies = judgeUserStroke({
+      userPoints: points,
+      strokePath: strokePaths[i],
+      median: medians[i],
+      size,
+      prevAccuracies: accuracies,
+    });
+  });
+
+  return { correct, accuracies };
 }

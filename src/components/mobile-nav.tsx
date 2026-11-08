@@ -1,4 +1,4 @@
-// src/components/mobile-nav.tsx v5.2.31
+// src/components/mobile-nav.tsx v5.2.44
 'use client';
 
 import { APP_VERSION } from '@/lib/version';
@@ -20,29 +20,64 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const swipe = useSwipeClose(isOpen, onClose);
 
+  // 仅在 URL 真的变化时关闭抽屉；避免 onClose 身份变化导致打开即被关闭
+  const previousPathname = useRef(pathname);
   useEffect(() => {
-    if (isOpen) {
-      closeButtonRef.current?.focus();
+    if (previousPathname.current !== pathname) {
+      previousPathname.current = pathname;
+      onClose();
     }
-  }, [isOpen]);
-
-  useEffect(() => {
-    onClose();
   }, [pathname, onClose]);
 
   useEffect(() => {
+    if (!isOpen) return;
+
+    // 记录触发元素，关闭后归还焦点；背景内容设 inert，避免 Tab 逃逸与读屏穿透
+    const trigger = document.activeElement as HTMLElement | null;
+    const shell = document.getElementById('app-shell');
+    const background = shell
+      ? Array.from(shell.children).filter(
+          (el) => el.id !== 'mobile-nav' && el.id !== 'mobile-nav-backdrop'
+        )
+      : [];
+    background.forEach((el) => el.setAttribute('inert', ''));
+    closeButtonRef.current?.focus();
+    document.body.style.overflow = 'hidden';
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const focusables = Array.from(
+        drawerRef.current?.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        ) ?? []
+      );
+      if (focusables.length === 0) {
+        e.preventDefault();
+        return;
+      }
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement;
+      const outside = !drawerRef.current?.contains(active);
+      if (e.shiftKey && (active === first || outside)) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && (active === last || outside)) {
+        e.preventDefault();
+        first.focus();
       }
     };
-    if (isOpen) {
-      document.addEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'hidden';
-    }
+
+    document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = '';
+      background.forEach((el) => el.removeAttribute('inert'));
+      trigger?.focus();
     };
   }, [isOpen, onClose]);
 
@@ -52,6 +87,7 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
     <>
       {/* Backdrop */}
       <div
+        id="mobile-nav-backdrop"
         className="fixed inset-0 bg-ink-900/30 dark:bg-ink-950/50 z-50 backdrop-blur-sm animate-fade-in-elegant"
         onClick={onClose}
         aria-hidden="true"
@@ -63,7 +99,7 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
         role="dialog"
         aria-modal="true"
         aria-label={t('common.navigationMenu')}
-        className="fixed right-0 top-0 h-full w-72 max-w-[85vw] bg-card/95 dark:bg-ink-900/95 backdrop-blur-xl shadow-ink-xl z-50 animate-slide-in-right flex flex-col overscroll-contain"
+        className="fixed end-0 top-0 h-full w-72 max-w-[85vw] bg-card/95 dark:bg-ink-900/95 backdrop-blur-xl shadow-ink-xl z-50 animate-slide-in-right flex flex-col overscroll-contain"
         id="mobile-nav"
         onTouchStart={swipe.onTouchStart}
         onTouchEnd={swipe.onTouchEnd}

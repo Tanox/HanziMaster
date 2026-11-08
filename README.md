@@ -1,4 +1,4 @@
-﻿# HanziMaster 汉字大师 v5.2.43
+﻿# HanziMaster 汉字大师 v5.2.44
 
 [English](README_EN.md) | [简体中文](README.md)
 
@@ -178,4 +178,4 @@ CSP 与安全响应头由 `next.config.mjs` 的 `headers()` 统一注入；项�
 
 本项目按 [MIT 许可证](LICENSE) 发布；第三方依赖许可见 [NOTICE](NOTICE)。贡献与安全报告流程见 [CONTRIBUTING.md](CONTRIBUTING.md)、[CODE_OF_CONDUCT.md](.github/CODE_OF_CONDUCT.md)、[SECURITY.md](.github/SECURITY.md)、[SUPPORT.md](.github/SUPPORT.md) 与 [PR 模板](.github/PULL_REQUEST_TEMPLATE.md)。
 
-© 2026 HanziMaster 汉字大师 v5.2.43
+© 2026 HanziMaster 汉字大师 v5.2.44

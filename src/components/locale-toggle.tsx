@@ -1,4 +1,4 @@
-// src/components/locale-toggle.tsx v5.2.42
+// src/components/locale-toggle.tsx v5.2.44
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
@@ -95,7 +95,7 @@ export function LocaleToggleClient() {
           ref={listRef}
           role="listbox"
           aria-label={t('common.selectLanguage')}
-          className="absolute right-0 mt-2 w-48 max-h-[70vh] overflow-y-auto bg-card dark:bg-ink-900 rounded-lg shadow-ink-lg border border-border z-50"
+          className="absolute end-0 mt-2 w-48 max-h-[70vh] overflow-y-auto bg-card dark:bg-ink-900 rounded-lg shadow-ink-lg border border-border z-50"
         >
           {availableLocales.map((loc) => (
             <button
@@ -104,7 +104,7 @@ export function LocaleToggleClient() {
               aria-selected={locale === loc}
               onClick={() => selectLocale(loc)}
               tabIndex={locale === loc ? 0 : -1}
-              className={`w-full text-left px-4 py-2.5 text-sm hover:bg-muted transition-colors first:rounded-t-lg last:rounded-b-lg ${
+              className={`w-full text-start px-4 py-2.5 text-sm hover:bg-muted transition-colors first:rounded-t-lg last:rounded-b-lg ${
                 locale === loc
                   ? 'bg-vermilion-500/10 dark:bg-vermilion-500/20 text-vermilion-600 dark:text-vermilion-400 font-semibold'
                   : 'text-ink-700 dark:text-ink-200'

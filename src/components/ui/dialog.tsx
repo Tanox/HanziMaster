@@ -1,4 +1,4 @@
-// src/components/ui/dialog.tsx v5.2.35
+// src/components/ui/dialog.tsx v5.2.44
 "use client"
 
 import * as React from "react"
@@ -7,6 +7,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
+import { useTranslation } from "@/components/locale-provider"
 
 function Dialog({
   ...props
@@ -52,19 +53,20 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
-  closeLabel = 'Close',
+  closeLabel,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean
   closeLabel?: string
 }) {
+  const { t } = useTranslation()
   return (
     <DialogPortal>
       <DialogOverlay />
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-3xl bg-card/95 dark:bg-ink-900/95 backdrop-blur-xl p-4 text-sm text-popover-foreground border border-ink-100 dark:border-ink-800 shadow-ink-xl duration-100 outline-none sm:max-w-sm data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+          "fixed top-1/2 start-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-3xl bg-card/95 dark:bg-ink-900/95 backdrop-blur-xl p-4 text-sm text-popover-foreground border border-ink-100 dark:border-ink-800 shadow-ink-xl duration-100 outline-none sm:max-w-sm data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
           className
         )}
         {...props}
@@ -74,12 +76,12 @@ function DialogContent({
           <DialogPrimitive.Close data-slot="dialog-close" asChild>
             <Button
               variant="ghost"
-              className="absolute top-2 right-2"
+              className="absolute top-2 end-2"
               size="icon-sm"
             >
               <X
               />
-              <span className="sr-only">{closeLabel}</span>
+              <span className="sr-only">{closeLabel ?? t('common.close')}</span>
             </Button>
           </DialogPrimitive.Close>
         )}
@@ -106,6 +108,7 @@ function DialogFooter({
 }: React.ComponentProps<"div"> & {
   showCloseButton?: boolean
 }) {
+  const { t } = useTranslation()
   return (
     <div
       data-slot="dialog-footer"
@@ -118,7 +121,7 @@ function DialogFooter({
       {children}
       {showCloseButton && (
         <DialogPrimitive.Close asChild>
-          <Button variant="outline">Close</Button>
+          <Button variant="outline">{t('common.close')}</Button>
         </DialogPrimitive.Close>
       )}
     </div>

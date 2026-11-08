@@ -1,4 +1,4 @@
-// src/app/layout.tsx v5.2.35
+// src/app/layout.tsx v5.2.44
 import type { Metadata, Viewport } from 'next';
 import { cookies } from 'next/headers';
 import { Space_Grotesk, Playfair_Display, Noto_Serif_SC, JetBrains_Mono } from 'next/font/google';
@@ -18,8 +18,9 @@ const playfairDisplay = Playfair_Display({ subsets: ['latin'], variable: '--font
 const notoSerifSC = Noto_Serif_SC({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-serif', display: 'swap' });
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap' });
 
+// P1-8：hreflang 指向语言前缀 URL（由 src/proxy.ts 重写到实际页面），x-default 保留根路径
 const languageAlternates = Object.fromEntries(
-  SUPPORTED_LOCALES.map((locale) => [locale, `/?lang=${encodeURIComponent(locale)}`])
+  SUPPORTED_LOCALES.map((locale) => [locale, `/${locale}/`])
 );
 
 export const metadata: Metadata = {

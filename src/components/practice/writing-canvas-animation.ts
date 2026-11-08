@@ -1,4 +1,4 @@
-// src/components/practice/writing-canvas-animation.ts v5.2.25
+// src/components/practice/writing-canvas-animation.ts v5.2.44
 // 书写引导动画：沿当前笔画中位线逐帧描线，已完成的笔画以浅色虚线轮廓呈现。
 // 抽离自 writing-canvas.tsx，使组件文件 ≤200 行（单一职责：动画播放）。
 
@@ -65,4 +65,35 @@ export function runStrokeAnimation(opts: StrokeAnimationOptions): StrokeAnimatio
       if (raf !== null) cancelAnimationFrame(raf);
     },
   };
+}
+
+/** 播放下一笔引导动画；全部播完或正在播放时忽略（从 writing-canvas.tsx 抽出，P2 行数门禁）。 */
+export function startNextStroke(params: {
+  canvas: HTMLCanvasElement;
+  character: string;
+  strokePaths: string[];
+  medians?: number[][][];
+  completed: Set<number>;
+  animHandleRef: { current: StrokeAnimationHandle | null };
+  animStrokeRef: { current: number };
+}): void {
+  const { canvas, character, strokePaths, medians, completed, animHandleRef, animStrokeRef } = params;
+  const next = completed.size;
+  if (next >= strokePaths.length || animHandleRef.current) return;
+  animStrokeRef.current = next;
+  const rect = canvas.getBoundingClientRect();
+  const size = Math.min(rect.width, rect.height);
+  animHandleRef.current = runStrokeAnimation({
+    canvas,
+    character,
+    median: medians?.[next] ?? [],
+    size,
+    completed,
+    strokePaths,
+    onComplete: () => {
+      completed.add(next);
+      animStrokeRef.current = -1;
+      animHandleRef.current = null;
+    },
+  });
 }

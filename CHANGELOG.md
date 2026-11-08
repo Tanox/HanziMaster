@@ -1,5 +1,21 @@
 ﻿# Changelog
 
+## [5.2.44] - 闭环剩余 22 项任务：URL 级 i18n、无障碍、RSC 拆分、PWA 与发布自动化
+### Added
+- **URL 级 i18n（P1-7/8/9）**：新增 `src/proxy.ts`（Next 16 proxy），`/{locale}/...` 重写到既有页面 + `?lang=`，旧深链按协商语言 302 到本地化 URL；`LocaleProvider` 以 URL 前缀为最高优先级并同步写入 URL/cookie；`layout.tsx` hreflang 与 `sitemap.ts` 改为语言前缀 URL，x-default 保留根路径。
+- **词典按需加载（P1-11）**：`src/lib/i18n/load-translations.ts` 按语言动态 `import()`，首屏仅英文兜底在主包，切换语言保留上一份词典避免闪烁。
+- **无障碍（P1-24/25/27/28/29）**：移动抽屉焦点陷阱 + 背景 `inert` + 关闭归还焦点；Canvas 键盘/读屏替代路径（`KeyboardStrokeForm` + `scoreKeyboardSequence` 与指针路径共享评分）；测验选项 `role="radiogroup"/"radio"` + `aria-checked` + 勾选图标；a11y/toast/dialog/画布/笔顺文案与 12 汉字释义全部走 11 语言词典。
+- **RTL（P1-35/36）**：10 个文件的物理方向类改为 `ms/me/start/end/text-start` 等逻辑属性；`rtl.css` 明确禁止对笔顺 SVG 与田字格 Canvas 做镜像。
+- **架构与质量（P2-5/6/11/18）**：三个 `page.tsx` 改为 Server Component 薄壳，交互岛迁入 `src/components/pages/`；`toast` 重构为 `ToastProvider` + `useToast()`；新增 `src/lib/logger.ts`（全应用唯一结构化日志出口 + 敏感字段脱敏）；内联动画改为 `animate-float-gentle-reverse` token。
+- **性能（P1-12）**：笔顺数据动态加载（`stroke-order-loader.ts`），笔顺演示与练习弹窗 `next/dynamic` 拆包。
+- **PWA（P2-14）**：`public/sw.js`（网络优先 + 离线兜底）、自包含 `public/offline.html`、`PwaInstallPrompt`（仅可安装时出现）+ 11 语言文案。
+- **进度迁移（P2-17）**：`src/lib/progress-transfer.ts`（JSON 备份 / 严格校验 / v0 迁移）与设置面板导出导入入口；非法文件不写坏现有进度。
+- **发布与平台（P1-32/37、P2-12）**：`.github/workflows/release.yml`（门禁全绿后自动建 Release）+ `scripts/extract-changelog.mjs`；`edgeone.json` 补齐安全响应头兜底与线上核验命令；全部依赖钉为精确版本并补升级/回滚策略文档。
+- **i18n 质量（P3-2）**：`docs/i18n-review.md` 审校清单；`scripts/i18n-lint.mjs` 增加占位符集合一致性与超长文案检查（6 个扩展模块）；审校项纳入 PR 模板。
+- **测试**：新增抽屉焦点、结构化日志、进度备份、Toast Context 等用例；单测 29 文件 / 158 用例全通过。
+### Changed
+- `docs/tasks.md` 完成状态全面复核（2026-11-08 11:42 UTC+8），P2-1 归档移出，剩余 22 项按 P1′/P2′/P3′ 重排；`docs/tasks-done.md` 归档 22 项。
+
 ## [5.2.43] - 修复设计系统色阶失效并优化仓库页面
 ### Fixed
 - **P2-1 落地**：死配置 `tailwind.config.ts`（v4 需 `@config` 才生效，从未引入）删除；`ink` / `vermilion` / `indigo` 色阶、状态色阶与 `shadow-ink*` 阴影迁入新增 `src/app/styles/theme-colors.css` 的 `@theme`。此前产物 CSS 缺失这批工具类，主页 hero CTA（`bg-vermilion-500`）、导航 Logo 渐变、强调文字等在浅色模式白底白字不可见、卡片阴影全部失效；实测修复后产物 CSS 含 `.bg-vermilion-500` / `.text-ink-900` / `.shadow-ink-lg` / `.from-vermilion-500`，浅色/深色模式视觉恢复设计稿效果。

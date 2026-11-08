@@ -1,8 +1,10 @@
-// src/components/toast.tsx v5.2.25
+// src/components/toast.tsx v5.2.44
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
+import { useTranslation } from '@/components/locale-provider';
 
 type ToastType = 'success' | 'error' | 'warning' | 'info';
 
@@ -13,9 +15,15 @@ interface Toast {
   duration?: number;
 }
 
-interface ToastItemProps extends Toast {
-  onRemove: (id: string) => void;
+interface ToastApi {
+  success: (message: string, duration?: number) => void;
+  error: (message: string, duration?: number) => void;
+  warning: (message: string, duration?: number) => void;
+  info: (message: string, duration?: number) => void;
 }
+
+// 状态由 Provider 持有，取代 v5.2.43 之前的模块级单例（P2-11）
+const ToastContext = createContext<ToastApi | null>(null);
 
 const typeStyles: Record<ToastType, string> = {
   success: 'bg-success-50 dark:bg-success-500/10 border-success-100 dark:border-success-500/30 text-success-600 dark:text-success-500',
@@ -24,7 +32,7 @@ const typeStyles: Record<ToastType, string> = {
   info: 'bg-indigo-50 dark:bg-indigo-900/30 border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300',
 };
 
-const iconMap: Record<ToastType, React.ReactNode> = {
+const iconMap: Record<ToastType, ReactNode> = {
   success: (
     <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -47,7 +55,8 @@ const iconMap: Record<ToastType, React.ReactNode> = {
   ),
 };
 
-function ToastItem({ id, message, type, duration = 5000, onRemove }: ToastItemProps) {
+function ToastItem({ id, message, type, duration = 5000, onRemove }: Toast & { onRemove: (id: string) => void }) {
+  const { t } = useTranslation();
   const [isExiting, setIsExiting] = useState(false);
 
   useEffect(() => {
@@ -76,7 +85,7 @@ function ToastItem({ id, message, type, duration = 5000, onRemove }: ToastItemPr
           setTimeout(() => onRemove(id), 300);
         }}
         className="p-1 rounded-lg hover:bg-ink-900/5 dark:hover:bg-ink-100/10 transition-colors"
-        aria-label="Close notification"
+        aria-label={t('common.closeNotification')}
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -86,45 +95,39 @@ function ToastItem({ id, message, type, duration = 5000, onRemove }: ToastItemPr
   );
 }
 
-let toastId = 0;
-const listeners: Set<(toasts: Toast[]) => void> = new Set();
-let toasts: Toast[] = [];
+export function ToastProvider({ children }: { children: ReactNode }) {
+  const { t } = useTranslation();
+  const [items, setItems] = useState<Toast[]>([]);
 
-function notify(message: string, type: ToastType = 'info', duration?: number) {
-  const id = `toast-${++toastId}`;
-  const toast: Toast = { id, message, type, duration };
-  toasts = [...toasts, toast];
-  listeners.forEach((listener) => listener(toasts));
-}
-
-export const toast = {
-  success: (message: string, duration?: number) => notify(message, 'success', duration),
-  error: (message: string, duration?: number) => notify(message, 'error', duration),
-  warning: (message: string, duration?: number) => notify(message, 'warning', duration),
-  info: (message: string, duration?: number) => notify(message, 'info', duration),
-};
-
-export function ToastContainer() {
-  const [activeToasts, setActiveToasts] = useState<Toast[]>([]);
-
-  useEffect(() => {
-    const listener = (newToasts: Toast[]) => setActiveToasts([...newToasts]);
-    listeners.add(listener);
-    return () => { listeners.delete(listener); };
+  const remove = useCallback((id: string) => {
+    setItems((prev) => prev.filter((item) => item.id !== id));
   }, []);
 
-  const removeToast = useCallback((id: string) => {
-    toasts = toasts.filter((t) => t.id !== id);
-    listeners.forEach((listener) => listener(toasts));
+  const push = useCallback((message: string, type: ToastType, duration?: number) => {
+    setItems((prev) => [...prev, { id: `toast-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`, message, type, duration }]);
   }, []);
 
-  if (activeToasts.length === 0) return null;
+  const api = useMemo<ToastApi>(() => ({
+    success: (message, duration) => push(message, 'success', duration),
+    error: (message, duration) => push(message, 'error', duration),
+    warning: (message, duration) => push(message, 'warning', duration),
+    info: (message, duration) => push(message, 'info', duration),
+  }), [push]);
 
   return (
-    <div id="toast-container" className="fixed top-20 right-4 z-[100] flex flex-col gap-2" role="region" aria-label="Notifications">
-      {activeToasts.map((t) => (
-        <ToastItem key={t.id} {...t} onRemove={removeToast} />
-      ))}
-    </div>
+    <ToastContext.Provider value={api}>
+      {children}
+      {items.length > 0 && (
+        <div id="toast-container" className="fixed top-20 end-4 z-[100] flex flex-col gap-2" role="region" aria-label={t('common.notifications')}>
+          {items.map((item) => <ToastItem key={item.id} {...item} onRemove={remove} />)}
+        </div>
+      )}
+    </ToastContext.Provider>
   );
+}
+
+export function useToast(): ToastApi {
+  const context = useContext(ToastContext);
+  if (!context) throw new Error('useToast must be used within a ToastProvider');
+  return context;
 }

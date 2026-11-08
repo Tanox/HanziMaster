@@ -1,6 +1,6 @@
 # Git 工作流与代码审查规范
 
-> 文档版本：v5.2.40（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.44（与项目版本同步，权威版本见 `package.json`）
 
 本文是**分支管理、Pull Request、代码审查与发版流程的唯一权威**。提交信息格式见 [commit-template.md](commit-template.md)，编码规则见 [coding-standards.md](coding-standards.md)，版本同步位置清单见 [coding-standards.md](coding-standards.md) §3。
 
@@ -118,7 +118,7 @@ PR 检查清单与 CI 判定依据一致，任一项失败即阻断合并：
 - **失败处理**：任一 job 失败 → `release.yml` 短路退出，不创建 Release，并在日志输出 `::error::` 标明哪个门禁未通过。此时**禁止删除重建同名 Tag**（§7），应修复后使用新的 patch 版本重新走 §6 流程。
 - **幂等与重复**：同名 Release / Tag 已存在时视为异常，直接失败并告警，不做覆盖式更新。
 - **权限**：`release.yml` 仅申请 `contents: write`，不授予其他 scope；Token 使用默认 `GITHUB_TOKEN`。
-- **实现任务**：该规则的落地工作流见 [tasks.md](tasks.md) P1-37（`release.yml` 尚未创建时，本节为规范目标态，发布仍按旧流程手工执行）。
+- **实现**：`.github/workflows/release.yml`（v5.2.44 落地）+ `scripts/extract-changelog.mjs`；`workflow_dispatch` 需传入 `tag` 参数。首次上线前须用真实 Tag 实跑一次确认 Release 自动创建。
 
 ## 7. 禁止事项
 

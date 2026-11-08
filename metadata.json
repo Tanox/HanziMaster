@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.43",
-  "version": "5.2.43",
-  "description": "v5.2.43: 修复设计系统色阶失效（P2-1：删除死配置 tailwind.config.ts，色阶与阴影迁入 styles/theme-colors.css 的 @theme，浅色模式 CTA/Logo/强调色恢复）；仓库页面优化——两份 README 增徽章行与预览截图区，新增 docs/assets/screenshots/ 四张生产实拍图。",
+  "name": "HanziMaster 汉字大师 v5.2.44",
+  "version": "5.2.44",
+  "description": "v5.2.44: 闭环 docs/tasks.md 剩余 22 项任务——URL 级 i18n 与词典按需加载、无障碍焦点陷阱/键盘替代路径、RSC 边界拆分、PWA 离线兜底、进度导出导入、自动发布 Release、依赖精确钉住与 i18n 审校流程；单测 29 文件/158 用例全通过。",
   "keywords": [
     "Chinese characters",
     "Hanzi",

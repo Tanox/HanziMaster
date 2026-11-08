@@ -48,6 +48,7 @@
 
 - [ ] 命名 / 目录 / 文件头注释符合编码规范，单文件 ≤ 200 行
 - [ ] 用户可见文本全部走 `t()`，新增键已同步 11 个语言文件
+- [ ] `pnpm i18n:lint` 通过（占位符集合、超长文案、扩展模块清单）；若改动译文，已按 [docs/i18n-review.md](../docs/i18n-review.md) 完成人工审校清单
 - [ ] 使用设计 token（`var(--color-*)`），无硬编码色值、`rounded-[Npx]`、`transition-all`
 - [ ] 主要容器与关键 DOM 有唯一 kebab-case 语义化 id，列表渲染无重复 id
 - [ ] 无 `any` / `console.log` / `debugger` / 密钥 / Token / 未处理 Promise 异常

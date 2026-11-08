@@ -1,11 +1,22 @@
-// src/components/learn/character-detail.tsx v5.2.38
+// src/components/learn/character-detail.tsx v5.2.44
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
 import type { Character } from '@/lib/characters';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { StrokeOrderDemo } from '@/components/learn/stroke-order-demo';
+import dynamic from 'next/dynamic';
+
+// 笔顺演示（含 12KB SVG 数据）按需加载，首屏只留骨架（P1-12）
+const StrokeOrderDemo = dynamic(
+  () => import('@/components/learn/stroke-order-demo').then((m) => m.StrokeOrderDemo),
+  {
+    ssr: false,
+    loading: () => (
+      <div id="stroke-order-skeleton" className="aspect-square w-full animate-pulse rounded-lg bg-ink-100 dark:bg-ink-800" />
+    ),
+  }
+);
 
 interface CharacterDetailProps {
   character: Character;
@@ -45,7 +56,7 @@ export function CharacterDetail({
               aria-describedby={showPronunciationHint ? 'pronunciation-hint' : undefined}
               className="text-ink-500 dark:text-ink-400 hover:text-vermilion-500 disabled:opacity-60"
             >
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg className="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
               </svg>
               {t('learn.playAudio')}

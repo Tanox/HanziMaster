@@ -1,4 +1,4 @@
-// src/components/layout-client.tsx v5.2.42
+// src/components/layout-client.tsx v5.2.44
 'use client';
 
 import { VERSION_LABEL } from '@/lib/version';
@@ -11,7 +11,8 @@ import { LocaleToggleClient } from '@/components/locale-toggle';
 import { MobileNav } from '@/components/mobile-nav';
 import { NavLink } from '@/components/nav-link';
 import { SettingsButton } from '@/components/settings-dialog';
-import { ToastContainer } from '@/components/toast';
+import { ToastProvider } from '@/components/toast';
+import { PwaInstallPrompt } from '@/components/pwa-install-prompt';
 
 interface LayoutClientProps {
   children: React.ReactNode;
@@ -29,6 +30,7 @@ export function LayoutClient({ children }: LayoutClientProps) {
   }, [pathname]);
 
   return (
+    <ToastProvider>
     <div id="app-shell" className="min-h-screen bg-ink-50 dark:bg-ink-950 text-ink-900 dark:text-ink-50 flex flex-col">
       {/* Skip to content - accessibility */}
       <a href="#main-content" className="skip-to-content">
@@ -80,9 +82,6 @@ export function LayoutClient({ children }: LayoutClientProps) {
       {/* Mobile Drawer */}
       <MobileNav isOpen={mobileNavOpen} onClose={closeMobileNav} t={t} />
 
-      {/* Toast Notifications */}
-      <ToastContainer />
-
       {/* Main Content */}
       <main id="main-content" className="flex-1 page-transition" key={pathname}>
         {children}
@@ -109,6 +108,8 @@ export function LayoutClient({ children }: LayoutClientProps) {
           <p id="footer-version" className="text-xs sm:text-sm text-ink-400 dark:text-ink-500 text-center">{t('footer.copyright', { versionLabel: VERSION_LABEL })}</p>
         </div>
       </footer>
+      <PwaInstallPrompt />
     </div>
+    </ToastProvider>
   );
 }

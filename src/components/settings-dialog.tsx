@@ -1,4 +1,4 @@
-// src/components/settings-dialog.tsx v5.2.42
+// src/components/settings-dialog.tsx v5.2.44
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -7,10 +7,11 @@ import { Button } from '@/components/ui/button';
 import { useTheme, type Theme } from '@/components/theme-provider';
 import { useLocale } from '@/components/locale-provider';
 import { localeNames } from '@/components/locale-toggle';
-import { toast } from '@/components/toast';
+import { useToast } from '@/components/toast';
 import { loadSettings, saveSettings, DEFAULT_SETTINGS, type AppSettings } from '@/lib/settings';
 import { safeRemoveItem } from '@/lib/storage';
 import { PROGRESS_STORAGE_KEY } from '@/hooks/use-progress';
+import { ProgressTransferControls } from '@/components/progress-transfer-controls';
 import type { Locale } from '@/lib/i18n';
 
 const THEMES: readonly Theme[] = ['light', 'dark', 'system'];
@@ -40,7 +41,7 @@ function SwitchRow({ label, desc, checked, onChange }: {
         onClick={() => onChange(!checked)}
         className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${checked ? 'bg-vermilion-500' : 'bg-ink-200 dark:bg-ink-700'}`}
       >
-        <span className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${checked ? 'translate-x-5' : ''}`} />
+        <span className={`absolute top-0.5 start-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${checked ? 'ltr:translate-x-5 rtl:-translate-x-5' : ''}`} />
       </button>
     </div>
   );
@@ -51,6 +52,7 @@ const sectionTitle = 'text-xs font-semibold uppercase tracking-wide text-ink-400
 export function SettingsButton() {
   const { t, locale, setLocale, availableLocales } = useLocale();
   const { theme, setTheme } = useTheme();
+  const toast = useToast();
   const [open, setOpen] = useState(false);
   const [settings, setSettings] = useState<AppSettings>(DEFAULT_SETTINGS);
   const [confirmReset, setConfirmReset] = useState(false);
@@ -157,6 +159,7 @@ export function SettingsButton() {
 
           <section aria-label={t('settings.data')} className="space-y-3">
             <h3 className={sectionTitle}>{t('settings.data')}</h3>
+            <ProgressTransferControls />
             {confirmReset ? (
               <div id="settings-reset-confirm" className="space-y-2 rounded-xl border border-vermilion-200 bg-vermilion-50 p-3 dark:border-vermilion-800 dark:bg-vermilion-900/30">
                 <p className="text-sm font-semibold text-vermilion-700 dark:text-vermilion-300">{t('settings.resetProgress')}</p>

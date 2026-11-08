@@ -1,7 +1,7 @@
 # 已完成任务归档 · Tasks Done
 
-> 文档版本：v5.2.43（与项目版本同步，权威版本见 `package.json`）
-> 最近归档：2026-11-07 17:30（UTC+8）
+> 文档版本：v5.2.44（与项目版本同步，权威版本见 `package.json`）
+> 最近归档：**2026-11-08（UTC+8）— 剩余 22 项任务全部闭环**
 
 ## 说明
 
@@ -149,3 +149,35 @@
 | P2-1 | 移除 Tailwind v4 死配置并迁移色阶 token | 构建/设计系统 | v5.2.43 | 死配置 `tailwind.config.ts`（v4 需 `@config` 才生效，从未引入）导致 `ink` / `vermilion` / `indigo` 色阶与 `shadow-ink*` 阴影从未进入产物 CSS——主页 hero CTA、导航 Logo 渐变、强调文字等在浅色模式白底白字不可见。修复：色阶与阴影迁入新增 `src/app/styles/theme-colors.css` 的 `@theme`；删除 `tailwind.config.ts`；`components.json` `tailwind.config` 置空；产物 CSS 实测含 `.bg-vermilion-500` / `.text-ink-900` / `.shadow-ink-lg` / `.from-vermilion-500`；10 处文档引用同步为单一来源表述 |
 
 > 归档实测（2026-11-07，v5.2.43）：`next build` 成功；页面截图核实浅色/深色模式视觉恢复设计稿效果（`docs/assets/screenshots/`）。
+
+## 归档（2026-11-08 剩余任务闭环批次 · v5.2.44）
+
+> 来源：`docs/tasks.md` §0.2「状态复核与优先级重排（2026-11-08 11:42 UTC+8）」列出的 22 项；本批次全部闭环，实现要点另见 `CHANGELOG.md` [5.2.44]。
+
+| ID | 任务 | 分类 | 实现要点 |
+|----|------|------|---------|
+| P1-7 | [locale] 路由骨架与重定向 | i18n 架构 | 新增 `src/proxy.ts`（Next 16 proxy）：`/{locale}/...` 重写到既有页面 + `?lang=`，无前缀旧深链按 cookie / Accept-Language / `?lang=` 协商后 302 到本地化 URL；无需复制三套页面，旧链接不 404 |
+| P1-8 | 页面 i18n 化与 hreflang | i18n 架构 | `layout.tsx` 的 `alternates.languages` 指向 11 个语言前缀 URL（x-default 保留 `/`）；`sitemap.ts` 输出 `/{locale}{path}`；根 layout 依 cookie 输出动态 `lang` / `dir`，客户端依 URL 前缀同步 |
+| P1-9 | 语言切换器改为 URL 导航 | i18n 架构 | `LocaleProvider.getUrlLocale` 以路径前缀为最高优先级；`setLocale` 用 `history.replaceState` 写入 /{locale}/ 前缀并清掉 `?lang=`，同时持久化 localStorage + cookie，刷新后语言保持 |
+| P1-11 | 11 语言词典按需加载 | 性能 | 新增 `src/lib/i18n/load-translations.ts`：每语言独立动态 `import()`；主包仅保留英文兜底词典；切换语言时保留上一份词典直至新 chunk 就绪，避免闪烁；14 个原运行时引用均为 type-only |
+| P1-12 | 笔顺数据与重型组件懒加载 | 性能 | `stroke-order-loader.ts` 按字符动态加载 12KB 笔顺数据（同 chunk 只加载一次）；`stroke-order-demo` / `writing-dialog` / `quiz-dialog` 经 `next/dynamic` 拆包，笔顺演示带骨架屏 |
+| P1-24 | 移动抽屉焦点陷阱 | 无障碍 | `mobile-nav.tsx`：Tab / Shift+Tab 环绕、背景 `inert`、Escape 关闭、关闭后焦点归还触发元素；同时修复 `onClose` 身份变化导致「打开即关闭」的缺陷；新增 3 例单测 |
+| P1-25 | Canvas 键盘/读屏替代路径 | 无障碍 | `writing-canvas-keyboard.tsx` 提供笔画编号输入表单（label / help / role="status"）；`scoreKeyboardSequence` 把序列转成轨迹点，复用指针路径同一 `judgeUserStroke` 评分管线，结果经同一 `onAccuracyChange` 回传；11 语言文案 |
+| P1-27 | 测验选项选中语义 | 无障碍 | `practice/quiz-dialog.tsx` 选项改 `role="radiogroup"/"radio"` + `aria-checked`，颜色之外补 ✓ 图标与 ring；测试同步改为按 radio 查询 |
+| P1-28 | a11y 文案 i18n | 无障碍 | toast 关闭/区域标签、Dialog 默认 `closeLabel` 与 Footer、笔顺 SVG、Canvas `aria-label` 全部走 `t()`；a11y 扩展补充 11 语言键盘路径文案 |
+| P1-29 | 测验释义 i18n | 内容 i18n | `CharacterQuiz.meaning` → `meaningKey: TranslationKey`，12 汉字指向 `practice.meanings.*`；测验与书写弹窗均用 `t(character.meaningKey)` |
+| P1-32 | EdgeOne 安全响应头 | 安全/部署 | `edgeone.json` 显式声明 CSP / X-Frame-Options / X-Content-Type-Options / Referrer-Policy / Permissions-Policy / COOP（与 `next.config.mjs` 逐字一致）；`docs/05-deployment.md` §3.1 增权威源说明与三条 `curl -sSI` 核验命令 |
+| P1-35 | RTL 逻辑属性 | RTL | 10 个文件的 `ml/mr/left/right/text-left` 等改为 `ms/me/start/end/text-start`；设置开关旋钮加 `ltr:/rtl:` 位移；修复批量替换误伤 `rounded-lg` 并复核 |
+| P1-36 | RTL 笔顺/书写适配 | RTL | `rtl.css` 明确汉字笔顺 SVG 与田字格 Canvas 为几何绘制，禁止 `scaleX(-1)` 镜像，笔画编号仍按 1→N；补充单一来源与兼容兜底说明 |
+| P1-37 | release.yml 自动发布 | CI/发布 | 新增 `.github/workflows/release.yml`：tag/版本一致校验 → 同 commit CI 全 job 与 Deploy 结论校验 → 同名 Release 查重 → `gh release create`；正文由 `scripts/extract-changelog.mjs` 从 CHANGELOG 抽取；`workflow_dispatch` 兜底；文档 §6.1 / §6 同步 |
+| P2-5 | RSC 边界拆分 | 架构 | `src/app/page.tsx` / `learn/page.tsx` / `practice/page.tsx` 改为 Server Component 薄壳；交互岛迁入 `src/components/pages/{home,learn,practice}-page.tsx`，导入全部走 `@/` 别名，公开契约不变 |
+| P2-6 | 结构化日志 | 代码质量 | 新增 `src/lib/logger.ts`（唯一 console 出口、JSON 结构、敏感键脱敏、Error 序列化、生产禁用 debug）；`app/error.tsx` 改用 logger；新增 3 例单测 |
+| P2-11 | Toast Provider 化 | 代码质量 | `toast.tsx` 重构为 `ToastProvider` + `useToast()`，移除模块级单例；`layout-client.tsx` 包裹 Provider，`settings-dialog.tsx` 与测试改用 Context；新增 Provider 隔离用例 |
+| P2-12 | 依赖精确钉住 | 构建 | 32 个 `^` 范围依赖按实际安装版本钉为精确版本，`pnpm install --lockfile-only` 同步 lockfile，`--frozen-lockfile` 实测通过；`docs/05-deployment.md` §8 增升级/回滚策略 |
+| P2-14 | PWA 离线兜底与安装引导 | PWA | `public/sw.js`（网络优先 + 缓存 + 导航失败回退 `/offline.html`，不缓存跨域/API）、自包含 `public/offline.html`、`PwaInstallPrompt`（仅 `beforeinstallprompt` 时出现且可永久关闭）+ `pwa` 扩展 11 语言文案；`manifest.ts` 已存在 |
+| P2-17 | 进度导出/导入 | 产品 | `src/lib/progress-transfer.ts`：JSON 备份、严格校验、5MB 上限、v0 裸数据迁移；设置面板新增 `ProgressTransferControls`（导出下载 / 导入文件，校验通过才写入）；`useProgress` 监听导入事件刷新内存态；重置二次确认沿用既有实现；新增 3 例单测 |
+| P2-18 | 动画令牌收敛 | 代码质量 | `utilities.css` 新增 `.animate-float-gentle-reverse`，移除 `page.tsx:34` 内联 `style={{animation:...}}`；动画名统一来自 token |
+| P3-2 | i18n 译文审校流程 | i18n/质量 | 新增 `docs/i18n-review.md`（术语、语境、占位符、数字单位、RTL 长度、lang/dir、a11y、法律文本、新增语言流程）；`scripts/i18n-lint.mjs` 扩展至 6 个模块并检查占位符集合一致与文案 >160 字符；审校项纳入 PR 模板 |
+
+> **实测基线（v5.2.44）**：`tsc --noEmit` 0 error；`eslint src scripts` 0 error / 0 warning；Vitest **29 文件 / 158 用例**全通过；`check:lines` `all <= 200`；`check:root` `root clean`；`i18n:lint` 11 语言 / 6 扩展模块 / 占位符一致；`version:check` `v5.2.44 in sync`；`pnpm install --frozen-lockfile` 通过。
+> **外部环境核验（代码已交付，非本机能验）**：P1-32 线上 `curl -sSI`、P1-37 真实 Tag 触发 Release、P3-2 母语者人工审校——清单保留在 `docs/tasks.md` §0.4，不计入未完成任务。

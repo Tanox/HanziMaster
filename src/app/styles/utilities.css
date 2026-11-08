@@ -1,4 +1,4 @@
-/* src/app/styles/utilities.css v5.2.31 */
+/* src/app/styles/utilities.css v5.2.44 */
 /* 自定义工具类（从 globals.css 拆分，保持单文件 ≤200 行） */
 
 @layer utilities {
@@ -28,6 +28,10 @@
 
   .animate-float-gentle {
     animation: floatGentle 6s ease-in-out infinite;
+  }
+
+  .animate-float-gentle-reverse {
+    animation: floatGentle 8s ease-in-out infinite reverse;
   }
 
   .animate-slide-in-right {
