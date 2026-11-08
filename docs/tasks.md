@@ -1,7 +1,7 @@
 # 任务清单 · Task Backlog
 
-> 文档版本：v5.2.44（与项目版本同步，权威版本见 `package.json`）
-> 最后更新：**2026-11-08 12:20（UTC+8）— 22 项剩余任务全部闭环**
+> 文档版本：v5.2.45（与项目版本同步，权威版本见 `package.json`）
+> 最后更新：**2026-11-08 22:00（UTC+8）— 审查修复批次（URL 级 i18n 行为固化与次级 i18n 修正）**
 > 本文件是**未完成任务 / 当前进度的单一来源**；已完成任务一律归档至 [tasks-done.md](tasks-done.md)，实现要点见 [CHANGELOG.md](../CHANGELOG.md)。
 
 ## 0. 说明与规则（单一来源）
@@ -73,13 +73,13 @@
 | 自动发布 Release | 推送首个真实 `vX.Y.Z` Tag，确认 `release.yml` 门禁校验通过并自动创建 Release，正文与 CHANGELOG 一致 | `docs/git-workflow.md` §6.1 |
 | 译文人工审校 | 由各语言母语者按 `docs/i18n-review.md` §2 清单抽查术语、语境与 RTL 文本长度 | `docs/i18n-review.md` |
 
-## 1. 当前质量基线（v5.2.44 实测）
+## 1. 当前质量基线（v5.2.45 实测）
 
 | 门禁 | 命令 | 结果 |
 |------|------|------|
 | 类型检查 | `node node_modules/typescript/bin/tsc --noEmit` | ✅ 0 error |
 | Lint | `node node_modules/eslint/bin/eslint.js src scripts` | ✅ 0 error / 0 warning |
-| 单测 | `node scripts/run-tests.mjs` | ✅ **29 文件 / 158 用例**全通过 |
+| 单测 | `node scripts/run-tests.mjs` | ✅ **30 文件 / 163 用例**全通过（新增 `src/proxy.test.ts` 5 例） |
 | 覆盖率 | `pnpm test:run --coverage` | 阈值门禁见 CI `coverage` job |
 | 行数 | `pnpm check:lines` | ✅ `all <= 200` |
 | 根目录清洁度 | `pnpm check:root` | ✅ `root clean` |

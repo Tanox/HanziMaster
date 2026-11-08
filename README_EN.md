@@ -1,4 +1,4 @@
-﻿# HanziMaster 汉字大师 v5.2.44
+﻿# HanziMaster 汉字大师 v5.2.45
 
 [English](README_EN.md) | [简体中文](README.md)
 
@@ -178,4 +178,4 @@ Character data, pinyin, examples, stroke-order animations and structure hints ar
 
 Released under the [MIT License](LICENSE); third-party dependency licenses are listed in [NOTICE](NOTICE). Contribution and security guidelines: [CONTRIBUTING.md](CONTRIBUTING.md), [CODE_OF_CONDUCT.md](.github/CODE_OF_CONDUCT.md), [SECURITY.md](.github/SECURITY.md), [SUPPORT.md](.github/SUPPORT.md), [PR template](.github/PULL_REQUEST_TEMPLATE.md).
 
-© 2026 HanziMaster 汉字大师 v5.2.44
+© 2026 HanziMaster 汉字大师 v5.2.45

@@ -1,4 +1,4 @@
-// src/app/layout.tsx v5.2.44
+// src/app/layout.tsx v5.2.45
 import type { Metadata, Viewport } from 'next';
 import { cookies } from 'next/headers';
 import { Space_Grotesk, Playfair_Display, Noto_Serif_SC, JetBrains_Mono } from 'next/font/google';

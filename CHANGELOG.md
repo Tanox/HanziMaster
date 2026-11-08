@@ -1,5 +1,15 @@
 ﻿# Changelog
 
+## [5.2.45] - 审查修复：URL 级 i18n 中间件行为固化与次级 i18n 修正
+### Added
+- `src/proxy.test.ts`（新）：为 Next 16 `proxy.ts` 中间件补 5 个单元测试，固化 URL 级 i18n 核心行为——`/{locale}/` 前缀重写 + `?lang=` 透传 + cookie 注入；无前缀首访按 cookie > `?lang=` > `Accept-Language` 优先级 302 协商重定向。单测增至 30 文件 / 163 用例。
+### Fixed
+- `src/proxy.ts`：无前缀首访命中根路径 `/` 时，302 目标显式补尾斜杠（`/en/`），与 `layout.tsx` hreflang 的 `/{locale}/` 保持一致（此前经 `NextURL` 规范化输出为 `/en`，两处不一致）。
+- `src/app/global-error.tsx`：`<html lang>` 由硬编码 `en` 改为 `zh-CN`，与应用主文案语言一致（`<p lang="en">` 英文副标题保持不变）。
+### Changed
+- 复核结论：Next.js 16.4.4 的中间件文件约定为 `proxy.ts`（`middleware.ts` 已弃用并触发构建警告，源码证据 `next/dist/build/index.js:731`），原实现有效，未做架构改动；`layout.tsx` 头注释版本号同步 v5.2.45。
+- `docs/tasks.md` 质量基线刷新（单测 30 文件 / 163 用例）。
+
 ## [5.2.44] - 闭环剩余 22 项任务：URL 级 i18n、无障碍、RSC 拆分、PWA 与发布自动化
 ### Added
 - **URL 级 i18n（P1-7/8/9）**：新增 `src/proxy.ts`（Next 16 proxy），`/{locale}/...` 重写到既有页面 + `?lang=`，旧深链按协商语言 302 到本地化 URL；`LocaleProvider` 以 URL 前缀为最高优先级并同步写入 URL/cookie；`layout.tsx` hreflang 与 `sitemap.ts` 改为语言前缀 URL，x-default 保留根路径。

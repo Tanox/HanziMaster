@@ -1,4 +1,4 @@
-// src/app/global-error.tsx v5.2.35
+// src/app/global-error.tsx v5.2.45
 'use client';
 
 import { useEffect } from 'react';
@@ -19,7 +19,7 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <html lang="en">
+    <html lang="zh-CN">
       <body id="global-error-body" className="flex min-h-screen items-center justify-center bg-white p-6 text-slate-900">
         <div id="global-error-panel" role="alert" className="max-w-md text-center">
           <h1 className="text-2xl font-semibold">应用出现错误</h1>

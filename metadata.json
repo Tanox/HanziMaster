@@ -1,6 +1,6 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.44",
-  "version": "5.2.44",
+  "name": "HanziMaster 汉字大师 v5.2.45",
+  "version": "5.2.45",
   "description": "v5.2.44: 闭环 docs/tasks.md 剩余 22 项任务——URL 级 i18n 与词典按需加载、无障碍焦点陷阱/键盘替代路径、RSC 边界拆分、PWA 离线兜底、进度导出导入、自动发布 Release、依赖精确钉住与 i18n 审校流程；单测 29 文件/158 用例全通过。",
   "keywords": [
     "Chinese characters",

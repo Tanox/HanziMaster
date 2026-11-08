@@ -1,6 +1,7 @@
-// src/proxy.ts v5.2.44
-// P1-7：URL 级 i18n。/ {locale}/... 前缀由 proxy 重写到既有页面 + ?lang=，
-// 因此无需复制三套页面，且 /、/learn、/practice 等旧深链保持可用。
+// src/proxy.ts v5.2.45
+// P1-7：URL 级 i18n。Next.js 16 的中间件文件约定为 proxy.ts（middleware.ts 已弃用并告警），
+// /{locale}/... 前缀由本文件重写到既有页面 + ?lang=，因此无需复制多套页面，
+// 且 /、/learn、/practice 等旧深链保持可用；首访按 Accept-Language 协商重定向到语言前缀。
 import { NextResponse, type NextRequest } from 'next/server';
 import { DEFAULT_LOCALE, SUPPORTED_LOCALES, isSupportedLocale } from '@/lib/site';
 
@@ -44,9 +45,11 @@ export function proxy(request: NextRequest) {
 
   // 无前缀旧深链（/learn、/practice、/privacy、/terms 与 /）：
   // 按协商语言给出本地化 URL，保留查询参数；避免 404 且语言由 cookie 延续。
+  // 根路径显式补尾斜杠，与 layout.tsx 的 hreflang `/{locale}/` 保持一致。
   const url = request.nextUrl.clone();
   const rest = segments.join('/');
-  url.pathname = `/${negotiateLocale(request)}/${rest ? `${rest}` : ''}`;
+  const locale = negotiateLocale(request);
+  url.pathname = rest ? `/${locale}/${rest}` : `/${locale}/`;
   if (search) url.search = search;
   return NextResponse.redirect(url, 302);
 }
