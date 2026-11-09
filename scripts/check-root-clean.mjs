@@ -8,7 +8,7 @@ import path from 'node:path';
 
 // 工具链 / 平台约定必须位于仓库根的目录（含构建期生成目录，均已 gitignore）
 const ALLOWED_DIRS = new Set([
-  '.codebuddy', '.git', '.github', '.next', '.trae', '.turbo', '.vercel',
+  '.codebuddy', '.git', '.github', '.next', '.trae', '.turbo', '.vercel', '.workbuddy',
   'coverage', 'dist', 'docs', 'e2e', 'node_modules', 'out',
   'playwright-report', 'prototype', 'public', 'reports', 'scripts', 'src', 'test-results',
 ]);
@@ -42,13 +42,24 @@ const entries = fs
   .filter((e) => e.name !== '.git')
   .sort((a, b) => a.name.localeCompare(b.name));
 
+// 符号链接（如 .workbuddy → .codebuddy 记忆目录）按链接目标类型归类；断链按文件兜底
+const isDirLike = (entry) => {
+  if (entry.isDirectory()) return true;
+  if (!entry.isSymbolicLink()) return false;
+  try {
+    return fs.statSync(entry.name).isDirectory();
+  } catch {
+    return false;
+  }
+};
+
 const offenders = [];
 for (const entry of entries) {
-  const allowed = entry.isDirectory()
+  const allowed = isDirLike(entry)
     ? ALLOWED_DIRS.has(entry.name)
     : ALLOWED_FILES.has(entry.name) || isLocalEnv(entry.name);
   if (!allowed || TEMP_PATTERNS.some((re) => re.test(entry.name))) {
-    offenders.push(`${entry.isDirectory() ? '[目录]' : '[文件]'} ${entry.name}`);
+    offenders.push(`${isDirLike(entry) ? '[目录]' : '[文件]'} ${entry.name}`);
   }
 }
 

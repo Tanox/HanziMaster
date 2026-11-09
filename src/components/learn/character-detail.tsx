@@ -1,4 +1,4 @@
-// src/components/learn/character-detail.tsx v5.2.44
+// src/components/learn/character-detail.tsx v5.2.45
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
@@ -43,58 +43,63 @@ export function CharacterDetail({
   return (
     <div id="character-detail" className="bg-card/80 dark:bg-ink-900/80 backdrop-blur-xl rounded-4xl p-10 border border-ink-100 dark:border-ink-800 reveal revealed animate-fade-in-elegant shadow-ink-lg">
       <div className="grid lg:grid-cols-2 gap-12 items-start">
-        <div className="text-center lg:text-left">
-          <div className="inline-flex items-center gap-2 mb-6">
-            <Badge variant="outline" className="rounded-full border-vermilion-200 text-vermilion-600 dark:border-vermilion-500 dark:text-vermilion-400">
-              {t('learn.strokeCount', { count: character.strokes })}
-            </Badge>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onSpeak(character.hanzi)}
-              disabled={speechSupported === false}
-              aria-describedby={showPronunciationHint ? 'pronunciation-hint' : undefined}
-              className="text-ink-500 dark:text-ink-400 hover:text-vermilion-500 disabled:opacity-60"
-            >
-              <svg className="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-              </svg>
-              {t('learn.playAudio')}
-            </Button>
-            {showPronunciationHint && (
-              <p id="pronunciation-hint" role="status" className="mt-2 text-xs text-ink-500 dark:text-ink-400">
-                {t('learn.pronunciationUnavailable')}
-              </p>
-            )}
-          </div>
-
-          <div className="relative inline-block mb-8">
-            <div className="absolute inset-0 bg-vermilion-500/10 rounded-full blur-[40px] scale-125" />
-            <span className="relative text-[120px] sm:text-[160px] font-light serif-font text-ink-900 dark:text-ink-50 animate-brush-stroke">
-              {character.hanzi}
-            </span>
-          </div>
-
-          <div className="space-y-4 mb-8">
-            <div>
-              <p className="text-sm text-ink-500 dark:text-ink-400 mb-1">{t('learn.pinyin')}</p>
-              <p className="text-2xl font-medium text-ink-900 dark:text-ink-50">{character.pinyin}</p>
-            </div>
-            <div>
-              <p className="text-sm text-ink-500 dark:text-ink-400 mb-1">{t('learn.meaning')}</p>
-              <p className="text-xl text-ink-700 dark:text-ink-200">{t(character.translationKey)}</p>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Button onClick={onStartQuiz} className="bg-vermilion-500 hover:bg-vermilion-600 text-primary-foreground rounded-full">
-              {t('learn.startQuiz')}
-            </Button>
-            <Button variant="outline" onClick={onNextCharacter} className="rounded-full border-ink-200 text-ink-700 dark:border-ink-700 dark:text-ink-200">
-              {t('learn.nextCharacter')}
-            </Button>
-          </div>
+      {/* 左栏「标本卡」：统一中轴居中，认知动线 见形 → 读音 → 知音 → 知义 → 行动 */}
+      <div id="character-summary" className="text-center">
+        <div className="relative inline-block mb-4">
+          <div className="absolute inset-0 bg-vermilion-500/10 rounded-full blur-[40px] scale-125" />
+          <span className="relative text-[120px] sm:text-[160px] leading-none font-light serif-font text-ink-900 dark:text-ink-50 animate-brush-stroke">
+            {character.hanzi}
+          </span>
         </div>
+
+        {/* 读音注解紧随主字 */}
+        <p id="character-pinyin" className="text-3xl font-medium tracking-wide text-ink-900 dark:text-ink-50">
+          {character.pinyin}
+        </p>
+        <p className="text-sm text-ink-500 dark:text-ink-400 mb-6">{t('learn.pinyin')}</p>
+
+        {/* 笔画与发音并排：发音为高频交互，升级为 44px 圆形描边图标按钮 */}
+        <div className="flex items-center justify-center gap-3 mb-8">
+          <Badge variant="outline" className="rounded-full border-vermilion-200 text-vermilion-600 dark:border-vermilion-500 dark:text-vermilion-400">
+            {t('learn.strokeCount', { count: character.strokes })}
+          </Badge>
+          <Button
+            id="play-audio-btn"
+            variant="outline"
+            size="icon"
+            onClick={() => onSpeak(character.hanzi)}
+            disabled={speechSupported === false}
+            aria-label={t('learn.playAudio')}
+            aria-describedby={showPronunciationHint ? 'pronunciation-hint' : undefined}
+            className="h-11 w-11 rounded-full border-ink-200 text-ink-500 hover:border-vermilion-300 hover:bg-vermilion-500/10 hover:text-vermilion-500 disabled:opacity-60 dark:border-ink-700 dark:text-ink-400"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+            </svg>
+          </Button>
+        </div>
+        {showPronunciationHint && (
+          <p id="pronunciation-hint" role="status" className="text-xs text-ink-500 dark:text-ink-400 mb-8">
+            {t('learn.pronunciationUnavailable')}
+          </p>
+        )}
+
+        {/* 含义 */}
+        <div id="character-meaning" className="mb-8">
+          <p className="text-sm text-ink-500 dark:text-ink-400 mb-1">{t('learn.meaning')}</p>
+          <p className="text-xl text-ink-700 dark:text-ink-200">{t(character.translationKey)}</p>
+        </div>
+
+        {/* 移动端两按钮等宽并排，桌面居中自适应 */}
+        <div id="detail-actions" className="grid grid-cols-2 gap-3 sm:flex sm:justify-center sm:gap-4">
+          <Button onClick={onStartQuiz} className="bg-vermilion-500 hover:bg-vermilion-600 text-primary-foreground rounded-full">
+            {t('learn.startQuiz')}
+          </Button>
+          <Button variant="outline" onClick={onNextCharacter} className="rounded-full border-ink-200 text-ink-700 dark:border-ink-700 dark:text-ink-200">
+            {t('learn.nextCharacter')}
+          </Button>
+        </div>
+      </div>
 
         <div className="space-y-8">
           <div className="bg-ink-50/50 dark:bg-ink-800/30 rounded-xl p-6">

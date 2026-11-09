@@ -39,6 +39,10 @@ next-env.d.ts
 /coverage
 /reports/
 
+# 会话临时目录与本地记忆目录（不入库；.workbuddy 为指向 .codebuddy 的符号链接，git 视作文件故不加尾斜杠）
+/.tmp/
+/.workbuddy
+
 # Misc
 *.pem
 
