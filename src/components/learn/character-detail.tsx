@@ -54,7 +54,7 @@ export function CharacterDetail({
           pronounceError={pronounceError}
         />
 
-        <div className="flex flex-col justify-between gap-8 text-start">
+        <div className="flex flex-col gap-8 text-start">
           <section>
             <h3 className="display-font text-lg font-semibold text-ink-900 dark:text-ink-50">
               {t('learn.exampleTitle')}

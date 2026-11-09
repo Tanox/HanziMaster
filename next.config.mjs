@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 
-// next.config.mjs v5.2.40
+// next.config.mjs v5.2.47
 
 import { readFileSync } from 'node:fs';
 import createBundleAnalyzer from '@next/bundle-analyzer';
@@ -19,12 +19,22 @@ const buildId = `${String(now.getFullYear()).slice(-2)}${pad(now.getMonth() + 1)
 
 // CSP 与安全头：统一由 headers() 注入所有路由，平台侧不重复配置。
 // script-src 'unsafe-inline' 为 Next.js App Router 内联脚本所必需；生产禁用 eval。
+// 开发态 React Refresh / Turbopack 依赖 eval，原先无差别禁用会导致 hydration 失败
+// （.reveal 元素永不显示、next/dynamic 客户端组件不挂载），故仅 dev 放开。
+const scriptSrc = [
+  "'self'",
+  "'unsafe-inline'",
+  'https://www.googletagmanager.com',
+  'https://www.google-analytics.com',
+  ...(process.env.NODE_ENV !== 'production' ? ["'unsafe-eval'"] : []),
+].join(' ');
+
 const securityHeaders = [
   {
     key: 'Content-Security-Policy',
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com",
+      `script-src ${scriptSrc}`,
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: https: blob:",

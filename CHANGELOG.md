@@ -14,6 +14,7 @@
 - **播完无法重播**：播放结束后再点「显示笔顺」原先无任何反应，现重置进度从头播放。
 - **定时器 setState 嵌套**：改为由 `playing` 驱动的 `useEffect` 定时器，避免在 `setActiveStroke` updater 内调用 `setPlaying`。
 - **`xs` 断点缺失**：`character-grid.tsx` / `learn/loading.tsx` 使用 `xs:grid-cols-3`，但 Tailwind v4 无 `--breakpoint-xs` token，该工具类从未生效；在 `globals.css @theme` 补 `--breakpoint-xs: 30rem`。
+- **测试竞态假红**：`providers.test.tsx` 语言切换用例用 `findByTestId('title')` 等待元素出现，而该元素一开始就以英文存在，导致断言到旧文案、全量并行跑时偶发失败；改为 `waitFor` 轮询目标译文。
 
 ## [5.2.46] - 修复笔顺上下颠倒与轮廓空心渲染
 ### Fixed

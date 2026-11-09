@@ -1,6 +1,6 @@
-// src/components/__tests__/providers.test.tsx v5.2.46
+// src/components/__tests__/providers.test.tsx v5.2.47
 
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { LocaleProvider, useLocale } from '../locale-provider';
@@ -83,8 +83,12 @@ describe('LocaleProvider', () => {
     await userEvent.click(screen.getByRole('button', { name: 'zh' }));
     expect(screen.getByTestId('locale')).toHaveTextContent('zh-CN');
     expect(document.cookie).toContain('hanzi-master-locale=zh-CN');
-    // 词典按需加载是异步的且冷启动可能较慢：切换语言后需等待重渲染，不能同步断言（避免竞态假红）
-    expect(await screen.findByTestId('title', {}, { timeout: 4000 })).toHaveTextContent('隐私政策');
+    // 词典按需加载是异步的：findByTestId 只等元素出现，而元素一开始就以英文存在，
+    // 会「过早查到、断言旧文案」造成假红；改为轮询真实目标文案直到重渲染完成。
+    await waitFor(
+      () => expect(screen.getByTestId('title')).toHaveTextContent('隐私政策'),
+      { timeout: 4000 }
+    );
   });
 
   it('sets rtl direction for arabic URL locale', async () => {
