@@ -15,6 +15,11 @@
 - **定时器 setState 嵌套**：改为由 `playing` 驱动的 `useEffect` 定时器，避免在 `setActiveStroke` updater 内调用 `setPlaying`。
 - **`xs` 断点缺失**：`character-grid.tsx` / `learn/loading.tsx` 使用 `xs:grid-cols-3`，但 Tailwind v4 无 `--breakpoint-xs` token，该工具类从未生效；在 `globals.css @theme` 补 `--breakpoint-xs: 30rem`。
 - **测试竞态假红**：`providers.test.tsx` 语言切换用例用 `findByTestId('title')` 等待元素出现，而该元素一开始就以英文存在，导致断言到旧文案、全量并行跑时偶发失败；改为 `waitFor` 轮询目标译文。
+- **开发态 CSP 禁用 eval**：`next.config.mjs` 的 `script-src` 原先对所有环境禁用 `eval`，而 Next.js dev 的 React Refresh / Turbopack 依赖它，控制台持续报 `eval() is not supported`；现仅 `NODE_ENV !== 'production'` 时追加 `'unsafe-eval'`，生产 CSP 仍严格禁用 eval。
+- **根目录门禁误报**：并行会话新增标准配置 `.gitattributes`（LF 策略）后，`scripts/check-root-clean.mjs` 的白名单未同步，导致 `check:root` 恒定失败；已把 `.gitattributes` 加入标准根文件白名单。
+### Added
+- `next.config.mjs` 支持 `NEXT_DIST_DIR` 指定独立构建目录（默认 `.next` 不变），便于在并行会话/沙箱护栏下做本地构建验证。
+- 新增 `stroke-order-demo.test.tsx`（3 例：静止态、逐笔节奏、播完重播、清除）与 `word-examples.test.tsx`（2 例：中文去重 / 差异译文保留），把无法在此沙箱做交互态截图的两个修复用测试固化。
 
 ## [5.2.46] - 修复笔顺上下颠倒与轮廓空心渲染
 ### Fixed

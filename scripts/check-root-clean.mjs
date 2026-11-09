@@ -1,4 +1,4 @@
-// scripts/check-root-clean.mjs v5.2.43
+// scripts/check-root-clean.mjs v5.2.47
 // 根目录清洁度门禁：禁止临时脚本 / 一次性产物落盘仓库根目录。
 // 规则：根目录每个条目必须命中白名单（工具链约定文件或生成产物目录），否则判失败。
 // 用法：node scripts/check-root-clean.mjs（结果写 reports/root-clean.txt，失败退出码 1）
@@ -15,7 +15,7 @@ const ALLOWED_DIRS = new Set([
 
 // 包管理器 / 构建工具 / 社区惯例要求位于仓库根的文件
 const ALLOWED_FILES = new Set([
-  '.env.example', '.gitignore', '.npmrc', '.nvmrc', '.prettierignore', '.prettierrc.json',
+  '.env.example', '.gitattributes', '.gitignore', '.npmrc', '.nvmrc', '.prettierignore', '.prettierrc.json',
   'CHANGELOG.md', 'components.json', 'CONTRIBUTING.md', 'CONTRIBUTING_EN.md',
   'edgeone.json', 'eslint.config.js', 'HanziMaster.code-workspace', 'LICENSE',
   'metadata.json', 'next-env.d.ts', 'next.config.mjs', 'NOTICE', 'package.json',

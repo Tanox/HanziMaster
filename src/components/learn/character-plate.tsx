@@ -32,7 +32,7 @@ export function CharacterPlate({
         {t('learn.strokeCount', { count: character.strokes })}
       </Badge>
 
-      <div className="relative mx-auto aspect-square w-full max-w-[300px] border border-vermilion-200/80 bg-card/60 dark:border-vermilion-800/70 dark:bg-ink-900/40">
+      <div className="relative mx-auto aspect-square w-full max-w-[340px] border border-vermilion-200/80 bg-card/60 dark:border-vermilion-800/70 dark:bg-ink-900/40">
         <svg
           className="absolute inset-0 h-full w-full"
           viewBox="0 0 100 100"
@@ -48,7 +48,7 @@ export function CharacterPlate({
             opacity="0.65"
           />
         </svg>
-        <span className="absolute inset-0 flex items-center justify-center text-[128px] leading-none font-light serif-font text-ink-900 dark:text-ink-50 animate-brush-stroke sm:text-[160px]">
+        <span className="absolute inset-0 flex items-center justify-center text-[140px] leading-none font-light serif-font text-ink-900 dark:text-ink-50 animate-brush-stroke sm:text-[184px]">
           {character.hanzi}
         </span>
       </div>

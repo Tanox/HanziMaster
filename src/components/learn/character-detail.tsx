@@ -71,15 +71,15 @@ export function CharacterDetail({
           </section>
 
           <WordExamples words={character.words} />
-        </div>
-      </div>
 
-      <div className="mt-10 border-t border-ink-200 pt-8 dark:border-ink-800">
-        <h3 className="display-font text-lg font-semibold text-ink-900 dark:text-ink-50">
-          {t('learn.strokeOrder')}
-        </h3>
-        <div className="mt-4">
-          <StrokeOrderDemo character={character.hanzi} strokeCount={character.strokes} />
+          <section className="border-t border-ink-200 pt-8 dark:border-ink-800">
+            <h3 className="display-font text-lg font-semibold text-ink-900 dark:text-ink-50">
+              {t('learn.strokeOrder')}
+            </h3>
+            <div className="mt-4">
+              <StrokeOrderDemo character={character.hanzi} strokeCount={character.strokes} />
+            </div>
+          </section>
         </div>
       </div>
 
