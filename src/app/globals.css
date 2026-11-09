@@ -1,4 +1,4 @@
-/* src/app/globals.css v5.2.43 */
+/* src/app/globals.css v5.2.47 */
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -89,6 +89,9 @@
 
   /* 触控目标 */
   --touch-target-min: 44px;
+
+  /* 断点：选字网格/骨架屏使用的 xs:* 工具类此前无对应 token，从未生效 */
+  --breakpoint-xs: 30rem;
 }
 
 /* ==================== 深色模式 Token 覆盖 ==================== */

@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.46",
-  "version": "5.2.46",
-  "description": "v5.2.46: 修复笔顺上下颠倒缺陷——Hanzi Writer 数据为 y 轴向上 1024 网格，笔顺演示与书写画布此前未做 y 翻转且把闭合轮廓当线条描边；统一坐标变换（scale/scaleY + SVG transform），演示改填充渲染，描红判定按数据坐标系反变换；单测 30 文件/165 用例全通过。",
+  "name": "HanziMaster 汉字大师 v5.2.47",
+  "version": "5.2.47",
+  "description": "v5.2.47: 学习页 UI 与布局重构为「字帖跨页」——左页田字格字板、右页题跋式例句与词语、下方编号笔顺序列；启用数据中此前从未展示的部首/结构/例句；修复中文界面词条译文重复、笔顺静止即显示红笔与播完无法重播；补 xs 断点并修正标题层级。",
   "keywords": [
     "Chinese characters",
     "Hanzi",

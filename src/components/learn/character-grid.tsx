@@ -1,4 +1,5 @@
-// src/components/learn/character-grid.tsx v5.2.31
+// src/components/learn/character-grid.tsx v5.2.47
+// 选字格改为素纸小格 + 朱砂印角，去掉整格红底与脉冲装饰。
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
@@ -14,10 +15,10 @@ export function CharacterGrid({ selectedId, onSelect }: CharacterGridProps) {
 
   return (
     <div
-      className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-5 mb-12 stagger-children reveal"
       id="character-grid"
       role="listbox"
       aria-label={t('common.masterCharacters')}
+      className="stagger-children reveal mb-8 grid grid-cols-2 gap-3 xs:grid-cols-3 sm:grid-cols-4 sm:gap-4 lg:grid-cols-6"
     >
       {characters.map((character) => {
         const isSelected = selectedId === character.id;
@@ -28,28 +29,21 @@ export function CharacterGrid({ selectedId, onSelect }: CharacterGridProps) {
             role="option"
             aria-selected={isSelected}
             aria-label={`${character.hanzi}, ${character.pinyin}`}
-            className={`group aspect-square rounded-2xl border-2 border-transparent hover:border-primary-border hover:bg-vermilion-50/50 dark:hover:bg-vermilion-900/10 hover:shadow-ink hover:scale-[1.03] active:scale-[0.98] transition-[colors,transform,box-shadow] duration-300 flex flex-col items-center justify-center relative overflow-hidden ${
+            className={`group relative flex aspect-square flex-col items-center justify-center border transition-colors duration-200 ${
               isSelected
-                ? 'bg-vermilion-500 text-primary-foreground shadow-vermilion-glow'
-                : 'bg-card dark:bg-ink-900/50 text-ink-900 dark:text-ink-50'
+                ? 'border-vermilion-500/70 bg-vermilion-50/60 text-vermilion-600 dark:border-vermilion-700 dark:bg-vermilion-900/10 dark:text-vermilion-300'
+                : 'border-ink-200 bg-card/60 text-ink-900 hover:border-vermilion-300 dark:border-ink-800 dark:bg-ink-900/30 dark:text-ink-50 dark:hover:border-vermilion-700'
             }`}
           >
             {isSelected && (
-              <div className="absolute inset-0 bg-vermilion-500/20 animate-pulse" />
+              <span aria-hidden="true" className="absolute start-2 top-2 size-1.5 bg-vermilion-500" />
             )}
-            <span className={`text-4xl sm:text-5xl font-light serif-font transition-transform duration-300 ${
-              isSelected ? '' : 'group-hover:scale-105'
-            }`}>
-              {character.hanzi}
-            </span>
-            <span className={`text-xs sm:text-sm mt-2 font-medium ${
-              isSelected ? 'text-primary-foreground/80' : 'text-ink-500 dark:text-ink-400'
+            <span className="serif-font text-4xl font-light sm:text-5xl">{character.hanzi}</span>
+            <span className={`mt-2 text-xs sm:text-sm ${
+              isSelected ? 'text-vermilion-600/80 dark:text-vermilion-300/80' : 'text-ink-500 dark:text-ink-400'
             }`}>
               {character.pinyin}
             </span>
-            {isSelected && (
-              <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-primary-foreground/20 rounded-full" />
-            )}
           </button>
         );
       })}

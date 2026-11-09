@@ -1,5 +1,20 @@
 ﻿# Changelog
 
+## [5.2.47] - 学习页 UI 与布局重构：字帖跨页
+### Changed
+- **布局重构**：`character-detail.tsx` 由「左侧短栏 + 右侧两张同款圆角卡片」改为**字帖跨页**——左页田字格字板（真实书写参照线，去掉朱砂渐变光晕），右页题跋栏用发丝线承载例句与词语，下方横带为笔顺，底部动作条；外层只保留一个圆角、一层轻阴影，消除截图中的大片空白与三层同款卡片。
+- **启用已有数据**：`radical`（部首）、`structureKey`（结构）、`example`（例句 + 拼音 + 译文）此前在数据与 11 语言词典里齐备却从未渲染，现进入右页题跋；`learn.radical` / `learn.structure` / `learn.exampleTitle` 均为既有翻译键，未新增任何 i18n 键。
+- **选字网格**：去掉整格朱砂红底、脉冲遮罩与装饰圆，改为素纸小格 + 朱砂印角；页面头部由居中大标题改为编辑式页眉（题名 + 当前字序号 + 键盘提示），移除渐变背景，纵向留白收紧。
+- **笔顺演示**：SVG 内加田字格虚线参考线；分页圆点改为**编号笔画序列**（真实顺序才用编号，`aria-current="step"` 标注当前笔），并与小尺寸字格并排；未写笔改用 `ink-300`，修复深色模式下 `--color-border` 淡字形几乎不可见。
+- **标题层级**：区块标题 `h4` → `h3`，修复 `h2 → h4` 跳跃。
+- **拆分组件**：新增 `character-plate.tsx`、`word-examples.tsx`，单文件仍 ≤200 行。
+### Fixed
+- **词条重复**：`zh-CN` / `zh-TW` / `ja` 等语言下 `t(word.translationKey)` 与 `word.text` 相同（如「大人 / 大人」「大学 / 大学」），现仅在译文与词条不同时显示，中文界面不再重复；`zh-TW` 的简体→繁体差异仍会展示。例句译文同样做去重。
+- **笔顺静止即显示红笔**：原逻辑把 `i === activeStroke` 也算作已写笔，初始 `activeStroke=0` 时第一笔就是朱砂红，且每次 tick 实际多显示一笔；改为「已写笔 = `i < activeStroke`」，静止时全部为淡字形，每 tick 精确显示一笔。
+- **播完无法重播**：播放结束后再点「显示笔顺」原先无任何反应，现重置进度从头播放。
+- **定时器 setState 嵌套**：改为由 `playing` 驱动的 `useEffect` 定时器，避免在 `setActiveStroke` updater 内调用 `setPlaying`。
+- **`xs` 断点缺失**：`character-grid.tsx` / `learn/loading.tsx` 使用 `xs:grid-cols-3`，但 Tailwind v4 无 `--breakpoint-xs` token，该工具类从未生效；在 `globals.css @theme` 补 `--breakpoint-xs: 30rem`。
+
 ## [5.2.46] - 修复笔顺上下颠倒与轮廓空心渲染
 ### Fixed
 - **笔顺颠倒根因**：笔顺数据为 Hanzi Writer 标准格式（1024×1024 网格、y 轴向上、字形以 y=900 为顶基线），而 `stroke-order-demo.tsx` 以 `viewBox 0 0 1000 1000` 直接渲染且未做 y 翻转 → 字形上下颠倒；`writing-canvas-utils.ts` 的 `scale()` 同样未翻转 → 书写画布引导动画与描红判定坐标颠倒。统一修正坐标系：SVG 侧 `<g transform="scale(1, -1) translate(0, -900)">` + viewBox 1024，Canvas 侧新增 `scaleY()`（x 仍走 `scale()`，分母改 1024）。
