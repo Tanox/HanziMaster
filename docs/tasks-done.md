@@ -1,7 +1,7 @@
 # 已完成任务归档 · Tasks Done
 
-> 文档版本：v5.2.44（与项目版本同步，权威版本见 `package.json`）
-> 最近归档：**2026-11-08（UTC+8）— 剩余 22 项任务全部闭环**
+> 文档版本：v5.2.46（与项目版本同步，权威版本见 `package.json`）
+> 最近归档：**2026-11-09（UTC+8）— 笔顺上下颠倒缺陷修复**
 
 ## 说明
 
@@ -181,3 +181,11 @@
 
 > **实测基线（v5.2.44）**：`tsc --noEmit` 0 error；`eslint src scripts` 0 error / 0 warning；Vitest **29 文件 / 158 用例**全通过；`check:lines` `all <= 200`；`check:root` `root clean`；`i18n:lint` 11 语言 / 6 扩展模块 / 占位符一致；`version:check` `v5.2.44 in sync`；`pnpm install --frozen-lockfile` 通过。
 > **外部环境核验（代码已交付，非本机能验）**：P1-32 线上 `curl -sSI`、P1-37 真实 Tag 触发 Release、P3-2 母语者人工审校——清单保留在 `docs/tasks.md` §0.4，不计入未完成任务。
+
+## 归档（2026-11-09 缺陷修复批次 · v5.2.46）
+
+| ID | 任务 | 分类 | 实现要点 |
+|----|------|------|---------|
+| BUG-1 | 笔顺演示与书写画布上下颠倒（用户报告） | 缺陷修复 | 根因：笔顺数据为 Hanzi Writer 格式（1024 网格、y 轴向上、基线 y=900），渲染/判定均未做 y 翻转且 viewBox 误用 1000。修复：`stroke-order-demo.tsx` 加 `<g transform="scale(1, -1) translate(0, -900)">` + viewBox 1024；`writing-canvas-utils.ts` 新增 `scaleY()`（x 走 `scale()`，分母改 1024），引导动画与 `scoreKeyboardSequence` 统一走翻转映射；`writing-canvas-animation.ts` 已完成笔改为坐标变换后填充；描红判定拆至 `writing-canvas-scoring.ts`（含 Path2D 反变换与线宽比例放大） |
+
+> **实测基线（v5.2.46）**：`tsc --noEmit` 0 error；`eslint src` 0 error / 0 warning；Vitest **30 文件 / 165 用例**全通过；`version:check` `v5.2.46 in sync`。实现细节见 `CHANGELOG.md` [5.2.46]。

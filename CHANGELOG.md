@@ -1,5 +1,15 @@
 ﻿# Changelog
 
+## [5.2.46] - 修复笔顺上下颠倒与轮廓空心渲染
+### Fixed
+- **笔顺颠倒根因**：笔顺数据为 Hanzi Writer 标准格式（1024×1024 网格、y 轴向上、字形以 y=900 为顶基线），而 `stroke-order-demo.tsx` 以 `viewBox 0 0 1000 1000` 直接渲染且未做 y 翻转 → 字形上下颠倒；`writing-canvas-utils.ts` 的 `scale()` 同样未翻转 → 书写画布引导动画与描红判定坐标颠倒。统一修正坐标系：SVG 侧 `<g transform="scale(1, -1) translate(0, -900)">` + viewBox 1024，Canvas 侧新增 `scaleY()`（x 仍走 `scale()`，分母改 1024）。
+- **轮廓空心渲染**：`strokes` 为闭合填充轮廓（非中心线），演示面板此前 `fill="none"` 描边渲染成空心「香蕉」形；改为填充渲染（已写/当前笔朱砂红、未写浅灰淡字形）；书写画布已完成笔由浅色虚线描边改为坐标变换后填充。
+- **描红判定错位**：`scoreStroke` 的 Path2D 分支此前用画布坐标直接对数据空间路径做 `isPointInStroke`；现把画布点反变换回数据坐标，线宽容差按 `1024/size` 同比例放大。
+### Changed
+- `stroke-order-data.ts` 头注释修正坐标系描述（原「0-1000 绝对坐标」有误），并注明翻转实现位置，防止后续调用点各自换算。
+- 单测同步：`writing-canvas-geometry.test.ts`（`scale` 改 1024 网格 + 新增 `scaleY` 翻转断言）、`writing-canvas-utils.test.ts`（中位线坐标、Path2D 线宽放大比例）、`writing-canvas-drawing.test.ts`（`drawMedianStroke` 翻转后坐标）；全量 **30 文件 / 165 用例**全通过。
+- 修复 `providers.test.tsx` 偶发假红：词典按需异步加载后切换语言不能同步断言译文，改为 `findByTestId` + 4s 超时等待重渲染。
+
 ## [5.2.45] - 审查修复：URL 级 i18n 中间件行为固化与次级 i18n 修正
 ### Added
 - `src/proxy.test.ts`（新）：为 Next 16 `proxy.ts` 中间件补 5 个单元测试，固化 URL 级 i18n 核心行为——`/{locale}/` 前缀重写 + `?lang=` 透传 + cookie 注入；无前缀首访按 cookie > `?lang=` > `Accept-Language` 优先级 302 协商重定向。单测增至 30 文件 / 163 用例。

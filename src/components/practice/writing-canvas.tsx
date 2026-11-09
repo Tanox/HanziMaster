@@ -1,11 +1,11 @@
-// src/components/practice/writing-canvas.tsx v5.2.44
-// 书写画布：淡字底图 + 指针描线 + 逐笔笔顺引导 + 键盘替代路径。
-// 绘制/判定在 writing-canvas-utils.ts，帧循环在 writing-canvas-animation.ts，评分编排在 use-keyboard-strokes.ts。
+// src/components/practice/writing-canvas.tsx v5.2.46
+// 书写画布：淡字底图 + 指针描线 + 逐笔笔顺引导 + 键盘替代路径；职责拆分见 utils/scoring/animation/use-keyboard-strokes。
 'use client';
 
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import { useTranslation } from '@/components/locale-provider';
-import { drawHint, judgeUserStroke } from './writing-canvas-utils';
+import { drawHint } from './writing-canvas-utils';
+import { judgeUserStroke } from './writing-canvas-scoring';
 import { startNextStroke, type StrokeAnimationHandle } from './writing-canvas-animation';
 import { ProgressLabel } from './writing-canvas-parts';
 import { KeyboardStrokeForm } from './writing-canvas-keyboard';

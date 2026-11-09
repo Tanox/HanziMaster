@@ -1,13 +1,14 @@
-// src/components/practice/__tests__/writing-canvas-utils.test.ts v5.2.36
+// src/components/practice/__tests__/writing-canvas-utils.test.ts v5.2.46
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { judgeUserStroke, parsePath, scoreStroke } from '../writing-canvas-utils';
+import { parsePath } from '../writing-canvas-utils';
+import { judgeUserStroke, scoreStroke } from '../writing-canvas-scoring';
 
-// 0-1000 绝对坐标的水平中位线；size=200 时映射为 (0,100) → (200,100)
+// y-up 1024 网格坐标的水平中位线；size=200 时 y=500 映射为画布 y=(900-500)/1024*200≈78.125
 const median = [
   [0, 500],
   [1000, 500],
 ];
-const onLine = { x: 100, y: 100 };
+const onLine = { x: 100, y: 78 };
 
 const baseParams = {
   strokePath: undefined,
@@ -53,7 +54,7 @@ describe('scoreStroke', () => {
   });
 
   it('scores a median-aligned trajectory as 1', () => {
-    expect(scoreStroke([onLine, { x: 20, y: 100 }], undefined, median, 200)).toBe(1);
+    expect(scoreStroke([onLine, { x: 20, y: 78 }], undefined, median, 200)).toBe(1);
   });
 
   it('scores the proportion of hits within tolerance', () => {
@@ -61,12 +62,12 @@ describe('scoreStroke', () => {
   });
 
   it('includes the tolerance boundary and excludes the next unit', () => {
-    expect(scoreStroke([{ x: 100, y: 118 }], undefined, median, 200, 18)).toBe(1);
-    expect(scoreStroke([{ x: 100, y: 119 }], undefined, median, 200, 18)).toBe(0);
+    expect(scoreStroke([{ x: 100, y: 96 }], undefined, median, 200, 18)).toBe(1);
+    expect(scoreStroke([{ x: 100, y: 97 }], undefined, median, 200, 18)).toBe(0);
   });
 
   it('honours a custom tolerance', () => {
-    expect(scoreStroke([{ x: 100, y: 140 }], undefined, median, 200, 50)).toBe(1);
+    expect(scoreStroke([{ x: 100, y: 128 }], undefined, median, 200, 50)).toBe(1);
   });
 
   it('uses Path2D.isPointInStroke when a stroke path is available', () => {
@@ -79,7 +80,8 @@ describe('scoreStroke', () => {
       probe as unknown as CanvasRenderingContext2D
     );
     expect(scoreStroke([{ x: 1, y: 1 }], 'M0 0 L10 10', median, 200, 18)).toBe(1);
-    expect(probe.lineWidth).toBe(36);
+    // 线宽容差按数据/画布比例放大：18 * 2 * (1024 / 200)
+    expect(probe.lineWidth).toBeCloseTo(184.32, 2);
     expect(probe.isPointInStroke).toHaveBeenCalledTimes(1);
   });
 
@@ -88,7 +90,8 @@ describe('scoreStroke', () => {
       constructor(public d: string) {}
     }
     vi.stubGlobal('Path2D', FakePath2D);
-    const probe = { lineWidth: 0, isPointInStroke: vi.fn((_p: unknown, x: number) => x < 5) };
+    // isPointInStroke 收到反变换后的数据坐标：画布 x=1 → 数据 x≈5.12，x=9 → ≈46.08
+    const probe = { lineWidth: 0, isPointInStroke: vi.fn((_p: unknown, x: number) => x < 30) };
     vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(
       probe as unknown as CanvasRenderingContext2D
     );

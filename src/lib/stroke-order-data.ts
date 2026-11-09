@@ -1,5 +1,7 @@
-// src/lib/stroke-order-data.ts v5.2.25
-// 12 个练习汉字的笔顺数据（Hanzi Writer 标准格式，坐标 0-1000 绝对坐标）。
+// src/lib/stroke-order-data.ts v5.2.46
+// 12 个练习汉字的笔顺数据（Hanzi Writer 标准格式：1024×1024 网格、y 轴向上、字形以 y=900 为顶基线）。
+// 渲染 / 判定须做 y 翻转与缩放，统一实现在 writing-canvas-utils 的 scale / scaleY 与
+// stroke-order-demo 的 <g transform="scale(1, -1) translate(0, -900)">，勿在调用点各自换算。
 // 数据来源：hanzi-writer-data 包按需内联，避免打包全量字库（离线可用、构建时打包）。
 // 结构：{ strokes: string[]（每笔一个 SVG path）; medians: number[][][]（每笔的中位线点集） }
 import type { StrokeOrderData } from '@/lib/character-types';

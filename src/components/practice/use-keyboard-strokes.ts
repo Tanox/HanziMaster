@@ -4,7 +4,7 @@
 
 import { useCallback, useState } from 'react';
 import type { RefObject } from 'react';
-import { scoreKeyboardSequence } from './writing-canvas-utils';
+import { scoreKeyboardSequence } from './writing-canvas-scoring';
 
 interface Params {
   strokePaths?: string[];

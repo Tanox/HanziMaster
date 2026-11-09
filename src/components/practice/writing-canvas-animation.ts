@@ -1,8 +1,8 @@
-// src/components/practice/writing-canvas-animation.ts v5.2.44
-// 书写引导动画：沿当前笔画中位线逐帧描线，已完成的笔画以浅色虚线轮廓呈现。
+// src/components/practice/writing-canvas-animation.ts v5.2.46
+// 书写引导动画：沿当前笔画中位线逐帧描线，已完成的笔画以浅色填充字形呈现。
 // 抽离自 writing-canvas.tsx，使组件文件 ≤200 行（单一职责：动画播放）。
 
-import { drawHint, drawMedianStroke, parsePath, resolveFg, resolvePrimary } from './writing-canvas-utils';
+import { drawHint, drawMedianStroke, parsePath, resolveFg, resolvePrimary, scale } from './writing-canvas-utils';
 
 export interface StrokeAnimationHandle {
   cancel: () => void;
@@ -36,16 +36,17 @@ export function runStrokeAnimation(opts: StrokeAnimationOptions): StrokeAnimatio
   const frame = (now: number) => {
     const progress = Math.min((now - start) / dur, 1);
     drawHint(canvas, character);
-    // 已完成笔：浅色虚线轮廓
+    // 已完成笔：切换到数据坐标系（x 缩放、y 翻转 + 900 基线）后填充字形轮廓
     completed.forEach((i) => {
       const p = parsePath(strokePaths[i]);
       if (!p) return;
-      ctx.strokeStyle = resolveFg();
-      ctx.globalAlpha = 0.25;
-      ctx.setLineDash([6, 6]);
-      ctx.stroke(p);
-      ctx.setLineDash([]);
-      ctx.globalAlpha = 1;
+      ctx.save();
+      ctx.translate(0, scale(900, size));
+      ctx.scale(size / 1024, -size / 1024);
+      ctx.fillStyle = resolveFg();
+      ctx.globalAlpha = 0.15;
+      ctx.fill(p);
+      ctx.restore();
     });
     // 当前笔：沿中位线动画描线
     if (median && median.length >= 2) {

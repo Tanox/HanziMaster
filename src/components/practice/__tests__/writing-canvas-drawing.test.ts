@@ -1,4 +1,4 @@
-// src/components/practice/__tests__/writing-canvas-drawing.test.ts v5.2.36
+// src/components/practice/__tests__/writing-canvas-drawing.test.ts v5.2.46
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   drawHint,
@@ -110,7 +110,8 @@ describe('drawMedianStroke', () => {
   it('starts at the first median point and strokes once at progress 0', () => {
     const ctx = makeCtx();
     drawMedianStroke(ctx as unknown as CanvasRenderingContext2D, medians, 200, 0, '#c53d43', 4);
-    expect(ctx.moveTo).toHaveBeenCalledWith(0, 0);
+    // y=0 经翻转映射为画布 (900-0)/1024*200 = 175.78125（字形基线靠近画布底部）
+    expect(ctx.moveTo).toHaveBeenCalledWith(0, 175.78125);
     expect(ctx.lineTo).toHaveBeenCalledTimes(1);
     expect(ctx.stroke).toHaveBeenCalledTimes(1);
     expect(ctx.strokeStyle).toBe('#c53d43');
@@ -121,7 +122,7 @@ describe('drawMedianStroke', () => {
     const ctx = makeCtx();
     drawMedianStroke(ctx as unknown as CanvasRenderingContext2D, medians, 200, 1, '#000', 2);
     expect(ctx.lineTo).toHaveBeenCalledTimes(2);
-    expect(ctx.lineTo).toHaveBeenLastCalledWith(200, 200);
+    expect(ctx.lineTo).toHaveBeenLastCalledWith(195.3125, -19.53125);
   });
 
   it('clamps progress above 1 and below 0', () => {
@@ -129,13 +130,13 @@ describe('drawMedianStroke', () => {
     const low = makeCtx();
     drawMedianStroke(high as unknown as CanvasRenderingContext2D, medians, 200, 5, '#000', 2);
     drawMedianStroke(low as unknown as CanvasRenderingContext2D, medians, 200, -5, '#000', 2);
-    expect(high.lineTo).toHaveBeenLastCalledWith(200, 200);
+    expect(high.lineTo).toHaveBeenLastCalledWith(195.3125, -19.53125);
     expect(low.lineTo).toHaveBeenCalledTimes(1);
   });
 
   it('interpolates a partial segment for a mid progress', () => {
     const ctx = makeCtx();
     drawMedianStroke(ctx as unknown as CanvasRenderingContext2D, medians, 200, 0.25, '#000', 2);
-    expect(ctx.lineTo).toHaveBeenLastCalledWith(50, 50);
+    expect(ctx.lineTo).toHaveBeenLastCalledWith(48.828125, 126.953125);
   });
 });

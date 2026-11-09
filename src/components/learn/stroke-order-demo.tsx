@@ -1,6 +1,6 @@
-// src/components/learn/stroke-order-demo.tsx v5.2.44
+// src/components/learn/stroke-order-demo.tsx v5.2.46
 // 学习页笔顺演示组件：用 SVG 渲染汉字笔画，点击「显示笔顺」逐笔播放书写动画。
-// 数据来自 stroke-order-data（Hanzi Writer 标准 path），无数据时回退灰字占位。
+// 数据来自 stroke-order-loader（Hanzi Writer 标准 path，y 轴向上），无数据时回退灰字占位。
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
@@ -81,29 +81,31 @@ export function StrokeOrderDemo({ character, strokeCount }: StrokeOrderDemoProps
       <div className="aspect-square bg-card dark:bg-ink-900/50 rounded-lg border border-ink-100 dark:border-ink-800 overflow-hidden relative">
         {data ? (
           <svg
-            viewBox="0 0 1000 1000"
+            viewBox="0 0 1024 1024"
             className="h-full w-full"
             role="img"
             aria-label={`${character} ${t('learn.strokeDemoLabel')}`}
           >
-            {/* 已完成笔画：实线朱砂红；当前笔：高亮 */}
-            {data.strokes.map((d, i) => {
-              const done = i < activeStroke;
-              const current = i === activeStroke;
-              return (
-                <path
-                  key={i}
-                  d={d}
-                  fill="none"
-                  stroke={current ? 'var(--color-primary)' : done ? 'var(--color-primary)' : 'var(--color-border)'}
-                  strokeWidth={current ? 22 : done ? 18 : 14}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  opacity={current ? 1 : done ? 0.85 : 0.5}
-                  style={{ transition: 'stroke 0.2s, stroke-width 0.2s, opacity 0.2s' }}
-                />
-              );
-            })}
+            {/*
+              数据坐标系：1024×1024 网格、y 轴向上、字形以 y=900 为顶基线。
+              scale(1,-1) translate(0,-900) 先平移再翻转，得到 svg_y = 900 - data_y（修正笔顺上下颠倒）。
+            */}
+            <g transform="scale(1, -1) translate(0, -900)">
+              {/* 已完成 / 当前笔：朱砂红填充；未写笔：浅灰淡字形（strokes 为闭合填充轮廓） */}
+              {data.strokes.map((d, i) => {
+                const done = i < activeStroke;
+                const current = i === activeStroke;
+                return (
+                  <path
+                    key={i}
+                    d={d}
+                    fill={current || done ? 'var(--color-primary)' : 'var(--color-border)'}
+                    opacity={current ? 1 : done ? 0.9 : 0.5}
+                    style={{ transition: 'fill 0.2s, opacity 0.2s' }}
+                  />
+                );
+              })}
+            </g>
           </svg>
         ) : (
           <div className="h-full w-full flex items-center justify-center">

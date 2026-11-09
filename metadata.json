@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.45",
-  "version": "5.2.45",
-  "description": "v5.2.44: 闭环 docs/tasks.md 剩余 22 项任务——URL 级 i18n 与词典按需加载、无障碍焦点陷阱/键盘替代路径、RSC 边界拆分、PWA 离线兜底、进度导出导入、自动发布 Release、依赖精确钉住与 i18n 审校流程；单测 29 文件/158 用例全通过。",
+  "name": "HanziMaster 汉字大师 v5.2.46",
+  "version": "5.2.46",
+  "description": "v5.2.46: 修复笔顺上下颠倒缺陷——Hanzi Writer 数据为 y 轴向上 1024 网格，笔顺演示与书写画布此前未做 y 翻转且把闭合轮廓当线条描边；统一坐标变换（scale/scaleY + SVG transform），演示改填充渲染，描红判定按数据坐标系反变换；单测 30 文件/165 用例全通过。",
   "keywords": [
     "Chinese characters",
     "Hanzi",

@@ -1,6 +1,6 @@
-// src/components/practice/writing-canvas-utils.ts v5.2.44
-// 书写画布的绘制工具函数集（与组件逻辑分离，保证单文件 ≤200 行）
-// 从设计 token 读取颜色与字体，避免 Canvas 写死色值（单一来源）
+// src/components/practice/writing-canvas-utils.ts v5.2.46
+// 书写画布的绘制工具函数集：设计 token 读取、坐标变换、淡字底图与中位线绘制。
+// 描红贴合度判定见 writing-canvas-scoring.ts（单一职责拆分，保证单文件 ≤200 行）。
 
 // 从设计 token 读取前景色与衬线字体
 export const resolveFg = () =>
@@ -11,9 +11,16 @@ export const resolveSerif = () =>
 export const resolvePrimary = () =>
   getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim() || '#c53d43';
 
-// 归一化：把 0-1000 绝对坐标缩放到画布实际尺寸
+// 坐标系约定：笔顺数据为 Hanzi Writer 格式——1024×1024 网格、y 轴向上、字形以 y=900 为顶基线。
+// 画布映射：x → (x/1024)*size；y → ((900 - y)/1024)*size（垂直翻转，修正笔顺上下颠倒）。
+// 归一化 x：把数据网格 x 缩放到画布实际尺寸
 export function scale(v: number, size: number) {
-  return (v / 1000) * size;
+  return (v / 1024) * size;
+}
+
+// 翻转并缩放 y：数据 y 轴向上 → 画布 y 轴向下
+export function scaleY(v: number, size: number) {
+  return ((900 - v) / 1024) * size;
 }
 
 // 解析 SVG path 字符串为 Path2D（浏览器原生支持），解析失败返回 null
@@ -23,61 +30,6 @@ export function parsePath(d: string): Path2D | null {
   } catch {
     return null;
   }
-}
-
-// 点到线段最短距离（用于描红贴合度判定）
-export function distToSegment(
-  px: number,
-  py: number,
-  ax: number,
-  ay: number,
-  bx: number,
-  by: number,
-): number {
-  const dx = bx - ax;
-  const dy = by - ay;
-  const len2 = dx * dx + dy * dy;
-  if (len2 === 0) return Math.hypot(px - ax, py - ay);
-  let t = ((px - ax) * dx + (py - ay) * dy) / len2;
-  t = Math.max(0, Math.min(1, t));
-  return Math.hypot(px - (ax + t * dx), py - (ay + t * dy));
-}
-
-// 描红贴合度判定：返回 0-1，表示用户轨迹点落在笔形/中位线容差内的比例
-// - 优先用 strokePath（Path2D.isPointInStroke，带容差线宽）判断点是否在笔画内
-// - 路径不可用时回退到中位线折线距离判定
-export function scoreStroke(
-  points: { x: number; y: number }[],
-  strokePath: string | undefined,
-  median: number[][] | undefined,
-  size: number,
-  tol = 18,
-): number {
-  if (!points.length) return 0;
-  const path = strokePath ? parsePath(strokePath) : null;
-  const probe = document.createElement('canvas').getContext('2d');
-  if (path && probe) {
-    probe.lineWidth = tol * 2;
-    let hit = 0;
-    for (const p of points) {
-      if (probe.isPointInStroke(path, p.x, p.y)) hit++;
-    }
-    return hit / points.length;
-  }
-  if (median && median.length >= 2) {
-    let hit = 0;
-    const pts = median.map((m) => ({ x: scale(m[0], size), y: scale(m[1], size) }));
-    for (const p of points) {
-      let min = Infinity;
-      for (let i = 0; i < pts.length - 1; i++) {
-        const d = distToSegment(p.x, p.y, pts[i].x, pts[i].y, pts[i + 1].x, pts[i + 1].y);
-        if (d < min) min = d;
-      }
-      if (min <= tol) hit++;
-    }
-    return hit / points.length;
-  }
-  return 0;
 }
 
 // 淡字底图绘制
@@ -122,67 +74,17 @@ export const drawMedianStroke = (
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
   ctx.beginPath();
-  ctx.moveTo(scale(medians[0][0], size), scale(medians[0][1], size));
+  ctx.moveTo(scale(medians[0][0], size), scaleY(medians[0][1], size));
   for (let i = 1; i <= idx; i++) {
-    ctx.lineTo(scale(medians[i][0], size), scale(medians[i][1], size));
+    ctx.lineTo(scale(medians[i][0], size), scaleY(medians[i][1], size));
   }
   if (idx < total) {
     const a = medians[idx];
     const b = medians[idx + 1];
-    ctx.lineTo(scale(a[0] + (b[0] - a[0]) * t, size), scale(a[1] + (b[1] - a[1]) * t, size));
+    ctx.lineTo(
+      scale(a[0] + (b[0] - a[0]) * t, size),
+      scaleY(a[1] + (b[1] - a[1]) * t, size)
+    );
   }
   ctx.stroke();
 };
-
-// 跟写描红结束：判定当前笔的贴合度并累加，返回更新后的准确度数组与均值
-export function judgeUserStroke(params: {
-  userPoints: { x: number; y: number }[];
-  strokePath: string | undefined;
-  median: number[][] | undefined;
-  size: number;
-  prevAccuracies: number[];
-  onAccuracyChange?: (avg: number) => void;
-}): number[] {
-  const { userPoints, strokePath, median, size, prevAccuracies, onAccuracyChange } = params;
-  if (userPoints.length === 0) return prevAccuracies;
-  const acc = scoreStroke(userPoints, strokePath, median, size);
-  const next = [...prevAccuracies, acc];
-  const avg = next.reduce((a, b) => a + b, 0) / next.length;
-  onAccuracyChange?.(avg);
-  return next;
-}
-
-/** 键盘替代路径（P1-25）：把提交的笔画编号序列转成轨迹点，复用与指针路径完全相同的 judgeUserStroke 评分管线。
- *  顺序错误时，用「提交笔画的中位线」去对照「期望笔画的路径」，自然得到低分，无需第二套评分规则。 */
-export function scoreKeyboardSequence(params: {
-  sequence: number[];
-  totalStrokes: number;
-  strokePaths: string[];
-  medians: number[][][];
-  size: number;
-  prevAccuracies: number[];
-}): { correct: boolean; accuracies: number[] } {
-  const { sequence, totalStrokes, strokePaths, medians, size, prevAccuracies } = params;
-  const expected = Array.from({ length: totalStrokes }, (_, i) => i + 1);
-  const correct =
-    totalStrokes > 0 &&
-    sequence.length === expected.length &&
-    sequence.every((n, i) => n === expected[i]);
-
-  let accuracies = prevAccuracies;
-  expected.forEach((_, i) => {
-    const points = (medians[sequence[i] - 1] ?? []).map(([x, y]) => ({
-      x: scale(x, size),
-      y: scale(y, size),
-    }));
-    accuracies = judgeUserStroke({
-      userPoints: points,
-      strokePath: strokePaths[i],
-      median: medians[i],
-      size,
-      prevAccuracies: accuracies,
-    });
-  });
-
-  return { correct, accuracies };
-}
