@@ -123,7 +123,7 @@ PR 检查清单与 CI 判定依据一致，任一项失败即阻断合并：
 ## 7. 禁止事项
 
 - 直接 push `main`；force push 共享分支；跳过 hooks；改写已发布 Tag。
-- 在提交中夹带密钥、Token、`.env.local`、脚本产物（`reports/` 已被忽略）。
+- 在提交中夹带密钥、Token、`.env.local`、临时目录或脚本产物（`tmp/` / `cache/` / `log/` / `reports/` 均已被忽略）。
 - 把任务/待办写进代码注释或规范文档；任务只写 [tasks.md](tasks.md)，完成后归档到 [tasks-done.md](tasks-done.md)。
 - 用「历史记录不篡改」之外的理由批量替换 CHANGELOG 历史条目中的旧版本号与旧路径（如 `openspec/`）。
 

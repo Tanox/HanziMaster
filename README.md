@@ -68,7 +68,7 @@ pnpm start
 | `pnpm lint:fix` | ESLint 自动修复 |
 | `pnpm test` | 单元测试（Vitest） |
 | `pnpm test:watch` | 监听模式 |
-| `pnpm test:run` | 测试包装器（产物落 `reports/`，透传 `--coverage`） |
+| `pnpm test:run` | 测试包装器（测试日志落 `log/test-out.log`，覆盖率落 `cache/coverage/`，透传 `--coverage`） |
 | `pnpm check:lines` | 源文件行数门禁（≤ 200 行） |
 | `pnpm check:root` | 根目录清洁度门禁（临时脚本/产物禁止落仓库根） |
 | `pnpm bundle:check` | 构建产物体积预算门禁 |
@@ -108,7 +108,10 @@ e2e/                         # Playwright 端到端测试（home / a11y）
 prototype/                   # 6 个 HTML 骨架 + styles/ + scripts/（源码均 ≤200 行）
 docs/                        # 规范文档 18 篇（入口 docs/index.md）
 scripts/                     # 9 个 Node 工具脚本（见 docs/03-development.md §3）
-reports/                     # 脚本产物（gitignore，不提交）
+tmp/                         # 会话临时文件（gitignore，用完即清）
+cache/                       # 可再生缓存：TS 增量 / Vitest 缓存与覆盖率（gitignore）
+log/                         # 运行日志：测试输出等（gitignore）
+reports/                     # 正式核验产物（gitignore，不提交）
 .github/workflows/           # ci.yml（质量门禁）/ deploy.yml（Vercel 部署）/ release.yml（自动发布）
 ```
 

@@ -68,7 +68,7 @@ pnpm start
 | `pnpm lint:fix` | ESLint auto-fix |
 | `pnpm test` | Unit tests (Vitest) |
 | `pnpm test:watch` | Watch mode |
-| `pnpm test:run` | Test wrapper (artifacts to `reports/`, forwards `--coverage`) |
+| `pnpm test:run` | Test wrapper (test log in `log/test-out.log`, coverage in `cache/coverage/`, forwards `--coverage`) |
 | `pnpm check:lines` | Source line-count gate (≤ 200 lines) |
 | `pnpm check:root` | Root cleanliness gate (no temp scripts/artifacts in repo root) |
 | `pnpm bundle:check` | Bundle size budget gate |
@@ -108,7 +108,10 @@ e2e/                         # Playwright E2E tests (home / a11y)
 prototype/                   # 6 HTML skeletons + styles/ + scripts/ (all ≤200 lines)
 docs/                        # 18 specification documents (entry: docs/index.md)
 scripts/                     # 9 Node tool scripts (see docs/03-development.md §3)
-reports/                     # Script artifacts (gitignored)
+tmp/                         # Session scratch files (gitignored, clear after use)
+cache/                       # Regenerable caches: TS incremental / Vitest cache and coverage (gitignored)
+log/                         # Runtime logs: test output, etc. (gitignored)
+reports/                     # Formal verification artifacts (gitignored)
 .github/workflows/           # ci.yml (quality gates) / deploy.yml (Vercel) / release.yml (auto release)
 ```
 

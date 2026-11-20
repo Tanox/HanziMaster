@@ -123,7 +123,7 @@ E2E 已接入，配置在 `playwright.config.ts`，测试在 `e2e/`：
 
 ## 7. 覆盖要求（阈值已生效）
 
-`vitest.config.ts` 已配置 V8 provider 与阈值门禁，任一指标低于阈值即测试失败：
+`vitest.config.ts` 已配置 V8 provider 与阈值门禁，任一指标低于阈值即测试失败；Vite/Vitest 缓存写 `cache/vite/`、覆盖率报告写 `cache/coverage/`，均由 `.gitignore` 排除：
 
 | 指标 | 阈值 |
 |------|------|
@@ -143,7 +143,7 @@ E2E 已接入，配置在 `playwright.config.ts`，测试在 `e2e/`：
 - [ ] 11 语言键一致性测试通过
 - [ ] 无 `jest.*` API、无硬编码环境依赖
 - [ ] 涉及页面渲染或无障碍的改动跑过 `pnpm e2e`
-- [ ] 测试产物未提交到仓库（在 `reports/` / `coverage/` / `test-results/` 下且被忽略）
+- [ ] 测试产物未提交到仓库（日志在 `log/`、覆盖率在 `cache/coverage/`、报告在 `reports/`，均被忽略）
 
 ## 9. 相关文档
 

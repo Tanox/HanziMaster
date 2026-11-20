@@ -92,8 +92,10 @@ HanziMaster/
 ├── docs/                           # 规范文档 18 篇（见 docs/index.md）
 ├── prototype/                      # 6 个 HTML 骨架 + styles/ + scripts/ + 4 篇文档
 ├── scripts/                        # 9 个 Node 工具脚本（见 [03-development.md](03-development.md) §3）
-├── .tmp/                           # 会话级临时文件唯一固定子目录（gitignore，按需创建、用完即删）
-├── reports/                        # 脚本产物（gitignore，不提交）
+├── tmp/                            # 会话级临时文件（gitignore，会话结束清空）
+├── cache/                          # 可再生缓存：TS 增量、Vitest/Vite 缓存与覆盖率（gitignore）
+├── log/                            # 运行日志：测试输出等（gitignore）
+├── reports/                        # 正式核验产物（gitignore，不提交）
 ├── .github/                        # workflows/（ci.yml / deploy.yml / release.yml）、dependabot.yml、社区文件
 ├── .trae/                          # 编辑器协作规则与命令
 ├── sentry.edge.config.ts / sentry.server.config.ts       # Sentry 构建配置（未配 DSN 时不启用）
@@ -123,7 +125,7 @@ HanziMaster/
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | GA4 衡量 ID；未设置完全不加载统计脚本，设置后仍需用户在同意横幅中选择「接受」 | 否 |
 | `SENTRY_DSN` / `NEXT_PUBLIC_SENTRY_DSN` / `SENTRY_ORG` / `SENTRY_PROJECT` / `SENTRY_AUTH_TOKEN` | Sentry 错误监控与 source maps 上传；未设置 DSN 时不启用、零开销 | 否（CI 构建需 AUTH_TOKEN 上传） |
 | `BLOB_READ_WRITE_TOKEN` / `BLOB_STORE_ID` | 可选云端进度同步：Vercel Blob 私有 store 的读写凭证与 store 标识；未配置时 `/api/progress` 返回 503，应用保持纯本地模式 | 否 |
-| `ANALYZE` | `ANALYZE=1 pnpm build` 生成 bundle 分析报告（写 `reports/`） | 否 |
+| `ANALYZE` | `ANALYZE=1 pnpm build` 生成 bundle 分析报告（写入框架构建目录 `.next/analyze/`，由 Next/Vercel 预设接管） | 否 |
 | `MAX_BUNDLE_KB` | 构建后产物体积门禁阈值（KB），由 `check-bundle-size.mjs` 读取 | 否 |
 | `NEXT_DIST_DIR` | 自定义构建输出目录，供并行预览/检查脚本隔离 `.next` 使用 | 否 |
 | `VERCEL_TOKEN` / `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` | 仅 `deploy.yml`（GitHub Actions）使用，配置在仓库 Secrets | CI 部署时 |

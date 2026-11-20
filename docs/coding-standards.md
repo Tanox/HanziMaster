@@ -89,14 +89,23 @@ HanziMaster/
 | 新 hook | `src/hooks/` | `use-xxx.ts` |
 | 新纯逻辑 / 数据 | `src/lib/` | `xxx-utils.ts` / `xxx-data.ts` |
 | 新测试 | 所属模块 `__tests__/` | `<被测文件>.test.ts(x)` |
-| 新工具脚本 | `scripts/` | `xxx-yyy.mjs`，产物写 `reports/` |
-| 一次性脚本 / 调试探针 / 中间产物 | `.tmp/` | `<用途>-<说明>.mjs` / `.txt` / `.json`，会话结束即删 |
+| 新工具脚本 | `scripts/` | `xxx-yyy.mjs`，产物按类别写 `cache/` / `log/` / `reports/` |
+| 一次性脚本 / 调试探针 / 中间产物 | `tmp/` | `<用途>-<说明>.mjs` / `.txt` / `.json`，会话结束即清 |
 
-**临时文件固定子目录（单一约定）**：会话级临时内容一律写 `.tmp/`，不得在仓库根或 `src/` / `docs/` 等业务目录散落；`.tmp/` 按需创建、用完即删，内容视为可随时丢弃的缓存，禁止入库。可复用工具脚本放 `scripts/`，其正式产物（测试输出、门禁报告、Release 说明）统一写 `reports/`，写入前先 `mkdir -p`。两者均已 `.gitignore`，且被 ESLint / Prettier / TypeScript / Vitest 忽略，不会造成门禁假红。
+**临时文件固定子目录（按用途分类、只写四类）**：
+
+| 目录 | 适用范围 | 创建 / 清理策略 |
+|------|---------|----------------|
+| `tmp/` | 一次性脚本、探针、调试中间产物 | `scripts/temp-paths.mjs` 按需创建；会话结束执行 `pnpm clean:tmp` 清空；内容可随时丢弃 |
+| `cache/` | 可再生缓存：TS 增量信息、Vitest/Vite 缓存、覆盖率 HTML | 脚本 / 工具自动创建；`pnpm clean:cache` 可安全清空，下次运行自动重建 |
+| `log/` | 运行过程日志：`test-out.log` 等 | `scripts/run-tests.mjs` 等自动创建；`pnpm clean:log` 清理，历史日志不入库 |
+| `reports/` | 门禁与发布产物：`root-clean.txt`、`line-count.txt`、`release-notes.md` 等 | 脚本写入前创建；每轮覆盖，可按需 `pnpm clean:all` 统一清理 |
+
+四类目录均由 `scripts/temp-paths.mjs` 定义绝对路径、由 `scripts/clean-temp.mjs` 在受管路径白名单内清理（`--dry-run` 预览、`--cache` / `--log` / `--reports` 单项清理、`--all` 清空），均已被 `.gitignore` 且被 ESLint / Prettier / TypeScript / Vitest 忽略。`.next/` 是 Next/Vercel/EdgeOne 预设要求的框架自有构建目录，作为**唯一例外**由 `next.config.mjs` 的 `distDir` 显式声明；本地并行验证可用 `NEXT_DIST_DIR` 指向其它固定子目录，但不得散落仓库根。
 
 禁止：在仓库根新增一次性脚本或产物文件；把临时文件写进 `src/` / `docs/` 等业务目录；把跨页面组件塞进页面目录；把纯函数与 UI 混写在同一文件。
 
-> 根目录清洁度由 `pnpm check:root`（`scripts/check-root-clean.mjs`，白名单制）强制：白名单放行 `.tmp/` 与 `reports/` 两个固定子目录，其余条目须为工具链 / 平台约定的根文件；`.gitignore` 预置 `/.tmp/`、`/.tmp-*`、`*_tmp*`、`*.out`、`audit-*.json`、`*-result.json` 兜底。CI 首步即执行该门禁。
+> 根目录清洁度由 `pnpm check:root`（`scripts/check-root-clean.mjs`，白名单制）强制：仅放行 `tmp/` / `cache/` / `log/` / `reports/` 四类受管子目录及 `.next/` 框架例外，其余条目须为工具链 / 平台约定的根文件；`tsconfig.tsbuildinfo` 已从白名单移除并改投 `cache/`。CI 首步即执行该门禁。
 
 ## 5. 命名约定
 
@@ -176,7 +185,7 @@ Next.js 约定文件名（`page.tsx` / `layout.tsx` / `error.tsx` / `loading.tsx
 | Lint | `pnpm lint` | 0 error / 0 warning |
 | 单测 | `pnpm test` | 全部通过 |
 | 行数 | `pnpm check:lines` | `all <= 200` |
-| 根目录清洁度 | `pnpm check:root` | 根目录条目全部命中白名单（`.tmp/` 为唯一放行的临时子目录，脚本产物写 `reports/`） |
+| 根目录清洁度 | `pnpm check:root` | 根目录条目全部命中白名单（仅 `tmp/`/`cache/`/`log/`/`reports/` 四类受管子目录 + `.next/` 框架例外） |
 | 格式化 | `pnpm format` | 按 `.prettierrc.json` 无遗留 diff |
 | 安全审计 | `pnpm security:audit` | 生产依赖 0 高危 |
 | 构建 | `pnpm build` | 构建成功 |

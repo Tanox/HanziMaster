@@ -81,7 +81,7 @@
 | 单测 | `node scripts/run-tests.mjs` | ✅ **36 文件 / 200 用例**全通过（v5.2.54 实测） |
 | 覆盖率 | `pnpm test:run --coverage` | 阈值门禁见 CI `coverage` job；数值以实测为准 |
 | 行数 | `pnpm check:lines` | ✅ `all <= 200` |
-| 根目录清洁度 | `pnpm check:root` | ✅ `root clean`（`.tmp/` 为唯一放行的临时子目录） |
+| 根目录清洁度 | `pnpm check:root` | ✅ `root clean`（仅 `tmp/`/`cache/`/`log/`/`reports/` 四类受管子目录 + `.next/` 框架例外） |
 | i18n | `pnpm i18n:lint` | ✅ 11 语言 / 9 扩展模块 / 占位符一致 / 文案 ≤160 |
 | 版本展示 | `pnpm version:check` | ✅ `v5.2.54 in sync` |
 | 冻结安装 | `pnpm install --frozen-lockfile` | ✅ 通过（依赖已精确钉住） |
