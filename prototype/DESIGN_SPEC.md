@@ -1,7 +1,7 @@
 # HanziMaster 原型设计规范文档
 
-> 文档版本：v5.2.55（与项目版本同步，权威版本见 `package.json`）· 与 [docs/07-design-prototype.md](../docs/07-design-prototype.md) 互为补充，本文聚焦**原型交付侧**的细化规范（图标、布局网格、交互模式库、反馈/错误/空状态规范）。
-> Design Token 为**单一来源、分层组织**：`src/app/globals.css` 的 `@theme` 定义语义 token（`--color-*`），`src/app/styles/theme-colors.css` 定义扩展色阶/阴影，`src/app/styles/utilities.css` 定义动画工具类；原型文件（`prototype.html` / `wireframes.html` / `learn.html` / `practice.html` / `progress.html` / `character-detail.html`）中的 CSS 变量须与语义 token 对齐。
+> 文档版本：v5.2.56（与项目版本同步，权威版本见 `package.json`）· 与 [docs/07-design-prototype.md](../docs/07-design-prototype.md) 互为补充，本文聚焦**原型交付侧**的细化规范（图标、布局网格、交互模式库、反馈/错误/空状态规范）。
+> Design Token 为**双重来源、分层组织**：`src/app/globals.css` 的 `@theme` 定义语义 token（`--color-*`），`src/app/styles/theme-colors.css` 定义扩展色阶/阴影，另有 `tailwind.config.ts` 扩展色阶；原型文件（`prototype.html` / `wireframes.html` / `learn.html` / `practice.html` / `progress.html` / `character-detail.html` / `privacy.html` / `terms.html`）中的 CSS 变量须与语义 token 对齐。原型 CSS 沿用 `--dur-*` 简写（与生产 `--duration-*` 一一对应，值相同）。
 > 本文 §2 描述的是 `wireframes.html` 的**原型组件库演示**，不是生产代码组件清单；生产组件以 [docs/04-api-reference.md](../docs/04-api-reference.md) §6 为准。
 
 ---
@@ -68,7 +68,7 @@
 
 ### 1.7 动效规范
 
-- **时长**：`--duration-fast 0.15s`（微交互）/ `--duration-normal 0.25s`（状态切换）/ `--duration-slow 0.4s` / `--duration-lg 0.6s`（页面/入场，与 `globals.css` 命名一致）。
+- **时长**：原型 `--dur-fast 0.15s`（微交互）/ `--dur-normal 0.25s`（状态切换）/ `--dur-slow 0.4s` / `--dur-lg 0.6s`（页面/入场）；生产对应 `globals.css` 的 `--duration-*`，数值一致。
 - **缓动**：`--ease-out`（出场）/ `--ease-spring`（弹性回弹，如按钮、开关）/ `--ease-smooth`（通用）。
 - **预设动画**：`brush-stroke`（笔触揭示）、`ink-spread`（墨水扩散入场）、`paper-flip`（卡片翻转）、`fade-in-elegant`（页面加载）、`float-gentle`（背景浮动）、`slide-in-right`（Toast）、`accordion-down/up`。
 - **无障碍**：`prefers-reduced-motion: reduce` 时所有动画/过渡降至 `0.01ms`。
@@ -165,12 +165,32 @@ FeatureCard（80px 渐变图标 + 标题 hover 上移 8px）、StatsCard（`acce
 
 | 文件 | 用途 |
 |------|------|
-| `prototype.html` | 首页高保真交互原型（Hero / 功能 / 汉字展示） |
+| `prototype.html` | 首页高保真交互原型（Hero / 功能 / 汉字展示 / 设置面板 / 云同步演示） |
 | `wireframes.html` | 组件库规范（基础/复合/业务组件 + 使用规则） |
 | `learn.html` | 学习页（汉字网格、筛选、详情弹窗） |
 | `practice.html` | 练习页（选择题、书写练习、进度条） |
 | `progress.html` | 进度页（统计卡、热力图、掌握度、活动流） |
 | `character-detail.html` | 汉字学习卡变体探索（设计探索，非最终） |
+| `privacy.html` / `terms.html` | 法律页原型示意（对应生产 `/privacy`、`/terms`，双语并列；完整正文以生产为准） |
+| `styles/prototype-settings.css` | 设置面板 / 云同步 / 法律页样式 |
+| `scripts/prototype-settings.js` | 设置面板文案补丁（4 语言演示，覆盖过时特性与测验提示） |
+| `scripts/prototype-settings-ui.js` | 设置面板交互（主题三态 / 语言 / 开关 / 同步码 / 重置） |
+
+### 4.1 设置面板交互契约（v5.2.56 新增）
+
+与生产 `SettingsDialog` / `CloudSyncControls` 对齐，语义化 id 保持一致：
+
+| 元素 | id | 行为 |
+|------|----|------|
+| 入口 | `#settings-open` / `#drawer-settings` | 打开面板，焦点移到关闭按钮 |
+| 面板 / 遮罩 | `#settings-dialog` / `#settings-scrim` | `role="dialog"` + `aria-modal`；Escape / 遮罩 / 关闭按钮均可关闭，焦点返回入口 |
+| 主题 | `#theme-radio` | 三态 radiogroup（light / dark / system），持久化 `hm-theme` |
+| 语言 | `#settings-language` | 原型演示 4 语言（生产 11），与头部菜单双向同步 |
+| 偏好 | `#settings-haptics` / `#settings-reduce-motion` | 持久化开关；减少动效给 `<html>` 加 `.reduce-motion` |
+| 云同步 | `#cloud-sync-controls` | 生成 `HM-XXXX-XXXX` 同步码、复制、上传/下载（演示 toast，无后端） |
+| 进度 | `#settings-reset` / `#settings-reset-confirm` / `#settings-reset-yes` | 二次确认后清除本地偏好与进度 |
+
+> 原型文案仅演示 en / zh-CN / ja / es 四种语言；生产版本的 11 语言文案以 `src/lib/i18n/translations/` 为准。
 
 ---
 

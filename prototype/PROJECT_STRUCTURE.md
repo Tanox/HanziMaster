@@ -1,6 +1,6 @@
 # 项目结构说明（归档）
 
-> 文档版本：v5.2.43（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.56（与项目版本同步，权威版本见 `package.json`）
 >
 > **归档说明**：本文保留原型目录的结构说明与历史导航，属于归档层文档。**当前权威**是 [docs/index.md](../docs/index.md)（文档分层与单一职责矩阵）、[docs/01-overview.md](../docs/01-overview.md) §6（完整目录树）与 [docs/coding-standards.md](../docs/coding-standards.md) §4（目录组织规则）。三者与本文冲突时以权威文档为准。
 
@@ -8,7 +8,7 @@
 
 ```
 HanziMaster/
-├── src/                          # 应用源码（111 个 TS/TSX + 4 个 CSS，含 24 个 .test.*）
+├── src/                          # 应用源码（164 个 TS/TSX + 6 个 CSS，含 36 个 .test.*）
 │   ├── app/                      # App Router：page / learn / practice / privacy / terms / api/health
 │   │   ├── layout.tsx            # 根布局（metadata / hreflang / SSR lang+dir）
 │   │   ├── error.tsx / loading.tsx / not-found.tsx / global-error.tsx
@@ -28,8 +28,8 @@ HanziMaster/
 │   │                             # storage / utils / version / consent / site /
 │   │                             # error-reporting + __tests__/
 │   │   └── i18n/                 # index.ts / translate.ts / translations/
-│   │                             # （11 语言 + extensions/ 4 个文案模块）
-│   └── instrumentation.ts / instrumentation-client.ts
+│   │                             # （11 语言 + extensions/ 10 组文案 + index）
+│   └── instrumentation.ts / instrumentation-client.ts / proxy.ts
 ├── docs/                         # 规范文档 16 篇（见 docs/index.md）
 │   ├── 01 ~ 07                   # 概述 / 架构 / 开发 / API / 部署 / 测试 / 设计系统
 │   ├── coding-standards.md       # 编码规范（权威）
@@ -38,18 +38,21 @@ HanziMaster/
 │   ├── index.md · AGENTS.md · project.md
 │   ├── alignment-checklist.md    # 对齐现状
 │   └── tasks.md · tasks-done.md  # 任务清单与归档
-├── prototype/                    # 6 个 HTML 骨架 + styles/（11）+ scripts/（11）
-│   ├── prototype.html            # 唯一权威高保真原型
+├── prototype/                    # 11 个 HTML + styles/（12）+ scripts/（13）+ 5 篇文档
+│   ├── prototype.html            # 唯一权威高保真原型（含设置面板 / 云同步演示）
 │   ├── wireframes.html           # 线框、状态可视化与断点指示器
 │   ├── learn.html / practice.html / progress.html / character-detail.html
-│   └── DESIGN_SPEC.md            # 原型交付侧细化规范
-├── scripts/                      # 7 个 .mjs：run-tests / check-line-count / sync-version /
-│                                 # i18n-lint / prototype-parity / analyze / check-bundle-size
-├── e2e/                          # home.spec.ts / a11y.spec.ts（Playwright + axe）
+│   ├── privacy.html / terms.html # 法律页原型示意（对应生产 /privacy、/terms）
+│   ├── styles/prototype-settings.css · scripts/prototype-settings{,-ui}.js
+│   └── DESIGN_SPEC.md            # 原型交付侧细化规范（§4.1 设置面板交互契约）
+├── scripts/                      # 12 个 .mjs：run-tests / check-line-count / sync-version /
+│                                 # i18n-lint / prototype-parity / analyze / check-bundle-size /
+│                                 # check-csp-consistency / check-root-clean / clean-temp /
+│                                 # extract-changelog / temp-paths
 ├── public/                       # icon.svg（PWA 图标）
 ├── reports/ · coverage/          # 脚本与覆盖率产物（gitignore，不提交）
 ├── .github/                      # PR / Issue 模板、SECURITY、SUPPORT、CODE_OF_CONDUCT、
-│                                 # dependabot.yml、workflows/（ci.yml / deploy.yml）
+│                                 # dependabot.yml、workflows/（ci / deploy / release）
 ├── .trae/                        # 编辑器协作规则与命令
 ├── LICENSE / NOTICE              # MIT 许可证与第三方声明
 ├── package.json                  # 依赖、脚本、版本唯一权威源
@@ -68,7 +71,7 @@ HanziMaster/
 
 ## 目录整理原则
 
-1. 按职责分层：`src/` 源码、`docs/` 规范、`prototype/` 原型、`e2e/` 端到端测试、`scripts/` 工具、`reports/` 与 `coverage/` 产物、根目录配置与入口文档。
+1. 按职责分层：`src/` 源码、`docs/` 规范、`prototype/` 原型、`scripts/` 工具、`reports/` 与 `coverage/` 产物、根目录配置与入口文档。端到端测试曾位于 `e2e/`，现已清理。
 2. 避免冗余：一类规则只在一个权威文档定义；任务只在 `docs/tasks.md` 维护、完成记录只在 `docs/tasks-done.md` 维护；不在仓库根放一次性脚本或产物。
 3. 源码单文件 ≤ 200 行，超限按职责拆分；**文档不拆分**。
 4. 命名约定以 [docs/coding-standards.md](../docs/coding-standards.md) §5 为准。
@@ -90,19 +93,18 @@ HanziMaster/
 | 法律与社区 | [LICENSE](../LICENSE) · [NOTICE](../NOTICE) · [.github/SUPPORT.md](../.github/SUPPORT.md) |
 | 历史归档 | [UI_UX_REVIEW.md](UI_UX_REVIEW.md) · [OPTIMIZATION_SUMMARY.md](OPTIMIZATION_SUMMARY.md) · [CHANGELOG.md](../CHANGELOG.md) |
 
-## 文档统计（v5.2.35 实算）
+## 文档统计（v5.2.56 实算）
 
 | 类别 | 数量 |
 |------|------|
-| `docs/` 规范文档 | 16 篇 |
-| `prototype/` 说明文档 | 4 篇 |
-| `src/` TS / TSX / CSS 文件 | 111 + 4 个 |
-| `src/` 测试文件 / 用例 | 24（用例数以 `pnpm test` 输出为准） |
-| `e2e/` Playwright 规格 | 2 个 |
-| 原型 HTML / CSS / JS | 6 / 11 / 11 个 |
-| 翻译语言 / 扩展文案模块 | 11 / 3 组（a11y / legal / meanings）+ index 合并入口 |
-| `scripts/` 工具脚本 | 7 个 |
-| `.github/workflows/` | 2 个（ci / deploy） |
+| `docs/` 规范文档 | 18 篇 |
+| `prototype/` 说明文档 | 5 篇 |
+| `src/` TS / TSX / CSS 文件 | 164 + 6 个 |
+| `src/` 测试文件 / 用例 | 36（用例数以 `pnpm test` 输出为准） |
+| 原型 HTML / CSS / JS | 11 / 12 / 13 个 |
+| 翻译语言 / 扩展文案模块 | 11 / 10 组（a11y / cloud / geo / legal / meanings / privacy / progress / pwa / seo / settings）+ index 合并入口 |
+| `scripts/` 工具脚本 | 12 个 |
+| `.github/workflows/` | 3 个（ci / deploy / release） |
 
 > 数字型统计随开发变化，引用前请实算；不要凭历史快照填写。
 
@@ -114,5 +116,5 @@ HanziMaster/
 
 ---
 
-**最后更新：** 2026-11-05（v5.2.35）
+**最后更新：** 2026-11-20（v5.2.56）
 **维护者：** HanziMaster 开发团队

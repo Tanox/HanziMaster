@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!-- prototype/privacy.html v5.2.56 · 隐私政策页原型示意（对应生产 /privacy） -->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>隐私政策 · HanziMaster 原型</title>
+<link rel="stylesheet" href="styles/prototype-part1.css" />
+<link rel="stylesheet" href="styles/prototype-settings.css" />
+<style>
+  .legal { max-width: 760px; margin: 64px auto; padding: 0 24px 80px; }
+  .legal h1 { font: 600 32px var(--font-heading); margin: 0; }
+  .legal .en { color: var(--muted-foreground); font-size: 18px; margin: 8px 0 16px; }
+  .legal .updated { color: var(--muted-foreground); font-size: 13px; }
+  .legal section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+  .legal h2 { font: 600 18px var(--font-sans); margin: 0 0 4px; }
+  .legal h2 small { display: block; font-weight: 400; color: var(--muted-foreground); }
+  .legal p { line-height: 1.8; }
+  .legal .back { display: inline-block; margin-bottom: 24px; color: var(--primary); text-decoration: none; }
+</style>
+</head>
+<body>
+<main class="legal" id="privacy-page">
+  <a class="back" href="prototype.html">← 返回原型 / Back to prototype</a>
+  <h1>隐私政策</h1>
+  <p class="en" lang="en">Privacy Policy</p>
+  <p class="updated">最后更新 / Last updated: 2026-11-05</p>
+
+  <section id="privacy-overview">
+    <h2>概述<small lang="en">Overview</small></h2>
+    <p>纯前端、本地优先的汉字学习应用；无账户体系、无业务后端 API，不上传学习内容。本页说明本地保存的数据、统计脚本加载条件与控制方式。</p>
+  </section>
+  <section id="privacy-local-storage">
+    <h2>本地存储<small lang="en">Local Storage</small></h2>
+    <p>localStorage 保存三类数据：界面主题、界面语言、学习进度（练习记录、连胜、正确率、周活动）。数据仅存于当前设备，清除站点数据即可全部删除。</p>
+  </section>
+  <section id="privacy-analytics">
+    <h2>统计与第三方服务<small lang="en">Analytics &amp; Third Parties</small></h2>
+    <p>仅在用户明确同意后加载 GA4；未配置衡量 ID 时不加载统计脚本。错误监控使用 Sentry，未配置 DSN 时不启用。</p>
+  </section>
+  <section id="privacy-rights">
+    <h2>用户控制<small lang="en">Your Control</small></h2>
+    <p>可通过浏览器清除站点数据删除全部本地数据；应用设置面板提供进度导出、导入与重置入口。</p>
+  </section>
+  <p class="updated">原型示意页：完整双语正文以生产版本 <code>/privacy</code> 页面为准。</p>
+</main>
+</body>
+</html>
