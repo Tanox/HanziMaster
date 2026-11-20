@@ -1,7 +1,7 @@
 # 任务清单 · Task Backlog
 
-> 文档版本：v5.2.54（与项目版本同步，权威版本见 `package.json`）
-> 最后更新：**2026-11-20 19:33（UTC+8）— P1-40 真实 Tag/Release 验证通过并归档；P0-32 定位为 Vercel secrets 未配置导致部署跳过（平台侧阻断）；剩余 2 项。版本 v5.2.54（§8）**
+> 文档版本：v5.2.55（与项目版本同步，权威版本见 `package.json`）
+> 最后更新：**2026-11-20 19:33（UTC+8）— P1-40 真实 Tag/Release 验证通过并归档；P0-32 定位为 Vercel secrets 未配置导致部署跳过（平台侧阻断）；剩余 2 项。版本 v5.2.55（§8）**
 > 本文件是**未完成任务 / 当前进度的单一来源**；已完成任务一律归档至 [tasks-done.md](tasks-done.md)，实现要点见 [CHANGELOG.md](../CHANGELOG.md)。
 
 ## 0. 说明与规则（单一来源）
@@ -72,18 +72,18 @@
 - **P1-40** `release.yml` 真实 Tag 触发 Release 验证 → `docs/git-workflow.md` §6.1
 - **P2-21** 译文母语者人工审校（11 语言关键路径抽查）→ `docs/i18n-review.md`
 
-## 1. 当前质量基线（v5.2.54 实测；后续以命令输出为准）
+## 1. 当前质量基线（v5.2.55 实测；后续以命令输出为准）
 
 | 门禁 | 命令 | 结果 |
 |------|------|------|
 | 类型检查 | `node node_modules/typescript/bin/tsc --noEmit` | ✅ 0 error |
 | Lint | `node node_modules/eslint/bin/eslint.js .` | ✅ 0 error / 0 warning |
-| 单测 | `node scripts/run-tests.mjs` | ✅ **36 文件 / 200 用例**全通过（v5.2.54 实测） |
+| 单测 | `node scripts/run-tests.mjs` | ✅ **36 文件 / 200 用例**全通过（v5.2.55 实测） |
 | 覆盖率 | `pnpm test:run --coverage` | 阈值门禁见 CI `coverage` job；数值以实测为准 |
 | 行数 | `pnpm check:lines` | ✅ `all <= 200` |
 | 根目录清洁度 | `pnpm check:root` | ✅ `root clean`（仅 `tmp/`/`cache/`/`log/`/`reports/` 四类受管子目录 + `.next/` 框架例外） |
 | i18n | `pnpm i18n:lint` | ✅ 11 语言 / 9 扩展模块 / 占位符一致 / 文案 ≤160 |
-| 版本展示 | `pnpm version:check` | ✅ `v5.2.54 in sync` |
+| 版本展示 | `pnpm version:check` | ✅ `v5.2.55 in sync` |
 | 冻结安装 | `pnpm install --frozen-lockfile` | ✅ 通过（依赖已精确钉住） |
 | 生产依赖漏洞 | `pnpm security:audit` | ✅ 0 高危（v5.2.31 T3 基线） |
 | 生产构建 | `pnpm build` | 见 CI；本地构建产物由 `reports/build-out.log` 记录 |
@@ -225,7 +225,7 @@
 | 隐私 / 主题 | P1-45 / P1-46 | head 主题预设消除 FOUC；设置面板可撤回统计同意并同步 GA4 consent update |
 | 交互健壮性 | P2-27 | 学习页测验重开清空状态、作答后禁用提交、Enter 防重复 |
 
-**实测门禁**：`tsc --noEmit` 0 error；`eslint .` 0 error / 0 warning；Vitest **36 文件 / 200 用例**全通过；`check:lines` `all <= 200`；`check:root` `root clean`；`check:csp` `csp consistent`；`i18n:lint` 11 语言 / 10 扩展模块 / 175 键；`version:check` v5.2.54 in sync。
+**实测门禁**：`tsc --noEmit` 0 error；`eslint .` 0 error / 0 warning；Vitest **36 文件 / 200 用例**全通过；`check:lines` `all <= 200`；`check:root` `root clean`；`check:csp` `csp consistent`；`i18n:lint` 11 语言 / 10 扩展模块 / 175 键；`version:check` v5.2.55 in sync。
 
 ### 7.2 剩余 3 项（均需平台 / 人工介入）
 
@@ -245,5 +245,5 @@
 | P0-32 生产部署 | ❌ 平台阻断 | Deploy run `44727890228` 注解 `Vercel secrets 未配置，跳过部署`；线上复测仍 `lang="en"` / localhost canonical / 无 hreflang / 无 og:image |
 | P2-21 母语者审校 | ⏳ 待外部 | `docs/i18n-review.md` 清单已就绪，需 11 语言审校人 |
 
-**当前版本**：v5.2.54（`package.json` 权威源，README / metadata / 文档戳已同步）。
+**当前版本**：v5.2.55（`package.json` 权威源，README / metadata / 文档戳已同步）。
 **未完成任务**：2 项（P0-32 平台配置、P2-21 人工审校），均非本机可闭环。

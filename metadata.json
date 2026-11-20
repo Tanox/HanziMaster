@@ -1,6 +1,6 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.54",
-  "version": "5.2.54",
+  "name": "HanziMaster 汉字大师 v5.2.55",
+  "version": "5.2.55",
   "description": "v5.2.51: 第二轮全面审查——修复 CI/Release 工作流失效与命令注入、生产 SITE_URL fail-closed、语言协商 q 权重、存储假成功、资源清理与 3 处测试假阳性等 27 项缺陷；两轮累计 45 项，报告与门禁全绿。",
   "keywords": [
     "Chinese characters",

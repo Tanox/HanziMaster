@@ -38,7 +38,7 @@ jobs:
         run: pnpm lint
 
       - name: TypeScript
-        run: pnpm exec tsc --noEmit
+        run: pnpm typecheck
 
       - name: Unit tests
         run: pnpm test

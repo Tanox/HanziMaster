@@ -1,6 +1,6 @@
 # 开发指南
 
-> 文档版本：v5.2.51（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.55（与项目版本同步，权威版本见 `package.json`）
 
 本文负责**开发环境、命令表与日常流程**。编码风格、命名、目录组织、设计 token、i18n、版本号与质量门禁的唯一权威是 [coding-standards.md](coding-standards.md)；提交、分支与审查见 [git-workflow.md](git-workflow.md)。
 
@@ -47,7 +47,8 @@ pnpm start
 | `pnpm lint:fix` | `eslint . --fix` | 自动修复 |
 | `pnpm test` | `vitest run` | 单元测试 |
 | `pnpm test:watch` | `vitest` | 监听模式 |
-| `pnpm test:run` | `node scripts/run-tests.mjs` | 包装器，产物写 `reports/`，可透传 `--coverage` |
+| `pnpm typecheck` | `node scripts/temp-paths.mjs && tsc --noEmit` | 先确保 `cache/` 存在，再做类型检查 |
+| `pnpm test:run` | `node scripts/run-tests.mjs` | 包装器，日志写 `log/test-out.log`，覆盖率写 `cache/coverage/`，可透传 `--coverage` |
 | `pnpm check:lines` | `node scripts/check-line-count.mjs` | 单文件 ≤ 200 行门禁，结果写 `reports/line-count.txt` |
 | `pnpm check:root` | `node scripts/check-root-clean.mjs` | 根目录清洁度门禁（白名单制），结果写 `reports/root-clean.txt` |
 | `pnpm bundle:check` | `node scripts/check-bundle-size.mjs` | 构建产物体积预算门禁（写 `reports/`） |

@@ -1,6 +1,6 @@
 {
   "name": "hanzi-master",
-  "version": "5.2.54",
+  "version": "5.2.55",
   "private": true,
   "license": "MIT",
   "packageManager": "pnpm@11.24.0",
@@ -9,6 +9,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "typecheck": "node scripts/temp-paths.mjs && tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "vitest run",

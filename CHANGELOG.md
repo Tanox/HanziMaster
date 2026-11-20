@@ -1,5 +1,18 @@
 ﻿# Changelog
 
+## [5.2.55] - 统一临时文件目录与清理策略
+### Added
+- `scripts/temp-paths.mjs`：临时文件目录单一来源，统一定义 `tmp/`（会话临时）、`cache/`（可再生缓存）、`log/`（运行日志）、`reports/`（正式产物）的绝对路径与目录创建逻辑；`.next/` 仅作为 Next/Vercel 框架自有构建目录例外。
+- `scripts/clean-temp.mjs`：受管目录清理器，仅清理四类固定目录及其子路径，支持 `--dry-run` / `--cache` / `--log` / `--reports` / `--all`；新增 `pnpm clean:tmp` / `clean:cache` / `clean:log` / `clean:all`。
+### Changed
+- 脚本产物路径统一：`run-tests.mjs` 测试日志改投 `log/test-out.log`；`check-line-count` / `check-csp-consistency` / `check-bundle-size` / `prototype-parity` / `extract-changelog` / `check-root-clean` 统一引用 `REPORTS_DIR`；体积门禁沿 `NEXT_DIST_DIR` 常量读取构建产物。
+- 构建配置：`tsconfig.json` 的 `tsBuildInfoFile` 改投 `cache/tsconfig.tsbuildinfo` 并排除四类目录；`vitest.config.ts` 设 `cacheDir: ./cache/vite`、覆盖率改投 `cache/coverage/`；CI `coverage` artifact 上传路径同步。
+- 根目录门禁：仅放行四类受管子目录 + `.next/` 框架例外，移除根 `tsconfig.tsbuildinfo` 白名单；`check-root-clean.mjs` 改为基于 `ROOT` 绝对路径扫描，并自动创建受管目录。忽略规则（`.gitignore` / `.prettierignore`）与 README 中英版、开发指南、总览、测试规范、Git 工作流、任务清单同步新约定。
+### Fixed
+- 删除历史残留的根目录 `tsconfig.tsbuildinfo`，避免旧缓存绕开新门禁。
+### Docs
+- `docs/coding-standards.md` §4 增补四类目录的适用范围、创建与清理策略表，并明确 `.next/` 唯一例外与清理命令。
+
 ## [5.2.54] - 修复 Release 门禁的 job 名称匹配
 ### Fixed
 - `.github/workflows/release.yml`「校验 CI / Deploy 门禁全绿」原先以 job id（`quality` / `coverage`）精确匹配 GitHub Jobs API 返回的 `name`，而该字段实际是显示名（`Lint / Types / Tests / Build` / `Coverage thresholds`），导致 v5.2.53 Tag 的真实 Release 校验恒失败。改为按显示名关键字匹配并重跑 Tag 验证（P1-40）。

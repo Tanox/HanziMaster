@@ -8,8 +8,12 @@ export default [
       ".next/**",
       "node_modules/**",
       "**/node_modules/**",
-      "coverage/**",
+      // 四类固定临时目录 + 框架构建目录；历史 coverage/.tmp 仍保留兼容
+      "tmp/**",
+      "cache/**",
+      "log/**",
       "reports/**",
+      "coverage/**",
       "playwright-report/**",
       "test-results/**",
       ".tmp/**",
