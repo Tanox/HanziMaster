@@ -1,4 +1,4 @@
-// vitest.setup.ts v5.2.35
+// vitest.setup.ts v5.2.52
 import '@testing-library/jest-dom/vitest';
 
 // Node 22+ 的实验性 globalThis.localStorage（未提供 --localstorage-file 时为 undefined）
@@ -21,10 +21,10 @@ function createMemoryStorage(): Storage {
   } as Storage;
 }
 
-const g = globalThis as unknown as { localStorage?: Storage; window?: unknown };
-if (typeof g.localStorage === 'undefined') {
-  g.localStorage = createMemoryStorage();
-}
-if (typeof window !== 'undefined' && typeof (window as { localStorage?: Storage }).localStorage === 'undefined') {
-  (window as { localStorage?: Storage }).localStorage = g.localStorage;
+// 始终用同一份内存 Storage 覆盖，避免 Node 24+ 实验性 localStorage 与 jsdom getter
+// 造成「每次访问返回不同实例」——storage.test.ts 对实例 setItem 的 mock 会因此失效（CI 实测）。
+const memory = createMemoryStorage();
+Object.defineProperty(globalThis, 'localStorage', { value: memory, configurable: true, writable: true });
+if (typeof window !== 'undefined') {
+  Object.defineProperty(window, 'localStorage', { value: memory, configurable: true, writable: true });
 }

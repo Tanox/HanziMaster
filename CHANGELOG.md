@@ -1,5 +1,11 @@
 ﻿# Changelog
 
+## [5.2.53] - 修复 CI 跨 Node 版本 storage 测试假失败
+### Fixed
+- `vitest.setup.ts`：原先仅在 `globalThis.localStorage` 缺失时注入内存 Storage；Node 24+ 实验性 localStorage 存在时，`window.localStorage` 仍可能是 jsdom 的 getter，`storage.test.ts` 对实例 `setItem` 的 mock 命中不到真实调用对象，CI 上 `trySetItem` 返回 `true` 导致断言失败（本地 Node 26 不复现）。现始终用**同一份内存 Storage** 以 `Object.defineProperty` 覆盖 `globalThis` 与 `window`，跨 Node 版本稳定。
+### Changed
+- 生产推送后 CI 实测发现该失败（run 44721767667），修复后重跑全量门禁；任务清单版本戳同步 v5.2.53。
+
 ## [5.2.52] - 任务状态复核、首页重构、CSP 一致性门禁与同意撤回
 ### Docs
 - 复核 `docs/tasks.md` 20 项未完成任务，归档 6 项至 `docs/tasks-done.md`（P1-39 线上安全头核验通过；P0-30/31、P1-38/43/44 代码侧完成、线上验收拆出 P0-32），新增 P0-32（生产部署后 SEO/i18n 全链路复验，P0 事故），并更新 P1-41/P2-24/P1-46/P2-26/P2-27 为「部分完成」；记录时间戳 **2026-11-20 18:18 UTC+8**。
