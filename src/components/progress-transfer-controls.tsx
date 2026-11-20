@@ -6,7 +6,7 @@ import { useRef } from 'react';
 import { useTranslation } from '@/components/locale-provider';
 import { useToast } from '@/components/toast';
 import { Button } from '@/components/ui/button';
-import { safeGetItem, safeSetItem } from '@/lib/storage';
+import { safeGetItem, trySetItem } from '@/lib/storage';
 import { getDefaultProgress, type ProgressData } from '@/lib/progress-utils';
 import { createProgressBackup, parseProgressBackup } from '@/lib/progress-transfer';
 import { PROGRESS_STORAGE_KEY, PROGRESS_IMPORTED_EVENT } from '@/hooks/use-progress';
@@ -31,8 +31,8 @@ export function ProgressTransferControls() {
     if (!file) return;
     try {
       const progress = parseProgressBackup(await file.text());
-      // 校验通过后才写入，非法文件不会破坏现有进度
-      safeSetItem(PROGRESS_STORAGE_KEY, progress);
+      // 校验通过后才写入；写入失败（配额/隐私模式）不得广播成功事件
+      if (!trySetItem(PROGRESS_STORAGE_KEY, progress)) throw new Error('storage_failed');
       window.dispatchEvent(new Event(PROGRESS_IMPORTED_EVENT));
       toast.success(t('progress.importDone'));
     } catch {

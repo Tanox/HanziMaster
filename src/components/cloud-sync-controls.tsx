@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useLocale } from '@/components/locale-provider';
 import { useToast } from '@/components/toast';
 import { Button } from '@/components/ui/button';
-import { safeGetItem, safeSetItem } from '@/lib/storage';
+import { safeGetItem, safeSetItem, trySetItem } from '@/lib/storage';
 import { getDefaultProgress, type ProgressData } from '@/lib/progress-utils';
 import { createProgressBackup, parseProgressBackup } from '@/lib/progress-transfer';
 import { PROGRESS_STORAGE_KEY, PROGRESS_IMPORTED_EVENT } from '@/hooks/use-progress';
@@ -34,6 +34,8 @@ export function CloudSyncControls() {
   };
 
   const handleGenerate = () => {
+    // 覆盖已有同步码会让旧云端数据失去访问入口，先确认
+    if (isSyncCode(code) && window.confirm && !window.confirm(`${t('cloud.generate')}? ${t('cloud.desc')}`)) return;
     const next = generateSyncCode();
     if (!next) {
       toast.error(t('cloud.failed'));
@@ -87,7 +89,7 @@ export function CloudSyncControls() {
       const data = await request('GET');
       if (!data.backup) throw new Error('request_failed');
       const progress = parseProgressBackup(data.backup);
-      safeSetItem(PROGRESS_STORAGE_KEY, progress);
+      if (!trySetItem(PROGRESS_STORAGE_KEY, progress)) throw new Error('storage_failed');
       window.dispatchEvent(new Event(PROGRESS_IMPORTED_EVENT));
       toast.success(t('cloud.downloadDone'));
     } catch (err) {
