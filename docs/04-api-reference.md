@@ -173,8 +173,9 @@ export function Example() {
 | 端点 | 方法 | 响应 |
 |------|------|------|
 | `/api/health` | `GET` | `{ status: 'ok', version, build }`；`version` / `build` 取 `NEXT_PUBLIC_APP_VERSION` / `NEXT_PUBLIC_BUILD_ID`，未注入时为 `unknown`。用于部署后健康探测，无鉴权、无副作用。 |
+| `/api/progress` | `GET` / `PUT` | 云端进度同步。`GET ?code=<32位十六进制同步码>` 读；`PUT { code, backup }` 写（复用 `createProgressBackup` 格式）。私有 Vercel Blob store，未配置 `BLOB_READ_WRITE_TOKEN` / `BLOB_STORE_ID` 时返回 `503 not_configured`，前端降级为纯 localStorage。无用户账户，同步码即凭证，须保密。 |
 
-这是当前唯一的 HTTP 端点；应用无业务后端 API。
+`/api/health` 用于部署探测；`/api/progress` 是唯一的业务数据端点（可选云同步）。
 
 ## 11. 样式与主题 token
 

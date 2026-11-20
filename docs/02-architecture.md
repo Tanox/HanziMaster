@@ -81,7 +81,7 @@
                → safeSetItem('hanzi-master-progress') → 周活动/准确率/连胜视图
 ```
 
-持久化统一走 `src/lib/storage.ts`（带 `STORAGE_VERSION` 与 schema 校验，过滤 NaN 与非法日期），业务代码不直接访问 `localStorage`。无云端同步，无第三方 API 调用。
+本地持久化统一走 `src/lib/storage.ts`（带 `STORAGE_VERSION` 与 schema 校验，过滤 NaN 与非法日期），业务代码不直接访问 `localStorage`。可选云端同步：设置面板生成 128 bit 同步码（凭证），经 `/api/progress` 用 `@vercel/blob` 私有 store 读写进度备份；token 缺失时端点返回 503，前端保持纯 localStorage 运行。无用户账户体系。
 
 ## 5. 版本与构建标识
 
