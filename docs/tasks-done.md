@@ -1,7 +1,13 @@
 # 已完成任务归档 · Tasks Done
 
 > 文档版本：v5.2.55（与项目版本同步，权威版本见 `package.json`）
-> 最近归档：**2026-11-20 19:33（UTC+8）— P1-40 真实 Tag/Release 验证通过；此前 12 项代码任务闭环**
+> 最近归档：**2026-11-20 19:58（UTC+8）— P2-28 临时文件目录治理闭环；此前 P1-40 Release 验证与 12 项代码任务闭环**
+
+## 2026-11-20 19:58（UTC+8）临时文件治理批次 · v5.2.55
+
+| ID | 任务 | 分类 | 完成版本 | 实现要点 / 验收证据 |
+|----|------|------|---------|---------------------|
+| P2-28 | 统一临时文件目录与清理策略 | 仓库卫生 / 工具链 | v5.2.55 | `scripts/temp-paths.mjs` 统一定义 `tmp/`/`cache/`/`log/`/`reports/`，`scripts/clean-temp.mjs` 仅清理四类受管目录并支持 dry-run / 单项 / 全量；`run-tests` 日志落 `log/`、TS 增量与 Vitest 缓存/覆盖率落 `cache/`、正式门禁报告落 `reports/`；根门禁只放行四类目录 + `.next/` 框架例外，删除根 `tsconfig.tsbuildinfo`；CI typecheck 与 coverage 路径同步；README 中英版、编码规范、开发/总览/测试/Git 文档完整记录适用范围、创建与清理策略。实测：Vitest 36 文件 / 200 用例、`check:root` clean、`typecheck`/`eslint`/`i18n:lint`/`check:csp` 全通过 |
 
 ## 2026-11-20 19:33（UTC+8）Release 链路验证批次 · v5.2.54
 

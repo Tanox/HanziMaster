@@ -64,6 +64,7 @@ pnpm start
 | `pnpm dev` | 开发服务器（HMR） |
 | `pnpm build` | 生产构建 |
 | `pnpm start` | 生产服务器（默认端口 3000） |
+| `pnpm typecheck` | 类型检查（先确保 `cache/` 存在，再运行 `tsc --noEmit`） |
 | `pnpm lint` | ESLint 检查（`eslint .`） |
 | `pnpm lint:fix` | ESLint 自动修复 |
 | `pnpm test` | 单元测试（Vitest） |
@@ -79,6 +80,7 @@ pnpm start
 | `pnpm format` | Prettier 格式化 |
 | `pnpm security:audit` | 生产依赖审计（`pnpm audit --prod --audit-level=high`） |
 | `pnpm security:audit:dev` | 全量审计（含 dev 链） |
+| `pnpm clean:tmp` / `clean:cache` / `clean:log` / `clean:all` | 按固定目录清理临时文件（脚本支持 `--dry-run`） |
 
 类型检查用 `pnpm exec tsc --noEmit`。本机若遇 `ERR_PNPM_IGNORED_BUILDS`，见 [docs/coding-standards.md](docs/coding-standards.md) §11 的 Node 直跑等价命令。
 

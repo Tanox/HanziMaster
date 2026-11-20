@@ -63,7 +63,7 @@ pnpm start
 | `pnpm security:audit` | `pnpm audit --prod --audit-level=high` | 生产依赖审计 |
 | `pnpm security:audit:dev` | `pnpm audit --audit-level=high` | 全量（含 dev 链）审计 |
 
-类型检查无独立脚本，用 `pnpm exec tsc --noEmit`（`tsconfig.json` 已设 `noEmit: true`）。
+类型检查用 `pnpm typecheck`（`tsconfig.json` 已设 `noEmit: true`，增量信息写 `cache/tsconfig.tsbuildinfo`）。临时目录清理：`pnpm clean:tmp`（默认）、`pnpm clean:cache`、`pnpm clean:log`、`pnpm clean:all`；可加 `--dry-run` 预览。
 
 **临时文件目录（v5.2.55 起）**：一次性调试脚本、探针与中间产物写 `tmp/`（会话结束用 `pnpm clean:tmp` 清空）；可再生缓存写 `cache/`（含 TS 增量信息、Vitest/Vite 缓存与覆盖率）；运行日志写 `log/`；可复用工具脚本的正式核验产物写 `reports/`。四类目录路径由 `scripts/temp-paths.mjs` 统一定义、自动创建并 gitignore，也被 ESLint / Prettier / TypeScript / Vitest 忽略。仓库根禁止产生临时文件，`pnpm check:root` 会拦截；`.next/` 仅是 Next/Vercel 框架自有构建目录例外，由 `next.config.mjs` 的 `distDir` 显式声明。清理命令见 `pnpm clean:tmp` / `clean:cache` / `clean:log` / `clean:all`。
 

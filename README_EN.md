@@ -64,6 +64,7 @@ pnpm start
 | `pnpm dev` | Dev server (HMR) |
 | `pnpm build` | Production build |
 | `pnpm start` | Production server (port 3000) |
+| `pnpm typecheck` | Type check (ensures `cache/` exists, then runs `tsc --noEmit`) |
 | `pnpm lint` | ESLint (`eslint .`) |
 | `pnpm lint:fix` | ESLint auto-fix |
 | `pnpm test` | Unit tests (Vitest) |
@@ -79,6 +80,7 @@ pnpm start
 | `pnpm format` | Prettier formatting |
 | `pnpm security:audit` | Production dependency audit (`pnpm audit --prod --audit-level=high`) |
 | `pnpm security:audit:dev` | Full audit (including dev chain) |
+| `pnpm clean:tmp` / `clean:cache` / `clean:log` / `clean:all` | Clean fixed temp directories (supports `--dry-run`) |
 
 Type check: `pnpm exec tsc --noEmit`. If you hit `ERR_PNPM_IGNORED_BUILDS` locally, see [docs/coding-standards.md](docs/coding-standards.md) §11 for equivalent Node commands.
 
