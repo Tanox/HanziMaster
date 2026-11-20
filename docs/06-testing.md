@@ -1,6 +1,6 @@
 # 测试规范
 
-> 文档版本：v5.2.48（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.50（与项目版本同步，权威版本见 `package.json`）
 
 本文描述项目**当前真实**的测试基础设施与编写规范。质量门禁的定义与完整命令表见 [coding-standards.md](coding-standards.md) §11；未完成的测试改进任务见 [tasks.md](tasks.md)。
 
@@ -23,7 +23,7 @@
 
 ## 2. 当前测试清单
 
-`src/` 下共 **24 个测试文件**（`pnpm test` 全通过；用例数随开发变化，以 `pnpm test` 输出为准，文档不维护具体数字）：
+`src/` 下共 **36 个测试文件**（最近一次实测 192 用例全通过；用例数随开发变化，以 `pnpm test` 输出为准，文档不维护具体数字）：
 
 | 分组 | 文件 | 覆盖内容 |
 |------|------|---------|
@@ -50,7 +50,7 @@
 
 本机 pnpm v10+ 触发 `ERR_PNPM_IGNORED_BUILDS` 时改用：`node node_modules/vitest/vitest.mjs run --reporter=dot`，或用 `node scripts/run-tests.mjs` 包装器（可避开工具对长时间 watch 命令的误判）。
 
-**覆盖率现状（v5.2.35）**：`@vitest/coverage-v8@3.2.4` 已安装，`vitest.config.ts` 配置 V8 provider 与 `80/70/80/80` 阈值。实测 **92.77% 行 / 92.77% 语句 / 90.19% 函数 / 93.66% 分支**，门禁通过。统计口径为逻辑层（`src/lib`、`src/hooks`、`src/components/state`、`src/components/ui`），静态文案与数据表不计入。
+**覆盖率现状**：`@vitest/coverage-v8@3.2.4` 已安装，`vitest.config.ts` 配置 V8 provider 与 `80/70/80/80` 阈值。历史快照（v5.2.35）为 92.77% 行 / 92.77% 语句 / 90.19% 函数 / 93.66% 分支；（v5.2.37）为 93.88% 行 / 93.88% 语句 / 91.8% 函数 / 94.65% 分支，均门禁通过。**当前数值以 `pnpm test:run --coverage` 实测为准**。统计口径见 §7。
 
 ## 4. 测试文件组织
 
@@ -132,7 +132,7 @@ E2E 已接入，配置在 `playwright.config.ts`，测试在 `e2e/`：
 | 函数 Functions | ≥ 80% |
 | 行 Lines | ≥ 80% |
 
-统计口径为逻辑层（`src/lib/**/*.ts`、`src/hooks/**/*.ts`、`src/components/state|ui/**`、`writing-canvas-utils.ts`），页面 JSX、静态文案（`translations/`）与数据表（`characters*` / `stroke-order-data`）不计入。v5.2.37 实测快照：93.88% 行 / 93.88% 语句 / 91.8% 函数 / 94.65% 分支（24 文件 / 137 用例全通过）。
+统计口径为逻辑层（以 `vitest.config.ts` 的 `coverage.include` 为准，含 `src/lib/**/*.ts`、`src/hooks/**/*.ts`、`src/components/state|ui/**`、`writing-canvas-*.ts`），页面 JSX、静态文案（`translations/`）与数据表（`characters*` / `stroke-order-data`）不计入。历史快照（v5.2.37）：93.88% 行 / 93.88% 语句 / 91.8% 函数 / 94.65% 分支（24 文件 / 137 用例全通过）；当前规模以 §2 与 `pnpm test` 输出为准。
 
 新功能须带对应测试；纯逻辑优先单测，交互路径优先集成测试；不追求对实现细节的覆盖率，重点覆盖边界条件与真实数据。
 

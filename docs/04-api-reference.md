@@ -29,7 +29,8 @@ Props：
 | Prop | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | `children` | `React.ReactNode` | — | 子组件 |
-| `defaultLocale` | `Locale` | 浏览器检测值 | 初始语言 |
+| `defaultLocale` | `Locale` | `en`（`DEFAULT_LOCALE`） | 初始语言；挂载后由 URL 前缀 / cookie / 存储 / 浏览器语言协商覆盖 |
+| `initialDictionary` | `Translations` | — | RSC 首屏预载词典，避免语言闪烁；传入后首屏跳过异步加载 |
 | `storageKey` | `string` | `hanzi-master-locale` | 偏好存储键 |
 
 `useLocale()` 与 `useTranslation()` 返回同一上下文对象：
@@ -130,11 +131,11 @@ export function Example() {
 
 翻译文件：`src/lib/i18n/translations/{en,zh-CN,zh-TW,es,ar,fr,pt-BR,de,ja,ko,ru}.ts`，共 11 个。`src/lib/__tests__/i18n.test.ts` 校验其余 10 语言的叶子键与 `en` 完全一致；`pnpm i18n:lint` 做同口径的命令行校验。
 
-**扩展文案模块**：`src/lib/i18n/translations/extensions/` 下共 3 组（`a11y`、`legal`、`meanings`）+ 1 个 `index.ts` 合并入口；`extendTranslations(base, locale)` 把三组文案合并进 11 个语言包，`Translations` 与 `TranslationKey` 类型随之自动扩展。新增文案模块时必须 11 语言齐全并保持叶子键一致。
+**扩展文案模块**：`src/lib/i18n/translations/extensions/` 下共 9 组（`a11y`、`cloud`、`geo`、`legal`、`meanings`、`progress`、`pwa`、`seo`、`settings`）+ 1 个 `index.ts` 合并入口；`extendTranslations(base, locale)` 把这些文案合并进 11 个语言包，`Translations` 与 `TranslationKey` 类型随之自动扩展。新增文案模块时必须 11 语言齐全并保持叶子键一致。
 
 ### 8.1 翻译键域
 
-`en.ts` 顶层共 6 个键域；**具体键以 `en.ts` 源码为准**，新增键须同步 11 个语言文件：
+`en.ts` 基准包与扩展模块合并后共有 9 个键域；**具体键以 `en.ts` 与 `extensions/` 源码为准**，新增键须同步 11 个语言文件：
 
 | 键域 | 内容 | 示例 |
 |------|------|------|
@@ -158,7 +159,7 @@ export function Example() {
 
 | 路径 | 导出 | 说明 |
 |------|------|------|
-| `src/lib/storage.ts` | `safeGetItem<T>(key, defaultValue)`、`safeSetItem<T>(key, value)` | 版本化 + schema 校验，内部统一 `window.localStorage`，异常静默降级 |
+| `src/lib/storage.ts` | `safeGetItem<T>(key, defaultValue)`、`safeSetItem<T>(key, value)`、`trySetItem<T>(key, value): boolean` | 版本化 + schema 校验，内部统一 `window.localStorage`；前两者静默降级，`trySetItem` 返回写入成败供 UI 判断（写入失败不得提示成功） |
 | `src/lib/utils.ts` | `cn(...inputs: ClassValue[])` | `clsx` + `twMerge` 合并类名 |
 | `src/lib/version.ts` | `APP_VERSION`、`BUILD_ID`、`VERSION_LABEL` | 读取 `NEXT_PUBLIC_*` 注入值，缺失时回退 |
 | `src/lib/site.ts` | `SITE_URL`、`SITE_URL_INVALID`、`getSiteUrlWarning()` | 站点绝对地址（仅接受绝对 http(s) URL；`NEXT_PUBLIC_SITE_URL` 漏配或非法时回退 `http://localhost:3000` 并在生产告警），供 canonical / sitemap 使用 |
@@ -191,7 +192,7 @@ export function Example() {
 | `--color-ring` | `#c53d43` | 焦点环 |
 | `--color-destructive` | `#ef4444` | 危险色 |
 
-字体变量：`--font-sans`（Space Grotesk）、`--font-display` / `--font-heading`（Playfair Display）、`--font-serif`（Noto Serif SC）、`--font-mono`（JetBrains Mono）。汉字用 `.hanzi-font`（`--font-serif`）。
+字体变量：`--font-sans`（Space Grotesk）、`--font-display` / `--font-heading`（Playfair Display）、`--font-serif`（Noto Serif SC）、`--font-mono`（JetBrains Mono）。书写与笔顺组件用 `serif-font` / `font-serif` 工具类（底层为 `--font-serif`）；历史文档提到的 `.hanzi-font` 类不存在。
 
 > 旧版本本文使用 `--primary` / `--accent`（无 `--color-` 前缀）并把 `--font-heading` 写成 Space Grotesk，均与 `globals.css` 不符，已纠正。扩展色阶见 `styles/theme-colors.css`，动画工具类见 `styles/utilities.css`，完整设计系统见 [07-design-prototype.md](07-design-prototype.md)。
 

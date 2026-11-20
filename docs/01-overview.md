@@ -1,13 +1,13 @@
 ﻿# 项目概述
 
-> 文档版本：v5.2.48（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.50（与项目版本同步，权威版本见 `package.json`）
 
 ## 1. 基本信息
 
 | 项目属性 | 值 |
 |---------|-----|
 | 项目名称 | HanziMaster 汉字大师 |
-| 当前版本 | v5.2.35（权威源 `package.json` 的 `version`） |
+| 当前版本 | v5.2.50（权威源 `package.json` 的 `version`） |
 | 项目类型 | 汉字学习 Web 应用（纯前端，本地优先） |
 | 主要语言 | TypeScript（strict） |
 | 应用框架 | Next.js 16 App Router + React 19 |
@@ -28,7 +28,7 @@ HanziMaster 汉字大师通过引导式练习、笔顺展示与结构提示帮�
 
 **包含**：笔顺与结构反馈、汉字学习、Canvas 书写练习、拼音测验、进度统计、主题切换、11 语言国际化、响应式设计、安全响应头。
 
-**不包含**：用户账户与云端同步、社交功能、在线课程购买、服务端数据存储、AI 生成式能力（原型与应用文案中残留的历史键名不代表存在 AI 后端）。
+**不包含**：用户账户体系、社交功能、在线课程购买、服务端业务数据库、AI 生成式能力（原型与应用文案中残留的历史键名不代表存在 AI 后端）。可选云端备份使用 Vercel Blob 私有 store，同步码即凭证，无账户体系。
 
 ## 4. 核心功能
 
@@ -57,7 +57,7 @@ HanziMaster 汉字大师通过引导式练习、笔顺展示与结构提示帮�
 | 样式工具 | `clsx` / `tailwind-merge` / `class-variance-authority` / `tw-animate-css` | — | 类名合并与变体 |
 | 错误监控 | `@sentry/nextjs ^11.10.0` | — | 未配置 DSN 时零开销（见 §7） |
 | 国际化 | 自定义 i18n Context | — | 11 语言，`TranslationKey` 联合类型 |
-| 测试 | Vitest `^3.2.4` + jsdom `^30.1.3` + Testing Library `^16.3.3` + `@vitest/coverage-v8` | — | 24 个单测文件 |
+| 测试 | Vitest `^3.2.4` + jsdom `^30.1.3` + Testing Library `^16.3.3` + `@vitest/coverage-v8` | — | 36 个单测文件（192 用例，以实测为准） |
 | E2E | Playwright `^1.64.1` + `@axe-core/playwright` | — | `e2e/`（home / a11y） |
 | Lint | ESLint `^9.39.4` + `@typescript-eslint ^8.60.0` + Next 插件 | — | flat config |
 | 格式化 | `.prettierrc.json`（配置存在） | — | `prettier` 已安装，`pnpm format` 可用 |
@@ -76,9 +76,11 @@ HanziMaster/
 │   │   ├── learn/error.tsx · practice/error.tsx   # 路由级错误边界
 │   │   ├── privacy/ · terms/       # 法律条款静态页（内容在 src/content/）
 │   │   ├── api/health/route.ts     # 健康检查端点
+│   │   ├── api/progress/route.ts   # 可选云端进度同步（GET / PUT，Vercel Blob）
 │   │   ├── manifest.ts / robots.ts / sitemap.ts   # PWA 与 SEO
 │   │   ├── globals.css             # 语义 design token（@theme）
-│   │   └── styles/                 # utilities.css / keyframes.css / rtl.css
+│   │   └── styles/                 # utilities.css / keyframes.css / rtl.css / theme-colors.css
+│   ├── proxy.ts                    # Next.js 16 中间件：URL 级 i18n 前缀协商与请求头注入
 │   ├── components/                 # ui/ learn/ practice/ state/ 与跨页面组件
 │   ├── hooks/                      # use-progress / use-pronunciation / use-haptic …
 │   ├── content/                    # privacy / terms 法律文案（中英分段）
@@ -87,12 +89,12 @@ HanziMaster/
 │       ├── i18n/                   # index.ts / translate.ts / translations/（11 语言）+ extensions/
 │       └── __tests__/              # 纯逻辑单测
 ├── e2e/                            # Playwright 端到端测试（home / a11y）
-├── docs/                           # 规范文档 16 篇（见 docs/index.md）
+├── docs/                           # 规范文档 18 篇（见 docs/index.md）
 ├── prototype/                      # 6 个 HTML 骨架 + styles/ + scripts/ + 4 篇文档
-├── scripts/                        # 7 个 Node 工具脚本（见 [03-development.md](03-development.md) §3）
+├── scripts/                        # 9 个 Node 工具脚本（见 [03-development.md](03-development.md) §3）
 ├── .tmp/                           # 会话级临时文件唯一固定子目录（gitignore，按需创建、用完即删）
 ├── reports/                        # 脚本产物（gitignore，不提交）
-├── .github/                        # workflows/（ci.yml / deploy.yml）、dependabot.yml、社区文件
+├── .github/                        # workflows/（ci.yml / deploy.yml / release.yml）、dependabot.yml、社区文件
 ├── .trae/                          # 编辑器协作规则与命令
 ├── sentry.edge.config.ts / sentry.server.config.ts       # Sentry 构建配置（未配 DSN 时不启用）
 ├── package.json                    # 依赖、脚本、版本唯一权威源

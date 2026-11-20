@@ -1,8 +1,8 @@
 ﻿# HanziMaster 文档中心
 
-> 文档版本：v5.2.43（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.50（与项目版本同步，权威版本见 `package.json`）
 
-本目录是项目**规范文档的唯一存放位置**（`docs/` 共 16 篇）。本文给出文档分层、单一职责矩阵、术语与格式约定；根级 README / CONTRIBUTING 只是入口摘要，不另立规则。
+本目录是项目**规范文档的唯一存放位置**（`docs/` 共 18 篇）。本文给出文档分层、单一职责矩阵、术语与格式约定；根级 README / CONTRIBUTING 只是入口摘要，不另立规则。
 
 ## 1. 文档分层
 
@@ -37,6 +37,7 @@
 | [AGENTS.md](AGENTS.md) | AI 助手在本仓库的协作约定（含工具标记） | 重复定义规范 |
 | [project.md](project.md) | 面向工具链的英文项目上下文摘要 | 独立结论（须与本文一致） |
 | [alignment-checklist.md](alignment-checklist.md) | 规范—原型—代码对齐现状与差异 | 待办清单（→ tasks.md） |
+| [code-review-2026-11-20.md](code-review-2026-11-20.md) | 2026-11-20 代码审查发现的缺陷清单、成因与修复方案（已修复项的历史记录） | 当前待办（→ tasks.md） |
 | [tasks.md](tasks.md) | **所有未完成任务 / 改进 / backlog 的唯一来源** | 已完成任务 |
 | [tasks-done.md](tasks-done.md) | 已完成任务归档（完成版本 + 实现要点） | 未完成任务 |
 
@@ -66,6 +67,7 @@
 | 源文件头注释 | `// <相对路径> vX.Y.Z`，仅源码 | 文档里写文件头注释 |
 | Conventional Commits | `<type>: <description>` 提交格式 | Angular 提交规范（可作括注，不作正式名） |
 | 质量门禁 | 类型检查 / Lint / 单测 / 行数 / 安全审计 / 构建 | 校验、检查脚本混称 |
+| `proxy.ts` | Next.js 16 的中间件约定文件（`src/proxy.ts`，URL 级 i18n 与请求头注入） | middleware.ts（Next 16 已弃用）、「项目无中间件」 |
 | 设计令牌（design token） | `globals.css @theme` 语义 token + `styles/theme-colors.css` 扩展色阶 | 「双重 token 来源」（`tailwind.config.ts` 已删除，token 单一来源） |
 | 东方水墨·朱砂红 | 设计系统名 | Apple Blue、emerald、Apple-HIG（仅历史记录中出现） |
 | 高保真原型 | `prototype/prototype.html`（唯一权威） | 把 `wireframes.html` 称为唯一权威 |
@@ -83,7 +85,7 @@
 
 ## 5. 版本戳规则
 
-- 产品版本的唯一权威源是 `package.json` 的 `version`（当前 `5.2.34`）。文档版本戳只是「该文档最后修订时对应的项目版本」的展示位，**不是第二权威源**。
+- 产品版本的唯一权威源是 `package.json` 的 `version`（本次修订时为 `5.2.50`）。文档版本戳只是「该文档最后修订时对应的项目版本」的展示位，**不是第二权威源**。
 - **只更新本次实际改动的文档**的版本戳；未改动文档保留原戳是合法的，不得为了「看起来一致」批量刷写全部文档。
 - 全局展示位（`package.json` / `metadata.json` / `README.md` / `README_EN.md` / `CHANGELOG.md`）每次发版必须同步，见 [coding-standards.md](coding-standards.md) §3。
 - 发版前用 `node -e "console.log(require('./package.json').version)"` 实查真实版本，勿按会话记忆或旧快照填写。

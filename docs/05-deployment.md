@@ -1,6 +1,6 @@
 # 部署指南
 
-> 文档版本：v5.2.49（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.50（与项目版本同步，权威版本见 `package.json`）
 
 本文描述项目的部署配置与上线流程。构建前的完整质量门禁见 [coding-standards.md](coding-standards.md) §11，发版与自动发布流程见 [git-workflow.md](git-workflow.md) §6 与 §6.1。
 
@@ -15,10 +15,10 @@
 
 - **运行时**：Node.js `>= 24.11.0`（`.nvmrc` 锁定 `24.11.0`），pnpm `>= 11`（`packageManager: pnpm@11.24.0`）。
 - **包管理器**：项目强制 pnpm（`preinstall: npx only-allow pnpm`，`.npmrc` 设 `engine-strict` / `package-manager-strict`）。开发者侧命令一律 `pnpm`；仅 `edgeone.json` 内的 `npm run build` 是构建平台内部命令，见 §3。
-- **环境变量**：运行应用**不需要任何环境变量**。`.env.local` 仅供本地可选配置，不提交仓库。
+- **环境变量**：核心页面运行**不需要任何环境变量**；生产建议配置 `NEXT_PUBLIC_SITE_URL`，可选启用 GA4 / Sentry / Vercel Blob 云同步（完整清单见 [01-overview.md](01-overview.md) §7）。`.env.local` 仅供本地可选配置，不提交仓库。
 - **联网资源**：`next/font/google` 需访问 Google Fonts（Space Grotesk / Playfair Display / Noto Serif SC / JetBrains Mono）。离线/沙箱环境构建可能因字体下载失败，属环境限制而非代码缺陷，部署平台需允许该域名。
 - **安全响应头**：CSP、`X-Content-Type-Options`、`X-Frame-Options`、`Referrer-Policy`、`Permissions-Policy` 由 `next.config.mjs` 的 `headers()` 统一注入到所有路由，**不要在平台配置里重复定义或覆盖**。
-- **无中间件**：项目不含 `middleware.ts` / `proxy.ts`，不存在额外边缘运行时逻辑。
+- **中间件**：`src/proxy.ts` 是 Next.js 16 的边缘中间件（URL 级 i18n 前缀协商与请求头注入，详见 [02-architecture.md](02-architecture.md) §2）；部署平台需支持 Next.js 中间件运行，不能按纯静态站点托管。
 
 ## 2. Vercel 部署
 
