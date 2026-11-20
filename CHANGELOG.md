@@ -1,5 +1,17 @@
 ﻿# Changelog
 
+## [5.2.57] - SEO / GEO 代码层收口与量化验证（与部署审计批次同版本）
+### Changed
+- **语义化层级**：`/learn`、`/practice` 补页面级 `h1`（原 h2），其下区块标题统一 `h2`（原 h3），消除「无 h1 + h2→h3 跳级」；`/privacy`、`/terms` 去掉重复的 `<main>`，保留全局唯一地标。
+- **内链与面包屑**：新增 `Breadcrumbs` 组件（语义 `nav/ol` + `aria-current`），覆盖 learn / practice / privacy / terms，首页不渲染；文案与 JSON-LD 共用 `pageTitle` 映射。
+- **结构化数据按路由生成**：`StructuredData` 接收 path，`WebPage` 的 `@id`/`url` 随语言与路由变化；FAQPage 只在首页（与可见正文一致），内页改用 BreadcrumbList；逻辑抽为 `buildStructuredDataGraph` 纯函数，服务端与客户端共用。
+- **客户端切语言元数据同步**：原仅同步 canonical/hreflang/og:locale；现同时同步 title / description / OG / Twitter 文案与 JSON-LD，映射来自 `clientMetadataPatch` + `buildStructuredDataGraph`，避免第二套规则。
+### Added
+- `src/app/llms.txt/route.ts`：`llms.txt` 从静态 `public/` 文件改为 Route Handler，域名从 `SITE_URL` 派生，复用 geo 词条输出英中双语事实、FAQ 与 11 语言页面链接；实测 `/llms.txt` 返回 200 `text/plain` 且含双语内容。
+- `scripts/seo-audit.mjs`：桌面 / 移动两种 UA 抓取 en + zh-CN × 5 页，检查单 h1、单一 main、标题层级、canonical、hreflang、og:image 与 JSON-LD 节点，报告写 `reports/seo-audit.txt`。
+- `docs/seo-geo.md`：量化目标与验证方式单一来源（h1/层级/main、canonical/hreflang 覆盖、JSON-LD、llms.txt、LCP ≤2.5s / CLS ≤0.1 / INP ≤200ms、Lighthouse SEO ≥95，桌面 + 移动），不写入未实测分数。
+- 新增 `llms.test.ts`、`seo-page.test.ts`、`semantic-structure.test.ts`，并扩展 `seo.test.tsx`：覆盖按路由 JSON-LD、FAQ 仅首页、llms 动态域名与双语、语义层级门禁。
+
 ## [5.2.57] - 修复 Vercel 部署审计发现的全部代码/配置问题
 ### Fixed
 - **Sentry 构建路径实测失败**：`next.config.mjs` 从 `@sentry/nextjs` 根导入 `withSentryConfig`，但 v11 已将该导出移至 `@sentry/nextjs/config`；平台一旦设置 `SENTRY_DSN` 即报 `withSentryConfig is not a function`。已改为从 `/config` 具名导入，并用带 DSN 的独立构建实测通过。

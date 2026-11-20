@@ -1,7 +1,15 @@
 # 已完成任务归档 · Tasks Done
 
-> 文档版本：v5.2.55（与项目版本同步，权威版本见 `package.json`）
-> 最近归档：**2026-11-20 19:58（UTC+8）— P2-28 临时文件目录治理闭环；此前 P1-40 Release 验证与 12 项代码任务闭环**
+> 文档版本：v5.2.57（与项目版本同步，权威版本见 `package.json`）
+> 最近归档：**2026-11-20 — SEO / GEO 代码层收口（语义化、按路由结构化数据、动态 llms.txt、量化验证）**
+
+## 2026-11-20 SEO / GEO 代码层收口批次 · v5.2.57
+
+| ID | 任务 | 分类 | 实现要点 |
+|----|------|------|---------|
+| SEO-GEO-1 | 语义化与结构化数据收口 | SEO | `/learn` `/practice` 补 h1、区块标题 h3→h2；`/privacy` `/terms` 去重 main；新增面包屑组件；JSON-LD 按路由/语言生成，FAQPage 仅首页、内页 BreadcrumbList |
+| SEO-GEO-2 | 动态 llms.txt 与客户端元数据同步 | GEO | `llms.txt` 改为 Route Handler 从 SITE_URL 派生双语事实/FAQ/11 语言链接；客户端切语言同步 title / description / OG / Twitter / JSON-LD（复用同一纯函数映射） |
+| SEO-GEO-3 | 量化目标与验证 | 质量 | 新增 `docs/seo-geo.md` 指标表、`scripts/seo-audit.mjs` 桌面/移动 UA 结构审计、语义结构与按路由 JSON-LD 单测；最终 Vitest **41 文件 / 217 用例**全通过（含外部会话并行新增用例） |
 
 ## 2026-11-20 19:58（UTC+8）临时文件治理批次 · v5.2.55
 

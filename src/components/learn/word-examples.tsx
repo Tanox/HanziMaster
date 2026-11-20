@@ -1,4 +1,4 @@
-// src/components/learn/word-examples.tsx v5.2.47
+// src/components/learn/word-examples.tsx v5.2.57
 // 词条用发丝线分隔，不再堆同款圆角卡片；中文界面下译文与词条相同则不重复显示。
 'use client';
 

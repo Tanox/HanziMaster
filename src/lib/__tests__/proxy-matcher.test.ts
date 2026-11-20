@@ -42,8 +42,10 @@ describe('proxy 路由绕过规则', () => {
   });
 
   it('proxy.ts 的静态 matcher 字面量与共享常量保持同步', () => {
-    const source = readFileSync(new URL('../../proxy.ts', import.meta.url), 'utf8');
-    const literal = source.match(/matcher:\s*\['([^']+)'\]/)?.[1];
+    // vitest 下 import.meta.url 可能不是 file://，直接用仓库根相对路径
+    const source = readFileSync('src/proxy.ts', 'utf8');
+    // 源码文本里的 \\ 是转义，比较前还原为运行时单反斜杠
+    const literal = source.match(/matcher:\s*\['([^']+)'\]/)?.[1]?.replace(/\\\\/g, '\\');
     expect(literal).toBe(PROXY_MATCHER);
   });
 });

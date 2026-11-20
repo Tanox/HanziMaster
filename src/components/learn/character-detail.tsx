@@ -1,4 +1,4 @@
-// src/components/learn/character-detail.tsx v5.2.47
+// src/components/learn/character-detail.tsx v5.2.57
 // 字帖跨页：左页田字格字板，右页题跋（例句 + 词语），下横带笔顺，底部动作条。
 'use client';
 

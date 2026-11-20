@@ -1,6 +1,6 @@
 # API 参考
 
-> 文档版本：v5.2.51（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.57（与项目版本同步，权威版本见 `package.json`）
 
 本文列出应用内部**公开模块与组件的真实签名**。类型与导出以源码为准；本文只做稳定契约说明，不逐字复制实现。设计 token 完整色板见 [07-design-prototype.md](07-design-prototype.md)，编码用法见 [coding-standards.md](coding-standards.md)。
 
@@ -153,7 +153,7 @@ export function Example() {
 
 > `home` 域中保留 `aiInsights*` / `etymology*` / `adaptive*` / `aiBadge` 等历史键名，首页仍有引用；它们只是文案键，不代表项目存在 AI 后端或 Gemini 依赖。
 
-> SEO/GEO 扩展（`seo` / `geo`）位于 `src/lib/i18n/translations/extensions/`，不写进 11 个语言基准包以维持单文件 ≤200 行；`scripts/i18n-lint.mjs` 校验 11 语言覆盖。服务端 `generateMetadata` 只读 `seoByLocale`，`public/llms.txt` 为生成式引擎提供与 UI / JSON-LD 一致的静态事实摘要，`structured-data.tsx` 的 `FAQPage` 与首页 FAQ 共用 `geoByLocale`。
+> SEO/GEO 扩展（`seo` / `geo`）位于 `src/lib/i18n/translations/extensions/`，不写进 11 个语言基准包以维持单文件 ≤200 行；`scripts/i18n-lint.mjs` 校验 11 语言覆盖。服务端 `generateMetadata` 只读 `seoByLocale`，`src/app/llms.txt/route.ts` 动态生成与 UI / JSON-LD 一致的双语事实摘要（域名从 `SITE_URL` 派生），`structured-data.tsx` 的 `FAQPage` 与首页 FAQ 共用 `geoByLocale`。
 
 ## 9. 工具模块 API
 

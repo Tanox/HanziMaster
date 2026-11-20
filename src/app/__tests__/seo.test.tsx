@@ -1,4 +1,4 @@
-// src/app/__tests__/seo.test.tsx v5.2.50
+// src/app/__tests__/seo.test.tsx v5.2.57
 
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';

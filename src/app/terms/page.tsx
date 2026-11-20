@@ -1,4 +1,4 @@
-// src/app/terms/page.tsx v5.2.49
+// src/app/terms/page.tsx v5.2.57
 
 import Link from 'next/link';
 import { headers } from 'next/headers';
