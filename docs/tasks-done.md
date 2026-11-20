@@ -1,7 +1,26 @@
 # 已完成任务归档 · Tasks Done
 
 > 文档版本：v5.2.52（与项目版本同步，权威版本见 `package.json`）
-> 最近归档：**2026-11-20 18:18（UTC+8）— 任务状态复核：6 项归档（含 1 项线上核验通过）**
+> 最近归档：**2026-11-20 18:42（UTC+8）— 12 项代码任务闭环（首页重构、CSP 门禁、同意撤回、减少动效等）**
+
+## 2026-11-20 18:42（UTC+8）代码任务闭环批次 · v5.2.52
+
+| ID | 任务 | 分类 | 完成版本 | 实现要点 / 验收证据 |
+|----|------|------|---------|---------------------|
+| P2-19 | 双平台 CSP 字符串一致性测试 | 安全/质量 | v5.2.52 | `scripts/check-csp-consistency.mjs` + `pnpm check:csp`：以生产配置导入 `next.config.mjs` 的 `headers()`，断言与 `edgeone.json` `/*` 规则 CSP 逐字一致；CI `quality` job 增门禁步骤；实测 `csp consistent` |
+| P2-20 | 收紧 CSP 中自托管字体的冗余 CDN 条目 | 安全 | v5.2.52 | `next.config.mjs` 与 `edgeone.json` 同步移除 `fonts.googleapis.com` / `fonts.gstatic.com`（style-src / font-src / connect-src），GA4 条目保留；一致性门禁通过 |
+| P1-41 | 首访 Cookie 同意横幅遮挡主视觉 | UX/无障碍 | v5.2.52 | `consent-banner.tsx` 已为底部非模态条 + `role=region`，本批次把 `<h2>` 降为 `<p>`，内容标题层级不再被插入 |
+| P1-42 | Hero 承诺与真实能力不符 | 内容/设计 | v5.2.52 | `home-page.tsx` 重写：删两枚 blur 光球、玻璃卡、静态永字与虚构 72%；首屏改左文右田字格可播放笔顺（`next/dynamic` + 本地字形占位的 loading fallback）；真实能力文案与「无需注册 · 进度仅存本机」信任点 |
+| P2-22 | 减少动效下首屏空白与 `.reveal` 兜底 | 无障碍 | v5.2.52 | 新增 `src/app/styles/reduced-motion.css`：系统偏好与 `html.reduce-motion` 两条路径均清零 animation/transition delay 并强制 hero/`.reveal` 可见；`.reveal` 改 `html.js` 作用域，无 JS 默认可见；首页复用 `useScrollReveal` 替代自建 observer |
+| P2-23 | 首页标题层级与中文排版 | 无障碍/排版 | v5.2.52 | H1 → H2(特性) → H3(卡片)；中文标题走 `serif-font`，eyebrow 去 uppercase / 大字距；新增 `common.practice` 等 CTA 文案复用，11 语言词条同步 |
+| P2-24 | CTA 错配与内容深度 | IA/内容 | v5.2.52 | 次 CTA 改 `common.practice` → `/practice`；虚构特性卡替换为「12 字库 / 本地进度」真实能力卡；保留 `HomeGeo` 事实/FAQ 区 |
+| P2-25 | 首屏高度与移动端留白 | 响应式 | v5.2.52 | hero `min-h-[90vh]` → `min-h-[70vh]`，`py-20` → `py-12/16`；桌面左文右演示两栏，主视觉进入首屏 |
+| P1-45 | 主题首屏闪烁（FOUC） | UX | v5.2.52 | `layout.tsx` `<head>` 注入静态主题预设脚本（无用户输入，`script-src 'unsafe-inline'` 已放行），hydration 前设置 `.dark` 与 `.js`，消除主题闪烁并给 `.reveal` 无 JS 兜底 |
+| P1-46 | Cookie 同意撤回机制 | 合规/隐私 | v5.2.52 | 新增 `privacy-controls.tsx` 设置面板隐私分区与 `updateAnalyticsConsent()`；GA4 init 先 `consent default: denied`，脚本 onLoad 与撤回/重开均发 `consent update`；11 语言 `privacy.ts` 扩展模块 |
+| P2-26 | 设置面板主题选择焦点管理 | 无障碍 | v5.2.52 | 数据分区拆为 `data-controls.tsx`，重置二次确认取消/完成后焦点回到 `#settings-reset`；`settings-dialog.test.tsx` 覆盖两条路径 |
+| P2-27 | 首页测验重入与状态残留 | 交互健壮性 | v5.2.52 | 学习页每次打开/关闭清空 `quizAnswer`/`quizCorrect` 与定时器；`quiz-dialog.tsx` 作答后禁用输入与提交并拦截 Enter 重复提交；新增禁用态测试 |
+
+> **实测基线（v5.2.52）**：`tsc --noEmit` 0 error；`eslint .` 0/0；Vitest **36 文件 / 200 用例**全通过；`check:lines` `all <= 200`；`check:root` `root clean`；`check:csp` `csp consistent`；`i18n:lint` 11 语言 / 10 扩展模块 / 175 键；`version:check` v5.2.52 in sync。
 
 ## 2026-11-20 18:18（UTC+8）任务状态复核批次 · v5.2.52
 
