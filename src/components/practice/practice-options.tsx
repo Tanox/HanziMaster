@@ -29,9 +29,9 @@ export function PracticeOptionsGrid({ selectedOption, onSelect }: PracticeOption
             }`}>
               {icons[option.icon]}
             </div>
-            <h3 className="text-xl font-semibold mb-3 text-ink-900 dark:text-ink-50 display-font">
+            <h2 className="text-xl font-semibold mb-3 text-ink-900 dark:text-ink-50 display-font">
               {t(option.titleKey)}
-            </h3>
+            </h2>
             <p className="text-base text-ink-600 dark:text-ink-300 leading-relaxed mb-6">
               {t(option.descKey)}
             </p>

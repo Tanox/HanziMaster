@@ -10,9 +10,9 @@ export function WordExamples({ words }: { words: Word[] }) {
 
   return (
     <section className="text-start">
-      <h3 className="display-font text-lg font-semibold text-ink-900 dark:text-ink-50">
+      <h2 className="display-font text-lg font-semibold text-ink-900 dark:text-ink-50">
         {t('learn.wordExamples')}
-      </h3>
+      </h2>
       <ul className="mt-3 border-t border-ink-200 dark:border-ink-800">
         {words.map((word, index) => {
           const translation = t(word.translationKey);

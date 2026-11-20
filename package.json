@@ -1,12 +1,13 @@
 {
   "name": "hanzi-master",
-  "version": "5.2.56",
+  "version": "5.2.57",
   "private": true,
   "license": "MIT",
   "packageManager": "pnpm@11.24.0",
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/check-runtime.mjs",
     "build": "next build",
     "start": "next start",
     "typecheck": "node scripts/temp-paths.mjs && tsc --noEmit",
@@ -38,7 +39,7 @@
     "@radix-ui/react-slot": "1.5.0",
     "@radix-ui/react-tooltip": "1.4.1",
     "@sentry/nextjs": "11.11.0",
-    "@vercel/blob": "^2.9.0",
+    "@vercel/blob": "2.9.0",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "lucide-react": "0.544.0",

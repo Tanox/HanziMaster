@@ -1,4 +1,4 @@
-// src/lib/progress-transfer.ts v5.2.44
+// src/lib/progress-transfer.ts v5.2.57
 // P2-17：学习进度 JSON 备份（导出 / 导入 / 严格校验 / v0 迁移），纯函数不触碰 localStorage。
 
 import { getDefaultProgress, validateProgress, type ProgressData } from './progress-utils';
@@ -10,7 +10,8 @@ export interface ProgressBackup {
   progress: ProgressData;
 }
 
-const MAX_BACKUP_BYTES = 5 * 1024 * 1024;
+// 4 MB：低于 Vercel Serverless 4.5 MB 请求体上限，与 cloud-sync.ts 保持一致
+const MAX_BACKUP_BYTES = 4 * 1024 * 1024;
 
 export function createProgressBackup(progress: ProgressData, exportedAt = new Date()): string {
   const backup: ProgressBackup = {

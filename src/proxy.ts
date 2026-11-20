@@ -1,4 +1,4 @@
-// src/proxy.ts v5.2.50
+// src/proxy.ts v5.2.57
 // P1-7：URL 级 i18n。Next.js 16 的中间件文件约定为 proxy.ts（middleware.ts 已弃用并告警），
 // /{locale}/... 前缀由本文件重写到既有页面 + ?lang=，因此无需复制多套页面，
 // 且 /、/learn、/practice 等旧深链保持可用；首访按 Accept-Language 协商重定向到语言前缀。
@@ -6,6 +6,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { DEFAULT_LOCALE, isSupportedLocale } from '@/lib/site';
 import { LOCALE_COOKIE, LOCALE_HEADER, PATH_HEADER, negotiateLocales } from '@/lib/request-locale';
+import { PROXY_MATCHER, shouldBypassProxy } from '@/lib/proxy-matcher';
 
 /** 从浏览器 Accept-Language 推断首选语言（首访 / 时用于生成语言前缀）。 */
 function negotiateLocale(request: NextRequest): string {
@@ -19,6 +20,8 @@ function negotiateLocale(request: NextRequest): string {
 
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
+  // 双保险：matcher 未覆盖到的约定路由在运行时再次 bypass（社交图 / 清单 / 静态 / API）
+  if (shouldBypassProxy(pathname)) return NextResponse.next();
   const segments = pathname.split('/').filter(Boolean);
   const first = segments[0];
 
@@ -52,6 +55,7 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // /monitoring 是 Sentry tunnel（next.config.mjs），不得被 302 到语言前缀，否则 POST 上报丢失
-  matcher: ['/((?!_next/|api/|monitoring|.*\\.).*)'],
+  // 统一定义于 lib/proxy-matcher.ts：除 _next/api/monitoring/带点静态外，
+  // opengraph-image / twitter-image / icon / manifest / favicon 也不得被 302（P1-C）
+  matcher: [PROXY_MATCHER],
 };

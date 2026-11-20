@@ -1,5 +1,6 @@
-// scripts/check-csp-consistency.mjs v5.2.55
-// 双平台 CSP 一致性门禁：断言 edgeone.json 的 CSP 与 next.config.mjs 生产 headers() 逐字一致。
+// scripts/check-csp-consistency.mjs v5.2.57
+// 双平台配置门禁：断言 edgeone.json 的 CSP 与 next.config.mjs 生产 headers() 逐字一致，
+// 并校验 vercel.json 不重复定义安全响应头、静态缓存范围不覆盖 sw.js（P2-A/D）。
 // 生产配置校验要求 SITE_URL，这里注入占位值；仅用于读取 CSP，不触发任何构建。
 import fs from 'node:fs';
 import path from 'node:path';

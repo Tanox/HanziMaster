@@ -1,4 +1,4 @@
-// scripts/check-root-clean.mjs v5.2.55
+// scripts/check-root-clean.mjs v5.2.57
 // 根目录清洁度门禁：禁止临时脚本 / 一次性产物散落仓库根目录。
 // 固定子目录：tmp/（会话临时）、cache/（可再生缓存）、log/（日志）、reports/（正式产物）；
 // 四者均由 scripts/temp-paths.mjs 统一管理并 gitignore；.next/ 是 Next/Vercel 框架自有产物例外。
@@ -13,7 +13,7 @@ ensureManagedDirs();
 
 // 工具链 / 平台约定必须位于仓库根的目录（含构建期生成目录，均已 gitignore）
 const ALLOWED_DIRS = new Set([
-  '.codebuddy', '.git', '.github', '.next', '.trae', '.turbo', '.vercel', '.workbuddy',
+  '.codebuddy', '.git', '.github', '.next', '.playwright-cli', '.trae', '.turbo', '.vercel', '.workbuddy',
   'cache', 'docs', 'e2e', 'log', 'node_modules', 'playwright-report', 'prototype',
   'public', 'reports', 'scripts', 'src', 'tmp', 'test-results',
 ]);

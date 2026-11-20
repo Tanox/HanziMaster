@@ -3,7 +3,8 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import type { Locale, TranslationKey, Translations } from '@/lib/i18n';
-import { SUPPORTED_LOCALES, DEFAULT_LOCALE, OG_LOCALES, isSupportedLocale, isRtlLocale } from '@/lib/site';
+import { SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale, isRtlLocale } from '@/lib/site';
+import { withLocale, syncMetadataLocale } from '@/lib/sync-locale-meta';
 import { getNestedValue, interpolate } from '@/lib/i18n/translate';
 import { safeGetItem, safeSetItem } from '@/lib/storage';
 import { loadTranslations } from '@/lib/i18n/load-translations';
@@ -60,34 +61,6 @@ const getUrlLocale = (): Locale | null => {
   if (fromPath && isSupportedLocale(fromPath)) return fromPath;
   const fromQuery = new URLSearchParams(window.location.search).get('lang');
   return fromQuery && isSupportedLocale(fromQuery) ? fromQuery : null;
-};
-
-/** 替换 URL 中的语言前缀，保留 origin 与尾斜杠（首页 /{locale}/ 是规范形式）。 */
-const withLocale = (href: string, value: string): string => {
-  try {
-    const url = new URL(href, window.location.origin);
-    const parts = url.pathname.split('/').filter(Boolean);
-    const rest = parts[0] && isSupportedLocale(parts[0]) ? parts.slice(1) : parts;
-    url.pathname = `/${value}${rest.length ? '/' + rest.join('/') : '/'}`;
-    return url.toString();
-  } catch {
-    return href;
-  }
-};
-
-/** 客户端切语言只改 history，不重跑 generateMetadata；同步 head 中的 canonical/hreflang/og:locale。 */
-const syncMetadataLocale = (value: Locale): void => {
-  const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
-  const href = canonical?.getAttribute('href');
-  if (href) canonical?.setAttribute('href', withLocale(href, value));
-  document.querySelectorAll<HTMLLinkElement>('link[rel="alternate"][hreflang]').forEach((link) => {
-    const hreflang = link.getAttribute('hreflang');
-    const target = link.getAttribute('href');
-    if (hreflang && isSupportedLocale(hreflang) && target) {
-      link.setAttribute('href', withLocale(target, hreflang));
-    }
-  });
-  document.querySelector('meta[property="og:locale"]')?.setAttribute('content', OG_LOCALES[value]);
 };
 
 /** 同步 lang / dir（RTL）、cookie 与 SEO 元数据，供 SSR 首屏读取。 */

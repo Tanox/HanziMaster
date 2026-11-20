@@ -25,6 +25,6 @@ describe('云同步规则', () => {
   it('Blob 路径固定前缀，杜绝穿越', () => {
     expect(blobPath('a'.repeat(32))).toBe(`hanzi-master/progress/${'a'.repeat(32)}.json`);
     expect(SYNC_CODE_STORAGE_KEY).toBe('hanzi-master-sync-code');
-    expect(MAX_BACKUP_BYTES).toBe(5 * 1024 * 1024);
+    expect(MAX_BACKUP_BYTES).toBe(4 * 1024 * 1024);
   });
 });

@@ -1,11 +1,12 @@
-// src/lib/cloud-sync.ts v5.2.51
+// src/lib/cloud-sync.ts v5.2.57
 // 云同步共享规则：同步码生成/校验、Blob 路径、体积上限（客户端与 API 路由共用）。
 
 /** 同步码：32 位小写十六进制（128 bit），足以抵抗猜测；不含路径分隔符。 */
 const SYNC_CODE = /^[0-9a-f]{32}$/;
 
-/** 与 progress-transfer 的 MAX_BACKUP_BYTES 一致的公开上限。 */
-export const MAX_BACKUP_BYTES = 5 * 1024 * 1024;
+/** 与 progress-transfer 的 MAX_BACKUP_BYTES 一致的公开上限。
+ * 4 MB：低于 Vercel Serverless 常见 4.5 MB 请求体上限，留足 JSON 编码与请求头余量。 */
+export const MAX_BACKUP_BYTES = 4 * 1024 * 1024;
 
 /** 本地保存同步码的键（localStorage，随设置面板展示/复制）。 */
 export const SYNC_CODE_STORAGE_KEY = 'hanzi-master-sync-code';

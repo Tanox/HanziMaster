@@ -25,9 +25,9 @@ export function WeeklyProgress({
 
   return (
     <div id="weekly-progress" className="bg-card/80 dark:bg-ink-900/80 backdrop-blur-xl rounded-4xl p-10 border border-ink-100 dark:border-ink-800 reveal shadow-ink-lg">
-      <h3 className="text-2xl font-semibold mb-10 text-ink-900 dark:text-ink-50 display-font">
+      <h2 className="text-2xl font-semibold mb-10 text-ink-900 dark:text-ink-50 display-font">
         {t('practice.weeklyProgress')}
-      </h3>
+      </h2>
 
       <div className="grid grid-cols-7 gap-4 mb-10">
         {weekDays.map((day, index) => {

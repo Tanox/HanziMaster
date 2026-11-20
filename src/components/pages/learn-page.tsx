@@ -2,7 +2,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useTranslation } from '@/components/locale-provider';
+import { useLocale } from '@/components/locale-provider';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { useScrollReveal } from '@/hooks/use-scroll-reveal';
 import { usePronunciation } from '@/hooks/use-pronunciation';
 import { useHaptic } from '@/hooks/use-haptic';
@@ -20,7 +21,7 @@ const QuizDialog = dynamic(
 import { EmptyState } from '@/components/state/state-views';
 
 export default function LearnPage() {
-  const { t } = useTranslation();
+  const { t, locale } = useLocale();
   useScrollReveal();
   const { speak, pronounceError, speechSupported } = usePronunciation();
   const vibrate = useHaptic();
@@ -88,12 +89,13 @@ export default function LearnPage() {
   return (
     <div id="learn-page" className="min-h-screen bg-background">
       <div id="learn-content" className="safe-bottom mx-auto max-w-6xl px-6 py-10 sm:py-14">
+        <Breadcrumbs locale={locale} path="/learn" />
         {/* 编辑式页眉：题名 + 当前字序号 + 键盘提示，发丝线与页面分隔 */}
         <div className="reveal mb-8 flex flex-wrap items-end justify-between gap-4 border-b border-ink-200 pb-5 text-start dark:border-ink-800">
           <div>
-            <h2 className="display-font text-3xl font-semibold tracking-tight text-ink-900 dark:text-ink-50 sm:text-4xl">
+            <h1 className="display-font text-3xl font-semibold tracking-tight text-ink-900 dark:text-ink-50 sm:text-4xl">
               {t('common.dailyPractice')}
-            </h2>
+            </h1>
             <p className="mt-1.5 text-sm text-ink-600 dark:text-ink-300">
               {t('common.masterCharacters')}
             </p>

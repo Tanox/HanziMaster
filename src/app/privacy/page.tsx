@@ -7,6 +7,7 @@ import { PRIVACY_UPDATED, privacySections } from '@/content/privacy';
 import { resolveLocale } from '@/lib/request-locale';
 import { getPageSeo } from '@/lib/seo-metadata';
 import { localizedHref } from '@/lib/urls';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 
 export const generateMetadata = async (): Promise<Metadata> => getPageSeo('privacyTitle');
 
@@ -15,7 +16,8 @@ export default async function PrivacyPage() {
   const locale = resolveLocale(await headers());
 
   return (
-    <main id="privacy-page" className="mx-auto w-full max-w-3xl px-6 py-16">
+    <div id="privacy-page" className="mx-auto w-full max-w-3xl px-6 py-16">
+      <Breadcrumbs locale={locale} path="/privacy" />
       <header id="privacy-page-header" className="mb-12">
         <h1 className="text-3xl font-bold text-foreground">隐私政策</h1>
         <p lang="en" className="mt-2 text-xl text-muted-foreground">
@@ -55,6 +57,6 @@ export default async function PrivacyPage() {
           服务条款 / Terms of Service
         </Link>
       </footer>
-    </main>
+    </div>
   );
 }

@@ -1,3 +1,4 @@
+# .github/workflows/deploy.yml v5.2.57
 name: Deploy
 
 on:
@@ -14,7 +15,7 @@ jobs:
     name: Vercel production
     runs-on: ubuntu-latest
     timeout-minutes: 25
-    # 未配置 Secrets 时自动跳过，避免 forks / 本地镜像仓库误报失败
+    # forks / 本地镜像缺 Secrets 时跳过；正式仓库缺 Secrets 必须失败，禁止「跳过但成功」（P0-A）
     if: ${{ github.repository_owner != '' }}
     steps:
       - uses: actions/checkout@v4
@@ -37,9 +38,12 @@ jobs:
         run: |
           if [ -n "$VERCEL_TOKEN" ] && [ -n "$VERCEL_ORG_ID" ] && [ -n "$VERCEL_PROJECT_ID" ]; then
             echo "ready=true" >> "$GITHUB_OUTPUT"
+          elif [ "$GITHUB_REPOSITORY" = "Tanox/HanziMaster" ]; then
+            echo "::error::正式仓库缺少 VERCEL_TOKEN / VERCEL_ORG_ID / VERCEL_PROJECT_ID，禁止跳过部署"
+            exit 1
           else
             echo "ready=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::Vercel secrets 未配置，跳过部署"
+            echo "::notice::fork 仓库 Vercel secrets 未配置，跳过部署"
           fi
 
       - name: Deploy to Vercel
@@ -51,6 +55,7 @@ jobs:
           VERCEL_ENV_FLAGS: --prod
         run: |
           pnpm install --frozen-lockfile
-          npx vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
-          npx vercel build --prod --token="$VERCEL_TOKEN"
-          npx vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
+          pnpm dlx vercel@66.5.0 pull --yes --environment=production --token="$VERCEL_TOKEN"
+          node scripts/check-deploy-env.mjs --strict --env-file .vercel/.env.production.local
+          pnpm dlx vercel@66.5.0 build --prod --token="$VERCEL_TOKEN"
+          pnpm dlx vercel@66.5.0 deploy --prebuilt --prod --yes --token="$VERCEL_TOKEN"

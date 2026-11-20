@@ -2,7 +2,8 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslation } from '@/components/locale-provider';
+import { useLocale } from '@/components/locale-provider';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { useProgress } from '@/hooks/use-progress';
 import { useScrollReveal } from '@/hooks/use-scroll-reveal';
 import { useHaptic } from '@/hooks/use-haptic';
@@ -40,7 +41,7 @@ const INITIAL_QUIZ_STATE: QuizState = {
 };
 
 export default function PracticePage() {
-  const { t } = useTranslation();
+  const { t, locale } = useLocale();
   const progress = useProgress();
   const vibrate = useHaptic();
   useScrollReveal();
@@ -111,10 +112,11 @@ export default function PracticePage() {
   return (
     <div id="practice-page" className="min-h-screen bg-linear-to-b from-ink-50/50 to-background dark:from-ink-950/50 dark:to-background">
       <div id="practice-content" className="max-w-6xl mx-auto px-6 py-16 safe-bottom">
+        <Breadcrumbs locale={locale} path="/practice" />
         <div className="text-center mb-16 reveal">
-          <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 text-ink-900 dark:text-ink-50 display-font">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 text-ink-900 dark:text-ink-50 display-font">
             {t('common.practice')} {t('practice.center')}
-          </h2>
+          </h1>
           <p className="text-xl text-ink-600 dark:text-ink-300 max-w-2xl mx-auto">
             {t('practice.subtitle')}
           </p>

@@ -1,5 +1,18 @@
 ﻿# Changelog
 
+## [5.2.56] - 原型补齐设置面板、云同步与法律页
+### Added
+- `prototype.html` 新增设置面板（`#settings-dialog`）与头部/抽屉设置入口，语义化 id 与生产 `SettingsDialog` / `CloudSyncControls` 对齐：主题三态 radiogroup、语言选择（原型演示 4 语言）、触觉/减少动效开关、进度导出/导入与二次确认重置。
+- `prototype/scripts/prototype-settings.js`（文案补丁，覆盖过时特性与测验提示为“选择汉字”）与 `prototype-settings-ui.js`（交互：面板开关、焦点管理、主题/语言同步、同步码生成与复制、重置确认）。
+- `prototype/styles/prototype-settings.css`（面板、遮罩、开关、云同步样式，全部复用原型 token）。
+- `prototype/privacy.html` / `prototype/terms.html`：法律页原型示意，对应生产 `/privacy`、`/terms`，基于真实文案要点，标注“完整正文以生产为准”。
+### Changed
+- 首页特性卡由过时的 “Etymology & Culture” / “Adaptive Learning” 改为生产的 “12 Essential Characters” / “Private by Default”；4 语言测验提示统一为“选择正确汉字”。
+- 页脚新增 `/privacy` `/terms` 链接与 `v5.2.56 · build prototype` 版本标识。
+- `prototype/DESIGN_SPEC.md` 术语统一为 token 双重来源，新增 §4.1 设置面板交互契约；`prototype/PROJECT_STRUCTURE.md` 统计按实算刷新（HTML 11 / CSS 12 / JS 13、src 164+6、测试 36、scripts 12、workflows 3，移除已删除的 e2e）。
+### Chore
+- 全局展示位同步至 v5.2.56；`prototype-parity`（138/98/20 shared）、行数门禁、i18n lint（11 语言 / 10 扩展模块 / 175 键）全部通过。
+
 ## [5.2.55] - 统一临时文件目录与清理策略
 ### Added
 - `scripts/temp-paths.mjs`：临时文件目录单一来源，统一定义 `tmp/`（会话临时）、`cache/`（可再生缓存）、`log/`（运行日志）、`reports/`（正式产物）的绝对路径与目录创建逻辑；`.next/` 仅作为 Next/Vercel 框架自有构建目录例外。

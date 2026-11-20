@@ -56,9 +56,9 @@ export function CharacterDetail({
 
         <div className="flex flex-col gap-8 text-start">
           <section>
-            <h3 className="display-font text-lg font-semibold text-ink-900 dark:text-ink-50">
+            <h2 className="display-font text-lg font-semibold text-ink-900 dark:text-ink-50">
               {t('learn.exampleTitle')}
-            </h3>
+            </h2>
             <div className="mt-3 border-s-2 border-vermilion-200 ps-4 dark:border-vermilion-800">
               <p className="serif-font text-xl leading-relaxed text-ink-900 dark:text-ink-50">
                 {character.example.sentence}
@@ -73,9 +73,9 @@ export function CharacterDetail({
           <WordExamples words={character.words} />
 
           <section className="border-t border-ink-200 pt-8 dark:border-ink-800">
-            <h3 className="display-font text-lg font-semibold text-ink-900 dark:text-ink-50">
+            <h2 className="display-font text-lg font-semibold text-ink-900 dark:text-ink-50">
               {t('learn.strokeOrder')}
-            </h3>
+            </h2>
             <div className="mt-4">
               <StrokeOrderDemo character={character.hanzi} strokeCount={character.strokes} />
             </div>

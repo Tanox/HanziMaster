@@ -52,6 +52,11 @@ jobs:
       - name: Production dependency audit
         run: pnpm security:audit
 
+      - name: Deploy env shape check
+        run: node scripts/check-deploy-env.mjs
+        env:
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL || 'https://example.com' }}
+
       - name: Production build
         run: pnpm build
         env:

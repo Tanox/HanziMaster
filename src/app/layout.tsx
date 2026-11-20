@@ -76,7 +76,7 @@ export const viewport: Viewport = {
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   // 首屏直接输出 URL 前缀对应的 lang / dir 与词典，避免英文→目标语言闪烁。
-  const { locale } = await requestContext();
+  const { locale, path } = await requestContext();
   const dictionary = await loadTranslations(locale);
   const direction = locale === 'ar' ? 'rtl' : 'ltr';
 
@@ -92,7 +92,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <script id="theme-init" dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         {/* 字体由 next/font/google 构建期自托管，无需运行时 preconnect */}
         <GoogleAnalytics />
-        <StructuredData locale={locale} />
+        <StructuredData locale={locale} path={path} />
       </head>
       <body className="antialiased font-sans">
         <ThemeProvider>

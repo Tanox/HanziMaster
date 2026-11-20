@@ -35,12 +35,9 @@ describe('SEO / GEO routes', () => {
     expect(result.host).toBe(SITE_URL);
   });
 
-  it('renders a localized JSON-LD @graph with a FAQPage', () => {
-    const html = renderToStaticMarkup(<StructuredData locale="zh-CN" />);
-    const json = html.match(/<script[^>]*>([\s\S]*?)<\/script>/)?.[1] ?? '{}';
-    const data = JSON.parse(json) as {
-      '@graph': { '@type': string; inLanguage?: string; mainEntity?: unknown[] }[];
-    };
+  it('renders a localized JSON-LD @graph with a FAQPage on the homepage', () => {
+    const html = renderToStaticMarkup(<StructuredData locale="zh-CN" path="/zh-CN/" />);
+    const data = parseJsonLd(html);
     const types = data['@graph'].map((node) => node['@type']);
     expect(types).toEqual(
       expect.arrayContaining([
@@ -52,7 +49,28 @@ describe('SEO / GEO routes', () => {
         'FAQPage',
       ]),
     );
+    expect(types).not.toContain('BreadcrumbList');
     expect(data['@graph'].find((node) => node['@type'] === 'WebSite')?.inLanguage).toBe('zh-CN');
     expect(data['@graph'].find((node) => node['@type'] === 'FAQPage')?.mainEntity).toHaveLength(3);
+    expect(data['@graph'].find((node) => node['@type'] === 'WebPage')?.url).toBe(`${SITE_URL}/zh-CN/`);
+  });
+
+  it('uses route-localized WebPage and BreadcrumbList instead of FAQ on inner pages', () => {
+    const html = renderToStaticMarkup(<StructuredData locale="zh-CN" path="/zh-CN/learn" />);
+    const data = parseJsonLd(html);
+    const types = data['@graph'].map((node) => node['@type']);
+    expect(types).not.toContain('FAQPage');
+    const breadcrumb = data['@graph'].find((node) => node['@type'] === 'BreadcrumbList');
+    expect(breadcrumb?.itemListElement).toHaveLength(2);
+    expect(data['@graph'].find((node) => node['@type'] === 'WebPage')?.url).toBe(
+      `${SITE_URL}/zh-CN/learn`,
+    );
   });
 });
+
+function parseJsonLd(html: string) {
+  const json = html.match(/<script[^>]*>([\s\S]*?)<\/script>/)?.[1] ?? '{}';
+  return JSON.parse(json) as {
+    '@graph': { '@type': string; url?: string; inLanguage?: string; mainEntity?: unknown[]; itemListElement?: unknown[] }[];
+  };
+}
