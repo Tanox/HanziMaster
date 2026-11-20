@@ -110,6 +110,13 @@ describe('practice QuizDialog · 渲染与交互', () => {
     expect(screen.queryByText(en.practice.wrong)).not.toBeInTheDocument();
   });
 
+  it('未作答时首项可 Tab 聚焦，作答后仅选中项可聚焦（roving tabindex）', () => {
+    renderDialog();
+    const radios = screen.getAllByRole('radio') as HTMLButtonElement[];
+    expect(radios[0].tabIndex).toBe(0);
+    expect(radios.slice(1).every((radio) => radio.tabIndex === -1)).toBe(true);
+  });
+
   it('advances and closes through the footer buttons', () => {
     const { props } = renderDialog();
     fireEvent.click(screen.getByRole('button', { name: en.practice.nextQuestion }));

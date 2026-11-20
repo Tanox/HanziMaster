@@ -50,6 +50,12 @@ describe('useProgress', () => {
     expect(stored._d.learnedCharIds).toEqual([7]);
   });
 
+  it('空进度不写回存储键（设置面板重置后键保持删除）', () => {
+    window.localStorage.setItem('hanzi-master-progress', 'stale');
+    renderHook(() => useProgress());
+    expect(window.localStorage.getItem('hanzi-master-progress')).toBeNull();
+  });
+
   it('reloads progress when another tab writes the same storage key', () => {
     const { result } = renderHook(() => useProgress());
     act(() => {

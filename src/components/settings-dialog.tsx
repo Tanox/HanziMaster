@@ -22,34 +22,6 @@ const applyReduceMotion = (on: boolean) => {
   document.documentElement.classList.toggle('reduce-motion', on);
 };
 
-function SwitchRow({ label, desc, checked, onChange }: {
-  label: string;
-  desc: string;
-  checked: boolean;
-  onChange: (v: boolean) => void;
-}) {
-  return (
-    <div className="flex items-center justify-between gap-4">
-      <div>
-        <p className="text-sm font-medium">{label}</p>
-        <p className="text-xs text-ink-500 dark:text-ink-400">{desc}</p>
-      </div>
-      <button
-        type="button"
-        role="switch"
-        aria-checked={checked}
-        aria-label={label}
-        onClick={() => onChange(!checked)}
-        className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${checked ? 'bg-vermilion-500' : 'bg-ink-200 dark:bg-ink-700'}`}
-      >
-        <span className={`absolute top-0.5 start-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${checked ? 'ltr:translate-x-5 rtl:-translate-x-5' : ''}`} />
-      </button>
-    </div>
-  );
-}
-
-const sectionTitle = 'text-xs font-semibold uppercase tracking-wide text-ink-400 dark:text-ink-500';
-
 export function SettingsButton() {
   const { t, locale, setLocale, availableLocales } = useLocale();
   const { theme, setTheme } = useTheme();

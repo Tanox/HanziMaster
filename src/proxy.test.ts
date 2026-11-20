@@ -47,6 +47,12 @@ describe('proxy · URL 级 i18n', () => {
     expect(res.headers.get('location') ?? '').toContain('/ar/learn');
   });
 
+  it('Accept-Language 按 q 权重协商（en;q=0.3,ar;q=0.9 → /ar/learn）', () => {
+    const res = proxy(makeReq('/learn', { headers: { 'accept-language': 'en;q=0.3,ar;q=0.9' } }));
+    expect(res.status).toBe(302);
+    expect(res.headers.get('location') ?? '').toContain('/ar/learn');
+  });
+
   it('?lang= 优先于 cookie（?lang=ko → /ko/learn）', () => {
     const res = proxy(makeReq('/learn?lang=ko', { cookies: { 'hanzi-master-locale': 'ja' } }));
     expect(res.status).toBe(302);
