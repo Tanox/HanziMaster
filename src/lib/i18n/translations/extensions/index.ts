@@ -1,6 +1,7 @@
-// src/lib/i18n/translations/extensions/index.ts v5.2.49
+// src/lib/i18n/translations/extensions/index.ts v5.2.51
 
 import { a11yByLocale } from './a11y';
+import { cloudByLocale } from './cloud';
 import { geoByLocale } from './geo';
 import { legalByLocale } from './legal';
 import { meaningsByLocale } from './meanings';
@@ -18,6 +19,7 @@ type BaseTranslations = typeof import('../en').en;
  */
 export function extendTranslations(base: BaseTranslations, locale: string) {
   const a11y = a11yByLocale[locale] ?? a11yByLocale.en;
+  const cloud = cloudByLocale[locale] ?? cloudByLocale.en;
   const legal = legalByLocale[locale] ?? legalByLocale.en;
   const meanings = meaningsByLocale[locale] ?? meaningsByLocale.en;
   const settings = settingsByLocale[locale] ?? settingsByLocale.en;
@@ -32,6 +34,7 @@ export function extendTranslations(base: BaseTranslations, locale: string) {
     geo,
     pwa,
     progress,
+    cloud,
     common: { ...base.common, ...a11y.common },
     learn: { ...base.learn, strokeDemoLabel: a11y.learn.strokeDemoLabel },
     practice: {

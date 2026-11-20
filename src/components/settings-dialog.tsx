@@ -1,4 +1,4 @@
-// src/components/settings-dialog.tsx v5.2.44
+// src/components/settings-dialog.tsx v5.2.51
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -12,6 +12,7 @@ import { loadSettings, saveSettings, DEFAULT_SETTINGS, type AppSettings } from '
 import { safeRemoveItem } from '@/lib/storage';
 import { PROGRESS_STORAGE_KEY } from '@/hooks/use-progress';
 import { ProgressTransferControls } from '@/components/progress-transfer-controls';
+import { CloudSyncControls } from '@/components/cloud-sync-controls';
 import type { Locale } from '@/lib/i18n';
 
 const THEMES: readonly Theme[] = ['light', 'dark', 'system'];
@@ -160,6 +161,7 @@ export function SettingsButton() {
           <section aria-label={t('settings.data')} className="space-y-3">
             <h3 className={sectionTitle}>{t('settings.data')}</h3>
             <ProgressTransferControls />
+            <CloudSyncControls />
             {confirmReset ? (
               <div id="settings-reset-confirm" className="space-y-2 rounded-xl border border-vermilion-200 bg-vermilion-50 p-3 dark:border-vermilion-800 dark:bg-vermilion-900/30">
                 <p className="text-sm font-semibold text-vermilion-700 dark:text-vermilion-300">{t('settings.resetProgress')}</p>
