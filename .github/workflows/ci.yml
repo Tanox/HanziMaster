@@ -86,6 +86,6 @@ jobs:
         if: always()
         with:
           name: coverage-report
-          path: coverage/
+          path: cache/coverage/
           retention-days: 7
 

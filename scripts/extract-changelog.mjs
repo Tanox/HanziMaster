@@ -1,7 +1,9 @@
-// scripts/extract-changelog.mjs v5.2.44
+// scripts/extract-changelog.mjs v5.2.55
 // 从 CHANGELOG.md 抽取指定版本小节作为 Release 正文，并校验 tag 与 package.json 一致。
 // 用法：node scripts/extract-changelog.mjs v5.2.44
 import fs from 'node:fs';
+import path from 'node:path';
+import { REPORTS_DIR, ensureDir } from './temp-paths.mjs';
 
 const tag = process.argv[2];
 if (!tag || !/^v\d+\.\d+\.\d+$/.test(tag)) {
@@ -37,6 +39,6 @@ if (!section) {
   process.exit(1);
 }
 
-fs.mkdirSync('reports', { recursive: true });
-fs.writeFileSync('reports/release-notes.md', `${section}\n`);
+ensureDir(REPORTS_DIR);
+fs.writeFileSync(path.join(REPORTS_DIR, 'release-notes.md'), `${section}\n`);
 console.log(`release notes: ${tag} (${section.split('\n').length} 行)`);

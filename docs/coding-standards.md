@@ -73,8 +73,10 @@ HanziMaster/
 ├── prototype/                   # 原型（6 个 HTML 骨架 + styles/ + scripts/）
 ├── scripts/                     # 可复用工具脚本（run-tests / check-line-count）
 ├── docs/                        # 规范文档
-├── .tmp/                        # 会话级临时文件唯一固定子目录（gitignore，按需创建、用完即删）
-└── reports/                     # 脚本产物（已被 .gitignore 忽略，不提交）
+├── tmp/                         # 会话级临时文件（gitignore，用完即清）
+├── cache/                       # 可再生缓存：TS 增量信息、Vitest/Vite 缓存与覆盖率（gitignore）
+├── log/                         # 运行日志：测试输出等（gitignore）
+└── reports/                     # 正式核验产物：门禁报告、Release 说明（gitignore，不提交）
 ```
 
 新增文件放置规则：

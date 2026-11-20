@@ -1,9 +1,10 @@
-// scripts/prototype-parity.mjs v5.2.35
+// scripts/prototype-parity.mjs v5.2.55
 // 对比原型 HTML 与 src/ 中的语义化 id，输出差异到 reports/prototype-parity.txt。
 // 默认只报告；--strict 在「原型 id 未落地到代码」时返回非零退出码。
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { REPORTS_DIR, ensureDir } from './temp-paths.mjs';
 
 const ID_RE = /\bid="([A-Za-z][A-Za-z0-9-]*)"/g;
 
@@ -44,8 +45,8 @@ const report = [
   '',
 ].join('\n');
 
-fs.mkdirSync('reports', { recursive: true });
-fs.writeFileSync(path.join('reports', 'prototype-parity.txt'), report);
+ensureDir(REPORTS_DIR);
+fs.writeFileSync(path.join(REPORTS_DIR, 'prototype-parity.txt'), report);
 console.log(report.split('\n').slice(0, 3).join('\n'));
 
 if (process.argv.includes('--strict') && prototypeOnly.length) {

@@ -24,6 +24,7 @@
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
+    "tsBuildInfoFile": "./cache/tsconfig.tsbuildinfo",
     "plugins": [
       {
         "name": "next"
@@ -39,6 +40,9 @@
   ],
   "exclude": [
     "node_modules",
-    ".tmp"
+    "tmp",
+    "cache",
+    "log",
+    "reports"
   ]
 }

@@ -1,8 +1,10 @@
-// vitest.config.ts v5.2.48
+// vitest.config.ts v5.2.55
 import { defineConfig, coverageConfigDefaults } from 'vitest/config';
 import { fileURLToPath } from 'node:url';
 
 export default defineConfig({
+  // Vite/Vitest 中间缓存统一落入 cache/vite，避免默认写 node_modules/.vite 之外的散落路径
+  cacheDir: './cache/vite',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -11,13 +13,13 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     include: ['src/**/*.test.{ts,tsx}'],
-    exclude: ['e2e/**', 'node_modules/**', '.tmp/**'],
+    exclude: ['e2e/**', 'node_modules/**', 'tmp/**', 'cache/**', 'log/**', 'reports/**'],
     setupFiles: ['./vitest.setup.ts'],
     globals: true,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json-summary', 'html'],
-      reportsDirectory: './coverage',
+      reportsDirectory: './cache/coverage',
       // 口径：只统计可单元测试的逻辑层；页面 JSX、静态文案与数据表不计入
       include: [
         'src/lib/**/*.ts',

@@ -1,8 +1,9 @@
-// scripts/check-line-count.mjs · 源文件行数门禁（v5.2.33）
+// scripts/check-line-count.mjs · 源文件行数门禁（v5.2.55）
 // 规则：src / prototype 下的 ts、tsx、css、js 单文件不超过 200 行。
-// 用法：node scripts/check-line-count.mjs（等价 pnpm run scripts.check:lines）
+// 用法：node scripts/check-line-count.mjs（等价 pnpm run check:lines）
 import fs from 'node:fs';
 import path from 'node:path';
+import { REPORTS_DIR, ensureDir } from './temp-paths.mjs';
 
 const roots = ['src', 'prototype/scripts', 'prototype/styles'];
 const LIMIT = 200;
@@ -29,9 +30,9 @@ function walk(dir) {
 
 for (const r of roots) walk(r);
 
-fs.mkdirSync('reports', { recursive: true });
+ensureDir(REPORTS_DIR);
 fs.writeFileSync(
-  path.join('reports', 'line-count.txt'),
+  path.join(REPORTS_DIR, 'line-count.txt'),
   over.length ? over.join('\n') + '\n' : `all <= ${LIMIT}\n`
 );
 console.log(over.length ? `OVER: ${over.length}` : `all <= ${LIMIT}`);

@@ -83,7 +83,8 @@ const securityHeaders = [
 
 const nextConfig = {
   reactStrictMode: true,
-  // 可用独立 distDir 做本地构建验证，避开对 .next 的批量清理（沙箱护栏/并行开发互扰）
+  // 固定例外：Next/Vercel/EdgeOne 预设要求默认构建目录为 .next（归属工具链，不属于仓库临时产物）；
+  // 仅在本地并行验证时用 NEXT_DIST_DIR 指向独立目录，禁止把构建产物散落仓库根。
   distDir: process.env.NEXT_DIST_DIR || '.next',
   // 构建时注入，dev / build 均生效；页脚与移动抽屉从此处读取，杜绝硬编码版本脱节
   env: {

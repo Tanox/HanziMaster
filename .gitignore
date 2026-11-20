@@ -35,12 +35,14 @@ next-env.d.ts
 *.swo
 *~
 
-# Testing
-/coverage
+# Testing / generated artifacts（四类固定子目录，统一由 scripts/temp-paths.mjs 创建）
+# tmp=会话临时，cache=可再生缓存，log=运行日志，reports=正式核验产物
+/tmp/
+/cache/
+/log/
 /reports/
 
-# 会话临时目录与本地记忆目录（不入库；.workbuddy 为指向 .codebuddy 的符号链接，git 视作文件故不加尾斜杠）
-# .tmp/ 是会话级临时文件的唯一固定子目录；后三条兜底历史散落的 .tmp-* / _tmp_* / *_tmp* 文件
+# 历史临时目录兜底（旧会话可能仍残留 .tmp-* / _tmp_* / *_tmp*）
 /.tmp/
 /.tmp-*
 /_tmp_*

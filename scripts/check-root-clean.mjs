@@ -1,18 +1,21 @@
-// scripts/check-root-clean.mjs v5.2.50
+// scripts/check-root-clean.mjs v5.2.55
 // 根目录清洁度门禁：禁止临时脚本 / 一次性产物散落仓库根目录。
-// 固定子目录约定：会话级临时文件唯一放 .tmp/；脚本与工具正式产物写 reports/；两者均 gitignore、不入库。
+// 固定子目录：tmp/（会话临时）、cache/（可再生缓存）、log/（日志）、reports/（正式产物）；
+// 四者均由 scripts/temp-paths.mjs 统一管理并 gitignore；.next/ 是 Next/Vercel 框架自有产物例外。
 // 规则：根目录每个条目必须命中白名单，否则判失败。
 // 用法：node scripts/check-root-clean.mjs（结果写 reports/root-clean.txt，失败退出码 1）
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { ROOT, REPORTS_DIR, ensureManagedDirs } from './temp-paths.mjs';
+
+ensureManagedDirs();
 
 // 工具链 / 平台约定必须位于仓库根的目录（含构建期生成目录，均已 gitignore）
-// .tmp 是会话级临时文件的唯一固定子目录：放行目录本身，禁止把内容散落到根目录
 const ALLOWED_DIRS = new Set([
-  '.codebuddy', '.git', '.github', '.next', '.tmp', '.trae', '.turbo', '.vercel', '.workbuddy',
-  'coverage', 'dist', 'docs', 'e2e', 'node_modules', 'out',
-  'playwright-report', 'prototype', 'public', 'reports', 'scripts', 'src', 'test-results',
+  '.codebuddy', '.git', '.github', '.next', '.trae', '.turbo', '.vercel', '.workbuddy',
+  'cache', 'docs', 'e2e', 'log', 'node_modules', 'playwright-report', 'prototype',
+  'public', 'reports', 'scripts', 'src', 'tmp', 'test-results',
 ]);
 
 // 包管理器 / 构建工具 / 社区惯例要求位于仓库根的文件
@@ -23,17 +26,16 @@ const ALLOWED_FILES = new Set([
   'metadata.json', 'next-env.d.ts', 'next.config.mjs', 'NOTICE', 'package.json',
   'playwright.config.ts', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', 'postcss.config.js',
   'README.md', 'README_EN.md', 'sentry.edge.config.ts', 'sentry.server.config.ts',
-  'tsconfig.json', 'tsconfig.tsbuildinfo', 'vercel.json',
-  'vitest.config.ts', 'vitest.setup.ts',
+  'tsconfig.json', 'vercel.json', 'vitest.config.ts', 'vitest.setup.ts',
 ]);
 
 // 本地环境变量文件按前缀放行（.env.local / .env.development.local 等，均已 gitignore）
 const isLocalEnv = (name) => name.startsWith('.env');
 
 // 临时产物特征：对「文件」即使命中白名单也判失败（兜底改名 / 新型产物）
-// 目录不适用：固定子目录 .tmp 会被 /\.(tmp)$/ 误伤，目录统一由 ALLOWED_DIRS 裁定
+// 目录不适用：固定子目录统一由 ALLOWED_DIRS 裁定，不按扩展名误伤
 const TEMP_PATTERNS = [
-  /\.(log|out|tmp|bak|orig|rej)$/i,
+  /\.(log|out|tmp|bak|orig|rej|tsbuildinfo)$/i,
   /(test-out|linecheck|build-out|build-err)/i,
   /^(audit-|tmp|temp|debug|draft)/i,
   /-result\.(json|txt|xml)$/i,
@@ -41,7 +43,7 @@ const TEMP_PATTERNS = [
 ];
 
 const entries = fs
-  .readdirSync('.', { withFileTypes: true })
+  .readdirSync(ROOT, { withFileTypes: true })
   .filter((e) => e.name !== '.git')
   .sort((a, b) => a.name.localeCompare(b.name));
 
@@ -50,7 +52,7 @@ const isDirLike = (entry) => {
   if (entry.isDirectory()) return true;
   if (!entry.isSymbolicLink()) return false;
   try {
-    return fs.statSync(entry.name).isDirectory();
+    return fs.statSync(path.join(ROOT, entry.name)).isDirectory();
   } catch {
     return false;
   }
@@ -67,18 +69,17 @@ for (const entry of entries) {
   }
 }
 
-fs.mkdirSync('reports', { recursive: true });
 const report = offenders.length
   ? `根目录清洁度门禁失败（${offenders.length} 项）\n${offenders.join('\n')}\n`
   : `root clean（${entries.length} 个条目全部命中白名单）\n`;
-fs.writeFileSync(path.join('reports', 'root-clean.txt'), report);
+fs.writeFileSync(path.join(REPORTS_DIR, 'root-clean.txt'), report);
 console.log(offenders.length ? `OVER: ${offenders.length}` : 'root clean');
 
 if (offenders.length) {
   console.error(
     '根目录出现白名单之外的条目：\n' +
       offenders.map((o) => `  - ${o}`).join('\n') +
-      '\n一次性临时脚本 / 中间产物请放 .tmp/（唯一固定临时子目录）；正式工具脚本放 scripts/，产物写 reports/。'
+      '\n临时文件一律放 tmp/，缓存放 cache/，日志放 log/；正式工具脚本放 scripts/，核验产物写 reports/。'
   );
   process.exitCode = 1;
 }

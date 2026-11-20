@@ -2,8 +2,9 @@ node_modules
 .next
 dist
 out
-coverage
 pnpm-lock.yaml
 package-lock.json
-.tmp
+tmp
+cache
+log
 reports

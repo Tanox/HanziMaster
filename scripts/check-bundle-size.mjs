@@ -1,12 +1,13 @@
-// scripts/check-bundle-size.mjs v5.2.35
+// scripts/check-bundle-size.mjs v5.2.55
 // 体积预算门禁：在 pnpm build 之后运行，读取 .next/static/chunks 的实际产物。
 // 阈值可用 MAX_BUNDLE_KB / MAX_CHUNK_KB 覆盖，产物报告写 reports/bundle-size.txt。
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { NEXT_DIST_DIR, REPORTS_DIR, ensureDir } from './temp-paths.mjs';
 
 // 跟随 next.config.mjs 的 NEXT_DIST_DIR，避免验证独立产物时检查旧目录
-const chunksDir = path.resolve(process.env.NEXT_DIST_DIR || '.next', 'static/chunks');
+const chunksDir = path.join(NEXT_DIST_DIR, 'static/chunks');
 if (!fs.existsSync(chunksDir)) {
   console.error('No build output. Run `pnpm build` before the size gate.');
   process.exit(1);
@@ -35,8 +36,8 @@ const report = [
   '',
 ].join('\n');
 
-fs.mkdirSync('reports', { recursive: true });
-fs.writeFileSync(path.join('reports', 'bundle-size.txt'), report);
+ensureDir(REPORTS_DIR);
+fs.writeFileSync(path.join(REPORTS_DIR, 'bundle-size.txt'), report);
 console.log(report.trimEnd());
 
 if (totalKb > maxTotal || (largest[0]?.kb ?? 0) > maxChunk) {
