@@ -54,6 +54,8 @@ export const en = {
     yongCharacterTitle: 'Eight Strokes of 永',
     yongCharacterDesc: 'Master the eight basic strokes through the character 永, unlocking the essence of Chinese calligraphy',
     yongCharacterStrokes: 'Stroke Mastery',
+    featureLibraryTitle: '12 Essential Characters', featureLibraryDesc: 'Start with the 12 most common characters, each with guided stroke order.',
+    featureLocalTitle: 'Private by Default', featureLocalDesc: 'No account needed. Your progress stays on this device.', heroTrust: 'No sign-up · Progress stays on this device',
   },
   practice: {
     center: 'Center',

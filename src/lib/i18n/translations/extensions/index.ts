@@ -1,4 +1,4 @@
-// src/lib/i18n/translations/extensions/index.ts v5.2.51
+// src/lib/i18n/translations/extensions/index.ts v5.2.52
 
 import { a11yByLocale } from './a11y';
 import { cloudByLocale } from './cloud';
@@ -7,6 +7,7 @@ import { legalByLocale } from './legal';
 import { meaningsByLocale } from './meanings';
 import { seoByLocale } from './seo';
 import { settingsByLocale } from './settings';
+import { privacyByLocale } from './privacy';
 import { pwaByLocale } from './pwa';
 import { progressByLocale } from './progress';
 
@@ -23,6 +24,7 @@ export function extendTranslations(base: BaseTranslations, locale: string) {
   const legal = legalByLocale[locale] ?? legalByLocale.en;
   const meanings = meaningsByLocale[locale] ?? meaningsByLocale.en;
   const settings = settingsByLocale[locale] ?? settingsByLocale.en;
+  const privacy = privacyByLocale[locale] ?? privacyByLocale.en;
   const pwa = pwaByLocale[locale] ?? pwaByLocale.en;
   const progress = progressByLocale[locale] ?? progressByLocale.en;
   const seo = seoByLocale[locale] ?? seoByLocale.en;
@@ -44,7 +46,7 @@ export function extendTranslations(base: BaseTranslations, locale: string) {
       keyboardHint: a11y.practice.keyboardHint,
       meanings,
     },
-    settings,
+    settings: { ...settings, ...privacy },
     legal,
   };
 }

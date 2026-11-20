@@ -54,6 +54,8 @@ export const ru = {
     yongCharacterTitle: 'Восемь черт иероглифа 永',
     yongCharacterDesc: 'Освойте восемь основных черт через иероглиф 永, открывая суть китайской каллиграфии',
     yongCharacterStrokes: 'Владение чертами',
+    featureLibraryTitle: '12 базовых иероглифов', featureLibraryDesc: 'Начните с 12 самых употребительных иероглифов с подсказкой порядка черт.',
+    featureLocalTitle: 'Приватно по умолчанию', featureLocalDesc: 'Без регистрации. Прогресс хранится только на этом устройстве.', heroTrust: 'Без регистрации · Прогресс только здесь',
   },
   practice: {
     center: 'Центр',

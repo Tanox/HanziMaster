@@ -54,6 +54,8 @@ export const zhCN = {
     yongCharacterTitle: '永字八法',
     yongCharacterDesc: '掌握永字的八个基本笔画，打开汉字书写的精髓',
     yongCharacterStrokes: '笔画掌握',
+    featureLibraryTitle: '12 个常用汉字', featureLibraryDesc: '从最常用的 12 个字开始，逐字配有笔顺指引。',
+    featureLocalTitle: '进度只存本机', featureLocalDesc: '无需注册，学习进度仅保存在这台设备。', heroTrust: '无需注册 · 进度仅存本机',
   },
   practice: {
     center: '中心',

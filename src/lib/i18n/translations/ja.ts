@@ -54,6 +54,8 @@ export const ja = {
     yongCharacterTitle: '永の八法',
     yongCharacterDesc: '永という文字を通じて8つの基本笔画をマスターし、中国書道の真髄を解き明かす',
     yongCharacterStrokes: '笔画掌握度',
+    featureLibraryTitle: 'よく使う12文字', featureLibraryDesc: 'よく使う12文字から始め、一字ずつ筆順を確認できます。',
+    featureLocalTitle: '進捗は端末内', featureLocalDesc: '登録不要。学習記録はこの端末にだけ保存されます。', heroTrust: '登録不要 · 進捗は端末内',
   },
   practice: {
     center: 'センター',

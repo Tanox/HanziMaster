@@ -54,6 +54,8 @@ export const de = {
     yongCharacterTitle: 'Die Acht Striche von 永',
     yongCharacterDesc: 'Meistern Sie die acht Grundstriche durch das Zeichen 永 und erschließen Sie das Wesen der chinesischen Kalligrafie',
     yongCharacterStrokes: 'Strichbeherrschung',
+    featureLibraryTitle: '12 grundlegende Zeichen', featureLibraryDesc: 'Beginne mit den 12 häufigsten Zeichen – jeweils mit geführter Strichfolge.',
+    featureLocalTitle: 'Standardmäßig privat', featureLocalDesc: 'Kein Konto nötig. Dein Fortschritt bleibt auf diesem Gerät.', heroTrust: 'Keine Anmeldung · Fortschritt nur lokal',
   },
   practice: {
     center: 'Zentrum',

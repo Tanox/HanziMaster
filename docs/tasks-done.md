@@ -1,7 +1,23 @@
 # 已完成任务归档 · Tasks Done
 
-> 文档版本：v5.2.51（与项目版本同步，权威版本见 `package.json`）
-> 最近归档：**2026-11-20（UTC+8）— 全面代码审查 18 项缺陷修复**
+> 文档版本：v5.2.52（与项目版本同步，权威版本见 `package.json`）
+> 最近归档：**2026-11-20 18:18（UTC+8）— 任务状态复核：6 项归档（含 1 项线上核验通过）**
+
+## 2026-11-20 18:18（UTC+8）任务状态复核批次 · v5.2.52
+
+> 依据当前源码逐项实查 + 生产域 `https://hanzi.ewuse.com` 实测取证；不再沿用历史文字结论。
+> 本批次归档 6 项：1 项完全闭环（P1-39），5 项**代码侧完成**、其线上验收拆分为新任务 P0-32 继续跟踪。
+
+| ID | 任务 | 分类 | 完成版本 | 实现要点 / 验收证据 |
+|----|------|------|---------|---------------------|
+| P1-39 | 首次真实生产部署 + 线上安全头核验 | 部署/安全 | v5.2.52 | 生产域 `/zh-CN` 与 `/_next/static/*.css` 实测均返回 CSP / `X-Frame-Options: DENY` / `X-Content-Type-Options: nosniff` / `Referrer-Policy: strict-origin-when-cross-origin` / `Permissions-Policy` / `Cross-Origin-Opener-Policy: same-origin` 六类头；核验日期 2026-11-20 18:18（UTC+8），样本见 `reports/online-audit.txt`，结果回填 `docs/05-deployment.md` §3.1 |
+| P0-30 | 生产环境变量 `NEXT_PUBLIC_SITE_URL` 必填校验 | 构建/SEO | v5.2.52 | `src/lib/site.ts:28-37` `getSiteUrlWarning`、`next.config.mjs` production 缺配置/非法值阻断构建、`layout.tsx:42-44` `logger.warn`、`.env.example` 生产必填说明、`src/lib/__tests__/site.test.ts` 三分支覆盖。**代码完成**；线上仍返回 `http://localhost:3000` canonical，复验转 P0-32 |
+| P0-31 | SSR 首屏语言与 URL 前缀不一致 | i18n/SEO | v5.2.52 | `src/proxy.ts` 注入 `x-hanzi-locale` / `x-hanzi-path`，`layout.tsx` 服务端 `requestContext()` + `loadTranslations()` 并注入 `LocaleProvider.initialDictionary`。**代码完成**；线上 `/zh-CN` 仍 `lang="en"`，复验转 P0-32 |
+| P1-38 | 补全 OG / Twitter 分享预览图 | SEO/社媒 | v5.2.52 | `src/app/opengraph-image.tsx` / `twitter-image.tsx` 动态 1200×630 分享图，按 Next.js 文件约定自动注入。**代码完成**；线上 `og:image` 缺失且 `/opengraph-image` 返回 302，复验转 P0-32 |
+| P1-43 | metadata 按语言本地化 | SEO/i18n | v5.2.52 | `layout.tsx` `generateMetadata` + `src/lib/build-metadata.ts` + `seo` 扩展 11 语言 + `metadata.test.ts` 两两不同断言。**代码完成**；线上 `/en` / `/ja` 标题仍中文，复验转 P0-32 |
+| P1-44 | 站内链接带语言前缀 | i18n/导航 | v5.2.52 | `src/lib/urls.ts` `localizedHref`，`home-page.tsx` / `layout-client.tsx` / `mobile-nav.tsx` / `nav-link.tsx` 统一前缀。**代码完成**；线上首页仍 `/learn` 等无前缀链接，复验转 P0-32 |
+
+> **线上核验结论**：安全头已达标；SEO / i18n 相关 5 项代码已落地但生产域仍在跑旧构建，属部署问题而非代码缺陷。
 
 ## 2026-11-20 全面代码审查（18 项）
 

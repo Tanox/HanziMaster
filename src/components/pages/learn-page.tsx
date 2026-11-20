@@ -1,4 +1,4 @@
-// src/components/pages/learn-page.tsx v5.2.47
+// src/components/pages/learn-page.tsx v5.2.52
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -131,7 +131,10 @@ export default function LearnPage() {
       <QuizDialog
         open={showQuizDialog}
         onOpenChange={(open) => {
-          if (!open) clearAutoCloseTimer();
+          // 每次打开/关闭都重置为全新空态，避免上次答案与结果残留导致重复提交
+          clearAutoCloseTimer();
+          setQuizAnswer('');
+          setQuizCorrect(null);
           setShowQuizDialog(open);
         }}
         character={selectedCharacter}

@@ -1,4 +1,4 @@
-// src/components/learn/quiz-dialog.tsx v5.2.50
+// src/components/learn/quiz-dialog.tsx v5.2.52
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
@@ -56,8 +56,9 @@ export function QuizDialog({
           <input
             type="text"
             value={value}
+            disabled={correct !== null}
             onChange={(e) => onChange(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && onSubmit()}
+            onKeyDown={(e) => e.key === 'Enter' && correct === null && onSubmit()}
             placeholder={t('learn.quizPlaceholder')}
             aria-label={t('learn.pinyin')}
             aria-invalid={correct === false}
@@ -84,7 +85,7 @@ export function QuizDialog({
           <Button onClick={() => onOpenChange(false)} variant="outline" className="rounded-full border-ink-200 text-ink-700 dark:border-ink-700 dark:text-ink-200">
             {t('common.cancel')}
           </Button>
-          <Button onClick={onSubmit} className="bg-vermilion-500 hover:bg-vermilion-600 text-primary-foreground rounded-full">
+          <Button onClick={onSubmit} disabled={correct !== null} className="bg-vermilion-500 hover:bg-vermilion-600 text-primary-foreground rounded-full">
             {t('common.submit')}
           </Button>
         </DialogFooter>

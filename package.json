@@ -16,6 +16,7 @@
     "test:run": "node scripts/run-tests.mjs",
     "check:lines": "node scripts/check-line-count.mjs",
     "check:root": "node scripts/check-root-clean.mjs",
+    "check:csp": "node scripts/check-csp-consistency.mjs",
     "bundle:check": "node scripts/check-bundle-size.mjs",
     "analyze": "node scripts/analyze.mjs",
     "i18n:lint": "node scripts/i18n-lint.mjs",

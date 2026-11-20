@@ -9,6 +9,7 @@ import { SettingsButton } from '../settings-dialog';
 import { ToastProvider } from '../toast';
 import { loadSettings } from '@/lib/settings';
 import { PROGRESS_STORAGE_KEY } from '@/hooks/use-progress';
+import { getConsent } from '@/lib/consent';
 
 function renderPanel() {
   return render(
@@ -82,9 +83,37 @@ describe('settings dialog', () => {
     const user = userEvent.setup();
     renderPanel();
     await user.click(screen.getByRole('button', { name: 'Settings' }));
-    await user.click(screen.getByRole('button', { name: 'Reset learning progress' }));
+    const reset = screen.getByRole('button', { name: 'Reset learning progress' });
+    await user.click(reset);
     await user.click(screen.getByRole('button', { name: 'Yes, reset' }));
 
     expect(window.localStorage.getItem(PROGRESS_STORAGE_KEY)).toBeNull();
+    expect(document.activeElement).toHaveAttribute('id', 'settings-reset');
+  });
+
+  it('returns focus to reset button when confirmation is cancelled', async () => {
+    const user = userEvent.setup();
+    renderPanel();
+    await user.click(screen.getByRole('button', { name: 'Settings' }));
+    const reset = screen.getByRole('button', { name: 'Reset learning progress' });
+    await user.click(reset);
+    await user.click(screen.getByRole('button', { name: 'Cancel' }));
+
+    expect(document.activeElement).toHaveAttribute('id', 'settings-reset');
+  });
+
+  it('withdraws and re-grants analytics consent from the privacy section', async () => {
+    const user = userEvent.setup();
+    renderPanel();
+    await user.click(screen.getByRole('button', { name: 'Settings' }));
+
+    // 首次进入未选择态；先同意再撤回，验证双向切换
+    await user.click(screen.getByRole('button', { name: 'Accept' }));
+    await user.click(screen.getByRole('button', { name: 'Withdraw analytics consent' }));
+    expect(getConsent()).toBeNull();
+    expect(screen.getByRole('button', { name: 'Accept' })).toBeTruthy();
+
+    await user.click(screen.getByRole('button', { name: 'Accept' }));
+    expect(getConsent()).toBe('granted');
   });
 });

@@ -54,6 +54,8 @@ export const fr = {
     yongCharacterTitle: 'Les Huit Traits de 永',
     yongCharacterDesc: 'Maîtrisez les huit traits de base à travers le caractère 永, débloquant l\'essence de la calligraphie chinoise',
     yongCharacterStrokes: 'Maîtrise des Traits',
+    featureLibraryTitle: '12 caractères essentiels', featureLibraryDesc: 'Commencez par les 12 caractères les plus courants, avec l’ordre des traits.',
+    featureLocalTitle: 'Confidentiel par défaut', featureLocalDesc: 'Sans compte. Votre progression reste sur cet appareil.', heroTrust: 'Sans inscription · Progression locale',
   },
   practice: {
     center: 'Centre',

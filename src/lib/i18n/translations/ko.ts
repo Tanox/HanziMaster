@@ -54,6 +54,8 @@ export const ko = {
     yongCharacterTitle: '永의 팔법',
     yongCharacterDesc: '永 한자를 통해 8가지 기본 획을 마스터하고 중국 서예의 본질을 해소하세요',
     yongCharacterStrokes: '획 마스터리',
+    featureLibraryTitle: '자주 쓰는 12자', featureLibraryDesc: '가장 자주 쓰는 12자부터 시작하며 획 순서를 안내합니다.',
+    featureLocalTitle: '기본적으로 비공개', featureLocalDesc: '가입 없이 학습 기록은 이 기기에만 저장됩니다.', heroTrust: '가입 불필요 · 기록은 이 기기에만',
   },
   practice: {
     center: '센터',

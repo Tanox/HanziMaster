@@ -113,6 +113,14 @@ describe('learn QuizDialog · 渲染与交互', () => {
     expect(screen.queryByText(en.learn.quizIncorrect)).not.toBeInTheDocument();
   });
 
+  it('disables input and submit after answering to prevent duplicate submissions', () => {
+    const { props } = renderDialog({ value: 'yī', correct: true });
+    expect(input()).toBeDisabled();
+    expect(screen.getByRole('button', { name: en.common.submit })).toBeDisabled();
+    fireEvent.keyDown(input(), { key: 'Enter' });
+    expect(props.onSubmit).not.toHaveBeenCalled();
+  });
+
   it('closes via cancel and the header close button', () => {
     const { props } = renderDialog();
     fireEvent.click(screen.getByRole('button', { name: en.common.cancel }));

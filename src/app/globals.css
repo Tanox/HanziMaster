@@ -6,6 +6,7 @@
 @import "./styles/theme-colors.css";
 @import "./styles/keyframes.css";
 @import "./styles/rtl.css";
+@import "./styles/reduced-motion.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -172,25 +173,4 @@ h3 {
 
 .skip-to-content:focus {
   top: 16px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* 设置面板「减少动效」开关：与系统 prefers-reduced-motion 相同的动画抑制，优先级独立于系统设置 */
-html.reduce-motion *,
-html.reduce-motion *::before,
-html.reduce-motion *::after {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.01ms !important;
-  scroll-behavior: auto !important;
 }

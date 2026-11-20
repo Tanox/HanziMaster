@@ -1,0 +1,45 @@
+/* src/app/styles/reduced-motion.css v5.2.52 */
+/* 减少动效：清延迟并保证首屏立即可见；系统偏好与设置面板开关两条路径等价 */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal,
+  .hero-eyebrow,
+  .hero-title,
+  .hero-subtitle,
+  .hero-cta,
+  .hero-visual {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-delay: 0ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  transition-delay: 0ms !important;
+  scroll-behavior: auto !important;
+}
+
+html.reduce-motion .reveal,
+html.reduce-motion .hero-eyebrow,
+html.reduce-motion .hero-title,
+html.reduce-motion .hero-subtitle,
+html.reduce-motion .hero-cta,
+html.reduce-motion .hero-visual {
+  opacity: 1 !important;
+  transform: none !important;
+}

@@ -1,4 +1,4 @@
-// src/lib/consent.ts v5.2.35
+// src/lib/consent.ts v5.2.52
 
 import { safeGetItem, trySetItem } from './storage';
 
@@ -29,4 +29,11 @@ export function clearConsent(): boolean {
     window.dispatchEvent(new CustomEvent<ConsentChoice>(CONSENT_CHANGE_EVENT));
   }
   return saved;
+}
+
+/** 把同意状态同步给已加载的 GA4（撤回后停止统计，重新同意后恢复）。脚本未加载时静默跳过。 */
+export function updateAnalyticsConsent(choice: ConsentChoice | null): void {
+  if (typeof window === 'undefined') return;
+  const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+  gtag?.('consent', 'update', { analytics_storage: choice === 'granted' ? 'granted' : 'denied' });
 }

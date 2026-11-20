@@ -1,24 +1,20 @@
-// src/components/settings-dialog.tsx v5.2.51
+// src/components/settings-dialog.tsx v5.2.52
 'use client';
 
 import { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { useTheme, type Theme } from '@/components/theme-provider';
 import { useLocale } from '@/components/locale-provider';
 import { localeNames } from '@/components/locale-toggle';
 import { useToast } from '@/components/toast';
 import { loadSettings, saveSettings, DEFAULT_SETTINGS, type AppSettings } from '@/lib/settings';
-import { safeRemoveItem } from '@/lib/storage';
-import { PROGRESS_IMPORTED_EVENT, PROGRESS_STORAGE_KEY } from '@/hooks/use-progress';
-import { ProgressTransferControls } from '@/components/progress-transfer-controls';
-import { CloudSyncControls } from '@/components/cloud-sync-controls';
 import { SwitchRow, sectionTitle } from '@/components/settings-dialog-parts';
+import { DataControls } from '@/components/data-controls';
+import { PrivacyControls } from '@/components/privacy-controls';
 import type { Locale } from '@/lib/i18n';
 
 const THEMES: readonly Theme[] = ['light', 'dark', 'system'];
 
-/** 头部按钮全局挂载：挂载时同步「减少动效」类，保证刷新后设置仍然生效。 */
 const applyReduceMotion = (on: boolean) => {
   document.documentElement.classList.toggle('reduce-motion', on);
 };
@@ -29,17 +25,13 @@ export function SettingsButton() {
   const toast = useToast();
   const [open, setOpen] = useState(false);
   const [settings, setSettings] = useState<AppSettings>(DEFAULT_SETTINGS);
-  const [confirmReset, setConfirmReset] = useState(false);
 
   useEffect(() => {
     applyReduceMotion(loadSettings().reduceMotion);
   }, []);
 
   useEffect(() => {
-    if (open) {
-      setSettings(loadSettings());
-      setConfirmReset(false);
-    }
+    if (open) setSettings(loadSettings());
   }, [open]);
 
   const update = (patch: Partial<AppSettings>) => {
@@ -51,14 +43,6 @@ export function SettingsButton() {
     }
     setSettings(next);
     if (patch.reduceMotion !== undefined) applyReduceMotion(next.reduceMotion);
-  };
-
-  const handleReset = () => {
-    safeRemoveItem(PROGRESS_STORAGE_KEY);
-    // storage 事件只跨文档触发；本标签页已挂载的 useProgress 需显式广播，否则旧 state 会在下次答题时写回
-    window.dispatchEvent(new Event(PROGRESS_IMPORTED_EVENT));
-    setConfirmReset(false);
-    toast.success(t('settings.resetDone'));
   };
 
   return (
@@ -146,35 +130,8 @@ export function SettingsButton() {
             />
           </section>
 
-          <section aria-label={t('settings.data')} className="space-y-3">
-            <h3 className={sectionTitle}>{t('settings.data')}</h3>
-            <ProgressTransferControls />
-            <CloudSyncControls />
-            {confirmReset ? (
-              <div id="settings-reset-confirm" className="space-y-2 rounded-xl border border-vermilion-200 bg-vermilion-50 p-3 dark:border-vermilion-800 dark:bg-vermilion-900/30">
-                <p className="text-sm font-semibold text-vermilion-700 dark:text-vermilion-300">{t('settings.resetProgress')}</p>
-                <p className="text-xs text-vermilion-600 dark:text-vermilion-400">{t('settings.resetDesc')}</p>
-                <div className="flex gap-2">
-                  <Button type="button" id="settings-reset-yes" variant="destructive" size="sm" onClick={handleReset}>
-                    {t('settings.resetYes')}
-                  </Button>
-                  <Button type="button" variant="outline" size="sm" onClick={() => setConfirmReset(false)}>
-                    {t('common.cancel')}
-                  </Button>
-                </div>
-              </div>
-            ) : (
-              <Button
-                type="button"
-                id="settings-reset"
-                variant="outline"
-                className="w-full border-vermilion-300 text-vermilion-600 hover:bg-vermilion-50 dark:border-vermilion-700 dark:text-vermilion-400 dark:hover:bg-vermilion-900/30"
-                onClick={() => setConfirmReset(true)}
-              >
-                {t('settings.resetProgress')}
-              </Button>
-            )}
-          </section>
+          <PrivacyControls />
+          <DataControls />
         </DialogContent>
       </Dialog>
     </>

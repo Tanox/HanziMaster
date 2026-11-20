@@ -54,6 +54,8 @@ export const ar = {
     yongCharacterTitle: 'الثمانية خطوط لـ 永',
     yongCharacterDesc: 'أتقن الثمانية خطوط الأساسية من خلال الحرف 永، مما يفتح جوهر الخط الصيني',
     yongCharacterStrokes: 'إتقان الخطوط',
+    featureLibraryTitle: '١٢ حرفًا أساسيًا', featureLibraryDesc: 'ابدأ بالأحرف الاثني عشر الأكثر شيوعًا مع توجيه لترتيب الضربات.',
+    featureLocalTitle: 'خصوصية تلقائية', featureLocalDesc: 'لا حاجة إلى حساب. يبقى تقدّمك على هذا الجهاز فقط.', heroTrust: 'لا تسجيل · التقدّم محفوظ على جهازك',
   },
   practice: {
     center: 'المركز',

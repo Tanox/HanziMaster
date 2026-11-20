@@ -1,4 +1,4 @@
-/* src/app/styles/utilities.css v5.2.44 */
+/* src/app/styles/utilities.css v5.2.52 */
 /* 自定义工具类（从 globals.css 拆分，保持单文件 ≤200 行） */
 
 @layer utilities {
@@ -46,13 +46,14 @@
     padding-bottom: env(safe-area-inset-bottom, 16px);
   }
 
-  .reveal {
+  /* 无 JS 时默认可见；ThemeProvider 之前的 head 预设脚本打上 .js 后才延迟揭示 */
+  html.js .reveal {
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
   }
 
-  .reveal.revealed {
+  html.js .reveal.revealed {
     opacity: 1;
     transform: translateY(0);
   }

@@ -1,4 +1,4 @@
-// src/app/layout.tsx v5.2.49
+// src/app/layout.tsx v5.2.52
 import type { Metadata, Viewport } from 'next';
 import { cookies, headers } from 'next/headers';
 import { Space_Grotesk, Playfair_Display, Noto_Serif_SC, JetBrains_Mono } from 'next/font/google';
@@ -43,6 +43,11 @@ const jetbrainsMono = JetBrains_Mono({
 const siteUrlWarning = getSiteUrlWarning();
 if (siteUrlWarning) logger.warn(siteUrlWarning, { scope: 'seo' });
 
+// 首屏主题预设：静态字符串（无用户输入），在 hydration 前设置 .dark/.js，消除主题闪烁并给 .reveal 提供无 JS 兜底。
+const THEME_INIT_SCRIPT =
+  "var d=document.documentElement;d.classList.add('js');try{var v=localStorage.getItem('hanzi-master-theme')||'system';" +
+  "d.classList.toggle('dark',v==='dark'||(v==='system'&&matchMedia('(prefers-color-scheme: dark)').matches))}catch(e){}";
+
 /** 语言来自 proxy 注入的请求头（URL 前缀），其次 cookie；路径用于 canonical / hreflang。 */
 const requestContext = async () => {
   const requestHeaders = await headers();
@@ -83,6 +88,8 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       className={`${spaceGrotesk.variable} ${playfairDisplay.variable} ${notoSerifSC.variable} ${jetbrainsMono.variable}`}
     >
       <head>
+        {/* 静态内联脚本，无用户输入； CSP script-src 'unsafe-inline' 已放行 */}
+        <script id="theme-init" dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         {/* 字体由 next/font/google 构建期自托管，无需运行时 preconnect */}
         <GoogleAnalytics />
         <StructuredData locale={locale} />

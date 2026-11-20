@@ -1,4 +1,4 @@
-// scripts/i18n-lint.mjs v5.2.49
+// scripts/i18n-lint.mjs v5.2.52
 // 校验 11 语言包、扩展模块与站点语言常量的键/清单一致性，
 // 并检查占位符集合一致性与超长文案（P3-2）。
 // 叶子键一致性由单测 src/lib/__tests__/i18n.test.ts 与 site.test.ts 负责。
@@ -25,7 +25,7 @@ for (const locale of expected) {
   if (!site.includes(`'${locale}'`)) errors.push(`site.ts missing locale: ${locale}`);
 }
 
-const extensionModules = ['legal', 'a11y', 'meanings', 'settings', 'pwa', 'progress', 'seo', 'geo', 'cloud'];
+const extensionModules = ['legal', 'a11y', 'meanings', 'settings', 'privacy', 'pwa', 'progress', 'seo', 'geo', 'cloud'];
 for (const module of extensionModules) {
   const file = path.join(root, 'extensions', `${module}.ts`);
   if (!fs.existsSync(file)) {
@@ -46,9 +46,8 @@ const TEXT_LIMIT = 160;
 
 const collectByKey = (source) => {
   const byKey = new Map();
-  for (const line of source.split('\n')) {
-    const match = line.match(/^\s*([\w'.-]+):\s*'((?:[^'\\]|\\.)*)'/);
-    if (!match) continue;
+  // 全局匹配：同一行可写多个键（为 200 行门禁压缩行数时仍须逐键校验）
+  for (const match of source.matchAll(/(?:^|[\s{,\n])([\w'.-]+):\s*'((?:[^'\\]|\\.)*)'/g)) {
     const names = [...match[2].matchAll(PLACEHOLDER)].map((m) => m[1]);
     const merged = new Set([...(byKey.get(match[1]) ?? []), ...names]);
     byKey.set(match[1], [...merged].sort().join(','));
@@ -96,10 +95,12 @@ for (const module of extensionModules) {
 
 // 超长文案：主语言包中的 UI 文案超过阈值会破坏移动布局（合规长文在 extensions/legal.ts，不检查）
 for (const locale of expected) {
-  for (const [index, line] of localeSources[locale].split('\n').entries()) {
-    const match = line.match(/:\s*'([^']*)'/);
-    if (match && match[1].length > TEXT_LIMIT) {
-      errors.push(`${locale}.ts:${index + 1} text too long (${match[1].length} > ${TEXT_LIMIT})`);
+  const lines = localeSources[locale].split('\n');
+  for (const [index, line] of lines.entries()) {
+    for (const match of line.matchAll(/:\s*'([^']*)'/g)) {
+      if (match[1].length > TEXT_LIMIT) {
+        errors.push(`${locale}.ts:${index + 1} text too long (${match[1].length} > ${TEXT_LIMIT})`);
+      }
     }
   }
 }

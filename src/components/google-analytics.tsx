@@ -1,10 +1,10 @@
-// src/components/google-analytics.tsx v5.2.35
+// src/components/google-analytics.tsx v5.2.52
 'use client';
 
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { CONSENT_CHANGE_EVENT, getConsent } from '@/lib/consent';
+import { CONSENT_CHANGE_EVENT, getConsent, updateAnalyticsConsent } from '@/lib/consent';
 
 // 衡量 ID 由部署环境注入；未配置时不加载任何统计脚本（合规默认关闭）
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
@@ -55,12 +55,14 @@ export function GoogleAnalytics() {
         id="google-analytics-lib"
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
         strategy="afterInteractive"
+        onLoad={() => updateAnalyticsConsent(getConsent())}
       />
       <Script id="google-analytics-init" strategy="afterInteractive">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
+          gtag('consent', 'default', { analytics_storage: 'denied' });
           gtag('config', '${GA_MEASUREMENT_ID}', { page_path: window.location.pathname });
         `}
       </Script>

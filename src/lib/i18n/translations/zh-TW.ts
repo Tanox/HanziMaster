@@ -54,6 +54,8 @@ export const zhTW = {
     yongCharacterTitle: '永字八法',
     yongCharacterDesc: '掌握永字的八個基本筆畫，打開漢字書寫的精髓',
     yongCharacterStrokes: '筆畫掌握',
+    featureLibraryTitle: '12 個常用漢字', featureLibraryDesc: '從最常用的 12 個字開始，每字都有筆順指引。',
+    featureLocalTitle: '進度僅存本機', featureLocalDesc: '無需註冊，學習進度僅保存在這台裝置。', heroTrust: '無需註冊 · 進度僅存本機',
   },
   practice: {
     center: '中心',

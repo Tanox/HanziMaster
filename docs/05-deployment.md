@@ -79,7 +79,8 @@ curl -sSI https://<your-domain>/learn | grep -i 'content-security-policy'
 ```
 
 - **验收口径**：三者均返回预期头；若页面响应出现两条不同 CSP，说明平台覆盖了 Next 注入值，需在控制台关闭平台侧的 CSP 覆写，保留 `next.config.mjs` 单一来源。
-- 本次交付为配置与核验流程；**线上 `curl -I` 实测需在有域名的部署环境执行**（本地构建不产生 EdgeOne 边缘响应），结果回填至本节。
+- **线上核验结果（2026-11-20 18:18 UTC+8，P1-39 闭环）**：`https://hanzi.ewuse.com/zh-CN` 与 `/_next/static/*.css` 实测均返回六类头——`Content-Security-Policy`（present）、`X-Frame-Options: DENY`、`X-Content-Type-Options: nosniff`、`Referrer-Policy: strict-origin-when-cross-origin`、`Permissions-Policy`（present）、`Cross-Origin-Opener-Policy: same-origin`；未见重复 CSP。原始样本见 `reports/online-audit.txt`（输出为 JSON 摘要，未落敏感 Cookie/Header）。
+- 当前生产域仍在跑旧构建，SEO / i18n 相关验收未通过，见 `docs/tasks.md` §6.2 与 P0-32。
 
 ## 4. 关于「静态托管」与 SPA 重写
 

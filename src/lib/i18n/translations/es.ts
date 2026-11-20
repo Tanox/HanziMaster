@@ -54,6 +54,8 @@ export const es = {
     yongCharacterTitle: 'Los Ocho Trazos de 永',
     yongCharacterDesc: 'Domina los ocho trazos básicos a través del carácter 永, desbloqueando la esencia de la caligrafía china',
     yongCharacterStrokes: 'Dominio de Trazos',
+    featureLibraryTitle: '12 caracteres esenciales', featureLibraryDesc: 'Empieza con los 12 caracteres más comunes, cada uno con su orden de trazos.',
+    featureLocalTitle: 'Privado por defecto', featureLocalDesc: 'Sin cuenta. Tu progreso se guarda solo en este dispositivo.', heroTrust: 'Sin registro · Tu progreso se queda aquí',
   },
   practice: {
     center: 'Centro',
