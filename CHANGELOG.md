@@ -1,5 +1,26 @@
 ﻿# Changelog
 
+## [5.2.52] - 任务状态复核、首页重构、CSP 一致性门禁与同意撤回
+### Docs
+- 复核 `docs/tasks.md` 20 项未完成任务，归档 6 项至 `docs/tasks-done.md`（P1-39 线上安全头核验通过；P0-30/31、P1-38/43/44 代码侧完成、线上验收拆出 P0-32），新增 P0-32（生产部署后 SEO/i18n 全链路复验，P0 事故），并更新 P1-41/P2-24/P1-46/P2-26/P2-27 为「部分完成」；记录时间戳 **2026-11-20 18:18 UTC+8**。
+- 线上实测：生产域六类安全头齐全；但仍是旧构建（canonical/hreflang/sitemap 指向 localhost、`lang="en"`、无 og:image、链接无前缀），证据见 `reports/online-audit.txt`，已回填 `docs/05-deployment.md` §3.1。
+### Added
+- `scripts/check-csp-consistency.mjs` + `pnpm check:csp`：断言 `edgeone.json` 与 `next.config.mjs` 生产 CSP 逐字一致，纳入 CI `quality` job。
+- `src/components/data-controls.tsx`、`src/components/privacy-controls.tsx`：设置面板数据/隐私分区拆分，支持随时撤回或重新开启统计同意。
+- `src/app/styles/reduced-motion.css`：减少动效规则独立成文件。
+- `src/lib/i18n/translations/extensions/privacy.ts`：11 语言隐私文案独立模块；`i18n-lint` 扩展为 10 模块并支持同一行多个键的校验。
+- 首页新增 11 语言 `home.featureLibrary*`、`home.featureLocal*`、`home.heroTrust` 文案。
+### Changed
+- 首页重构（P1-42/23/24/25）：删除模糊光球、玻璃卡、静态「永」字与虚构 72% 统计；首屏改为左文右田字格笔顺演示（可播放）两栏，`min-h-[90vh]` → `70vh`；标题改中文衬线字体、去掉 uppercase 大字距，层级修正为 H1→H2→H3；CTA 与落地页一致，补「无需注册 · 进度仅存本机」；复用 `useScrollReveal`。
+- CSP 收紧（P2-20）：移除 `fonts.googleapis.com` / `fonts.gstatic.com` 冗余条目（字体已构建期自托管），两平台同步。
+- 主题首屏预设脚本（P1-45）：`layout.tsx` head 注入静态脚本设置 `.dark`/`.js`，消除主题闪烁并为 `.reveal` 提供无 JS 兜底；`.reveal` 仅在 `html.js` 下隐藏。
+- 减少动效（P2-22）：系统与设置面板两条路径均清零 `animation-delay`/`transition-delay` 并保证首屏可见。
+- 学习页测验（P2-27）：每次打开/关闭重置答案与结果，作答后禁用输入与提交按钮，Enter 不再重复触发；补禁用态与焦点测试。
+- 设置面板（P2-26）：二次确认取消/完成后焦点回到 `#settings-reset`，补测试。
+- Cookie 同意（P1-41/P1-46）：横幅标题由 `h2` 降级为 `p`；新增 `updateAnalyticsConsent` 与 GA4 `consent default/update`，撤回后停止统计。
+### Fixed
+- 行数门禁：新文案以独立模块与同行多键形式落盘，11 语言包均 200 行、`settings.ts` 198 行、`globals.css` 176 行。
+
 ## [5.2.51] - 第二轮全面审查：CI/Release、SEO fail-closed 与门禁假阳性修复
 ### Fixed（阻断与安全）
 - `.github/workflows/ci.yml`：删除仍引用已清理 `e2e/` 目录的 job（曾导致 CI 必失败）；`release.yml` 的 `workflow_dispatch` tag 改由 env 传参，消除命令注入；门禁按 checkout 后的实际 commit（而非 `context.sha`）查询 CI/Deploy；job 清单去掉已删除的 e2e。

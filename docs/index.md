@@ -1,6 +1,6 @@
 ﻿# HanziMaster 文档中心
 
-> 文档版本：v5.2.51（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.52（与项目版本同步，权威版本见 `package.json`）
 
 本目录是项目**规范文档的唯一存放位置**（`docs/` 共 18 篇）。本文给出文档分层、单一职责矩阵、术语与格式约定；根级 README / CONTRIBUTING 只是入口摘要，不另立规则。
 
@@ -85,7 +85,7 @@
 
 ## 5. 版本戳规则
 
-- 产品版本的唯一权威源是 `package.json` 的 `version`（本次修订时为 `5.2.50`）。文档版本戳只是「该文档最后修订时对应的项目版本」的展示位，**不是第二权威源**。
+- 产品版本的唯一权威源是 `package.json` 的 `version`（本次修订时为 `5.2.52`）。文档版本戳只是「该文档最后修订时对应的项目版本」的展示位，**不是第二权威源**。
 - **只更新本次实际改动的文档**的版本戳；未改动文档保留原戳是合法的，不得为了「看起来一致」批量刷写全部文档。
 - 全局展示位（`package.json` / `metadata.json` / `README.md` / `README_EN.md` / `CHANGELOG.md`）每次发版必须同步，见 [coding-standards.md](coding-standards.md) §3。
 - 发版前用 `node -e "console.log(require('./package.json').version)"` 实查真实版本，勿按会话记忆或旧快照填写。
