@@ -1,6 +1,6 @@
 # 任务清单 · Task Backlog
 
-> 文档版本：v5.2.50（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.51（与项目版本同步，权威版本见 `package.json`）
 > 最后更新：**2026-11-20 — 全面代码审查：18 项缺陷修复并归档，新增 4 项后续任务（§4）**
 > 本文件是**未完成任务 / 当前进度的单一来源**；已完成任务一律归档至 [tasks-done.md](tasks-done.md)，实现要点见 [CHANGELOG.md](../CHANGELOG.md)。
 
@@ -278,15 +278,18 @@
 
 > 完整报告：[code-review-2026-11-20.md](code-review-2026-11-20.md)（含每项问题原因与修改思路）。18 项已修复项已归档至 `tasks-done.md`。
 
-### 4.1 本轮已修复（18 项，均已归档）
+### 4.1 本轮已修复（两轮共 45 项：第一轮 18 + 第二轮 27）
 
 | 类别 | 修复点 | 主要文件 |
 |------|--------|---------|
-| 进度与统计 | 跨标签页同步、hydration 一致、答题记录上限、id/时间戳严格校验、未来日期连胜、准确率满分钳制 | `use-progress.ts`、`progress-utils.ts` |
-| 存储与插值 | envelope 缺 `_d` 回退默认值、替换值不再二次解析 | `storage.ts`、`i18n/translate.ts` |
-| 懒加载 | 笔顺 chunk 失败可重试 + 三处消费端 `.catch()` | `stroke-order-loader.ts`、`writing-dialog.tsx`、`stroke-order-demo.tsx`、`locale-provider.tsx` |
-| 配置与 SEO | Sentry tunnel 不再被 302、AI 爬虫组补敏感路径禁入、`SITE_URL` 非法值告警回退 | `proxy.ts`、`robots.ts`、`site.ts` |
-| RTL / 可访问性 / 性能 | 对话框与提示 RTL 居中、抽屉手势方向、重复 DOM id、i18n aria-label、移除 `main key`、测验结果播报与选项键盘导航、Object URL 延迟释放 | `dialog.tsx`、`use-swipe-close.ts`、`theme-toggle.tsx`、`locale-toggle.tsx`、`layout-client.tsx`、两个 `quiz-dialog.tsx`、`progress-transfer-controls.tsx` |
+| 进度与统计 | 跨标签页同步、hydration 一致、答题记录上限、id/时间戳严格校验、未来日期连胜、准确率满分钳制、空进度不写回键 | `use-progress.ts`、`progress-utils.ts` |
+| 存储与插值 | envelope 缺 `_d` 回退默认值、替换值不再二次解析、写入失败不再广播假成功 | `storage.ts`、`i18n/translate.ts`、`consent.ts`、`settings.ts` |
+| 懒加载 | 笔顺 chunk 失败可重试 + 三处消费端 `.catch()`、发音 API 构造检测与异常捕获 | `stroke-order-loader.ts`、`writing-dialog.tsx`、`stroke-order-demo.tsx`、`locale-provider.tsx`、`use-pronunciation.ts` |
+| 配置与 SEO | Sentry tunnel 不再被 302、AI 爬虫组补敏感路径禁入、`SITE_URL` 非法值生产构建阻断、Accept-Language q 权重与 manifest 语言协商 | `proxy.ts`、`robots.ts`、`site.ts`、`next.config.mjs`、`request-locale.ts`、`manifest.ts` |
+| RTL / 可访问性 / 性能 | 对话框与提示 RTL 居中、抽屉手势方向、重复 DOM id、i18n aria-label、移除 `main key`、测验结果播报与选项键盘导航（含 practice roving tabindex 条件修正）、Object URL 延迟释放、错误页 `lang`/`dir`、Toast 计时器清理 | `dialog.tsx`、`use-swipe-close.ts`、`theme-toggle.tsx`、`locale-toggle.tsx`、`layout-client.tsx`、两个 `quiz-dialog.tsx`、`progress-transfer-controls.tsx`、`global-error.tsx`、`toast.tsx` |
+| CI / Release / 门禁 | 删除失效 e2e job 与门禁依赖、tag 注入修复、按实际 commit 查询门禁、i18n-lint 按键与扩展检查、3 处测试假阳性修正、行数与 bundle 脚本边界 | `.github/workflows/ci.yml`、`release.yml`、`scripts/i18n-lint.mjs`、3 个测试文件、`check-line-count.mjs`、`check-bundle-size.mjs` |
+
+详细逐项清单见 `docs/code-review-2026-11-20.md` §2/§3。
 
 ### 4.2 新增待办（4 项）
 
@@ -306,9 +309,9 @@
 - **涉及**：`src/components/consent-banner.tsx`、`src/lib/consent.ts`、`src/components/settings-dialog.tsx`、11 语言 `settings.*`
 - **依赖**：无
 
-#### P2-26 · 设置面板主题选择与焦点管理 `无障碍` `待办`
+#### P2-26 · 设置面板主题选择与焦点管理 `无障碍` `部分完成（v5.2.51）`
 
-- **现状**：设置面板主题三按钮无 roving tabindex / 方向键，重置学习进度二次确认后焦点未回到主按钮。
+- **现状**：roving tabindex 与方向键已在 v5.2.51 修复（当前主题按钮进 Tab 序列、方向键切换并移动焦点）；**剩余**：重置学习进度二次确认后焦点未回到主按钮。
 - **目标**：主题三按钮改为标准 radiogroup 键盘导航；重置确认/取消后恢复焦点到 `#settings-reset`。
 - **验收**：仅当前主题按钮进 Tab 序列，方向键可切换；二次确认取消/完成后焦点回到重置按钮；`settings-dialog.test.tsx` 覆盖。
 - **涉及**：`src/components/settings-dialog.tsx`、`src/components/__tests__/settings-dialog.test.tsx`

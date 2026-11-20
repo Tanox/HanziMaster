@@ -1,6 +1,6 @@
 # 技术架构
 
-> 文档版本：v5.2.50（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.51（与项目版本同步，权威版本见 `package.json`）
 
 本文描述**当前代码的实际架构**。组件 API 见 [04-api-reference.md](04-api-reference.md)，设计系统见 [07-design-prototype.md](07-design-prototype.md)，编码约束见 [coding-standards.md](coding-standards.md)。
 

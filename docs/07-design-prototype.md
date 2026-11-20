@@ -1,6 +1,6 @@
 # 设计规范与原型
 
-> 文档版本：v5.2.50（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.51（与项目版本同步，权威版本见 `package.json`）
 
 本文是设计系统的权威说明。编码层面的 token 使用约束见 [coding-standards.md](coding-standards.md) §8；原型交付侧细化规范见 `prototype/DESIGN_SPEC.md`。文中组件清单以 `src/components/` 实际文件为准。
 

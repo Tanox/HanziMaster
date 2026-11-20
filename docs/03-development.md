@@ -1,6 +1,6 @@
 # 开发指南
 
-> 文档版本：v5.2.50（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.51（与项目版本同步，权威版本见 `package.json`）
 
 本文负责**开发环境、命令表与日常流程**。编码风格、命名、目录组织、设计 token、i18n、版本号与质量门禁的唯一权威是 [coding-standards.md](coding-standards.md)；提交、分支与审查见 [git-workflow.md](git-workflow.md)。
 

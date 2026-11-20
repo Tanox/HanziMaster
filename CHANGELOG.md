@@ -1,5 +1,22 @@
 ﻿# Changelog
 
+## [5.2.51] - 第二轮全面审查：CI/Release、SEO fail-closed 与门禁假阳性修复
+### Fixed（阻断与安全）
+- `.github/workflows/ci.yml`：删除仍引用已清理 `e2e/` 目录的 job（曾导致 CI 必失败）；`release.yml` 的 `workflow_dispatch` tag 改由 env 传参，消除命令注入；门禁按 checkout 后的实际 commit（而非 `context.sha`）查询 CI/Deploy；job 清单去掉已删除的 e2e。
+- `next.config.mjs`：生产构建对 `NEXT_PUBLIC_SITE_URL` 缺失/非法（含 query、hash、重复尾斜杠）fail-closed 直接阻断，防止线上 canonical / sitemap / robots 再次全指向 localhost；`site.ts` 同步拒绝畸形 URL。
+- `practice/quiz-dialog.tsx`：roving tabindex 条件由 `selectedAnswer === null` 修正为 `''`（初值为空字符串），键盘用户可 Tab 到选项。
+
+### Fixed（逻辑与边界）
+- `consent.ts` / `settings.ts`：存储写入失败不再广播/显示假成功，返回真实结果并在设置面板提示；`use-pronunciation.ts` 补 WebView 缺构造器的检测与异常捕获。
+- `request-locale.ts` / `proxy.ts` / `manifest.ts`：Accept-Language 按 q 权重协商语言，PWA manifest 首访同步浏览器语言。
+- `toast.tsx` 退出计时器纳入卸载清理；`use-progress.ts` 空进度不再把默认快照写回存储键；`use-swipe-close.ts` 处理空触摸列表；`learn-page.tsx` 方向键快捷键排除输入框；`global-error.tsx` 错误页 `lang` / `dir` 跟随用户语言。
+- `settings-dialog.tsx` 主题 radiogroup 补方向键导航；因超 200 行拆出 `settings-dialog-parts.tsx`。
+
+### Test / Chore
+- 修复 3 处测试假阳性：DST 用例固定 UTC 时刻、`storage.test.ts` mock 实例方法、`i18n.test.ts` 直接检查扩展模块键（不再被英文回退掩盖）；`i18n-lint.mjs` 占位符改按键与扩展 locale 块检查。
+- `check-line-count.mjs` 剔除末尾空行避免 200 行误判；`check-bundle-size.mjs` 支持 `NEXT_DIST_DIR`；`edgeone.json` 固定 pnpm 11.24.0；`fr/ja` 文案拼写修正。
+- `docs/code-review-2026-11-20.md` 更新为两轮 45 项缺陷清单；SITE_URL 文档语义同步为生产 fail-closed。全量门禁与 36 文件 / 197 用例通过。
+
 ## [5.2.50] - 全面代码审查：18 项缺陷修复与健壮性加固
 ### Fixed（核心逻辑与边界）
 - `use-progress`：新增跨标签页 `storage` 同步，避免旧标签页整块覆写导致进度丢失；首帧统一默认进度、挂载后再读取，消除 hydration 不一致且防止默认值覆盖已有数据；答题记录上限 1000 条。

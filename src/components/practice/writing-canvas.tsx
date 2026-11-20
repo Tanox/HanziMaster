@@ -59,6 +59,7 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
       completedRef.current = new Set();
       tracingRef.current = null;
       userPointsRef.current = [];
+      tracesRef.current = [];
       accuracyRef.current = [];
       isDrawing.current = false;
       pointerId.current = null;
@@ -82,6 +83,7 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
       isDrawing,
       pointerId,
       userPoints: userPointsRef,
+      traces: tracesRef,
       accuracy: accuracyRef,
       completed: completedRef,
       tracing: tracingRef,
@@ -97,12 +99,12 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
       keyboard.reset();
       const canvas = canvasRef.current;
       if (canvas) drawHint(canvas, character);
+      // 尺寸变化只重绘，不重置笔迹/准确度/键盘结果（旋转屏幕等场景保留用户进度）
       const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(() => {
         const target = canvasRef.current;
         if (!target) return;
         drawHint(target, character);
-        resetRefs();
-        keyboard.reset();
+        redrawUserStrokes(target, tracesRef.current);
       });
       if (canvas && observer) observer.observe(canvas);
       return () => {

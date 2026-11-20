@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.50",
-  "version": "5.2.50",
-  "description": "v5.2.50: 全面代码审查——修复进度跨标签页覆盖/hydration 不一致/准确率误报满分、笔顺懒加载永久卡死、Sentry tunnel 被重定向、robots UA 组覆盖禁用规则、RTL 居中与手势方向、测验可访问性等 18 项缺陷；新增审查报告与回归测试。",
+  "name": "HanziMaster 汉字大师 v5.2.51",
+  "version": "5.2.51",
+  "description": "v5.2.51: 第二轮全面审查——修复 CI/Release 工作流失效与命令注入、生产 SITE_URL fail-closed、语言协商 q 权重、存储假成功、资源清理与 3 处测试假阳性等 27 项缺陷；两轮累计 45 项，报告与门禁全绿。",
   "keywords": [
     "Chinese characters",
     "Hanzi",
