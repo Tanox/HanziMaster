@@ -1,6 +1,6 @@
 // src/lib/settings.ts v5.2.42
 // 应用偏好设置（设置面板唯一来源）：经 lib/storage.ts 版本化读写，不直接访问 localStorage。
-import { safeGetItem, safeSetItem } from './storage';
+import { safeGetItem, trySetItem } from './storage';
 
 export const SETTINGS_STORAGE_KEY = 'hanzi-master-settings';
 
@@ -29,6 +29,6 @@ export const normalizeSettings = (value: unknown): AppSettings => {
 export const loadSettings = (): AppSettings =>
   normalizeSettings(safeGetItem<unknown>(SETTINGS_STORAGE_KEY, DEFAULT_SETTINGS));
 
-export const saveSettings = (settings: AppSettings): void => {
-  safeSetItem(SETTINGS_STORAGE_KEY, settings);
-};
+/** 返回 false 表示存储不可用（隐私模式 / 配额耗尽），调用方据此提示用户而非静默成功。 */
+export const saveSettings = (settings: AppSettings): boolean =>
+  trySetItem(SETTINGS_STORAGE_KEY, settings);

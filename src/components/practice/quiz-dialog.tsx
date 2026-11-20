@@ -88,7 +88,8 @@ export function QuizDialog({
                   type="button"
                   role="radio"
                   aria-checked={checked}
-                  tabIndex={checked || (selectedAnswer === null && char === QUIZ_OPTIONS[0]) ? 0 : -1}
+                  // selectedAnswer 的初值为空字符串（非 null）：未作答时须让首项进入 Tab 序列
+                  tabIndex={checked || (selectedAnswer === '' && char === QUIZ_OPTIONS[0]) ? 0 : -1}
                   onClick={() => onAnswer(char)}
                   disabled={answered}
                   className={`relative py-6 text-3xl font-light serif-font rounded-lg transition-[colors,transform] duration-300 ${

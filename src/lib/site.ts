@@ -10,7 +10,9 @@ export const DEFAULT_SITE_URL = 'http://localhost:3000';
 const normalizeSiteUrl = (value: string): string | null => {
   try {
     const url = new URL(value);
-    return url.protocol === 'http:' || url.protocol === 'https:' ? value.replace(/\/$/, '') : null;
+    // query / hash / 重复尾斜杠会让 sitemap 等处的字符串拼接产生畸形绝对 URL
+    if (url.search || url.hash || value.slice(url.protocol.length + 2).includes('//')) return null;
+    return url.protocol === 'http:' || url.protocol === 'https:' ? value.replace(/\/+$/, '') : null;
   } catch {
     return null;
   }

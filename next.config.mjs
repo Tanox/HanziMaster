@@ -17,12 +17,26 @@ const pad = (n) => String(n).padStart(2, '0');
 const now = new Date();
 const buildId = `${String(now.getFullYear()).slice(-2)}${pad(now.getMonth() + 1)}${pad(now.getDate())}${pad(now.getHours())}${pad(now.getMinutes())}`;
 
-// 生产漏配站点域名时构建日志明确告警（不阻断 CI；部署清单列为必填，见 docs/05-deployment.md §7）。
-if (process.env.NODE_ENV === 'production' && !process.env.NEXT_PUBLIC_SITE_URL) {
-  process.emitWarning(
-    'NEXT_PUBLIC_SITE_URL is not set in production; canonical/hreflang/sitemap/robots fall back to http://localhost:3000',
-    'SEOConfigWarning',
-  );
+// 生产必须配置合法的绝对站点 URL：canonical / hreflang / sitemap / robots / JSON-LD 均派生自它，
+// 漏配会让线上全部绝对 URL 指向 localhost（2026-11-09 线上事故）；故 fail-closed 阻断构建。
+if (process.env.NODE_ENV === 'production') {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  let validSiteUrl = false;
+  if (siteUrl) {
+    try {
+      const parsed = new URL(siteUrl);
+      validSiteUrl =
+        (parsed.protocol === 'http:' || parsed.protocol === 'https:') &&
+        !parsed.search && !parsed.hash && !siteUrl.slice(parsed.protocol.length + 2).includes('//');
+    } catch {
+      validSiteUrl = false;
+    }
+  }
+  if (!validSiteUrl) {
+    throw new Error(
+      'NEXT_PUBLIC_SITE_URL must be a valid absolute http(s) URL without query/hash in production (e.g. https://hanzi.ewuse.com). See docs/05-deployment.md §7.',
+    );
+  }
 }
 
 // CSP 与安全头：统一由 headers() 注入所有路由，平台侧不重复配置。

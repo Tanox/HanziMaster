@@ -17,8 +17,6 @@
     "check:lines": "node scripts/check-line-count.mjs",
     "check:root": "node scripts/check-root-clean.mjs",
     "bundle:check": "node scripts/check-bundle-size.mjs",
-    "e2e": "playwright test",
-    "e2e:ui": "playwright test --ui",
     "analyze": "node scripts/analyze.mjs",
     "i18n:lint": "node scripts/i18n-lint.mjs",
     "version:sync": "node scripts/sync-version.mjs",

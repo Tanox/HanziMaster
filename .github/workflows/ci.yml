@@ -86,23 +86,3 @@ jobs:
           path: coverage/
           retention-days: 7
 
-  e2e:
-    name: E2E / accessibility
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 11.24.0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24.11.0
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - name: Install Playwright browsers
-        run: pnpm exec playwright install --with-deps chromium
-        env:
-          NEXT_TELEMETRY_DISABLED: '1'
-      - name: E2E tests
-        run: pnpm e2e

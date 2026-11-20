@@ -16,23 +16,30 @@ export function usePronunciation() {
   }, []);
 
   const speak = useCallback((hanzi: string) => {
-    if (!('speechSynthesis' in window)) {
+    // 部分 WebView 只暴露 speechSynthesis、不暴露构造函数，直接 new 会抛 ReferenceError
+    if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') {
       setPronounceError(true);
       return;
     }
     setPronounceError(false);
-    const utterance = new SpeechSynthesisUtterance(hanzi);
-    utterance.lang = 'zh-CN';
-    utterance.rate = 0.8;
-    utterance.pitch = 1;
-    utterance.onstart = () => setIsSpeaking(true);
-    utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => {
+    try {
+      const utterance = new SpeechSynthesisUtterance(hanzi);
+      utterance.lang = 'zh-CN';
+      utterance.rate = 0.8;
+      utterance.pitch = 1;
+      utterance.onstart = () => setIsSpeaking(true);
+      utterance.onend = () => setIsSpeaking(false);
+      utterance.onerror = () => {
+        setIsSpeaking(false);
+        setPronounceError(true);
+      };
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
+    } catch {
+      // 构造或 speak 抛错时降级为错误提示，不把异常冒泡到点击处理器
       setIsSpeaking(false);
       setPronounceError(true);
-    };
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utterance);
+    }
   }, []);
 
   // 组件卸载时中断正在播放的发音，避免延续到卸载后
