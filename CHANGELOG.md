@@ -1,5 +1,9 @@
 ﻿# Changelog
 
+## [5.2.54] - 修复 Release 门禁的 job 名称匹配
+### Fixed
+- `.github/workflows/release.yml`「校验 CI / Deploy 门禁全绿」原先以 job id（`quality` / `coverage`）精确匹配 GitHub Jobs API 返回的 `name`，而该字段实际是显示名（`Lint / Types / Tests / Build` / `Coverage thresholds`），导致 v5.2.53 Tag 的真实 Release 校验恒失败。改为按显示名关键字匹配并重跑 Tag 验证（P1-40）。
+
 ## [5.2.53] - 修复 CI 跨 Node 版本 storage 测试假失败
 ### Fixed
 - `vitest.setup.ts`：原先仅在 `globalThis.localStorage` 缺失时注入内存 Storage；Node 24+ 实验性 localStorage 存在时，`window.localStorage` 仍可能是 jsdom 的 getter，`storage.test.ts` 对实例 `setItem` 的 mock 命中不到真实调用对象，CI 上 `trySetItem` 返回 `true` 导致断言失败（本地 Node 26 不复现）。现始终用**同一份内存 Storage** 以 `Object.defineProperty` 覆盖 `globalThis` 与 `window`，跨 Node 版本稳定。

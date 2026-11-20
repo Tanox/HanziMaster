@@ -1,6 +1,6 @@
 {
   "name": "hanzi-master",
-  "version": "5.2.53",
+  "version": "5.2.54",
   "private": true,
   "license": "MIT",
   "packageManager": "pnpm@11.24.0",

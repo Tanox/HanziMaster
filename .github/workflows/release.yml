@@ -1,4 +1,4 @@
-# .github/workflows/release.yml v5.2.51
+# .github/workflows/release.yml v5.2.54
 # docs/git-workflow.md §6.1：门禁全绿后自动发布 GitHub Release
 name: Release
 
@@ -74,7 +74,11 @@ jobs:
             });
             const badJob = jobs.data.jobs.find((job) => job.conclusion !== 'success');
             if (badJob) return fail(`ci.yml job ${badJob.name} 未通过（${badJob.conclusion}）`);
-            if (!['quality', 'coverage'].every((name) => jobs.data.jobs.some((j) => j.name === name))) {
+            // Jobs API 的 name 是 workflow 里的显示名（"Lint / Types / Tests / Build"、
+            // "Coverage thresholds"），不是 job id；按关键字匹配才不会恒假阴性。
+            const hasQuality = jobs.data.jobs.some((j) => /lint|types|tests|build/i.test(j.name));
+            const hasCoverage = jobs.data.jobs.some((j) => /coverage/i.test(j.name));
+            if (!hasQuality || !hasCoverage) {
               return fail('ci.yml 缺少 quality / coverage 中的某个 job');
             }
 
