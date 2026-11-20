@@ -1,6 +1,6 @@
 # 部署指南
 
-> 文档版本：v5.2.51（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.57（与项目版本同步，权威版本见 `package.json`）
 
 本文描述项目的部署配置与上线流程。构建前的完整质量门禁见 [coding-standards.md](coding-standards.md) §11，发版与自动发布流程见 [git-workflow.md](git-workflow.md) §6 与 §6.1。
 
@@ -13,7 +13,7 @@
 
 共同约束：
 
-- **运行时**：Node.js `>= 24.11.0`（`.nvmrc` 锁定 `24.11.0`），pnpm `>= 11`（`packageManager: pnpm@11.24.0`）。
+- **运行时**：Node.js `>= 24.11.0`（`.nvmrc` 锁定 `24.11.0`），pnpm `>= 11`（`packageManager: pnpm@11.24.0`）。Vercel 的 Node 版本是**项目设置**，`vercel.json` 不支持 `nodeVersion` 键；`prebuild` 的 `scripts/check-runtime.mjs` 会在构建最早期校验 Node 版本并给出可操作错误。
 - **包管理器**：项目强制 pnpm（`preinstall: npx only-allow pnpm`，`.npmrc` 设 `engine-strict` / `package-manager-strict`）。开发者侧命令一律 `pnpm`；仅 `edgeone.json` 内的 `npm run build` 是构建平台内部命令，见 §3。
 - **环境变量**：核心页面运行**不需要任何环境变量**；生产建议配置 `NEXT_PUBLIC_SITE_URL`，可选启用 GA4 / Sentry / Vercel Blob 云同步（完整清单见 [01-overview.md](01-overview.md) §7）。`.env.local` 仅供本地可选配置，不提交仓库。
 - **联网资源**：`next/font/google` 需访问 Google Fonts（Space Grotesk / Playfair Display / Noto Serif SC / JetBrains Mono）。离线/沙箱环境构建可能因字体下载失败，属环境限制而非代码缺陷，部署平台需允许该域名。
@@ -27,24 +27,31 @@
 ```json
 {
   "framework": "nextjs",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "pnpm build",
   "headers": [
     {
-      "source": "/(.*\\.(js|css|svg|png|jpg|jpeg|gif|ico|woff|woff2|ttf|eot))",
+      "source": "/_next/static/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
     }
   ]
 }
 ```
 
-即：框架识别 + 静态资源长期缓存；**未配置**自定义 `buildCommand` / `outputDirectory` / `rewrites`，均走 Vercel 的 Next.js 默认流程。
+即：框架识别 + 显式安装/构建命令 + **只对带哈希的构建产物**长期缓存；`sw.js` 必须可重验证，避免旧 SW 常驻。**未配置** `outputDirectory` / `rewrites`，走 Vercel 的 Next.js 默认流程。
 
 步骤：
 
 1. 将代码推送到 Git 仓库（分支与合并规则见 [git-workflow.md](git-workflow.md)）。
 2. 在 https://vercel.com/new 导入仓库，Framework Preset 选 `Next.js`。
-3. 保持默认 Build Command（等价 `pnpm build`）与 Output Directory（`.next`）。
-4. 点击 Deploy；平台按 `packageManager` 自动使用 pnpm。
-5. 部署成功后在控制台绑定自定义域名（可选）。
+3. 在项目设置中把 **Node.js Version 选 24.11.x**（`vercel.json` 无 `nodeVersion` 键）；Install / Build Command 由上方配置接管，Output Directory 保持 `.next`。
+4. 在 Environment Variables 配置 `NEXT_PUBLIC_SITE_URL=https://<正式域名>`（必填），可选 GA4 / Sentry / Blob 变量见 §7 与 `.env.example`。
+5. 点击 Deploy；`prebuild` 会先校验 Node 版本，部署工作流还会用 `scripts/check-deploy-env.mjs --strict` 校验平台环境变量。
+6. 部署成功后在控制台绑定自定义域名（可选）。**如使用 `deploy.yml` 自动部署，请关闭 Vercel Git Integration**，避免同一 commit 双通道部署（P1-E）。
 
 ## 3. 腾讯云 EdgeOne Pages 部署
 
@@ -101,7 +108,7 @@ pnpm start          # 默认监听 3000
 
 ## 5. 性能与缓存
 
-- 静态资源（`/_next/static/*`、字体、图片）长期缓存 `public, max-age=31536000, immutable`，已在两个平台配置中声明。
+- 静态资源：`/_next/static/*` 长期缓存 `public, max-age=31536000, immutable`（Vercel 与 EdgeOne 均已声明）；`public/sw.js` 在 Vercel 侧改为 `max-age=0, must-revalidate`，保证 Service Worker 可及时更新。
 - HTML / 页面响应由 Next.js 自行控制，不设长期强缓存。
 - 启用 Gzip 或 Brotli 压缩；面向国内用户可配合 CDN。
 - Google Analytics 相关域名由 CSP 的 `script-src` / `connect-src` 放行，新增第三方脚本须同步更新 `next.config.mjs` 的 `securityHeaders`。
@@ -113,10 +120,10 @@ GitHub Actions 工作流（`.github/workflows/`）一览：
 | 工作流 | 触发 | Job | 说明 |
 |--------|------|-----|------|
 | `ci.yml` | push / PR（`main`、`develop`）、手动 | `quality` / `coverage` / `e2e` | 全量质量门禁：lint、`tsc --noEmit`、单测、行数门禁、生产依赖审计、`pnpm build`、体积预算、i18n 与版本展示位校验；coverage 上传报告 artifact；e2e 含 a11y（Playwright + axe） |
-| `deploy.yml` | push `main`、手动 | `vercel` | Vercel 生产部署；未配置 Secrets 时自动跳过（见工作流内 `::notice::`） |
+| `deploy.yml` | push `main`、手动 | `vercel` | Vercel 生产部署；正式仓库缺 Secrets 直接失败，fork 才跳过；`vercel pull` 后执行 `check-deploy-env.mjs --strict`；Vercel CLI 钉版本 `66.5.0` |
 | `release.yml` | push tag `v*`、手动 | `release` | **自动发布 GitHub Releases**：校验 tag/版本一致 → 校验同 commit 的 CI 全 job 与 Deploy 结论 → 同名 Release 查重 → 取 `CHANGELOG.md` 对应小节为正文，规则见 [git-workflow.md](git-workflow.md) §6.1 |
 
-**自动发布规则**：推送 tag `vX.Y.Z` 后，仅当同一 commit 的 `ci.yml` 全部 job（`quality` / `coverage` / `e2e`）与 `deploy.yml` 均为绿色（Deploy 跳过视为可发布）、tag 与 `package.json` 版本一致、且同名 Release 不存在时，自动创建 GitHub Release——标题 `vX.Y.Z`，正文由 `scripts/extract-changelog.mjs` 从 `CHANGELOG.md` 抽取；任一门禁失败则不发布并在 Action 日志标注 `::error::` 原因。首次上线前需在有 Tag 的仓库实跑一次确认。
+**自动发布规则**：推送 tag `vX.Y.Z` 后，仅当同一 commit 的 `ci.yml` 全部 job（`quality` / `coverage`）与 `deploy.yml` 均为绿色（**Deploy 必须真正 success，`skipped` 不再视为可发布**）、tag 与 `package.json` 版本一致、且同名 Release 不存在时，自动创建 GitHub Release——标题 `vX.Y.Z`，正文由 `scripts/extract-changelog.mjs` 从 `CHANGELOG.md` 抽取；任一门禁失败则不发布并在 Action 日志标注 `::error::` 原因。
 
 ## 7. 部署前检查清单
 
@@ -126,7 +133,9 @@ GitHub Actions 工作流（`.github/workflows/`）一览：
 - [ ] `pnpm test` 全部通过
 - [ ] `pnpm check:lines` 输出 `all <= 200`
 - [ ] `pnpm security:audit`（`pnpm audit --prod --audit-level=high`）无高危
-- [ ] `pnpm build` 成功
+- [ ] `pnpm build` 成功（`prebuild` 运行时门禁通过）
+- [ ] `node scripts/check-deploy-env.mjs --strict` 通过（平台侧由 `deploy.yml` 在 `vercel pull` 后自动执行）
+- [ ] 带 Sentry 变量的构建路径已在 Preview 验证（`SENTRY_DSN` / `NEXT_PUBLIC_SENTRY_DSN` / `SENTRY_ORG` / `SENTRY_PROJECT` 同时设置时）
 - [ ] **生产环境变量 `NEXT_PUBLIC_SITE_URL=https://<正式域名>` 已配置**（P0-30，必填；漏配或非法会让生产构建直接失败，防止 canonical / hreflang / `sitemap.xml` / `robots.txt` 全指向 `http://localhost:3000`）
 - [ ] 部署后 SEO/GEO 线上核验（下列 `curl` 均不得出现 `localhost`，`/zh-CN` 首屏 HTML 的 `lang` 与文案须为中文）：
   ```bash

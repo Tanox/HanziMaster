@@ -13,7 +13,7 @@ ensureManagedDirs();
 
 // 工具链 / 平台约定必须位于仓库根的目录（含构建期生成目录，均已 gitignore）
 const ALLOWED_DIRS = new Set([
-  '.codebuddy', '.git', '.github', '.next', '.playwright-cli', '.trae', '.turbo', '.vercel', '.workbuddy',
+  '.codebuddy', '.git', '.github', '.next', '.playwright-cli', '.tmp', '.trae', '.turbo', '.vercel', '.workbuddy',
   'cache', 'docs', 'e2e', 'log', 'node_modules', 'playwright-report', 'prototype',
   'public', 'reports', 'scripts', 'src', 'tmp', 'test-results',
 ]);
