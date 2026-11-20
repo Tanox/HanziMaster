@@ -1,13 +1,12 @@
 /** @type {import('next').NextConfig} */
 
-// next.config.mjs v5.2.49
+// next.config.mjs v5.2.57
 
 import { readFileSync } from 'node:fs';
 import createBundleAnalyzer from '@next/bundle-analyzer';
-// @sentry/nextjs 为 CJS 包，ESM 配置中须走默认导出互操作
-import sentryModule from '@sentry/nextjs';
-
-const { withSentryConfig } = sentryModule;
+// @sentry/nextjs v11 起 withSentryConfig 移至 /config 子路径；
+// 从根导入会得到不含该函数的对象，平台设置 SENTRY_DSN 时构建必失败（P1-A 实测）。
+import { withSentryConfig } from '@sentry/nextjs/config';
 
 // 版本号取自 package.json 单一来源；build 编号按构建时刻本地时间生成（yymmddhhmm 的 10 位写法）
 const { version: appVersion } = JSON.parse(

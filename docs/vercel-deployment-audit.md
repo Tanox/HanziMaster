@@ -2,7 +2,7 @@
 
 > 文档版本：v5.2.56（与项目版本同步，权威版本见 `package.json`）
 > 审计时间：2026-11-20（UTC+8） · 基线：HEAD `86a512d` / v5.2.56
-> 审计性质：**只读静态审计**——未修改代码、未访问 Vercel / GitHub 控制台（本机无平台凭据）。线上结论引用仓库已记录的实测证据（`docs/tasks.md` §6.2、`docs/05-deployment.md` §3.1、`CHANGELOG.md` 5.2.54）。
+> 审计性质：初版为只读静态审计（未访问 Vercel / GitHub 控制台）；**v5.2.57 已对代码/配置可闭环项完成修复**，修复状态见 §0.1。线上结论引用仓库已记录的实测证据（`docs/tasks.md` §6.2、`docs/05-deployment.md` §3.1、`CHANGELOG.md` 5.2.54）。
 
 ## 0. 结论摘要
 
@@ -12,7 +12,25 @@
 | **P1 高** | 5 | 配置/路由 | Sentry 构建路径从未验证、Node/pnpm 版本未显式锁定、proxy 误拦截 OG 图路由、GA4 构建期内联易误配、双部署通道与 Release 门禁把 skip 视为成功 |
 | **P2 中** | 4 | 健壮性 | 平台缓存规则过宽、构建期字体外网依赖、Blob 云同步未配置且备份上限超 Serverless body limit、文档/配置漂移 |
 
-**一句话**：源码侧没有「必然构建失败」的硬缺陷，**真正的 P0 全在 Vercel/GitHub 平台配置**；P1 中有两项（OG 图路由、Sentry 构建路径）是部署后才会暴露的隐藏风险。
+**一句话**：源码侧原本没有「必然构建失败」的硬缺陷，**真正的 P0 全在 Vercel/GitHub 平台配置**；但审计后实测发现 Sentry 构建路径存在真实代码缺陷（见 P1-A），已一并修复。
+
+### 0.1 修复状态（2026-11-20，v5.2.57）
+
+| ID | 状态 | 本次改动 | 仍需平台/人工 |
+|----|------|---------|--------------|
+| P0-A | **代码侧已闭环** | `deploy.yml` 正式仓库缺 Secrets 直接 `::error::` 失败（fork 才跳过）；`release.yml` 要求 Deploy 真 success，`skipped` 不再可发布 | 在 GitHub 仓库配置三项 Secrets 并重跑 Deploy |
+| P0-B | **代码侧已闭环** | 新增 `scripts/check-deploy-env.mjs`，`deploy.yml` 在 `vercel pull` 后以 `--strict --env-file` 预检；CI 加形状校验 | 在 Vercel 项目设置 `NEXT_PUBLIC_SITE_URL=https://hanzi.ewuse.com` |
+| P1-A | **已修复（实测缺陷）** | 带 DSN 构建实测报 `withSentryConfig is not a function`；根因是 v11 已把该导出移到 `@sentry/nextjs/config`，`next.config.mjs` 导入已修正 | Preview 用真实 DSN 再验证一次 source map 上传 |
+| P1-B | **代码侧已闭环** | `vercel.json` 显式 `installCommand`/`buildCommand`；新增 `prebuild` 运行时门禁；`.npmrc` 补 `engine-strict`/`package-manager-strict` | Vercel 项目 Node Version 选 24.11.x（配置键不支持，必须平台设置） |
+| P1-C | **已修复** | `src/lib/proxy-matcher.ts` 统一 matcher 与运行时守卫，bypass 约定式图片/清单路由；新增 4 组单测 | 部署后 `curl -I /opengraph-image` 确认 200 image/png |
+| P1-D | **代码侧已闭环** | `check-deploy-env.mjs` 校验 GA ID 形状（`G-XXXX`），`.env.example` 说明构建期内联 | 平台设置正确的 GA 测量 ID 并做同意联动验证 |
+| P1-E | **代码侧已闭环** | Release 门禁不再接受 skipped；部署文档明确「Actions 部署与 Git Integration 二选一」 | 关闭其中一条部署通道（推荐保留 Actions） |
+| P2-A | **已修复** | `vercel.json` immutable 缓存收窄到 `/_next/static/(.*)`；`/sw.js` 改 `must-revalidate`；`check:csp` 扩展校验 | 部署后核对响应头 |
+| P2-B | 环境约束（无法从代码消除） | 文档明确构建期需访问 Google Fonts，并通过自托管产物验证 | 平台出网策略放行（Vercel 默认可访问） |
+| P2-C | **已修复** | `MAX_BACKUP_BYTES` 5 MB → 4 MB（低于 Serverless 4.5 MB body limit）；`.env.example` 补 `BLOB_STORE_ID` OIDC 说明 | 创建 Blob store 并配置 Store ID |
+| P2-D | **已修复** | `@vercel/blob` 钉为 `2.9.0`；Vercel CLI 钉为 `66.5.0`；`check:csp` 覆盖 Vercel 配置；`.playwright-cli/` 纳入 gitignore 与根目录门禁白名单 | — |
+
+> **剩余平台动作清单**：① GitHub Secrets 三项；② Vercel `NEXT_PUBLIC_SITE_URL`；③ Vercel Node 24.11.x；④ Blob store（可选）；⑤ GA/Sentry 变量（可选）；⑥ 关闭双部署通道之一。完成 ①②③⑥ 后重新触发 Deploy 并按 §5 的 `curl` 清单复验。
 
 ---
 
