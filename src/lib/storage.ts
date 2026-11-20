@@ -37,20 +37,23 @@ export function safeGetItem<T>(key: string, defaultValue: T): T {
 /**
  * Safely write to localStorage with version info
  */
-export function safeSetItem<T>(key: string, value: T): void {
-  if (typeof window === 'undefined') {
-    return;
-  }
-
+/** 写入结果可判定的版本：配额超限/隐私模式下返回 false，避免调用方误报成功。 */
+export function trySetItem<T>(key: string, value: T): boolean {
+  if (typeof window === 'undefined') return false;
   try {
     const data: StorageData<T> = {
       _v: STORAGE_VERSION,
       _d: value,
     };
     window.localStorage.setItem(key, JSON.stringify(data));
+    return true;
   } catch {
-    // Silently fail for quota exceeded or other storage errors
+    return false;
   }
+}
+
+export function safeSetItem<T>(key: string, value: T): void {
+  trySetItem(key, value);
 }
 
 /**

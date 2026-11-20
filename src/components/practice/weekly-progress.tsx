@@ -31,7 +31,10 @@ export function WeeklyProgress({
 
       <div className="grid grid-cols-7 gap-4 mb-10">
         {weekDays.map((day, index) => {
-          const active = weeklyActivity[index] ?? false;
+          // weeklyActivity 是以今天结尾的滚动 7 天窗口（[6] = 今天），
+          // 列标签却是周一→周日，必须按距今天数重映射，否则除周日外全部错位
+          const daysAgo = (todayIndex - index + 7) % 7;
+          const active = weeklyActivity[6 - daysAgo] ?? false;
           return (
             <div
               key={day}

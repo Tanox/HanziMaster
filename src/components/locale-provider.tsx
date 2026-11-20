@@ -3,7 +3,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import type { Locale, TranslationKey, Translations } from '@/lib/i18n';
-import { SUPPORTED_LOCALES, DEFAULT_LOCALE, isSupportedLocale, isRtlLocale } from '@/lib/site';
+import { SUPPORTED_LOCALES, DEFAULT_LOCALE, OG_LOCALES, isSupportedLocale, isRtlLocale } from '@/lib/site';
 import { getNestedValue, interpolate } from '@/lib/i18n/translate';
 import { safeGetItem, safeSetItem } from '@/lib/storage';
 import { loadTranslations } from '@/lib/i18n/load-translations';
@@ -33,9 +33,9 @@ const LocaleProviderContext = createContext<LocaleProviderState | undefined>(und
 
 const getBrowserLocale = (): Locale => {
   if (typeof navigator === 'undefined') return DEFAULT_LOCALE;
-  const browserLang = navigator.language;
+  const browserLang = navigator.language.toLowerCase();
   if (browserLang.startsWith('zh')) {
-    return browserLang.includes('TW') || browserLang.includes('HK') ? 'zh-TW' : 'zh-CN';
+    return /tw|hk|mo|hant/.test(browserLang) ? 'zh-TW' : 'zh-CN';
   }
   const localeMap: Record<string, Locale> = {
     es: 'es',
@@ -62,20 +62,46 @@ const getUrlLocale = (): Locale | null => {
   return fromQuery && isSupportedLocale(fromQuery) ? fromQuery : null;
 };
 
-/** 同步 lang / dir（RTL）与 cookie，供 SSR 首屏读取。 */
+/** 替换 URL 中的语言前缀，保留 origin 与尾斜杠（首页 /{locale}/ 是规范形式）。 */
+const withLocale = (href: string, value: string): string => {
+  try {
+    const url = new URL(href, window.location.origin);
+    const parts = url.pathname.split('/').filter(Boolean);
+    const rest = parts[0] && isSupportedLocale(parts[0]) ? parts.slice(1) : parts;
+    url.pathname = `/${value}${rest.length ? '/' + rest.join('/') : '/'}`;
+    return url.toString();
+  } catch {
+    return href;
+  }
+};
+
+/** 客户端切语言只改 history，不重跑 generateMetadata；同步 head 中的 canonical/hreflang/og:locale。 */
+const syncMetadataLocale = (value: Locale): void => {
+  const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+  const href = canonical?.getAttribute('href');
+  if (href) canonical?.setAttribute('href', withLocale(href, value));
+  document.querySelectorAll<HTMLLinkElement>('link[rel="alternate"][hreflang]').forEach((link) => {
+    const hreflang = link.getAttribute('hreflang');
+    const target = link.getAttribute('href');
+    if (hreflang && isSupportedLocale(hreflang) && target) {
+      link.setAttribute('href', withLocale(target, hreflang));
+    }
+  });
+  document.querySelector('meta[property="og:locale"]')?.setAttribute('content', OG_LOCALES[value]);
+};
+
+/** 同步 lang / dir（RTL）、cookie 与 SEO 元数据，供 SSR 首屏读取。 */
 const applyDocumentLocale = (value: Locale): void => {
   document.documentElement.lang = value;
   document.documentElement.dir = isRtlLocale(value) ? 'rtl' : 'ltr';
   document.cookie = `${COOKIE_KEY}=${encodeURIComponent(value)}; path=/; max-age=31536000; samesite=lax`;
+  syncMetadataLocale(value);
 };
 
 /** 语言写入 URL 前缀（P1-9）：保留当前页面段，去掉旧的 ?lang=，URL 可分享可索引。 */
 const syncUrlLocale = (value: Locale): void => {
   const url = new URL(window.location.href);
-  const segments = url.pathname.split('/').filter(Boolean);
-  if (segments[0] && isSupportedLocale(segments[0])) segments[0] = value;
-  else segments.unshift(value);
-  url.pathname = '/' + segments.join('/');
+  url.href = withLocale(url.toString(), value);
   url.searchParams.delete('lang');
   window.history.replaceState(null, '', url.toString());
 };
@@ -98,6 +124,8 @@ export function LocaleProvider({
       getUrlLocale() ?? (stored && isSupportedLocale(stored) ? stored : getBrowserLocale());
     setLocaleState(initial);
     applyDocumentLocale(initial);
+    // URL / cookie 胜出时同步回写存储，避免三处状态分叉导致后续页面语言跳变
+    safeSetItem(storageKey, initial);
   }, [storageKey, defaultLocale]);
 
   // P1-11：只按需加载当前语言词典；SSR 预载时直接复用，切回默认语言也恢复预载词典。

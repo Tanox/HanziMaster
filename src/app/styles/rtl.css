@@ -10,6 +10,11 @@
   transform: none;
 }
 
+/* 抽屉用 end-0 锚定，RTL 时位于左侧；滑入方向须随之翻转 */
+:where([dir='rtl']) .animate-slide-in-right {
+  animation-name: slideInLeft;
+}
+
 :where([dir='rtl']) .text-left {
   text-align: right;
 }

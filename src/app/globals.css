@@ -159,7 +159,7 @@ h3 {
 .skip-to-content {
   position: absolute;
   top: -100%;
-  left: 16px;
+  inset-inline-start: 16px;
   z-index: 100;
   padding: 12px 20px;
   background-color: var(--color-primary);

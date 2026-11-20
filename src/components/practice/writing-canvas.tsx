@@ -52,7 +52,6 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
       completedRef,
       onAccuracyChange,
     });
-
     const clearCanvas = useCallback(() => {
       keyboard.reset();
       const canvas = canvasRef.current;
@@ -68,12 +67,12 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
     }, [character, keyboard.reset]);
 
     useImperativeHandle(ref, () => ({ clearCanvas }), [clearCanvas]);
-
     useEffect(() => {
       const canvas = canvasRef.current;
       if (canvas) drawHint(canvas, character);
       completedRef.current = new Set();
       animStrokeRef.current = -1;
+      tracingRef.current = null;
       userPointsRef.current = [];
       accuracyRef.current = [];
       return () => {
@@ -81,11 +80,19 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
         animHandleRef.current = null;
       };
     }, [character]);
-
     const getPoint = (e: React.PointerEvent<HTMLCanvasElement>) => {
       const rect = canvasRef.current?.getBoundingClientRect();
       if (!rect) return { x: 0, y: 0 };
       return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    };
+
+    const startStroke = (e: React.PointerEvent<HTMLCanvasElement>) => {
+      isDrawing.current = true;
+      const p = getPoint(e);
+      userPointsRef.current = [p];
+      const ctx = canvasRef.current?.getContext('2d');
+      ctx?.beginPath();
+      ctx?.moveTo(p.x, p.y);
     };
 
     // 触发下一笔的引导动画（具体帧循环在 writing-canvas-animation.ts）
@@ -100,43 +107,29 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
         completed: completedRef.current,
         animHandleRef,
         animStrokeRef,
+        onGuidanceReady: (index) => { tracingRef.current = index; },
       });
     };
 
     const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
       // 有笔顺数据时：引导播放与跟写描红交替进行
       if (strokePaths) {
-        // 全部笔画已播放完成：再次点击重置并从第一笔重新引导
+        // 全部笔画已跟写完成：再次点击重置并从第一笔重新引导
         if (completedRef.current.size >= strokePaths.length && animStrokeRef.current === -1) {
           clearCanvas();
           return;
         }
         if (animStrokeRef.current !== -1) return; // 引导动画进行中，忽略
-        if (completedRef.current.size === 0) {
-          // 第一笔：先播放引导动画
+        if (tracingRef.current === null) {
+          // 当前笔尚未引导：先播放动画，播完后等待跟写
           playNextStroke();
-        } else {
-          // 引导已播放过：进入跟写描红模式，收集当前笔轨迹
-          isDrawing.current = true;
-          userPointsRef.current = [getPoint(e)];
-          const canvas = canvasRef.current;
-          const ctx = canvas?.getContext('2d');
-          if (canvas && ctx) {
-            const p = getPoint(e);
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-          }
+          return;
         }
+        // 引导已播完：进入跟写描红模式，收集当前笔轨迹
+        startStroke(e);
         return;
       }
-      isDrawing.current = true;
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
-      const p = getPoint(e);
-      ctx.beginPath();
-      ctx.moveTo(p.x, p.y);
+      startStroke(e);
     };
 
     const handlePointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
@@ -152,10 +145,10 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
     const stopDrawing = () => {
       if (!isDrawing.current) return;
       isDrawing.current = false;
-      if (strokePaths && userPointsRef.current.length > 0) {
-        const current = completedRef.current.size - 1;
+      if (strokePaths && userPointsRef.current.length > 0 && tracingRef.current !== null) {
+        const current = tracingRef.current;
         const canvas = canvasRef.current;
-        if (canvas && current >= 0) {
+        if (canvas && strokePaths[current]) {
           const rect = canvas.getBoundingClientRect();
           const size = Math.min(rect.width, rect.height);
           accuracyRef.current = judgeUserStroke({
@@ -167,7 +160,10 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
             onAccuracyChange,
           });
         }
+        completedRef.current.add(current);
+        tracingRef.current = null;
         userPointsRef.current = [];
+        playNextStroke(); // 跟写完成后自动演示下一笔，形成交替引导
       }
     };
 

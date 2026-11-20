@@ -68,7 +68,7 @@ export const OG_LOCALES: Record<SupportedLocale, string> = {
   'zh-CN': 'zh_CN',
   'zh-TW': 'zh_TW',
   es: 'es_ES',
-  ar: 'ar_AR',
+  ar: 'ar_SA',
   fr: 'fr_FR',
   'pt-BR': 'pt_BR',
   de: 'de_DE',
