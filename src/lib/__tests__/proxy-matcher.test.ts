@@ -1,4 +1,5 @@
 // src/lib/__tests__/proxy-matcher.test.ts v5.2.57
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { PROXY_MATCHER, shouldBypassProxy } from '../proxy-matcher';
 
@@ -32,10 +33,17 @@ describe('proxy 路由绕过规则', () => {
   });
 
   it('matcher 字符串与运行时守卫结论一致', () => {
-    const matcher = new RegExp(PROXY_MATCHER);
+    // Next matcher 对整条路径生效，测试需^...$锚定，否则可在中间斜杠处误命中
+    const matcher = new RegExp(`^${PROXY_MATCHER}$`);
     expect(matcher.test('/opengraph-image')).toBe(false);
     expect(matcher.test('/twitter-image')).toBe(false);
     expect(matcher.test('/zh-CN')).toBe(true);
     expect(matcher.test('/api/health')).toBe(false);
+  });
+
+  it('proxy.ts 的静态 matcher 字面量与共享常量保持同步', () => {
+    const source = readFileSync(new URL('../../proxy.ts', import.meta.url), 'utf8');
+    const literal = source.match(/matcher:\s*\['([^']+)'\]/)?.[1];
+    expect(literal).toBe(PROXY_MATCHER);
   });
 });

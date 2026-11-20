@@ -1,5 +1,23 @@
 ﻿# Changelog
 
+## [5.2.57] - 修复 Vercel 部署审计发现的全部代码/配置问题
+### Fixed
+- **Sentry 构建路径实测失败**：`next.config.mjs` 从 `@sentry/nextjs` 根导入 `withSentryConfig`，但 v11 已将该导出移至 `@sentry/nextjs/config`；平台一旦设置 `SENTRY_DSN` 即报 `withSentryConfig is not a function`。已改为从 `/config` 具名导入，并用带 DSN 的独立构建实测通过。
+- **proxy 拦截社交分享图**：`/opengraph-image` / `/twitter-image` / `icon` / `manifest` / `favicon` 被语言协商 302。新增 `src/lib/proxy-matcher.ts` 统一绕过规则（matcher 静态字面量 + 运行时守卫），并加单测锁定两处同步。
+- **Next 16 matcher 静态约束**：`config.matcher` 不能引用导入常量，首次修复曾导致构建失败，已改为字面量并保留同步校验。
+- **备份上限超平台限制**：`MAX_BACKUP_BYTES` 5 MB → 4 MB，避免 Vercel Serverless 4.5 MB 请求体上限提前返回 413。
+- **根目录门禁**：`.playwright-cli/` 与历史 `.tmp/` 纳入 gitignore/白名单，恢复 `check:root` 全绿。
+### Added
+- `scripts/check-deploy-env.mjs`：部署环境变量预检（站点 URL 形状/正式域名、GA ID、Sentry DSN 与配套变量、Blob 形状），支持 `--strict --env-file` 读取 `vercel pull` 产物；不打印任何值，报告写 `reports/deploy-env.txt`。
+- `scripts/check-runtime.mjs` + `prebuild`：构建最早期的 Node ≥24.11 门禁，报告写 `reports/runtime-check.txt`。
+- `deploy.yml`：正式仓库缺三项 Vercel Secrets 直接失败（fork 才跳过）；`vercel pull` 后执行严格环境变量预检；Vercel CLI 钉版本 `66.5.0`；部署加 `--yes`。
+- `release.yml`：Deploy 必须真正 `success`，`skipped` 不再视为可发布。
+- `vercel.json`：显式 `installCommand` / `buildCommand`；immutable 缓存收窄至 `/_next/static/(.*)`；`/sw.js` 改 `must-revalidate`。
+- `check:csp` 扩展校验 Vercel 配置不重复安全头、SW 缓存规则存在。
+- `.npmrc` 补 `engine-strict` / `package-manager-strict`；`@vercel/blob` 钉为 `2.9.0`；`.env.example` 补 `BLOB_STORE_ID`。
+### Docs
+- `docs/vercel-deployment-audit.md` 增修复状态表与剩余平台动作清单；`docs/05-deployment.md` 同步 Vercel 配置、Node 项目设置、部署/发布门禁与缓存策略。
+
 ## [5.2.56] - 原型补齐设置面板、云同步与法律页
 ### Added
 - `prototype.html` 新增设置面板（`#settings-dialog`）与头部/抽屉设置入口，语义化 id 与生产 `SettingsDialog` / `CloudSyncControls` 对齐：主题三态 radiogroup、语言选择（原型演示 4 语言）、触觉/减少动效开关、进度导出/导入与二次确认重置。

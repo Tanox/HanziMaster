@@ -6,7 +6,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { DEFAULT_LOCALE, isSupportedLocale } from '@/lib/site';
 import { LOCALE_COOKIE, LOCALE_HEADER, PATH_HEADER, negotiateLocales } from '@/lib/request-locale';
-import { PROXY_MATCHER, shouldBypassProxy } from '@/lib/proxy-matcher';
+import { shouldBypassProxy } from '@/lib/proxy-matcher';
 
 /** 从浏览器 Accept-Language 推断首选语言（首访 / 时用于生成语言前缀）。 */
 function negotiateLocale(request: NextRequest): string {
@@ -55,7 +55,9 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // 统一定义于 lib/proxy-matcher.ts：除 _next/api/monitoring/带点静态外，
-  // opengraph-image / twitter-image / icon / manifest / favicon 也不得被 302（P1-C）
-  matcher: [PROXY_MATCHER],
+  // Next 16 要求 matcher 为静态字符串字面量（不能用导入常量）；
+  // 与 lib/proxy-matcher.ts 的 PROXY_MATCHER 必须一致，单测会校验两处同步。
+  // 除 _next/api/monitoring/带点静态外，opengraph-image / twitter-image / icon /
+  // manifest / favicon 也不得被 302（P1-C）。
+  matcher: ['/((?!_next/|api/|monitoring|opengraph-image|twitter-image|icon|manifest|favicon|.*\\.).*)'],
 };
