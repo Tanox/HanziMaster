@@ -83,7 +83,7 @@ export const en = {
     clear: 'Clear',
     next: 'Next',
     done: 'Done',
-    quizDialogDesc: 'Select the correct pinyin',
+    quizDialogDesc: 'Select the correct character',
     quizComplete: 'Quiz Complete!',
     correct: 'Correct',
     wrong: 'Wrong',

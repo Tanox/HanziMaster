@@ -83,7 +83,7 @@ export const ptBR = {
     clear: 'Limpar',
     next: 'Próximo',
     done: 'Concluído',
-    quizDialogDesc: 'Selecione o pinyin correto',
+    quizDialogDesc: 'Selecione o caractere correto',
     quizComplete: 'Quiz Concluído!',
     correct: 'Correto',
     wrong: 'Incorreto',

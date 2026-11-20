@@ -13,6 +13,7 @@ import { safeRemoveItem } from '@/lib/storage';
 import { PROGRESS_IMPORTED_EVENT, PROGRESS_STORAGE_KEY } from '@/hooks/use-progress';
 import { ProgressTransferControls } from '@/components/progress-transfer-controls';
 import { CloudSyncControls } from '@/components/cloud-sync-controls';
+import { SwitchRow, sectionTitle } from '@/components/settings-dialog-parts';
 import type { Locale } from '@/lib/i18n';
 
 const THEMES: readonly Theme[] = ['light', 'dark', 'system'];

@@ -83,7 +83,7 @@ export const ar = {
     clear: 'مسح',
     next: 'التالي',
     done: 'تم',
-    quizDialogDesc: 'اختر اللكنة الصحيحة',
+    quizDialogDesc: 'اختر الحرف الصحيح',
     quizComplete: 'اكتمل الاختبار!',
     correct: 'صحيح',
     wrong: 'خطأ',

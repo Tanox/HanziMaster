@@ -83,7 +83,7 @@ export const ru = {
     clear: 'Очистить',
     next: 'Далее',
     done: 'Готово',
-    quizDialogDesc: 'Выберите правильный пиньинь',
+    quizDialogDesc: 'Выберите правильный иероглиф',
     quizComplete: 'Викторина Завершена!',
     correct: 'Правильно',
     wrong: 'Неправильно',

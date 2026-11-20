@@ -15,6 +15,8 @@ export interface WritingInputCtx {
   isDrawing: { current: boolean };
   pointerId: { current: number | null };
   userPoints: { current: { x: number; y: number }[] };
+  /** 已完成笔画的轨迹快照，供画布尺寸变化后重放，避免视觉墨迹丢失。 */
+  traces: { current: { x: number; y: number }[][] };
   accuracy: { current: number[] };
   completed: { current: Set<number> };
   tracing: { current: number | null };
@@ -106,6 +108,7 @@ export const pointerUp = (ctx: WritingInputCtx, e: ReactPointerEvent<HTMLCanvasE
     });
   }
   ctx.completed.current.add(current);
+  ctx.traces.current.push([...ctx.userPoints.current]);
   ctx.tracing.current = null;
   ctx.userPoints.current = [];
   playNextStroke(ctx);

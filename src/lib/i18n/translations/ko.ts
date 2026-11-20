@@ -83,7 +83,7 @@ export const ko = {
     clear: '지우기',
     next: '다음',
     done: '완료',
-    quizDialogDesc: '올바른 핀인을 선택하세요',
+    quizDialogDesc: '올바른 한자를 선택하세요',
     quizComplete: '퀴즈 완료!',
     correct: '정답',
     wrong: '오답',

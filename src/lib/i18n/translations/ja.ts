@@ -83,7 +83,7 @@ export const ja = {
     clear: 'クリア',
     next: '次へ',
     done: '完了',
-    quizDialogDesc: '正しいピンインを選択してください',
+    quizDialogDesc: '正しい漢字を選択してください',
     quizComplete: 'クイズ完了！',
     correct: '正解',
     wrong: '不正解',

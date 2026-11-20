@@ -4,7 +4,7 @@
 
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import { useTranslation } from '@/components/locale-provider';
-import { drawHint } from './writing-canvas-utils';
+import { drawHint, redrawUserStrokes } from './writing-canvas-utils';
 import { ProgressLabel } from './writing-canvas-parts';
 import { KeyboardStrokeForm } from './writing-canvas-keyboard';
 import { useKeyboardStrokes } from './use-keyboard-strokes';
@@ -40,6 +40,7 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
     const completedRef = useRef<Set<number>>(new Set());
     const tracingRef = useRef<number | null>(null);
     const userPointsRef = useRef<{ x: number; y: number }[]>([]);
+    const tracesRef = useRef<{ x: number; y: number }[][]>([]);
     const accuracyRef = useRef<number[]>([]);
     const keyboard = useKeyboardStrokes({
       strokePaths,

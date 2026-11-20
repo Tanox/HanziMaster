@@ -83,7 +83,7 @@ export const zhCN = {
     clear: '清除',
     next: '下一个',
     done: '完成',
-    quizDialogDesc: '选择正确的拼音',
+    quizDialogDesc: '选择正确的汉字',
     quizComplete: '测验完成！',
     correct: '正确',
     wrong: '错误',

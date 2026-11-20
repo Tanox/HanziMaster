@@ -66,6 +66,30 @@ export const drawHint = (canvas: HTMLCanvasElement, character: string) => {
   ctx.globalAlpha = 1;
 };
 
+/** 尺寸变化后重放已完成的指针笔迹；点位为 CSS 像素，与 pointerMove 记录时同坐标系。 */
+export const redrawUserStrokes = (
+  canvas: HTMLCanvasElement,
+  traces: { x: number; y: number }[][],
+) => {
+  if (traces.length === 0) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  const dpr = window.devicePixelRatio || 1;
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(dpr, dpr);
+  ctx.strokeStyle = resolveFg();
+  ctx.lineWidth = 4;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  for (const points of traces) {
+    if (points.length < 2) continue;
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    for (let i = 1; i < points.length; i++) ctx.lineTo(points[i].x, points[i].y);
+    ctx.stroke();
+  }
+};
+
 // 沿中位线绘制一笔：从 start 到 end 按 progress(0-1) 逐点描线
 export const drawMedianStroke = (
   ctx: CanvasRenderingContext2D,

@@ -83,7 +83,7 @@ export const zhTW = {
     clear: '清除',
     next: '下一個',
     done: '完成',
-    quizDialogDesc: '選擇正確的拼音',
+    quizDialogDesc: '選擇正確的漢字',
     quizComplete: '測驗完成！',
     correct: '正確',
     wrong: '錯誤',
