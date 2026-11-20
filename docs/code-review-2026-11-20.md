@@ -50,3 +50,5 @@
 ## 5. 门禁结果
 
 `tsc --noEmit` ✓ · ESLint（全部改动源码）✓ · `check:lines`（all ≤ 200）✓ · `i18n:lint` ✓ · 全量单测 ✓ · `version:sync --check` ✓。
+
+补充：审查期间 `check:root` 发现 `.nvmdrc`（nvm-windows 版本配置，已入库）未列入根目录白名单，已补入 `scripts/check-root-clean.mjs`，避免门禁假红。

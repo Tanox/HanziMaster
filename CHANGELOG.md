@@ -15,6 +15,9 @@
 - 对话框与主题提示改用物理 `left-1/2` 居中，修复 RTL 偏位；抽屉关闭手势按 `dir` 判定方向（LTR 右滑、RTL 左滑）；主题/语言切换按钮增加 `id`/`idPrefix` prop 消除桌面与移动端重复 DOM id；主题按钮 aria-label 走 i18n 并补 `type=button`。
 - 移除 `<main key={pathname}>`，避免每次路由切换强制重挂子树；学习/练习测验结果补 `role=status/aria-live` 与 `aria-invalid/describedby`，练习选项组补 roving tabindex 与方向键导航。
 
+### Chore
+- `check-root-clean` 白名单补 `.nvmdrc`（nvm-windows 项目级 Node 版本配置，v5.2.49 已入库但门禁漏放行），消除根目录假红。
+
 ### Docs
 - 新增 `docs/code-review-2026-11-20.md`（审查结论、18 项修复的原因/思路、未修建议、门禁结果）；`docs/tasks.md` §4 记录修复与 4 项后续任务；`tasks-done.md` 归档；`.env.example` 与 `docs/03-development.md` 补充 SITE_URL 校验说明。
 

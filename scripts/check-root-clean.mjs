@@ -1,4 +1,4 @@
-// scripts/check-root-clean.mjs v5.2.48
+// scripts/check-root-clean.mjs v5.2.50
 // 根目录清洁度门禁：禁止临时脚本 / 一次性产物散落仓库根目录。
 // 固定子目录约定：会话级临时文件唯一放 .tmp/；脚本与工具正式产物写 reports/；两者均 gitignore、不入库。
 // 规则：根目录每个条目必须命中白名单，否则判失败。
@@ -17,7 +17,7 @@ const ALLOWED_DIRS = new Set([
 
 // 包管理器 / 构建工具 / 社区惯例要求位于仓库根的文件
 const ALLOWED_FILES = new Set([
-  '.env.example', '.gitattributes', '.gitignore', '.npmrc', '.nvmrc', '.prettierignore', '.prettierrc.json',
+  '.env.example', '.gitattributes', '.gitignore', '.npmrc', '.nvmrc', '.nvmdrc', '.prettierignore', '.prettierrc.json',
   'CHANGELOG.md', 'components.json', 'CONTRIBUTING.md', 'CONTRIBUTING_EN.md',
   'edgeone.json', 'eslint.config.js', 'HanziMaster.code-workspace', 'LICENSE',
   'metadata.json', 'next-env.d.ts', 'next.config.mjs', 'NOTICE', 'package.json',
