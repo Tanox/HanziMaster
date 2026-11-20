@@ -106,13 +106,13 @@ src/
 
 e2e/                         # Playwright E2E tests (home / a11y)
 prototype/                   # 6 HTML skeletons + styles/ + scripts/ (all ≤200 lines)
-docs/                        # 16 specification documents (entry: docs/index.md)
-scripts/                     # 7 Node tool scripts (see docs/03-development.md §3)
+docs/                        # 18 specification documents (entry: docs/index.md)
+scripts/                     # 9 Node tool scripts (see docs/03-development.md §3)
 reports/                     # Script artifacts (gitignored)
-.github/workflows/           # ci.yml (quality gates) / deploy.yml (Vercel)
+.github/workflows/           # ci.yml (quality gates) / deploy.yml (Vercel) / release.yml (auto release)
 ```
 
-CSP and security headers are injected centrally by `next.config.mjs` `headers()`; there is no middleware. Full tree: [docs/01-overview.md](docs/01-overview.md) §6.
+CSP and security headers are injected centrally by `next.config.mjs` `headers()`; `src/proxy.ts` is the Next.js 16 middleware for URL-level i18n prefix negotiation and request-header injection. Full tree: [docs/01-overview.md](docs/01-overview.md) §6.
 
 ## Version & Build Identifier
 
@@ -128,6 +128,7 @@ CSP and security headers are injected centrally by `next.config.mjs` `headers()`
 | Privacy Policy | `/privacy` | Data collection and processing |
 | Terms of Service | `/terms` | Terms of use and disclaimer |
 | Health check | `/api/health` | App status, version and build ID |
+| Cloud progress | `/api/progress` | Optional: read/write progress backups in a private Vercel Blob store using a sync code; falls back to local-only when unconfigured |
 
 ## Tech Stack
 
@@ -140,7 +141,7 @@ CSP and security headers are injected centrally by `next.config.mjs` `headers()`
 | Error monitoring | Sentry (`@sentry/nextjs`, zero overhead without a DSN) |
 | Fonts | Space Grotesk / Playfair Display / Noto Serif SC / JetBrains Mono (`next/font/google`) |
 | i18n | Custom i18n Context, 11 languages, `TranslationKey` union type |
-| Testing | Vitest `^3.2.4` + jsdom + Testing Library (24 unit test files) + Playwright E2E |
+| Testing | Vitest `^3.2.4` + jsdom + Testing Library (36 unit test files) + Playwright E2E |
 | Deployment | Vercel / Tencent Cloud EdgeOne Pages |
 
 ## Development Standards

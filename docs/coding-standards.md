@@ -1,6 +1,6 @@
 # 编码规范
 
-> 文档版本：v5.2.48（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.50（与项目版本同步，权威版本见 `package.json`）
 
 本文是项目**编码风格、命名约定、目录组织与质量门禁的唯一权威**。提交信息、分支与代码审查见 [git-workflow.md](git-workflow.md)，环境与命令见 [03-development.md](03-development.md)。其他文档只做摘要与链接，不得另立一套规则。
 

@@ -198,7 +198,7 @@ export function Example() {
 
 ## 12. 环境变量与浏览器要求
 
-- 环境变量：核心页面**无需任何**即可运行；可选变量（`NEXT_PUBLIC_SITE_URL` / GA / Sentry / `ANALYZE`）见 `.env.example` 与 [01-overview.md](01-overview.md) §7。运行期版本由 `next.config.mjs` 注入 `NEXT_PUBLIC_APP_VERSION` / `NEXT_PUBLIC_BUILD_ID`，不需手工配置。
+- 环境变量：核心页面**无需任何**即可运行；可选变量（`NEXT_PUBLIC_SITE_URL` / `NEXT_PUBLIC_GA_MEASUREMENT_ID` / Sentry DSN / `BLOB_READ_WRITE_TOKEN` + `BLOB_STORE_ID` / `ANALYZE` / `MAX_BUNDLE_KB` / `NEXT_DIST_DIR`）见 `.env.example` 与 [01-overview.md](01-overview.md) §7。运行期版本由 `next.config.mjs` 注入 `NEXT_PUBLIC_APP_VERSION` / `NEXT_PUBLIC_BUILD_ID`，不需手工配置。
 - 浏览器：Chrome / Firefox / Safari / Edge 最新两个主要版本；需启用 JavaScript、`localStorage`、Canvas 与（发音功能）Web Speech API。
 - 构建期联网资源：`next/font/google`（Google Fonts）。
 

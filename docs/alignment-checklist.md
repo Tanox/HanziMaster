@@ -1,6 +1,6 @@
 ﻿# 对齐检查清单
 
-> 文档版本：v5.2.43（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.50（与项目版本同步，权威版本见 `package.json`）
 > 基线日期：2026-11-07
 
 本文记录**当前**规范文档、原型与代码实现的对齐状态。它是状态报告，**不是任务清单**：所有待办只在 [tasks.md](tasks.md) 维护。历史版本本文曾包含「113 项 100% 对齐」的快照与 24 个 UI 组件的统计，与代码不符，已整体替换；历史叙述保留在 `CHANGELOG.md` 中，不回改。
@@ -13,10 +13,10 @@
 |------|---------|---------|------|
 | 项目定位 / 技术栈 | `01-overview.md` | `package.json` / `src/` | 已对齐（依赖表含 Radix 按需子包与 Sentry） |
 | 架构分层 | `02-architecture.md` | `src/app/` + `src/components/` + `src/lib/` | 已对齐（3 页面均为 Client Component，根布局 Server；法律页与 `/api/health` 为 Server） |
-| 环境与命令 | `03-development.md` | `package.json` scripts / `scripts/`（7 个） | 已对齐（命令表与 21 条 scripts 一一对应） |
-| 组件 API | `04-api-reference.md` | `src/components/` / `src/lib/` | 已对齐（签名按源码重写，含 `/api/health`） |
-| 部署 | `05-deployment.md` | `vercel.json` / `edgeone.json` / `next.config.mjs` / workflows | 已对齐（CI 工作流一览 + 自动发布规则；`release.yml` 规划中） |
-| 测试 | `06-testing.md` | `vitest.config.ts` / `vitest.setup.ts` / `playwright.config.ts` / 24 个单测 + 2 个 e2e | 已对齐（覆盖率阈值 80/70/80/80 已生效） |
+| 环境与命令 | `03-development.md` | `package.json` scripts / `scripts/`（9 个） | 已对齐（命令表与 scripts 一一对应） |
+| 组件 API | `04-api-reference.md` | `src/components/` / `src/lib/` | 已对齐（签名按源码重写，含 `/api/health` 与 `/api/progress`） |
+| 部署 | `05-deployment.md` | `vercel.json` / `edgeone.json` / `next.config.mjs` / workflows | 已对齐（CI 工作流一览 + 自动发布规则；`release.yml` 已启用） |
+| 测试 | `06-testing.md` | `vitest.config.ts` / `vitest.setup.ts` / `playwright.config.ts` / 36 个单测 + 2 个 e2e | 已对齐（覆盖率阈值 80/70/80/80 已生效） |
 | 编码规范 | `coding-standards.md` | `tsconfig.json` / `eslint.config.js` / `.prettierrc.json` | 已对齐（单一权威） |
 | 提交规范 | `commit-template.md` | `CONTRIBUTING*` / `.trae/rules/` / PR 模板 | 已对齐（10 类 type 与版本标注） |
 | Git 流程 | `git-workflow.md` | `.github/PULL_REQUEST_TEMPLATE.md` | 已对齐（新增分支与审查流程） |
@@ -39,7 +39,7 @@
 ## 3. 国际化
 
 - 11 语言包：`en, zh-CN, zh-TW, es, ar, fr, pt-BR, de, ja, ko, ru`（`src/lib/i18n/translations/`）。
-- `en.ts` 顶层 6 个键域：`common` / `home` / `learn` / `practice` / `footer` / `meta`；`i18n.test.ts` 校验 11 语言叶子键一致。
+- `en.ts` 基准包 + `extensions/` 合并后共 9 个键域：`common` / `home` / `learn` / `practice` / `settings` / `seo` / `geo` / `footer` / `meta`；`i18n.test.ts` 校验 11 语言叶子键一致。
 - `t()` 的 key 为 `TranslationKey` 点分联合类型；插值 `{{name}}` 由 `translate.ts` 处理。
 - `footer.copyright` 用 `{{versionLabel}}`；**不存在 `common.appVersion`**，文档与代码均无此键。
 - `home` 域的历史 `ai*` / `etymology*` / `adaptive*` 键仍被首页引用，只是文案键，不代表存在 AI 后端。
@@ -61,22 +61,22 @@
 | 配置 | 文件 | 现状 |
 |------|------|------|
 | 版本注入 | `next.config.mjs` | 读 `package.json`，注入 `NEXT_PUBLIC_APP_VERSION` / `NEXT_PUBLIC_BUILD_ID` |
-| 安全响应头 | `next.config.mjs` `headers()` | CSP + 6 个安全头，作用于 `/:path*`；**无中间件** |
+| 安全响应头 | `next.config.mjs` `headers()` | CSP + 6 个安全头，作用于 `/:path*`；另有 `src/proxy.ts`（Next 16 中间件，负责 URL 级 i18n 前缀协商与请求头注入） |
 | 部署 | `vercel.json` / `edgeone.json` | 静态资源缓存；EdgeOne 安装命令先装 pnpm |
 | 依赖约束 | `.npmrc` / `pnpm-workspace.yaml` | 强制 pnpm；`onlyBuiltDependencies` 与 `overrides` 在 workspace 文件 |
 | 类型 / Lint | `tsconfig.json` / `eslint.config.js` | strict；ESLint 9 flat config |
 | 格式化 | `.prettierrc.json` | `prettier ^3.9.10` 已安装，`pnpm format` 可用 |
 | 测试 | `vitest.config.ts` / `vitest.setup.ts` / `playwright.config.ts` | jsdom + globals + 内存 Storage 兜底；coverage 阈值 80/70/80/80；Playwright chromium |
-| CI | `.github/workflows/` | `ci.yml`（quality / coverage / e2e）+ `deploy.yml`（Vercel，无 Secrets 自动跳过）；`release.yml` 规划中（P1-37） |
+| CI | `.github/workflows/` | `ci.yml`（quality / coverage / e2e）+ `deploy.yml`（Vercel，无 Secrets 自动跳过）+ `release.yml`（版本发布与 CHANGELOG 摘录） |
 | 覆盖率 | `@vitest/coverage-v8@3.2.4` | 已安装，`vitest.config.ts` 含 coverage 段与阈值门禁 |
 
 ## 6. 测试
 
-当前 **24 个单测文件**（分布在 `src/lib` / `src/hooks` / `src/components` 的 `__tests__/`）+ **2 个 e2e 测试**（`e2e/home.spec.ts`、`e2e/a11y.spec.ts`）。使用 Vitest + Testing Library + Playwright，不使用 Jest；用例数以 `pnpm test` 输出为准。详见 [06-testing.md](06-testing.md) §2、§6。
+当前 **36 个单测文件**（分布在 `src/lib` / `src/hooks` / `src/components` 的 `__tests__/`）+ **2 个 e2e 测试**（`e2e/home.spec.ts`、`e2e/a11y.spec.ts`）。使用 Vitest + Testing Library + Playwright，不使用 Jest；用例数以 `pnpm test` 输出为准。详见 [06-testing.md](06-testing.md) §2、§6。
 
 ## 7. 文档体系
 
-- `docs/` 共 **16 篇**；[index.md](index.md) 的 §2 单一职责矩阵规定「一类规则只在一个文档定义」。
+- `docs/` 共 **18 篇**；[index.md](index.md) 的 §2 单一职责矩阵规定「一类规则只在一个文档定义」。
 - 文档版本戳格式统一为 `> 文档版本：vX.Y.Z（与项目版本同步，权威版本见 package.json）`；**只更新本次改动的文档**，未改动文档保留旧戳合法。
 - 术语、格式与 `npm` 字样豁免规则见 [index.md](index.md) §4 / §6。
 - 归档文档 `prototype/UI_UX_REVIEW.md`、`prototype/OPTIMIZATION_SUMMARY.md`、`prototype/PROJECT_STRUCTURE.md` 与 `CHANGELOG.md` 历史条目按「历史记录不篡改」保留原文，不作为当前状态依据。
@@ -92,7 +92,7 @@
 
 | 位置 | 值 / 机制 |
 |------|----------|
-| `package.json` `version` | `5.2.37`（唯一权威源） |
+| `package.json` `version` | `5.2.50`（唯一权威源；本次文档修订时的值，后续以 package.json 为准） |
 | `metadata.json` | `name` 内版本与 `version` 同步 |
 | `README.md` / `README_EN.md` | 标题与页脚同步 |
 | `CHANGELOG.md` | 新增 `5.2.34` 小节 |

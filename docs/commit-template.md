@@ -1,6 +1,6 @@
 # Git 提交信息规范
 
-> 文档版本：v5.2.35（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.50（与项目版本同步，权威版本见 `package.json`）
 
 本文是**提交信息格式的唯一权威**。分支、PR、审查与发版见 [git-workflow.md](git-workflow.md)；编码规则见 [coding-standards.md](coding-standards.md)。[README.md](../README.md)、[CONTRIBUTING.md](../CONTRIBUTING.md) 中的提交段落均为本文摘要，冲突以本文为准。
 

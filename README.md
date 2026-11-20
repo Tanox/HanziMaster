@@ -106,13 +106,13 @@ src/
 
 e2e/                         # Playwright 端到端测试（home / a11y）
 prototype/                   # 6 个 HTML 骨架 + styles/ + scripts/（源码均 ≤200 行）
-docs/                        # 规范文档 16 篇（入口 docs/index.md）
-scripts/                     # 7 个 Node 工具脚本（见 docs/03-development.md §3）
+docs/                        # 规范文档 18 篇（入口 docs/index.md）
+scripts/                     # 9 个 Node 工具脚本（见 docs/03-development.md §3）
 reports/                     # 脚本产物（gitignore，不提交）
-.github/workflows/           # ci.yml（质量门禁）/ deploy.yml（Vercel 部署）
+.github/workflows/           # ci.yml（质量门禁）/ deploy.yml（Vercel 部署）/ release.yml（自动发布）
 ```
 
-CSP 与安全响应头由 `next.config.mjs` 的 `headers()` 统一注入；项目无中间件。完整目录树见 [docs/01-overview.md](docs/01-overview.md) §6。
+CSP 与安全响应头由 `next.config.mjs` 的 `headers()` 统一注入；`src/proxy.ts` 是 Next.js 16 的中间件（URL 级 i18n 前缀协商与请求头注入）。完整目录树见 [docs/01-overview.md](docs/01-overview.md) §6。
 
 ## 版本与构建标识
 
@@ -128,6 +128,7 @@ CSP 与安全响应头由 `next.config.mjs` 的 `headers()` 统一注入；项�
 | 隐私政策 | `/privacy` | 数据收集与处理说明 |
 | 服务条款 | `/terms` | 使用条款与免责声明 |
 | 健康检查 | `/api/health` | 返回应用状态、版本与 build 编号 |
+| 云端进度 | `/api/progress` | 可选：用同步码在 Vercel Blob 私有 store 读写进度备份；未配置 token 时降级为纯本地 |
 
 ## 技术栈
 
@@ -140,7 +141,7 @@ CSP 与安全响应头由 `next.config.mjs` 的 `headers()` 统一注入；项�
 | 错误监控 | Sentry（`@sentry/nextjs`，未配置 DSN 时零开销） |
 | 字体 | Space Grotesk / Playfair Display / Noto Serif SC / JetBrains Mono（`next/font/google`） |
 | 国际化 | 自定义 i18n Context，11 语言，`TranslationKey` 类型约束 |
-| 测试 | Vitest `^3.2.4` + jsdom + Testing Library（24 个单测文件）+ Playwright E2E |
+| 测试 | Vitest `^3.2.4` + jsdom + Testing Library（36 个单测文件）+ Playwright E2E |
 | 部署 | Vercel / 腾讯云 EdgeOne Pages |
 
 ## 开发规范

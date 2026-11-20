@@ -1,6 +1,6 @@
 # Git 工作流与代码审查规范
 
-> 文档版本：v5.2.44（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.50（与项目版本同步，权威版本见 `package.json`）
 
 本文是**分支管理、Pull Request、代码审查与发版流程的唯一权威**。提交信息格式见 [commit-template.md](commit-template.md)，编码规则见 [coding-standards.md](coding-standards.md)，版本同步位置清单见 [coding-standards.md](coding-standards.md) §3。
 

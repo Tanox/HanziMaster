@@ -122,7 +122,10 @@ HanziMaster/
 | `NEXT_PUBLIC_SITE_URL` | 站点绝对地址，用于 `metadataBase` / canonical / hreflang / sitemap；本地留空回退 `http://localhost:3000` | 生产部署必填 |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | GA4 衡量 ID；未设置完全不加载统计脚本，设置后仍需用户在同意横幅中选择「接受」 | 否 |
 | `SENTRY_DSN` / `NEXT_PUBLIC_SENTRY_DSN` / `SENTRY_ORG` / `SENTRY_PROJECT` / `SENTRY_AUTH_TOKEN` | Sentry 错误监控与 source maps 上传；未设置 DSN 时不启用、零开销 | 否（CI 构建需 AUTH_TOKEN 上传） |
+| `BLOB_READ_WRITE_TOKEN` / `BLOB_STORE_ID` | 可选云端进度同步：Vercel Blob 私有 store 的读写凭证与 store 标识；未配置时 `/api/progress` 返回 503，应用保持纯本地模式 | 否 |
 | `ANALYZE` | `ANALYZE=1 pnpm build` 生成 bundle 分析报告（写 `reports/`） | 否 |
+| `MAX_BUNDLE_KB` | 构建后产物体积门禁阈值（KB），由 `check-bundle-size.mjs` 读取 | 否 |
+| `NEXT_DIST_DIR` | 自定义构建输出目录，供并行预览/检查脚本隔离 `.next` 使用 | 否 |
 | `VERCEL_TOKEN` / `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` | 仅 `deploy.yml`（GitHub Actions）使用，配置在仓库 Secrets | CI 部署时 |
 
 版本与 build 编号由 `next.config.mjs` 构建时注入 `NEXT_PUBLIC_APP_VERSION` / `NEXT_PUBLIC_BUILD_ID`，无需手工配置。
