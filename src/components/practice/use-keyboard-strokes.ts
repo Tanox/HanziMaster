@@ -44,7 +44,12 @@ export function useKeyboardStrokes({
       prevAccuracies: accuracyRef.current ?? [],
     });
     if (accuracyRef.current) accuracyRef.current = accuracies;
-    if (completedRef.current) completedRef.current = new Set(Array.from({ length: totalStrokes }, (_, i) => i));
+    // 只有答案正确才算完成全部笔画；错误答案不应把画布标记为已完成
+    if (completedRef.current) {
+      completedRef.current = correct
+        ? new Set(Array.from({ length: totalStrokes }, (_, i) => i))
+        : new Set();
+    }
     onAccuracyChange?.(accuracies.reduce((a, b) => a + b, 0) / (accuracies.length || 1));
     setResult(correct ? 'correct' : 'wrong');
   };

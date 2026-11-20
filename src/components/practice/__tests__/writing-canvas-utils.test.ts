@@ -159,4 +159,21 @@ describe('judgeUserStroke', () => {
     expect(result).toEqual([0]);
     expect(onAccuracyChange).toHaveBeenCalledWith(0);
   });
+
+  it('enforceDirection: a single touch cannot score full marks', () => {
+    expect(judgeUserStroke({ ...baseParams, userPoints: [onLine], prevAccuracies: [], enforceDirection: true }))
+      .toEqual([0.5]);
+  });
+
+  it('enforceDirection: a full forward trace scores near full marks', () => {
+    const trace = [10, 100, 190].map((x) => ({ x, y: 78 }));
+    const score = judgeUserStroke({ ...baseParams, userPoints: trace, prevAccuracies: [], enforceDirection: true })[0];
+    expect(score).toBeGreaterThan(0.8);
+  });
+
+  it('enforceDirection: a reversed trace is capped at half marks', () => {
+    const trace = [190, 100, 10].map((x) => ({ x, y: 78 }));
+    const score = judgeUserStroke({ ...baseParams, userPoints: trace, prevAccuracies: [], enforceDirection: true })[0];
+    expect(score).toBeCloseTo(0.5, 2);
+  });
 });

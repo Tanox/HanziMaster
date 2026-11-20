@@ -32,15 +32,26 @@ export function parsePath(d: string): Path2D | null {
   }
 }
 
+/** 同步 backing store 到当前 rect × DPR；返回尺寸是否变化（变化会清空画布内容）。 */
+export const syncCanvasSize = (canvas: HTMLCanvasElement): boolean => {
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  const width = Math.round(rect.width * dpr);
+  const height = Math.round(rect.height * dpr);
+  if (canvas.width === width && canvas.height === height) return false;
+  canvas.width = width;
+  canvas.height = height;
+  return true;
+};
+
 // 淡字底图绘制
 export const drawHint = (canvas: HTMLCanvasElement, character: string) => {
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
   const rect = canvas.getBoundingClientRect();
   const dpr = window.devicePixelRatio || 1;
+  syncCanvasSize(canvas);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
-  canvas.width = rect.width * dpr;
-  canvas.height = rect.height * dpr;
   ctx.scale(dpr, dpr);
   ctx.lineWidth = 4;
   ctx.lineCap = 'round';

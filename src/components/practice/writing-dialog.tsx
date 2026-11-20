@@ -76,6 +76,7 @@ export function WritingDialog({ open, onOpenChange, character, strokeCount, onNe
 
           <div className="relative aspect-square w-full overflow-hidden rounded-lg border border-dashed border-border bg-card">
             <WritingCanvas
+              key={character.hanzi}
               ref={canvasRef}
               character={character.hanzi}
               strokePaths={strokeData?.strokes}
@@ -100,7 +101,7 @@ export function WritingDialog({ open, onOpenChange, character, strokeCount, onNe
           <Button variant="outline" onClick={clearCanvas} className="border-border">
             {t('practice.clear')}
           </Button>
-          <Button onClick={onNext} className="bg-vermilion-600 hover:bg-vermilion-700">
+          <Button onClick={() => { clearCanvas(); onNext(); }} className="bg-vermilion-600 hover:bg-vermilion-700">
             {t('practice.next')}
           </Button>
         </DialogFooter>

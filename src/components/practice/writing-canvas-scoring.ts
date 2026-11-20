@@ -60,6 +60,50 @@ export function scoreStroke(
   return 0;
 }
 
+/** 把画布点投影到中位线折线，返回沿折线的累计弧长（用于方向/覆盖判定）。 */
+const projectOnMedian = (
+  p: { x: number; y: number },
+  pts: { x: number; y: number }[],
+): number => {
+  let best = { along: 0, dist: Infinity };
+  let along = 0;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const a = pts[i];
+    const b = pts[i + 1];
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const len = Math.hypot(dx, dy);
+    if (len === 0) continue;
+    const raw = ((p.x - a.x) * dx + (p.y - a.y) * dy) / (len * len);
+    const t = Math.max(0, Math.min(1, raw));
+    const d = Math.hypot(p.x - (a.x + t * dx), p.y - (a.y + t * dy));
+    if (d < best.dist) best = { along: along + t * len, dist: d };
+    along += len;
+  }
+  return best.along;
+};
+
+/** 方向/覆盖因子：单点或反向轨迹最多半分，完整正向描完才得满分。 */
+const directionCoverage = (
+  points: { x: number; y: number }[],
+  median: number[][],
+  size: number,
+): number => {
+  const pts = median.map(([x, y]) => ({ x: scale(x, size), y: scaleY(y, size) }));
+  let total = 0;
+  for (let i = 0; i < pts.length - 1; i++) total += Math.hypot(pts[i + 1].x - pts[i].x, pts[i + 1].y - pts[i].y);
+  if (total === 0 || points.length < 2) return 0.5;
+  let traveled = 0;
+  let prev = projectOnMedian(points[0], pts);
+  for (let i = 1; i < points.length; i++) {
+    const cur = projectOnMedian(points[i], pts);
+    const delta = cur - prev;
+    traveled += delta >= 0 ? delta : delta * 0.5; // 反向移动倒扣
+    prev = cur;
+  }
+  return 0.5 + 0.5 * Math.min(Math.max(traveled / total, 0), 1);
+};
+
 // 跟写描红结束：判定当前笔的贴合度并累加，返回更新后的准确度数组与均值
 export function judgeUserStroke(params: {
   userPoints: { x: number; y: number }[];
@@ -68,10 +112,15 @@ export function judgeUserStroke(params: {
   size: number;
   prevAccuracies: number[];
   onAccuracyChange?: (avg: number) => void;
+  /** 描红路径启用：结合中位线方向/覆盖度修正命中率（默认关闭以保持纯函数向后兼容） */
+  enforceDirection?: boolean;
 }): number[] {
-  const { userPoints, strokePath, median, size, prevAccuracies, onAccuracyChange } = params;
+  const { userPoints, strokePath, median, size, prevAccuracies, onAccuracyChange, enforceDirection } = params;
   if (userPoints.length === 0) return prevAccuracies;
-  const acc = scoreStroke(userPoints, strokePath, median, size);
+  let acc = scoreStroke(userPoints, strokePath, median, size);
+  if (enforceDirection && median && median.length >= 2) {
+    acc *= directionCoverage(userPoints, median, size);
+  }
   const next = [...prevAccuracies, acc];
   const avg = next.reduce((a, b) => a + b, 0) / next.length;
   onAccuracyChange?.(avg);
@@ -97,10 +146,13 @@ export function scoreKeyboardSequence(params: {
 
   let accuracies = prevAccuracies;
   expected.forEach((_, i) => {
-    const points = (medians[sequence[i] - 1] ?? []).map(([x, y]) => ({
-      x: scale(x, size),
-      y: scaleY(y, size),
-    }));
+    const index = sequence[i] - 1;
+    // 越界/缺位提交必须显式记 0 分，否则分母缩水会得到虚高准确度
+    if (!Number.isInteger(index) || index < 0 || index >= medians.length) {
+      accuracies = [...accuracies, 0];
+      return;
+    }
+    const points = medians[index].map(([x, y]) => ({ x: scale(x, size), y: scaleY(y, size) }));
     accuracies = judgeUserStroke({
       userPoints: points,
       strokePath: strokePaths[i],
