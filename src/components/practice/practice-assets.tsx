@@ -42,3 +42,21 @@ export const practiceOptions: PracticeOption[] = [
 ];
 
 export const weekDays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as const;
+
+/** 测验题库（顺序固定，便于索引切换）；选项由题库派生，避免两者失步。 */
+export const quizCharacters: CharacterQuiz[] = [
+  { id: 1, hanzi: '一', pinyin: 'yī', translationKey: 'learn.one', meaningKey: 'practice.meanings.one' },
+  { id: 2, hanzi: '二', pinyin: 'èr', translationKey: 'learn.two', meaningKey: 'practice.meanings.two' },
+  { id: 3, hanzi: '三', pinyin: 'sān', translationKey: 'learn.three', meaningKey: 'practice.meanings.three' },
+  { id: 4, hanzi: '人', pinyin: 'rén', translationKey: 'learn.person', meaningKey: 'practice.meanings.person' },
+  { id: 5, hanzi: '大', pinyin: 'dà', translationKey: 'learn.big', meaningKey: 'practice.meanings.big' },
+  { id: 6, hanzi: '小', pinyin: 'xiǎo', translationKey: 'learn.small', meaningKey: 'practice.meanings.small' },
+  { id: 7, hanzi: '口', pinyin: 'kǒu', translationKey: 'learn.mouth', meaningKey: 'practice.meanings.mouth' },
+  { id: 8, hanzi: '日', pinyin: 'rì', translationKey: 'learn.sunDay', meaningKey: 'practice.meanings.sunDay' },
+  { id: 9, hanzi: '月', pinyin: 'yuè', translationKey: 'learn.moonMonth', meaningKey: 'practice.meanings.moonMonth' },
+  { id: 10, hanzi: '山', pinyin: 'shān', translationKey: 'learn.mountain', meaningKey: 'practice.meanings.mountain' },
+  { id: 11, hanzi: '水', pinyin: 'shuǐ', translationKey: 'learn.water', meaningKey: 'practice.meanings.water' },
+  { id: 12, hanzi: '火', pinyin: 'huǒ', translationKey: 'learn.fire', meaningKey: 'practice.meanings.fire' },
+];
+
+export const QUIZ_OPTIONS = quizCharacters.map((c) => c.hanzi);

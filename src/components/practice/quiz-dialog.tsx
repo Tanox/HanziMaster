@@ -2,7 +2,7 @@
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
-import type { CharacterQuiz } from '@/components/practice/practice-assets';
+import { QUIZ_OPTIONS, type CharacterQuiz } from '@/components/practice/practice-assets';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -22,8 +22,6 @@ interface QuizDialogProps {
   onAnswer: (hanzi: string) => void;
   onNext: () => void;
 }
-
-const QUIZ_OPTIONS = ['一', '二', '三', '人', '大', '小', '口', '日'];
 
 export function QuizDialog({
   open,

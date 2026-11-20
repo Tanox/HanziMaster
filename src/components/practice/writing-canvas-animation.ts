@@ -77,8 +77,10 @@ export function startNextStroke(params: {
   completed: Set<number>;
   animHandleRef: { current: StrokeAnimationHandle | null };
   animStrokeRef: { current: number };
+  /** 引导播放完成后回调（此时笔尚未跟写，不能计入 completed） */
+  onGuidanceReady?: (index: number) => void;
 }): void {
-  const { canvas, character, strokePaths, medians, completed, animHandleRef, animStrokeRef } = params;
+  const { canvas, character, strokePaths, medians, completed, animHandleRef, animStrokeRef, onGuidanceReady } = params;
   const next = completed.size;
   if (next >= strokePaths.length || animHandleRef.current) return;
   animStrokeRef.current = next;
@@ -92,9 +94,10 @@ export function startNextStroke(params: {
     completed,
     strokePaths,
     onComplete: () => {
-      completed.add(next);
+      // completed 表示「已跟写完成」，引导播放完只标记可跟写，由调用方在判定后加入
       animStrokeRef.current = -1;
       animHandleRef.current = null;
+      onGuidanceReady?.(next);
     },
   });
 }

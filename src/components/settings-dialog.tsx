@@ -10,7 +10,7 @@ import { localeNames } from '@/components/locale-toggle';
 import { useToast } from '@/components/toast';
 import { loadSettings, saveSettings, DEFAULT_SETTINGS, type AppSettings } from '@/lib/settings';
 import { safeRemoveItem } from '@/lib/storage';
-import { PROGRESS_STORAGE_KEY } from '@/hooks/use-progress';
+import { PROGRESS_IMPORTED_EVENT, PROGRESS_STORAGE_KEY } from '@/hooks/use-progress';
 import { ProgressTransferControls } from '@/components/progress-transfer-controls';
 import { CloudSyncControls } from '@/components/cloud-sync-controls';
 import type { Locale } from '@/lib/i18n';
@@ -78,6 +78,8 @@ export function SettingsButton() {
 
   const handleReset = () => {
     safeRemoveItem(PROGRESS_STORAGE_KEY);
+    // storage 事件只跨文档触发；本标签页已挂载的 useProgress 需显式广播，否则旧 state 会在下次答题时写回
+    window.dispatchEvent(new Event(PROGRESS_IMPORTED_EVENT));
     setConfirmReset(false);
     toast.success(t('settings.resetDone'));
   };

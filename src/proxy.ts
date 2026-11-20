@@ -16,10 +16,14 @@ function negotiateLocale(request: NextRequest): string {
   const header = request.headers.get('accept-language') ?? '';
   for (const part of header.split(',')) {
     const tag = part.split(';')[0].trim().toLowerCase();
-    const match = SUPPORTED_LOCALES.find(
-      (locale) =>
-        locale.toLowerCase() === tag || locale.toLowerCase().split('-')[0] === tag.split('-')[0],
-    );
+    if (!tag) continue;
+    // 精确匹配必须先于主干匹配：否则 zh-TW 会被数组里靠前的 zh-CN 主干命中抢占
+    const exact = SUPPORTED_LOCALES.find((locale) => locale.toLowerCase() === tag);
+    if (exact) return exact;
+    // 繁体书写系统与港澳地区统一到 zh-TW
+    if (tag === 'zh-hant' || tag === 'zh-hk' || tag === 'zh-mo') return 'zh-TW';
+    const base = tag.split('-')[0];
+    const match = SUPPORTED_LOCALES.find((locale) => locale.toLowerCase().split('-')[0] === base);
     if (match) return match;
   }
   return DEFAULT_LOCALE;

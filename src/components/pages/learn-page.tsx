@@ -6,6 +6,7 @@ import { useTranslation } from '@/components/locale-provider';
 import { useScrollReveal } from '@/hooks/use-scroll-reveal';
 import { usePronunciation } from '@/hooks/use-pronunciation';
 import { useHaptic } from '@/hooks/use-haptic';
+import { useProgress } from '@/hooks/use-progress';
 import { characters } from '@/lib/characters';
 import { CharacterGrid } from '@/components/learn/character-grid';
 import { CharacterDetail } from '@/components/learn/character-detail';
@@ -23,6 +24,7 @@ export default function LearnPage() {
   useScrollReveal();
   const { speak, pronounceError, speechSupported } = usePronunciation();
   const vibrate = useHaptic();
+  const progress = useProgress();
   const [selectedCharacterId, setSelectedCharacterId] = useState<number | null>(characters[0]?.id ?? null);
   const [showQuizDialog, setShowQuizDialog] = useState(false);
   const [quizAnswer, setQuizAnswer] = useState('');
@@ -35,9 +37,12 @@ export default function LearnPage() {
   // 答对后定时自动关闭弹窗；用 ref 持有句柄以便关闭/卸载时清理，
   // 避免用户提前关闭或路由切换后定时器仍触发，造成操作已卸载组件或状态错乱。
   const handleQuizSubmit = () => {
-    if (!selectedCharacter) return;
+    if (!selectedCharacter || quizCorrect !== null || !quizAnswer.trim()) return;
+    clearAutoCloseTimer();
     const isCorrect = quizAnswer.toLowerCase() === selectedCharacter.pinyin.toLowerCase();
     setQuizCorrect(isCorrect);
+    // 学习页测验同样计入准确率/连胜/学习记录（此前只反馈不写进度）
+    progress.recordQuizResult(selectedCharacter.id, isCorrect);
     vibrate(isCorrect ? 'success' : 'error');
     if (isCorrect) {
       autoCloseTimer.current = setTimeout(() => {
@@ -129,6 +134,7 @@ export default function LearnPage() {
         character={selectedCharacter}
         value={quizAnswer}
         onChange={(v) => {
+          clearAutoCloseTimer();
           setQuizAnswer(v);
           setQuizCorrect(null);
         }}

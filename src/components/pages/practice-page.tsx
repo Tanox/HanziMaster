@@ -7,7 +7,7 @@ import { useProgress } from '@/hooks/use-progress';
 import { useScrollReveal } from '@/hooks/use-scroll-reveal';
 import { useHaptic } from '@/hooks/use-haptic';
 import { characters } from '@/lib/characters';
-import type { CharacterQuiz } from '@/components/practice/practice-assets';
+import { quizCharacters, type CharacterQuiz } from '@/components/practice/practice-assets';
 import { PracticeOptionsGrid } from '@/components/practice/practice-options';
 import { WeeklyProgress } from '@/components/practice/weekly-progress';
 import dynamic from 'next/dynamic';
@@ -24,22 +24,6 @@ const QuizDialog = dynamic(
 
 // 汉字到笔画数的映射，供书写对话框显示描红提示
 const strokeMap = new Map(characters.map((c) => [c.hanzi, c.strokes]));
-
-// 测验候选字符（顺序固定，便于索引切换）
-const quizCharacters: CharacterQuiz[] = [
-  { id: 1, hanzi: '一', pinyin: 'yī', translationKey: 'learn.one', meaningKey: 'practice.meanings.one' },
-  { id: 2, hanzi: '二', pinyin: 'èr', translationKey: 'learn.two', meaningKey: 'practice.meanings.two' },
-  { id: 3, hanzi: '三', pinyin: 'sān', translationKey: 'learn.three', meaningKey: 'practice.meanings.three' },
-  { id: 4, hanzi: '人', pinyin: 'rén', translationKey: 'learn.person', meaningKey: 'practice.meanings.person' },
-  { id: 5, hanzi: '大', pinyin: 'dà', translationKey: 'learn.big', meaningKey: 'practice.meanings.big' },
-  { id: 6, hanzi: '小', pinyin: 'xiǎo', translationKey: 'learn.small', meaningKey: 'practice.meanings.small' },
-  { id: 7, hanzi: '口', pinyin: 'kǒu', translationKey: 'learn.mouth', meaningKey: 'practice.meanings.mouth' },
-  { id: 8, hanzi: '日', pinyin: 'rì', translationKey: 'learn.sunDay', meaningKey: 'practice.meanings.sunDay' },
-  { id: 9, hanzi: '月', pinyin: 'yuè', translationKey: 'learn.moonMonth', meaningKey: 'practice.meanings.moonMonth' },
-  { id: 10, hanzi: '山', pinyin: 'shān', translationKey: 'learn.mountain', meaningKey: 'practice.meanings.mountain' },
-  { id: 11, hanzi: '水', pinyin: 'shuǐ', translationKey: 'learn.water', meaningKey: 'practice.meanings.water' },
-  { id: 12, hanzi: '火', pinyin: 'huǒ', translationKey: 'learn.fire', meaningKey: 'practice.meanings.fire' },
-];
 
 interface QuizState {
   currentIndex: number;

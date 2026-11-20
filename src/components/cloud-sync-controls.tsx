@@ -19,6 +19,9 @@ const readCode = (): string => {
   return typeof saved === 'string' && isSyncCode(saved) ? saved : '';
 };
 
+const hasProgress = (p: ProgressData): boolean =>
+  p.learnedCharIds.length > 0 || p.quizResults.length > 0 || Object.keys(p.dailyActivity).length > 0;
+
 export function CloudSyncControls() {
   const { t } = useLocale();
   const toast = useToast();
@@ -60,6 +63,10 @@ export function CloudSyncControls() {
   const handleUpload = async () => {
     if (!isSyncCode(code)) return;
     const progress = safeGetItem<ProgressData>(PROGRESS_STORAGE_KEY, getDefaultProgress());
+    if (!hasProgress(progress)) {
+      toast.error(t('cloud.noProgress'));
+      return;
+    }
     const backup = createProgressBackup(progress);
     setBusy(true);
     try {

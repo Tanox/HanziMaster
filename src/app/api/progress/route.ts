@@ -3,12 +3,13 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { get, put } from '@vercel/blob';
 import { parseProgressBackup, createProgressBackup } from '@/lib/progress-transfer';
-import { validateProgress } from '@/lib/progress-utils';
 import { isSyncCode, blobPath, MAX_BACKUP_BYTES } from '@/lib/cloud-sync';
 
 export const dynamic = 'force-dynamic';
 
 const noStore = { 'Cache-Control': 'no-store' };
+const isEmpty = (p: { learnedCharIds: unknown[]; quizResults: unknown[]; dailyActivity: object }): boolean =>
+  p.learnedCharIds.length === 0 && p.quizResults.length === 0 && Object.keys(p.dailyActivity).length === 0;
 const configured = () => Boolean(process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID);
 
 function reject(code: string, status: number, message: string) {
@@ -28,8 +29,11 @@ export async function GET(request: NextRequest) {
     if (new TextEncoder().encode(raw).length > MAX_BACKUP_BYTES) {
       return reject('too_large', 413, 'Cloud backup exceeds size limit');
     }
-    const progress = validateProgress(JSON.parse(raw).progress);
-    return NextResponse.json({ backup: createProgressBackup(progress) }, { headers: noStore });
+    // 复用 PUT 的严格解析：损坏 blob / 缺少 progress 字段时抛错 → 502，不再伪装成空进度；
+    // 原样返回 raw 以保留真实 exportedAt（读取时刻重算会让备份时间失真）。
+    const progress = parseProgressBackup(raw);
+    if (isEmpty(progress)) return reject('empty_backup', 502, 'Cloud backup contains no progress');
+    return NextResponse.json({ backup: raw }, { headers: noStore });
   } catch {
     return reject('read_failed', 502, 'Failed to read cloud progress');
   }
@@ -53,6 +57,7 @@ export async function PUT(request: NextRequest) {
 
   try {
     const progress = parseProgressBackup(body.backup);
+    if (isEmpty(progress)) return reject('empty_progress', 400, 'Refusing to overwrite cloud progress with empty data');
     await put(blobPath(body.code), createProgressBackup(progress), {
       access: 'private',
       contentType: 'application/json',

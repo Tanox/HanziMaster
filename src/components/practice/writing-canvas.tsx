@@ -37,6 +37,8 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
     const animHandleRef = useRef<StrokeAnimationHandle | null>(null);
     const animStrokeRef = useRef(-1);
     const completedRef = useRef<Set<number>>(new Set());
+    // 已播放引导、等待跟写的笔索引；与 completedRef（已跟写完成）严格分离
+    const tracingRef = useRef<number | null>(null);
     // 当前笔用户描红轨迹点（仅在引导播完后跟写时收集）
     const userPointsRef = useRef<{ x: number; y: number }[]>([]);
     // 已判定笔的准确度累计（0-1），用于计算整体均值
@@ -60,6 +62,7 @@ export const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>
       animHandleRef.current = null;
       animStrokeRef.current = -1;
       completedRef.current = new Set();
+      tracingRef.current = null;
       userPointsRef.current = [];
       accuracyRef.current = [];
     }, [character, keyboard.reset]);
