@@ -2,7 +2,7 @@
 // Progress tracking with localStorage persistence
 
 import { useState, useEffect, useCallback } from 'react';
-import { safeGetItem, safeSetItem } from '@/lib/storage';
+import { safeGetItem, safeRemoveItem, safeSetItem } from '@/lib/storage';
 import {
   type ProgressData,
   computeAccuracy,
@@ -37,7 +37,17 @@ export function useProgress() {
 
   // 加载完成前禁止写回，否则会用默认进度覆盖已存在的本地数据
   useEffect(() => {
-    if (loaded) safeSetItem(PROGRESS_STORAGE_KEY, progress);
+    if (!loaded) return;
+    // 空进度时删除键：否则「重置学习进度」后又被写回默认快照，存储键永久残留
+    const isEmpty =
+      progress.learnedCharIds.length === 0 &&
+      progress.quizResults.length === 0 &&
+      Object.keys(progress.dailyActivity).length === 0;
+    if (isEmpty) {
+      safeRemoveItem(PROGRESS_STORAGE_KEY);
+      return;
+    }
+    safeSetItem(PROGRESS_STORAGE_KEY, progress);
   }, [progress, loaded]);
 
   useEffect(() => {

@@ -58,13 +58,19 @@ const iconMap: Record<ToastType, ReactNode> = {
 function ToastItem({ id, message, type, duration = 5000, onRemove }: Toast & { onRemove: (id: string) => void }) {
   const { t } = useTranslation();
   const [isExiting, setIsExiting] = useState(false);
+  const exitTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsExiting(true);
-      setTimeout(() => onRemove(id), 300);
+      exitTimer.current = setTimeout(() => onRemove(id), 300);
     }, duration);
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      // 内层退出计时器也必须清理：否则卸载后仍调用 onRemove 更新已卸载 Provider
+      if (exitTimer.current) clearTimeout(exitTimer.current);
+      exitTimer.current = null;
+    };
   }, [id, duration, onRemove]);
 
   return (
@@ -82,7 +88,8 @@ function ToastItem({ id, message, type, duration = 5000, onRemove }: Toast & { o
       <button
         onClick={() => {
           setIsExiting(true);
-          setTimeout(() => onRemove(id), 300);
+          if (exitTimer.current) clearTimeout(exitTimer.current);
+          exitTimer.current = setTimeout(() => onRemove(id), 300);
         }}
         className="p-1 rounded-lg hover:bg-ink-900/5 dark:hover:bg-ink-100/10 transition-colors"
         aria-label={t('common.closeNotification')}

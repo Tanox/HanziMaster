@@ -14,7 +14,7 @@ export const fr = {
     strokeCount: 'Nombre de Traits',
     strokes: 'Traits',
     foreverQuote: 'Le caractère "éternel" contient les 8 traits de base.',
-    learners: 'apprenants qui estudient',
+    learners: 'apprenants qui étudient',
     strokeMastery: 'Maîtrise des Traits',
     theme: {
       light: 'Clair',

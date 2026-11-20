@@ -1,6 +1,6 @@
 // src/lib/request-locale.ts v5.2.49
 // proxy 在 rewrite 时把原始语言与路径注入请求头，供 RSC（layout / generateMetadata / 合规页）首屏直接读取。
-import { DEFAULT_LOCALE, isSupportedLocale, type SupportedLocale } from './site';
+import { DEFAULT_LOCALE, SUPPORTED_LOCALES, isSupportedLocale, type SupportedLocale } from './site';
 
 export const LOCALE_HEADER = 'x-hanzi-locale';
 export const PATH_HEADER = 'x-hanzi-path';

@@ -71,8 +71,12 @@ export function SettingsButton() {
 
   const update = (patch: Partial<AppSettings>) => {
     const next = { ...settings, ...patch };
+    // 存储不可用时（隐私模式 / 配额耗尽）不更新 UI，避免显示「已保存」的假象
+    if (!saveSettings(next)) {
+      toast.error(t('common.errorDesc'));
+      return;
+    }
     setSettings(next);
-    saveSettings(next);
     if (patch.reduceMotion !== undefined) applyReduceMotion(next.reduceMotion);
   };
 
@@ -118,7 +122,16 @@ export function SettingsButton() {
                   type="button"
                   role="radio"
                   aria-checked={theme === th}
+                  tabIndex={theme === th ? 0 : -1}
                   onClick={() => setTheme(th)}
+                  onKeyDown={(e) => {
+                    if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) return;
+                    e.preventDefault();
+                    const delta = e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 1;
+                    const next = THEMES[(THEMES.indexOf(theme) + delta + THEMES.length) % THEMES.length];
+                    setTheme(next);
+                    (e.currentTarget.parentElement?.children[THEMES.indexOf(next)] as HTMLElement | undefined)?.focus();
+                  }}
                   className={`rounded-xl border px-3 py-2 text-sm transition-colors ${theme === th ? 'border-vermilion-500 bg-vermilion-500/10 font-semibold text-vermilion-600 dark:text-vermilion-400' : 'border-ink-200 text-ink-600 hover:bg-muted dark:border-ink-700 dark:text-ink-300'}`}
                 >
                   {t(`common.theme.${th}`)}

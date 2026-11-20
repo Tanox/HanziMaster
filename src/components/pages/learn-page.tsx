@@ -75,6 +75,9 @@ export default function LearnPage() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (showQuizDialog || e.ctrlKey || e.metaKey || e.altKey) return;
+      // 输入框 / 文本域 / 可编辑区域中的方向键属于文本编辑，不应切换汉字
+      const target = e.target as HTMLElement | null;
+      if (target?.isContentEditable || (target && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName))) return;
       if (e.key === 'ArrowRight') goCharacter(1);
       if (e.key === 'ArrowLeft') goCharacter(-1);
     };

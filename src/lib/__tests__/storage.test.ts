@@ -1,7 +1,7 @@
 // src/lib/__tests__/storage.test.ts v5.2.50
 
 import { beforeEach, describe, expect, it } from 'vitest';
-import { safeGetItem, safeSetItem } from '../storage';
+import { safeGetItem, safeSetItem, trySetItem } from '../storage';
 
 describe('safeGetItem / safeSetItem', () => {
   beforeEach(() => window.localStorage.clear());
