@@ -43,7 +43,7 @@ jobs:
         run: node scripts/extract-changelog.mjs "$TAG"
 
       - name: 校验 CI / Deploy 门禁全绿
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const { owner, repo } = context.repo;
