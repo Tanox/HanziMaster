@@ -7,7 +7,7 @@
 
 | 检查 | 命令 | 覆盖 |
 |------|------|------|
-| 语言清单与扩展模块 | `pnpm i18n:lint` | 11 语言文件齐全、`site.ts` 常量同步、6 个扩展模块齐全、**占位符集合一致**、**UI 文案 ≤160 字符** |
+| 语言清单与扩展模块 | `pnpm i18n:lint` | 11 语言文件齐全、`site.ts` 常量同步、9 个扩展模块齐全（a11y / cloud / geo / legal / meanings / progress / pwa / seo / settings）、**占位符集合一致**、**UI 文案 ≤160 字符** |
 | 叶子键一致性 | `pnpm test` | `src/lib/__tests__/i18n.test.ts`：任意语言缺键 / 多键即失败 |
 | 站点常量一致性 | `pnpm test` | `src/lib/__tests__/site.test.ts` |
 

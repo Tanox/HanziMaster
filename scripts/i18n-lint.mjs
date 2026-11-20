@@ -25,7 +25,7 @@ for (const locale of expected) {
   if (!site.includes(`'${locale}'`)) errors.push(`site.ts missing locale: ${locale}`);
 }
 
-const extensionModules = ['legal', 'a11y', 'meanings', 'settings', 'pwa', 'progress', 'seo', 'geo'];
+const extensionModules = ['legal', 'a11y', 'meanings', 'settings', 'pwa', 'progress', 'seo', 'geo', 'cloud'];
 for (const module of extensionModules) {
   const file = path.join(root, 'extensions', `${module}.ts`);
   if (!fs.existsSync(file)) {

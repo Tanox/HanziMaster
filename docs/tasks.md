@@ -83,7 +83,7 @@
 | 覆盖率 | `pnpm test:run --coverage` | 阈值门禁见 CI `coverage` job；数值以实测为准 |
 | 行数 | `pnpm check:lines` | ✅ `all <= 200` |
 | 根目录清洁度 | `pnpm check:root` | ✅ `root clean`（`.tmp/` 为唯一放行的临时子目录） |
-| i18n | `pnpm i18n:lint` | ✅ 11 语言 / 8 扩展模块 / 占位符一致 / 文案 ≤160 |
+| i18n | `pnpm i18n:lint` | ✅ 11 语言 / 9 扩展模块 / 占位符一致 / 文案 ≤160 |
 | 版本展示 | `pnpm version:check` | ✅ `v5.2.50 in sync` |
 | 冻结安装 | `pnpm install --frozen-lockfile` | ✅ 通过（依赖已精确钉住） |
 | 生产依赖漏洞 | `pnpm security:audit` | ✅ 0 高危（v5.2.31 T3 基线） |

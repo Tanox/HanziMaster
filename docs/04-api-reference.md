@@ -178,6 +178,24 @@ export function Example() {
 
 `/api/health` 用于部署探测；`/api/progress` 是唯一的业务数据端点（可选云同步）。
 
+**示例**（把 `<SYNC_CODE>` 替换为 32 位十六进制同步码；`backup` 是 `createProgressBackup()` 返回的 **JSON 字符串**，不是对象）：
+
+```bash
+curl -s https://example.com/api/health
+# {"status":"ok","version":"5.2.50","build":"2611201800"}
+
+curl -s 'https://example.com/api/progress?code=<SYNC_CODE>'
+# 成功：{"backup":"{\"version\":1,\"exportedAt\":...,\"progress\":{...}}"}
+# 未配置：503 {"error":"not_configured",...}；无备份：404；同步码非法：400
+
+curl -s -X PUT https://example.com/api/progress \
+  -H 'Content-Type: application/json' \
+  -d '{"code":"<SYNC_CODE>","backup":"<由 createProgressBackup() 生成的 JSON 字符串>"}'
+# 成功：{"ok":true}；空进度被拒绝：400 empty_progress；写入失败：502
+```
+
+> 两个端点均返回 `Cache-Control: no-store`。同步码即凭证，不要写入日志或提交到仓库。
+
 ## 11. 样式与主题 token
 
 语义 token 定义在 `src/app/globals.css` 的 `@theme`，命名带 `--color-` 前缀：

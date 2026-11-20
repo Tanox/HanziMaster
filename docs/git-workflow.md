@@ -118,7 +118,7 @@ PR 检查清单与 CI 判定依据一致，任一项失败即阻断合并：
 - **失败处理**：任一 job 失败 → `release.yml` 短路退出，不创建 Release，并在日志输出 `::error::` 标明哪个门禁未通过。此时**禁止删除重建同名 Tag**（§7），应修复后使用新的 patch 版本重新走 §6 流程。
 - **幂等与重复**：同名 Release / Tag 已存在时视为异常，直接失败并告警，不做覆盖式更新。
 - **权限**：`release.yml` 仅申请 `contents: write`，不授予其他 scope；Token 使用默认 `GITHUB_TOKEN`。
-- **实现**：`.github/workflows/release.yml`（v5.2.44 落地）+ `scripts/extract-changelog.mjs`；`workflow_dispatch` 需传入 `tag` 参数。首次上线前须用真实 Tag 实跑一次确认 Release 自动创建。
+- **实现**：`.github/workflows/release.yml`（v5.2.44 已上线）+ `scripts/extract-changelog.mjs`；`workflow_dispatch` 需传入 `tag` 参数。常规发布由推送 Tag 自动触发，无需手动派发；修改 workflow 后应先用真实 Tag 验证一次 Release 自动创建。
 
 ## 7. 禁止事项
 

@@ -20,6 +20,7 @@
 
 ### Docs
 - 新增 `docs/code-review-2026-11-20.md`（审查结论、18 项修复的原因/思路、未修建议、门禁结果）；`docs/tasks.md` §4 记录修复与 4 项后续任务；`tasks-done.md` 归档；`.env.example` 与 `docs/03-development.md` 补充 SITE_URL 校验说明。
+- `scripts/i18n-lint.mjs`：扩展模块清单补入 `cloud`（此前 9 个模块只校验 8 个），门禁现覆盖全部 9 个扩展模块。
 - **全量文档同步（本批次）**：修正「无 `proxy.ts` / 无中间件」的失效结论（`src/proxy.ts` 为 Next 16 i18n 中间件），并在 `index` / `01` / `02` / `05` / `alignment-checklist` / `project` / 两份 README 中统一；补齐 `/api/progress` 端点、Vercel Blob / `MAX_BUNDLE_KB` / `NEXT_DIST_DIR` 等环境变量、9 个 i18n 扩展模块与 9 个键域、`trySetItem` API、manifest 动态 `lang`/`dir`；统一测试规模为 36 文件 / 192 用例（覆盖率旧数值标注为历史快照）、`scripts/` 为 9 个、`docs/` 为 18 篇、`release.yml` 由「规划中」改为已启用；统一全量 `docs/` 版本戳至 v5.2.50；`index.md` 补 `code-review-2026-11-20.md` 入口；归档文档与 CHANGELOG 历史条目按「历史记录不篡改」保留原文。
 
 
