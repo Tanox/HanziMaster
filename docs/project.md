@@ -1,6 +1,6 @@
 # Project Context
 
-> Document version: v5.2.40 (single source of truth: `package.json`)
+> Document version: v5.2.50 (single source of truth: `package.json`)
 
 This file is the English project context consumed by AI tooling. It is a **summary only**: the authoritative rules live in [coding-standards.md](coding-standards.md), [commit-template.md](commit-template.md), [git-workflow.md](git-workflow.md) and [index.md](index.md). If this file conflicts with them, fix this file.
 
@@ -59,9 +59,9 @@ HanziMaster (汉字大师) is a local-first Chinese character learning web app: 
 
 ## Important Constraints
 
-- Core pages need no environment variables at runtime; optional variables (`NEXT_PUBLIC_SITE_URL`, GA, Sentry, `ANALYZE`) are documented in `.env.example` and [01-overview.md](01-overview.md) §7. Google Fonts is the only network dependency at build time; offline `next build` may fail on font download (environment limitation, not a code defect).
-- CSP and all security headers are injected centrally by `next.config.mjs` `headers()` for `/:path*`. There is **no** `middleware.ts` / `proxy.ts`; do not reintroduce it.
-- CI lives in `.github/workflows/` (`ci.yml`: quality / coverage / e2e jobs; `deploy.yml`: Vercel). Coverage runs via `pnpm test:run --coverage` with thresholds in `vitest.config.ts`; `release.yml` (auto GitHub Releases) is planned, see [git-workflow.md](git-workflow.md) §6.1 and [tasks.md](tasks.md) P1-37.
+- Core pages need no environment variables at runtime; optional variables (`NEXT_PUBLIC_SITE_URL`, GA, Sentry, `BLOB_READ_WRITE_TOKEN` + `BLOB_STORE_ID` for optional cloud sync, `ANALYZE`, `MAX_BUNDLE_KB`, `NEXT_DIST_DIR`) are documented in `.env.example` and [01-overview.md](01-overview.md) §7. Google Fonts is the only network dependency at build time; offline `next build` may fail on font download (environment limitation, not a code defect).
+- CSP and all security headers are injected centrally by `next.config.mjs` `headers()` for `/:path*`. `src/proxy.ts` is the Next.js 16 middleware (the old `middleware.ts` is deprecated): it negotiates the `/{locale}/` URL prefix, rewrites to the page, and injects `x-hanzi-locale` / `x-hanzi-path` headers. Do not remove it.
+- CI lives in `.github/workflows/` (`ci.yml`: quality / coverage / e2e jobs; `deploy.yml`: Vercel; `release.yml`: auto GitHub Releases). Coverage runs via `pnpm test:run --coverage` with thresholds in `vitest.config.ts`; see [git-workflow.md](git-workflow.md) §6.1.
 - Historical `openspec/` paths inside `CHANGELOG.md` and archived documents are historical records — do not bulk-replace them.
 
 ## External Dependencies

@@ -73,18 +73,18 @@
 - **P1-40** `release.yml` 真实 Tag 触发 Release 验证 → `docs/git-workflow.md` §6.1
 - **P2-21** 译文母语者人工审校（11 语言关键路径抽查）→ `docs/i18n-review.md`
 
-## 1. 当前质量基线（v5.2.45 实测）
+## 1. 当前质量基线（v5.2.50 实测；后续以命令输出为准）
 
 | 门禁 | 命令 | 结果 |
 |------|------|------|
 | 类型检查 | `node node_modules/typescript/bin/tsc --noEmit` | ✅ 0 error |
-| Lint | `node node_modules/eslint/bin/eslint.js src scripts` | ✅ 0 error / 0 warning |
-| 单测 | `node scripts/run-tests.mjs` | ✅ **32 文件 / 170 用例**全通过（v5.2.48 实测） |
-| 覆盖率 | `pnpm test:run --coverage` | 阈值门禁见 CI `coverage` job |
+| Lint | `node node_modules/eslint/bin/eslint.js .` | ✅ 0 error / 0 warning |
+| 单测 | `node scripts/run-tests.mjs` | ✅ **36 文件 / 192 用例**全通过（v5.2.50 实测） |
+| 覆盖率 | `pnpm test:run --coverage` | 阈值门禁见 CI `coverage` job；数值以实测为准 |
 | 行数 | `pnpm check:lines` | ✅ `all <= 200` |
 | 根目录清洁度 | `pnpm check:root` | ✅ `root clean`（`.tmp/` 为唯一放行的临时子目录） |
-| i18n | `pnpm i18n:lint` | ✅ 11 语言 / 6 扩展模块 / 占位符一致 / 文案 ≤160 |
-| 版本展示 | `pnpm version:check` | ✅ `v5.2.48 in sync` |
+| i18n | `pnpm i18n:lint` | ✅ 11 语言 / 8 扩展模块 / 占位符一致 / 文案 ≤160 |
+| 版本展示 | `pnpm version:check` | ✅ `v5.2.50 in sync` |
 | 冻结安装 | `pnpm install --frozen-lockfile` | ✅ 通过（依赖已精确钉住） |
 | 生产依赖漏洞 | `pnpm security:audit` | ✅ 0 高危（v5.2.31 T3 基线） |
 | 生产构建 | `pnpm build` | 见 CI；本地构建产物由 `reports/build-out.log` 记录 |
