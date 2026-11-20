@@ -2,7 +2,8 @@
 'use client';
 
 import Script from 'next/script';
-import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 import { CONSENT_CHANGE_EVENT, getConsent } from '@/lib/consent';
 
 // 衡量 ID 由部署环境注入；未配置时不加载任何统计脚本（合规默认关闭）

@@ -16,8 +16,8 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
     display: 'standalone',
     background_color: '#faf9f6',
     theme_color: '#c53d43',
-    lang: 'en',
-    dir: 'ltr',
+    lang: locale,
+    dir: isRtlLocale(locale) ? 'rtl' : 'ltr',
     categories: ['education', 'productivity'],
     icons: [
       { src: '/icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },

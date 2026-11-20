@@ -5,6 +5,8 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from '@/components/locale-provider';
 import { Button } from '@/components/ui/button';
+import { safeGetItem, safeSetItem } from '@/lib/storage';
+import { BUILD_ID, APP_VERSION } from '@/lib/version';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -20,22 +22,34 @@ export function PwaInstallPrompt() {
 
   useEffect(() => {
     if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
-      navigator.serviceWorker.register('/sw.js').catch(() => {
+      // 版本随构建变化，触发 SW 重新安装并淘汰旧缓存
+      navigator.serviceWorker.register(`/sw.js?v=${APP_VERSION}-${BUILD_ID}`).catch(() => {
         // Service Worker 不可用时静默降级，不影响应用
       });
     }
-    setDismissed(localStorage.getItem(DISMISS_KEY) === '1');
+    let legacyDismissed = false;
+    try {
+      legacyDismissed = window.localStorage.getItem(DISMISS_KEY) === '1';
+    } catch {
+      // 存储不可用时忽略旧值
+    }
+    setDismissed(safeGetItem<boolean>(DISMISS_KEY, false) === true || legacyDismissed);
 
     const handleInstallPrompt = (event: Event) => {
       event.preventDefault();
       setInstallEvent(event as BeforeInstallPromptEvent);
     };
+    const handleInstalled = () => setInstallEvent(null);
     window.addEventListener('beforeinstallprompt', handleInstallPrompt);
-    return () => window.removeEventListener('beforeinstallprompt', handleInstallPrompt);
+    window.addEventListener('appinstalled', handleInstalled);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleInstallPrompt);
+      window.removeEventListener('appinstalled', handleInstalled);
+    };
   }, []);
 
   const dismiss = () => {
-    localStorage.setItem(DISMISS_KEY, '1');
+    safeSetItem(DISMISS_KEY, true);
     setDismissed(true);
     setInstallEvent(null);
   };
@@ -55,9 +69,12 @@ export function PwaInstallPrompt() {
           size="sm"
           className="rounded-lg bg-vermilion-500 text-primary-foreground hover:bg-vermilion-600"
           onClick={async () => {
-            await installEvent.prompt();
-            await installEvent.userChoice;
-            setInstallEvent(null);
+            try {
+              await installEvent.prompt();
+              await installEvent.userChoice;
+            } finally {
+              setInstallEvent(null);
+            }
           }}
         >
           {t('pwa.installAction')}

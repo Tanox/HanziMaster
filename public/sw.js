@@ -1,6 +1,8 @@
 // public/sw.js v5.2.44
 // P2-14：离线兜底 Service Worker（网络优先 + 缓存回退，不缓存跨域与 API 请求）。
-const CACHE_NAME = 'hanzi-master-5-2-44';
+// 版本由注册 URL 的 ?v= 注入；版本变化会让浏览器视为新脚本并触发 install/activate 清理旧缓存
+const VERSION = new URL(self.location.href).searchParams.get('v') || 'dev';
+const CACHE_NAME = `hanzi-master-${VERSION}`;
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', (event) => {
