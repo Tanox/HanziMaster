@@ -8,7 +8,12 @@ const roots = ['src', 'prototype/scripts', 'prototype/styles'];
 const LIMIT = 200;
 const over = [];
 
-const count = f => fs.readFileSync(f, 'utf8').split(/\r?\n/).length;
+// 结尾换行会产生一个空字符串，不应计入源码行数（恰好 200 行的文件会被误判超限）
+const count = (f) => {
+  const lines = fs.readFileSync(f, 'utf8').split(/\r?\n/);
+  if (lines.at(-1) === '') lines.pop();
+  return lines.length;
+};
 
 function walk(dir) {
   if (!fs.existsSync(dir)) return;

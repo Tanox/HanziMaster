@@ -44,6 +44,13 @@ describe('site constants', () => {
     expect(
       getSiteUrlWarning({ NODE_ENV: 'production', NEXT_PUBLIC_SITE_URL: 'https://hanzi.ewuse.com' })
     ).toBeNull();
+    // query / hash / 重复尾斜杠会让 sitemap 等处的字符串拼接产生畸形 URL
+    expect(
+      getSiteUrlWarning({ NODE_ENV: 'production', NEXT_PUBLIC_SITE_URL: 'https://example.com?x=1' })
+    ).toMatch(/not a valid absolute http\(s\) URL/);
+    expect(
+      getSiteUrlWarning({ NODE_ENV: 'production', NEXT_PUBLIC_SITE_URL: 'https://example.com//' })
+    ).toMatch(/not a valid absolute http\(s\) URL/);
   });
 
   it('maps every locale to an Open Graph region tag', () => {

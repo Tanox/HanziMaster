@@ -2,12 +2,15 @@
 
 import type { MetadataRoute } from 'next';
 import { cookies, headers } from 'next/headers';
-import { LOCALE_COOKIE, resolveLocale } from '@/lib/request-locale';
-import { isRtlLocale } from '@/lib/site';
+import { LOCALE_COOKIE, negotiateLocales } from '@/lib/request-locale';
+import { DEFAULT_LOCALE, isRtlLocale, isSupportedLocale } from '@/lib/site';
 
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
-  // manifest.webmanifest 带点号被 proxy matcher 排除，因此从 cookie 读取已解析的语言
-  const locale = resolveLocale(await headers(), (await cookies()).get(LOCALE_COOKIE)?.value);
+  // manifest.webmanifest 带点号被 proxy matcher 排除：先读 cookie，首访再按 Accept-Language（含 q 权重）协商
+  const cookie = (await cookies()).get(LOCALE_COOKIE)?.value;
+  const fromCookie = cookie && isSupportedLocale(cookie) ? cookie : null;
+  const fromHeader = negotiateLocales((await headers()).get('accept-language') ?? '')[0] ?? null;
+  const locale = fromCookie ?? fromHeader ?? DEFAULT_LOCALE;
   return {
     name: 'HanziMaster 汉字大师',
     short_name: 'HanziMaster',

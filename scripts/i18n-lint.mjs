@@ -40,24 +40,57 @@ for (const module of extensionModules) {
   }
 }
 
-// 占位符集合：按文件统计 {{name}}，任一语言与 en 不一致即报错（防止插值键漏译/多译）
+// 占位符一致性：基准包按「键」比较（原按文件整体集合比较无法发现同一文件内跨键互换）
 const PLACEHOLDER = /\{\{\s*([\w.-]+)\s*\}\}/g;
 const TEXT_LIMIT = 160;
 
-function collect(source) {
-  const placeholders = new Set();
-  for (const match of source.matchAll(PLACEHOLDER)) placeholders.add(match[1]);
-  return [...placeholders].sort().join(',');
-}
+const collectByKey = (source) => {
+  const byKey = new Map();
+  for (const line of source.split('\n')) {
+    const match = line.match(/^\s*([\w'.-]+):\s*'((?:[^'\\]|\\.)*)'/);
+    if (!match) continue;
+    const names = [...match[2].matchAll(PLACEHOLDER)].map((m) => m[1]);
+    const merged = new Set([...(byKey.get(match[1]) ?? []), ...names]);
+    byKey.set(match[1], [...merged].sort().join(','));
+  }
+  return byKey;
+};
+const collectAll = (source) =>
+  [...new Set([...source.matchAll(PLACEHOLDER)].map((m) => m[1]))].sort().join(',');
+
+/** 扩展模块是 en: {...} / 'zh-CN': {...} 结构，按顶层 locale 块分别收集占位符。 */
+const collectExtensionBlocks = (source) => {
+  const blocks = new Map();
+  const matches = [...source.matchAll(/^\s{2}('?)([\w-]+)\1:\s*\{/gm)];
+  matches.forEach((m, i) => {
+    const start = m.index + m[0].length;
+    const end = i + 1 < matches.length ? matches[i + 1].index : source.length;
+    blocks.set(m[2], collectAll(source.slice(start, end)));
+  });
+  return blocks;
+};
 
 const localeSources = Object.fromEntries(
   expected.map((locale) => [locale, fs.readFileSync(path.join(root, `${locale}.ts`), 'utf8')]),
 );
-const baseline = collect(localeSources.en);
+const baselineByKey = collectByKey(localeSources.en);
 for (const locale of expected) {
-  const found = collect(localeSources[locale]);
-  if (found !== baseline) {
-    errors.push(`${locale}.ts placeholder mismatch: expected [${baseline}], got [${found}]`);
+  const byKey = collectByKey(localeSources[locale]);
+  for (const [key, names] of baselineByKey) {
+    if (byKey.get(key) !== names) {
+      errors.push(`${locale}.ts key "${key}" placeholder mismatch: expected [${names}], got [${byKey.get(key) ?? ''}]`);
+    }
+  }
+}
+
+// 扩展模块此前只检查语言块存在，不检查占位符；此处补齐
+for (const module of extensionModules) {
+  const blocks = collectExtensionBlocks(fs.readFileSync(path.join(root, 'extensions', `${module}.ts`), 'utf8'));
+  const baseline = blocks.get('en') ?? '';
+  for (const locale of expected) {
+    if ((blocks.get(locale) ?? '') !== baseline) {
+      errors.push(`extensions/${module}.ts ${locale} placeholder mismatch: expected [${baseline}], got [${blocks.get(locale) ?? ''}]`);
+    }
   }
 }
 
@@ -77,5 +110,5 @@ if (errors.length) {
 }
 console.log(
   `i18n lint OK: ${expected.length} locales, ${extensionModules.length} extension modules, ` +
-    `placeholders [${baseline || 'none'}], text limit ${TEXT_LIMIT}`,
+    `checked ${baselineByKey.size} keys, text limit ${TEXT_LIMIT}`,
 );

@@ -31,7 +31,12 @@ describe('safeGetItem / safeSetItem', () => {
     Storage.prototype.setItem = () => {
       throw new Error('QuotaExceededError');
     };
-    expect(() => safeSetItem('blocked', 'value')).not.toThrow();
-    Storage.prototype.setItem = original;
+    try {
+      expect(() => safeSetItem('blocked', 'value')).not.toThrow();
+      expect(trySetItem('blocked', 'value')).toBe(false);
+    } finally {
+      // 断言失败也必须还原原型，否则污染后续用例
+      Storage.prototype.setItem = original;
+    }
   });
 });

@@ -11,12 +11,19 @@ export function useSwipeClose(isOpen: boolean, onClose: () => void) {
   const startX = useRef<number | null>(null);
 
   const onTouchStart = (e: TouchEvent<HTMLElement>) => {
-    startX.current = e.touches[0].clientX;
+    // 辅助触控/合成事件可能给出空 touches，直接取 [0] 会抛 TypeError
+    const touch = e.touches[0];
+    startX.current = touch ? touch.clientX : null;
   };
 
   const onTouchEnd = (e: TouchEvent<HTMLElement>) => {
     if (startX.current === null) return;
-    const dx = e.changedTouches[0].clientX - startX.current;
+    const touch = e.changedTouches[0];
+    if (!touch) {
+      startX.current = null;
+      return;
+    }
+    const dx = touch.clientX - startX.current;
     startX.current = null;
     const isRtl = document.documentElement.dir === 'rtl';
     // 关闭方向始终朝屏幕外侧：LTR 为 +dx，RTL 为 -dx

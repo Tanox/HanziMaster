@@ -2,6 +2,15 @@
 import { describe, it, expect } from 'vitest';
 import { translations } from '@/lib/i18n';
 import type { Locale, Translations } from '@/lib/i18n';
+import { a11yByLocale } from '@/lib/i18n/translations/extensions/a11y';
+import { cloudByLocale } from '@/lib/i18n/translations/extensions/cloud';
+import { geoByLocale } from '@/lib/i18n/translations/extensions/geo';
+import { legalByLocale } from '@/lib/i18n/translations/extensions/legal';
+import { meaningsByLocale } from '@/lib/i18n/translations/extensions/meanings';
+import { progressByLocale } from '@/lib/i18n/translations/extensions/progress';
+import { pwaByLocale } from '@/lib/i18n/translations/extensions/pwa';
+import { seoByLocale } from '@/lib/i18n/translations/extensions/seo';
+import { settingsByLocale } from '@/lib/i18n/translations/extensions/settings';
 
 function leafKeys(obj: unknown, prefix = ''): Set<string> {
   let out = new Set<string>();
@@ -33,5 +42,25 @@ describe('i18n key integrity', () => {
 
   it('en 基准键数量合理（>30 个叶子键）', () => {
     expect(enKeys.size).toBeGreaterThan(30);
+  });
+
+  it('扩展模块每种语言都有与 en 相同的键（不被英文回退掩盖）', () => {
+    const modules: Record<string, Record<string, object>> = {
+      a11y: a11yByLocale,
+      cloud: cloudByLocale,
+      geo: geoByLocale,
+      legal: legalByLocale,
+      meanings: meaningsByLocale,
+      progress: progressByLocale,
+      pwa: pwaByLocale,
+      seo: seoByLocale,
+      settings: settingsByLocale,
+    };
+    for (const [name, byLocale] of Object.entries(modules)) {
+      const expectedKeys = Object.keys(byLocale.en).sort();
+      for (const locale of locales) {
+        expect(Object.keys(byLocale[locale] ?? {}).sort(), `${name}.${locale}`).toEqual(expectedKeys);
+      }
+    }
   });
 });

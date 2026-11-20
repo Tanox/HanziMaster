@@ -5,7 +5,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const chunksDir = path.resolve('.next/static/chunks');
+// 跟随 next.config.mjs 的 NEXT_DIST_DIR，避免验证独立产物时检查旧目录
+const chunksDir = path.resolve(process.env.NEXT_DIST_DIR || '.next', 'static/chunks');
 if (!fs.existsSync(chunksDir)) {
   console.error('No build output. Run `pnpm build` before the size gate.');
   process.exit(1);

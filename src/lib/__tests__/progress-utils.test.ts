@@ -77,13 +77,13 @@ describe('computeStreak', () => {
     expect(computeStreak(activity, localNoon(2026, 3, 10))).toBe(2);
   });
 
-  it('跨夏令时切换日仍按日历天连续（修复 UTC 毫秒差导致的断连）', () => {
-    // 2026-03-08 为美国夏令时开始日（本地日仅 23 小时）
+  it('夏令时切换日的 23 小时不会中断连续天数（UTC 日序号）', () => {
+    // 2026-03-08 为美国夏令时开始日；用固定 UTC 时刻避免测试 runners 所在时区影响结果
     const activity = {
       '2026-03-07': true, '2026-03-08': true,
       '2026-03-09': true, '2026-03-10': true,
     };
-    expect(computeStreak(activity, localNoon(2026, 3, 10))).toBe(4);
+    expect(computeStreak(activity, new Date('2026-03-10T12:00:00Z'))).toBe(4);
   });
 
   it('存在断档时只累计最近连续段', () => {

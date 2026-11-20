@@ -20,4 +20,12 @@ describe('stroke order data', () => {
       for (const m of data.medians) expect(m.length).toBeGreaterThan(1);
     }
   });
+
+  it('词条标注的笔画数与笔顺演示的真实步数一致', () => {
+    for (const c of characters) {
+      expect(c.strokes, `${c.hanzi} 的 strokes 与笔顺数据不一致`).toBe(
+        strokeOrderData[c.hanzi].strokes.length,
+      );
+    }
+  });
 });

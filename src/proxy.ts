@@ -4,8 +4,8 @@
 // 且 /、/learn、/practice 等旧深链保持可用；首访按 Accept-Language 协商重定向到语言前缀。
 // P0-31：rewrite 时把语言与原始路径注入请求头，供 RSC 首屏直接输出正确 lang / 词典 / metadata。
 import { NextResponse, type NextRequest } from 'next/server';
-import { DEFAULT_LOCALE, SUPPORTED_LOCALES, isSupportedLocale } from '@/lib/site';
-import { LOCALE_COOKIE, LOCALE_HEADER, PATH_HEADER } from '@/lib/request-locale';
+import { DEFAULT_LOCALE, isSupportedLocale } from '@/lib/site';
+import { LOCALE_COOKIE, LOCALE_HEADER, PATH_HEADER, negotiateLocales } from '@/lib/request-locale';
 
 /** 从浏览器 Accept-Language 推断首选语言（首访 / 时用于生成语言前缀）。 */
 function negotiateLocale(request: NextRequest): string {
@@ -14,19 +14,7 @@ function negotiateLocale(request: NextRequest): string {
   const cookie = request.cookies.get(LOCALE_COOKIE)?.value;
   if (cookie && isSupportedLocale(cookie)) return cookie;
   const header = request.headers.get('accept-language') ?? '';
-  for (const part of header.split(',')) {
-    const tag = part.split(';')[0].trim().toLowerCase();
-    if (!tag) continue;
-    // 精确匹配必须先于主干匹配：否则 zh-TW 会被数组里靠前的 zh-CN 主干命中抢占
-    const exact = SUPPORTED_LOCALES.find((locale) => locale.toLowerCase() === tag);
-    if (exact) return exact;
-    // 繁体书写系统与港澳地区统一到 zh-TW
-    if (tag === 'zh-hant' || tag === 'zh-hk' || tag === 'zh-mo') return 'zh-TW';
-    const base = tag.split('-')[0];
-    const match = SUPPORTED_LOCALES.find((locale) => locale.toLowerCase().split('-')[0] === base);
-    if (match) return match;
-  }
-  return DEFAULT_LOCALE;
+  return negotiateLocales(header)[0] ?? DEFAULT_LOCALE;
 }
 
 export function proxy(request: NextRequest) {
