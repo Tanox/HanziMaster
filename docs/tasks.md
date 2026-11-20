@@ -1,7 +1,7 @@
 # 任务清单 · Task Backlog
 
-> 文档版本：v5.2.49（与项目版本同步，权威版本见 `package.json`）
-> 最后更新：**2026-11-12 — SEO/GEO 体系完善：5 项任务代码落地，待部署线上复验**
+> 文档版本：v5.2.50（与项目版本同步，权威版本见 `package.json`）
+> 最后更新：**2026-11-20 — 全面代码审查：18 项缺陷修复并归档，新增 4 项后续任务（§4）**
 > 本文件是**未完成任务 / 当前进度的单一来源**；已完成任务一律归档至 [tasks-done.md](tasks-done.md)，实现要点见 [CHANGELOG.md](../CHANGELOG.md)。
 
 ## 0. 说明与规则（单一来源）
@@ -11,15 +11,15 @@
 - 每个任务拆到**最小可执行模块**：一处明确改动 + 一条可验证验收标准。
 - 本次更新前已按源码逐项复核，不沿用历史文字结论；版本号、任务计数均实算。
 
-### 0.1 当前清单概览（共 16 项未完成）
+### 0.1 当前清单概览（共 20 项未完成）
 
 | 优先级 | 未完成 | 已归档 | 结论 |
 |--------|--------|--------|------|
 | **P0** | 2 | 22 | SITE_URL 漏配线上复现（代码告警已加，待运维配置）；SSR 首屏语言改为服务端注入，待线上 `curl` 复验 |
-| **P1** | 7 | 41 | 首访横幅遮挡、Hero 承诺不符等待办；metadata 本地化 / OG 图 / 链接前缀代码已落地待复验，+ 原 3 项 |
-| **P2** | 7 | 34 | 减少动效下首屏空白、标题层级与中文排版、CTA 错配与内容深度、首屏高度，+ 原 3 项 |
+| **P1** | 9 | 41 | 首访横幅遮挡、Hero 承诺不符等待办；+ 2026-11-20 审查新增 2 项（主题首屏 FOUC、Cookie 同意撤回） |
+| **P2** | 9 | 34 | 减少动效下首屏空白、标题层级与排版、CTA 错配与内容深度、首屏高度；+ 2026-11-20 审查新增 2 项（设置面板键盘、测验重入） |
 | **P3** | 0 | 4 | i18n 译文审校流程已闭环 |
-| **合计** | **16** | **101** | 5 项代码已落地但验收含线上核验，暂不归档；详见 §3.5 |
+| **合计** | **20** | **119** | 2026-11-20 审查 18 项已修复并归档（101→119），新增 4 项待办；详见 §4 与 `docs/code-review-2026-11-20.md` |
 
 > 归档总数 101 = 历史与 P0 批次 79 项 + 2026-11-08 批次 22 项。
 > 7 项残差来自 **2026-11-09 新鲜度审查**：逐项对源码/部署配置/文档实查，不沿用历史结论。
@@ -274,7 +274,55 @@
 
 > 线上核验命令见 `docs/05-deployment.md` §7。代码侧门禁（`tsc` / 全量单测 / ESLint / `i18n:lint` 8 模块 / `check:lines`）已全绿；**上述 5 项验收含线上 `curl`，完成前不归档**。
 
-## 4. 后续维护约定
+## 4. 全面代码审查（2026-11-20）
+
+> 完整报告：[code-review-2026-11-20.md](code-review-2026-11-20.md)（含每项问题原因与修改思路）。18 项已修复项已归档至 `tasks-done.md`。
+
+### 4.1 本轮已修复（18 项，均已归档）
+
+| 类别 | 修复点 | 主要文件 |
+|------|--------|---------|
+| 进度与统计 | 跨标签页同步、hydration 一致、答题记录上限、id/时间戳严格校验、未来日期连胜、准确率满分钳制 | `use-progress.ts`、`progress-utils.ts` |
+| 存储与插值 | envelope 缺 `_d` 回退默认值、替换值不再二次解析 | `storage.ts`、`i18n/translate.ts` |
+| 懒加载 | 笔顺 chunk 失败可重试 + 三处消费端 `.catch()` | `stroke-order-loader.ts`、`writing-dialog.tsx`、`stroke-order-demo.tsx`、`locale-provider.tsx` |
+| 配置与 SEO | Sentry tunnel 不再被 302、AI 爬虫组补敏感路径禁入、`SITE_URL` 非法值告警回退 | `proxy.ts`、`robots.ts`、`site.ts` |
+| RTL / 可访问性 / 性能 | 对话框与提示 RTL 居中、抽屉手势方向、重复 DOM id、i18n aria-label、移除 `main key`、测验结果播报与选项键盘导航、Object URL 延迟释放 | `dialog.tsx`、`use-swipe-close.ts`、`theme-toggle.tsx`、`locale-toggle.tsx`、`layout-client.tsx`、两个 `quiz-dialog.tsx`、`progress-transfer-controls.tsx` |
+
+### 4.2 新增待办（4 项）
+
+#### P1-45 · 主题首屏闪烁（FOUC） `UX` `待办`
+
+- **现状**：`theme-provider` 在客户端 useEffect 中才应用 `.dark`，首屏可能短暂显示错误主题；直接注入 `<head>` 预设脚本又需兼顾 CSP `script-src` nonce/哈希。
+- **目标**：在 `<head>` 注入最小主题预设脚本（读 localStorage 主题偏好并设置 documentElement class），与 CSP 策略兼容。
+- **验收**：刷新页面首帧截图主题正确（明/暗/系统三态）；CSP 门禁通过；`theme-provider.test.tsx` 仍通过。
+- **涉及**：`src/app/layout.tsx`、`src/components/theme-provider.tsx`、`next.config.mjs`（CSP）
+- **依赖**：无
+
+#### P1-46 · Cookie 同意撤回机制 `合规/隐私` `待办`
+
+- **现状**：`consent-banner` 只在首次选择时写入同意状态，用户之后无法撤回；统计脚本加载后不会因撤回而停止。
+- **目标**：设置面板增加「隐私与数据」入口，可撤回分析同意并调用 gtag consent update；撤回后 localStorage 状态与脚本行为同步。
+- **验收**：撤回后刷新不再加载统计脚本；同意状态可再次开启；11 语言文案同步、`i18n:lint` 通过。
+- **涉及**：`src/components/consent-banner.tsx`、`src/lib/consent.ts`、`src/components/settings-dialog.tsx`、11 语言 `settings.*`
+- **依赖**：无
+
+#### P2-26 · 设置面板主题选择与焦点管理 `无障碍` `待办`
+
+- **现状**：设置面板主题三按钮无 roving tabindex / 方向键，重置学习进度二次确认后焦点未回到主按钮。
+- **目标**：主题三按钮改为标准 radiogroup 键盘导航；重置确认/取消后恢复焦点到 `#settings-reset`。
+- **验收**：仅当前主题按钮进 Tab 序列，方向键可切换；二次确认取消/完成后焦点回到重置按钮；`settings-dialog.test.tsx` 覆盖。
+- **涉及**：`src/components/settings-dialog.tsx`、`src/components/__tests__/settings-dialog.test.tsx`
+- **依赖**：无
+
+#### P2-27 · 首页测验重入与状态残留 `交互健壮性` `待办`
+
+- **现状**：学习页测验弹窗连续提交/Enter 可重复触发；反馈定时器在关闭弹窗后未清理；重开弹窗保留上次输入与结果。练习弹窗下一题时亦需确认状态重置。
+- **目标**：提交中禁用按钮与输入、清理定时器、每次打开重置输入与结果状态；为学习页补充快捷键与结果播报（与练习页一致）。
+- **验收**：快速双击只记录一次；关闭后无计时器泄漏；重开为全新空态；键盘可完成答题并听到结果播报。
+- **涉及**：`src/components/learn/quiz-dialog.tsx`、`src/app/learn/learn-page.tsx`、`src/components/practice/quiz-dialog.tsx`
+- **依赖**：无
+
+## 5. 后续维护约定
 
 - 新任务写入本文件并标注优先级 / 现状证据 / 验收标准 / 涉及文件；完成后立即移入 `tasks-done.md`。
 - 每次改动按 `docs/git-workflow.md` bump 一个最小版本，同步 `CHANGELOG.md` 与全局展示位。

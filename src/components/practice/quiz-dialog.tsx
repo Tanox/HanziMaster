@@ -1,4 +1,4 @@
-// src/components/practice/quiz-dialog.tsx v5.2.44
+// src/components/practice/quiz-dialog.tsx v5.2.50
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
@@ -59,7 +59,29 @@ export function QuizDialog({
             </div>
           </div>
 
-          <div id="practice-quiz-options" role="radiogroup" aria-label={t('practice.quizTitle')} className="grid grid-cols-2 gap-4">
+          <div
+            id="practice-quiz-options"
+            role="radiogroup"
+            aria-label={t('practice.quizTitle')}
+            // radiogroup 需支持方向键在选项间移动（roving tabindex），否则键盘用户只能 Tab 到当前项
+            onKeyDown={(e) => {
+              if (!['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp', 'Home', 'End'].includes(e.key)) return;
+              e.preventDefault();
+              const items = Array.from(
+                e.currentTarget.querySelectorAll<HTMLButtonElement>('[role="radio"]:not(:disabled)')
+              );
+              if (items.length === 0) return;
+              const current = items.indexOf(document.activeElement as HTMLButtonElement);
+              const next =
+                e.key === 'Home' ? 0
+                : e.key === 'End' ? items.length - 1
+                : e.key === 'ArrowRight' || e.key === 'ArrowDown'
+                  ? (current + 1) % items.length
+                  : (current - 1 + items.length) % items.length;
+              items[next]?.focus();
+            }}
+            className="grid grid-cols-2 gap-4"
+          >
             {QUIZ_OPTIONS.map((char) => {
               const checked = selectedAnswer === char;
               return (
@@ -68,6 +90,7 @@ export function QuizDialog({
                   type="button"
                   role="radio"
                   aria-checked={checked}
+                  tabIndex={checked || (selectedAnswer === null && char === QUIZ_OPTIONS[0]) ? 0 : -1}
                   onClick={() => onAnswer(char)}
                   disabled={answered}
                   className={`relative py-6 text-3xl font-light serif-font rounded-lg transition-[colors,transform] duration-300 ${
@@ -87,7 +110,7 @@ export function QuizDialog({
           </div>
 
           {answered && (
-            <div className={`mt-6 text-center font-semibold ${
+            <div id="practice-quiz-result" role="status" aria-live="polite" className={`mt-6 text-center font-semibold ${
               selectedAnswer === character.hanzi ? 'text-vermilion-600 dark:text-vermilion-400' : 'text-destructive'
             }`}>
               {selectedAnswer === character.hanzi ? t('practice.correct') : t('practice.wrong')}

@@ -1,4 +1,4 @@
-// src/lib/__tests__/progress-utils.test.ts v5.2.27
+// src/lib/__tests__/progress-utils.test.ts v5.2.50
 import { describe, it, expect } from 'vitest';
 import {
   computeAccuracy,
@@ -36,12 +36,14 @@ describe('validateProgress', () => {
 
   it('过滤 NaN/Infinity、非法记录与非法日期键，并去重', () => {
     const result = validateProgress({
-      learnedCharIds: [1, 1, NaN, Infinity, '3', 2],
+      learnedCharIds: [1, 1, NaN, Infinity, '3', 2, -1, 1.5, Number.MAX_SAFE_INTEGER + 1],
       quizResults: [
         { charId: 1, correct: true, timestamp: 100 },
         { charId: NaN, correct: false, timestamp: 200 },
         { charId: 2, correct: 'yes', timestamp: 300 },
         { charId: 3, correct: false, timestamp: Infinity },
+        { charId: -2, correct: true, timestamp: 400 },
+        { charId: 4, correct: true, timestamp: -5 },
         null,
       ],
       dailyActivity: {
@@ -92,9 +94,17 @@ describe('computeStreak', () => {
     expect(computeStreak(activity, localNoon(2026, 3, 10))).toBe(2);
   });
 
-  it('最后活动早于昨天或位于未来时返回 0', () => {
+  it('最后活动早于昨天或仅位于未来时返回 0', () => {
     expect(computeStreak({ '2026-03-01': true }, localNoon(2026, 3, 10))).toBe(0);
     expect(computeStreak({ '2026-04-01': true }, localNoon(2026, 3, 10))).toBe(0);
+  });
+
+  it('混合未来脏数据时仍按不晚于今天的活动计算连续段', () => {
+    const activity = {
+      '2099-01-01': true,
+      '2026-03-08': true, '2026-03-09': true, '2026-03-10': true,
+    };
+    expect(computeStreak(activity, localNoon(2026, 3, 10))).toBe(3);
   });
 });
 
@@ -106,6 +116,13 @@ describe('computeAccuracy', () => {
       { charId: 2, correct: false, timestamp: 2 },
       { charId: 3, correct: true, timestamp: 3 },
     ])).toBe(67);
+  });
+
+  it('非满分结果不得四舍五入为 100', () => {
+    const results = Array.from({ length: 200 }, (_, i) => ({
+      charId: 1, correct: i < 199, timestamp: i,
+    }));
+    expect(computeAccuracy(results)).toBe(99);
   });
 });
 

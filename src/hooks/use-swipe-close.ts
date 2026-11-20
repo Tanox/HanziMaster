@@ -1,4 +1,4 @@
-// src/hooks/use-swipe-close.ts v5.2.31
+// src/hooks/use-swipe-close.ts v5.2.50
 'use client';
 
 import { useRef } from 'react';
@@ -6,7 +6,7 @@ import type { TouchEvent } from 'react';
 
 const SWIPE_THRESHOLD = 60;
 
-/** 右侧抽屉手势：向右滑出超过阈值时触发关闭。 */
+/** 抽屉手势：LTR 右抽屉向右滑关闭；RTL 左抽屉向左滑关闭。 */
 export function useSwipeClose(isOpen: boolean, onClose: () => void) {
   const startX = useRef<number | null>(null);
 
@@ -18,7 +18,9 @@ export function useSwipeClose(isOpen: boolean, onClose: () => void) {
     if (startX.current === null) return;
     const dx = e.changedTouches[0].clientX - startX.current;
     startX.current = null;
-    if (isOpen && dx > SWIPE_THRESHOLD) onClose();
+    const isRtl = document.documentElement.dir === 'rtl';
+    // 关闭方向始终朝屏幕外侧：LTR 为 +dx，RTL 为 -dx
+    if (isOpen && (isRtl ? dx < -SWIPE_THRESHOLD : dx > SWIPE_THRESHOLD)) onClose();
   };
 
   return { onTouchStart, onTouchEnd };

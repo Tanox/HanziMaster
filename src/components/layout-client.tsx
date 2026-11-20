@@ -1,4 +1,4 @@
-// src/components/layout-client.tsx v5.2.49
+// src/components/layout-client.tsx v5.2.50
 'use client';
 
 import { VERSION_LABEL } from '@/lib/version';
@@ -65,15 +65,15 @@ export function LayoutClient({ children }: LayoutClientProps) {
               <NavLink href="/learn">{t('common.learn')}</NavLink>
               <NavLink href="/practice">{t('common.practice')}</NavLink>
               <div className="w-px h-6 bg-ink-200 dark:bg-ink-700"></div>
-              <LocaleToggleClient />
-              <ThemeToggleClient />
+              <LocaleToggleClient idPrefix="locale-toggle-desktop" />
+              <ThemeToggleClient id="theme-toggle-desktop" />
               <SettingsButton />
             </nav>
 
             {/* Mobile Controls */}
             <div className="flex items-center gap-2 lg:hidden">
-              <ThemeToggleClient />
-              <LocaleToggleClient />
+              <ThemeToggleClient id="theme-toggle-mobile" />
+              <LocaleToggleClient idPrefix="locale-toggle-mobile" />
               <SettingsButton />
               <button
                 onClick={() => setMobileNavOpen(true)}
@@ -104,7 +104,8 @@ export function LayoutClient({ children }: LayoutClientProps) {
         <MobileNav isOpen={mobileNavOpen} onClose={closeMobileNav} t={t} locale={locale} />
 
         {/* Main Content */}
-        <main id="main-content" className="flex-1 page-transition" key={pathname}>
+        {/* 不加 key={pathname}：强制重挂会每次路由切换重建全部子树、丢失内部状态并放大动效成本 */}
+        <main id="main-content" className="flex-1 page-transition">
           {children}
         </main>
 

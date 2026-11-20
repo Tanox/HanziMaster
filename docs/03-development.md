@@ -1,6 +1,6 @@
 # 开发指南
 
-> 文档版本：v5.2.48（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.50（与项目版本同步，权威版本见 `package.json`）
 
 本文负责**开发环境、命令表与日常流程**。编码风格、命名、目录组织、设计 token、i18n、版本号与质量门禁的唯一权威是 [coding-standards.md](coding-standards.md)；提交、分支与审查见 [git-workflow.md](git-workflow.md)。
 
@@ -93,6 +93,7 @@ package.json version（唯一权威源）
 5. 本地验证：格式化 → 类型检查 → lint → 单测 → 行数 → 审计 → 构建（命令见 §3 与 [coding-standards.md](coding-standards.md) §11）。
 6. 按 [commit-template.md](commit-template.md) 提交并 bump 版本；按 [git-workflow.md](git-workflow.md) §5 发起 PR 与审查。
 7. 任务状态更新到 [tasks.md](tasks.md)（唯一来源），完成后归档到 [tasks-done.md](tasks-done.md)。
+8. 涉及进度数据时注意：`useProgress` 首帧使用默认进度、挂载后从 `window.localStorage` 读取，并监听 `storage` 事件与 `hanzi-master:progress-imported` 跨标签页同步；导入/重置后由调用方广播该事件。准确率非满分最多显示 99，连胜计算忽略未来日期。
 
 ## 6. 本机工具链注意事项
 

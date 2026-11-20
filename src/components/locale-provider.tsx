@@ -111,9 +111,13 @@ export function LocaleProvider({
       return;
     }
     let active = true;
-    loadTranslations(locale).then((next) => {
-      if (active) setDictionary(next);
-    });
+    loadTranslations(locale)
+      .then((next) => {
+        if (active) setDictionary(next);
+      })
+      .catch(() => {
+        // 词典 chunk 加载失败时保留上一份词典，避免 unhandled rejection 界面空白
+      });
     return () => {
       active = false;
     };

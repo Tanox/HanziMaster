@@ -31,9 +31,14 @@ export function WritingDialog({ open, onOpenChange, character, strokeCount, onNe
     if (!open) return;
     let active = true;
     setStrokeData(null);
-    loadStrokeOrder(character.hanzi).then((data) => {
-      if (active) setStrokeData(data ?? null);
-    });
+    loadStrokeOrder(character.hanzi)
+      .then((data) => {
+        if (active) setStrokeData(data ?? null);
+      })
+      .catch(() => {
+        // 加载失败保持空状态，下一次打开可重试；loader 已记录告警
+        if (active) setStrokeData(null);
+      });
     return () => {
       active = false;
     };

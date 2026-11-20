@@ -1,5 +1,24 @@
 ﻿# Changelog
 
+## [5.2.50] - 全面代码审查：18 项缺陷修复与健壮性加固
+### Fixed（核心逻辑与边界）
+- `use-progress`：新增跨标签页 `storage` 同步，避免旧标签页整块覆写导致进度丢失；首帧统一默认进度、挂载后再读取，消除 hydration 不一致且防止默认值覆盖已有数据；答题记录上限 1000 条。
+- `progress-utils`：严格校验字符 id（正整数/安全整数）与时间戳（非负/安全整数）；连胜计算过滤未来日期脏数据；准确率非满分钳制到 99，避免 199/200 误报 100%。
+- `storage`：envelope 缺 `_d` 字段时回退默认值，消除返回类型与运行时不一致；`translate`：改单次正则替换，避免替换值中的 `{{...}}` 被二次解析。
+- `stroke-order-loader`：chunk 加载失败后清空 pending 允许重试并消费 rejection；书写弹窗、笔顺演示、语言词典三处补 `.catch()`，避免 unhandled rejection 与界面空白。
+- `site`：生产环境变量 `NEXT_PUBLIC_SITE_URL` 只接受绝对 http(s) URL，非法值告警并回退，杜绝 metadata 构建期异常；`progress-transfer`：导出文件 Object URL 延迟释放，兼容 Firefox 下载。
+
+### Fixed（配置与 SEO）
+- `proxy` matcher 排除 `/monitoring`（Sentry tunnel），避免上报请求被语言前缀 302 打断；`robots` 为所有 AI 爬虫 UA 组显式声明 `/api/`、`/monitoring` 禁入，防止更具体 UA 组覆盖通配规则。
+
+### Fixed（RTL / 可访问性 / 性能）
+- 对话框与主题提示改用物理 `left-1/2` 居中，修复 RTL 偏位；抽屉关闭手势按 `dir` 判定方向（LTR 右滑、RTL 左滑）；主题/语言切换按钮增加 `id`/`idPrefix` prop 消除桌面与移动端重复 DOM id；主题按钮 aria-label 走 i18n 并补 `type=button`。
+- 移除 `<main key={pathname}>`，避免每次路由切换强制重挂子树；学习/练习测验结果补 `role=status/aria-live` 与 `aria-invalid/describedby`，练习选项组补 roving tabindex 与方向键导航。
+
+### Docs
+- 新增 `docs/code-review-2026-11-20.md`（审查结论、18 项修复的原因/思路、未修建议、门禁结果）；`docs/tasks.md` §4 记录修复与 4 项后续任务；`tasks-done.md` 归档；`.env.example` 与 `docs/03-development.md` 补充 SITE_URL 校验说明。
+
+
 ## [5.2.49] - SEO / GEO 体系完善（多语言 SSR metadata、结构化数据、llms.txt）
 ### Added
 - **GEO 内容层**：新增 `public/llms.txt`（站点事实摘要、12 字清单、FAQ 与引用指引）、首页 `#site-facts` / `#site-faq` 两个 SSR 可抓取区块（`home-geo.tsx`）；`structured-data.tsx` 升级为 `@graph`（WebSite / Organization / WebPage / WebApplication / Course / FAQPage，FAQ 与 UI 同源）。

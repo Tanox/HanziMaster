@@ -1,7 +1,30 @@
 # 已完成任务归档 · Tasks Done
 
-> 文档版本：v5.2.48（与项目版本同步，权威版本见 `package.json`）
-> 最近归档：**2026-11-12（UTC+8）— 统一临时文件固定子目录（仓库卫生）**
+> 文档版本：v5.2.50（与项目版本同步，权威版本见 `package.json`）
+> 最近归档：**2026-11-20（UTC+8）— 全面代码审查 18 项缺陷修复**
+
+## 2026-11-20 全面代码审查（18 项）
+
+> 完整原因与修改思路见 [code-review-2026-11-20.md](code-review-2026-11-20.md)；对应测试已随代码合入。
+
+- **CR-01 进度跨标签页覆盖** → `use-progress` 监听 `storage` 事件按 key 重载，避免旧状态整块覆写。
+- **CR-02 进度 hydration 不一致** → 首帧统一默认进度，挂载后读取，加载前禁止写回。
+- **CR-03 答题记录无上限** → `quizResults` 截断至最近 1000 条。
+- **CR-04 进度数值校验过宽** → id/timestamp 严格校验（正整数/非负安全整数）。
+- **CR-05 未来日期污染连胜** → `computeStreak` 过滤晚于今天的活动。
+- **CR-06 准确率误报满分** → 非满分钳制到 99。
+- **CR-07 storage envelope 缺 `_d`** → 回退默认值，保证返回类型一致。
+- **CR-08 插值链式替换** → 单次正则扫描替换。
+- **CR-09 笔顺 chunk 失败永久卡死** → 清 pending 允许重试 + 内部消费 rejection。
+- **CR-10 懒加载未捕获异常** → 书写弹窗/笔顺演示/词典加载三处补 `.catch()`。
+- **CR-11 Sentry tunnel 被 302** → `proxy` matcher 排除 `/monitoring`。
+- **CR-12 AI 爬虫组覆盖禁用规则** → `robots` 每个 UA 组显式 disallow 敏感路径。
+- **CR-13 SITE_URL 非法值构建异常** → 校验绝对 http(s) URL，非法值告警回退。
+- **CR-14 RTL 对话框/提示错位** → 物理 `left-1/2` 居中。
+- **CR-15 RTL 抽屉手势反向** → 按 `dir` 判定关闭方向。
+- **CR-16 重复 DOM id 与英文 aria-label** → `id`/`idPrefix` prop + i18n 标签 + `type=button`。
+- **CR-17 `main key={pathname}` 强制重挂** → 移除 key。
+- **CR-18 测验可访问性与下载中断** → 结果 aria-live、选项键盘导航、Object URL 延迟释放。
 
 ## 说明
 

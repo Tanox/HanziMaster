@@ -1,6 +1,6 @@
 # API 参考
 
-> 文档版本：v5.2.49（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.50（与项目版本同步，权威版本见 `package.json`）
 
 本文列出应用内部**公开模块与组件的真实签名**。类型与导出以源码为准；本文只做稳定契约说明，不逐字复制实现。设计 token 完整色板见 [07-design-prototype.md](07-design-prototype.md)，编码用法见 [coding-standards.md](coding-standards.md)。
 
@@ -161,7 +161,7 @@ export function Example() {
 | `src/lib/storage.ts` | `safeGetItem<T>(key, defaultValue)`、`safeSetItem<T>(key, value)` | 版本化 + schema 校验，内部统一 `window.localStorage`，异常静默降级 |
 | `src/lib/utils.ts` | `cn(...inputs: ClassValue[])` | `clsx` + `twMerge` 合并类名 |
 | `src/lib/version.ts` | `APP_VERSION`、`BUILD_ID`、`VERSION_LABEL` | 读取 `NEXT_PUBLIC_*` 注入值，缺失时回退 |
-| `src/lib/site.ts` | `SITE_URL` | 站点绝对地址（`NEXT_PUBLIC_SITE_URL`，回退 `http://localhost:3000`），供 canonical / sitemap 使用 |
+| `src/lib/site.ts` | `SITE_URL`、`SITE_URL_INVALID`、`getSiteUrlWarning()` | 站点绝对地址（仅接受绝对 http(s) URL；`NEXT_PUBLIC_SITE_URL` 漏配或非法时回退 `http://localhost:3000` 并在生产告警），供 canonical / sitemap 使用 |
 | `src/lib/consent.ts` | GA 同意状态读写 | 同意门控（`getConsent` / `setConsent` 等），配合 `consent-banner.tsx` |
 | `src/lib/error-reporting.ts` | 错误上报封装 | 未配置 Sentry DSN 时为空操作 |
 | `src/lib/characters*.ts` | 汉字数据与类型 | 12 个基础汉字，拆分为 `characters-part1/2.ts` |

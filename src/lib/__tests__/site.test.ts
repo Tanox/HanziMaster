@@ -1,4 +1,4 @@
-// src/lib/__tests__/site.test.ts v5.2.49
+// src/lib/__tests__/site.test.ts v5.2.50
 
 import { describe, expect, it } from 'vitest';
 import {
@@ -38,6 +38,12 @@ describe('site constants', () => {
       getSiteUrlWarning({ NODE_ENV: 'production', NEXT_PUBLIC_SITE_URL: 'https://example.com' }),
     ).toBeNull();
     expect(getSiteUrlWarning({ NODE_ENV: 'development' })).toBeNull();
+    expect(
+      getSiteUrlWarning({ NODE_ENV: 'production', NEXT_PUBLIC_SITE_URL: 'example.com' })
+    ).toMatch(/not a valid absolute http\(s\) URL/);
+    expect(
+      getSiteUrlWarning({ NODE_ENV: 'production', NEXT_PUBLIC_SITE_URL: 'https://hanzi.ewuse.com' })
+    ).toBeNull();
   });
 
   it('maps every locale to an Open Graph region tag', () => {

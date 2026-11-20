@@ -1,4 +1,4 @@
-// src/components/learn/quiz-dialog.tsx v5.2.35
+// src/components/learn/quiz-dialog.tsx v5.2.50
 'use client';
 
 import { useTranslation } from '@/components/locale-provider';
@@ -60,6 +60,8 @@ export function QuizDialog({
             onKeyDown={(e) => e.key === 'Enter' && onSubmit()}
             placeholder={t('learn.quizPlaceholder')}
             aria-label={t('learn.pinyin')}
+            aria-invalid={correct === false}
+            aria-describedby={correct !== null ? 'learn-quiz-result' : undefined}
             className={`w-full px-6 py-4 text-lg text-center rounded-lg border-2 transition-[colors,border-color,box-shadow] duration-300 ${
               correct === true
                 ? 'border-vermilion-500 bg-vermilion-50 dark:bg-vermilion-900/20 text-vermilion-600 dark:text-vermilion-400'
@@ -70,7 +72,7 @@ export function QuizDialog({
           />
 
           {correct !== null && (
-            <div className={`mt-4 text-center font-medium ${
+            <div id="learn-quiz-result" role="status" aria-live="polite" className={`mt-4 text-center font-medium ${
               correct ? 'text-vermilion-600 dark:text-vermilion-400' : 'text-destructive'
             }`}>
               {correct ? t('learn.quizCorrect') : t('learn.quizIncorrect')}

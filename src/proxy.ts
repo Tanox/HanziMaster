@@ -1,4 +1,4 @@
-// src/proxy.ts v5.2.49
+// src/proxy.ts v5.2.50
 // P1-7：URL 级 i18n。Next.js 16 的中间件文件约定为 proxy.ts（middleware.ts 已弃用并告警），
 // /{locale}/... 前缀由本文件重写到既有页面 + ?lang=，因此无需复制多套页面，
 // 且 /、/learn、/practice 等旧深链保持可用；首访按 Accept-Language 协商重定向到语言前缀。
@@ -60,5 +60,6 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/|api/|.*\\.).*)'],
+  // /monitoring 是 Sentry tunnel（next.config.mjs），不得被 302 到语言前缀，否则 POST 上报丢失
+  matcher: ['/((?!_next/|api/|monitoring|.*\\.).*)'],
 };

@@ -1,4 +1,4 @@
-// src/components/theme-toggle.tsx v5.2.44
+// src/components/theme-toggle.tsx v5.2.50
 'use client';
 
 import { useTheme } from './theme-provider';
@@ -28,33 +28,30 @@ const themeCycle: Record<string, 'dark' | 'light' | 'system'> = {
   system: 'light',
 };
 
-const ariaLabels = {
-  light: 'Switch to dark mode',
-  dark: 'Switch to system mode',
-  system: 'Switch to light mode',
-};
-
-export function ThemeToggleClient() {
+export function ThemeToggleClient({ id = 'theme-toggle' }: { id?: string }) {
   const { theme, setTheme } = useTheme();
   const { t } = useTranslation();
+  const nextTheme = themeCycle[theme] || 'system';
 
   const cycleTheme = () => {
-    setTheme(themeCycle[theme] || 'system');
+    setTheme(nextTheme);
   };
 
   return (
     <button
+      type="button"
       onClick={cycleTheme}
-      className="p-2 rounded-lg hover:bg-muted transition-colors relative group"
-      id="theme-toggle"
-      aria-label={ariaLabels[theme]}
+      className="p-2 rounded-lg hover:bg-muted transition-colors relative group focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-vermilion-500"
+      id={id}
+      // aria-label 用目标主题并走 i18n，替代原先硬编码英文；桌面/移动实例通过 id prop 区分
+      aria-label={t(`common.theme.${nextTheme}`)}
       title={t(`common.theme.${theme}`)}
       style={{ minWidth: 44, minHeight: 44 }}
     >
       {themeIcons[theme] || themeIcons.system}
 
-      {/* Tooltip on hover */}
-      <span className="absolute -bottom-8 start-1/2 -translate-x-1/2 bg-ink-800 dark:bg-ink-100 text-ink-50 dark:text-ink-900 text-[10px] font-medium px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap hidden sm:block">
+      {/* Tooltip：物理 left 居中兼容 RTL；键盘聚焦时同样可见 */}
+      <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-ink-800 dark:bg-ink-100 text-ink-50 dark:text-ink-900 text-[10px] font-medium px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity pointer-events-none whitespace-nowrap hidden sm:block">
         {t(`common.theme.${theme}`)}
       </span>
     </button>

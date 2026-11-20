@@ -1,4 +1,4 @@
-// src/components/progress-transfer-controls.tsx v5.2.44
+// src/components/progress-transfer-controls.tsx v5.2.50
 // P2-17：设置面板中的进度导出 / 导入入口。
 'use client';
 
@@ -23,7 +23,8 @@ export function ProgressTransferControls() {
     link.href = url;
     link.download = `hanzi-master-progress-${new Date().toISOString().slice(0, 10)}.json`;
     link.click();
-    URL.revokeObjectURL(url);
+    // 立即 revoke 会在部分浏览器（如 Firefox）中断尚未开始的下载，延迟释放
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
 
   const handleImport = async (file?: File) => {

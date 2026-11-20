@@ -1,4 +1,4 @@
-// src/hooks/__tests__/use-progress.test.tsx v5.2.31
+// src/hooks/__tests__/use-progress.test.tsx v5.2.50
 import { describe, it, expect, beforeEach } from 'vitest';
 import { act, renderHook } from '@testing-library/react';
 import { useProgress } from '../use-progress';
@@ -37,5 +37,28 @@ describe('useProgress', () => {
     const { result } = renderHook(() => useProgress());
     act(() => result.current.recordQuizResult(4, true));
     expect(result.current.getLearnedCount()).toBe(1);
+  });
+
+  it('loads existing progress after mount without overwriting it with defaults', () => {
+    window.localStorage.setItem(
+      'hanzi-master-progress',
+      JSON.stringify({ _v: 1, _d: { learnedCharIds: [7], quizResults: [], dailyActivity: {} } })
+    );
+    const { result } = renderHook(() => useProgress());
+    expect(result.current.getLearnedCount()).toBe(1);
+    const stored = JSON.parse(window.localStorage.getItem('hanzi-master-progress')!);
+    expect(stored._d.learnedCharIds).toEqual([7]);
+  });
+
+  it('reloads progress when another tab writes the same storage key', () => {
+    const { result } = renderHook(() => useProgress());
+    act(() => {
+      window.localStorage.setItem(
+        'hanzi-master-progress',
+        JSON.stringify({ _v: 1, _d: { learnedCharIds: [5, 6], quizResults: [], dailyActivity: {} } })
+      );
+      window.dispatchEvent(new StorageEvent('storage', { key: 'hanzi-master-progress' }));
+    });
+    expect(result.current.getLearnedCount()).toBe(2);
   });
 });

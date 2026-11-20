@@ -1,4 +1,4 @@
-// src/lib/__tests__/translate.test.ts v5.2.27
+// src/lib/__tests__/translate.test.ts v5.2.50
 import { describe, it, expect } from 'vitest';
 import { getNestedValue, interpolate } from '@/lib/i18n/translate';
 import { locales, translations } from '@/lib/i18n';
@@ -50,5 +50,12 @@ describe('interpolate', () => {
 
   it('替换值含 $& / $1 等序列时按字面量处理', () => {
     expect(interpolate('{{v}}', { v: '$& $1 $$' })).toBe('$& $1 $$');
+  });
+
+  it('替换值中的占位符不会被二次解析', () => {
+    expect(interpolate('{{first}} {{second}}', {
+      first: '{{second}}',
+      second: 'ok',
+    })).toBe('{{second}} ok');
   });
 });

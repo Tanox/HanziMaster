@@ -1,9 +1,10 @@
-// src/app/robots.ts v5.2.49
+// src/app/robots.ts v5.2.50
 
 import type { MetadataRoute } from 'next';
 import { SITE_URL } from '@/lib/site';
 
-/** 显式允许生成式引擎/AI 搜索爬虫（默认 * 已允许，此处表明 GEO 意图并便于日后按 UA 细分）。 */
+/** AI 爬虫组必须重复声明敏感路径禁入：robots.txt 中更具体的 UA 组优先于通配 * 组。 */
+const SENSITIVE_PATHS = ['/api/', '/monitoring'];
 const AI_CRAWLERS = [
   'GPTBot',
   'OAI-SearchBot',
@@ -19,8 +20,8 @@ const AI_CRAWLERS = [
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
-      { userAgent: '*', allow: '/', disallow: ['/api/', '/monitoring'] },
-      ...AI_CRAWLERS.map((userAgent) => ({ userAgent, allow: '/' })),
+      { userAgent: '*', allow: '/', disallow: SENSITIVE_PATHS },
+      ...AI_CRAWLERS.map((userAgent) => ({ userAgent, allow: '/', disallow: SENSITIVE_PATHS })),
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
     host: SITE_URL,

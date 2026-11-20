@@ -27,9 +27,14 @@ export function StrokeOrderDemo({ character, strokeCount }: StrokeOrderDemoProps
     setData(null);
     setActiveStroke(0);
     setPlaying(false);
-    loadStrokeOrder(character).then((loaded) => {
-      if (active) setData(loaded ?? null);
-    });
+    loadStrokeOrder(character)
+      .then((loaded) => {
+        if (active) setData(loaded ?? null);
+      })
+      .catch(() => {
+        // 加载失败回退为空状态，下一次切换可重试；loader 已记录告警
+        if (active) setData(null);
+      });
     return () => {
       active = false;
     };

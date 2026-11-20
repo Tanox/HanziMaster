@@ -1,4 +1,4 @@
-// src/lib/__tests__/storage.test.ts v5.2.35
+// src/lib/__tests__/storage.test.ts v5.2.50
 
 import { beforeEach, describe, expect, it } from 'vitest';
 import { safeGetItem, safeSetItem } from '../storage';
@@ -21,6 +21,9 @@ describe('safeGetItem / safeSetItem', () => {
 
     window.localStorage.setItem('old', JSON.stringify({ _v: 0, _d: 99 }));
     expect(safeGetItem('old', 7)).toBe(7);
+
+    window.localStorage.setItem('no-data', JSON.stringify({ _v: 1 }));
+    expect(safeGetItem('no-data', 7)).toBe(7);
   });
 
   it('silently ignores quota errors', () => {

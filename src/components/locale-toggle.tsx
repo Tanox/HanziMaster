@@ -1,4 +1,4 @@
-// src/components/locale-toggle.tsx v5.2.44
+// src/components/locale-toggle.tsx v5.2.50
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
@@ -19,7 +19,8 @@ export const localeNames: Record<string, string> = {
   'ru': 'Русский',
 };
 
-export function LocaleToggleClient() {
+/** 桌面与移动端各渲染一次，idPrefix 保证 DOM id 唯一（默认保持历史 id）。 */
+export function LocaleToggleClient({ idPrefix = 'locale-toggle' }: { idPrefix?: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const { locale, setLocale, availableLocales, t } = useLocale();
   const menuRef = useRef<HTMLDivElement>(null);
@@ -74,9 +75,10 @@ export function LocaleToggleClient() {
   }, [isOpen, close]);
 
   return (
-    <div id="locale-toggle" className="relative" ref={menuRef}>
+    <div id={idPrefix} className="relative" ref={menuRef}>
       <button
-        id="locale-toggle-button"
+        type="button"
+        id={`${idPrefix}-button`}
         ref={buttonRef}
         onClick={() => setIsOpen((v) => !v)}
         className="p-2 rounded-lg hover:bg-muted transition-colors"
@@ -91,7 +93,7 @@ export function LocaleToggleClient() {
       </button>
       {isOpen && (
         <div
-          id="locale-toggle-menu"
+          id={`${idPrefix}-menu`}
           ref={listRef}
           role="listbox"
           aria-label={t('common.selectLanguage')}

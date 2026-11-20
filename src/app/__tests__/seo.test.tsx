@@ -1,4 +1,4 @@
-// src/app/__tests__/seo.test.tsx v5.2.49
+// src/app/__tests__/seo.test.tsx v5.2.50
 
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
@@ -26,6 +26,10 @@ describe('SEO / GEO routes', () => {
     const agents = rules.map((rule) => rule.userAgent).filter(Boolean);
     for (const bot of ['GPTBot', 'ClaudeBot', 'PerplexityBot', 'Google-Extended']) {
       expect(agents).toContain(bot);
+    }
+    // 每个 UA 组必须自带敏感路径禁入，否则更具体的组会覆盖通配 * 的规则
+    for (const rule of rules) {
+      expect(rule.disallow).toEqual(expect.arrayContaining(['/api/', '/monitoring']));
     }
     expect(result.sitemap).toBe(`${SITE_URL}/sitemap.xml`);
     expect(result.host).toBe(SITE_URL);

@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.49",
-  "version": "5.2.49",
-  "description": "v5.2.49: SEO/GEO 体系完善——SSR 首屏语言与 generateMetadata 按 11 语言本地化（canonical/hreflang/OG）、动态分享图、结构化数据 @graph、llms.txt 与首页事实/FAQ、AI 爬虫规则与规范化 sitemap、全站链接语言前缀；新增生产 SITE_URL 漏配告警与部署核验清单。",
+  "name": "HanziMaster 汉字大师 v5.2.50",
+  "version": "5.2.50",
+  "description": "v5.2.50: 全面代码审查——修复进度跨标签页覆盖/hydration 不一致/准确率误报满分、笔顺懒加载永久卡死、Sentry tunnel 被重定向、robots UA 组覆盖禁用规则、RTL 居中与手势方向、测验可访问性等 18 项缺陷；新增审查报告与回归测试。",
   "keywords": [
     "Chinese characters",
     "Hanzi",

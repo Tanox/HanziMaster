@@ -66,7 +66,8 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "fixed top-1/2 start-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-3xl bg-card/95 dark:bg-ink-900/95 backdrop-blur-xl p-4 text-sm text-popover-foreground border border-ink-100 dark:border-ink-800 shadow-ink-xl duration-100 outline-none sm:max-w-sm data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+          // 物理 left 居中：start-1/2 在 RTL 下落在右侧，配合 -translate-x-1/2 会偏出视口
+          "fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-3xl bg-card/95 dark:bg-ink-900/95 backdrop-blur-xl p-4 text-sm text-popover-foreground border border-ink-100 dark:border-ink-800 shadow-ink-xl duration-100 outline-none sm:max-w-sm data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
           className
         )}
         {...props}

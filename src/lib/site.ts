@@ -1,18 +1,38 @@
-// src/lib/site.ts v5.2.49
+// src/lib/site.ts v5.2.50
 
 /**
  * 站点级常量。部署时必须通过 NEXT_PUBLIC_SITE_URL 指定正式域名，
  * 未配置时回退本地地址，绝不猜测生产域名。
  */
 export const DEFAULT_SITE_URL = 'http://localhost:3000';
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL).replace(/\/$/, '');
-export const SITE_URL_CONFIGURED = Boolean(process.env.NEXT_PUBLIC_SITE_URL);
 
-/** 生产漏配时返回明确告警（不阻断构建，CI 无该变量仍可构建）；纯函数便于单测与脚本复用。 */
-export const getSiteUrlWarning = (env: NodeJS.ProcessEnv = process.env): string | null =>
-  env.NODE_ENV === 'production' && !env.NEXT_PUBLIC_SITE_URL
-    ? `NEXT_PUBLIC_SITE_URL is not set in production; canonical/hreflang/sitemap/robots fall back to ${DEFAULT_SITE_URL}`
-    : null;
+/** 只接受绝对 http(s) URL；非法值（如缺协议的 example.com）会让 new URL() 在 metadata/构建期抛错。 */
+const normalizeSiteUrl = (value: string): string | null => {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'http:' || url.protocol === 'https:' ? value.replace(/\/$/, '') : null;
+  } catch {
+    return null;
+  }
+};
+
+const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+const normalizedSiteUrl = configuredSiteUrl ? normalizeSiteUrl(configuredSiteUrl) : null;
+export const SITE_URL = normalizedSiteUrl ?? DEFAULT_SITE_URL;
+export const SITE_URL_CONFIGURED = Boolean(configuredSiteUrl);
+export const SITE_URL_INVALID = Boolean(configuredSiteUrl) && normalizedSiteUrl === null;
+
+/** 生产漏配或配置非法绝对 URL 时返回明确告警（不阻断构建）；纯函数便于单测与脚本复用。 */
+export const getSiteUrlWarning = (env: NodeJS.ProcessEnv = process.env): string | null => {
+  if (env.NODE_ENV !== 'production') return null;
+  if (!env.NEXT_PUBLIC_SITE_URL) {
+    return `NEXT_PUBLIC_SITE_URL is not set in production; canonical/hreflang/sitemap/robots fall back to ${DEFAULT_SITE_URL}`;
+  }
+  if (!normalizeSiteUrl(env.NEXT_PUBLIC_SITE_URL)) {
+    return `NEXT_PUBLIC_SITE_URL="${env.NEXT_PUBLIC_SITE_URL}" is not a valid absolute http(s) URL; falling back to ${DEFAULT_SITE_URL}`;
+  }
+  return null;
+};
 
 export const DEFAULT_LOCALE = 'en';
 
