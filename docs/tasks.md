@@ -1,7 +1,7 @@
 # 任务清单 · Task Backlog
 
-> 文档版本：v5.2.47（与项目版本同步，权威版本见 `package.json`）
-> 最后更新：**2026-11-09 — 线上首页审计（https://hanzi.ewuse.com/zh-CN）新增 9 项改进任务**
+> 文档版本：v5.2.49（与项目版本同步，权威版本见 `package.json`）
+> 最后更新：**2026-11-12 — SEO/GEO 体系完善：5 项任务代码落地，待部署线上复验**
 > 本文件是**未完成任务 / 当前进度的单一来源**；已完成任务一律归档至 [tasks-done.md](tasks-done.md)，实现要点见 [CHANGELOG.md](../CHANGELOG.md)。
 
 ## 0. 说明与规则（单一来源）
@@ -15,11 +15,11 @@
 
 | 优先级 | 未完成 | 已归档 | 结论 |
 |--------|--------|--------|------|
-| **P0** | 2 | 22 | 生产环境变量漏配**已在线上复现**（canonical / sitemap / robots 全为 localhost）；SSR 首屏语言与 URL 前缀不符 |
-| **P1** | 7 | 41 | 首访横幅遮挡主视觉、Hero 承诺与真实能力不符、metadata 未本地化、站内链接丢语言前缀，+ 原 3 项 |
+| **P0** | 2 | 22 | SITE_URL 漏配线上复现（代码告警已加，待运维配置）；SSR 首屏语言改为服务端注入，待线上 `curl` 复验 |
+| **P1** | 7 | 41 | 首访横幅遮挡、Hero 承诺不符等待办；metadata 本地化 / OG 图 / 链接前缀代码已落地待复验，+ 原 3 项 |
 | **P2** | 7 | 34 | 减少动效下首屏空白、标题层级与中文排版、CTA 错配与内容深度、首屏高度，+ 原 3 项 |
 | **P3** | 0 | 4 | i18n 译文审校流程已闭环 |
-| **合计** | **16** | **101** | 线上首页审计后新增 9 项；P0 两项直接影响搜索引擎收录与首屏语言，须优先修复 |
+| **合计** | **16** | **101** | 5 项代码已落地但验收含线上核验，暂不归档；详见 §3.5 |
 
 > 归档总数 101 = 历史与 P0 批次 79 项 + 2026-11-08 批次 22 项。
 > 7 项残差来自 **2026-11-09 新鲜度审查**：逐项对源码/部署配置/文档实查，不沿用历史结论。
@@ -79,12 +79,12 @@
 |------|------|------|
 | 类型检查 | `node node_modules/typescript/bin/tsc --noEmit` | ✅ 0 error |
 | Lint | `node node_modules/eslint/bin/eslint.js src scripts` | ✅ 0 error / 0 warning |
-| 单测 | `node scripts/run-tests.mjs` | ✅ **30 文件 / 165 用例**全通过（v5.2.46 笔顺坐标修正后同步更新 36 例断言） |
+| 单测 | `node scripts/run-tests.mjs` | ✅ **32 文件 / 170 用例**全通过（v5.2.48 实测） |
 | 覆盖率 | `pnpm test:run --coverage` | 阈值门禁见 CI `coverage` job |
 | 行数 | `pnpm check:lines` | ✅ `all <= 200` |
-| 根目录清洁度 | `pnpm check:root` | ✅ `root clean` |
+| 根目录清洁度 | `pnpm check:root` | ✅ `root clean`（`.tmp/` 为唯一放行的临时子目录） |
 | i18n | `pnpm i18n:lint` | ✅ 11 语言 / 6 扩展模块 / 占位符一致 / 文案 ≤160 |
-| 版本展示 | `pnpm version:check` | ✅ `v5.2.46 in sync` |
+| 版本展示 | `pnpm version:check` | ✅ `v5.2.48 in sync` |
 | 冻结安装 | `pnpm install --frozen-lockfile` | ✅ 通过（依赖已精确钉住） |
 | 生产依赖漏洞 | `pnpm security:audit` | ✅ 0 高危（v5.2.31 T3 基线） |
 | 生产构建 | `pnpm build` | 见 CI；本地构建产物由 `reports/build-out.log` 记录 |
@@ -260,6 +260,19 @@
 ### 3.4 设计方向（供实现时参考，不另立任务）
 
 以「田字格 + 真实笔顺动画」为唯一记忆点：删掉两枚 blur 光球、玻璃卡、字距 eyebrow 等通用 SaaS 装饰；中文标题统一中文字体与朴素标点；特性卡换成真实功能（12 字库 / 笔顺演示 / 拼音测验 / 本地进度），删除「72%」等虚构统计并补「无需注册 · 进度仅存本机」信任点。约束：一屏一个记忆点、动效只在用户触发时（播放笔顺）出现、尊重减少动效、焦点可见、对比度 AA、11 语言与 RTL 不退化。
+
+### 3.5 v5.2.49 实施进展（2026-11-12，代码已落地 / 待线上复验）
+
+| 任务 | 本批次已落地 | 剩余验收（需部署后执行） |
+|------|-------------|------------------------|
+| P0-30 | `getSiteUrlWarning` 纯函数 + `layout.tsx` / `next.config.mjs` 生产告警；`.env.example` 与部署清单明确必填 | 生产平台设置 `NEXT_PUBLIC_SITE_URL=https://<正式域名>` 并重新部署；`curl` 全链路不得出现 localhost |
+| P0-31 | `proxy.ts` 注入 `x-hanzi-locale` / `x-hanzi-path`；`layout.tsx` 服务端预载词典 + `LocaleProvider.initialDictionary` | 禁用 JS / `curl` 抓 `/zh-CN` 得 `lang="zh-CN"` 且正文中文；浏览器首帧无语言跳动 |
+| P1-38 | `opengraph-image.tsx` / `twitter-image.tsx` 动态 1200×630 分享图 | 线上 `/opengraph-image` 返回 200，`og:image` 为生产绝对 URL |
+| P1-43 | `generateMetadata` 按 11 语言输出 title / description / `og:locale` / canonical / hreflang；4 个子页面本地化标题 | `curl` 比对 `/en`、`/zh-CN`、`/ja` 的 `<title>` / og 标签两两不同 |
+| P1-44 | 全站 `Link` 统一 `/{locale}/...`，active 判定去前缀 | 从 `/zh-CN` 点击所有站内链接直达、network 无 302 |
+| GEO（本批次新增） | `llms.txt`、JSON-LD `@graph`、首页事实/FAQ、`robots.ts` AI 爬虫规则、`sitemap.ts` 55 条规范 URL + hreflang | 线上访问 `llms.txt` / `robots.txt` / `sitemap.xml`；搜索控制台与生成式引擎收录观察 |
+
+> 线上核验命令见 `docs/05-deployment.md` §7。代码侧门禁（`tsc` / 全量单测 / ESLint / `i18n:lint` 8 模块 / `check:lines`）已全绿；**上述 5 项验收含线上 `curl`，完成前不归档**。
 
 ## 4. 后续维护约定
 

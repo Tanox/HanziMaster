@@ -1,6 +1,6 @@
 # 开发指南
 
-> 文档版本：v5.2.40（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.48（与项目版本同步，权威版本见 `package.json`）
 
 本文负责**开发环境、命令表与日常流程**。编码风格、命名、目录组织、设计 token、i18n、版本号与质量门禁的唯一权威是 [coding-standards.md](coding-standards.md)；提交、分支与审查见 [git-workflow.md](git-workflow.md)。
 
@@ -63,6 +63,8 @@ pnpm start
 | `pnpm security:audit:dev` | `pnpm audit --audit-level=high` | 全量（含 dev 链）审计 |
 
 类型检查无独立脚本，用 `pnpm exec tsc --noEmit`（`tsconfig.json` 已设 `noEmit: true`）。
+
+**临时文件目录**：一次性调试脚本、探针与中间产物一律写 `.tmp/`（唯一固定临时子目录，按需创建、会话结束即删、已 gitignore）；可复用工具脚本的正式产物写 `reports/`。仓库根禁止产生临时文件，`pnpm check:root` 会拦截；`.tmp/` 已被 ESLint / Prettier / TypeScript / Vitest 忽略，不会污染门禁。
 
 ## 4. 版本与 build 注入链路
 

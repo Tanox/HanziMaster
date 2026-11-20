@@ -1,4 +1,4 @@
-// scripts/i18n-lint.mjs v5.2.44
+// scripts/i18n-lint.mjs v5.2.49
 // 校验 11 语言包、扩展模块与站点语言常量的键/清单一致性，
 // 并检查占位符集合一致性与超长文案（P3-2）。
 // 叶子键一致性由单测 src/lib/__tests__/i18n.test.ts 与 site.test.ts 负责。
@@ -10,7 +10,11 @@ const root = path.resolve('src/lib/i18n/translations');
 const expected = ['en', 'zh-CN', 'zh-TW', 'es', 'ar', 'fr', 'pt-BR', 'de', 'ja', 'ko', 'ru'];
 const errors = [];
 
-const files = fs.readdirSync(root).filter((f) => f.endsWith('.ts')).map((f) => f.slice(0, -3)).sort();
+const files = fs
+  .readdirSync(root)
+  .filter((f) => f.endsWith('.ts'))
+  .map((f) => f.slice(0, -3))
+  .sort();
 const missing = expected.filter((locale) => !files.includes(locale));
 const extra = files.filter((locale) => !expected.includes(locale));
 if (missing.length) errors.push(`missing language files: ${missing.join(', ')}`);
@@ -21,7 +25,7 @@ for (const locale of expected) {
   if (!site.includes(`'${locale}'`)) errors.push(`site.ts missing locale: ${locale}`);
 }
 
-const extensionModules = ['legal', 'a11y', 'meanings', 'settings', 'pwa', 'progress'];
+const extensionModules = ['legal', 'a11y', 'meanings', 'settings', 'pwa', 'progress', 'seo', 'geo'];
 for (const module of extensionModules) {
   const file = path.join(root, 'extensions', `${module}.ts`);
   if (!fs.existsSync(file)) {
@@ -47,7 +51,7 @@ function collect(source) {
 }
 
 const localeSources = Object.fromEntries(
-  expected.map((locale) => [locale, fs.readFileSync(path.join(root, `${locale}.ts`), 'utf8')])
+  expected.map((locale) => [locale, fs.readFileSync(path.join(root, `${locale}.ts`), 'utf8')]),
 );
 const baseline = collect(localeSources.en);
 for (const locale of expected) {
@@ -73,5 +77,5 @@ if (errors.length) {
 }
 console.log(
   `i18n lint OK: ${expected.length} locales, ${extensionModules.length} extension modules, ` +
-  `placeholders [${baseline || 'none'}], text limit ${TEXT_LIMIT}`
+    `placeholders [${baseline || 'none'}], text limit ${TEXT_LIMIT}`,
 );

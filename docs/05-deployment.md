@@ -1,6 +1,6 @@
 # 部署指南
 
-> 文档版本：v5.2.44（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.49（与项目版本同步，权威版本见 `package.json`）
 
 本文描述项目的部署配置与上线流程。构建前的完整质量门禁见 [coding-standards.md](coding-standards.md) §11，发版与自动发布流程见 [git-workflow.md](git-workflow.md) §6 与 §6.1。
 
@@ -126,6 +126,14 @@ GitHub Actions 工作流（`.github/workflows/`）一览：
 - [ ] `pnpm check:lines` 输出 `all <= 200`
 - [ ] `pnpm security:audit`（`pnpm audit --prod --audit-level=high`）无高危
 - [ ] `pnpm build` 成功
+- [ ] **生产环境变量 `NEXT_PUBLIC_SITE_URL=https://<正式域名>` 已配置**（P0-30，必填；漏配会让 canonical / hreflang / `sitemap.xml` / `robots.txt` 全指向 `http://localhost:3000`，构建日志仅告警不阻断）
+- [ ] 部署后 SEO/GEO 线上核验（下列 `curl` 均不得出现 `localhost`，`/zh-CN` 首屏 HTML 的 `lang` 与文案须为中文）：
+  ```bash
+  curl -sSL https://<正式域名>/zh-CN | grep -iE '<html|canonical|hreflang|<h1'
+  curl -sSL https://<正式域名>/sitemap.xml | grep -i '<loc>' | head -5
+  curl -sSL https://<正式域名>/robots.txt
+  curl -sSL https://<正式域名>/llms.txt | head -5
+  ```
 - [ ] CI 全部工作流在目标 commit 上为绿色；打 Tag 后确认 `release.yml` 自动创建 Release 且正文与 `CHANGELOG.md` 一致
 - [ ] 生产页脚 `#footer-version` 显示 `vX.Y.Z · build yymmddhhmm`（10 位 build 编号；版本号来自 `package.json`，build 编号由 `next.config.mjs` 构建时注入，无需手工维护）
 - [ ] CSP 与 `X-Frame-Options` 等响应头在部署环境生效

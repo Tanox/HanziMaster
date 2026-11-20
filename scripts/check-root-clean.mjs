@@ -1,14 +1,16 @@
-// scripts/check-root-clean.mjs v5.2.47
-// 根目录清洁度门禁：禁止临时脚本 / 一次性产物落盘仓库根目录。
-// 规则：根目录每个条目必须命中白名单（工具链约定文件或生成产物目录），否则判失败。
+// scripts/check-root-clean.mjs v5.2.48
+// 根目录清洁度门禁：禁止临时脚本 / 一次性产物散落仓库根目录。
+// 固定子目录约定：会话级临时文件唯一放 .tmp/；脚本与工具正式产物写 reports/；两者均 gitignore、不入库。
+// 规则：根目录每个条目必须命中白名单，否则判失败。
 // 用法：node scripts/check-root-clean.mjs（结果写 reports/root-clean.txt，失败退出码 1）
 
 import fs from 'node:fs';
 import path from 'node:path';
 
 // 工具链 / 平台约定必须位于仓库根的目录（含构建期生成目录，均已 gitignore）
+// .tmp 是会话级临时文件的唯一固定子目录：放行目录本身，禁止把内容散落到根目录
 const ALLOWED_DIRS = new Set([
-  '.codebuddy', '.git', '.github', '.next', '.trae', '.turbo', '.vercel', '.workbuddy',
+  '.codebuddy', '.git', '.github', '.next', '.tmp', '.trae', '.turbo', '.vercel', '.workbuddy',
   'coverage', 'dist', 'docs', 'e2e', 'node_modules', 'out',
   'playwright-report', 'prototype', 'public', 'reports', 'scripts', 'src', 'test-results',
 ]);
@@ -28,7 +30,8 @@ const ALLOWED_FILES = new Set([
 // 本地环境变量文件按前缀放行（.env.local / .env.development.local 等，均已 gitignore）
 const isLocalEnv = (name) => name.startsWith('.env');
 
-// 临时产物特征：即使命中白名单也判失败（兜底改名 / 新型产物）
+// 临时产物特征：对「文件」即使命中白名单也判失败（兜底改名 / 新型产物）
+// 目录不适用：固定子目录 .tmp 会被 /\.(tmp)$/ 误伤，目录统一由 ALLOWED_DIRS 裁定
 const TEMP_PATTERNS = [
   /\.(log|out|tmp|bak|orig|rej)$/i,
   /(test-out|linecheck|build-out|build-err)/i,
@@ -55,11 +58,12 @@ const isDirLike = (entry) => {
 
 const offenders = [];
 for (const entry of entries) {
-  const allowed = isDirLike(entry)
+  const dirLike = isDirLike(entry);
+  const allowed = dirLike
     ? ALLOWED_DIRS.has(entry.name)
     : ALLOWED_FILES.has(entry.name) || isLocalEnv(entry.name);
-  if (!allowed || TEMP_PATTERNS.some((re) => re.test(entry.name))) {
-    offenders.push(`${isDirLike(entry) ? '[目录]' : '[文件]'} ${entry.name}`);
+  if (!allowed || (!dirLike && TEMP_PATTERNS.some((re) => re.test(entry.name)))) {
+    offenders.push(`${dirLike ? '[目录]' : '[文件]'} ${entry.name}`);
   }
 }
 
@@ -74,7 +78,7 @@ if (offenders.length) {
   console.error(
     '根目录出现白名单之外的条目：\n' +
       offenders.map((o) => `  - ${o}`).join('\n') +
-      '\n一次性脚本请放 scripts/，脚本与工具产物统一写 reports/（或对应生成目录）。'
+      '\n一次性临时脚本 / 中间产物请放 .tmp/（唯一固定临时子目录）；正式工具脚本放 scripts/，产物写 reports/。'
   );
   process.exitCode = 1;
 }

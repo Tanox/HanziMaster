@@ -1,7 +1,7 @@
 # 已完成任务归档 · Tasks Done
 
-> 文档版本：v5.2.46（与项目版本同步，权威版本见 `package.json`）
-> 最近归档：**2026-11-09（UTC+8）— 笔顺上下颠倒缺陷修复**
+> 文档版本：v5.2.48（与项目版本同步，权威版本见 `package.json`）
+> 最近归档：**2026-11-12（UTC+8）— 统一临时文件固定子目录（仓库卫生）**
 
 ## 说明
 
@@ -189,3 +189,11 @@
 | BUG-1 | 笔顺演示与书写画布上下颠倒（用户报告） | 缺陷修复 | 根因：笔顺数据为 Hanzi Writer 格式（1024 网格、y 轴向上、基线 y=900），渲染/判定均未做 y 翻转且 viewBox 误用 1000。修复：`stroke-order-demo.tsx` 加 `<g transform="scale(1, -1) translate(0, -900)">` + viewBox 1024；`writing-canvas-utils.ts` 新增 `scaleY()`（x 走 `scale()`，分母改 1024），引导动画与 `scoreKeyboardSequence` 统一走翻转映射；`writing-canvas-animation.ts` 已完成笔改为坐标变换后填充；描红判定拆至 `writing-canvas-scoring.ts`（含 Path2D 反变换与线宽比例放大） |
 
 > **实测基线（v5.2.46）**：`tsc --noEmit` 0 error；`eslint src` 0 error / 0 warning；Vitest **30 文件 / 165 用例**全通过；`version:check` `v5.2.46 in sync`。实现细节见 `CHANGELOG.md` [5.2.46]。
+
+## 归档（2026-11-12 仓库卫生批次 · v5.2.48）
+
+| ID | 任务 | 分类 | 实现要点 |
+|----|------|------|---------|
+| W-1 | 统一临时文件固定子目录（用户指示） | 仓库卫生 | `.tmp/` 定为会话级一次性脚本 / 探针 / 中间产物的唯一固定子目录（gitignore、按需创建、用完即删、不入库）；`scripts/` 放可复用工具脚本、正式产物写 `reports/`，仓库根禁止散落临时文件；`check-root-clean.mjs` 放行 `.tmp` 并更新失败提示，同时修正 `TEMP_PATTERNS` 误把目录名 `.tmp` 当文件后缀的缺陷（临时特征只对文件生效）；ESLint / Prettier / tsconfig / vitest 同步忽略 `.tmp`；`.gitignore` 补 `/.tmp-*` / `/_tmp_*` / `*_tmp*` 历史命名兜底；`coding-standards.md` §4 / §11、`01-overview.md`、`03-development.md` §3、`06-testing.md` §4 同步说明 |
+
+> **实测基线（v5.2.48）**：`.tmp/` 内放含类型错误的 `.ts` 探针与 `.mjs` / `.txt` 产物后，`check:root`、`tsc --noEmit`、`eslint .`、`check:lines`、`version:check`、Vitest **32 文件 / 170 用例**均 exit 0；ESLint `isPathIgnored` / Prettier `--file-info` 返回 ignored；隔离沙盒中根目录临时产物仍被门禁拦截（exit 1）。验证脚本与探针用完即删，临时目录清理后 `check:root` 仍为 `root clean`。

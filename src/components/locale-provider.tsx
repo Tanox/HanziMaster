@@ -1,4 +1,4 @@
-// src/components/locale-provider.tsx v5.2.44
+// src/components/locale-provider.tsx v5.2.49
 'use client';
 
 import { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
@@ -13,6 +13,8 @@ import { extendTranslations } from '@/lib/i18n/translations/extensions';
 type LocaleProviderProps = {
   children: React.ReactNode;
   defaultLocale?: Locale;
+  /** RSC 首屏预载的词典；传入后首屏不再异步加载，避免语言闪烁。 */
+  initialDictionary?: Translations;
   storageKey?: string;
 };
 
@@ -36,9 +38,14 @@ const getBrowserLocale = (): Locale => {
     return browserLang.includes('TW') || browserLang.includes('HK') ? 'zh-TW' : 'zh-CN';
   }
   const localeMap: Record<string, Locale> = {
-    'es': 'es', 'ar': 'ar', 'fr': 'fr',
-    'pt': 'pt-BR', 'de': 'de', 'ja': 'ja',
-    'ko': 'ko', 'ru': 'ru',
+    es: 'es',
+    ar: 'ar',
+    fr: 'fr',
+    pt: 'pt-BR',
+    de: 'de',
+    ja: 'ja',
+    ko: 'ko',
+    ru: 'ru',
   };
   for (const [lang, locale] of Object.entries(localeMap)) {
     if (browserLang.startsWith(lang)) return locale;
@@ -76,21 +83,29 @@ const syncUrlLocale = (value: Locale): void => {
 export function LocaleProvider({
   children,
   defaultLocale = DEFAULT_LOCALE,
+  initialDictionary,
   storageKey = STORAGE_KEY,
   ...props
 }: LocaleProviderProps) {
   const [locale, setLocaleState] = useState<Locale>(defaultLocale);
-  const [dictionary, setDictionary] = useState<Translations>(FALLBACK_DICTIONARY);
+  const [dictionary, setDictionary] = useState<Translations>(
+    initialDictionary ?? FALLBACK_DICTIONARY,
+  );
 
   useEffect(() => {
     const stored = safeGetItem<Locale>(storageKey, defaultLocale);
-    const initial = getUrlLocale() ?? (stored && isSupportedLocale(stored) ? stored : getBrowserLocale());
+    const initial =
+      getUrlLocale() ?? (stored && isSupportedLocale(stored) ? stored : getBrowserLocale());
     setLocaleState(initial);
     applyDocumentLocale(initial);
   }, [storageKey, defaultLocale]);
 
-  // P1-11：只按需加载当前语言词典；加载完成前保留上一份词典，避免切换时闪烁
+  // P1-11：只按需加载当前语言词典；SSR 预载时直接复用，切回默认语言也恢复预载词典。
   useEffect(() => {
+    if (locale === defaultLocale && initialDictionary) {
+      setDictionary(initialDictionary);
+      return;
+    }
     if (locale === DEFAULT_LOCALE) {
       setDictionary(FALLBACK_DICTIONARY);
       return;
@@ -102,21 +117,27 @@ export function LocaleProvider({
     return () => {
       active = false;
     };
-  }, [locale]);
+  }, [locale, defaultLocale, initialDictionary]);
 
-  const setLocale = useCallback((newLocale: Locale) => {
-    safeSetItem(storageKey, newLocale);
-    setLocaleState(newLocale);
-    applyDocumentLocale(newLocale);
-    syncUrlLocale(newLocale);
-  }, [storageKey]);
+  const setLocale = useCallback(
+    (newLocale: Locale) => {
+      safeSetItem(storageKey, newLocale);
+      setLocaleState(newLocale);
+      applyDocumentLocale(newLocale);
+      syncUrlLocale(newLocale);
+    },
+    [storageKey],
+  );
 
-  const t = useCallback((key: TranslationKey, params?: Record<string, string | number>): string =>
-    interpolate(getNestedValue(dictionary, key) || key, params), [dictionary]);
+  const t = useCallback(
+    (key: TranslationKey, params?: Record<string, string | number>): string =>
+      interpolate(getNestedValue(dictionary, key) || key, params),
+    [dictionary],
+  );
 
   const value = useMemo<LocaleProviderState>(
     () => ({ locale, t, setLocale, availableLocales: [...SUPPORTED_LOCALES] }),
-    [locale, t, setLocale]
+    [locale, t, setLocale],
   );
 
   return (

@@ -1,6 +1,6 @@
 ﻿# 项目概述
 
-> 文档版本：v5.2.43（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.48（与项目版本同步，权威版本见 `package.json`）
 
 ## 1. 基本信息
 
@@ -90,6 +90,7 @@ HanziMaster/
 ├── docs/                           # 规范文档 16 篇（见 docs/index.md）
 ├── prototype/                      # 6 个 HTML 骨架 + styles/ + scripts/ + 4 篇文档
 ├── scripts/                        # 7 个 Node 工具脚本（见 [03-development.md](03-development.md) §3）
+├── .tmp/                           # 会话级临时文件唯一固定子目录（gitignore，按需创建、用完即删）
 ├── reports/                        # 脚本产物（gitignore，不提交）
 ├── .github/                        # workflows/（ci.yml / deploy.yml）、dependabot.yml、社区文件
 ├── .trae/                          # 编辑器协作规则与命令

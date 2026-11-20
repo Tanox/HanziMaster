@@ -1,6 +1,6 @@
 # API 参考
 
-> 文档版本：v5.2.43（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.49（与项目版本同步，权威版本见 `package.json`）
 
 本文列出应用内部**公开模块与组件的真实签名**。类型与导出以源码为准；本文只做稳定契约说明，不逐字复制实现。设计 token 完整色板见 [07-design-prototype.md](07-design-prototype.md)，编码用法见 [coding-standards.md](coding-standards.md)。
 
@@ -143,12 +143,16 @@ export function Example() {
 | `learn` | 12 个汉字词条、例句、笔顺、测验、键盘提示 | `learn.showStrokeOrder`、`learn.kbdHint` |
 | `practice` | 三种练习模式、弹窗/测验/进度文案、星期 | `practice.writingTitle`、`practice.accuracy` |
 | `settings` | 设置面板：标题/描述、外观（主题/语言）、反馈（震动）、动效（减少动效）、数据（重置进度及确认） | `settings.title`、`settings.reduceMotion`、`settings.resetDone` |
+| `seo` | 站点与页面级 title / description / OG 文案（`generateMetadata` 服务端读取） | `seo.title`、`seo.learnTitle` |
+| `geo` | 首页事实区与 FAQ；同一文案供 JSON-LD `FAQPage` 使用 | `geo.factsLead`、`geo.q1` |
 | `footer` | 页脚版权 | `footer.copyright` |
 | `meta` | 页面元数据 | `meta.title`、`meta.description` |
 
 `footer.copyright` 固定使用 `{{versionLabel}}` 占位符（如 `© 2026 HanziMaster 汉字大师 {{versionLabel}}. All rights reserved.`），由 `layout-client.tsx` 用 `VERSION_LABEL` 插值；**不存在 `common.appVersion` 键**，禁止把版本号写进翻译文件。
 
 > `home` 域中保留 `aiInsights*` / `etymology*` / `adaptive*` / `aiBadge` 等历史键名，首页仍有引用；它们只是文案键，不代表项目存在 AI 后端或 Gemini 依赖。
+
+> SEO/GEO 扩展（`seo` / `geo`）位于 `src/lib/i18n/translations/extensions/`，不写进 11 个语言基准包以维持单文件 ≤200 行；`scripts/i18n-lint.mjs` 校验 11 语言覆盖。服务端 `generateMetadata` 只读 `seoByLocale`，`public/llms.txt` 为生成式引擎提供与 UI / JSON-LD 一致的静态事实摘要，`structured-data.tsx` 的 `FAQPage` 与首页 FAQ 共用 `geoByLocale`。
 
 ## 9. 工具模块 API
 

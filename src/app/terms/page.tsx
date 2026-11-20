@@ -1,23 +1,29 @@
-// src/app/terms/page.tsx v5.2.35
+// src/app/terms/page.tsx v5.2.49
 
 import Link from 'next/link';
+import { headers } from 'next/headers';
 import type { Metadata } from 'next';
 import { TERMS_UPDATED, termsSections } from '@/content/terms';
+import { resolveLocale } from '@/lib/request-locale';
+import { getPageSeo } from '@/lib/seo-metadata';
+import { localizedHref } from '@/lib/urls';
 
-export const metadata: Metadata = {
-  title: '服务条款 | HanziMaster 汉字大师',
-  description: 'HanziMaster 汉字大师的服务条款：教育用途、本地数据、开源许可与责任说明。',
-  alternates: { canonical: '/terms' },
-};
+export const generateMetadata = async (): Promise<Metadata> => getPageSeo('termsTitle');
 
 /** 静态合规页面：Server Component 渲染，双语并列。 */
-export default function TermsPage() {
+export default async function TermsPage() {
+  const locale = resolveLocale(await headers());
+
   return (
     <main id="terms-page" className="mx-auto w-full max-w-3xl px-6 py-16">
       <header id="terms-page-header" className="mb-12">
         <h1 className="text-3xl font-bold text-foreground">服务条款</h1>
-        <p lang="en" className="mt-2 text-xl text-muted-foreground">Terms of Service</p>
-        <p className="mt-4 text-sm text-muted-foreground">最后更新 / Last updated: {TERMS_UPDATED}</p>
+        <p lang="en" className="mt-2 text-xl text-muted-foreground">
+          Terms of Service
+        </p>
+        <p className="mt-4 text-sm text-muted-foreground">
+          最后更新 / Last updated: {TERMS_UPDATED}
+        </p>
       </header>
 
       <div id="terms-sections" className="space-y-10">
@@ -26,7 +32,9 @@ export default function TermsPage() {
             <h2 id={`${section.id}-title`} className="text-xl font-semibold text-foreground">
               {section.title}
             </h2>
-            <p lang="en" className="mt-1 text-sm text-muted-foreground">{section.titleEn}</p>
+            <p lang="en" className="mt-1 text-sm text-muted-foreground">
+              {section.titleEn}
+            </p>
             {section.paragraphs.map((paragraph, index) => (
               <div key={index} className="mt-4">
                 <p className="leading-relaxed text-foreground/90">{paragraph}</p>
@@ -40,7 +48,10 @@ export default function TermsPage() {
       </div>
 
       <footer id="terms-page-footer" className="mt-12 border-t border-border pt-6">
-        <Link href="/privacy" className="text-primary underline-offset-4 hover:underline">
+        <Link
+          href={localizedHref(locale, '/privacy')}
+          className="text-primary underline-offset-4 hover:underline"
+        >
           隐私政策 / Privacy Policy
         </Link>
       </footer>

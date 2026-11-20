@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 
-// next.config.mjs v5.2.47
+// next.config.mjs v5.2.49
 
 import { readFileSync } from 'node:fs';
 import createBundleAnalyzer from '@next/bundle-analyzer';
@@ -11,11 +11,19 @@ const { withSentryConfig } = sentryModule;
 
 // 版本号取自 package.json 单一来源；build 编号按构建时刻本地时间生成（yymmddhhmm 的 10 位写法）
 const { version: appVersion } = JSON.parse(
-  readFileSync(new URL('./package.json', import.meta.url), 'utf8')
+  readFileSync(new URL('./package.json', import.meta.url), 'utf8'),
 );
 const pad = (n) => String(n).padStart(2, '0');
 const now = new Date();
 const buildId = `${String(now.getFullYear()).slice(-2)}${pad(now.getMonth() + 1)}${pad(now.getDate())}${pad(now.getHours())}${pad(now.getMinutes())}`;
+
+// 生产漏配站点域名时构建日志明确告警（不阻断 CI；部署清单列为必填，见 docs/05-deployment.md §7）。
+if (process.env.NODE_ENV === 'production' && !process.env.NEXT_PUBLIC_SITE_URL) {
+  process.emitWarning(
+    'NEXT_PUBLIC_SITE_URL is not set in production; canonical/hreflang/sitemap/robots fall back to http://localhost:3000',
+    'SEOConfigWarning',
+  );
+}
 
 // CSP 与安全头：统一由 headers() 注入所有路由，平台侧不重复配置。
 // script-src 'unsafe-inline' 为 Next.js App Router 内联脚本所必需；生产禁用 eval。

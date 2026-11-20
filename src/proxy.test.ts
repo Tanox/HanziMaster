@@ -1,4 +1,4 @@
-// src/proxy.test.ts v5.2.45
+// src/proxy.test.ts v5.2.49
 // P1-7/8/9：固化 URL 级 i18n 中间件（Next 16 proxy.ts）行为——语言前缀重写、
 // 无前缀首访协商重定向、?lang=/cookie/Accept-Language 优先级与 cookie 注入。
 import { describe, expect, it } from 'vitest';
@@ -9,7 +9,7 @@ const ORIGIN = 'https://hanzimaster.example';
 
 function makeReq(
   path: string,
-  init: { headers?: Record<string, string>; cookies?: Record<string, string> } = {}
+  init: { headers?: Record<string, string>; cookies?: Record<string, string> } = {},
 ) {
   const request = new NextRequest(new URL(path, ORIGIN), { headers: init.headers ?? {} });
   if (init.cookies) {
@@ -51,5 +51,12 @@ describe('proxy · URL 级 i18n', () => {
     const res = proxy(makeReq('/learn?lang=ko', { cookies: { 'hanzi-master-locale': 'ja' } }));
     expect(res.status).toBe(302);
     expect(res.headers.get('location') ?? '').toContain('/ko/learn');
+  });
+
+  it('把语言与原始路径注入请求头供 RSC 首屏使用（P0-31）', () => {
+    const res = proxy(makeReq('/zh-CN/learn'));
+    expect(res.headers.get('x-middleware-request-x-hanzi-locale')).toBe('zh-CN');
+    expect(res.headers.get('x-middleware-request-x-hanzi-path')).toBe('/zh-CN/learn');
+    expect(res.headers.get('x-middleware-override-headers') ?? '').toContain('x-hanzi-locale');
   });
 });

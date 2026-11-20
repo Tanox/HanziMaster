@@ -12,6 +12,7 @@ export default [
       "reports/**",
       "playwright-report/**",
       "test-results/**",
+      ".tmp/**",
     ],
   },
   {

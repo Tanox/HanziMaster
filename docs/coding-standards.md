@@ -1,6 +1,6 @@
 # 编码规范
 
-> 文档版本：v5.2.43（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.48（与项目版本同步，权威版本见 `package.json`）
 
 本文是项目**编码风格、命名约定、目录组织与质量门禁的唯一权威**。提交信息、分支与代码审查见 [git-workflow.md](git-workflow.md)，环境与命令见 [03-development.md](03-development.md)。其他文档只做摘要与链接，不得另立一套规则。
 
@@ -73,6 +73,7 @@ HanziMaster/
 ├── prototype/                   # 原型（6 个 HTML 骨架 + styles/ + scripts/）
 ├── scripts/                     # 可复用工具脚本（run-tests / check-line-count）
 ├── docs/                        # 规范文档
+├── .tmp/                        # 会话级临时文件唯一固定子目录（gitignore，按需创建、用完即删）
 └── reports/                     # 脚本产物（已被 .gitignore 忽略，不提交）
 ```
 
@@ -87,10 +88,13 @@ HanziMaster/
 | 新纯逻辑 / 数据 | `src/lib/` | `xxx-utils.ts` / `xxx-data.ts` |
 | 新测试 | 所属模块 `__tests__/` | `<被测文件>.test.ts(x)` |
 | 新工具脚本 | `scripts/` | `xxx-yyy.mjs`，产物写 `reports/` |
+| 一次性脚本 / 调试探针 / 中间产物 | `.tmp/` | `<用途>-<说明>.mjs` / `.txt` / `.json`，会话结束即删 |
 
-禁止：在仓库根新增一次性脚本或产物文件；把跨页面组件塞进页面目录；把纯函数与 UI 混写在同一文件。
+**临时文件固定子目录（单一约定）**：会话级临时内容一律写 `.tmp/`，不得在仓库根或 `src/` / `docs/` 等业务目录散落；`.tmp/` 按需创建、用完即删，内容视为可随时丢弃的缓存，禁止入库。可复用工具脚本放 `scripts/`，其正式产物（测试输出、门禁报告、Release 说明）统一写 `reports/`，写入前先 `mkdir -p`。两者均已 `.gitignore`，且被 ESLint / Prettier / TypeScript / Vitest 忽略，不会造成门禁假红。
 
-> 根目录清洁度由 `pnpm check:root`（`scripts/check-root-clean.mjs`，白名单制）强制：新增会产生落盘产物的脚本，输出必须指向 `reports/`（或对应生成目录）并先 `mkdir -p`；`.gitignore` 预置 `*.out` / `audit-*.json` / `*-result.json` 兜底。CI 首步即执行该门禁。
+禁止：在仓库根新增一次性脚本或产物文件；把临时文件写进 `src/` / `docs/` 等业务目录；把跨页面组件塞进页面目录；把纯函数与 UI 混写在同一文件。
+
+> 根目录清洁度由 `pnpm check:root`（`scripts/check-root-clean.mjs`，白名单制）强制：白名单放行 `.tmp/` 与 `reports/` 两个固定子目录，其余条目须为工具链 / 平台约定的根文件；`.gitignore` 预置 `/.tmp/`、`/.tmp-*`、`*_tmp*`、`*.out`、`audit-*.json`、`*-result.json` 兜底。CI 首步即执行该门禁。
 
 ## 5. 命名约定
 
@@ -170,7 +174,7 @@ Next.js 约定文件名（`page.tsx` / `layout.tsx` / `error.tsx` / `loading.tsx
 | Lint | `pnpm lint` | 0 error / 0 warning |
 | 单测 | `pnpm test` | 全部通过 |
 | 行数 | `pnpm check:lines` | `all <= 200` |
-| 根目录清洁度 | `pnpm check:root` | 根目录条目全部命中白名单（临时脚本/产物禁止落仓库根） |
+| 根目录清洁度 | `pnpm check:root` | 根目录条目全部命中白名单（`.tmp/` 为唯一放行的临时子目录，脚本产物写 `reports/`） |
 | 格式化 | `pnpm format` | 按 `.prettierrc.json` 无遗留 diff |
 | 安全审计 | `pnpm security:audit` | 生产依赖 0 高危 |
 | 构建 | `pnpm build` | 构建成功 |

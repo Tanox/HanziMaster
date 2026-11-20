@@ -1,14 +1,15 @@
-// src/components/consent-banner.tsx v5.2.44
+// src/components/consent-banner.tsx v5.2.49
 'use client';
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { useTranslation } from '@/components/locale-provider';
+import { useLocale } from '@/components/locale-provider';
 import { CONSENT_CHANGE_EVENT, getConsent, setConsent } from '@/lib/consent';
+import { localizedHref } from '@/lib/urls';
 
 /** 统计同意横幅：未作出选择前不加载任何统计脚本（见 google-analytics.tsx）。 */
 export function ConsentBanner() {
-  const { t } = useTranslation();
+  const { t, locale } = useLocale();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -37,7 +38,10 @@ export function ConsentBanner() {
       </h2>
       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
         {t('legal.consentBody')}{' '}
-        <Link href="/privacy" className="text-primary underline underline-offset-4">
+        <Link
+          href={localizedHref(locale, '/privacy')}
+          className="text-primary underline underline-offset-4"
+        >
           {t('legal.privacyLink')}
         </Link>
       </p>

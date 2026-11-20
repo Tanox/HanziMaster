@@ -1,5 +1,33 @@
 ﻿# Changelog
 
+## [5.2.49] - SEO / GEO 体系完善（多语言 SSR metadata、结构化数据、llms.txt）
+### Added
+- **GEO 内容层**：新增 `public/llms.txt`（站点事实摘要、12 字清单、FAQ 与引用指引）、首页 `#site-facts` / `#site-faq` 两个 SSR 可抓取区块（`home-geo.tsx`）；`structured-data.tsx` 升级为 `@graph`（WebSite / Organization / WebPage / WebApplication / Course / FAQPage，FAQ 与 UI 同源）。
+- `app/opengraph-image.tsx` + `app/twitter-image.tsx`：动态 1200×630 分享图（田字格几何 + 拉丁文案，避免 Satori 默认字体缺中文字形）。
+- `robots.ts` 显式允许 GPTBot / OAI-SearchBot / ChatGPT-User / ClaudeBot / PerplexityBot / Google-Extended / Applebot-Extended / CCBot；`sitemap.ts` 只收录带语言前缀的规范 URL（55 条）并为每条补 11 语言 hreflang alternates。
+- i18n：`extensions/seo.ts`（11 语言站点/页面 title、description、OG 文案）与 `extensions/geo.ts`（事实与 FAQ 12 键 × 11 语言），`i18n:lint` 扩至 8 个扩展模块。
+- `lib/urls.ts`、`lib/request-locale.ts`、`lib/seo-metadata.ts`：多语言 URL 与服务端 locale 的统一来源。
+
+### Fix
+- **P0-31 / P1-43**：`proxy.ts` rewrite 注入 `x-hanzi-locale` / `x-hanzi-path`；`layout.tsx` 用 `generateMetadata` 按语言输出 title / description / `og:locale` / canonical / hreflang，并把当前语言词典预载给 `LocaleProvider`（`initialDictionary`），消除 `/zh-CN` SSR 输出英文的闪烁与索引错配。learn / practice / privacy / terms 的 metadata 同步本地化，移除会覆盖父级 canonical 的静态声明。
+- **P1-44**：NavLink / 头部 / 页脚 / 移动抽屉 / 首页 CTA / 同意横幅 / 合规页 / 404 全部生成 `/{locale}/...` 直达链接，消除 302 协商跳转；active 判定改用去前缀路径。
+- **P0-30 防线**：`site.ts` 提供 `getSiteUrlWarning`，`layout.tsx` 与 `next.config.mjs` 在生产漏配 `NEXT_PUBLIC_SITE_URL` 时告警（不阻断 CI）；`.env.example` 与 `docs/05-deployment.md` §7 明确生产必填并给出线上 SEO/GEO `curl` 核验命令。**线上平台变量配置仍需运维执行**（tasks.md P0-30 保留待复验）。
+
+### Test
+- 新增 `urls.test.ts`、`seo.test.tsx`（sitemap / robots / JSON-LD）、`metadata.test.ts`（11 语言 title / `og:locale`、canonical / hreflang / x-default）；`site.test.ts` 补 SITE_URL 告警与 OG 映射，`proxy.test.ts` 补请求头注入。metadata 构造抽为纯函数 `build-metadata.ts` 与请求上下文解耦，全量单测通过。
+
+## [5.2.48] - 统一临时文件固定子目录并纳入门禁 / 工具链
+### Changed
+- **固定子目录约定**：会话级一次性脚本、调试探针、中间产物唯一放 `.tmp/`（按需创建、用完即删、不入库）；可复用工具脚本仍放 `scripts/`，其正式产物统一写 `reports/`。仓库根禁止产生任何临时文件。
+- **门禁对齐**：`scripts/check-root-clean.mjs` 的 `ALLOWED_DIRS` 放行 `.tmp`，失败提示明确两类目录；此前 `.tmp/` 一存在即被判「白名单之外」，与临时目录约定自相矛盾。
+- **工具链忽略**：`eslint.config.js` 忽略 `.tmp/**`；`.prettierignore` 忽略 `.tmp` / `reports`；`tsconfig.json` 的 `exclude` 与 `vitest.config.ts` 的 `exclude` 加 `.tmp`，避免临时探针造成 lint / tsc / 格式化 / 测试假红。
+- **gitignore 兜底**：在 `/.tmp/` 之外补 `/.tmp-*` / `/_tmp_*` / `*_tmp*`，覆盖历史散落的临时文件命名。
+### Docs
+- `coding-standards.md` §4 明确固定子目录与两类产物边界、§11 门禁表同步；`01-overview.md` 目录树、`03-development.md` §3、`06-testing.md` §4、`tasks.md` / `tasks-done.md` 版本戳与说明同步。
+### Fixed
+- **门禁误伤固定临时目录**：`TEMP_PATTERNS` 的 `\.(log|out|tmp|bak|orig|rej)$` 会把目录名 `.tmp` 当成临时文件后缀，导致白名单放行后仍判违规；现临时特征只对文件生效，目录统一由 `ALLOWED_DIRS` 裁定。
+- **验证**：在 `.tmp/` 放置含类型错误的 `.ts` 探针、`.mjs` 探针与中间产物后，`check:root` / `tsc --noEmit` / `eslint .` / `check:lines` / `version:check` / Vitest **32 文件 / 170 用例**均通过；ESLint `isPathIgnored` 与 Prettier `--file-info` 均返回 ignored；隔离沙盒中根目录临时产物仍被门禁拦截（exit 1）；临时目录清理后 `check:root` 仍为 `root clean`。
+
 ## [5.2.47] - 学习页 UI 与布局重构：字帖跨页
 ### Changed
 - **布局重构**：`character-detail.tsx` 由「左侧短栏 + 右侧两张同款圆角卡片」改为**字帖跨页**——左页田字格字板（真实书写参照线，去掉朱砂渐变光晕），右页题跋栏用发丝线承载例句与词语，下方横带为笔顺，底部动作条；外层只保留一个圆角、一层轻阴影，消除截图中的大片空白与三层同款卡片。

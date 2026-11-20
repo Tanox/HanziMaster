@@ -1,11 +1,12 @@
-// src/components/layout-client.tsx v5.2.44
+// src/components/layout-client.tsx v5.2.49
 'use client';
 
 import { VERSION_LABEL } from '@/lib/version';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { useTranslation } from '@/components/locale-provider';
+import { useLocale } from '@/components/locale-provider';
+import { localizedHref } from '@/lib/urls';
 import { ThemeToggleClient } from '@/components/theme-toggle';
 import { LocaleToggleClient } from '@/components/locale-toggle';
 import { MobileNav } from '@/components/mobile-nav';
@@ -19,7 +20,7 @@ interface LayoutClientProps {
 }
 
 export function LayoutClient({ children }: LayoutClientProps) {
-  const { t } = useTranslation();
+  const { t, locale } = useLocale();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const pathname = usePathname();
 
@@ -31,85 +32,142 @@ export function LayoutClient({ children }: LayoutClientProps) {
 
   return (
     <ToastProvider>
-    <div id="app-shell" className="min-h-screen bg-ink-50 dark:bg-ink-950 text-ink-900 dark:text-ink-50 flex flex-col">
-      {/* Skip to content - accessibility */}
-      <a href="#main-content" className="skip-to-content">
-        {t('common.skipToContent')}
-      </a>
+      <div
+        id="app-shell"
+        className="min-h-screen bg-ink-50 dark:bg-ink-950 text-ink-900 dark:text-ink-50 flex flex-col"
+      >
+        {/* Skip to content - accessibility */}
+        <a href="#main-content" className="skip-to-content">
+          {t('common.skipToContent')}
+        </a>
 
-      {/* Header - Oriental Ink Style with Glassmorphism（背景全宽，内容与内容区 max-w-6xl 对齐） */}
-      <header id="site-header" className="bg-card/70 dark:bg-ink-900/70 backdrop-blur-xl border-b border-ink-200/50 dark:border-ink-800/50 py-4 sticky top-0 z-50">
-        <div className="container-page flex justify-between items-center">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group shrink-0">
-            <div className="w-10 h-10 bg-linear-to-br from-vermilion-500 to-vermilion-600 rounded-xl flex items-center justify-center shadow-sm group-hover:scale-105 group-hover:shadow-md transition-[colors,transform,box-shadow] duration-300">
-              <span className="text-primary-foreground text-lg font-bold serif-font">汉</span>
-            </div>
-            <span className="text-xl font-semibold tracking-tight hidden sm:block display-font">
-              HanziMaster
-            </span>
-          </Link>
-
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-8">
-            <NavLink href="/learn">{t('common.learn')}</NavLink>
-            <NavLink href="/practice">{t('common.practice')}</NavLink>
-            <div className="w-px h-6 bg-ink-200 dark:bg-ink-700"></div>
-            <LocaleToggleClient />
-            <ThemeToggleClient />
-            <SettingsButton />
-          </nav>
-
-          {/* Mobile Controls */}
-          <div className="flex items-center gap-2 lg:hidden">
-            <ThemeToggleClient />
-            <LocaleToggleClient />
-            <SettingsButton />
-            <button
-              onClick={() => setMobileNavOpen(true)}
-              className="p-2 rounded-xl hover:bg-ink-100 dark:hover:bg-ink-800 transition-colors duration-200 touch-target"
-              aria-label={t('common.openMenu')}
-              aria-expanded={mobileNavOpen}
+        {/* Header - Oriental Ink Style with Glassmorphism（背景全宽，内容与内容区 max-w-6xl 对齐） */}
+        <header
+          id="site-header"
+          className="bg-card/70 dark:bg-ink-900/70 backdrop-blur-xl border-b border-ink-200/50 dark:border-ink-800/50 py-4 sticky top-0 z-50"
+        >
+          <div className="container-page flex justify-between items-center">
+            {/* Logo */}
+            <Link
+              href={localizedHref(locale, '/')}
+              className="flex items-center gap-3 group shrink-0"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </header>
+              <div className="w-10 h-10 bg-linear-to-br from-vermilion-500 to-vermilion-600 rounded-xl flex items-center justify-center shadow-sm group-hover:scale-105 group-hover:shadow-md transition-[colors,transform,box-shadow] duration-300">
+                <span className="text-primary-foreground text-lg font-bold serif-font">汉</span>
+              </div>
+              <span className="text-xl font-semibold tracking-tight hidden sm:block display-font">
+                HanziMaster
+              </span>
+            </Link>
 
-      {/* Mobile Drawer */}
-      <MobileNav isOpen={mobileNavOpen} onClose={closeMobileNav} t={t} />
+            {/* Desktop Nav */}
+            <nav className="hidden lg:flex items-center gap-8">
+              <NavLink href="/learn">{t('common.learn')}</NavLink>
+              <NavLink href="/practice">{t('common.practice')}</NavLink>
+              <div className="w-px h-6 bg-ink-200 dark:bg-ink-700"></div>
+              <LocaleToggleClient />
+              <ThemeToggleClient />
+              <SettingsButton />
+            </nav>
 
-      {/* Main Content */}
-      <main id="main-content" className="flex-1 page-transition" key={pathname}>
-        {children}
-      </main>
-
-      {/* Footer - Oriental Ink Style */}
-      <footer id="site-footer" className="bg-ink-100/50 dark:bg-ink-900/50 border-t border-ink-200/50 dark:border-ink-800/50 py-12 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col items-center gap-6">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-linear-to-br from-vermilion-500 to-vermilion-600 rounded-xl flex items-center justify-center">
-              <span className="text-primary-foreground text-sm font-bold serif-font">汉</span>
+            {/* Mobile Controls */}
+            <div className="flex items-center gap-2 lg:hidden">
+              <ThemeToggleClient />
+              <LocaleToggleClient />
+              <SettingsButton />
+              <button
+                onClick={() => setMobileNavOpen(true)}
+                className="p-2 rounded-xl hover:bg-ink-100 dark:hover:bg-ink-800 transition-colors duration-200 touch-target"
+                aria-label={t('common.openMenu')}
+                aria-expanded={mobileNavOpen}
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </button>
             </div>
-            <span className="text-lg font-semibold display-font">HanziMaster</span>
           </div>
-          <nav id="footer-nav" aria-label={t('legal.legalHeading')} className="flex flex-wrap justify-center gap-8 text-sm text-ink-500 dark:text-ink-400">
-            <Link href="/learn" className="hover:text-vermilion-500 transition-colors">{t('common.learn')}</Link>
-            <Link href="/practice" className="hover:text-vermilion-500 transition-colors">{t('common.practice')}</Link>
-            <Link id="footer-privacy-link" href="/privacy" className="hover:text-vermilion-500 transition-colors">{t('legal.privacyLink')}</Link>
-            <Link id="footer-terms-link" href="/terms" className="hover:text-vermilion-500 transition-colors">{t('legal.termsLink')}</Link>
-          </nav>
-          <p id="footer-disclaimer" className="max-w-xl text-center text-xs text-ink-400 dark:text-ink-500">
-            {t('legal.disclaimerShort')}
-          </p>
-          <p id="footer-version" className="text-xs sm:text-sm text-ink-400 dark:text-ink-500 text-center">{t('footer.copyright', { versionLabel: VERSION_LABEL })}</p>
-        </div>
-      </footer>
-      <PwaInstallPrompt />
-    </div>
+        </header>
+
+        {/* Mobile Drawer */}
+        <MobileNav isOpen={mobileNavOpen} onClose={closeMobileNav} t={t} locale={locale} />
+
+        {/* Main Content */}
+        <main id="main-content" className="flex-1 page-transition" key={pathname}>
+          {children}
+        </main>
+
+        {/* Footer - Oriental Ink Style */}
+        <footer
+          id="site-footer"
+          className="bg-ink-100/50 dark:bg-ink-900/50 border-t border-ink-200/50 dark:border-ink-800/50 py-12 px-6"
+        >
+          <div className="max-w-6xl mx-auto flex flex-col items-center gap-6">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 bg-linear-to-br from-vermilion-500 to-vermilion-600 rounded-xl flex items-center justify-center">
+                <span className="text-primary-foreground text-sm font-bold serif-font">汉</span>
+              </div>
+              <span className="text-lg font-semibold display-font">HanziMaster</span>
+            </div>
+            <nav
+              id="footer-nav"
+              aria-label={t('legal.legalHeading')}
+              className="flex flex-wrap justify-center gap-8 text-sm text-ink-500 dark:text-ink-400"
+            >
+              <Link
+                href={localizedHref(locale, '/learn')}
+                className="hover:text-vermilion-500 transition-colors"
+              >
+                {t('common.learn')}
+              </Link>
+              <Link
+                href={localizedHref(locale, '/practice')}
+                className="hover:text-vermilion-500 transition-colors"
+              >
+                {t('common.practice')}
+              </Link>
+              <Link
+                id="footer-privacy-link"
+                href={localizedHref(locale, '/privacy')}
+                className="hover:text-vermilion-500 transition-colors"
+              >
+                {t('legal.privacyLink')}
+              </Link>
+              <Link
+                id="footer-terms-link"
+                href={localizedHref(locale, '/terms')}
+                className="hover:text-vermilion-500 transition-colors"
+              >
+                {t('legal.termsLink')}
+              </Link>
+            </nav>
+            <p
+              id="footer-disclaimer"
+              className="max-w-xl text-center text-xs text-ink-400 dark:text-ink-500"
+            >
+              {t('legal.disclaimerShort')}
+            </p>
+            <p
+              id="footer-version"
+              className="text-xs sm:text-sm text-ink-400 dark:text-ink-500 text-center"
+            >
+              {t('footer.copyright', { versionLabel: VERSION_LABEL })}
+            </p>
+          </div>
+        </footer>
+        <PwaInstallPrompt />
+      </div>
     </ToastProvider>
   );
 }

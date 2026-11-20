@@ -1,8 +1,10 @@
-// src/components/nav-link.tsx v5.2.44
+// src/components/nav-link.tsx v5.2.49
 'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useLocale } from '@/components/locale-provider';
+import { localizedHref, stripLocalePrefix } from '@/lib/urls';
 
 interface NavLinkProps {
   href: string;
@@ -11,11 +13,12 @@ interface NavLinkProps {
 
 export function NavLink({ href, children }: NavLinkProps) {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  const { locale } = useLocale();
+  const isActive = stripLocalePrefix(pathname) === href;
 
   return (
     <Link
-      href={href}
+      href={localizedHref(locale, href)}
       className={`px-4 py-2.5 rounded-xl font-medium transition-[background-color,color,transform] duration-200 relative group ${
         isActive
           ? 'bg-vermilion-500/10 dark:bg-vermilion-500/20 text-vermilion-500 dark:text-vermilion-400'

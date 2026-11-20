@@ -1,6 +1,6 @@
 # 测试规范
 
-> 文档版本：v5.2.37（与项目版本同步，权威版本见 `package.json`）
+> 文档版本：v5.2.48（与项目版本同步，权威版本见 `package.json`）
 
 本文描述项目**当前真实**的测试基础设施与编写规范。质量门禁的定义与完整命令表见 [coding-standards.md](coding-standards.md) §11；未完成的测试改进任务见 [tasks.md](tasks.md)。
 
@@ -56,7 +56,7 @@
 
 - 命名：`<被测文件>.test.ts`（纯逻辑）或 `<被测文件>.test.tsx`（组件/hook）。
 - 位置：被测模块同级的 `__tests__/` 目录，例如 `src/lib/__tests__/`、`src/hooks/__tests__/`、`src/components/state/__tests__/`。
-- 不新建独立的顶层 `test/` 目录；不在仓库根生成测试产物，统一写 `reports/`（已被 `.gitignore` 忽略）。
+- 不新建独立的顶层 `test/` 目录；不在仓库根生成测试产物，统一写 `reports/`（已被 `.gitignore` 忽略）；调试用的临时脚本 / 探针写 `.tmp/`（唯一固定临时子目录，用完即删）。
 - 测试文件同样遵守单文件 ≤ 200 行规则。
 
 ## 5. 编写规范

@@ -1,7 +1,7 @@
 {
-  "name": "HanziMaster 汉字大师 v5.2.47",
-  "version": "5.2.47",
-  "description": "v5.2.47: 学习页 UI 与布局重构为「字帖跨页」——左页田字格字板、右页题跋式例句与词语、下方编号笔顺序列；启用数据中此前从未展示的部首/结构/例句；修复中文界面词条译文重复、笔顺静止即显示红笔与播完无法重播；补 xs 断点并修正标题层级。",
+  "name": "HanziMaster 汉字大师 v5.2.49",
+  "version": "5.2.49",
+  "description": "v5.2.49: SEO/GEO 体系完善——SSR 首屏语言与 generateMetadata 按 11 语言本地化（canonical/hreflang/OG）、动态分享图、结构化数据 @graph、llms.txt 与首页事实/FAQ、AI 爬虫规则与规范化 sitemap、全站链接语言前缀；新增生产 SITE_URL 漏配告警与部署核验清单。",
   "keywords": [
     "Chinese characters",
     "Hanzi",

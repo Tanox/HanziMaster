@@ -1,4 +1,4 @@
-// src/components/mobile-nav.tsx v5.2.44
+// src/components/mobile-nav.tsx v5.2.49
 'use client';
 
 import { APP_VERSION } from '@/lib/version';
@@ -6,16 +6,24 @@ import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSwipeClose } from '@/hooks/use-swipe-close';
+import { localizedHref, stripLocalePrefix } from '@/lib/urls';
+import { DEFAULT_LOCALE, isSupportedLocale, type SupportedLocale } from '@/lib/site';
 import type { TranslationKey } from '@/lib/i18n';
 
 interface MobileNavProps {
   isOpen: boolean;
   onClose: () => void;
   t: (key: TranslationKey, params?: Record<string, string | number>) => string;
+  /** 由布局传入当前语言；省略时从 URL 前缀推断，便于独立测试。 */
+  locale?: SupportedLocale;
 }
 
-export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
+export function MobileNav({ isOpen, onClose, t, locale: localeProp }: MobileNavProps) {
   const pathname = usePathname();
+  const fromPath = pathname.split('/').filter(Boolean)[0];
+  const locale =
+    localeProp ?? (fromPath && isSupportedLocale(fromPath) ? fromPath : DEFAULT_LOCALE);
+  const currentPath = stripLocalePrefix(pathname);
   const drawerRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const swipe = useSwipeClose(isOpen, onClose);
@@ -37,7 +45,7 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
     const shell = document.getElementById('app-shell');
     const background = shell
       ? Array.from(shell.children).filter(
-          (el) => el.id !== 'mobile-nav' && el.id !== 'mobile-nav-backdrop'
+          (el) => el.id !== 'mobile-nav' && el.id !== 'mobile-nav-backdrop',
         )
       : [];
     background.forEach((el) => el.setAttribute('inert', ''));
@@ -52,8 +60,8 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
       if (e.key !== 'Tab') return;
       const focusables = Array.from(
         drawerRef.current?.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
-        ) ?? []
+          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ) ?? [],
       );
       if (focusables.length === 0) {
         e.preventDefault();
@@ -110,7 +118,9 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
             <div className="w-10 h-10 bg-linear-to-br from-vermilion-500 to-vermilion-600 rounded-xl flex items-center justify-center shadow-sm">
               <span className="text-primary-foreground text-base font-bold serif-font">汉</span>
             </div>
-            <span className="text-base font-bold text-ink-900 dark:text-ink-50 display-font">HanziMaster</span>
+            <span className="text-base font-bold text-ink-900 dark:text-ink-50 display-font">
+              HanziMaster
+            </span>
           </div>
           <button
             ref={closeButtonRef}
@@ -118,8 +128,19 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
             className="p-2 rounded-xl hover:bg-ink-100 dark:hover:bg-ink-800 transition-colors duration-200 touch-target"
             aria-label={t('common.closeMenu')}
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -128,10 +149,10 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
         <nav className="flex-1 overflow-y-auto p-4">
           <div className="space-y-2">
             <Link
-              href="/"
+              href={localizedHref(locale, '/')}
               onClick={onClose}
               className={`block px-4 py-3 rounded-xl font-medium transition-colors duration-200 ${
-                pathname === '/'
+                currentPath === '/'
                   ? 'bg-vermilion-500/10 dark:bg-vermilion-500/20 text-vermilion-500 dark:text-vermilion-400'
                   : 'text-ink-600 dark:text-ink-300 hover:bg-ink-100 dark:hover:bg-ink-800'
               }`}
@@ -139,10 +160,10 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
               {t('common.home')}
             </Link>
             <Link
-              href="/learn"
+              href={localizedHref(locale, '/learn')}
               onClick={onClose}
               className={`block px-4 py-3 rounded-xl font-medium transition-colors duration-200 ${
-                pathname === '/learn'
+                currentPath === '/learn'
                   ? 'bg-vermilion-500/10 dark:bg-vermilion-500/20 text-vermilion-500 dark:text-vermilion-400'
                   : 'text-ink-600 dark:text-ink-300 hover:bg-ink-100 dark:hover:bg-ink-800'
               }`}
@@ -150,10 +171,10 @@ export function MobileNav({ isOpen, onClose, t }: MobileNavProps) {
               {t('common.learn')}
             </Link>
             <Link
-              href="/practice"
+              href={localizedHref(locale, '/practice')}
               onClick={onClose}
               className={`block px-4 py-3 rounded-xl font-medium transition-colors duration-200 ${
-                pathname === '/practice'
+                currentPath === '/practice'
                   ? 'bg-vermilion-500/10 dark:bg-vermilion-500/20 text-vermilion-500 dark:text-vermilion-400'
                   : 'text-ink-600 dark:text-ink-300 hover:bg-ink-100 dark:hover:bg-ink-800'
               }`}

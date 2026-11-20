@@ -1,4 +1,4 @@
-// vitest.config.ts v5.2.36
+// vitest.config.ts v5.2.48
 import { defineConfig, coverageConfigDefaults } from 'vitest/config';
 import { fileURLToPath } from 'node:url';
 
@@ -11,7 +11,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     include: ['src/**/*.test.{ts,tsx}'],
-    exclude: ['e2e/**', 'node_modules/**'],
+    exclude: ['e2e/**', 'node_modules/**', '.tmp/**'],
     setupFiles: ['./vitest.setup.ts'],
     globals: true,
     coverage: {
