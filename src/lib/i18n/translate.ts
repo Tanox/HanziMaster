@@ -29,9 +29,8 @@ export const interpolate = (
   params?: Record<string, string | number>
 ): string => {
   if (!params) return template;
-  let result = template;
-  for (const [key, value] of Object.entries(params)) {
-    result = result.split(`{{${key}}}`).join(String(value));
-  }
-  return result;
+  // 单次扫描替换：替换值中的 {{...}} 不会被后续参数二次解析，避免参数顺序影响结果
+  return template.replace(/\{\{([^{}]+)\}\}/g, (match, key: string) =>
+    Object.prototype.hasOwnProperty.call(params, key) ? String(params[key]) : match
+  );
 };

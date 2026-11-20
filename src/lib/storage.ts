@@ -1,4 +1,4 @@
-// src/lib/storage.ts v5.2.42
+// src/lib/storage.ts v5.2.50
 // src/lib/storage.ts
 // Secure localStorage utilities with version control
 
@@ -23,11 +23,11 @@ export function safeGetItem<T>(key: string, defaultValue: T): T {
     
     const parsed = JSON.parse(item) as StorageData<T>;
     
-    // Version check - if version mismatch, return default
-    if (parsed._v !== STORAGE_VERSION) {
+    // 版本不匹配或 envelope 缺 _d 时回退默认值，保证返回类型与运行时一致
+    if (parsed._v !== STORAGE_VERSION || !('_d' in parsed)) {
       return defaultValue;
     }
-    
+
     return parsed._d;
   } catch {
     return defaultValue;

@@ -1,4 +1,4 @@
-// src/hooks/use-progress.ts v5.2.44
+// src/hooks/use-progress.ts v5.2.50
 // Progress tracking with localStorage persistence
 
 import { useState, useEffect, useCallback } from 'react';
@@ -19,24 +19,39 @@ export const PROGRESS_STORAGE_KEY = 'hanzi-master-progress';
 /** 导入成功后广播，让已挂载的 useProgress 重新读取 localStorage（P2-17）。 */
 export const PROGRESS_IMPORTED_EVENT = 'hanzi-master:progress-imported';
 
+/** 单个 hooks 实例保留的最近答题记录上限，防止长期使用撑满 localStorage。 */
+const MAX_QUIZ_RESULTS = 1000;
+
+const readProgress = (): ProgressData =>
+  validateProgress(safeGetItem<ProgressData>(PROGRESS_STORAGE_KEY, getDefaultProgress()));
+
 export function useProgress() {
-  const [progress, setProgress] = useState<ProgressData>(() => {
-    if (typeof window === 'undefined') {
-      return getDefaultProgress();
-    }
-    return validateProgress(safeGetItem<ProgressData>(PROGRESS_STORAGE_KEY, getDefaultProgress()));
-  });
+  // SSR 与客户端首帧统一用默认进度；挂载后再读 localStorage，避免 hydration 不一致
+  const [progress, setProgress] = useState<ProgressData>(getDefaultProgress);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    safeSetItem(PROGRESS_STORAGE_KEY, progress);
-  }, [progress]);
+    setProgress(readProgress());
+    setLoaded(true);
+  }, []);
+
+  // 加载完成前禁止写回，否则会用默认进度覆盖已存在的本地数据
+  useEffect(() => {
+    if (loaded) safeSetItem(PROGRESS_STORAGE_KEY, progress);
+  }, [progress, loaded]);
 
   useEffect(() => {
-    const reload = () => {
-      setProgress(validateProgress(safeGetItem<ProgressData>(PROGRESS_STORAGE_KEY, getDefaultProgress())));
+    const reload = () => setProgress(readProgress());
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === PROGRESS_STORAGE_KEY) reload();
     };
     window.addEventListener(PROGRESS_IMPORTED_EVENT, reload);
-    return () => window.removeEventListener(PROGRESS_IMPORTED_EVENT, reload);
+    // 跨标签页修改同一进度键时同步重载，避免旧状态整体覆写导致进度丢失
+    window.addEventListener('storage', onStorage);
+    return () => {
+      window.removeEventListener(PROGRESS_IMPORTED_EVENT, reload);
+      window.removeEventListener('storage', onStorage);
+    };
   }, []);
 
   const markTodayActive = useCallback(() => {
@@ -65,7 +80,7 @@ export function useProgress() {
       learnedCharIds: correct && !prev.learnedCharIds.includes(charId)
         ? [...prev.learnedCharIds, charId]
         : prev.learnedCharIds,
-      quizResults: [...prev.quizResults, { charId, correct, timestamp: Date.now() }],
+      quizResults: [...prev.quizResults, { charId, correct, timestamp: Date.now() }].slice(-MAX_QUIZ_RESULTS),
       dailyActivity: { ...prev.dailyActivity, [today]: true },
     }));
   }, []);

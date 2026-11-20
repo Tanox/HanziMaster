@@ -1,4 +1,4 @@
-// src/lib/progress-utils.ts v5.2.27
+// src/lib/progress-utils.ts v5.2.50
 // 进度计算纯函数：与 React / localStorage 解耦，便于单元测试与复用
 
 export interface QuizResult {
@@ -37,8 +37,13 @@ export const shiftLocalDateStr = (date: Date, days: number): string => {
   return toLocalDateStr(shifted);
 };
 
-const isFiniteNumber = (value: unknown): value is number =>
-  typeof value === 'number' && Number.isFinite(value);
+/** 字符 id 必须是正整数且在安全整数范围内；旧版本可能写入负数/小数/超大 id。 */
+const isValidCharId = (value: unknown): value is number =>
+  typeof value === 'number' && Number.isInteger(value) && value > 0 && value <= Number.MAX_SAFE_INTEGER;
+
+/** 时间戳必须非负且不超过 JS 安全整数；导入的损坏数据不得进入准确率分母。 */
+const isValidTimestamp = (value: unknown): value is number =>
+  typeof value === 'number' && Number.isFinite(value) && value >= 0 && value <= Number.MAX_SAFE_INTEGER;
 
 const isValidDateKey = (key: string): boolean => {
   if (!DATE_KEY.test(key)) return false;
@@ -62,7 +67,7 @@ export const validateProgress = (data: unknown): ProgressData => {
   const d = data as Partial<ProgressData>;
 
   if (Array.isArray(d.learnedCharIds)) {
-    result.learnedCharIds = [...new Set(d.learnedCharIds.filter(isFiniteNumber))];
+    result.learnedCharIds = [...new Set(d.learnedCharIds.filter(isValidCharId))];
   }
   if (Array.isArray(d.quizResults)) {
     result.quizResults = d.quizResults
@@ -70,9 +75,9 @@ export const validateProgress = (data: unknown): ProgressData => {
         (r): r is QuizResult =>
           !!r &&
           typeof r === 'object' &&
-          isFiniteNumber((r as QuizResult).charId) &&
+          isValidCharId((r as QuizResult).charId) &&
           typeof (r as QuizResult).correct === 'boolean' &&
-          isFiniteNumber((r as QuizResult).timestamp)
+          isValidTimestamp((r as QuizResult).timestamp)
       )
       .map((r) => ({
         charId: r.charId,
@@ -93,22 +98,28 @@ export const validateProgress = (data: unknown): ProgressData => {
 export const computeAccuracy = (quizResults: QuizResult[]): number => {
   if (quizResults.length === 0) return 0;
   const correct = quizResults.filter((r) => r.correct).length;
-  return Math.round((correct / quizResults.length) * 100);
+  if (correct === quizResults.length) return 100;
+  // 非满分结果即使四舍五入到 100 也钳制到 99，避免 199/200 显示为满分
+  return Math.min(99, Math.round((correct / quizResults.length) * 100));
 };
 
 export const computeStreak = (
   activity: Record<string, boolean>,
   now: Date = new Date()
 ): number => {
+  const today = toUtcDay(toLocalDateStr(now));
+  // 先过滤未来日期：混合脏数据中真实连续段不应被一条 2099 年的记录判死
   const days = [...new Set(
-    Object.keys(activity).filter((k) => isValidDateKey(k) && activity[k]).map(toUtcDay)
+    Object.keys(activity)
+      .filter((k) => isValidDateKey(k) && activity[k])
+      .map(toUtcDay)
+      .filter((day) => day <= today)
   )].sort((a, b) => b - a);
 
   if (days.length === 0) return 0;
 
-  const today = toUtcDay(toLocalDateStr(now));
-  // 连胜必须以今天或昨天结束；未来日期或过旧日期都不构成连胜
-  if (days[0] > today || days[0] < today - 1) return 0;
+  // 连胜必须以今天或昨天结束；过旧日期不构成连胜
+  if (days[0] < today - 1) return 0;
 
   let streak = 1;
   for (let i = 0; i < days.length - 1; i++) {
