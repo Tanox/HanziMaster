@@ -52,7 +52,7 @@ export const ko = {
     featuresSubtitle: '안내형 연습과 몰입형 복습으로 중국 한자를 배우며, 학습 진도를 앞당기는 기능을 갖추었습니다.',
     aiBadge: '대화형 학습',
     yongCharacterTitle: '永의 팔법',
-    yongCharacterDesc: '永 한자를 통해 8가지 기본 획을 마스터하고 중국 서예의 본질을解锁하세요',
+    yongCharacterDesc: '永 한자를 통해 8가지 기본 획을 마스터하고 중국 서예의 본질을 해소하세요',
     yongCharacterStrokes: '획 마스터리',
   },
   practice: {
@@ -189,7 +189,7 @@ export const ko = {
     kbdHint: '← → 키로 한자 전환',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 {{versionLabel}}. All rights reserved.',
+    copyright: '© 2026 HanziMaster 汉字大师 {{versionLabel}}. 무단 전재 및 재배포 금지.',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

@@ -52,7 +52,7 @@ export const ja = {
     featuresSubtitle: 'ガイド付き練習と没入型の復習で中国語の文字を学び、学習進捗を加速する機能を備えています。',
     aiBadge: 'インタラクティブ学習',
     yongCharacterTitle: '永の八法',
-    yongCharacterDesc: '永という文字を通じて8つの基本笔画をマスターし、中国書道の真髄を解锁する',
+    yongCharacterDesc: '永という文字を通じて8つの基本笔画をマスターし、中国書道の真髄を解き明かす',
     yongCharacterStrokes: '笔画掌握度',
   },
   practice: {
@@ -189,7 +189,7 @@ export const ja = {
     kbdHint: '← → で漢字を切り替え',
   },
   footer: {
-    copyright: '© 2026 HanziMaster 汉字大师 {{versionLabel}}. All rights reserved.',
+    copyright: '© 2026 HanziMaster 汉字大师 {{versionLabel}}. 無断転載を禁じます。',
   },
   meta: {
     title: 'HanziMaster 汉字大师',

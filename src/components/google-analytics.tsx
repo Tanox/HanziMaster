@@ -15,6 +15,8 @@ const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
  */
 export function GoogleAnalytics() {
   const [allowed, setAllowed] = useState(false);
+  const pathname = usePathname();
+  const lastPath = useRef<string | null>(null);
 
   useEffect(() => {
     const sync = () => {
@@ -28,6 +30,20 @@ export function GoogleAnalytics() {
       window.removeEventListener('storage', sync);
     };
   }, []);
+
+  // SPA 路由切换不会重跑初始化脚本；首屏已由 gtag('config') 上报，仅对后续路径补发 page_view
+  useEffect(() => {
+    if (!allowed || !pathname) return;
+    if (lastPath.current === null) {
+      lastPath.current = pathname;
+      return;
+    }
+    if (lastPath.current === pathname) return;
+    lastPath.current = pathname;
+    (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.('event', 'page_view', {
+      page_path: pathname,
+    });
+  }, [allowed, pathname]);
 
   if (!allowed || !GA_MEASUREMENT_ID) {
     return null;
