@@ -1,40 +1,48 @@
 # 已完成任务归档 · Tasks Done
 
 > 文档版本：v5.2.54（与项目版本同步，权威版本见 `package.json`）
-> 最近归档：**2026-11-20 18:42（UTC+8）— 12 项代码任务闭环（首页重构、CSP 门禁、同意撤回、减少动效等）**
+> 最近归档：**2026-11-20 19:33（UTC+8）— P1-40 真实 Tag/Release 验证通过；此前 12 项代码任务闭环**
 
-## 2026-11-20 18:42（UTC+8）代码任务闭环批次 · v5.2.54
+## 2026-11-20 19:33（UTC+8）Release 链路验证批次 · v5.2.54
 
 | ID | 任务 | 分类 | 完成版本 | 实现要点 / 验收证据 |
 |----|------|------|---------|---------------------|
-| P2-19 | 双平台 CSP 字符串一致性测试 | 安全/质量 | v5.2.54 | `scripts/check-csp-consistency.mjs` + `pnpm check:csp`：以生产配置导入 `next.config.mjs` 的 `headers()`，断言与 `edgeone.json` `/*` 规则 CSP 逐字一致；CI `quality` job 增门禁步骤；实测 `csp consistent` |
-| P2-20 | 收紧 CSP 中自托管字体的冗余 CDN 条目 | 安全 | v5.2.54 | `next.config.mjs` 与 `edgeone.json` 同步移除 `fonts.googleapis.com` / `fonts.gstatic.com`（style-src / font-src / connect-src），GA4 条目保留；一致性门禁通过 |
-| P1-41 | 首访 Cookie 同意横幅遮挡主视觉 | UX/无障碍 | v5.2.54 | `consent-banner.tsx` 已为底部非模态条 + `role=region`，本批次把 `<h2>` 降为 `<p>`，内容标题层级不再被插入 |
-| P1-42 | Hero 承诺与真实能力不符 | 内容/设计 | v5.2.54 | `home-page.tsx` 重写：删两枚 blur 光球、玻璃卡、静态永字与虚构 72%；首屏改左文右田字格可播放笔顺（`next/dynamic` + 本地字形占位的 loading fallback）；真实能力文案与「无需注册 · 进度仅存本机」信任点 |
-| P2-22 | 减少动效下首屏空白与 `.reveal` 兜底 | 无障碍 | v5.2.54 | 新增 `src/app/styles/reduced-motion.css`：系统偏好与 `html.reduce-motion` 两条路径均清零 animation/transition delay 并强制 hero/`.reveal` 可见；`.reveal` 改 `html.js` 作用域，无 JS 默认可见；首页复用 `useScrollReveal` 替代自建 observer |
-| P2-23 | 首页标题层级与中文排版 | 无障碍/排版 | v5.2.54 | H1 → H2(特性) → H3(卡片)；中文标题走 `serif-font`，eyebrow 去 uppercase / 大字距；新增 `common.practice` 等 CTA 文案复用，11 语言词条同步 |
-| P2-24 | CTA 错配与内容深度 | IA/内容 | v5.2.54 | 次 CTA 改 `common.practice` → `/practice`；虚构特性卡替换为「12 字库 / 本地进度」真实能力卡；保留 `HomeGeo` 事实/FAQ 区 |
-| P2-25 | 首屏高度与移动端留白 | 响应式 | v5.2.54 | hero `min-h-[90vh]` → `min-h-[70vh]`，`py-20` → `py-12/16`；桌面左文右演示两栏，主视觉进入首屏 |
-| P1-45 | 主题首屏闪烁（FOUC） | UX | v5.2.54 | `layout.tsx` `<head>` 注入静态主题预设脚本（无用户输入，`script-src 'unsafe-inline'` 已放行），hydration 前设置 `.dark` 与 `.js`，消除主题闪烁并给 `.reveal` 无 JS 兜底 |
-| P1-46 | Cookie 同意撤回机制 | 合规/隐私 | v5.2.54 | 新增 `privacy-controls.tsx` 设置面板隐私分区与 `updateAnalyticsConsent()`；GA4 init 先 `consent default: denied`，脚本 onLoad 与撤回/重开均发 `consent update`；11 语言 `privacy.ts` 扩展模块 |
-| P2-26 | 设置面板主题选择焦点管理 | 无障碍 | v5.2.54 | 数据分区拆为 `data-controls.tsx`，重置二次确认取消/完成后焦点回到 `#settings-reset`；`settings-dialog.test.tsx` 覆盖两条路径 |
-| P2-27 | 首页测验重入与状态残留 | 交互健壮性 | v5.2.54 | 学习页每次打开/关闭清空 `quizAnswer`/`quizCorrect` 与定时器；`quiz-dialog.tsx` 作答后禁用输入与提交并拦截 Enter 重复提交；新增禁用态测试 |
+| P1-40 | `release.yml` 真实 Tag 触发 Release 验证 | CI/发布 | v5.2.54 | ① 修复 `vitest.setup.ts` 跨 Node 版本 Storage 实例不一致导致的 CI 假失败（v5.2.53），`CI` 在 `afe073e` 上 completed/success；② 修复 `release.yml` 门禁以 job id 精确匹配 Jobs API 显示名的恒假阴性（v5.2.54）；③ 推送 Tag `v5.2.54` → Release workflow run `44728160179` completed/success → Release `https://github.com/sutchan/HanziMaster/releases/tag/v5.2.54` 自动生成，正文由 `scripts/extract-changelog.mjs` 从 CHANGELOG 抽取且与 v5.2.54 条目一致 |
 
-> **实测基线（v5.2.54）**：`tsc --noEmit` 0 error；`eslint .` 0/0；Vitest **36 文件 / 200 用例**全通过；`check:lines` `all <= 200`；`check:root` `root clean`；`check:csp` `csp consistent`；`i18n:lint` 11 语言 / 10 扩展模块 / 175 键；`version:check` v5.2.54 in sync。
+> 首次 Tag `v5.2.53` 的 Release 校验因门禁 job 名称匹配缺陷失败（run 44727364116），修复后以新版本 Tag 重验通过；失败记录保留在 GitHub Actions 历史中，不回滚历史 Tag。
 
-## 2026-11-20 18:18（UTC+8）任务状态复核批次 · v5.2.54
+## 2026-11-20 18:42（UTC+8）代码任务闭环批次 · v5.2.52
+
+| ID | 任务 | 分类 | 完成版本 | 实现要点 / 验收证据 |
+|----|------|------|---------|---------------------|
+| P2-19 | 双平台 CSP 字符串一致性测试 | 安全/质量 | v5.2.52 | `scripts/check-csp-consistency.mjs` + `pnpm check:csp`：以生产配置导入 `next.config.mjs` 的 `headers()`，断言与 `edgeone.json` `/*` 规则 CSP 逐字一致；CI `quality` job 增门禁步骤；实测 `csp consistent` |
+| P2-20 | 收紧 CSP 中自托管字体的冗余 CDN 条目 | 安全 | v5.2.52 | `next.config.mjs` 与 `edgeone.json` 同步移除 `fonts.googleapis.com` / `fonts.gstatic.com`（style-src / font-src / connect-src），GA4 条目保留；一致性门禁通过 |
+| P1-41 | 首访 Cookie 同意横幅遮挡主视觉 | UX/无障碍 | v5.2.52 | `consent-banner.tsx` 已为底部非模态条 + `role=region`，本批次把 `<h2>` 降为 `<p>`，内容标题层级不再被插入 |
+| P1-42 | Hero 承诺与真实能力不符 | 内容/设计 | v5.2.52 | `home-page.tsx` 重写：删两枚 blur 光球、玻璃卡、静态永字与虚构 72%；首屏改左文右田字格可播放笔顺（`next/dynamic` + 本地字形占位的 loading fallback）；真实能力文案与「无需注册 · 进度仅存本机」信任点 |
+| P2-22 | 减少动效下首屏空白与 `.reveal` 兜底 | 无障碍 | v5.2.52 | 新增 `src/app/styles/reduced-motion.css`：系统偏好与 `html.reduce-motion` 两条路径均清零 animation/transition delay 并强制 hero/`.reveal` 可见；`.reveal` 改 `html.js` 作用域，无 JS 默认可见；首页复用 `useScrollReveal` 替代自建 observer |
+| P2-23 | 首页标题层级与中文排版 | 无障碍/排版 | v5.2.52 | H1 → H2(特性) → H3(卡片)；中文标题走 `serif-font`，eyebrow 去 uppercase / 大字距；新增 `common.practice` 等 CTA 文案复用，11 语言词条同步 |
+| P2-24 | CTA 错配与内容深度 | IA/内容 | v5.2.52 | 次 CTA 改 `common.practice` → `/practice`；虚构特性卡替换为「12 字库 / 本地进度」真实能力卡；保留 `HomeGeo` 事实/FAQ 区 |
+| P2-25 | 首屏高度与移动端留白 | 响应式 | v5.2.52 | hero `min-h-[90vh]` → `min-h-[70vh]`，`py-20` → `py-12/16`；桌面左文右演示两栏，主视觉进入首屏 |
+| P1-45 | 主题首屏闪烁（FOUC） | UX | v5.2.52 | `layout.tsx` `<head>` 注入静态主题预设脚本（无用户输入，`script-src 'unsafe-inline'` 已放行），hydration 前设置 `.dark` 与 `.js`，消除主题闪烁并给 `.reveal` 无 JS 兜底 |
+| P1-46 | Cookie 同意撤回机制 | 合规/隐私 | v5.2.52 | 新增 `privacy-controls.tsx` 设置面板隐私分区与 `updateAnalyticsConsent()`；GA4 init 先 `consent default: denied`，脚本 onLoad 与撤回/重开均发 `consent update`；11 语言 `privacy.ts` 扩展模块 |
+| P2-26 | 设置面板主题选择焦点管理 | 无障碍 | v5.2.52 | 数据分区拆为 `data-controls.tsx`，重置二次确认取消/完成后焦点回到 `#settings-reset`；`settings-dialog.test.tsx` 覆盖两条路径 |
+| P2-27 | 首页测验重入与状态残留 | 交互健壮性 | v5.2.52 | 学习页每次打开/关闭清空 `quizAnswer`/`quizCorrect` 与定时器；`quiz-dialog.tsx` 作答后禁用输入与提交并拦截 Enter 重复提交；新增禁用态测试 |
+
+> **实测基线（v5.2.52）**：`tsc --noEmit` 0 error；`eslint .` 0/0；Vitest **36 文件 / 200 用例**全通过；`check:lines` `all <= 200`；`check:root` `root clean`；`check:csp` `csp consistent`；`i18n:lint` 11 语言 / 10 扩展模块 / 175 键；`version:check` v5.2.52 in sync。
+
+## 2026-11-20 18:18（UTC+8）任务状态复核批次 · v5.2.52
 
 > 依据当前源码逐项实查 + 生产域 `https://hanzi.ewuse.com` 实测取证；不再沿用历史文字结论。
 > 本批次归档 6 项：1 项完全闭环（P1-39），5 项**代码侧完成**、其线上验收拆分为新任务 P0-32 继续跟踪。
 
 | ID | 任务 | 分类 | 完成版本 | 实现要点 / 验收证据 |
 |----|------|------|---------|---------------------|
-| P1-39 | 首次真实生产部署 + 线上安全头核验 | 部署/安全 | v5.2.54 | 生产域 `/zh-CN` 与 `/_next/static/*.css` 实测均返回 CSP / `X-Frame-Options: DENY` / `X-Content-Type-Options: nosniff` / `Referrer-Policy: strict-origin-when-cross-origin` / `Permissions-Policy` / `Cross-Origin-Opener-Policy: same-origin` 六类头；核验日期 2026-11-20 18:18（UTC+8），样本见 `reports/online-audit.txt`，结果回填 `docs/05-deployment.md` §3.1 |
-| P0-30 | 生产环境变量 `NEXT_PUBLIC_SITE_URL` 必填校验 | 构建/SEO | v5.2.54 | `src/lib/site.ts:28-37` `getSiteUrlWarning`、`next.config.mjs` production 缺配置/非法值阻断构建、`layout.tsx:42-44` `logger.warn`、`.env.example` 生产必填说明、`src/lib/__tests__/site.test.ts` 三分支覆盖。**代码完成**；线上仍返回 `http://localhost:3000` canonical，复验转 P0-32 |
-| P0-31 | SSR 首屏语言与 URL 前缀不一致 | i18n/SEO | v5.2.54 | `src/proxy.ts` 注入 `x-hanzi-locale` / `x-hanzi-path`，`layout.tsx` 服务端 `requestContext()` + `loadTranslations()` 并注入 `LocaleProvider.initialDictionary`。**代码完成**；线上 `/zh-CN` 仍 `lang="en"`，复验转 P0-32 |
-| P1-38 | 补全 OG / Twitter 分享预览图 | SEO/社媒 | v5.2.54 | `src/app/opengraph-image.tsx` / `twitter-image.tsx` 动态 1200×630 分享图，按 Next.js 文件约定自动注入。**代码完成**；线上 `og:image` 缺失且 `/opengraph-image` 返回 302，复验转 P0-32 |
-| P1-43 | metadata 按语言本地化 | SEO/i18n | v5.2.54 | `layout.tsx` `generateMetadata` + `src/lib/build-metadata.ts` + `seo` 扩展 11 语言 + `metadata.test.ts` 两两不同断言。**代码完成**；线上 `/en` / `/ja` 标题仍中文，复验转 P0-32 |
-| P1-44 | 站内链接带语言前缀 | i18n/导航 | v5.2.54 | `src/lib/urls.ts` `localizedHref`，`home-page.tsx` / `layout-client.tsx` / `mobile-nav.tsx` / `nav-link.tsx` 统一前缀。**代码完成**；线上首页仍 `/learn` 等无前缀链接，复验转 P0-32 |
+| P1-39 | 首次真实生产部署 + 线上安全头核验 | 部署/安全 | v5.2.52 | 生产域 `/zh-CN` 与 `/_next/static/*.css` 实测均返回 CSP / `X-Frame-Options: DENY` / `X-Content-Type-Options: nosniff` / `Referrer-Policy: strict-origin-when-cross-origin` / `Permissions-Policy` / `Cross-Origin-Opener-Policy: same-origin` 六类头；核验日期 2026-11-20 18:18（UTC+8），样本见 `reports/online-audit.txt`，结果回填 `docs/05-deployment.md` §3.1 |
+| P0-30 | 生产环境变量 `NEXT_PUBLIC_SITE_URL` 必填校验 | 构建/SEO | v5.2.52 | `src/lib/site.ts:28-37` `getSiteUrlWarning`、`next.config.mjs` production 缺配置/非法值阻断构建、`layout.tsx:42-44` `logger.warn`、`.env.example` 生产必填说明、`src/lib/__tests__/site.test.ts` 三分支覆盖。**代码完成**；线上仍返回 `http://localhost:3000` canonical，复验转 P0-32 |
+| P0-31 | SSR 首屏语言与 URL 前缀不一致 | i18n/SEO | v5.2.52 | `src/proxy.ts` 注入 `x-hanzi-locale` / `x-hanzi-path`，`layout.tsx` 服务端 `requestContext()` + `loadTranslations()` 并注入 `LocaleProvider.initialDictionary`。**代码完成**；线上 `/zh-CN` 仍 `lang="en"`，复验转 P0-32 |
+| P1-38 | 补全 OG / Twitter 分享预览图 | SEO/社媒 | v5.2.52 | `src/app/opengraph-image.tsx` / `twitter-image.tsx` 动态 1200×630 分享图，按 Next.js 文件约定自动注入。**代码完成**；线上 `og:image` 缺失且 `/opengraph-image` 返回 302，复验转 P0-32 |
+| P1-43 | metadata 按语言本地化 | SEO/i18n | v5.2.52 | `layout.tsx` `generateMetadata` + `src/lib/build-metadata.ts` + `seo` 扩展 11 语言 + `metadata.test.ts` 两两不同断言。**代码完成**；线上 `/en` / `/ja` 标题仍中文，复验转 P0-32 |
+| P1-44 | 站内链接带语言前缀 | i18n/导航 | v5.2.52 | `src/lib/urls.ts` `localizedHref`，`home-page.tsx` / `layout-client.tsx` / `mobile-nav.tsx` / `nav-link.tsx` 统一前缀。**代码完成**；线上首页仍 `/learn` 等无前缀链接，复验转 P0-32 |
 
 > **线上核验结论**：安全头已达标；SEO / i18n 相关 5 项代码已落地但生产域仍在跑旧构建，属部署问题而非代码缺陷。
 

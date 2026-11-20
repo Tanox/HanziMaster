@@ -1,7 +1,7 @@
 # 任务清单 · Task Backlog
 
 > 文档版本：v5.2.54（与项目版本同步，权威版本见 `package.json`）
-> 最后更新：**2026-11-20 18:42（UTC+8）— 按复核清单完成 12 项代码任务并归档，剩余 3 项均为外部核验（P0-32 部署复验、P1-40 Tag/Release、P2-21 母语者审校）；全量门禁 36 文件 / 200 用例通过（§7）**
+> 最后更新：**2026-11-20 19:33（UTC+8）— P1-40 真实 Tag/Release 验证通过并归档；P0-32 定位为 Vercel secrets 未配置导致部署跳过（平台侧阻断）；剩余 2 项。版本 v5.2.54（§8）**
 > 本文件是**未完成任务 / 当前进度的单一来源**；已完成任务一律归档至 [tasks-done.md](tasks-done.md)，实现要点见 [CHANGELOG.md](../CHANGELOG.md)。
 
 ## 0. 说明与规则（单一来源）
@@ -11,18 +11,18 @@
 - 每个任务拆到**最小可执行模块**：一处明确改动 + 一条可验证验收标准。
 - 本次更新前已按源码逐项复核，不沿用历史文字结论；版本号、任务计数均实算。
 
-### 0.1 当前清单概览（共 3 项未完成）
+### 0.1 当前清单概览（共 2 项未完成）
 
 | 优先级 | 未完成 | 已归档 | 结论 |
 |--------|--------|--------|------|
-| **P0** | 1 | 24 | P0-32：生产部署后 SEO / i18n 全链路复验（线上仍跑旧构建，属事故） |
-| **P1** | 1 | 50 | P1-40：真实 Tag 触发 Release 验证（需 GitHub 推送权限） |
+| **P0** | 1 | 24 | P0-32：生产部署后 SEO / i18n 全链路复验（Vercel secrets 未配置 → 部署实际跳过） |
+| **P1** | 0 | 51 | P1-40 已完成：真实 Tag `v5.2.54` 触发 Release 成功 |
 | **P2** | 1 | 42 | P2-21：11 语言母语者人工审校（需外部审校人） |
 | **P3** | 0 | 4 | 已闭环 |
-| **合计** | **3** | **137** | 2026-11-20 两批归档共 18 项后，代码侧任务全部闭环；余下 3 项均需平台/人工介入 |
+| **合计** | **2** | **138** | 代码与 CI/Release 链路全部闭环，剩余 2 项需平台配置与人工审校 |
 
-> 剩余 3 项均为**外部核验**，本机无法闭环；不得以「代码已实现」替代验收结果。
-> 本轮完成的 12 项见 §7 与 `tasks-done.md`「2026-11-20 18:42 批次」。
+> 剩余 2 项均为**外部动作**，本机无法闭环；不得以「代码已实现」替代验收结果。
+> 本轮完成的 12 项见 §7，P1-40 见 §8 与 `tasks-done.md`。
 
 ### 0.2 状态复核与优先级重排（2026-11-08 11:42 UTC+8）
 
@@ -98,13 +98,6 @@
 ### 2.1 阻断上线（P0）
 
 ### 2.2 高优先级（P1）
-
-#### P1-40 · `release.yml` 真实 Tag 触发 Release 验证 `CI/发布` `待办`
-
-- **现状**：`.github/workflows/release.yml`（P1-37 新增）校验 tag / 版本一致 → 门禁 → 创建 Release，但从未用真实 Tag 触发；`docs/git-workflow.md` §6.1 规范已写。
-- **目标**：推送首个真实 `vX.Y.Z` Tag，确认 `release.yml` 门禁通过并自动建 Release，正文与 CHANGELOG 一致；记录任何异常。
-- **验收**：① 打 Tag 后 Release 自动生成；② 正文与 CHANGELOG 一致；③ 版本一致 / 同名查重门禁生效。
-- **涉及**：`.github/workflows/release.yml`、`docs/git-workflow.md` §6.1
 
 ### 2.3 中优先级（P2）
 
@@ -205,8 +198,8 @@
 
 #### P0-32 · 生产部署后 SEO / i18n 全链路复验 `部署/SEO/事故` `待办`
 
-- **现状**：代码侧 P0-30 / P0-31 / P1-38 / P1-43 / P1-44 已实现并归档，但生产域实测仍为旧构建（证据见 §6.2）——canonical / hreflang / sitemap / robots 全指向 `localhost:3000`，非默认语言页 SSR 为英文且 `lang="en"`，分享图 302、链接无前缀。搜索引擎与社媒抓取结果错误，属**线上事故**。
-- **目标**：① 将当前 `main` 部署到生产平台并确认构建号更新；② 在平台配置 `NEXT_PUBLIC_SITE_URL=https://hanzi.ewuse.com`，重新部署；③ 按 `docs/05-deployment.md` §7 逐项 `curl` 复验 P0-30/31、P1-38/43/44 的验收标准。
+- **现状（2026-11-20 19:33 复核）**：代码侧 P0-30 / P0-31 / P1-38 / P1-43 / P1-44 已实现并归档；`main` 已推送至 `4010a8e`，`ci.yml` 全绿、`deploy.yml` 结论 success，但生产域仍是旧构建（canonical/hreflang 指 localhost、`lang="en"`、无 og:image、链接无前缀）。**根因已定位**：Deploy 运行 `44727890228` 的注解为 `Vercel secrets 未配置，跳过部署`——工作流走的是「跳过但成功」路径，并未真正部署。属**平台侧配置阻断**，非代码缺陷。
+- **目标**：① 在 GitHub 仓库配置 `VERCEL_TOKEN` / `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` Secrets 并在平台设置 `NEXT_PUBLIC_SITE_URL=https://hanzi.ewuse.com`；② 重新触发 Deploy 并确认真正执行（日志不再出现「跳过部署」）；③ 按 `docs/05-deployment.md` §7 逐项 `curl` 复验 P0-30/31、P1-38/43/44 的验收标准。
 - **验收**：① `/zh-CN` / `/ja` 的 `<html lang>`、`<title>`、`og:locale` 与页面语言一致，首帧正文中文/日文（禁 JS 抓取）；② canonical / hreflang / sitemap / robots / JSON-LD 全为 `https://hanzi.ewuse.com`，无 `localhost`；③ `og:image` / `twitter:image` 为生产绝对 URL，`/opengraph-image` 返回 200 且 `content-type: image/png`；④ 站内链接均为 `/{locale}/...`；⑤ 结果回填 `docs/05-deployment.md` §7 并注明日期。
 - **涉及**：部署平台环境变量与 Deploy、`docs/05-deployment.md` §7
 - **依赖**：当前 `main` 已含全部代码改动；需平台部署权限（非本机可闭环）
@@ -238,8 +231,19 @@
 
 | ID | 优先级 | 任务 | 阻塞原因 | 下一步 |
 |----|--------|------|---------|--------|
-| P0-32 | P0 | 生产部署后 SEO / i18n 全链路复验 | 生产域仍跑旧构建；需在平台设 `NEXT_PUBLIC_SITE_URL` 并重新部署 | 部署后按 `docs/05-deployment.md` §7 逐项 `curl`，回填结果 |
-| P1-40 | P1 | 真实 Tag 触发 Release 验证 | 需向 GitHub 推送 `vX.Y.Z` Tag | 推送 Tag 后核对 `release.yml` 生成的 Release 正文与 CHANGELOG |
+| P0-32 | P0 | 生产部署后 SEO / i18n 全链路复验 | Vercel Secrets 未配置，Deploy 实际跳过；生产域仍跑旧构建 | 配置三项 Vercel Secrets + `NEXT_PUBLIC_SITE_URL`，重新部署后按 `docs/05-deployment.md` §7 逐项 `curl` 并回填 |
 | P2-21 | P2 | 11 语言母语者人工审校 | 需外部审校人，非代码可闭环 | 按 `docs/i18n-review.md` §2 抽查并记录问题清单 |
 
 > 本清单不再保留「代码已完成但未验收」的条目：实现完成即归档，验收动作独立建任务跟踪。
+
+## 8. CI / Release 链路验证与最终状态（2026-11-20 19:33 UTC+8）
+
+| 事项 | 结果 | 证据 |
+|------|------|------|
+| CI 跨 Node 版本假失败 | 已修复 | `vitest.setup.ts` 统一 Storage 实例；push `afe073e` 后 `CI: completed/success`（run 44725980719 系列） |
+| P1-40 真实 Tag/Release | ✅ 完成 | 推送 `v5.2.54` Tag → `Release: completed/success`（run 44728160179）→ Release `https://github.com/sutchan/HanziMaster/releases/tag/v5.2.54` 自动生成，正文与 CHANGELOG 一致 |
+| P0-32 生产部署 | ❌ 平台阻断 | Deploy run `44727890228` 注解 `Vercel secrets 未配置，跳过部署`；线上复测仍 `lang="en"` / localhost canonical / 无 hreflang / 无 og:image |
+| P2-21 母语者审校 | ⏳ 待外部 | `docs/i18n-review.md` 清单已就绪，需 11 语言审校人 |
+
+**当前版本**：v5.2.54（`package.json` 权威源，README / metadata / 文档戳已同步）。
+**未完成任务**：2 项（P0-32 平台配置、P2-21 人工审校），均非本机可闭环。

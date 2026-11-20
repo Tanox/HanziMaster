@@ -3,6 +3,9 @@
 ## [5.2.54] - 修复 Release 门禁的 job 名称匹配
 ### Fixed
 - `.github/workflows/release.yml`「校验 CI / Deploy 门禁全绿」原先以 job id（`quality` / `coverage`）精确匹配 GitHub Jobs API 返回的 `name`，而该字段实际是显示名（`Lint / Types / Tests / Build` / `Coverage thresholds`），导致 v5.2.53 Tag 的真实 Release 校验恒失败。改为按显示名关键字匹配并重跑 Tag 验证（P1-40）。
+### Docs
+- P1-40 完成并归档至 `docs/tasks-done.md`；`docs/tasks.md` 最终仅剩 P0-32（生产部署复验）与 P2-21（母语者审校）2 项外部任务。
+- P0-32 根因取证：Deploy run `44727890228` 注解明确为 `Vercel secrets 未配置，跳过部署`，故工作流 success 但线上仍为旧构建；需平台配置 `VERCEL_TOKEN` / `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` 与 `NEXT_PUBLIC_SITE_URL` 后重新部署。
 
 ## [5.2.53] - 修复 CI 跨 Node 版本 storage 测试假失败
 ### Fixed
